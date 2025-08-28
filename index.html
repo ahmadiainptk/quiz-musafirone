@@ -5,6 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kuis Interaktif: Bab 1 - Cahaya dan Bunyi</title>
     <style>
+        :root {
+            --primary-color: #1a73e8;
+            --correct-bg: #d4edda;
+            --correct-border: #c3e6cb;
+            --correct-text: #155724;
+            --incorrect-bg: #f8d7da;
+            --incorrect-border: #f5c6cb;
+            --incorrect-text: #721c24;
+            --neutral-bg: #f8f9fa;
+            --neutral-border: #dee2e6;
+            --light-blue-bg: #e8f0fe;
+        }
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             background-color: #f0f2f5;
@@ -14,6 +27,7 @@
             display: flex;
             justify-content: center;
         }
+
         .quiz-container {
             width: 100%;
             max-width: 800px;
@@ -22,61 +36,95 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             padding: 30px;
         }
+
         h1 {
-            color: #1a73e8;
+            color: var(--primary-color);
             text-align: center;
             border-bottom: 2px solid #e0e0e0;
             padding-bottom: 15px;
-            margin-bottom: 30px;
+            margin-top: 0;
+            margin-bottom: 20px;
         }
+
+        #progress-indicator {
+            text-align: center;
+            font-size: 1.1em;
+            font-weight: 500;
+            color: #6c757d;
+            margin-bottom: 20px;
+            background-color: var(--light-blue-bg);
+            padding: 10px;
+            border-radius: 8px;
+        }
+        
         .question-block {
-            margin-bottom: 25px;
-            padding-bottom: 25px;
-            border-bottom: 1px solid #e0e0e0;
+            min-height: 200px;
         }
+
         .question {
             font-weight: 600;
-            font-size: 1.1em;
+            font-size: 1.2em;
             margin-bottom: 15px;
+            line-height: 1.5;
         }
-        .answers {
-            display: flex;
-            flex-direction: column;
-        }
-        .answer label {
+
+        .answers label {
             display: block;
             padding: 12px 15px;
-            background-color: #f8f9fa;
-            border: 1px solid #dee2e6;
+            background-color: var(--neutral-bg);
+            border: 1px solid var(--neutral-border);
             border-radius: 8px;
             margin-bottom: 8px;
             cursor: pointer;
             transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
         }
-        .answer label:hover {
+
+        .answers label:hover {
             background-color: #e9ecef;
             border-color: #adb5bd;
         }
-        .answer input[type="radio"] {
+        
+        .answers input[type="radio"] {
             margin-right: 10px;
         }
-        #submit {
-            display: block;
-            width: 100%;
-            padding: 15px;
-            font-size: 1.2em;
+        
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .nav-btn, #submit {
+            padding: 12px 25px;
+            font-size: 1em;
             font-weight: bold;
             color: #fff;
-            background-color: #1a73e8;
+            background-color: var(--primary-color);
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            margin-top: 30px;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s, opacity 0.3s;
         }
-        #submit:hover {
+        
+        .nav-btn:disabled {
+            background-color: #adb5bd;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .nav-btn:hover:not(:disabled) {
             background-color: #155ab6;
         }
+
+        #submit {
+            width: 100%;
+            margin-top: 20px;
+            background-color: #28a745;
+        }
+        #submit:hover {
+            background-color: #218838;
+        }
+
         #results {
             margin-top: 30px;
             text-align: center;
@@ -84,34 +132,86 @@
             font-weight: bold;
             padding: 20px;
             border-radius: 8px;
-            background-color: #e8f0fe;
-            color: #1a73e8;
+            background-color: var(--light-blue-bg);
+            color: var(--primary-color);
+            display: none; /* Sembunyikan secara default */
+        }
+
+        /* Gaya untuk panel nomor soal */
+        #question-jumper {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .jumper-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+            gap: 8px;
+        }
+
+        .jumper-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid var(--neutral-border);
+            background-color: #fff;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .jumper-btn:hover {
+            background-color: var(--light-blue-bg);
+            border-color: var(--primary-color);
+        }
+        .jumper-btn.current {
+            background-color: var(--primary-color);
+            color: #fff;
+            border-color: var(--primary-color);
+            font-weight: bold;
+        }
+        .jumper-btn.answered {
+            background-color: #cce5ff;
+            border-color: #b8daff;
         }
         
-        /* Gaya untuk feedback jawaban */
-        .answer label.correct {
-            background-color: #d4edda;
-            border-color: #c3e6cb;
-            color: #155724;
+        /* Gaya untuk feedback jawaban setelah submit */
+        .answers label.correct {
+            background-color: var(--correct-bg);
+            border-color: var(--correct-border);
+            color: var(--correct-text);
         }
-        .answer label.incorrect {
-            background-color: #f8d7da;
-            border-color: #f5c6cb;
-            color: #721c24;
+        .answers label.incorrect {
+            background-color: var(--incorrect-bg);
+            border-color: var(--incorrect-border);
+            color: var(--incorrect-text);
         }
     </style>
 </head>
 <body>
 
     <div class="quiz-container">
-        <h1>Ulangan Bab 1: Melihat karena Cahaya, Mendengar karena Bunyi</h1>
-        <div id="quiz"></div>
-        <button id="submit">Kirim Jawaban</button>
+        <h1>Ulangan Bab 1: Cahaya dan Bunyi</h1>
+        
+        <div id="progress-indicator"></div>
+        <div id="question-container"></div>
+
+        <div class="navigation-buttons">
+            <button class="nav-btn" id="prev">Sebelumnya</button>
+            <button class="nav-btn" id="next">Berikutnya</button>
+        </div>
+        
+        <button id="submit" style="display:none;">Kirim Jawaban</button>
         <div id="results"></div>
+
+        <div id="question-jumper">
+            <h3 style="text-align:center; margin-bottom:15px;">Navigasi Soal</h3>
+            <div class="jumper-grid"></div>
+        </div>
     </div>
 
 <script>
-    (function(){
+    document.addEventListener('DOMContentLoaded', function() {
         const myQuestions = [
             { question: "1. Mengapa kolam renang terlihat lebih dangkal dari kedalaman sebenarnya?", answers: { A: "Karena cahaya dapat dipantulkan", B: "Karena cahaya dapat dibiaskan", C: "Karena cahaya merambat lurus", D: "Karena cahaya dapat menembus benda bening" }, correctAnswer: "B" },
             { question: "2. Benda yang dapat ditembus oleh semua cahaya disebut...", answers: { A: "Benda gelap", B: "Benda buram", C: "Benda bening (transparan)", D: "Benda padat" }, correctAnswer: "C" },
@@ -215,68 +315,161 @@
             { question: "100. Koklea, gendang telinga, dan tulang pendengaran adalah bagian dari indra...", answers: { A: "Pendengaran", B: "Penglihatan", C: "Keseimbangan", D: "Perasa" }, correctAnswer: "A" }
         ];
 
-        function buildQuiz(){
-            const output = [];
-            myQuestions.forEach((currentQuestion, questionNumber) => {
-                const answers = [];
-                for(letter in currentQuestion.answers){
-                    answers.push(
-                        `<div class="answer">
-                            <label>
-                                <input type="radio" name="question${questionNumber}" value="${letter}">
-                                ${letter} :
-                                ${currentQuestion.answers[letter]}
-                            </label>
-                        </div>`
-                    );
-                }
-                output.push(
-                    `<div class="question-block">
-                        <div class="question"> ${currentQuestion.question} </div>
-                        <div class="answers"> ${answers.join('')} </div>
-                    </div>`
-                );
+        let currentQuestionIndex = 0;
+        const userAnswers = new Array(myQuestions.length).fill(null);
+        let quizSubmitted = false;
+
+        const questionContainer = document.getElementById('question-container');
+        const progressIndicator = document.getElementById('progress-indicator');
+        const prevButton = document.getElementById('prev');
+        const nextButton = document.getElementById('next');
+        const submitButton = document.getElementById('submit');
+        const resultsContainer = document.getElementById('results');
+        const jumperGrid = document.querySelector('.jumper-grid');
+
+        function buildQuestionJumper() {
+            jumperGrid.innerHTML = '';
+            myQuestions.forEach((_, index) => {
+                const button = document.createElement('button');
+                button.classList.add('jumper-btn');
+                button.textContent = index + 1;
+                button.dataset.index = index;
+                button.addEventListener('click', () => {
+                    goToQuestion(index);
+                });
+                jumperGrid.appendChild(button);
             });
-            quizContainer.innerHTML = output.join('');
         }
 
-        function showResults(){
-            const answerContainers = quizContainer.querySelectorAll('.answers');
-            let numCorrect = 0;
+        function updateJumper() {
+            const buttons = jumperGrid.querySelectorAll('.jumper-btn');
+            buttons.forEach((button, index) => {
+                button.classList.remove('current', 'answered');
+                if (userAnswers[index] !== null) {
+                    button.classList.add('answered');
+                }
+                if (index === currentQuestionIndex) {
+                    button.classList.add('current');
+                }
+            });
+        }
 
-            myQuestions.forEach((currentQuestion, questionNumber) => {
-                const answerContainer = answerContainers[questionNumber];
-                const selector = `input[name=question${questionNumber}]:checked`;
-                const userAnswer = (answerContainer.querySelector(selector) || {}).value;
+        function showQuestion(index) {
+            const currentQuestion = myQuestions[index];
+            const output = [];
+            const answers = [];
 
-                const labels = answerContainer.querySelectorAll('label');
+            for (let letter in currentQuestion.answers) {
+                const isChecked = userAnswers[index] === letter ? 'checked' : '';
+                answers.push(
+                    `<label>
+                        <input type="radio" name="question${index}" value="${letter}" ${isChecked} ${quizSubmitted ? 'disabled' : ''}>
+                        ${letter} : ${currentQuestion.answers[letter]}
+                    </label>`
+                );
+            }
 
-                labels.forEach(label => {
-                    const input = label.querySelector('input');
-                    if(input.value === currentQuestion.correctAnswer){
-                        label.classList.add('correct');
-                    } else if(input.value === userAnswer) {
-                         label.classList.add('incorrect');
-                    }
+            output.push(
+                `<div class="question-block">
+                    <div class="question">${currentQuestion.question}</div>
+                    <div class="answers">${answers.join('')}</div>
+                </div>`
+            );
+
+            questionContainer.innerHTML = output.join('');
+            progressIndicator.textContent = `Soal ${index + 1} dari ${myQuestions.length}`;
+            
+            // Tambahkan event listener untuk jawaban
+            const radioButtons = questionContainer.querySelectorAll(`input[name=question${index}]`);
+            radioButtons.forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    userAnswers[index] = e.target.value;
+                    updateJumper();
+                    checkIfAllAnswered();
                 });
+            });
+            
+            updateNavButtons();
+            updateJumper();
+        }
 
-                if(userAnswer === currentQuestion.correctAnswer){
+        function updateNavButtons() {
+            prevButton.disabled = currentQuestionIndex === 0;
+            nextButton.disabled = currentQuestionIndex === myQuestions.length - 1;
+        }
+
+        function goToQuestion(index) {
+            currentQuestionIndex = index;
+            showQuestion(currentQuestionIndex);
+            if(quizSubmitted) showFeedback();
+        }
+        
+        function showNextQuestion() {
+            if (currentQuestionIndex < myQuestions.length - 1) {
+                currentQuestionIndex++;
+                showQuestion(currentQuestionIndex);
+                if(quizSubmitted) showFeedback();
+            }
+        }
+
+        function showPrevQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                showQuestion(currentQuestionIndex);
+                if(quizSubmitted) showFeedback();
+            }
+        }
+        
+        function checkIfAllAnswered() {
+            const allAnswered = userAnswers.every(answer => answer !== null);
+            if (allAnswered && !quizSubmitted) {
+                submitButton.style.display = 'block';
+            }
+        }
+
+        function showFeedback() {
+            const currentQuestion = myQuestions[currentQuestionIndex];
+            const answerContainer = questionContainer.querySelector('.answers');
+            const labels = answerContainer.querySelectorAll('label');
+            
+            labels.forEach(label => {
+                const input = label.querySelector('input');
+                if (input.value === currentQuestion.correctAnswer) {
+                    label.classList.add('correct');
+                } else if (input.value === userAnswers[currentQuestionIndex]) {
+                    label.classList.add('incorrect');
+                }
+            });
+        }
+
+        function calculateResults() {
+            quizSubmitted = true;
+            let numCorrect = 0;
+            myQuestions.forEach((question, index) => {
+                if (userAnswers[index] === question.correctAnswer) {
                     numCorrect++;
                 }
             });
 
             resultsContainer.innerHTML = `Skor Anda: ${numCorrect} dari ${myQuestions.length} soal benar.`;
-            submitButton.style.display = 'none'; // Sembunyikan tombol setelah dikirim
+            resultsContainer.style.display = 'block';
+            submitButton.style.display = 'none';
+            prevButton.style.display = 'none';
+            nextButton.style.display = 'none';
+            
+            // Tampilkan feedback untuk soal pertama
+            goToQuestion(0);
         }
 
-        const quizContainer = document.getElementById('quiz');
-        const resultsContainer = document.getElementById('results');
-        const submitButton = document.getElementById('submit');
-        
-        buildQuiz();
+        // Event Listeners
+        prevButton.addEventListener('click', showPrevQuestion);
+        nextButton.addEventListener('click', showNextQuestion);
+        submitButton.addEventListener('click', calculateResults);
 
-        submitButton.addEventListener('click', showResults);
-    })();
+        // Inisialisasi Kuis
+        buildQuestionJumper();
+        showQuestion(currentQuestionIndex);
+    });
 </script>
 
 </body>

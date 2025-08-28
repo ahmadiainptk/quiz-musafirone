@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuis Interaktif: Bab 1 - Cahaya dan Bunyi</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+        .quiz-container {
+            width: 100%;
+            max-width: 800px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+        h1 {
+            color: #1a73e8;
+            text-align: center;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+        }
+        .question-block {
+            margin-bottom: 25px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .question {
+            font-weight: 600;
+            font-size: 1.1em;
+            margin-bottom: 15px;
+        }
+        .answers {
+            display: flex;
+            flex-direction: column;
+        }
+        .answer label {
+            display: block;
+            padding: 12px 15px;
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+        }
+        .answer label:hover {
+            background-color: #e9ecef;
+            border-color: #adb5bd;
+        }
+        .answer input[type="radio"] {
+            margin-right: 10px;
+        }
+        #submit {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #fff;
+            background-color: #1a73e8;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 30px;
+            transition: background-color 0.3s;
+        }
+        #submit:hover {
+            background-color: #155ab6;
+        }
+        #results {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 1.4em;
+            font-weight: bold;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #e8f0fe;
+            color: #1a73e8;
+        }
+        
+        /* Gaya untuk feedback jawaban */
+        .answer label.correct {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+        }
+        .answer label.incorrect {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="quiz-container">
+        <h1>Ulangan Bab 1: Melihat karena Cahaya, Mendengar karena Bunyi</h1>
+        <div id="quiz"></div>
+        <button id="submit">Kirim Jawaban</button>
+        <div id="results"></div>
+    </div>
+
+<script>
+    (function(){
+        const myQuestions = [
+            { question: "1. Mengapa kolam renang terlihat lebih dangkal dari kedalaman sebenarnya?", answers: { A: "Karena cahaya dapat dipantulkan", B: "Karena cahaya dapat dibiaskan", C: "Karena cahaya merambat lurus", D: "Karena cahaya dapat menembus benda bening" }, correctAnswer: "B" },
+            { question: "2. Benda yang dapat ditembus oleh semua cahaya disebut...", answers: { A: "Benda gelap", B: "Benda buram", C: "Benda bening (transparan)", D: "Benda padat" }, correctAnswer: "C" },
+            { question: "3. Apa yang terjadi ketika cahaya mengenai benda gelap?", answers: { A: "Cahaya akan dipantulkan seluruhnya", B: "Cahaya akan menembus benda tersebut", C: "Akan terbentuk bayangan", D: "Cahaya akan diuraikan menjadi pelangi" }, correctAnswer: "C" },
+            { question: "4. Pelangi terbentuk karena sifat cahaya yang dapat...", answers: { A: "Dipantulkan", B: "Merambat lurus", C: "Diuraikan", D: "Menembus benda bening" }, correctAnswer: "C" },
+            { question: "5. Jenis cermin yang digunakan pada kaca spion kendaraan adalah...", answers: { A: "Cermin datar", B: "Cermin cekung", C: "Cermin cembung", D: "Cermin buram" }, correctAnswer: "C" },
+            { question: "6. Bagian mata yang berfungsi mengatur jumlah cahaya yang masuk adalah...", answers: { A: "Kornea", B: "Lensa", C: "Retina", D: "Pupil dan Iris" }, correctAnswer: "D" },
+            { question: "7. Bayangan benda yang ditangkap oleh retina berbentuk...", answers: { A: "Nyata, tegak, diperbesar", B: "Nyata, terbalik, diperkecil", C: "Maya, tegak, sama besar", D: "Maya, terbalik, diperkecil" }, correctAnswer: "B" },
+            { question: "8. Gangguan penglihatan yang membuat sulit melihat benda dari jarak jauh disebut...", answers: { A: "Rabun dekat (Hipermetropi)", B: "Rabun jauh (Miopi)", C: "Mata silindris (Astigmatisme)", D: "Mata tua (Presbiopi)" }, correctAnswer: "B" },
+            { question: "9. Bunyi berasal dari benda yang...", answers: { A: "Diam", B: "Berpindah tempat", C: "Bergetar", D: "Memantulkan cahaya" }, correctAnswer: "C" },
+            { question: "10. Medium manakah yang paling baik dalam merambatkan bunyi?", answers: { A: "Benda padat", B: "Benda cair", C: "Benda gas", D: "Ruang hampa" }, correctAnswer: "A" },
+            { question: "11. Bunyi pantulan yang terdengar kembali setelah sumber bunyi selesai bersuara di area yang luas disebut...", answers: { A: "Gaung", B: "Gema", C: "Nada", D: "Intensitas" }, correctAnswer: "B" },
+            { question: "12. Benda-benda seperti busa dan karpet dapat digunakan untuk...", answers: { A: "Memantulkan suara", B: "Meredam suara", C: "Memperkeras suara", D: "Menghasilkan suara" }, correctAnswer: "B" },
+            { question: "13. Tinggi rendahnya suatu bunyi ditentukan oleh...", answers: { A: "Seberapa kuat benda dipukul (Amplitudo)", B: "Seberapa cepat benda bergetar (Frekuensi)", C: "Jarak sumber bunyi", D: "Jenis medium perambatan" }, correctAnswer: "B" },
+            { question: "14. Bagian telinga yang berfungsi menangkap gelombang bunyi dari luar adalah...", answers: { A: "Gendang telinga", B: "Tulang pendengaran", C: "Rumah siput (koklea)", D: "Daun telinga" }, correctAnswer: "D" },
+            { question: "15. Getaran dari gendang telinga akan diteruskan dan diperkuat oleh...", answers: { A: "Saraf pendengaran", B: "Saluran Eustachius", C: "Tulang-tulang pendengaran", D: "Daun telinga" }, correctAnswer: "C" },
+            { question: "16. Mengapa mendengarkan musik dengan volume terlalu keras menggunakan *earphone* berbahaya?", answers: { A: "Dapat merusak daun telinga", B: "Dapat merusak gendang telinga dan sel-sel rambut di koklea", C: "Dapat menyumbat saluran telinga", D: "Dapat mengganggu keseimbangan tubuh" }, correctAnswer: "B" },
+            { question: "17. Teknologi yang terinspirasi dari kemampuan ekolokasi hewan seperti kelelawar adalah...", answers: { A: "Sinar-X", B: "Mikroskop", C: "Ultrasonografi (USG)", D: "Teleskop" }, correctAnswer: "C" },
+            { question: "18. Contoh peristiwa yang membuktikan bahwa cahaya merambat lurus adalah...", answers: { A: "Sendok terlihat bengkok di dalam gelas berisi air", B: "Cahaya matahari yang masuk melalui celah-celah kecil", C: "Terbentuknya bayangan kita di cermin", D: "Air kolam yang terlihat jernih" }, correctAnswer: "B" },
+            { question: "19. Apa yang terjadi pada lensa mata kita saat melihat objek yang sangat dekat?", answers: { A: "Lensa mata akan menipis", B: "Lensa mata akan menebal", C: "Lensa mata akan menjadi datar", D: "Lensa mata tidak berubah bentuk" }, correctAnswer: "B" },
+            { question: "20. Suara keras yang tidak enak didengar dan dapat mengganggu disebut...", answers: { A: "Polusi udara", B: "Polusi cahaya", C: "Polusi suara", D: "Polusi air" }, correctAnswer: "C" },
+            { question: "21. Sumber energi cahaya terbesar di Bumi adalah...", answers: { A: "Api", B: "Lampu", C: "Bulan", D: "Matahari" }, correctAnswer: "D" },
+            { question: "22. Bagian mata yang berwarna putih dan keras serta berfungsi melindungi bagian penting di dalamnya adalah...", answers: { A: "Pupil", B: "Sklera", C: "Iris", D: "Kornea" }, correctAnswer: "B" },
+            { question: "23. Intensitas bunyi mengacu pada...", answers: { A: "Tinggi rendahnya nada", B: "Keras pelannya bunyi", C: "Kecepatan rambat bunyi", D: "Pantulan bunyi" }, correctAnswer: "B" },
+            { question: "24. Kita bisa melihat diri kita di cermin karena sifat cahaya yang dapat...", answers: { A: "Dibiaskan", B: "Diuraikan", C: "Dipantulkan", D: "Merambat lurus" }, correctAnswer: "C" },
+            { question: "25. Bagian telinga yang mengubah getaran suara menjadi sinyal listrik untuk dikirim ke otak adalah...", answers: { A: "Gendang telinga", B: "Tulang pendengaran", C: "Rumah siput (koklea)", D: "Saluran telinga" }, correctAnswer: "C" },
+            { question: "26. Mengapa kita tidak bisa mendengar bunyi di luar angkasa?", answers: { A: "Karena di luar angkasa sangat dingin", B: "Karena di luar angkasa tidak ada udara (hampa)", C: "Karena di luar angkasa terlalu terang", D: "Karena di luar angkasa gravitasinya lemah" }, correctAnswer: "B" },
+            { question: "27. Fungsi alis dan bulu mata adalah...", answers: { A: "Membantu memfokuskan cahaya", B: "Mendeteksi warna", C: "Melindungi mata dari keringat dan debu", D: "Mengatur jumlah cahaya yang masuk" }, correctAnswer: "C" },
+            { question: "28. Jika senar gitar dikencangkan, maka bunyi yang dihasilkan akan...", answers: { A: "Semakin rendah", B: "Semakin tinggi", C: "Semakin keras", D: "Tidak berubah" }, correctAnswer: "B" },
+            { question: "29. Membaca buku di tempat yang terlalu gelap dapat menyebabkan...", answers: { A: "Mata menjadi lebih sehat", B: "Mata menjadi lelah dan tegang", C: "Kemampuan mendengar menurun", D: "Warna buku menjadi lebih cerah" }, correctAnswer: "B" },
+            { question: "30. Gaung terjadi di ruangan yang...", answers: { A: "Sangat luas dan terbuka", B: "Sempit dan tertutup dengan dinding keras", C: "Dilapisi banyak perabotan lunak", D: "Tidak memiliki dinding sama sekali" }, correctAnswer: "B" },
+            { question: "31. Saat kita berkedip, apa fungsi utama yang terjadi?", answers: { A: "Untuk beristirahat sejenak dari melihat", B: "Membersihkan dan membasahi permukaan mata", C: "Memfokuskan kembali lensa mata", D: "Mengurangi jumlah cahaya yang masuk" }, correctAnswer: "B" },
+            { question: "32. Sendok yang dimasukkan sebagian ke dalam air akan terlihat bengkok. Ini adalah contoh...", answers: { A: "Pemantulan baur", B: "Pembiasan cahaya", C: "Penguraian cahaya", D: "Penyerapan cahaya" }, correctAnswer: "B" },
+            { question: "33. Contoh benda buram adalah...", answers: { A: "Kaca bening", B: "Tembok", C: "Kertas minyak", D: "Air jernih" }, correctAnswer: "C" },
+            { question: "34. Semakin jauh sumber cahaya dari suatu benda, maka bayangan yang terbentuk akan...", answers: { A: "Semakin pendek dan jelas", B: "Semakin panjang dan kabur", C: "Tidak berubah ukurannya", D: "Menghilang" }, correctAnswer: "B" },
+            { question: "35. Bayangan yang dihasilkan oleh cermin cekung jika kita bercermin dari jarak sangat dekat adalah...", answers: { A: "Tegak dan diperkecil", B: "Terbalik dan diperbesar", C: "Tegak dan diperbesar", D: "Terbalik dan diperkecil" }, correctAnswer: "C" },
+            { question: "36. Mengapa permukaan air yang beriak menghasilkan pantulan bayangan yang tidak jelas?", answers: { A: "Karena air menyerap semua cahaya", B: "Karena arah pantulan cahaya menjadi tidak beraturan", C: "Karena air membiaskan cahaya", D: "Karena air menghasilkan cahayanya sendiri" }, correctAnswer: "B" },
+            { question: "37. Proses melihat diawali dengan...", answers: { A: "Otak menerjemahkan sinyal", B: "Benda memantulkan cahaya ke mata", C: "Lensa mata memfokuskan cahaya", D: "Pupil membesar atau mengecil" }, correctAnswer: "B" },
+            { question: "38. Rabun dekat karena faktor usia disebut juga...", answers: { A: "Miopi", B: "Astigmatisme", C: "Presbiopi", D: "Katarak" }, correctAnswer: "C" },
+            { question: "39. Jika sebuah botol berisi sedikit air ditiup, nadanya akan tinggi. Jika botol yang sama diisi banyak air, maka saat ditiup nadanya akan...", answers: { A: "Lebih tinggi", B: "Lebih rendah", C: "Sama saja", D: "Tidak bersuara" }, correctAnswer: "B" },
+            { question: "40. Drum yang dipukul dengan lemah akan menghasilkan bunyi dengan...", answers: { A: "Nada tinggi dan intensitas tinggi", B: "Nada rendah dan intensitas tinggi", C: "Nada tinggi dan intensitas rendah", D: "Nada rendah dan intensitas rendah" }, correctAnswer: "D" },
+            { question: "41. Saraf mata berfungsi untuk...", answers: { A: "Menggerakkan bola mata", B: "Meneruskan sinyal bayangan dari retina ke otak", C: "Mengubah bentuk lensa mata", D: "Melindungi mata dari benda asing" }, correctAnswer: "B" },
+            { question: "42. Kita masih bisa mendengar suara orang di ruangan sebelah meskipun tidak melihatnya. Ini karena bunyi...", answers: { A: "Merambat lurus seperti cahaya", B: "Dapat merambat ke segala arah", C: "Hanya bisa merambat melalui udara", D: "Tidak membutuhkan medium" }, correctAnswer: "B" },
+            { question: "43. Percobaan menaburkan garam di atas balon yang diikatkan pada mulut toples membuktikan bahwa...", answers: { A: "Garam dapat menghasilkan bunyi", B: "Bunyi adalah getaran yang merambat", C: "Balon dapat memantulkan bunyi", D: "Bunyi tidak bisa merambat melalui benda padat" }, correctAnswer: "B" },
+            { question: "44. Mata silindris dapat dibantu dengan menggunakan kacamata...", answers: { A: "Minus", B: "Plus", C: "Silindris", D: "Rangkap" }, correctAnswer: "C" },
+            { question: "45. Urutan yang benar dalam proses mendengar adalah...", answers: { A: "Daun telinga -> Tulang pendengaran -> Gendang telinga -> Rumah siput -> Otak", B: "Daun telinga -> Gendang telinga -> Tulang pendengaran -> Rumah siput -> Otak", C: "Daun telinga -> Rumah siput -> Gendang telinga -> Tulang pendengaran -> Otak", D: "Otak -> Saraf pendengaran -> Gendang telinga -> Daun telinga" }, correctAnswer: "B" },
+            { question: "46. Cahaya putih seperti cahaya matahari sebenarnya merupakan gabungan dari...", answers: { A: "Warna hitam dan putih", B: "Berbagai macam warna seperti pelangi", C: "Hanya warna kuning", D: "Warna-warna primer saja (merah, kuning, biru)" }, correctAnswer: "B" },
+            { question: "47. Hewan yang menggunakan ekolokasi untuk navigasi dan mencari makan adalah...", answers: { A: "Elang", B: "Kucing", C: "Kelelawar dan lumba-lumba", D: "Ular" }, correctAnswer: "C" },
+            { question: "48. Manakah pernyataan yang BENAR mengenai perbedaan cahaya dan bunyi?", answers: { A: "Cahaya membutuhkan medium, sedangkan bunyi tidak", B: "Bunyi membutuhkan medium, sedangkan cahaya tidak", C: "Keduanya membutuhkan medium untuk merambat", D: "Keduanya tidak membutuhkan medium untuk merambat" }, correctAnswer: "B" },
+            { question: "49. Ketika berada di tempat yang sangat terang, pupil mata kita akan...", answers: { A: "Membesar", B: "Mengecil", C: "Menghilang", D: "Tidak berubah" }, correctAnswer: "B" },
+            { question: "50. Tujuan utama proyek belajar pada Bab 1 adalah...", answers: { A: "Membuat alat peraga sifat cahaya dan bunyi", B: "Melakukan wawancara dengan pengguna kacamata", C: "Membuat media informasi cara menjaga kesehatan mata dan telinga", D: "Menyelidiki polusi suara di lingkungan sekitar" }, correctAnswer: "C" },
+            { question: "51. Sebuah benda terlihat berwarna merah karena benda tersebut...", answers: { A: "Menyerap semua warna kecuali merah", B: "Memantulkan semua warna", C: "Menyerap semua warna termasuk merah", D: "Menghasilkan cahaya merah sendiri" }, correctAnswer: "A" },
+            { question: "52. Bagian telinga yang berfungsi menjaga keseimbangan tekanan udara antara telinga tengah dan dunia luar adalah...", answers: { A: "Saluran Semiskular", B: "Saluran Telinga", C: "Saluran Eustachius", D: "Koklea" }, correctAnswer: "C" },
+            { question: "53. Contoh aktivitas atau pekerjaan yang membutuhkan perlindungan khusus untuk mata adalah...", answers: { A: "Koki di restoran", B: "Tukang las", C: "Guru di kelas", D: "Pustakawan" }, correctAnswer: "B" },
+            { question: "54. Mengapa suara petir terdengar beberapa saat setelah kilatnya terlihat?", answers: { A: "Karena suara merambat lebih cepat dari cahaya", B: "Karena cahaya merambat lebih cepat dari suara", C: "Karena suara membutuhkan waktu untuk dihasilkan", D: "Karena mata kita lebih peka dari telinga" }, correctAnswer: "B" },
+            { question: "55. Kemampuan lensa mata untuk menebal dan menipis disebut...", answers: { A: "Daya refleksi", B: "Daya refraksi", C: "Daya akomodasi", D: "Daya serap" }, correctAnswer: "C" },
+            { question: "56. Jika kamu berteriak di dalam kamar yang penuh dengan perabotan, gema/gaung hampir tidak terdengar. Mengapa?", answers: { A: "Karena udara di dalam kamar menyerap suara", B: "Karena perabotan lunak seperti kasur, gorden, dan karpet menyerap suara", C: "Karena kamar terlalu kecil untuk menghasilkan gema", D: "Karena suara tidak bisa memantul dari dinding" }, correctAnswer: "B" },
+            { question: "57. Kurang mengonsumsi makanan yang mengandung vitamin A dapat meningkatkan risiko...", answers: { A: "Gangguan pendengaran", B: "Gangguan penglihatan seperti rabun senja", C: "Mata silindris", D: "Telinga berdenging" }, correctAnswer: "B" },
+            { question: "58. Suara kicau burung memiliki... yang tinggi, sedangkan suara gong memiliki... yang rendah.", answers: { A: "Intensitas, Nada", B: "Nada, Intensitas", C: "Nada, Nada", D: "Intensitas, Intensitas" }, correctAnswer: "C" },
+            { question: "59. Dinding pada bioskop dilapisi busa tebal dan karpet. Tujuannya adalah...", answers: { A: "Agar suara film terdengar lebih keras", B: "Agar tidak terjadi gaung sehingga suara film jernih", C: "Agar ruangan terlihat lebih mewah", D: "Agar penonton merasa lebih nyaman" }, correctAnswer: "B" },
+            { question: "60. Bagian dari cermin cembung yang memantulkan cahaya adalah permukaan yang...", answers: { A: "Melengkung ke luar", B: "Melengkung ke dalam", C: "Datar dan rata", D: "Kasar dan tidak rata" }, correctAnswer: "A" },
+            { question: "61. Jika tiga layar terbuat dari bahan yang berbeda: Layar 1 (kayu), Layar 2 (kaca bening), dan Layar 3 (plastik buram). Manakah pernyataan yang benar?", answers: { A: "Kita bisa melihat jelas melalui Layar 1", B: "Kita bisa melihat dengan jelas melalui Layar 2", C: "Kita tidak bisa melihat sama sekali melalui Layar 3", D: "Kita bisa melihat jelas melalui Layar 3" }, correctAnswer: "B" },
+            { question: "62. Otak menerima informasi bayangan dari retina dalam keadaan terbalik, lalu...", answers: { A: "Memperbesarnya agar terlihat jelas", B: "Meneruskannya ke lensa untuk difokuskan ulang", C: "Menerjemahkan dan membalikkannya kembali sehingga terlihat tegak", D: "Menyimpannya sebagai memori tanpa mengubahnya" }, correctAnswer: "C" },
+            { question: "63. Mengapa suara sirene ambulans terdengar lebih tinggi saat mendekat dan lebih rendah saat menjauh?", answers: { A: "Karena intensitasnya berubah", B: "Ini disebut Efek Doppler", C: "Karena ambulans mengubah nada sirenenya", D: "Karena ada gema di jalan raya" }, correctAnswer: "B" },
+            { question: "64. Sinar laser yang digunakan dalam operasi mata memanfaatkan sifat cahaya untuk...", answers: { A: "Memantulkan bayangan", B: "Menghasilkan panas yang terfokus", C: "Menguraikan warna", D: "Menerangi bagian dalam mata" }, correctAnswer: "B" },
+            { question: "65. Tulang-tulang pendengaran (martil, landasan, sanggurdi) berada di bagian...", answers: { A: "Telinga Luar", B: "Telinga Tengah", C: "Telinga Dalam", D: "Saluran Eustachius" }, correctAnswer: "B" },
+            { question: "66. Benda yang tidak tembus cahaya sama sekali disebut juga benda...", answers: { A: "Transparan", B: "Translusen", C: "Opak (Opaque)", D: "Reflektif" }, correctAnswer: "C" },
+            { question: "67. Saat kamu mendekatkan wajahmu ke sendok makan dari sisi yang cekung, bayanganmu akan terlihat...", answers: { A: "Tegak dan lebih kecil", B: "Terbalik", C: "Tegak dan lebih besar", D: "Sama seperti cermin datar" }, correctAnswer: "C" },
+            { question: "68. Suara gitar dihasilkan oleh...", answers: { A: "Getaran udara di dalam badan gitar", B: "Getaran senar yang dipetik", C: "Gesekan jari pada senar", D: "Pantulan suara dari kayu gitar" }, correctAnswer: "B" },
+            { question: "69. Jika kamu berada di puncak gunung dan temanmu di lembah, kamu akan lebih mudah mendengar suaranya jika angin bertiup...", answers: { A: "Dari puncak ke lembah", B: "Dari lembah ke puncak", C: "Menyamping", D: "Tidak ada angin sama sekali" }, correctAnswer: "B" },
+            { question: "70. Gangguan pendengaran yang disebabkan oleh kerusakan pada saraf pendengaran...", answers: { A: "Mudah diobati dengan obat tetes telinga", B: "Sulit diatasi karena saraf tidak dapat meneruskan informasi ke otak", C: "Dapat diatasi dengan membersihkan kotoran telinga", D: "Hanya terjadi pada orang tua" }, correctAnswer: "B" },
+            { question: "71. Lampu senter yang dinyalakan di ruangan gelap akan menunjukkan bahwa cahaya...", answers: { A: "Membelok saat mengenai dinding", B: "Merambat lurus dalam satu berkas", C: "Menghasilkan pelangi di udara", D: "Membutuhkan udara untuk merambat" }, correctAnswer: "B" },
+            { question: "72. Melihat layar komputer atau telepon pintar terlalu lama dapat menyebabkan mata lelah. Mengapa?", answers: { A: "Karena layar memancarkan suara yang mengganggu", B: "Karena otot mata terus bekerja untuk fokus pada jarak dekat dan kita jarang berkedip", C: "Karena layar terlalu dingin", D: "Karena cahaya layar merusak pupil" }, correctAnswer: "B" },
+            { question: "73. Bunyi pantulan yang terdengar hampir bersamaan dengan bunyi asli disebut...", answers: { A: "Gema", B: "Gaung", C: "Resonansi", D: "Difraksi" }, correctAnswer: "B" },
+            { question: "74. Cermin di tikungan jalan biasanya adalah cermin cembung. Tujuannya adalah...", answers: { A: "Untuk memperbesar gambar mobil yang mendekat", B: "Untuk memberikan area pandang yang lebih luas", C: "Untuk memantulkan cahaya matahari agar tidak silau", D: "Sebagai hiasan jalan" }, correctAnswer: "B" },
+            { question: "75. Suara orang dewasa pada umumnya lebih rendah daripada suara anak-anak karena...", answers: { A: "Orang dewasa berbicara lebih pelan", B: "Pita suara orang dewasa lebih panjang dan besar", C: "Telinga anak-anak lebih peka", D: "Orang dewasa memiliki paru-paru lebih besar" }, correctAnswer: "B" },
+            { question: "76. Saat terjadi gangguan di telinga tengah, misalnya infeksi, penderita biasanya kesulitan mendengar...", answers: { A: "Suara pelan", B: "Suara keras", C: "Suara bernada tinggi", D: "Suara bernada rendah" }, correctAnswer: "A" },
+            { question: "77. Kacamata plus (lensa cembung) digunakan untuk membantu penderita rabun dekat. Lensa ini berfungsi untuk...", answers: { A: "Menyebarkan cahaya sebelum masuk ke mata", B: "Membantu memfokuskan cahaya agar jatuh tepat di retina", C: "Mengurangi jumlah cahaya yang masuk", D: "Memperbaiki bentuk kornea" }, correctAnswer: "B" },
+            { question: "78. Mengapa kita bisa melihat bayangan angsa di permukaan air yang tenang?", answers: { A: "Karena air bersifat buram", B: "Karena permukaan air yang tenang berfungsi seperti cermin datar", C: "Karena air menyerap cahaya dari angsa", D: "Karena terjadi pembiasan cahaya di dalam air" }, correctAnswer: "B" },
+            { question: "79. Jika kamu meniup suling sambil menutup semua lubangnya, nada yang dihasilkan akan menjadi yang paling...", answers: { A: "Tinggi", B: "Rendah", C: "Keras", D: "Pelan" }, correctAnswer: "B" },
+            { question: "80. Salah satu cara menjaga kesehatan telinga adalah...", answers: { A: "Mendengarkan musik dengan volume maksimal", B: "Menghindari suara yang terlalu keras atau bising", C: "Membersihkan telinga dengan benda tajam", D: "Tidak pernah membersihkan telinga sama sekali" }, correctAnswer: "B" },
+            { question: "81. Perbedaan utama antara gema dan gaung terletak pada...", answers: { A: "Sumber bunyinya", B: "Waktu terdengarnya bunyi pantul", C: "Kerasnya bunyi pantul", D: "Arah datangnya bunyi pantul" }, correctAnswer: "B" },
+            { question: "82. Membaca sambil tiduran tidak disarankan karena...", answers: { A: "Dapat merusak bantal", B: "Membuat otot mata bekerja lebih keras untuk menjaga fokus", C: "Membuat tulisan menjadi kabur", D: "Mengurangi asupan oksigen ke otak" }, correctAnswer: "B" },
+            { question: "83. Implan koklea adalah alat bantu dengar yang berfungsi sebagai pengganti...", answers: { A: "Daun telinga", B: "Gendang telinga dan tulang pendengaran", C: "Rumah siput (koklea) yang rusak", D: "Otak dalam menerjemahkan suara" }, correctAnswer: "C" },
+            { question: "84. Sebuah objek terlihat berwarna putih karena...", answers: { A: "Menyerap semua warna cahaya", B: "Memantulkan semua warna cahaya", C: "Hanya memantulkan warna putih", D: "Tidak berinteraksi dengan cahaya sama sekali" }, correctAnswer: "B" },
+            { question: "85. Ketika kamu memainkan xilofon, batang kayu yang lebih panjang akan menghasilkan nada yang...", answers: { A: "Lebih tinggi", B: "Lebih rendah", C: "Lebih keras", D: "Sama dengan batang yang pendek" }, correctAnswer: "B" },
+            { question: "86. Bayangan tubuh kita paling pendek saat...", answers: { A: "Matahari terbit", B: "Matahari terbenam", C: "Tengah hari saat matahari tepat di atas kepala", D: "Malam hari" }, correctAnswer: "C" },
+            { question: "87. Alat pengukur kedalaman laut (fathometer) bekerja dengan prinsip...", answers: { A: "Pembiasan cahaya", B: "Pemantulan bunyi (ekolokasi)", C: "Perambatan lurus cahaya", D: "Penguraian cahaya" }, correctAnswer: "B" },
+            { question: "88. Saat kamu berbicara, pita suaramu...", answers: { A: "Memanjang dan memendek", B: "Bergetar karena aliran udara dari paru-paru", C: "Tetap diam", D: "Menyerap suara dari mulut" }, correctAnswer: "B" },
+            { question: "89. Fungsi utama kornea pada mata adalah...", answers: { A: "Mengatur warna mata", B: "Sebagai 'jendela' tempat cahaya pertama kali masuk dan dibiaskan", C: "Mengubah getaran menjadi sinyal listrik", D: "Menggerakkan bola mata" }, correctAnswer: "B" },
+            { question: "90. Seorang musisi menyetem gitarnya. Dia mengencangkan salah satu senar agar nadanya lebih tinggi. Apa yang dia ubah?", answers: { A: "Amplitudo getaran senar", B: "Frekuensi getaran senar", C: "Warna senar", D: "Bahan senar" }, correctAnswer: "B" },
+            { question: "91. Saat kamu melihat ikan di dalam kolam, posisi ikan yang terlihat oleh mata...", answers: { A: "Sama dengan posisi aslinya", B: "Lebih dangkal dari posisi aslinya", C: "Lebih dalam dari posisi aslinya", D: "Berada di samping posisi aslinya" }, correctAnswer: "B" },
+            { question: "92. Meniup peluit menghasilkan bunyi bernada tinggi karena...", answers: { A: "Udara di dalamnya bergetar sangat lambat", B: "Udara di dalamnya bergetar sangat cepat", C: "Bahan peluit terbuat dari plastik", D: "Peluit ditiup dengan sangat kuat" }, correctAnswer: "B" },
+            { question: "93. Mengapa penggunaan kacamata hitam di bawah terik matahari terasa nyaman?", answers: { A: "Karena kacamata hitam memfokuskan cahaya", B: "Karena kacamata hitam mengurangi intensitas cahaya yang masuk ke mata", C: "Karena kacamata hitam mendinginkan mata", D: "Karena kacamata hitam membiaskan cahaya" }, correctAnswer: "B" },
+            { question: "94. Paparan suara keras secara terus-menerus di tempat kerja (misalnya pabrik) dapat menyebabkan...", answers: { A: "Peningkatan kemampuan mendengar", B: "Gangguan pendengaran permanen", C: "Peningkatan kesehatan mata", D: "Tidak ada efek apa pun" }, correctAnswer: "B" },
+            { question: "95. Jika kamu menyalakan lampu di dalam kotak kardus yang tertutup rapat, orang di luar kotak...", answers: { A: "Bisa melihat cahaya dengan jelas", B: "Tidak bisa melihat cahaya sama sekali", C: "Bisa melihat cahaya samar-samar", D: "Bisa melihat pelangi" }, correctAnswer: "B" },
+            { question: "96. Tujuan dari kegiatan 'Mari Refleksikan' di setiap akhir topik adalah...", answers: { A: "Untuk menguji hafalan siswa", B: "Untuk mendorong siswa berpikir tentang apa yang telah mereka pelajari", C: "Untuk memberikan tugas rumah tambahan", D: "Untuk mempersiapkan ujian akhir" }, correctAnswer: "B" },
+            { question: "97. Manakah yang BUKAN merupakan sifat cahaya?", answers: { A: "Dapat dipantulkan", B: "Dapat dibiaskan", C: "Membutuhkan medium untuk merambat", D: "Dapat diuraikan" }, correctAnswer: "C" },
+            { question: "98. Manakah yang BUKAN merupakan sifat bunyi?", answers: { A: "Dapat dipantulkan", B: "Membutuhkan medium untuk merambat", C: "Dapat merambat lurus", D: "Dapat diserap" }, correctAnswer: "C" },
+            { question: "99. Sklera, iris, dan pupil adalah bagian dari indra...", answers: { A: "Pendengaran", B: "Penglihatan", C: "Peraba", D: "Penciuman" }, correctAnswer: "B" },
+            { question: "100. Koklea, gendang telinga, dan tulang pendengaran adalah bagian dari indra...", answers: { A: "Pendengaran", B: "Penglihatan", C: "Keseimbangan", D: "Perasa" }, correctAnswer: "A" }
+        ];
+
+        function buildQuiz(){
+            const output = [];
+            myQuestions.forEach((currentQuestion, questionNumber) => {
+                const answers = [];
+                for(letter in currentQuestion.answers){
+                    answers.push(
+                        `<div class="answer">
+                            <label>
+                                <input type="radio" name="question${questionNumber}" value="${letter}">
+                                ${letter} :
+                                ${currentQuestion.answers[letter]}
+                            </label>
+                        </div>`
+                    );
+                }
+                output.push(
+                    `<div class="question-block">
+                        <div class="question"> ${currentQuestion.question} </div>
+                        <div class="answers"> ${answers.join('')} </div>
+                    </div>`
+                );
+            });
+            quizContainer.innerHTML = output.join('');
+        }
+
+        function showResults(){
+            const answerContainers = quizContainer.querySelectorAll('.answers');
+            let numCorrect = 0;
+
+            myQuestions.forEach((currentQuestion, questionNumber) => {
+                const answerContainer = answerContainers[questionNumber];
+                const selector = `input[name=question${questionNumber}]:checked`;
+                const userAnswer = (answerContainer.querySelector(selector) || {}).value;
+
+                const labels = answerContainer.querySelectorAll('label');
+
+                labels.forEach(label => {
+                    const input = label.querySelector('input');
+                    if(input.value === currentQuestion.correctAnswer){
+                        label.classList.add('correct');
+                    } else if(input.value === userAnswer) {
+                         label.classList.add('incorrect');
+                    }
+                });
+
+                if(userAnswer === currentQuestion.correctAnswer){
+                    numCorrect++;
+                }
+            });
+
+            resultsContainer.innerHTML = `Skor Anda: ${numCorrect} dari ${myQuestions.length} soal benar.`;
+            submitButton.style.display = 'none'; // Sembunyikan tombol setelah dikirim
+        }
+
+        const quizContainer = document.getElementById('quiz');
+        const resultsContainer = document.getElementById('results');
+        const submitButton = document.getElementById('submit');
+        
+        buildQuiz();
+
+        submitButton.addEventListener('click', showResults);
+    })();
+</script>
+
+</body>
+</html>

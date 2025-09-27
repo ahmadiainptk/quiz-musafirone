@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soal Latihan - Berpikir Komputasional</title>
+    <!-- Menggunakan Tailwind CSS untuk styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Style kustom untuk jawaban yang benar dan salah */
+        .correct {
+            background-color: #d1fae5; /* green-100 */
+            border-left: 4px solid #10b981; /* green-500 */
+        }
+        .incorrect {
+            background-color: #fee2e2; /* red-100 */
+            border-left: 4px solid #ef4444; /* red-500 */
+        }
+        .highlight-correct {
+             border-left: 4px solid #10b981; /* green-500 */
+             background-color: #d1fae5;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans">
+    <div class="container mx-auto p-4 sm:p-6 lg:p-8">
+        <div class="bg-white rounded-xl shadow-lg p-6 md:p-8">
+            <div class="text-center mb-8">
+                <h1 class="text-3xl font-bold text-gray-800">Soal Latihan: Berpikir Komputasional</h1>
+                <p class="text-gray-600 mt-2">Mata Pelajaran: Informatika - Kelas VII</p>
+            </div>
+
+            <form id="quizForm" class="space-y-8">
+                <!-- Soal 1 -->
+                <div id="question-1" class="p-4 rounded-lg border border-gray-200">
+                    <p class="font-semibold text-gray-700 mb-3">1. Saat kamu membuat jus mangga menggunakan blender, buah mangga yang dimasukkan ke dalam blender merupakan bagian dari...</p>
+                    <div class="space-y-2">
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q1" value="a" class="mr-3">a. Proses</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q1" value="b" class="mr-3">b. Output</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q1" value="c" class="mr-3">c. Input</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q1" value="d" class="mr-3">d. Alat</label>
+                    </div>
+                </div>
+                
+                <!-- Soal 2 -->
+                <div id="question-2" class="p-4 rounded-lg border border-gray-200">
+                    <p class="font-semibold text-gray-700 mb-3">2. Seorang kasir menghitung total belanjaanmu menggunakan mesin kasir. Proses menekan tombol angka dan operasi hitung pada mesin kasir disebut...</p>
+                    <div class="space-y-2">
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q2" value="a" class="mr-3">a. Input</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q2" value="b" class="mr-3">b. Proses</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q2" value="c" class="mr-3">c. Output</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q2" value="d" class="mr-3">d. Hasil</label>
+                    </div>
+                </div>
+
+                <!-- Soal 3 -->
+                <div id="question-3" class="p-4 rounded-lg border border-gray-200">
+                    <p class="font-semibold text-gray-700 mb-3">3. Setelah memasukkan uang dan memilih minuman di mesin penjual otomatis, minuman yang keluar dari mesin tersebut adalah...</p>
+                    <div class="space-y-2">
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q3" value="a" class="mr-3">a. Input</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q3" value="b" class="mr-3">b. Proses</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q3" value="c" class="mr-3">c. Output</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q3" value="d" class="mr-3">d. Perintah</label>
+                    </div>
+                </div>
+
+                <!-- Soal 4 -->
+                <div id="question-4" class="p-4 rounded-lg border border-gray-200">
+                    <p class="font-semibold text-gray-700 mb-3">4. Sebuah fungsi memiliki <strong>input</strong> berupa angka `10`. <strong>Proses</strong> yang dilakukan adalah "dikalikan dengan 5". Berapakah <strong>output</strong> yang akan dihasilkan?</p>
+                    <div class="space-y-2">
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q4" value="a" class="mr-3">a. 5</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q4" value="b" class="mr-3">b. 15</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q4" value="c" class="mr-3">c. 50</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q4" value="d" class="mr-3">d. 10</label>
+                    </div>
+                </div>
+
+                <!-- Soal 5 -->
+                <div id="question-5" class="p-4 rounded-lg border border-gray-200">
+                    <p class="font-semibold text-gray-700 mb-3">5. Kamu mengetik kata "informatika" di keyboard laptop. Aktivitas mengetik ini dalam konsep fungsi adalah...</p>
+                    <div class="space-y-2">
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q5" value="a" class="mr-3">a. Output</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q5" value="b" class="mr-3">b. Proses</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q5" value="c" class="mr-3">c. Input</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q5" value="d" class="mr-3">d. Media</label>
+                    </div>
+                </div>
+
+                <!-- Soal 6 -->
+                <div id="question-6" class="p-4 rounded-lg border border-gray-200">
+                    <p class="font-semibold text-gray-700 mb-3">6. CPU (Central Processing Unit) pada komputer menerima perintah untuk menjumlahkan dua angka. Kegiatan yang dilakukan oleh CPU tersebut merupakan...</p>
+                    <div class="space-y-2">
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q6" value="a" class="mr-3">a. Input</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q6" value="b" class="mr-3">b. Proses</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q6" value="c" class="mr-3">c. Output</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q6" value="d" class="mr-3">d. Data</label>
+                    </div>
+                </div>
+
+                <!-- Soal 7 -->
+                <div id="question-7" class="p-4 rounded-lg border border-gray-200">
+                    <p class="font-semibold text-gray-700 mb-3">7. Hasil pencarian yang ditampilkan oleh Google setelah kamu mengetikkan kata kunci adalah contoh dari...</p>
+                    <div class="space-y-2">
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q7" value="a" class="mr-3">a. Input</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q7" value="b" class="mr-3">b. Proses</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q7" value="c" class="mr-3">c. Output</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q7" value="d" class="mr-3">d. Algoritma</label>
+                    </div>
+                </div>
+
+                <!-- Soal 8 -->
+                <div id="question-8" class="p-4 rounded-lg border border-gray-200">
+                    <p class="font-semibold text-gray-700 mb-3">8. Apakah yang dimaksud dengan himpunan?</p>
+                    <div class="space-y-2">
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q8" value="a" class="mr-3">a. Kumpulan benda apa saja tanpa aturan yang jelas.</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q8" value="b" class="mr-3">b. Kumpulan objek atau benda yang dapat didefinisikan dengan jelas.</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q8" value="c" class="mr-3">c. Daftar benda-benda yang disukai seseorang.</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q8" value="d" class="mr-3">d. Sekelompok benda yang memiliki warna yang sama.</label>
+                    </div>
+                </div>
+
+                <!-- Soal 9 -->
+                <div id="question-9" class="p-4 rounded-lg border border-gray-200">
+                    <p class="font-semibold text-gray-700 mb-3">9. Manakah di antara kumpulan berikut yang merupakan sebuah himpunan?</p>
+                    <div class="space-y-2">
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q9" value="a" class="mr-3">a. Kumpulan siswa yang pandai di kelas.</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q9" value="b" class="mr-3">b. Kumpulan lukisan yang indah.</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q9" value="c" class="mr-3">c. Kumpulan hewan berkaki empat.</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q9" value="d" class="mr-3">d. Kumpulan makanan yang lezat.</label>
+                    </div>
+                </div>
+                
+                <!-- Soal 10 -->
+                <div id="question-10" class="p-4 rounded-lg border border-gray-200">
+                    <p class="font-semibold text-gray-700 mb-3">10. Berikut ini yang <strong>bukan</strong> merupakan contoh himpunan adalah...</p>
+                    <div class="space-y-2">
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q10" value="a" class="mr-3">a. Kumpulan nama-nama hari dalam seminggu.</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q10" value="b" class="mr-3">b. Kumpulan siswa kelas VII yang tinggi badannya di atas 180 cm.</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q10" value="c" class="mr-3">c. Kumpulan bunga-bunga yang harum baunya.</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q10" value="d" class="mr-3">d. Kumpulan bilangan prima kurang dari 10.</label>
+                    </div>
+                </div>
+                
+                <!-- Soal 11 -->
+                <div id="question-11" class="p-4 rounded-lg border border-gray-200">
+                    <p class="font-semibold text-gray-700 mb-3">11. Untuk bisa masuk ke sebuah wahana, syaratnya adalah "tinggi minimal 150 cm <strong>DAN</strong> usia minimal 12 tahun". Jika Ali tingginya 160 cm namun usianya baru 10 tahun, apakah ia boleh masuk?</p>
+                    <div class="space-y-2">
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q11" value="a" class="mr-3">a. Boleh, karena tingginya sudah memenuhi.</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q11" value="b" class="mr-3">b. Tidak boleh, karena salah satu syarat tidak terpenuhi.</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q11" value="c" class="mr-3">c. Boleh, karena usianya tidak terlalu jauh.</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q11" value="d" class="mr-3">d. Tidak boleh, karena kedua syarat tidak terpenuhi.</label>
+                    </div>
+                </div>
+                
+                <!-- Soal 12 -->
+                <div id="question-12" class="p-4 rounded-lg border border-gray-200">
+                    <p class="font-semibold text-gray-700 mb-3">12. Sebuah lampu akan menyala jika "saklar A ditekan <strong>ATAU</strong> saklar B ditekan". Apa yang terjadi jika hanya saklar A yang ditekan?</p>
+                    <div class="space-y-2">
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q12" value="a" class="mr-3">a. Lampu tidak akan menyala.</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q12" value="b" class="mr-3">b. Lampu akan menyala redup.</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q12" value="c" class="mr-3">c. Lampu akan tetap menyala terang.</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q12" value="d" class="mr-3">d. Lampu akan berkedip.</label>
+                    </div>
+                </div>
+                
+                <!-- Soal 13 -->
+                <div id="question-13" class="p-4 rounded-lg border border-gray-200">
+                    <p class="font-semibold text-gray-700 mb-3">13. Perhatikan kumpulan berikut: "Kumpulan warna-warna pelangi". Apakah kumpulan tersebut termasuk himpunan?</p>
+                    <div class="space-y-2">
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q13" value="a" class="mr-3">a. Tidak, karena warna itu selera.</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q13" value="b" class="mr-3">b. Ya, karena anggotanya jelas (Merah, Jingga, Kuning, Hijau, Biru, Nila, Ungu).</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q13" value="c" class="mr-3">c. Tidak, karena jumlah warnanya terlalu banyak.</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q13" value="d" class="mr-3">d. Ya, karena semua orang suka pelangi.</label>
+                    </div>
+                </div>
+                
+                <!-- Soal 14 -->
+                <div id="question-14" class="p-4 rounded-lg border border-gray-200">
+                    <p class="font-semibold text-gray-700 mb-3">14. Suatu cara untuk mewakili besaran dari suatu item fisik dengan menggunakan sekumpulan simbol atau angka sesuai aturan tertentu disebut...</p>
+                    <div class="space-y-2">
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q14" value="a" class="mr-3">a. Sistem Komputer</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q14" value="b" class="mr-3">b. Sistem Operasi</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q14" value="c" class="mr-3">c. Sistem Bilangan</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q14" value="d" class="mr-3">d. Sistem Digital</label>
+                    </div>
+                </div>
+                
+                <!-- Soal 15 -->
+                <div id="question-15" class="p-4 rounded-lg border border-gray-200">
+                    <p class="font-semibold text-gray-700 mb-3">15. Alasan utama komputer menggunakan sistem bilangan biner (0 dan 1) adalah...</p>
+                    <div class="space-y-2">
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q15" value="a" class="mr-3">a. Karena bilangan biner lebih mudah dihitung oleh manusia.</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q15" value="b" class="mr-3">b. Karena komputer hanya bisa mengenali dua kondisi, yaitu ada arus listrik (1) dan tidak ada arus listrik (0).</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q15" value="c" class="mr-3">c. Agar program yang dibuat lebih sederhana.</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q15" value="d" class="mr-3">d. Karena sistem bilangan desimal terlalu rumit untuk komputer.</label>
+                    </div>
+                </div>
+                
+                <!-- Soal 16 -->
+                <div id="question-16" class="p-4 rounded-lg border border-gray-200">
+                    <p class="font-semibold text-gray-700 mb-3">16. Bilangan desimal `25` jika diubah ke dalam bentuk bilangan biner adalah...</p>
+                    <div class="space-y-2">
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q16" value="a" class="mr-3">a. 11001</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q16" value="b" class="mr-3">b. 10011</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q16" value="c" class="mr-3">c. 11100</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q16" value="d" class="mr-3">d. 10101</label>
+                    </div>
+                </div>
+
+                <!-- Soal 17 -->
+                <div id="question-17" class="p-4 rounded-lg border border-gray-200">
+                    <p class="font-semibold text-gray-700 mb-3">17. Bilangan biner `1011` jika dikonversikan menjadi bilangan desimal adalah...</p>
+                    <div class="space-y-2">
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q17" value="a" class="mr-3">a. 9</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q17" value="b" class="mr-3">b. 10</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q17" value="c" class="mr-3">c. 11</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q17" value="d" class="mr-3">d. 13</label>
+                    </div>
+                </div>
+
+                <!-- Soal 18 -->
+                <div id="question-18" class="p-4 rounded-lg border border-gray-200">
+                    <p class="font-semibold text-gray-700 mb-3">18. Berapakah nilai bilangan desimal `83` jika diubah menjadi bilangan oktal?</p>
+                    <div class="space-y-2">
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q18" value="a" class="mr-3">a. 123</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q18" value="b" class="mr-3">b. 132</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q18" value="c" class="mr-3">c. 103</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q18" value="d" class="mr-3">d. 143</label>
+                    </div>
+                </div>
+
+                <!-- Soal 19 -->
+                <div id="question-19" class="p-4 rounded-lg border border-gray-200">
+                    <p class="font-semibold text-gray-700 mb-3">19. Nilai desimal dari bilangan biner `11110` adalah...</p>
+                    <div class="space-y-2">
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q19" value="a" class="mr-3">a. 28</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q19" value="b" class="mr-3">b. 30</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q19" value="c" class="mr-3">c. 31</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q19" value="d" class="mr-3">d. 15</label>
+                    </div>
+                </div>
+
+                <!-- Soal 20 -->
+                <div id="question-20" class="p-4 rounded-lg border border-gray-200">
+                    <p class="font-semibold text-gray-700 mb-3">20. Kamu menumpuk beberapa buku di atas meja dengan urutan: Matematika, lalu IPA, kemudian IPS. Buku manakah yang akan kamu ambil pertama kali jika kamu harus mengambilnya dari tumpukan paling atas?</p>
+                    <div class="space-y-2">
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q20" value="a" class="mr-3">a. Matematika</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q20" value="b" class="mr-3">b. IPA</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q20" value="c" class="mr-3">c. IPS</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q20" value="d" class="mr-3">d. Ketiganya bersamaan</label>
+                    </div>
+                </div>
+
+                <!-- Soal 21 -->
+                <div id="question-21" class="p-4 rounded-lg border border-gray-200">
+                    <p class="font-semibold text-gray-700 mb-3">21. Manakah dari kelompok berikut yang dapat disebut sebagai himpunan?</p>
+                    <div class="space-y-2">
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q21" value="a" class="mr-3">a. Kelompok anak-anak yang berambut keriting.</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q21" value="b" class="mr-3">b. Kelompok gunung-gunung yang tinggi.</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q21" value="c" class="mr-3">c. Kelompok siswa yang gemar melukis.</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q21" value="d" class="mr-3">d. Kelompok provinsi di Pulau Jawa.</label>
+                    </div>
+                </div>
+
+                <!-- Soal 22 -->
+                <div id="question-22" class="p-4 rounded-lg border border-gray-200">
+                    <p class="font-semibold text-gray-700 mb-3">22. "Kumpulan bilangan ganjil antara 10 dan 20". Manakah yang merupakan anggota himpunan tersebut?</p>
+                    <div class="space-y-2">
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q22" value="a" class="mr-3">a. 10, 12, 14, 16, 18</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q22" value="b" class="mr-3">b. 11, 13, 15, 17, 19</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q22" value="c" class="mr-3">c. 11, 12, 13, 14, 15</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q22" value="d" class="mr-3">d. 15, 17, 19, 20</label>
+                    </div>
+                </div>
+
+                <!-- Soal 23 -->
+                <div id="question-23" class="p-4 rounded-lg border border-gray-200">
+                    <p class="font-semibold text-gray-700 mb-3">23. Bilangan biner `100101` setara dengan bilangan desimal...</p>
+                    <div class="space-y-2">
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q23" value="a" class="mr-3">a. 35</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q23" value="b" class="mr-3">b. 37</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q23" value="c" class="mr-3">c. 41</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q23" value="d" class="mr-3">d. 25</label>
+                    </div>
+                </div>
+
+                <!-- Soal 24 -->
+                <div id="question-24" class="p-4 rounded-lg border border-gray-200">
+                    <p class="font-semibold text-gray-700 mb-3">24. Bilangan oktal `45` jika dikonversikan ke bilangan desimal menjadi...</p>
+                    <div class="space-y-2">
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q24" value="a" class="mr-3">a. 37</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q24" value="b" class="mr-3">b. 45</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q24" value="c" class="mr-3">c. 54</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q24" value="d" class="mr-3">d. 9</label>
+                    </div>
+                </div>
+
+                <!-- Soal 25 -->
+                <div id="question-25" class="p-4 rounded-lg border border-gray-200">
+                    <p class="font-semibold text-gray-700 mb-3">25. Nilai desimal dari bilangan oktal `107` adalah...</p>
+                    <div class="space-y-2">
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q25" value="a" class="mr-3">a. 71</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q25" value="b" class="mr-3">b. 107</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q25" value="c" class="mr-3">c. 64</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q25" value="d" class="mr-3">d. 79</label>
+                    </div>
+                </div>
+
+                <!-- Soal 26 -->
+                <div id="question-26" class="p-4 rounded-lg border border-gray-200">
+                    <p class="font-semibold text-gray-700 mb-3">26. Berikut adalah empat pilar utama dalam berpikir komputasional, <strong>kecuali</strong>...</p>
+                    <div class="space-y-2">
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q26" value="a" class="mr-3">a. Dekomposisi</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q26" value="b" class="mr-3">b. Pengenalan Pola</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q26" value="c" class="mr-3">c. Abstraksi</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q26" value="d" class="mr-3">d. Kompilasi</label>
+                    </div>
+                </div>
+
+                <!-- Soal 27 -->
+                <div id="question-27" class="p-4 rounded-lg border border-gray-200">
+                    <p class="font-semibold text-gray-700 mb-3">27. Sistem bilangan yang menggunakan basis 10 dan terdiri dari angka 0 hingga 9 adalah sistem bilangan...</p>
+                    <div class="space-y-2">
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q27" value="a" class="mr-3">a. Biner</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q27" value="b" class="mr-3">b. Oktal</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q27" value="c" class="mr-3">c. Desimal</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q27" value="d" class="mr-3">d. Heksadesimal</label>
+                    </div>
+                </div>
+
+                <!-- Soal 28 -->
+                <div id="question-28" class="p-4 rounded-lg border border-gray-200">
+                    <p class="font-semibold text-gray-700 mb-3">28. Basis atau radiks dari sistem bilangan biner adalah...</p>
+                    <div class="space-y-2">
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q28" value="a" class="mr-3">a. 2</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q28" value="b" class="mr-3">b. 8</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q28" value="c" class="mr-3">c. 10</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q28" value="d" class="mr-3">d. 16</label>
+                    </div>
+                </div>
+
+                <!-- Soal 29 -->
+                <div id="question-29" class="p-4 rounded-lg border border-gray-200">
+                    <p class="font-semibold text-gray-700 mb-3">29. Diketahui Himpunan A = {1, 2, 3, 4, 5} dan Himpunan B = {4, 5, 6, 7}. Apakah irisan (intersection) dari Himpunan A dan Himpunan B?</p>
+                    <div class="space-y-2">
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q29" value="a" class="mr-3">a. {1, 2, 3}</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q29" value="b" class="mr-3">b. {6, 7}</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q29" value="c" class="mr-3">c. {4, 5}</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q29" value="d" class="mr-3">d. {1, 2, 3, 4, 5, 6, 7}</label>
+                    </div>
+                </div>
+
+                <!-- Soal 30 -->
+                <div id="question-30" class="p-4 rounded-lg border border-gray-200">
+                    <p class="font-semibold text-gray-700 mb-3">30. Adi memasukkan mainannya ke dalam sebuah kotak besar. Pertama ia memasukkan robot, lalu mobil-mobilan, dan terakhir bola. Jika Adi ingin mengambil mainannya satu per satu dari atas, mainan apa yang pertama kali ia ambil?</p>
+                    <div class="space-y-2">
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q30" value="a" class="mr-3">a. Robot</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q30" value="b" class="mr-3">b. Mobil-mobilan</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q30" value="c" class="mr-3">c. Bola</label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition-colors duration-200 cursor-pointer"><input type="radio" name="q30" value="d" class="mr-3">d. Semuanya sekaligus</label>
+                    </div>
+                </div>
+            </form>
+
+            <div class="mt-8 text-center">
+                <button id="submitBtn" class="bg-blue-600 text-white font-bold py-3 px-8 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 transition-all duration-300 shadow-md">
+                    Periksa Jawaban
+                </button>
+            </div>
+
+            <div id="result" class="mt-8 text-center p-6 bg-gray-50 rounded-lg hidden">
+                <h2 class="text-2xl font-bold text-gray-800">Hasil Anda</h2>
+                <p id="score" class="text-4xl font-bold text-blue-600 mt-2"></p>
+                <p id="feedback" class="text-gray-600 mt-2"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript untuk menangani pengecekan jawaban
+        const correctAnswers = {
+            q1: 'c', q2: 'b', q3: 'c', q4: 'c', q5: 'c',
+            q6: 'b', q7: 'c', q8: 'b', q9: 'c', q10: 'c',
+            q11: 'b', q12: 'c', q13: 'b', q14: 'c', q15: 'b',
+            q16: 'a', q17: 'c', q18: 'a', q19: 'b', q20: 'c',
+            q21: 'd', q22: 'b', q23: 'b', q24: 'a', q25: 'd',
+            q26: 'd', q27: 'c', q28: 'a', q29: 'c', q30: 'c'
+        };
+
+        const totalQuestions = Object.keys(correctAnswers).length;
+
+        const submitBtn = document.getElementById('submitBtn');
+        const quizForm = document.getElementById('quizForm');
+        const resultDiv = document.getElementById('result');
+        const scoreEl = document.getElementById('score');
+        const feedbackEl = document.getElementById('feedback');
+        
+        submitBtn.addEventListener('click', () => {
+            let score = 0;
+            
+            // Hapus style sebelumnya
+            const allLabels = document.querySelectorAll('#quizForm label');
+            allLabels.forEach(label => {
+                label.classList.remove('correct', 'incorrect', 'highlight-correct');
+            });
+            
+            for (let i = 1; i <= totalQuestions; i++) {
+                const questionName = 'q' + i;
+                const selectedOption = document.querySelector(`input[name="${questionName}"]:checked`);
+                
+                const labels = document.querySelectorAll(`#question-${i} label`);
+
+                if (selectedOption) {
+                    const userAnswer = selectedOption.value;
+                    const correctAnswer = correctAnswers[questionName];
+                    const selectedLabel = selectedOption.parentElement;
+
+                    if (userAnswer === correctAnswer) {
+                        score++;
+                        selectedLabel.classList.add('correct');
+                    } else {
+                        selectedLabel.classList.add('incorrect');
+                        // Highlight jawaban yang benar
+                        const correctLabel = document.querySelector(`input[name="${questionName}"][value="${correctAnswer}"]`).parentElement;
+                        correctLabel.classList.add('highlight-correct');
+                    }
+                } else {
+                    // Jika tidak dijawab, tandai jawaban yang benar
+                    const correctLabel = document.querySelector(`input[name="${questionName}"][value="${correctAnswers[questionName]}"]`).parentElement;
+                    correctLabel.classList.add('highlight-correct');
+                }
+            }
+
+            const percentage = (score / totalQuestions) * 100;
+            scoreEl.textContent = `${score} / ${totalQuestions}`;
+            
+            let feedbackText = '';
+            if (percentage === 100) {
+                feedbackText = 'Sempurna! Kamu menguasai materi ini dengan sangat baik.';
+            } else if (percentage >= 80) {
+                feedbackText = 'Luar biasa! Pemahamanmu sudah sangat baik.';
+            } else if (percentage >= 60) {
+                feedbackText = 'Bagus! Tingkatkan lagi belajarmu.';
+            } else {
+                feedbackText = 'Jangan menyerah! Coba pelajari lagi materinya dan ulangi latihan.';
+            }
+            feedbackEl.textContent = feedbackText;
+
+            resultDiv.classList.remove('hidden');
+            resultDiv.scrollIntoView({ behavior: 'smooth' });
+        });
+
+    </script>
+</body>
+</html>
+

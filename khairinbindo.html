@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Latihan Soal PTS Bahasa Indonesia - Kelas VII</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .option-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        .option-btn.selected {
+            background-color: #3b82f6; /* blue-500 */
+            color: white;
+            border-color: #2563eb; /* blue-600 */
+        }
+        .mode-card {
+            transition: all 0.2s ease-in-out;
+        }
+        .mode-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        /* Custom scrollbar for better aesthetics */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9; /* slate-100 */
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #94a3b8; /* slate-400 */
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #64748b; /* slate-500 */
+        }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 flex items-center justify-center min-h-screen p-4">
+
+    <div id="app-container" class="w-full max-w-4xl mx-auto">
+        
+        <!-- Start Screen -->
+        <div id="start-screen" class="bg-white p-8 rounded-2xl shadow-lg text-center">
+            <h1 class="text-3xl md:text-4xl font-bold text-slate-700 mb-2">Latihan Soal Bahasa Indonesia</h1>
+            <p class="text-lg text-slate-500 mb-8">Kelas VII - Sesuai Kisi-Kisi Ujian</p>
+            <p class="mb-6">Silakan pilih tingkat kesulitan untuk memulai latihan. Setiap mode berisi 35 soal.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div onclick="startQuiz('normal')" class="mode-card bg-green-500 text-white p-6 rounded-xl shadow-md cursor-pointer">
+                    <h2 class="text-2xl font-bold mb-2">NORMAL</h2>
+                    <p>Soal-soal dasar untuk pemahaman konsep.</p>
+                </div>
+                <div onclick="startQuiz('medium')" class="mode-card bg-yellow-500 text-white p-6 rounded-xl shadow-md cursor-pointer">
+                    <h2 class="text-2xl font-bold mb-2">MEDIUM</h2>
+                    <p>Soal yang membutuhkan analisis ringan.</p>
+                </div>
+                <div onclick="startQuiz('hard')" class="mode-card bg-red-500 text-white p-6 rounded-xl shadow-md cursor-pointer">
+                    <h2 class="text-2xl font-bold mb-2">SULIT</h2>
+                    <p>Soal analisis mendalam dan penerapan kompleks.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quiz Screen -->
+        <div id="quiz-screen" class="hidden">
+            <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg">
+                <div class="flex justify-between items-center mb-6">
+                    <div class="text-sm font-semibold bg-indigo-100 text-indigo-700 py-1 px-3 rounded-full">
+                        Mode: <span id="mode-label" class="capitalize"></span>
+                    </div>
+                    <div class="text-sm font-semibold bg-slate-100 text-slate-700 py-1 px-3 rounded-full">
+                        Soal <span id="question-number"></span> dari 35
+                    </div>
+                </div>
+
+                <div id="question-container" class="mb-6">
+                    <p id="question-text" class="text-lg md:text-xl leading-relaxed"></p>
+                </div>
+
+                <div id="options-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Options will be dynamically inserted here -->
+                </div>
+
+                <div class="mt-8 flex justify-end">
+                    <button id="next-btn" onclick="nextQuestion()" class="bg-indigo-600 text-white font-bold py-3 px-8 rounded-lg shadow-md hover:bg-indigo-700 transition-colors duration-200 disabled:bg-slate-400 disabled:cursor-not-allowed">
+                        Selanjutnya
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Result Screen -->
+        <div id="result-screen" class="hidden">
+            <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg text-center">
+                <h2 class="text-3xl font-bold text-slate-700 mb-2">Latihan Selesai!</h2>
+                <p class="text-lg text-slate-500 mb-6">Berikut adalah hasil pengerjaanmu.</p>
+                
+                <div class="bg-indigo-50 border-2 border-indigo-200 rounded-xl p-6 mb-8">
+                    <p class="text-xl text-indigo-800">Skor Akhir</p>
+                    <p class="text-6xl font-bold text-indigo-600 my-2"><span id="score"></span></p>
+                    <p class="text-xl text-indigo-800"><span id="correct-answers"></span> dari 35 soal benar</p>
+                </div>
+
+                <div class="text-left mb-6">
+                    <h3 class="text-2xl font-bold mb-4 text-slate-700">Pembahasan Soal</h3>
+                    <div id="review-container" class="space-y-4 max-h-[50vh] overflow-y-auto pr-4">
+                        <!-- Review content will be dynamically inserted here -->
+                    </div>
+                </div>
+
+                <button onclick="restartQuiz()" class="w-full md:w-auto bg-indigo-600 text-white font-bold py-3 px-8 rounded-lg shadow-md hover:bg-indigo-700 transition-colors duration-200">
+                    Ulangi Latihan
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // DOM Elements
+        const startScreen = document.getElementById('start-screen');
+        const quizScreen = document.getElementById('quiz-screen');
+        const resultScreen = document.getElementById('result-screen');
+        
+        const modeLabel = document.getElementById('mode-label');
+        const questionNumber = document.getElementById('question-number');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const nextBtn = document.getElementById('next-btn');
+
+        const scoreEl = document.getElementById('score');
+        const correctAnswersEl = document.getElementById('correct-answers');
+        const reviewContainer = document.getElementById('review-container');
+
+        // Quiz State
+        let currentMode = '';
+        let currentQuestionIndex = 0;
+        let userAnswers = [];
+        let questions = {};
+
+        // --- DATABASE SOAL ---
+        const allQuestions = {
+            normal: [
+                // Teks Deskripsi (1-10)
+                { q: "Apa tujuan utama dari teks deskripsi?", o: ["Menceritakan sebuah peristiwa", "Menggambarkan objek sejelas-jelasnya", "Mengajak pembaca melakukan sesuatu", "Menjelaskan langkah-langkah"], a: "Menggambarkan objek sejelas-jelasnya", p: "Tujuan teks deskripsi adalah membuat pembaca seolah-olah melihat, mendengar, atau merasakan sendiri objek yang dideskripsikan." },
+                { q: "Berikut ini yang merupakan ciri-ciri teks deskripsi adalah...", o: ["Berisi argumen penulis", "Menggunakan kalimat perintah", "Melibatkan panca indra", "Bersifat kronologis"], a: "Melibatkan panca indra", p: "Ciri utama teks deskripsi adalah penggambaran yang melibatkan panca indra (penglihatan, pendengaran, perabaan, dll)." },
+                { q: "'Pantai itu memiliki pasir putih yang lembut.' Kalimat tersebut menonjolkan indra...", o: ["Pendengaran", "Penglihatan dan perabaan", "Penciuman", "Pengecapan"], a: "Penglihatan dan perabaan", p: "'Pasir putih' adalah hasil penglihatan, sedangkan 'lembut' adalah hasil perabaan." },
+                { q: "Manakah di bawah ini yang merupakan contoh kalimat deskripsi?", o: ["Ayo, jaga kebersihan pantai!", "Pantai Parangtritis terletak di Yogyakarta.", "Debur ombak terdengar berirama di sore hari.", "Bagaimana cara menuju ke pantai itu?"], a: "Debur ombak terdengar berirama di sore hari.", p: "Kalimat ini menggambarkan suara (indra pendengaran) sehingga pembaca bisa membayangkannya." },
+                { q: "Struktur teks deskripsi secara umum adalah...", o: ["Orientasi, Komplikasi, Resolusi", "Tesis, Argumentasi, Penegasan Ulang", "Identifikasi, Deskripsi Bagian, Simpulan", "Tujuan, Langkah-langkah"], a: "Identifikasi, Deskripsi Bagian, Simpulan", p: "Teks deskripsi diawali dengan identifikasi (pengenalan objek), dilanjutkan deskripsi bagian-bagiannya, dan ditutup simpulan/kesan." },
+                { q: "Kata 'sangat indah', 'luar biasa', 'menakjubkan' dalam teks deskripsi berfungsi untuk...", o: ["Menunjukkan lokasi", "Menjelaskan urutan waktu", "Memberikan kesan subjektif penulis", "Menyatakan fakta objektif"], a: "Memberikan kesan subjektif penulis", p: "Kata-kata tersebut menunjukkan perasaan atau kesan pribadi penulis terhadap objek yang dideskripsikan." },
+                { q: "Objek yang dideskripsikan dalam teks deskripsi bersifat...", o: ["Abstrak dan tidak nyata", "Selalu berupa benda mati", "Khusus dan dapat dirasakan panca indra", "Umum dan luas"], a: "Khusus dan dapat dirasakan panca indra", p: "Teks deskripsi fokus pada satu objek yang spesifik (misalnya: 'Kucingku si Belang', bukan 'kucing' secara umum)." },
+                { q: "Teks yang menggambarkan suasana, tempat, atau orang disebut...", o: ["Teks Prosedur", "Teks Narasi", "Teks Deskripsi", "Teks Eksposisi"], a: "Teks Deskripsi", p: "Penggambaran suasana, tempat, atau orang adalah fungsi utama dari teks deskripsi." },
+                { q: "Penggunaan majas atau gaya bahasa dalam teks deskripsi bertujuan untuk...", o: ["Membuat teks lebih panjang", "Menghidupkan imajinasi pembaca", "Menyembunyikan informasi", "Menunjukkan data akurat"], a: "Menghidupkan imajinasi pembaca", p: "Majas seperti personifikasi atau metafora membuat penggambaran menjadi lebih hidup dan menarik." },
+                { q: "'Angin pantai sepoi-sepoi membelai rambutku.' Kalimat ini menggunakan majas...", o: ["Metafora", "Hiperbola", "Personifikasi", "Simile"], a: "Personifikasi", p: "Personifikasi memberikan sifat manusia (membelai) pada benda mati (angin)." },
+                
+                // Puisi Rakyat (11-22)
+                { q: "Puisi lama yang setiap baitnya terdiri atas empat baris serta memiliki sampiran dan isi disebut...", o: ["Gurindam", "Syair", "Pantun", "Seloka"], a: "Pantun", p: "Ciri khas pantun adalah memiliki 4 baris, dengan 2 baris pertama sampiran dan 2 baris berikutnya isi." },
+                { q: "Baris pertama dan kedua pada pantun disebut...", o: ["Isi", "Sampiran", "Larik", "Bait"], a: "Sampiran", p: "Sampiran adalah pengantar rima dan irama yang tidak berhubungan langsung dengan isi pantun." },
+                { q: "Rima atau sajak akhir pada pantun yang paling umum adalah...", o: ["a-a-a-a", "a-b-b-a", "a-a-b-b", "a-b-a-b"], a: "a-b-a-b", p: "Pantun klasik biasanya bersajak a-b-a-b, artinya bunyi akhir baris pertama sama dengan ketiga, dan kedua sama dengan keempat." },
+                { q: "Puisi lama yang terdiri atas dua baris, berisi nasihat, dan bersajak a-a disebut...", o: ["Pantun", "Syair", "Talibun", "Gurindam"], a: "Gurindam", p: "Gurindam memiliki ciri khas: dua baris per bait, bersajak sama (a-a), dan merupakan satu kesatuan ide yang berisi nasihat." },
+                { q: "'Barang siapa tiada memegang agama, sekali-kali tiada boleh dibilangkan nama.' Kutipan tersebut merupakan contoh...", o: ["Pantun", "Gurindam", "Syair", "Mantra"], a: "Gurindam", p: "Kutipan ini terdiri dari dua baris, bersajak a-a, dan berisi nasihat, sesuai dengan ciri gurindam." },
+                { q: "Puisi lama yang berasal dari Arab, tiap bait terdiri dari 4 baris dan bersajak a-a-a-a adalah...", o: ["Pantun", "Gurindam", "Syair", "Karmina"], a: "Syair", p: "Syair berasal dari tradisi sastra Arab-Persia, dengan ciri utama 4 baris per bait dan rima yang sama di setiap baris (a-a-a-a)." },
+                { q: "Semua baris dalam syair merupakan...", o: ["Sampiran", "Isi", "Perintah", "Pertanyaan"], a: "Isi", p: "Berbeda dengan pantun, syair tidak memiliki sampiran. Keempat barisnya merupakan satu kesatuan isi yang menceritakan sesuatu." },
+                { q: "Fungsi utama dari puisi rakyat pada zaman dahulu adalah...", o: ["Sebagai hiburan semata", "Mewariskan nilai-nilai luhur dan nasihat", "Untuk mencatat sejarah kerajaan", "Sebagai syarat upacara adat"], a: "Mewariskan nilai-nilai luhur dan nasihat", p: "Puisi rakyat seperti pantun, gurindam, dan syair menjadi media untuk menyampaikan ajaran moral, budi pekerti, dan nasihat dari generasi ke generasi." },
+                { q: "Jumlah suku kata dalam setiap baris pantun biasanya berkisar antara...", o: ["4-6 suku kata", "8-12 suku kata", "14-16 suku kata", "Bebas tanpa aturan"], a: "8-12 suku kata", p: "Setiap baris pantun umumnya terdiri dari 8 hingga 12 suku kata agar iramanya pas saat dilantunkan." },
+                { q: "Gurindam 12 adalah karya sastra Melayu lama yang terkenal. Siapakah pengarangnya?", o: ["Hamzah Fansuri", "Raja Ali Haji", "Sultan Takdir Alisjahbana", "Chairil Anwar"], a: "Raja Ali Haji", p: "Gurindam Dua Belas adalah karya monumental dari Raja Ali Haji, seorang sastrawan dari Kepulauan Riau." },
+                { q: "Isi pantun biasanya berupa...", o: ["Hanya nasihat", "Hanya jenaka", "Nasihat, jenaka, teka-teki, atau percintaan", "Hanya cerita kepahlawanan"], a: "Nasihat, jenaka, teka-teki, atau percintaan", p: "Pantun memiliki banyak jenis berdasarkan isinya, mulai dari pantun nasihat, jenaka, agama, hingga teka-teki." },
+                { q: "Puisi rakyat bersifat anonim, artinya...", o: ["Dikarang oleh raja", "Tidak diketahui nama pengarangnya", "Memiliki banyak pengarang", "Hanya boleh dibaca kalangan istana"], a: "Tidak diketahui nama pengarangnya", p: "Anonim berarti tidak ada nama pengarang yang tercatat karena puisi rakyat dianggap milik bersama masyarakat dan disebarkan secara lisan." },
+
+                // Teks Naratif (23-35)
+                { q: "Teks yang menceritakan serangkaian peristiwa secara kronologis disebut...", o: ["Teks Deskripsi", "Teks Prosedur", "Teks Naratif", "Teks Laporan"], a: "Teks Naratif", p: "Teks naratif atau narasi bertujuan untuk menceritakan suatu kisah atau peristiwa dengan urutan waktu." },
+                { q: "Struktur teks naratif yang benar adalah...", o: ["Tesis, Argumen, Simpulan", "Identifikasi, Deskripsi Bagian", "Orientasi, Komplikasi, Resolusi", "Judul, Bahan, Langkah-langkah"], a: "Orientasi, Komplikasi, Resolusi", p: "Struktur umum teks naratif adalah Orientasi (pengenalan), Komplikasi (munculnya masalah), dan Resolusi (penyelesaian masalah)." },
+                { q: "Bagian yang berisi pengenalan tokoh, latar tempat, dan waktu dalam cerita disebut...", o: ["Resolusi", "Komplikasi", "Koda", "Orientasi"], a: "Orientasi", p: "Orientasi adalah bagian awal cerita yang berfungsi untuk memperkenalkan elemen-elemen dasar cerita." },
+                { q: "Unsur intrinsik dalam teks naratif meliputi...", o: ["Latar belakang penulis", "Nilai sosial masyarakat", "Tokoh, latar, alur, dan amanat", "Kondisi politik saat cerita dibuat"], a: "Tokoh, latar, alur, dan amanat", p: "Unsur intrinsik adalah unsur yang membangun cerita dari dalam, seperti tokoh, alur, latar, sudut pandang, dan amanat." },
+                { q: "Jenis buku yang ceritanya berdasarkan imajinasi atau khayalan penulis disebut buku...", o: ["Fiksi", "Nonfiksi", "Biografi", "Ensiklopedia"], a: "Fiksi", p: "Buku fiksi berisi cerita rekaan atau tidak nyata, contohnya novel, cerpen, dan dongeng." },
+                { q: "Novel, komik, dan kumpulan dongeng termasuk ke dalam jenis buku...", o: ["Nonfiksi", "Referensi", "Pelajaran", "Fiksi"], a: "Fiksi", p: "Novel, komik, dan dongeng adalah contoh karya sastra yang ceritanya bersifat imajinatif atau fiksi." },
+                { q: "Buku yang berisi informasi atau data berdasarkan fakta dan kenyataan disebut...", o: ["Buku fiksi", "Buku nonfiksi", "Buku Antologi Puisi", "Buku Cerpen"], a: "Buku nonfiksi", p: "Buku nonfiksi menyajikan informasi faktual. Contohnya buku pelajaran, biografi, dan buku ilmiah." },
+                { q: "Buku pelajaran, kamus, dan buku cara merakit komputer adalah contoh buku...", o: ["Fiksi", "Misteri", "Nonfiksi", "Horor"], a: "Nonfiksi", p: "Buku-buku tersebut menyajikan data, fakta, dan informasi nyata, sehingga tergolong buku nonfiksi." },
+                // Soal berdasarkan cerita pendek
+                { q: "(Cerita) Kancil yang cerdik berhasil menipu buaya-buaya untuk menyeberangi sungai. Ia berpura-pura akan membagikan daging dari raja. Apa sifat tokoh Kancil dalam cerita tersebut?", o: ["Pembohong", "Penakut", "Cerdik", "Sombong"], a: "Cerdik", p: "Kancil menggunakan akalnya untuk menyelesaikan masalah (menyeberang sungai), ini menunjukkan kecerdikan." },
+                { q: "(Cerita) Malin Kundang durhaka pada ibunya sehingga dikutuk menjadi batu. Amanat dari cerita tersebut adalah...", o: ["Jangan pergi merantau", "Hormatilah orang tua", "Carilah harta sebanyak-banyaknya", "Jangan percaya pada kutukan"], a: "Hormatilah orang tua", p: "Amanat adalah pesan moral dalam cerita. Kisah Malin Kundang mengajarkan pentingnya menghormati dan tidak melupakan jasa orang tua." },
+                { q: "(Cerita) Bawang Merah selalu iri dan berbuat jahat kepada Bawang Putih yang baik hati. Tokoh Bawang Merah memiliki watak...", o: ["Protagonis", "Antagonis", "Tritagonis", "Figuran"], a: "Antagonis", p: "Tokoh antagonis adalah tokoh yang memiliki watak jahat atau menjadi penentang tokoh utama (protagonis)." },
+                { q: "(Cerita) Cinderella akhirnya hidup bahagia bersama pangeran setelah melewati banyak penderitaan. Akhir cerita ini disebut...", o: ["Akhir yang menyedihkan (sad ending)", "Akhir yang menggantung (cliffhanger)", "Akhir yang bahagia (happy ending)", "Tidak ada akhir"], a: "Akhir yang bahagia (happy ending)", p: "Resolusi cerita yang berakhir baik bagi tokoh utama disebut 'happy ending'." },
+                { q: "Latar tempat cerita 'Timun Mas' yang paling dominan adalah...", o: ["Kerajaan dan istana", "Perkotaan modern", "Sekolah", "Hutan dan pedesaan"], a: "Hutan dan pedesaan", p: "Cerita Timun Mas banyak mengambil latar di hutan saat ia melarikan diri dari raksasa." }
+            ],
+            medium: [
+                 // Teks Deskripsi (1-10)
+                { q: "Sebuah teks mendeskripsikan 'Gedung Sate di Bandung' secara rinci, mulai dari arsitektur, sejarah, hingga suasana di sekitarnya. Jenis pengembangan deskripsi bagian pada teks ini adalah...", o: ["Deskripsi bagian berdasarkan ruang", "Deskripsi bagian berdasarkan proses", "Deskripsi bagian berdasarkan anggota", "Deskripsi bagian berdasarkan manfaat"], a: "Deskripsi bagian berdasarkan ruang", p: "Deskripsi berdasarkan ruang mengelompokkan penjelasan berdasarkan lokasi atau bagian fisik dari suatu objek, seperti menjelaskan arsitektur luar, dalam, dan lingkungan sekitar." },
+                { q: "Perhatikan kutipan: 'Kamar Rani sangat rapi. Di sudut kiri terdapat meja belajar kayu dengan lampu baca. Di seberangnya, tempat tidur bersprei biru tertata apik.' Pola pengembangan paragraf tersebut adalah...", o: ["Umum-khusus", "Sebab-akibat", "Spasial (keruangan)", "Kronologis (urutan waktu)"], a: "Spasial (keruangan)", p: "Pola spasial menggambarkan objek berdasarkan urutan ruang atau letak, seperti 'di sudut kiri', 'di seberangnya'." },
+                { q: "Kalimat 'Pemandangan matahari terbenam di pantai ini sungguh spektakuler' menggunakan kata sifat yang berfungsi untuk...", o: ["Menjelaskan urutan", "Menunjukkan fakta mutlak", "Memberi kesan emosional dan subjektif", "Menyatakan ukuran pasti"], a: "Memberi kesan emosional dan subjektif", p: "Kata 'spektakuler' tidak dapat diukur secara objektif, tetapi menunjukkan perasaan kagum penulis." },
+                { q: "Manakah kalimat deskripsi yang paling efektif dalam membangkitkan imajinasi pembaca?", o: ["Gedung itu tinggi sekali.", "Sungai itu airnya berwarna cokelat.", "Aroma roti bakar yang baru matang menyebar dari dapur, berpadu dengan wangi kopi yang pekat.", "Dia memakai baju berwarna merah."], a: "Aroma roti bakar yang baru matang menyebar dari dapur, berpadu dengan wangi kopi yang pekat.", p: "Kalimat ini efektif karena melibatkan indra penciuman secara detail, membuat pembaca seolah-olah bisa mencium aromanya." },
+                { q: "Tujuan dari simpulan atau kesan dalam struktur teks deskripsi adalah...", o: ["Mengulang kembali semua deskripsi bagian", "Memberikan penilaian atau kesan akhir penulis", "Mengajak pembaca untuk mengunjungi objek", "Menyajikan data statistik tentang objek"], a: "Memberikan penilaian atau kesan akhir penulis", p: "Bagian simpulan/kesan berfungsi sebagai penutup yang merangkum pandangan subjektif penulis setelah menggambarkan objek secara rinci." },
+                { q: "Penggunaan kalimat perincian dalam teks deskripsi bertujuan untuk...", o: ["Membuat teks menjadi lebih singkat", "Mengonkretkan gambaran agar lebih jelas", "Menyatakan pendapat pribadi", "Membandingkan dua objek berbeda"], a: "Mengonkretkan gambaran agar lebih jelas", p: "Kalimat perincian (contoh: 'Warnanya beragam: ada merah, kuning, dan jingga') membuat deskripsi yang umum menjadi lebih spesifik dan mudah dibayangkan." },
+                { q: "'Batu karang itu seolah-olah menjadi benteng perkasa yang melindungi pantai dari amukan ombak.' Majas yang dominan pada kalimat tersebut adalah...", o: ["Hiperbola dan Metafora", "Personifikasi dan Simile (Perumpamaan)", "Litotes dan Ironi", "Metonimia dan Sinekdoke"], a: "Personifikasi dan Simile (Perumpamaan)", p: "'Benteng perkasa' adalah simile (mengumpamakan batu seperti benteng) dan 'amukan ombak' adalah personifikasi (ombak dianggap bisa mengamuk)." },
+                { q: "Sebuah teks deskripsi tentang 'Tari Saman'. Apa saja yang kemungkinan besar akan dideskripsikan di bagian 'deskripsi bagian'?", o: ["Sejarah berdirinya Indonesia", "Gerakan penari, kostum, musik pengiring, dan formasi", "Cara memasak makanan khas Aceh", "Biografi pencipta Tari Saman"], a: "Gerakan penari, kostum, musik pengiring, dan formasi", p: "Deskripsi bagian akan merinci unsur-unsur yang membentuk Tari Saman itu sendiri, seperti gerak, busana, dan musiknya." },
+                { q: "Perbedaan utama antara teks deskripsi dan teks laporan hasil observasi adalah...", o: ["Teks deskripsi lebih panjang", "Teks deskripsi bersifat subjektif, teks laporan objektif", "Teks laporan menggunakan bahasa gaul", "Teks deskripsi hanya menjelaskan hewan"], a: "Teks deskripsi bersifat subjektif, teks laporan objektif", p: "Teks deskripsi seringkali memasukkan kesan pribadi penulis, sedangkan teks laporan hasil observasi harus menyajikan data dan fakta apa adanya tanpa opini." },
+                { q: "Kalimat manakah yang paling cocok untuk bagian identifikasi/gambaran umum dalam teks deskripsi tentang Candi Borobudur?", o: ["Candi Borobudur memiliki ribuan relief yang indah.", "Candi Borobudur merupakan candi Buddha terbesar di dunia yang terletak di Magelang, Jawa Tengah.", "Stupa di puncak Candi Borobudur berbentuk lonceng.", "Setiap pagi, banyak turis menikmati matahari terbit di Candi Borobudur."], a: "Candi Borobudur merupakan candi Buddha terbesar di dunia yang terletak di Magelang, Jawa Tengah.", p: "Bagian identifikasi memberikan pengenalan umum tentang objek sebelum dideskripsikan secara rinci." },
+                
+                // Puisi Rakyat (11-22)
+                { q: "Perhatikan pantun berikut:\nJalan-jalan ke kota hujan (1)\nJangan lupa membeli talas (2)\nJanganlah kita lupakan Tuhan (3)\nKarena semua akan dibalas (4)\nMaksud dari isi pantun tersebut adalah...", o: ["Kita harus sering ke Bogor", "Talas Bogor sangat enak", "Mengingatkan agar selalu taat kepada Tuhan", "Semua perbuatan akan tercatat"], a: "Mengingatkan agar selalu taat kepada Tuhan", p: "Isi pantun terdapat pada baris 3 dan 4, yang berisi nasihat keagamaan untuk selalu mengingat Tuhan." },
+                { q: "Dari pantun pada soal sebelumnya, manakah yang merupakan sampiran?", o: ["Baris 1 dan 3", "Baris 2 dan 4", "Baris 3 dan 4", "Baris 1 dan 2"], a: "Baris 1 dan 2", p: "Sampiran adalah dua baris pertama pantun yang berfungsi sebagai pengantar rima dan tidak berhubungan langsung dengan isi." },
+                { q: "'Jika hendak mengenal orang yang berbangsa,\nlihat kepada budi dan bahasa.'\nKutipan gurindam tersebut menekankan pentingnya...", o: ["Keturunan bangsawan", "Kekayaan materi", "Sikap dan tutur kata yang baik", "Pendidikan formal yang tinggi"], a: "Sikap dan tutur kata yang baik", p: "Gurindam ini menasihati bahwa martabat seseorang (berbangsa) dapat dilihat dari perilakunya (budi) dan cara bicaranya (bahasa)." },
+                { q: "Perbedaan mendasar antara pantun dan syair terletak pada...", o: ["Jumlah baris dalam satu bait", "Jumlah suku kata per baris", "Struktur sampiran-isi dan pola rima", "Bahasa yang digunakan"], a: "Struktur sampiran-isi dan pola rima", p: "Pantun memiliki sampiran-isi dengan rima a-b-a-b, sedangkan syair semua barisnya adalah isi dengan rima a-a-a-a." },
+                { q: "Wahai muda kenali dirimu,\nialah perahu tamsil hidupmu,\ntiadalah berapa lama hidupmu,\nke akhirat jua kekal diammu.\nBerdasarkan isinya, kutipan syair di atas bertema...", o: ["Percintaan", "Sejarah", "Nasihat keagamaan (Sufi)", "Peperangan"], a: "Nasihat keagamaan (Sufi)", p: "Syair ini menggunakan metafora 'perahu' untuk kehidupan dan mengingatkan tentang akhirat, yang merupakan ciri khas syair nasihat sufi/keagamaan." },
+                { q: "Berdasarkan kutipan syair pada soal sebelumnya, apa yang dimaksud dengan 'perahu tamsil hidupmu'?", o: ["Hidup itu seperti naik perahu", "Setiap orang harus punya perahu", "Kehidupan adalah sebuah perjalanan singkat menuju keabadian", "Hidup itu penuh dengan air mata"], a: "Kehidupan adalah sebuah perjalanan singkat menuju keabadian", p: "Kata 'tamsil' berarti perumpamaan. Syair ini mengumpamakan hidup sebagai perjalanan singkat (dengan perahu) menuju tujuan akhir (akhirat)." },
+                { q: "Karmina atau pantun kilat adalah pantun yang hanya terdiri dari...", o: ["Satu baris", "Dua baris", "Enam baris", "Delapan baris"], a: "Dua baris", p: "Karmina adalah versi singkat dari pantun. Baris pertama adalah sampiran dan baris kedua adalah isi." },
+                { q: "Contoh karmina yang tepat adalah...", o: ["Kayu lurus di tengah hutan, / Jadi orang haruslah sopan.", "Dahulu parang sekarang besi, / Dahulu sayang sekarang benci.", "Ikan sepat ikan gabus, / Makin cepat makin bagus.", "Buah duku dari Palembang, / Hati rindu siapa yang larang."], a: "Dahulu parang sekarang besi, / Dahulu sayang sekarang benci.", p: "Ini adalah contoh karmina, dengan baris pertama sebagai sampiran dan baris kedua sebagai isi, bersajak a-a." },
+                { q: "Fungsi sampiran pada pantun selain sebagai pengantar rima juga untuk...", o: ["Menyembunyikan makna asli", "Membuat pantun lebih sulit dipahami", "Menggambarkan latar budaya atau alam masyarakatnya", "Menyatakan perintah secara langsung"], a: "Menggambarkan latar budaya atau alam masyarakatnya", p: "Kata-kata yang dipilih dalam sampiran seringkali mencerminkan lingkungan alam, kebiasaan, atau benda-benda yang akrab dalam kehidupan masyarakat Melayu." },
+                { q: "Syair, gurindam, dan pantun digolongkan sebagai puisi rakyat karena...", o: ["Diciptakan oleh rakyat jelata dan menyebar dari mulut ke mulut", "Hanya populer di kalangan rakyat miskin", "Selalu menggunakan bahasa yang kasar", "Isinya selalu tentang pemberontakan rakyat"], a: "Diciptakan oleh rakyat jelata dan menyebar dari mulut ke mulut", p: "Puisi rakyat adalah sastra lisan yang hidup dan berkembang di tengah masyarakat, diwariskan secara turun-temurun, dan seringkali tidak diketahui pengarangnya (anonim)." },
+                { q: "Hubungan sebab-akibat merupakan ciri khas dari puisi rakyat jenis...", o: ["Pantun", "Syair", "Mantra", "Gurindam"], a: "Gurindam", p: "Gurindam seringkali memiliki struktur 'jika... maka...' atau 'barang siapa... maka...'. Baris pertama menyatakan syarat/sebab, baris kedua menyatakan konsekuensi/akibat." },
+                { q: "'Apabila banyak berkata-kata, di situlah jalan masuk dusta.' Nilai moral yang terkandung dalam gurindam tersebut adalah...", o: ["Pentingnya banyak bicara untuk melatih keberanian", "Berbicara seperlunya untuk menghindari kebohongan", "Dusta adalah perbuatan yang diizinkan", "Semua perkataan pasti mengandung dusta"], a: "Berbicara seperlunya untuk menghindari kebohongan", p: "Gurindam ini menasihati agar kita menjaga lisan dan tidak terlalu banyak bicara, karena hal itu bisa membuka peluang untuk berkata tidak benar." },
+
+                // Teks Naratif (23-35)
+                { q: "Bagian puncak dari konflik atau masalah dalam alur cerita disebut...", o: ["Orientasi", "Resolusi", "Klimaks", "Koda"], a: "Klimaks", p: "Klimaks adalah titik ketegangan tertinggi dalam komplikasi sebelum masalah mulai menuju penyelesaian." },
+                { q: "Sebuah cerita yang tokohnya adalah binatang yang berperilaku seperti manusia disebut...", o: ["Mite", "Legenda", "Sage", "Fabel"], a: "Fabel", p: "Fabel adalah cerita fiksi yang tokoh-tokohnya adalah hewan yang bisa berbicara dan berpikir, serta mengandung pesan moral." },
+                { q: "Sudut pandang orang pertama dalam teks naratif ditandai dengan penggunaan kata ganti...", o: ["Dia, ia, mereka", "Aku, saya, kami", "Kamu, engkau", "Bapak, Ibu"], a: "Aku, saya, kami", p: "Sudut pandang orang pertama menempatkan penulis/narator sebagai tokoh utama dalam cerita, ditandai dengan kata 'aku' atau 'saya'." },
+                { q: "Cerita tentang asal-usul suatu tempat, seperti 'Asal-usul Danau Toba', termasuk dalam jenis...", o: ["Fabel", "Legenda", "Mite", "Hikayat"], a: "Legenda", p: "Legenda adalah cerita rakyat yang dihubungkan dengan asal-usul suatu tempat, benda, atau kejadian sejarah yang dipercayai benar-benar terjadi." },
+                { q: "Perbedaan utama antara buku fiksi dan nonfiksi terletak pada...", o: ["Ketebalan buku", "Kualitas sampul", "Sumber isi cerita/informasi", "Harga jual buku"], a: "Sumber isi cerita/informasi", p: "Buku fiksi bersumber dari imajinasi penulis, sedangkan buku nonfiksi bersumber dari data, fakta, dan realitas." },
+                { q: "Di bawah ini yang merupakan unsur ekstrinsik dari sebuah karya narasi adalah...", o: ["Alur cerita", "Latar belakang sosial budaya pengarang", "Penokohan", "Amanat"], a: "Latar belakang sosial budaya pengarang", p: "Unsur ekstrinsik adalah unsur dari luar karya sastra yang memengaruhi isinya, seperti latar belakang penulis, kondisi sosial, dan nilai-nilai masyarakat." },
+                { q: "Amanat atau pesan moral dalam sebuah cerita seringkali disampaikan secara...", o: ["Tersurat (langsung tertulis)", "Tersirat (tersembunyi dan perlu disimpulkan)", "Keduanya bisa terjadi", "Tidak pernah ada"], a: "Keduanya bisa terjadi", p: "Amanat bisa disampaikan secara tersurat (eksplisit) melalui dialog tokoh, atau tersirat (implisit) yang harus disimpulkan pembaca dari keseluruhan cerita." },
+                { q: "Jika Anda melihat buku dengan judul 'Revolusi Industri 4.0: Mengubah Dunia', kemungkinan besar buku tersebut adalah buku...", o: ["Fiksi ilmiah", "Nonfiksi", "Antologi cerpen", "Novel sejarah"], a: "Nonfiksi", p: "Judul tersebut mengindikasikan isi buku adalah pembahasan faktual dan analisis tentang sebuah fenomena nyata, ciri khas buku nonfiksi." },
+                { q: "(Cerita) Seorang anak miskin menemukan dompet berisi uang. Ia sempat bimbang, namun akhirnya mengembalikan dompet itu kepada pemiliknya. Bagian cerita saat ia bimbang merupakan...", o: ["Konflik batin tokoh", "Konflik fisik", "Latar suasana", "Resolusi"], a: "Konflik batin tokoh", p: "Konflik batin adalah pertentangan yang terjadi dalam diri seorang tokoh, seperti dilema antara kejujuran dan keinginan pribadi." },
+                { q: "Watak seorang tokoh dalam cerita dapat digambarkan melalui...", o: ["Dialog, tindakan, dan pikiran tokoh", "Hanya melalui deskripsi fisik", "Hanya melalui nama tokoh", "Hanya melalui latar tempat"], a: "Dialog, tindakan, dan pikiran tokoh", p: "Penulis dapat menunjukkan watak tokoh secara langsung (analitik) atau tidak langsung (dramatik) melalui dialog, tindakan, pikiran, dan komentar tokoh lain." },
+                { q: "(Cerita) Di sebuah kerajaan, sang raja harus memilih antara menyelamatkan putrinya atau menyelamatkan rakyatnya dari serangan naga. Puncak masalah ini termasuk dalam bagian...", o: ["Orientasi", "Resolusi", "Klimaks", "Koda"], a: "Klimaks", p: "Klimaks adalah titik di mana tokoh utama menghadapi pilihan tersulit atau pertarungan puncak yang menentukan nasibnya." },
+                { q: "Dalam cerita 'Sangkuriang', tokoh utamanya gagal menyelesaikan tugasnya karena hari keburu pagi. Jenis penyelesaian (resolusi) ini menunjukkan bahwa...", o: ["Tokoh utama selalu berhasil", "Tidak semua cerita berakhir bahagia bagi tokoh utama", "Tokoh antagonis selalu menang", "Cerita tidak memiliki resolusi"], a: "Tidak semua cerita berakhir bahagia bagi tokoh utama", p: "Resolusi tidak selalu berupa 'happy ending'. Kegagalan tokoh utama juga merupakan bentuk penyelesaian masalah dalam alur cerita." },
+                { q: "Penggunaan majas dan bahasa kiasan lebih sering ditemukan pada jenis buku...", o: ["Nonfiksi (ilmiah)", "Fiksi (sastra)", "Kamus", "Buku telepon"], a: "Fiksi (sastra)", p: "Karya fiksi/sastra menggunakan bahasa yang kaya akan majas untuk membangun imajinasi dan keindahan, berbeda dengan bahasa lugas pada buku nonfiksi." }
+            ],
+            hard: [
+                // Teks Deskripsi (1-10)
+                { q: "Sebuah teks deskripsi yang diawali dengan penjelasan umum tentang 'Hutan Hujan Tropis' lalu dilanjutkan dengan perincian tentang 'Flora', 'Fauna', dan 'Lapisan Kanopi' menggunakan pola pengembangan...", o: ["Sebab-akibat", "Perbandingan", "Klasifikasi/Pengelompokan", "Proses"], a: "Klasifikasi/Pengelompokan", p: "Teks ini mengelompokkan deskripsi ke dalam beberapa kategori (flora, fauna, kanopi) untuk menjelaskan objek 'Hutan Hujan Tropis' secara sistematis." },
+                { q: "Analisis kalimat berikut: 'Deru mesin jet memekakkan telinga, meninggalkan jejak asap putih lurus di langit biru yang lengang.' Kalimat ini secara efektif menggabungkan indra...", o: ["Penglihatan dan perabaan", "Pendengaran dan penciuman", "Pendengaran dan penglihatan", "Pengecapan dan perabaan"], a: "Pendengaran dan penglihatan", p: "'Deru mesin jet memekakkan telinga' (pendengaran) dan 'jejak asap putih di langit biru' (penglihatan) digabungkan dalam satu kalimat untuk menciptakan gambaran yang kuat." },
+                { q: "Dalam penulisan teks deskripsi, mana yang lebih diutamakan untuk menciptakan efek imajinatif yang kuat?", o: ["Penggunaan data statistik yang akurat", "Penggunaan kata kerja dan kata sifat yang konkret dan emotif", "Penggunaan istilah teknis yang rumit", "Penggunaan kalimat pasif"], a: "Penggunaan kata kerja dan kata sifat yang konkret dan emotif", p: "Kata-kata konkret (misalnya: 'merayap' bukan 'bergerak') dan emotif ('mengharukan' bukan 'sedih') lebih mampu membangkitkan gambaran dan perasaan pembaca." },
+                { q: "Perbedaan antara deskripsi sugestif dan deskripsi ekspositoris (teknis) adalah...", o: ["Deskripsi sugestif bertujuan membangkitkan imajinasi, deskripsi teknis bertujuan memberi informasi logis", "Deskripsi sugestif selalu lebih pendek dari deskripsi teknis", "Deskripsi teknis menggunakan majas, deskripsi sugestif tidak", "Deskripsi sugestif hanya untuk objek fiksi, deskripsi teknis untuk objek nyata"], a: "Deskripsi sugestif bertujuan membangkitkan imajinasi, deskripsi teknis bertujuan memberi informasi logis", p: "Deskripsi sugestif (sastra) fokus pada kesan dan imajinasi, sedangkan deskripsi ekspositoris (teknis) fokus pada data dan fakta objektif, seperti dalam manual atau laporan ilmiah." },
+                { q: "Jika seorang penulis ingin mendeskripsikan sebuah pertunjukan musik rock, pilihan kata yang paling tepat untuk menggambarkan suasana adalah...", o: ["Tenang, damai, syahdu", "Hening, sunyi, senyap", "Meriah, energik, menghentak", "Formal, kaku, teratur"], a: "Meriah, energik, menghentak", p: "Pilihan kata (diksi) harus sesuai dengan karakter objek yang dideskripsikan untuk menciptakan suasana yang tepat." },
+                { q: "Teks deskripsi dapat menjadi bagian dari jenis teks lain. Misalnya, dalam sebuah cerpen, penulis mendeskripsikan latar sebuah rumah angker secara detail. Fungsi teks deskripsi dalam konteks cerpen tersebut adalah...", o: ["Mempercepat alur cerita", "Membangun suasana (atmosfer) dan memperkuat latar", "Menjelaskan biografi tokoh utama", "Menyampaikan argumen penulis"], a: "Membangun suasana (atmosfer) dan memperkuat latar", p: "Dalam teks naratif, deskripsi latar berfungsi penting untuk membangun suasana cerita, misalnya suasana tegang, sedih, atau gembira." },
+                { q: "Tinjau kalimat ini: 'Bangunan tua itu berdiri dengan angkuh di puncak bukit.' Kata 'angkuh' dalam kalimat ini memberikan kesan bahwa bangunan itu...", o: ["Rapuh dan akan roboh", "Terawat dan modern", "Megah, kokoh, dan seolah menyendiri", "Ramah dan menyambut pengunjung"], a: "Megah, kokoh, dan seolah menyendiri", p: "Penggunaan kata 'angkuh' adalah personifikasi yang memberikan karakter pada bangunan, menyiratkan kemegahan dan kesan superioritas." },
+                { q: "Seorang penulis ingin mendeskripsikan rasa sebuah makanan, misalnya 'Durian'. Aspek apa yang paling tidak relevan untuk dideskripsikan?", o: ["Tekstur daging buahnya", "Aroma khasnya yang kuat", "Warna kulit dan bentuk durinya", "Proses penanaman pohon durian"], a: "Proses penanaman pohon durian", p: "Deskripsi rasa makanan fokus pada aspek yang bisa dirasakan langsung oleh panca indra (rasa, bau, tekstur, penampilan). Proses penanaman lebih cocok untuk teks prosedur atau laporan." },
+                { q: "Mengapa dalam teks deskripsi sering digunakan 'kalimat yang seolah-olah dapat dilihat/didengar/dirasakan'?", o: ["Agar teks lebih objektif dan faktual", "Untuk mentransfer pengalaman indrawi penulis kepada pembaca", "Sebagai syarat wajib dalam kaidah kebahasaan", "Untuk menyembunyikan kekurangan objek"], a: "Untuk mentransfer pengalaman indrawi penulis kepada pembaca", p: "Tujuan utamanya adalah membuat pembaca mengalami sensasi yang sama seperti yang dialami penulis, seolah-olah mereka berada di sana." },
+                { q: "Dalam menyusun deskripsi bagian, seorang penulis bisa memilih berbagai urutan. Jika mendeskripsikan Candi Prambanan dari yang paling penting (Candi Siwa) ke candi-candi pendamping yang lebih kecil, urutan yang digunakan adalah...", o: ["Urutan spasial (ruang)", "Urutan klimaks (tingkat kepentingan)", "Urutan kronologis (waktu)", "Urutan acak"], a: "Urutan klimaks (tingat kepentingan)", p: "Urutan klimaks menyajikan bagian-bagian dari yang paling umum/kurang penting menuju yang paling menonjol/penting, atau sebaliknya." },
+                
+                // Puisi Rakyat (11-22)
+                { q: "Anak ayam turun sepuluh,\nMati satu tinggal sembilan.\nTuntutlah ilmu bersungguh-sungguh,\nSupaya tidak ketinggalan.\nDilihat dari hubungan sampiran dan isi, pantun di atas menunjukkan...", o: ["Hubungan sebab-akibat langsung", "Tidak ada hubungan makna, hanya hubungan bunyi/rima", "Sampiran sebagai penjelasan dari isi", "Isi sebagai akibat dari sampiran"], a: "Tidak ada hubungan makna, hanya hubungan bunyi/rima", p: "Secara esensial, sampiran dalam pantun tidak harus memiliki kaitan makna dengan isi. Fungsinya adalah sebagai cetakan rima (sepuluh-sungguh, sembilan-ketinggalan) dan irama." },
+                { q: "Struktur gurindam yang terdiri dari baris pertama sebagai syarat dan baris kedua sebagai konsekuensi mencerminkan pola pikir masyarakat Melayu lama yang...", o: ["Menjunjung tinggi hubungan sebab-akibat dan hukum alam/Tuhan", "Cenderung berpikir acak dan tidak terstruktur", "Lebih mementingkan bentuk daripada isi", "Selalu menentang aturan yang ada"], a: "Menjunjung tinggi hubungan sebab-akibat dan hukum alam/Tuhan", p: "Struktur gurindam menunjukkan cara berpikir yang logis dan didasarkan pada keyakinan bahwa setiap perbuatan (syarat) akan menghasilkan akibat (konsekuensi)." },
+                { q: "Syair Panji dan Syair Romantis adalah contoh syair yang berfungsi sebagai...", o: ["Media dakwah agama", "Kritik sosial terhadap pemerintah", "Catatan sejarah kerajaan", "Narasi atau cerita hiburan"], a: "Narasi atau cerita hiburan", p: "Berbeda dengan syair sufi atau sejarah, Syair Panji dan Romantis berisi cerita petualangan, percintaan, dan peperangan yang bertujuan untuk menghibur pendengarnya." },
+                { q: "Jika sebuah pantun memiliki 6 baris dalam satu bait, di mana 3 baris pertama adalah sampiran dan 3 baris berikutnya adalah isi, maka pantun tersebut disebut...", o: ["Karmina", "Pantun biasa", "Seloka", "Talibun"], a: "Talibun", p: "Talibun adalah jenis pantun yang jumlah barisnya lebih dari empat (biasanya 6, 8, atau 10 baris), dengan separuh pertama sebagai sampiran dan separuh kedua sebagai isi." },
+                { q: "Dalam tradisi lisan, mengapa puisi rakyat seperti pantun dan syair memiliki pola yang tetap (jumlah baris, suku kata, rima)?", o: ["Agar terdengar modern", "Untuk membatasi kreativitas penyair", "Untuk memudahkan proses penghafalan dan pelantunan", "Agar sulit ditiru oleh bangsa lain"], a: "Untuk memudahkan proses penghafalan dan pelantunan", p: "Sebagai sastra lisan, pola yang teratur berfungsi sebagai alat bantu memori (mnemonic device) agar mudah dihafal dan diwariskan dari satu generasi ke generasi berikutnya." },
+                { q: "Perhatikan gurindam ini: 'Cahari olehmu akan sahabat, yang boleh dijadikan obat.' Kata 'obat' dalam konteks ini memiliki makna kiasan yaitu...", o: ["Sesuatu yang bisa menyembuhkan penyakit fisik", "Teman yang bisa memberikan nasihat dan dukungan saat kesulitan", "Ahli medis atau tabib", "Ramuan tradisional"], a: "Teman yang bisa memberikan nasihat dan dukungan saat kesulitan", p: "Makna 'obat' di sini adalah konotatif, merujuk pada fungsi sahabat sebagai penyembuh masalah hati dan pemberi ketenangan." },
+                { q: "Transformasi puisi rakyat di era digital terlihat dalam bentuk...", o: ["Menghilangnya pantun dari media sosial", "Pantun yang dibuat menjadi meme atau status singkat di media sosial", "Syair yang hanya boleh ditulis di daun lontar", "Gurindam yang dilarang untuk dikutip"], a: "Pantun yang dibuat menjadi meme atau status singkat di media sosial", p: "Puisi rakyat beradaptasi dengan media baru. Pantun, misalnya, sering digunakan dalam caption, meme, atau sebagai komentar jenaka di platform digital, menunjukkan daya hidupnya." },
+                { q: "Meskipun sama-sama berisi 4 baris dan bisa mengandung nasihat, perbedaan utama antara Pantun Nasihat dan Syair Nasihat adalah...", o: ["Syair tidak pernah berisi nasihat", "Pantun selalu lebih lucu dari syair", "Syair menceritakan nasihat dalam satu kesatuan cerita, pantun menyajikannya dalam satu bait utuh", "Pantun berasal dari Indonesia, syair dari Malaysia"], a: "Syair menceritakan nasihat dalam satu kesatuan cerita, pantun menyajikannya dalam satu bait utuh", p: "Dalam syair, nasihat terjalin dari bait ke bait membentuk sebuah narasi. Dalam pantun, satu bait sudah merupakan satu unit nasihat yang lengkap dan mandiri." },
+                { q: "Puisi rakyat sering menggunakan 'bahasa kiasan' atau ungkapan. Jika disebut 'si panjang tangan', maka yang dimaksud adalah...", o: ["Orang yang tangannya panjang", "Orang yang suka menolong", "Orang yang suka mencuri", "Orang yang rajin bekerja"], a: "Orang yang suka mencuri", p: "'Panjang tangan' adalah idiom yang bermakna suka mencuri. Puisi rakyat kaya akan ungkapan-ungkapan seperti ini." },
+                { q: "Kemampuan berbalas pantun secara spontan dalam sebuah acara adat menunjukkan...", o: ["Permusuhan antar kelompok", "Kecerdasan berpikir, kecepatan merespons, dan penguasaan bahasa", "Kurangnya media hiburan lain", "Bahwa semua orang hafal pantun yang sama persis"], a: "Kecerdasan berpikir, kecepatan merespons, dan penguasaan bahasa", p: "Berbalas pantun bukan sekadar menghafal, tetapi juga kemampuan untuk merangkai sampiran dan isi yang relevan secara cepat, yang menunjukkan tingkat intelektualitas dan keterampilan berbahasa." },
+                { q: "'Sudah gaharu cendana pula, sudah tahu bertanya pula'. Jenis puisi rakyat ini adalah...", o: ["Syair", "Talibun", "Mantra", "Seloka/Pantun Berkait"], a: "Seloka/Pantun Berkait", p: "Ini adalah contoh seloka atau peribahasa dalam bentuk yang menyerupai pantun. Isinya seringkali berupa sindiran atau ejekan." },
+                { q: "Syair Siti Zubaidah Perang Cina adalah sebuah karya sastra yang menceritakan kepahlawanan seorang wanita. Hal ini menunjukkan bahwa syair juga berfungsi sebagai media untuk...", o: ["Menyebarkan berita bohong", "Mengajarkan cara berperang", "Mendobrak stereotip gender pada masanya", "Mengkritik pemerintah Cina"], a: "Mendobrak stereotip gender pada masanya", p: "Dengan menampilkan tokoh utama wanita yang heroik, syair ini secara tidak langsung menantang pandangan umum pada zaman itu yang menganggap wanita lemah." },
+                
+                // Teks Naratif (23-35)
+                { q: "Alur maju-mundur (flashback/sorot balik) dalam sebuah cerita sering digunakan penulis untuk...", o: ["Membuat pembaca bingung", "Memperpanjang cerita tanpa alasan", "Memberikan latar belakang atau penjelasan atas peristiwa yang sedang terjadi", "Menunjukkan bahwa penulis tidak bisa menulis secara urut"], a: "Memberikan latar belakang atau penjelasan atas peristiwa yang sedang terjadi", p: "Flashback adalah teknik alur yang efektif untuk mengungkap masa lalu tokoh atau peristiwa penting yang memengaruhi plot utama di masa kini." },
+                { q: "Dalam sebuah cerita detektif, penulis sengaja menyembunyikan beberapa petunjuk penting hingga akhir cerita. Teknik ini disebut...", o: ["Foreshadowing (pertanda)", "Suspense (ketegangan)", "Surprise (kejutan)", "Ironi Dramatis"], a: "Suspense (ketegangan)", p: "Suspense diciptakan dengan menahan informasi dari pembaca, membuat mereka terus bertanya-tanya dan penasaran dengan apa yang akan terjadi selanjutnya." },
+                { q: "Seorang tokoh yang tidak mengalami perubahan karakter dari awal hingga akhir cerita disebut...", o: ["Tokoh dinamis", "Tokoh statis/datar", "Tokoh protagonis", "Tokoh antagonis"], a: "Tokoh statis/datar", p: "Tokoh statis (flat character) memiliki karakter yang konsisten dan tidak berkembang sepanjang cerita, berbeda dengan tokoh dinamis (round character) yang mengalami perubahan." },
+                { q: "Ketika pembaca mengetahui sesuatu yang tidak diketahui oleh tokoh dalam cerita (misalnya, pembaca tahu ada bahaya di balik pintu, tetapi tokoh tidak), ini menciptakan efek yang disebut...", o: ["Simbolisme", "Ironi Dramatis", "Personifikasi", "Klimaks"], a: "Ironi Dramatis", p: "Ironi dramatis terjadi karena adanya kesenjangan informasi antara pembaca dan tokoh, yang berfungsi untuk membangun ketegangan." },
+                { q: "Sebuah novel yang menceritakan ulang kisah Perang Diponegoro dengan menambahkan tokoh-tokoh fiktif di dalamnya dapat diklasifikasikan sebagai...", o: ["Fabel", "Novel Sejarah (Fiksi Sejarah)", "Biografi murni", "Laporan penelitian"], a: "Novel Sejarah (Fiksi Sejarah)", p: "Fiksi sejarah adalah genre yang mengambil latar peristiwa sejarah nyata tetapi mengisinya dengan alur dan tokoh yang sebagian atau seluruhnya bersifat fiktif." },
+                { q: "Perbedaan antara tema dan amanat dalam teks naratif adalah...", o: ["Tema adalah judul, amanat adalah isi", "Tema adalah ide pokok cerita, amanat adalah pesan moral yang ingin disampaikan", "Tema hanya ada di fiksi, amanat hanya di nonfiksi", "Tema ditentukan oleh pembaca, amanat ditentukan oleh penulis"], a: "Tema adalah ide pokok cerita, amanat adalah pesan moral yang ingin disampaikan", p: "Tema adalah gagasan sentral yang abstrak (misalnya 'perjuangan'), sedangkan amanat adalah nasihat atau pelajaran spesifik yang bisa dipetik dari tema tersebut (misalnya 'jangan menyerah dalam berjuang')." },
+                { q: "Jika sebuah buku nonfiksi menyajikan data dalam bentuk grafik, tabel, dan infografis, tujuan utamanya adalah...", o: ["Membuat buku lebih tebal", "Memvisualisasikan data agar lebih mudah dipahami dan menarik", "Menggantikan seluruh teks penjelasan", "Memenuhi standar penerbitan"], a: "Memvisualisasikan data agar lebih mudah dipahami dan menarik", p: "Elemen visual dalam buku nonfiksi berfungsi untuk menyajikan informasi yang kompleks secara ringkas dan mudah dicerna oleh pembaca." },
+                { q: "Membaca sebuah biografi (nonfiksi) dapat memberikan manfaat yang sama dengan membaca novel (fiksi) dalam hal...", o: ["Mengetahui alur cerita khayalan", "Mendapatkan hiburan dari dunia imajinasi", "Mempelajari pelajaran hidup dan inspirasi dari pengalaman tokoh", "Menganalisis penggunaan majas dan gaya bahasa"], a: "Mempelajari pelajaran hidup dan inspirasi dari pengalaman tokoh", p: "Meskipun satu nyata dan satu fiksi, keduanya bisa menjadi sumber inspirasi dan pembelajaran tentang kehidupan melalui kisah perjalanan tokoh-tokohnya." },
+                { q: "Dalam struktur naratif Freytag's Pyramid, bagian setelah klimaks di mana konflik mulai mereda disebut...", o: ["Eksposisi", "Insiden Penggugah (Inciting Incident)", "Aksi Menurun (Falling Action)", "Resolusi"], a: "Aksi Menurun (Falling Action)", p: "Setelah mencapai puncak ketegangan (klimaks), alur akan memasuki tahap 'falling action' di mana konsekuensi dari klimaks mulai terurai menuju penyelesaian." },
+                { q: "Seorang narator serbatahu (omniscient narrator) dalam sebuah cerita berarti...", o: ["Narator hanya mengetahui pikiran satu tokoh", "Narator adalah salah satu tokoh dalam cerita", "Narator berada di luar cerita dan mengetahui semua pikiran dan perasaan semua tokoh", "Narator tidak mengetahui apa-apa"], a: "Narator berada di luar cerita dan mengetahui semua pikiran dan perasaan semua tokoh", p: "Sudut pandang orang ketiga serbatahu (omniscient) memberikan keleluasaan penuh kepada penulis untuk masuk ke dalam benak setiap tokoh." },
+                { q: "Sebuah cerita yang berakhir dengan sengaja dibuat menggantung (cliffhanger) bertujuan untuk...", o: ["Membuat pembaca kecewa", "Menunjukkan penulis kehabisan ide", "Menciptakan rasa penasaran yang kuat untuk cerita lanjutannya (sekuel)", "Menyelesaikan semua konflik dengan tuntas"], a: "Menciptakan rasa penasaran yang kuat untuk cerita lanjutannya (sekuel)", p: "Akhir yang menggantung adalah teknik naratif untuk memastikan audiens kembali untuk seri berikutnya, sering digunakan dalam novel berseri atau serial TV." },
+                { q: "Kritik sastra adalah contoh teks ulasan yang objeknya adalah buku fiksi. Maka, kritik sastra itu sendiri tergolong sebagai tulisan...", o: ["Fiksi", "Nonfiksi", "Puisi", "Drama"], a: "Nonfiksi", p: "Meskipun membahas karya fiksi, teks kritik atau ulasan itu sendiri adalah analisis faktual dan argumentatif, sehingga tergolong tulisan nonfiksi." },
+                { q: "Penggunaan 'setting' atau latar yang detail dan hidup dalam sebuah cerita fantasi sangat penting karena...", o: ["Harganya mahal", "Membuat dunia fiksi tersebut terasa nyata dan dapat dipercaya oleh pembaca (world-building)", "Membuat cerita lebih singkat", "Tidak ada hubungannya dengan kualitas cerita"], a: "Membuat dunia fiksi tersebut terasa nyata dan dapat dipercaya oleh pembaca (world-building)", p: "Dalam genre fantasi atau fiksi ilmiah, pembangunan dunia (world-building) melalui deskripsi latar yang kaya sangat krusial agar pembaca bisa 'masuk' dan percaya pada dunia imajinatif tersebut." }
+            ]
+        };
+
+        // --- Quiz Logic ---
+
+        function startQuiz(mode) {
+            currentMode = mode;
+            currentQuestionIndex = 0;
+            userAnswers = new Array(allQuestions[mode].length).fill(null);
+            questions = allQuestions[mode];
+            
+            modeLabel.textContent = mode;
+            startScreen.classList.add('hidden');
+            resultScreen.classList.add('hidden');
+            quizScreen.classList.remove('hidden');
+            
+            displayQuestion();
+        }
+
+        function displayQuestion() {
+            const question = questions[currentQuestionIndex];
+            questionNumber.textContent = currentQuestionIndex + 1;
+            questionText.innerHTML = question.q.replace(/\n/g, '<br>'); // Handle multiline questions
+            
+            optionsContainer.innerHTML = '';
+            question.o.forEach((option, index) => {
+                const optionElement = document.createElement('button');
+                optionElement.innerHTML = option;
+                optionElement.classList.add('option-btn', 'w-full', 'p-4', 'border-2', 'border-slate-300', 'rounded-lg', 'text-left', 'transition-all', 'duration-200');
+                optionElement.onclick = () => selectAnswer(index);
+                optionsContainer.appendChild(optionElement);
+            });
+            
+            updateNavigation();
+        }
+
+        function selectAnswer(index) {
+            userAnswers[currentQuestionIndex] = questions[currentQuestionIndex].o[index];
+            
+            // Visual feedback for selected answer
+            const optionButtons = optionsContainer.querySelectorAll('.option-btn');
+            optionButtons.forEach((btn, btnIndex) => {
+                if (btnIndex === index) {
+                    btn.classList.add('selected');
+                } else {
+                    btn.classList.remove('selected');
+                }
+            });
+
+            updateNavigation();
+        }
+
+        function updateNavigation() {
+            if (userAnswers[currentQuestionIndex] !== null) {
+                nextBtn.disabled = false;
+            } else {
+                nextBtn.disabled = true;
+            }
+
+            if (currentQuestionIndex === questions.length - 1) {
+                nextBtn.textContent = 'Selesai';
+            } else {
+                nextBtn.textContent = 'Selanjutnya';
+            }
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                displayQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function showResults() {
+            quizScreen.classList.add('hidden');
+            resultScreen.classList.remove('hidden');
+
+            let correctCount = 0;
+            questions.forEach((q, index) => {
+                if (userAnswers[index] === q.a) {
+                    correctCount++;
+                }
+            });
+
+            const finalScore = Math.round((correctCount / questions.length) * 100);
+            scoreEl.textContent = finalScore;
+            correctAnswersEl.textContent = correctCount;
+            
+            displayReview();
+        }
+
+        function displayReview() {
+            reviewContainer.innerHTML = '';
+            questions.forEach((q, index) => {
+                const isCorrect = userAnswers[index] === q.a;
+                const reviewItem = document.createElement('div');
+                reviewItem.classList.add('p-4', 'border', 'rounded-lg', isCorrect ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200');
+
+                let userAnswerHtml = userAnswers[index] ? `"${userAnswers[index]}"` : "<i>Tidak dijawab</i>";
+                let answerStatusHtml = isCorrect 
+                    ? `<span class="font-semibold text-green-700">(Benar)</span>` 
+                    : `<span class="font-semibold text-red-700">(Salah)</span>`;
+
+                reviewItem.innerHTML = `
+                    <p class="font-semibold text-slate-800 mb-2">Soal ${index + 1}: ${q.q.replace(/\n/g, '<br>')}</p>
+                    <p class="text-sm text-slate-600 mb-1">Jawabanmu: ${userAnswerHtml} ${answerStatusHtml}</p>
+                    ${!isCorrect ? `<p class="text-sm text-slate-600 mb-2">Jawaban Benar: <span class="font-semibold">"${q.a}"</span></p>` : ''}
+                    <div class="mt-2 pt-2 border-t border-dashed ${isCorrect ? 'border-green-200' : 'border-red-200'}">
+                        <p class="text-sm font-semibold text-indigo-800">Pembahasan:</p>
+                        <p class="text-sm text-slate-700">${q.p}</p>
+                    </div>
+                `;
+                reviewContainer.appendChild(reviewItem);
+            });
+        }
+        
+        function restartQuiz() {
+            resultScreen.classList.add('hidden');
+            startScreen.classList.remove('hidden');
+        }
+
+    </script>
+</body>
+</html>

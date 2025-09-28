@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Latihan Soal IPS - Kelas VII</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .option-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        .option-btn.selected {
+            background-color: #3b82f6; /* blue-500 */
+            color: white;
+            border-color: #2563eb; /* blue-600 */
+        }
+        .mode-card {
+            transition: all 0.2s ease-in-out;
+        }
+        .mode-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        /* Custom scrollbar for better aesthetics */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9; /* slate-100 */
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #94a3b8; /* slate-400 */
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #64748b; /* slate-500 */
+        }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 flex items-center justify-center min-h-screen p-4">
+
+    <div id="app-container" class="w-full max-w-4xl mx-auto">
+        
+        <!-- Start Screen -->
+        <div id="start-screen" class="bg-white p-8 rounded-2xl shadow-lg text-center">
+            <h1 class="text-3xl md:text-4xl font-bold text-slate-700 mb-2">Latihan Soal IPS</h1>
+            <p class="text-lg text-slate-500 mb-8">Kelas VII - Sesuai Kisi-Kisi Ujian</p>
+            <p class="mb-6">Silakan pilih tingkat kesulitan untuk memulai latihan. Setiap mode berisi 35 soal.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div onclick="startQuiz('normal')" class="mode-card bg-green-500 text-white p-6 rounded-xl shadow-md cursor-pointer">
+                    <h2 class="text-2xl font-bold mb-2">NORMAL</h2>
+                    <p>Soal-soal dasar untuk pemahaman konsep.</p>
+                </div>
+                <div onclick="startQuiz('medium')" class="mode-card bg-yellow-500 text-white p-6 rounded-xl shadow-md cursor-pointer">
+                    <h2 class="text-2xl font-bold mb-2">MEDIUM</h2>
+                    <p>Soal yang membutuhkan analisis ringan.</p>
+                </div>
+                <div onclick="startQuiz('hard')" class="mode-card bg-red-500 text-white p-6 rounded-xl shadow-md cursor-pointer">
+                    <h2 class="text-2xl font-bold mb-2">SULIT</h2>
+                    <p>Soal analisis mendalam dan penerapan kompleks.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quiz Screen -->
+        <div id="quiz-screen" class="hidden">
+            <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg">
+                <div class="flex justify-between items-center mb-6">
+                    <div class="text-sm font-semibold bg-indigo-100 text-indigo-700 py-1 px-3 rounded-full">
+                        Mode: <span id="mode-label" class="capitalize"></span>
+                    </div>
+                    <div class="text-sm font-semibold bg-slate-100 text-slate-700 py-1 px-3 rounded-full">
+                        Soal <span id="question-number"></span> dari 35
+                    </div>
+                </div>
+
+                <div id="question-container" class="mb-6">
+                    <p id="question-text" class="text-lg md:text-xl leading-relaxed"></p>
+                </div>
+
+                <div id="options-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Options will be dynamically inserted here -->
+                </div>
+
+                <div class="mt-8 flex justify-end">
+                    <button id="next-btn" onclick="nextQuestion()" class="bg-indigo-600 text-white font-bold py-3 px-8 rounded-lg shadow-md hover:bg-indigo-700 transition-colors duration-200 disabled:bg-slate-400 disabled:cursor-not-allowed">
+                        Selanjutnya
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Result Screen -->
+        <div id="result-screen" class="hidden">
+            <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg text-center">
+                <h2 class="text-3xl font-bold text-slate-700 mb-2">Latihan Selesai!</h2>
+                <p class="text-lg text-slate-500 mb-6">Berikut adalah hasil pengerjaanmu.</p>
+                
+                <div class="bg-indigo-50 border-2 border-indigo-200 rounded-xl p-6 mb-8">
+                    <p class="text-xl text-indigo-800">Skor Akhir</p>
+                    <p class="text-6xl font-bold text-indigo-600 my-2"><span id="score"></span></p>
+                    <p class="text-xl text-indigo-800"><span id="correct-answers"></span> dari 35 soal benar</p>
+                </div>
+
+                <div class="text-left mb-6">
+                    <h3 class="text-2xl font-bold mb-4 text-slate-700">Pembahasan Soal</h3>
+                    <div id="review-container" class="space-y-4 max-h-[50vh] overflow-y-auto pr-4">
+                        <!-- Review content will be dynamically inserted here -->
+                    </div>
+                </div>
+
+                <button onclick="restartQuiz()" class="w-full md:w-auto bg-indigo-600 text-white font-bold py-3 px-8 rounded-lg shadow-md hover:bg-indigo-700 transition-colors duration-200">
+                    Ulangi Latihan
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // DOM Elements
+        const startScreen = document.getElementById('start-screen');
+        const quizScreen = document.getElementById('quiz-screen');
+        const resultScreen = document.getElementById('result-screen');
+        
+        const modeLabel = document.getElementById('mode-label');
+        const questionNumber = document.getElementById('question-number');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const nextBtn = document.getElementById('next-btn');
+
+        const scoreEl = document.getElementById('score');
+        const correctAnswersEl = document.getElementById('correct-answers');
+        const reviewContainer = document.getElementById('review-container');
+
+        // Quiz State
+        let currentMode = '';
+        let currentQuestionIndex = 0;
+        let userAnswers = [];
+        let questions = {};
+
+        // --- DATABASE SOAL IPS ---
+        const allQuestions = {
+            normal: [
+                // Kisi-kisi 1-5
+                { q: "Letak suatu wilayah berdasarkan posisi sebenarnya di permukaan bumi, seperti di antara dua benua dan dua samudra, disebut letak...", o: ["Astronomis", "Geografis", "Geologis", "Absolut"], a: "Geografis", p: "Letak geografis adalah posisi suatu wilayah dilihat dari kenyataannya di permukaan bumi. Indonesia terletak di antara Benua Asia dan Australia, serta Samudra Hindia dan Pasifik." },
+                { q: "Secara astronomis, Indonesia terletak di antara...", o: ["95° BT - 141° BT dan 6° LU - 11° LS", "10° BT - 110° BT dan 5° LU - 10° LS", "90° BB - 140° BB dan 0° LU - 10° LS", "100° BT - 150° BT dan 8° LS - 12° LS"], a: "95° BT - 141° BT dan 6° LU - 11° LS", p: "Letak astronomis adalah letak berdasarkan garis lintang (LU/LS) dan garis bujur (BT/BB). Posisi ini menyebabkan Indonesia beriklim tropis." },
+                { q: "Indonesia memiliki tiga zona waktu, yaitu...", o: ["WIB, WITA, dan WITA", "WIB, WIT, dan Waktu Lokal", "WIB, WITA, dan WIT", "Waktu Pagi, Siang, dan Malam"], a: "WIB, WITA, dan WIT", p: "Karena bentang bujur yang luas, Indonesia dibagi menjadi Waktu Indonesia Barat (WIB), Waktu Indonesia Tengah (WITA), dan Waktu Indonesia Timur (WIT)." },
+                { q: "Letak Indonesia di garis khatulistiwa menyebabkan Indonesia memiliki iklim...", o: ["Subtropis", "Sedang", "Dingin", "Tropis"], a: "Tropis", p: "Wilayah yang dilalui garis khatulistiwa seperti Indonesia menerima sinar matahari sepanjang tahun, sehingga memiliki iklim tropis dengan dua musim: hujan dan kemarau." },
+                { q: "Indonesia berada di pertemuan tiga lempeng tektonik besar dunia. Hal ini merupakan penjelasan dari letak...", o: ["Geografis", "Ekonomis", "Geologis", "Astronomis"], a: "Geologis", p: "Letak geologis adalah letak berdasarkan struktur batuan dan lempeng bumi. Posisi ini membuat Indonesia kaya akan gunung api tetapi juga rawan gempa." },
+                // Kisi-kisi 6-35 (dipadatkan dan disesuaikan)
+                { q: "Fungsi utama dari peta adalah...", o: ["Sebagai hiasan dinding", "Menunjukkan lokasi dan gambaran permukaan bumi", "Menghitung jumlah penduduk", "Meramal cuaca"], a: "Menunjukkan lokasi dan gambaran permukaan bumi", p: "Peta berfungsi untuk memberikan informasi keruangan, seperti menunjukkan letak suatu tempat, jarak, arah, dan bentuk permukaan bumi." },
+                { q: "Google Maps dan Waze adalah contoh peta digital. Manfaat utama peta digital adalah...", o: ["Hanya bisa dilihat di komputer", "Memberikan informasi rute secara real-time", "Tidak bisa diperbesar", "Harganya sangat mahal"], a: "Memberikan informasi rute secara real-time", p: "Peta digital memiliki keunggulan dapat memberikan informasi terkini (real-time) seperti kondisi lalu lintas, rute tercepat, dan lokasi yang terus diperbarui." },
+                { q: "Hubungan timbal balik antara individu dengan individu, individu dengan kelompok, atau kelompok dengan kelompok disebut...", o: ["Sosialisasi", "Interaksi sosial", "Kebutuhan", "Norma"], a: "Interaksi sosial", p: "Interaksi sosial adalah proses saling memengaruhi antara dua pihak atau lebih. Ini adalah dasar dari kehidupan bermasyarakat." },
+                { q: "Segala sesuatu yang harus dipenuhi oleh manusia untuk mempertahankan hidup disebut...", o: ["Keinginan", "Kebutuhan", "Kemewahan", "Hobi"], a: "Kebutuhan", p: "Kebutuhan bersifat wajib dipenuhi. Jika tidak, kelangsungan hidup dapat terganggu. Contohnya makanan, pakaian, dan tempat tinggal." },
+                { q: "Keluarga, sekolah, dan teman sepermainan adalah contoh dari...", o: ["Norma sosial", "Nilai sosial", "Agen sosialisasi", "Lembaga ekonomi"], a: "Agen sosialisasi", p: "Agen sosialisasi adalah pihak-pihak yang melaksanakan proses sosialisasi, yaitu menanamkan nilai dan norma kepada individu." },
+                { q: "Keyakinan dan kepercayaan kepada Tuhan Yang Maha Esa adalah contoh dari nilai...", o: ["Material", "Vital", "Rohani", "Estetika"], a: "Rohani", p: "Nilai rohani adalah nilai yang bersumber dari keyakinan atau kepercayaan manusia, berhubungan dengan aspek batiniah." },
+                { q: "Aturan atau kaidah yang berlaku dalam masyarakat dan berisi perintah atau larangan disebut...", o: ["Nilai", "Norma", "Status", "Peran"], a: "Norma", p: "Norma berfungsi untuk mengatur perilaku masyarakat agar tercipta ketertiban. Contohnya norma agama, kesopanan, hukum, dan kesusilaan." },
+                { q: "Peran utama nilai dan norma dalam masyarakat adalah...", o: ["Membatasi kebebasan individu", "Menciptakan ketertiban dan keteraturan sosial", "Menghukum orang yang salah", "Membuat masyarakat menjadi seragam"], a: "Menciptakan ketertiban dan keteraturan sosial", p: "Dengan adanya nilai sebagai pedoman dan norma sebagai aturan, perilaku masyarakat menjadi lebih terarah dan teratur." },
+                { q: "Menggunakan tangan kanan saat makan atau memberi sesuatu adalah contoh dari norma...", o: ["Hukum", "Agama", "Kesusilaan", "Kesopanan"], a: "Kesopanan", p: "Norma kesopanan bersumber dari kebiasaan atau tata krama yang berlaku dalam suatu masyarakat." },
+                { q: "Makanan, pakaian, dan tempat tinggal termasuk dalam jenis kebutuhan...", o: ["Primer", "Sekunder", "Tersier", "Rohani"], a: "Primer", p: "Kebutuhan primer adalah kebutuhan pokok yang harus dipenuhi untuk bertahan hidup." },
+                { q: "Lokasi yang ditentukan oleh garis lintang dan garis bujur, seperti 'Jakarta terletak di 6° LS', disebut lokasi...", o: ["Relatif", "Geografis", "Absolut", "Strategis"], a: "Absolut", p: "Lokasi absolut bersifat tetap dan pasti karena menggunakan sistem koordinat (garis lintang dan bujur)." },
+                { q: "Aristoteles menyatakan bahwa manusia adalah 'zoon politicon', yang artinya manusia adalah makhluk...", o: ["Ekonomi", "Berbudaya", "Sosial", "Individu"], a: "Sosial", p: "'Zoon politicon' berarti manusia pada dasarnya selalu ingin bergaul dan hidup bermasyarakat, tidak bisa hidup sendiri." },
+                { q: "Pihak pertama dan utama yang mengenalkan nilai dan norma kepada seorang anak adalah...", o: ["Sekolah", "Teman bermain", "Media massa", "Keluarga"], a: "Keluarga", p: "Keluarga merupakan agen sosialisasi primer, tempat pertama kali seorang individu belajar tentang aturan dan cara hidup." },
+                { q: "Kondisi di mana jumlah kebutuhan manusia tidak terbatas sedangkan alat pemuas kebutuhan terbatas disebut...", o: ["Kemakmuran", "Kelangkaan", "Keseimbangan", "Produksi"], a: "Kelangkaan", p: "Kelangkaan adalah inti dari masalah ekonomi, yang memaksa manusia untuk membuat pilihan." },
+                { q: "Kebutuhan yang dirasakan oleh jasmani atau fisik, seperti makan dan olahraga, adalah kebutuhan berdasarkan...", o: ["Sifatnya", "Waktunya", "Subjeknya", "Tingkatannya"], a: "Sifatnya", p: "Berdasarkan sifatnya, kebutuhan dibagi menjadi kebutuhan jasmani (fisik) dan rohani (batin)." },
+                { q: "Pendapatan, tingkat pendidikan, dan lingkungan sosial adalah contoh faktor-faktor yang...", o: ["Menghilangkan kebutuhan", "Memengaruhi kebutuhan manusia", "Menjamin kemakmuran", "Tidak ada hubungannya dengan ekonomi"], a: "Memengaruhi kebutuhan manusia", p: "Setiap orang memiliki kebutuhan yang berbeda-beda, dipengaruhi oleh banyak faktor seperti pendapatan, usia, pendidikan, dan lingkungan." },
+                { q: "Memberikan kasih sayang, perlindungan, dan melanjutkan keturunan adalah beberapa dari fungsi...", o: ["Sekolah", "Pasar", "Keluarga", "Pemerintah"], a: "Keluarga", p: "Keluarga memiliki banyak fungsi penting, di antaranya fungsi reproduksi, proteksi (perlindungan), afeksi (kasih sayang), dan sosialisasi." },
+                { q: "Keluarga yang terdiri dari ayah, ibu, dan anak disebut...", o: ["Keluarga besar", "Keluarga inti", "Keluarga berencana", "Keluarga harmonis"], a: "Keluarga inti", p: "Keluarga inti (nuclear family) adalah unit keluarga terkecil yang terdiri dari orang tua dan anak-anaknya." },
+                { q: "Peran seorang anak dalam keluarga adalah...", o: ["Mencari nafkah", "Menjaga keutuhan rumah tangga", "Menghormati orang tua dan belajar dengan baik", "Memimpin keluarga"], a: "Menghormati orang tua dan belajar dengan baik", p: "Setiap anggota keluarga memiliki perannya. Peran utama anak adalah berbakti kepada orang tua dan mempersiapkan masa depan dengan belajar." },
+                { q: "Kebutuhan akan barang-barang mewah seperti mobil sport atau perhiasan termasuk kebutuhan...", o: ["Primer", "Sekunder", "Tersier", "Jasmani"], a: "Tersier", p: "Kebutuhan tersier (kebutuhan mewah) dipenuhi setelah kebutuhan primer dan sekunder terpenuhi, bertujuan untuk meningkatkan status sosial." },
+                { q: "Asuransi dan dana pensiun adalah contoh pemenuhan kebutuhan berdasarkan...", o: ["Waktu sekarang", "Waktu yang akan datang", "Sifatnya", "Subjeknya"], a: "Waktu yang akan datang", p: "Kebutuhan ini dipersiapkan sekarang untuk digunakan di masa depan, menunjukkan adanya perencanaan." },
+                { q: "Kebutuhan yang dirasakan oleh batin atau jiwa, seperti beribadah dan rekreasi, disebut kebutuhan...", o: ["Jasmani", "Rohani", "Individu", "Kelompok"], a: "Rohani", p: "Kebutuhan rohani berkaitan dengan kepuasan batiniah dan mental." },
+                { q: "Kebutuhan yang dirasakan oleh seseorang secara pribadi, misalnya kebutuhan seorang pelajar akan buku, disebut kebutuhan...", o: ["Kelompok", "Kolektif", "Individu", "Mewah"], a: "Individu", p: "Berdasarkan subjeknya, kebutuhan dibagi menjadi kebutuhan individu (perorangan) dan kolektif (bersama)." },
+                { q: "Jalan raya, jembatan, dan rumah sakit adalah contoh kebutuhan...", o: ["Individu", "Primer", "Kolektif/Umum", "Rohani"], a: "Kolektif/Umum", p: "Kebutuhan kolektif adalah kebutuhan yang dirasakan dan dimanfaatkan bersama oleh masyarakat." },
+                { q: "Salah satu dampak positif dari letak Indonesia yang strategis di jalur perdagangan dunia adalah...", o: ["Rawan terjadi bencana alam", "Menjadi pusat lalu lintas perdagangan dunia", "Memiliki iklim tropis", "Terdiri dari banyak pulau"], a: "Menjadi pusat lalu lintas perdagangan dunia", p: "Posisi silang Indonesia menjadikannya lokasi yang sangat strategis untuk jalur pelayaran dan perdagangan internasional, yang memberikan keuntungan ekonomi." },
+                { q: "Media massa seperti televisi dan internet dapat menjadi agen sosialisasi yang mengajarkan...", o: ["Hanya hal-hal negatif", "Nilai dan norma yang ada di masyarakat luas", "Cara bertani yang baik", "Aturan keluarga"], a: "Nilai dan norma yang ada di masyarakat luas", p: "Media massa menyebarkan informasi dan tren secara luas, sehingga memengaruhi cara pandang, gaya hidup, serta nilai dan norma seseorang." },
+                { q: "Contoh lokasi absolut adalah...", o: ["Rumahku dekat pasar", "Sekolahku di seberang jalan", "Indonesia di antara dua benua", "Monas berada di koordinat 6°10' LS, 106°49' BT"], a: "Monas berada di koordinat 6°10' LS, 106°49' BT", p: "Lokasi absolut menggunakan titik koordinat garis lintang dan bujur yang pasti dan tidak berubah." },
+                { q: "Keluarga yang terdiri dari keluarga inti ditambah kerabat lain seperti kakek, nenek, paman, dan bibi disebut...", o: ["Keluarga inti", "Keluarga besar", "Keluarga modern", "Tetangga"], a: "Keluarga besar", p: "Keluarga besar (extended family) mencakup beberapa generasi atau kerabat yang tinggal bersama atau memiliki hubungan yang erat." },
+                { q: "Fungsi ekonomi dalam keluarga adalah...", o: ["Memberikan kasih sayang", "Ayah mencari nafkah dan ibu mengatur keuangan", "Melanjutkan keturunan", "Mengajarkan sopan santun"], a: "Ayah mencari nafkah dan ibu mengatur keuangan", p: "Fungsi ekonomi berkaitan dengan upaya keluarga untuk memenuhi kebutuhan materinya, seperti mencari pendapatan dan mengelolanya." }
+            ],
+            medium: [
+                 // Kisi-kisi 1-5
+                { q: "Dampak letak geografis Indonesia yang berada di posisi silang dunia terhadap kebudayaan lokal adalah...", o: ["Kebudayaan Indonesia menjadi tertutup", "Terjadinya akulturasi budaya dengan bangsa lain", "Indonesia tidak memiliki kebudayaan asli", "Masyarakat menjadi individualistis"], a: "Terjadinya akulturasi budaya dengan bangsa lain", p: "Karena menjadi jalur perlintasan bangsa-bangsa, budaya asing mudah masuk dan berbaur dengan budaya lokal, menghasilkan budaya baru tanpa menghilangkan ciri khas asli (akulturasi)." },
+                { q: "Jika di kota London (0° Bujur) pukul 03:00 pagi, maka di wilayah Indonesia bagian barat (WIB, +7 GMT) pukul...", o: ["10:00", "11:00", "12:00", "09:00"], a: "10:00", p: "Selisih waktu antara London (GMT 0) dan WIB (GMT+7) adalah 7 jam. Jadi, waktu di WIB adalah 03:00 + 7 jam = 10:00 pagi." },
+                { q: "Sebuah acara televisi nasional disiarkan langsung pukul 20:00 WIB. Pukul berapakah acara tersebut ditonton oleh pemirsa di Makassar (WITA) dan Jayapura (WIT)?", o: ["21:00 WITA dan 22:00 WIT", "19:00 WITA dan 18:00 WIT", "20:00 WITA dan 20:00 WIT", "22:00 WITA dan 21:00 WIT"], a: "21:00 WITA dan 22:00 WIT", p: "WITA memiliki selisih +1 jam dari WIB, dan WIT +2 jam dari WIB. Maka, di Makassar pukul 21:00 WITA dan di Jayapura pukul 22:00 WIT." },
+                { q: "Angin muson barat yang bertiup dari Asia ke Australia membawa banyak uap air, menyebabkan Indonesia mengalami musim...", o: ["Kemarau", "Hujan", "Pancaroba", "Dingin"], a: "Hujan", p: "Angin muson barat melewati Samudra Hindia sehingga membawa banyak uap air yang menyebabkan musim hujan di sebagian besar wilayah Indonesia, biasanya terjadi sekitar Oktober-April." },
+                { q: "Letak geologis Indonesia yang berada di jalur Cincin Api Pasifik (Ring of Fire) menyebabkan...", o: ["Indonesia bebas dari gempa bumi", "Tanah di Indonesia menjadi subur akibat aktivitas vulkanik", "Indonesia memiliki iklim tropis", "Indonesia memiliki laut yang dangkal"], a: "Tanah di Indonesia menjadi subur akibat aktivitas vulkanik", p: "Meskipun rawan bencana, abu vulkanik dari letusan gunung api membuat tanah di sekitarnya menjadi sangat subur dan baik untuk pertanian." },
+                 // Kisi-kisi 6-35
+                { q: "Skala pada peta adalah 1:2.500.000. Jika jarak dua kota di peta adalah 4 cm, berapakah jarak sebenarnya?", o: ["10 km", "25 km", "100 km", "250 km"], a: "100 km", p: "Jarak sebenarnya = Jarak di peta x Skala = 4 cm x 2.500.000 = 10.000.000 cm. Untuk mengubah ke km, dibagi 100.000. Jadi, 10.000.000 / 100.000 = 100 km." },
+                { q: "Seorang pengemudi ojek online menggunakan aplikasi peta digital untuk menghindari macet. Ini menunjukkan manfaat peta digital dalam hal...", o: ["Efisiensi waktu dan biaya", "Mengetahui sejarah suatu tempat", "Melihat kondisi geologis", "Sebagai hiburan"], a: "Efisiensi waktu dan biaya", p: "Dengan informasi lalu lintas real-time, pengguna dapat memilih rute tercepat, sehingga menghemat waktu perjalanan dan bahan bakar (biaya)." },
+                { q: "Ketika dua orang calon presiden berdebat di televisi, bentuk interaksi sosial yang terjadi adalah...", o: ["Kerja sama", "Akomodasi", "Persaingan (kompetisi)", "Konflik"], a: "Persaingan (kompetisi)", p: "Debat adalah bentuk persaingan di mana kedua pihak berusaha menunjukkan keunggulan gagasan masing-masing untuk mencapai tujuan yang sama (memenangkan pemilu)." },
+                { q: "Bagi seorang pelajar, laptop adalah kebutuhan sekunder. Namun bagi seorang desainer grafis, laptop adalah kebutuhan primer. Hal ini menunjukkan bahwa sifat kebutuhan...", o: ["Selalu sama untuk semua orang", "Dapat berubah sesuai status dan profesi seseorang", "Tidak dapat dipenuhi", "Hanya ditentukan oleh pendapatan"], a: "Dapat berubah sesuai status dan profesi seseorang", p: "Tingkat kepentingan suatu barang bisa berbeda bagi setiap orang, tergantung pada profesi, status sosial, dan lingkungannya." },
+                { q: "Seorang anak belajar cara berbicara sopan dengan meniru orang tuanya. Proses ini merupakan contoh sosialisasi yang terjadi di lingkungan...", o: ["Agen media massa", "Agen teman sepermainan", "Agen sekolah", "Agen keluarga"], a: "Agen keluarga", p: "Keluarga adalah tempat sosialisasi pertama di mana anak menginternalisasi nilai dan norma dasar melalui proses imitasi (peniruan)." },
+                { q: "Menjaga nama baik sekolah dengan tidak terlibat tawuran adalah perwujudan dari nilai... dan norma...", o: ["Nilai keindahan; norma kesopanan", "Nilai kebenaran; norma hukum", "Nilai moral; norma kesusilaan", "Nilai vital; norma kebiasaan"], a: "Nilai moral; norma hukum", p: "Perbuatan ini didasari nilai moral (kebaikan) untuk menjaga nama baik dan juga menaati norma hukum yang melarang perkelahian dan kekerasan." },
+                { q: "Lampu merah di persimpangan jalan adalah contoh norma hukum yang bertujuan untuk...", o: ["Menambah pemasukan negara dari denda", "Mengatur kelancaran dan keselamatan lalu lintas", "Membuat pengendara berhenti sejenak", "Menguji kesabaran pengendara"], a: "Mengatur kelancaran dan keselamatan lalu lintas", p: "Norma hukum dibuat untuk menciptakan ketertiban dan keamanan. Aturan lalu lintas adalah contoh konkretnya." },
+                { q: "Meskipun tidak tertulis, seorang siswa yang mencontek saat ujian akan merasa bersalah dan malu. Perasaan ini muncul karena ia telah melanggar norma...", o: ["Kesusilaan", "Kesopanan", "Hukum", "Adat"], a: "Kesusilaan", p: "Norma kesusilaan bersumber dari hati nurani manusia. Sanksinya bersifat internal, seperti perasaan bersalah, malu, atau menyesal." },
+                { q: "Di tengah pandemi, masker yang tadinya barang biasa menjadi barang yang sangat dicari. Ini menunjukkan bahwa tingkat kebutuhan dipengaruhi oleh...", o: ["Pendapatan", "Status sosial", "Kondisi atau situasi tertentu", "Pendidikan"], a: "Kondisi atau situasi tertentu", p: "Faktor situasional seperti wabah penyakit, bencana alam, atau musim dapat mengubah prioritas kebutuhan manusia secara drastis." },
+                { q: "Lokasi relatif suatu tempat bersifat dinamis. Contoh pernyataan yang menunjukkan lokasi relatif adalah...", o: ["Indonesia terletak di 6°LU - 11°LS", "Kantor pos berada di sebelah timur alun-alun", "Garis bujur 0° melewati kota Greenwich", "Peta ini memiliki skala 1:100.000"], a: "Kantor pos berada di sebelah timur alun-alun", p: "Lokasi relatif ditentukan berdasarkan posisinya terhadap objek lain di sekitarnya. Jika alun-alun pindah, maka deskripsi lokasi kantor pos pun akan berubah." },
+                { q: "Manusia membutuhkan orang lain untuk memenuhi kebutuhan sosialnya, seperti kebutuhan akan kasih sayang, penghargaan, dan pengakuan. Ini memperkuat gagasan bahwa manusia adalah makhluk...", o: ["Ekonomi", "Individu", "Sosial", "Rasional"], a: "Sosial", p: "Kebutuhan sosial tidak dapat dipenuhi sendiri, melainkan melalui interaksi dan hubungan dengan orang lain dalam masyarakat." },
+                { q: "Seorang remaja mulai mengikuti gaya berpakaian dan musik dari grup idolanya yang ia lihat di televisi. Dalam hal ini, media massa berfungsi sebagai agen sosialisasi yang membentuk...", o: ["Kepribadian dasar", "Gaya hidup dan selera", "Norma agama", "Aturan hukum"], a: "Gaya hidup dan selera", p: "Media massa sangat berpengaruh dalam menyebarkan budaya populer, yang kemudian diadopsi oleh masyarakat, terutama remaja, sebagai bagian dari gaya hidup." },
+                { q: "Pemerintah membangun jalan tol untuk mengatasi kemacetan. Pembangunan ini merupakan upaya untuk mengatasi masalah ekonomi yang berkaitan dengan...", o: ["Produksi", "Konsumsi", "Distribusi", "Kelangkaan sumber daya"], a: "Distribusi", p: "Jalan tol memperlancar proses distribusi (penyaluran) barang dan jasa serta mobilitas manusia, sehingga dapat mengatasi hambatan ekonomi akibat kemacetan." },
+                { q: "Kebutuhan akan pendidikan dan pengetahuan tergolong kebutuhan rohani karena...", o: ["Membutuhkan biaya yang mahal", "Bertujuan untuk memuaskan rasa ingin tahu dan pengembangan intelektual", "Hanya bisa didapat di sekolah formal", "Merupakan kebutuhan fisik"], a: "Bertujuan untuk memuaskan rasa ingin tahu dan pengembangan intelektual", p: "Pendidikan memuaskan kebutuhan batiniah manusia akan ilmu pengetahuan dan pengembangan diri, bukan kebutuhan fisik semata." },
+                { q: "Perbedaan tingkat pendapatan antara si kaya dan si miskin menyebabkan perbedaan dalam cara...", o: ["Bernapas", "Memenuhi kebutuhan hidup", "Berinteraksi", "Bersosialisasi"], a: "Memenuhi kebutuhan hidup", p: "Tingkat pendapatan sangat memengaruhi jenis, kualitas, dan kuantitas barang dan jasa yang dapat dikonsumsi seseorang untuk memenuhi kebutuhannya." },
+                { q: "Fungsi afeksi dalam keluarga sangat penting bagi perkembangan anak karena...", o: ["Membuat anak menjadi manja", "Memberikan dasar rasa aman dan kasih sayang untuk membentuk kepribadian yang sehat", "Menjamin semua kebutuhan materi terpenuhi", "Menggantikan peran sekolah"], a: "Memberikan dasar rasa aman dan kasih sayang untuk membentuk kepribadian yang sehat", p: "Fungsi afeksi adalah pemenuhan kebutuhan akan kasih sayang. Anak yang mendapat cukup afeksi cenderung tumbuh menjadi pribadi yang lebih stabil secara emosional." },
+                { q: "Keluarga inti lebih banyak ditemukan di masyarakat perkotaan yang modern, sedangkan keluarga besar lebih umum di masyarakat pedesaan. Hal ini berkaitan dengan faktor...", o: ["Tingkat pendidikan", "Jenis pekerjaan dan mobilitas sosial", "Perbedaan iklim", "Hukum yang berlaku"], a: "Jenis pekerjaan dan mobilitas sosial", p: "Masyarakat kota cenderung lebih individualistis dan mobilitasnya tinggi, sehingga keluarga inti lebih praktis. Di desa, ikatan kekerabatan dan tradisi masih kuat, mendukung eksistensi keluarga besar." },
+                { q: "Seorang ayah yang bekerja sebagai nelayan mengajarkan anaknya cara melaut. Ini adalah contoh fungsi... dalam keluarga.", o: ["Proteksi", "Sosialisasi dan edukasi", "Ekonomi", "Afeksi"], a: "Sosialisasi dan edukasi", p: "Dalam konteks ini, keluarga berfungsi sebagai lembaga pendidikan pertama yang mewariskan keterampilan dan pengetahuan praktis dari orang tua ke anak." },
+                { q: "Membeli tiket konser musik mahal saat kebutuhan pokok belum terpenuhi adalah contoh...", o: ["Perilaku konsumtif yang rasional", "Skala prioritas yang tepat", "Gaya hidup hemat", "Perilaku konsumtif yang tidak rasional"], a: "Perilaku konsumtif yang tidak rasional", p: "Tindakan ini tidak rasional karena mendahulukan keinginan (tersier) di atas kebutuhan (primer), yang dapat menimbulkan masalah ekonomi." },
+                { q: "Seseorang menabung untuk membeli rumah dalam 5 tahun ke depan. Ini adalah contoh pemenuhan kebutuhan...", o: ["Sekarang", "Mendesak", "Yang akan datang", "Kolektif"], a: "Yang akan datang", p: "Ini adalah contoh perencanaan keuangan untuk memenuhi kebutuhan penting di masa depan." },
+                { q: "Menonton film di bioskop bisa menjadi kebutuhan sekunder bagi sebagian orang, namun bisa menjadi kebutuhan primer bagi seorang kritikus film. Ini membuktikan bahwa...", o: ["Kebutuhan bersifat mutlak", "Klasifikasi kebutuhan bersifat fleksibel dan subjektif", "Bioskop adalah kebutuhan pokok", "Semua orang suka film"], a: "Klasifikasi kebutuhan bersifat fleksibel dan subjektif", p: "Status suatu kebutuhan (primer, sekunder, tersier) tidak kaku, melainkan tergantung pada profesi, lingkungan, dan prioritas individu." },
+                { q: "Seorang dokter membutuhkan stetoskop untuk bekerja. Kebutuhan ini disebut kebutuhan individu, namun jika dilihat dari fungsinya untuk melayani pasien, ia juga memiliki nilai...", o: ["Kolektif", "Rohani", "Mewah", "Mendesak"], a: "Kolektif", p: "Meskipun barangnya milik individu, manfaatnya dirasakan oleh orang banyak (pasien), sehingga memiliki aspek kebutuhan kolektif/sosial." },
+                { q: "Pembangunan fasilitas umum seperti taman kota merupakan pemenuhan kebutuhan kolektif yang bertujuan untuk meningkatkan...", o: ["Pendapatan pemerintah", "Kualitas hidup dan interaksi sosial masyarakat", "Jumlah penduduk kota", "Harga properti"], a: "Kualitas hidup dan interaksi sosial masyarakat", p: "Fasilitas umum disediakan untuk kepentingan bersama, memberikan ruang bagi warga untuk rekreasi dan bersosialisasi yang berdampak pada kualitas hidup." },
+                { q: "Selain keuntungan ekonomi, dampak positif letak strategis Indonesia bagi hubungan internasional adalah...", o: ["Indonesia menjadi negara yang terisolasi", "Memudahkan Indonesia menjalin kerja sama diplomatik dengan negara lain", "Membuat budaya Indonesia hilang", "Menyebabkan konflik dengan negara tetangga"], a: "Memudahkan Indonesia menjalin kerja sama diplomatik dengan negara lain", p: "Posisi yang penting di kancah global membuat banyak negara ingin menjalin hubungan baik dan kerja sama dengan Indonesia di berbagai bidang." },
+                { q: "Ketika seorang anak bergaul dengan teman-teman yang rajin belajar, ia cenderung ikut menjadi rajin. Ini menunjukkan pengaruh agen sosialisasi... dalam membentuk perilaku.", o: ["Keluarga", "Sekolah", "Teman sepermainan (peer group)", "Media massa"], a: "Teman sepermainan (peer group)", p: "Peer group memiliki pengaruh yang sangat kuat, terutama pada masa remaja, dalam membentuk kebiasaan, gaya hidup, dan bahkan prestasi akademik." },
+                { q: "Penentuan lokasi industri sering mempertimbangkan kedekatannya dengan bahan baku atau pasar. Penentuan lokasi seperti ini disebut...", o: ["Lokasi absolut", "Lokasi relatif", "Lokasi geografis", "Lokasi geologis"], a: "Lokasi relatif", p: "Lokasi ini ditentukan berdasarkan hubungannya dengan faktor-faktor lain (bahan baku, pasar, tenaga kerja) untuk mencapai efisiensi." },
+                { q: "Dalam era globalisasi, peran keluarga sebagai 'filter' informasi dari media massa menjadi sangat penting. Maksud dari 'filter' adalah...", o: ["Melarang anak mengakses media massa", "Mendampingi dan membantu anak memilah informasi yang baik dan buruk", "Menyediakan semua jenis media massa di rumah", "Membiarkan anak menyerap semua informasi"], a: "Mendampingi dan membantu anak memilah informasi yang baik dan buruk", p: "Keluarga berperan penting dalam membimbing anak agar dapat menyaring konten dari luar, mengambil yang positif dan menolak yang negatif." },
+                { q: "Peran seorang ibu dalam keluarga modern telah berkembang, tidak hanya sebagai pengurus rumah tangga tetapi juga seringkali sebagai...", o: ["Pencari nafkah utama", "Mitra sejajar ayah dalam pengambilan keputusan dan pencarian nafkah", "Satu-satunya pendidik anak", "Penentu status sosial keluarga"], a: "Mitra sejajar ayah dalam pengambilan keputusan dan pencarian nafkah", p: "Di era modern, peran gender dalam keluarga menjadi lebih fleksibel. Banyak ibu yang juga bekerja dan berkontribusi secara ekonomi serta menjadi partner ayah dalam mendidik anak." }
+            ],
+            hard: [
+                 // Kisi-kisi 1-5
+                { q: "Bagaimana letak geologis Indonesia sebagai pertemuan tiga lempeng tektonik besar memberikan dampak positif sekaligus negatif bagi kehidupan masyarakat?", o: ["Positif: tanah subur, Negatif: sering hujan", "Positif: kaya tambang & subur, Negatif: rawan bencana (gempa, tsunami, vulkanik)", "Positif: iklim tropis, Negatif: kelembaban tinggi", "Positif: jalur perdagangan ramai, Negatif: rawan penyelundupan"], a: "Positif: kaya tambang & subur, Negatif: rawan bencana (gempa, tsunami, vulkanik)", p: "Secara geologis, tumbukan lempeng menghasilkan deretan gunung api yang menyuburkan tanah dan menciptakan potensi mineral/tambang (positif). Namun, pergerakan lempeng ini juga menjadikan Indonesia sebagai wilayah yang sangat rawan bencana geologi (negatif)." },
+                { q: "Analisis dampak letak astronomis Indonesia (6°LU - 11°LS) terhadap sektor pertanian dan kesehatan masyarakat!", o: ["Pertanian sulit, kesehatan baik", "Pertanian bisa sepanjang tahun, namun rentan penyakit tropis", "Pertanian hanya di musim hujan, kesehatan buruk", "Pertanian tidak mungkin, masyarakat sehat"], a: "Pertanian bisa sepanjang tahun, namun rentan penyakit tropis", p: "Iklim tropis memungkinkan aktivitas pertanian berlangsung sepanjang tahun (tidak ada musim dingin). Namun, suhu dan kelembaban yang tinggi juga menjadi lingkungan ideal bagi berkembangnya nyamuk penyebar penyakit seperti demam berdarah dan malaria." },
+                { q: "Perbedaan waktu antara ujung barat (Sabang, 95° BT) dan ujung timur (Merauke, 141° BT) Indonesia adalah sekitar 3 jam. Apa implikasi utama dari perbedaan waktu ini bagi integrasi nasional dan ekonomi?", o: ["Tidak ada implikasi apa-apa", "Menyulitkan komunikasi dan koordinasi bisnis secara nasional", "Membuat masyarakat timur lebih malas", "Mendorong pemisahan wilayah"], a: "Menyulitkan komunikasi dan koordinasi bisnis secara nasional", p: "Perbedaan waktu yang signifikan (misalnya jam kerja di barat baru mulai, di timur sudah mau selesai) menjadi tantangan dalam koordinasi administrasi pemerintahan dan transaksi bisnis yang membutuhkan komunikasi real-time antarwilayah." },
+                { q: "Indonesia dikenal sebagai negara maritim. Konsep ini lebih ditekankan oleh letak... dan didukung oleh letak...", o: ["Geologis; Astronomis", "Geografis; Geologis", "Astronomis; Geografis", "Geografis; Astronomis"], a: "Geografis; Geologis", p: "Konsep negara maritim muncul dari letak geografisnya (dikelilingi laut dan di antara samudra). Ini didukung letak geologis yang membentuk ribuan pulau dengan garis pantai yang sangat panjang." },
+                { q: "Gerakan angin muson dipengaruhi oleh perbedaan tekanan udara antara benua Asia dan Australia. Mengapa tekanan udara di kedua benua tersebut bisa berbeda secara periodik?", o: ["Karena perputaran bulan", "Karena sifat daratan yang cepat panas dan cepat dingin, sedangkan lautan sebaliknya", "Karena jumlah penduduk yang berbeda", "Karena aktivitas gunung berapi"], a: "Karena sifat daratan yang cepat panas dan cepat dingin, sedangkan lautan sebaliknya", p: "Saat matahari di utara, daratan Asia lebih panas (tekanan rendah) dan Australia lebih dingin (tekanan tinggi), angin bergerak dari Australia ke Asia (muson timur). Sebaliknya saat matahari di selatan." },
+                 // Kisi-kisi 6-35
+                { q: "Peta topografi menggunakan garis kontur untuk menunjukkan ketinggian. Jika garis kontur pada peta terlihat sangat rapat, artinya wilayah tersebut...", o: ["Datar dan landai", "Merupakan wilayah perairan", "Memiliki lereng yang sangat curam", "Tidak dapat dipetakan"], a: "Memiliki lereng yang sangat curam", p: "Garis kontur yang rapat menandakan perubahan ketinggian yang drastis dalam jarak horizontal yang pendek, yang merupakan ciri dari lereng atau tebing yang curam." },
+                { q: "Sistem Informasi Geografis (SIG) adalah pengembangan dari peta digital yang tidak hanya menampilkan data spasial (lokasi), tetapi juga mengintegrasikannya dengan data atribut (informasi). Contoh penerapannya adalah...", o: ["Menampilkan peta buta suatu wilayah", "Peta persebaran kasus COVID-19 yang menunjukkan jumlah kasus di tiap kecamatan", "Album foto pemandangan dari berbagai negara", "Daftar nama jalan di sebuah kota"], a: "Peta persebaran kasus COVID-19 yang menunjukkan jumlah kasus di tiap kecamatan", p: "Ini adalah contoh SIG, di mana data lokasi (kecamatan) digabungkan dengan data atribut (jumlah kasus) untuk analisis dan pengambilan keputusan." },
+                { q: "Seorang guru menegur murid yang tidak mengerjakan PR. Interaksi ini bersifat disosiatif karena mengandung unsur...", o: ["Kerja sama", "Persaingan", "Kontravensi (pertentangan tersembunyi)", "Konflik ringan (teguran)"], a: "Konflik ringan (teguran)", p: "Meskipun bertujuan mendidik, teguran adalah bentuk pertentangan atau konflik dalam skala kecil karena ada perbedaan kepentingan (guru ingin tugas dikerjakan, murid tidak mengerjakan)." },
+                { q: "Dalam teori kebutuhan Maslow, pemenuhan kebutuhan dasar seperti makan dan rasa aman harus didahulukan sebelum seseorang bisa mencapai kebutuhan yang lebih tinggi seperti aktualisasi diri. Konsep ini disebut...", o: ["Skala prioritas", "Hierarki kebutuhan", "Kelangkaan", "Tindakan ekonomi"], a: "Hierarki kebutuhan", p: "Teori hierarki kebutuhan Maslow menyatakan bahwa kebutuhan manusia bertingkat, dari yang paling dasar (fisiologis) hingga yang paling tinggi (aktualisasi diri)." },
+                { q: "Ketika seorang anak dari keluarga petani pindah ke kota dan menjadi dokter, ia akan mengalami proses sosialisasi kembali untuk menyesuaikan diri dengan nilai dan norma di lingkungan profesi barunya. Proses ini disebut...", o: ["Sosialisasi primer", "Resosialisasi", "Sosialisasi represif", "Gagal sosialisasi"], a: "Resosialisasi", p: "Resosialisasi adalah proses mempelajari nilai dan norma baru yang berbeda atau bahkan bertentangan dengan yang lama, karena individu memasuki lingkungan sosial yang baru." },
+                { q: "Norma hukum memiliki sanksi yang tegas dan memaksa yang dijalankan oleh aparat negara, sedangkan norma sosial lain (kesopanan, kesusilaan) sanksinya lebih bersifat...", o: ["Tidak ada sanksi sama sekali", "Hukuman fisik langsung dari masyarakat", "Pengucilan, cemoohan, atau perasaan bersalah dari masyarakat", "Denda yang lebih besar dari denda hukum"], a: "Pengucilan, cemoohan, atau perasaan bersalah dari masyarakat", p: "Sanksi untuk pelanggaran norma sosial bersifat informal, seperti dikucilkan, digunjingkan, atau tekanan psikologis, yang efektif dalam komunitas yang erat." },
+                { q: "Peran nilai sebagai 'pemberi arah' bagi masyarakat artinya...", o: ["Nilai menentukan arah mata angin", "Nilai menjadi standar untuk menilai apakah sesuatu itu baik/buruk dan diinginkan/tidak diinginkan", "Nilai selalu menunjuk ke arah kebaikan", "Nilai membuat masyarakat bergerak ke satu arah yang sama"], a: "Nilai menjadi standar untuk menilai apakah sesuatu itu baik/buruk dan diinginkan/tidak diinginkan", p: "Nilai (misalnya nilai kejujuran, kerja keras) berfungsi sebagai kompas sosial yang membimbing perilaku dan pilihan masyarakat." },
+                { q: "Mengapa norma kesopanan di satu daerah bisa berbeda dengan daerah lain?", o: ["Karena sumbernya adalah hati nurani yang universal", "Karena norma kesopanan dibentuk oleh kebiasaan dan adat istiadat masyarakat setempat yang beragam", "Karena intervensi pemerintah pusat", "Karena perbedaan tingkat ekonomi"], a: "Karena norma kesopanan dibentuk oleh kebiasaan dan adat istiadat masyarakat setempat yang beragam", p: "Norma kesopanan bersifat relatif dan partikular, tergantung pada latar belakang budaya, sejarah, dan kebiasaan yang berkembang di masing-masing komunitas." },
+                { q: "Fenomena 'panic buying' saat awal pandemi, di mana orang memborong masker dan hand sanitizer, adalah contoh bagaimana kelangkaan (baik nyata maupun persepsi) dapat memengaruhi...", o: ["Perilaku konsumsi masyarakat secara drastis", "Peningkatan produksi barang lain", "Stabilitas politik negara", "Kualitas produk"], a: "Perilaku konsumsi masyarakat secara drastis", p: "Kekhawatiran akan kelangkaan mendorong orang untuk membeli barang jauh melebihi kebutuhan normalnya, yang justru memperparah kelangkaan itu sendiri." },
+                { q: "Lokasi absolut penting untuk navigasi global (penerbangan, pelayaran), sedangkan lokasi relatif lebih sering digunakan untuk...", o: ["Penentuan batas negara", "Analisis potensi ekonomi suatu wilayah berdasarkan lingkungannya", "Perhitungan zona waktu", "Penelitian geologi"], a: "Analisis potensi ekonomi suatu wilayah berdasarkan lingkungannya", p: "Lokasi relatif (misalnya, dekat pelabuhan, dekat pusat kota, di daerah subur) sangat krusial untuk menganalisis keunggulan dan potensi ekonomi suatu daerah." },
+                { q: "Manusia sebagai makhluk sosial dan makhluk ekonomi seringkali mengalami pertentangan. Contohnya adalah...", o: ["Seorang pedagang menaikkan harga barang saat permintaan tinggi untuk keuntungan maksimal (ekonomi), namun dicap serakah oleh masyarakat (sosial)", "Seorang ayah bekerja untuk menafkahi keluarga", "Siswa belajar kelompok untuk mendapat nilai bagus", "Masyarakat bergotong royong membangun jembatan"], a: "Seorang pedagang menaikkan harga barang saat permintaan tinggi untuk keuntungan maksimal (ekonomi), namun dicap serakah oleh masyarakat (sosial)", p: "Ini menunjukkan konflik antara motif ekonomi (mencari untung sebesar-besarnya) dengan norma sosial (kepedulian, tidak memanfaatkan kesulitan orang lain)." },
+                { q: "Sosialisasi yang dilakukan dengan paksaan, hukuman, dan komunikasi satu arah disebut sosialisasi partisipatoris. Pernyataan ini salah karena...", o: ["Sosialisasi partisipatoris menekankan pada komunikasi dua arah dan keaktifan individu", "Itu adalah ciri sosialisasi represif", "Keduanya benar", "A dan B benar"], a: "A dan B benar", p: "Ciri-ciri tersebut (paksaan, hukuman) adalah milik sosialisasi REPRESIF. Sebaliknya, sosialisasi PARTISIPATORIS lebih demokratis, menekankan interaksi, dan memberi ruang pada anak untuk aktif." },
+                { q: "Masalah pokok ekonomi modern adalah 'what, how, dan for whom'. Jika pemerintah memutuskan membangun MRT (what) dengan teknologi dari Jepang (how), maka pertanyaan 'for whom' berkaitan dengan...", o: ["Siapa saja yang boleh membangun MRT?", "Untuk siapa MRT ini dibangun dan siapa yang akan menikmatinya?", "Berapa lama waktu pembangunannya?", "Mengapa harus dari Jepang?"], a: "Untuk siapa MRT ini dibangun dan siapa yang akan menikmatinya?", p: "'For whom' (untuk siapa) adalah masalah distribusi, yaitu menentukan siapa saja yang akan mendapat manfaat dari barang/jasa yang diproduksi." },
+                { q: "Seseorang yang memilih membeli sepatu merek ternama seharga 5 juta rupiah padahal ada sepatu sejenis seharga 500 ribu rupiah, kemungkinan besar didorong oleh pemenuhan kebutuhan akan...", o: ["Fungsi dasar sepatu (kebutuhan primer)", "Gengsi dan status sosial (kebutuhan tersier/psikologis)", "Kenyamanan semata", "Investasi masa depan"], a: "Gengsi dan status sosial (kebutuhan tersier/psikologis)", p: "Dalam kasus ini, nilai guna barang tidak lagi pada fungsi utamanya, tetapi pada citra dan status yang melekat pada merek tersebut, yang merupakan pemenuhan kebutuhan psikologis." },
+                { q: "Bagaimana kemajuan teknologi (misalnya, e-commerce) memengaruhi cara manusia memenuhi kebutuhannya?", o: ["Membuat pemenuhan kebutuhan lebih sulit dan mahal", "Tidak ada pengaruh sama sekali", "Memberikan lebih banyak pilihan, kemudahan akses, dan efisiensi waktu", "Mengurangi jumlah kebutuhan manusia"], a: "Memberikan lebih banyak pilihan, kemudahan akses, dan efisiensi waktu", p: "Teknologi digital mengubah perilaku konsumsi dengan menyediakan platform yang memungkinkan konsumen membandingkan harga, mencari barang dari seluruh dunia, dan bertransaksi dengan cepat." },
+                { q: "Pernyataan 'keluarga adalah tempat bersemayamnya cinta kasih' merujuk pada fungsi...", o: ["Ekonomi", "Proteksi", "Sosialisasi", "Afeksi"], a: "Afeksi", p: "Fungsi afeksi menekankan peran keluarga sebagai sumber utama kehangatan, cinta, dan dukungan emosional bagi anggotanya." },
+                { q: "Di beberapa budaya, keputusan penting dalam keluarga besar ditentukan oleh anggota tertua (kakek/nenek). Sistem ini disebut...", o: ["Demokratis", "Patriarki", "Matriarki", "Gerontokrasi"], a: "Gerontokrasi", p: "Gerontokrasi adalah sistem kepemimpinan atau pengambilan keputusan yang didasarkan pada senioritas atau usia. Ini sering ditemukan dalam struktur keluarga besar yang tradisional." },
+                { q: "Peran ganda seorang wanita karir (sebagai ibu/istri dan pekerja) dapat menimbulkan...", o: ["Konflik peran (role conflict)", "Integrasi sosial yang kuat", "Status sosial yang rendah", "Kegagalan ekonomi"], a: "Konflik peran (role conflict)", p: "Konflik peran terjadi ketika seseorang dihadapkan pada tuntutan yang saling bertentangan dari dua atau lebih status yang dimilikinya secara bersamaan." },
+                { q: "Prinsip ekonomi adalah 'dengan pengorbanan sekecil-kecilnya untuk mendapatkan hasil tertentu, atau dengan pengorbanan tertentu untuk mendapatkan hasil sebesar-besarnya'. Contoh penerapannya adalah...", o: ["Membeli barang termahal untuk pamer", "Membandingkan harga dan kualitas barang di beberapa toko sebelum membeli", "Membeli semua barang yang diinginkan tanpa berpikir", "Tidak pernah membeli apa pun"], a: "Membandingkan harga dan kualitas barang di beberapa toko sebelum membeli", p: "Tindakan ini mencerminkan usaha untuk mendapatkan hasil (kualitas barang) maksimal dengan pengorbanan (harga) yang paling efisien atau minimal." },
+                { q: "Membayar pajak adalah kewajiban untuk memenuhi kebutuhan kolektif. Pajak yang terkumpul kemudian digunakan negara untuk membangun infrastruktur. Ini adalah contoh dari prinsip ekonomi dalam skala...", o: ["Rumah tangga", "Perusahaan", "Makro (negara)", "Individu"], a: "Makro (negara)", p: "Ini adalah contoh bagaimana negara mengelola sumber daya (dari pajak) untuk memenuhi kebutuhan warganya secara luas (kolektif), yang merupakan lingkup ekonomi makro." },
+                { q: "Kebutuhan manusia tidak terbatas, sementara sumber daya terbatas. Hal ini memaksa manusia untuk...", o: ["Berhenti berusaha", "Membuat skala prioritas dan melakukan pilihan", "Menguasai semua sumber daya", "Menghilangkan kebutuhannya"], a: "Membuat skala prioritas dan melakukan pilihan", p: "Inti dari ilmu ekonomi adalah studi tentang bagaimana manusia membuat pilihan (choice) dalam menghadapi kelangkaan (scarcity) dengan menyusun urutan kebutuhan dari yang paling penting." },
+                { q: "Mengapa gotong royong dalam masyarakat pedesaan dapat dianggap sebagai cara pemenuhan kebutuhan kolektif yang efisien?", o: ["Karena tidak memerlukan biaya sama sekali", "Karena menggantikan peran pemerintah", "Karena memobilisasi sumber daya (tenaga kerja) secara sukarela untuk kepentingan bersama", "Karena hanya dilakukan oleh orang miskin"], a: "Karena memobilisasi sumber daya (tenaga kerja) secara sukarela untuk kepentingan bersama", p: "Gotong royong adalah mekanisme sosial untuk mengatasi kelangkaan sumber daya (misalnya dana) dengan memaksimalkan sumber daya yang ada (tenaga kerja) untuk mencapai tujuan bersama." },
+                { q: "Dampak negatif dari letak geografis Indonesia yang terbuka adalah rentannya terhadap...", o: ["Bencana geologi", "Perubahan iklim ekstrim", "Penyebaran budaya negatif dan perdagangan ilegal", "Isolasi dari dunia luar"], a: "Penyebaran budaya negatif dan perdagangan ilegal", p: "Posisi yang sangat terbuka dan garis pantai yang panjang membuat pengawasan menjadi sulit, sehingga rentan terhadap masuknya pengaruh budaya yang tidak sesuai dan aktivitas ilegal seperti penyelundupan." },
+                { q: "Sekolah menerapkan aturan 'anti-bullying'. Selain sebagai norma hukum sekolah, aturan ini juga merupakan proses sosialisasi yang bertujuan menanamkan nilai...", o: ["Persaingan", "Individualisme", "Penghargaan terhadap sesama dan empati", "Kepatuhan mutlak"], a: "Penghargaan terhadap sesama dan empati", p: "Aturan ini tidak hanya untuk menghukum, tetapi juga mendidik siswa untuk menghargai perbedaan, merasakan apa yang orang lain rasakan (empati), dan menolak kekerasan." },
+                { q: "Analisis: Bagaimana lokasi absolut (letak lintang) dan lokasi relatif (dekat dengan pusat ekonomi) sebuah kota secara bersamaan memengaruhi potensinya?", o: ["Tidak ada hubungannya", "Lokasi absolut menentukan iklim, lokasi relatif menentukan akses dan peluang ekonomi", "Keduanya hanya menentukan nama kota", "Lokasi absolut menentukan zona waktu, lokasi relatif menentukan jumlah penduduk"], a: "Lokasi absolut menentukan iklim, lokasi relatif menentukan akses dan peluang ekonomi", p: "Sebuah kota di daerah tropis (ditentukan lokasi absolut/lintang) yang juga dekat dengan pelabuhan internasional (lokasi relatif) memiliki potensi besar dalam agribisnis dan perdagangan." },
+                { q: "Fungsi sosialisasi dalam keluarga tidak selalu berjalan sempurna. Ketika keluarga gagal menanamkan nilai dan norma yang baik, kondisi ini disebut...", o: ["Keluarga sejahtera", "Disfungsi keluarga", "Keluarga modern", "Resosialisasi"], a: "Disfungsi keluarga", p: "Disfungsi terjadi ketika keluarga tidak dapat menjalankan satu atau lebih fungsi esensialnya, seperti gagal dalam mendidik anak, yang dapat menyebabkan perilaku menyimpang." },
+                { q: "Dalam keluarga, ayah sering dianggap sebagai 'kepala keluarga'. Istilah ini merujuk pada peran ayah dalam hal...", o: ["Pengambilan keputusan akhir dan tanggung jawab utama", "Melakukan semua pekerjaan rumah tangga", "Satu-satunya yang boleh berbicara", "Memiliki pendapatan tertinggi"], a: "Pengambilan keputusan akhir dan tanggung jawab utama", p: "Sebagai kepala keluarga, ayah secara tradisional memegang otoritas dan tanggung jawab terbesar atas kesejahteraan dan keselamatan seluruh anggota keluarga." }
+            ]
+        };
+
+        // --- Quiz Logic ---
+
+        function startQuiz(mode) {
+            currentMode = mode;
+            currentQuestionIndex = 0;
+            userAnswers = new Array(allQuestions[mode].length).fill(null);
+            questions = allQuestions[mode];
+            
+            modeLabel.textContent = mode;
+            startScreen.classList.add('hidden');
+            resultScreen.classList.add('hidden');
+            quizScreen.classList.remove('hidden');
+            
+            displayQuestion();
+        }
+
+        function displayQuestion() {
+            const question = questions[currentQuestionIndex];
+            questionNumber.textContent = currentQuestionIndex + 1;
+            questionText.innerHTML = question.q.replace(/\n/g, '<br>'); // Handle multiline questions
+            
+            optionsContainer.innerHTML = '';
+            question.o.forEach((option, index) => {
+                const optionElement = document.createElement('button');
+                optionElement.innerHTML = option;
+                optionElement.classList.add('option-btn', 'w-full', 'p-4', 'border-2', 'border-slate-300', 'rounded-lg', 'text-left', 'transition-all', 'duration-200');
+                optionElement.onclick = () => selectAnswer(index);
+                optionsContainer.appendChild(optionElement);
+            });
+            
+            updateNavigation();
+        }
+
+        function selectAnswer(index) {
+            userAnswers[currentQuestionIndex] = questions[currentQuestionIndex].o[index];
+            
+            // Visual feedback for selected answer
+            const optionButtons = optionsContainer.querySelectorAll('.option-btn');
+            optionButtons.forEach((btn, btnIndex) => {
+                if (btnIndex === index) {
+                    btn.classList.add('selected');
+                } else {
+                    btn.classList.remove('selected');
+                }
+            });
+
+            updateNavigation();
+        }
+
+        function updateNavigation() {
+            if (userAnswers[currentQuestionIndex] !== null) {
+                nextBtn.disabled = false;
+            } else {
+                nextBtn.disabled = true;
+            }
+
+            if (currentQuestionIndex === questions.length - 1) {
+                nextBtn.textContent = 'Selesai';
+            } else {
+                nextBtn.textContent = 'Selanjutnya';
+            }
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                displayQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function showResults() {
+            quizScreen.classList.add('hidden');
+            resultScreen.classList.remove('hidden');
+
+            let correctCount = 0;
+            questions.forEach((q, index) => {
+                if (userAnswers[index] === q.a) {
+                    correctCount++;
+                }
+            });
+
+            const finalScore = Math.round((correctCount / questions.length) * 100);
+            scoreEl.textContent = finalScore;
+            correctAnswersEl.textContent = correctCount;
+            
+            displayReview();
+        }
+
+        function displayReview() {
+            reviewContainer.innerHTML = '';
+            questions.forEach((q, index) => {
+                const isCorrect = userAnswers[index] === q.a;
+                const reviewItem = document.createElement('div');
+                reviewItem.classList.add('p-4', 'border', 'rounded-lg', isCorrect ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200');
+
+                let userAnswerHtml = userAnswers[index] ? `"${userAnswers[index]}"` : "<i>Tidak dijawab</i>";
+                let answerStatusHtml = isCorrect 
+                    ? `<span class="font-semibold text-green-700">(Benar)</span>` 
+                    : `<span class="font-semibold text-red-700">(Salah)</span>`;
+
+                reviewItem.innerHTML = `
+                    <p class="font-semibold text-slate-800 mb-2">Soal ${index + 1}: ${q.q.replace(/\n/g, '<br>')}</p>
+                    <p class="text-sm text-slate-600 mb-1">Jawabanmu: ${userAnswerHtml} ${answerStatusHtml}</p>
+                    ${!isCorrect ? `<p class="text-sm text-slate-600 mb-2">Jawaban Benar: <span class="font-semibold">"${q.a}"</span></p>` : ''}
+                    <div class="mt-2 pt-2 border-t border-dashed ${isCorrect ? 'border-green-200' : 'border-red-200'}">
+                        <p class="text-sm font-semibold text-indigo-800">Pembahasan:</p>
+                        <p class="text-sm text-slate-700">${q.p}</p>
+                    </div>
+                `;
+                reviewContainer.appendChild(reviewItem);
+            });
+        }
+        
+        function restartQuiz() {
+            resultScreen.classList.add('hidden');
+            startScreen.classList.remove('hidden');
+        }
+
+    </script>
+</body>
+</html>

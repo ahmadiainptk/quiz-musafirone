@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Latihan Soal UTS Matematika - Tingkat Sulit</title>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- MathJax for rendering mathematical formulas -->
+    <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      },
+      svg: {
+        fontCache: 'global'
+      }
+    };
+    </script>
+    <script type="text/javascript" id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .quiz-option input[type="radio"]:checked+label {
+            background-color: #3b82f6; /* bg-blue-500 */
+            color: white;
+            border-color: #2563eb; /* border-blue-600 */
+        }
+        .quiz-option.correct label {
+            background-color: #22c55e; /* bg-green-500 */
+            color: white;
+            border-color: #16a34a; /* border-green-600 */
+        }
+        .quiz-option.incorrect label {
+            background-color: #ef4444; /* bg-red-500 */
+            color: white;
+            border-color: #dc2626; /* border-red-600 */
+        }
+        .quiz-option.show-correct label {
+            border: 2px solid #22c55e;
+            box-shadow: 0 0 5px #22c55e;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800 p-4 sm:p-6 md:p-8">
+
+    <div class="max-w-3xl mx-auto bg-white p-6 sm:p-8 rounded-xl shadow-lg">
+        <header class="text-center mb-8 border-b pb-4">
+            <h1 class="text-3xl font-bold text-gray-900">Latihan Soal Penilaian Tengah Semester</h1>
+            <p class="text-md text-gray-600 mt-1">Matematika - Kelas VIII (Tingkat Sulit)</p>
+        </header>
+
+        <main id="quiz-container">
+            <!-- Quiz questions will be inserted here by JavaScript -->
+        </main>
+
+        <footer class="mt-8 text-center">
+            <button id="submit-btn" class="bg-blue-600 text-white font-bold py-3 px-8 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 transition-transform transform hover:scale-105">
+                Cek Jawaban
+            </button>
+            <div id="result" class="mt-6 text-2xl font-semibold"></div>
+        </footer>
+    </div>
+
+    <script>
+        const quizData = [
+            // Indikator 1
+            { no: 1, question: "Jika $\\frac{2^{2023} - 2^{2021}}{2^{2021}} = 3 \\times 2^x$, maka nilai $x$ adalah...", options: ["0", "1", "2", "3"], answer: "0" },
+            { no: 2, question: "Nilai $x$ yang memenuhi persamaan $4^{x+1} = 8^{x-1}$ adalah...", options: ["3", "4", "5", "6"], answer: "5" },
+            { no: 9, question: "Bentuk paling sederhana dari $(\\frac{x^{-1}y^2}{x^{-3}y^{-1}})^{-2}$ adalah...", options: ["$\\frac{x^4}{y^6}$", "$\\frac{y^6}{x^4}$", "$\\frac{1}{x^4y^6}$", "$x^4y^6$"], answer: "$\\frac{1}{x^4y^6}$" },
+            // Indikator 2
+            { no: 7, question: "Jika $a=2$ dan $b=3$, nilai dari $(a^{-1} + b^{-1})^{-1} \\times (a-b)$ adalah...", options: ["$-\\frac{5}{6}$", "$\\frac{5}{6}$", "$-\\frac{6}{5}$", "$\\frac{6}{5}$"], answer: "$-\\frac{6}{5}$" },
+            { no: 8, question: "Jika $5^{x} = 25^{y} = 125^{z} = 625$, maka nilai dari $x-y+z$ adalah...", options: ["$4/3$", "$5/3$", "$8/3$", "$10/3$"], answer: "$8/3$" },
+            // Indikator 3
+            { no: 26, question: "Sebuah bola dijatuhkan dari ketinggian 12 meter dan memantul kembali dengan ketinggian $\\frac{3}{4}$ dari ketinggian sebelumnya. Total panjang lintasan bola sampai berhenti adalah...", options: ["48 m", "84 m", "96 m", "108 m"], answer: "84 m" },
+            // Indikator 4
+            { no: 4, question: "Hasil dari $\\sqrt{14 + 2\\sqrt{45}}$ adalah...", options: ["$3 + \\sqrt{5}$", "$5 + \\sqrt{3}$", "$2 + \\sqrt{7}$", "$7 + \\sqrt{2}$"], answer: "$3 + \\sqrt{5}$" },
+            { no: 5, question: "Bentuk sederhana dari $(\\sqrt{6} + \\sqrt{2})(\\sqrt{6} - \\sqrt{2}) - (\\sqrt{3} + 1)^2$ adalah...", options: ["$2\\sqrt{3}$", "$-2\\sqrt{3}$", "$4-2\\sqrt{3}$", "$2-2\\sqrt{3}$"], answer: "$-2\\sqrt{3}$" },
+            { no: 10, question: "Jika $x = \\sqrt{5} + \\sqrt{3}$, maka nilai dari $x^2 - \\frac{2}{x^2}$ adalah...", options: ["$8+2\\sqrt{15}$", "$8-2\\sqrt{15}$", "$8+\\frac{\\sqrt{15}}{2}$", "$8 - \\frac{8-\\sqrt{15}}{2}$"], answer: "$8 - \\frac{8-\\sqrt{15}}{2}$" },
+            // Indikator 5
+            { no: 6, question: "Bentuk rasional dari $\\frac{2\\sqrt{2}}{\\sqrt{5}-\\sqrt{3}}$ adalah...", options: ["$\\sqrt{10} + \\sqrt{6}$", "$2\\sqrt{10} + 2\\sqrt{6}$", "$\\sqrt{5} + \\sqrt{3}$", "$2\\sqrt{5} - 2\\sqrt{3}$"], answer: "$\\sqrt{10} + \\sqrt{6}$" },
+            // Indikator 6
+            { no: 27, question: "Sebuah kubus memiliki panjang diagonal ruang $(3+\\sqrt{6})$ cm. Luas permukaan kubus tersebut adalah...", options: ["$30+12\\sqrt{6}$ cm$^2$", "$15+6\\sqrt{6}$ cm$^2$", "$15-6\\sqrt{6}$ cm$^2$", "$30-12\\sqrt{6}$ cm$^2$"], answer: "$30+12\\sqrt{6}$ cm$^2$" },
+            // Indikator 7
+            { no: 3, question: "Hasil dari $\\frac{(8 \\times 10^5) \\times (3 \\times 10^{-2})}{6 \\times 10^2}$ dalam notasi ilmiah yang benar adalah...", options: ["$4 \\times 10^0$", "$4 \\times 10^1$", "$0.4 \\times 10^2$", "$40 \\times 10^{-1}$"], answer: "$4 \\times 10^1$" },
+            // Indikator 8
+            { no: 21, question: "Jika $x = 5 \\times 10^{-3}$ dan $y = 2 \\times 10^{-4}$, maka nilai dari $x^2 - y$ adalah...", options: ["$2,48 \\times 10^{-5}$", "$2,3 \\times 10^{-5}$", "$4,8 \\times 10^{-4}$", "$2,52 \\times 10^{-6}$"], answer: "$2,48 \\times 10^{-5}$" },
+            { no: 22, question: "Sebuah benda memiliki massa jenis $1,2 \\times 10^4$ kg/m$^3$ dan volume $5 \\times 10^{-6}$ m$^3$. Jika benda tersebut jatuh bebas, gaya berat yang dialaminya adalah... (g = 9,8 m/s$^2$)", options: ["$0,0588$ N", "$0,588$ N", "$5,88$ N", "$58,8$ N"], answer: "$0,588$ N" },
+            { no: 23, question: "Jika laju cahaya $c=3 \\times 10^8$ m/s, dan konstanta Planck $h=6.6 \\times 10^{-34}$ Js. Energi foton dengan panjang gelombang $2,2 \\times 10^{-7}$ m adalah... ($E=\\frac{hc}{\\lambda}$)", options: ["$9 \\times 10^{-19}$ J", "$3 \\times 10^{-19}$ J", "$9 \\times 10^{-20}$ J", "$3 \\times 10^{-20}$ J"], answer: "$9 \\times 10^{-19}$ J" },
+            { no: 24, question: "Sebuah bakteri berbentuk bola dengan diameter $4 \\times 10^{-7}$ m. Volume bakteri tersebut adalah... ($V=\\frac{4}{3}\\pi r^3$, $\\pi \\approx 3$)", options: ["$3,2 \\times 10^{-20}$ m$^3$", "$3,2 \\times 10^{-21}$ m$^3$", "$2,56 \\times 10^{-20}$ m$^3$", "$2,56 \\times 10^{-19}$ m$^3$"], answer: "$3,2 \\times 10^{-20}$ m$^3$" },
+            { no: 25, question: "Jumlah penduduk suatu kota adalah $1,5 \\times 10^6$ jiwa. Jika luas kota tersebut adalah $5 \\times 10^3$ km$^2$, kepadatan penduduknya adalah...", options: ["$3 \\times 10^2$ jiwa/km$^2$", "$3 \\times 10^3$ jiwa/km$^2$", "$0,3 \\times 10^3$ jiwa/km$^2$", "$30$ jiwa/km$^2$"], answer: "$3 \\times 10^2$ jiwa/km$^2$" },
+            // Indikator 9
+            { no: 11, question: "Sisi-sisi sebuah segitiga siku-siku adalah $x$, $x+7$, dan $x+8$. Panjang hipotenusanya adalah...", options: ["13", "15", "17", "25"], answer: "17" },
+            // Indikator 10
+            { no: 12, question: "Sebuah segitiga memiliki sisi $a, b,$ dan $c$. Jika berlaku $a^2 = b^2 + c^2 - bc$, maka jenis segitiga tersebut adalah...", options: ["Siku-siku", "Lancip", "Tumpul", "Sama sisi"], answer: "Lancip" },
+            // Indikator 11
+            { no: 13, question: "Diberikan triple Pythagoras $(x-y, x, x+y)$. Jika keliling segitiga tersebut adalah 60, maka luasnya adalah...", options: ["120", "150", "180", "240"], answer: "150" },
+            // Indikator 12
+            { no: 29, question: "Dalam sebuah lingkaran berjari-jari 10 cm, terdapat dua tali busur sejajar AB dan CD dengan panjang masing-masing 12 cm dan 16 cm. Jarak antara kedua tali busur tersebut jika keduanya berada pada sisi yang berlawanan dari pusat lingkaran adalah...", options: ["12 cm", "14 cm", "16 cm", "18 cm"], answer: "14 cm" },
+            // Indikator 13
+            { no: 14, question: "Pada segitiga ABC, titik D terletak pada sisi AC. Jika AB=8 cm, BD=5 cm, BC=6 cm dan AD=7 cm. Panjang CD adalah...", options: ["$2\\sqrt{10}-7$", "$2\\sqrt{10}$", "3 cm", "$11-2\\sqrt{10}$"], answer: "$11-2\\sqrt{10}$" },
+            { no: 15, question: "Dua lingkaran dengan jari-jari 11 cm dan 2 cm bersinggungan di luar. Panjang garis singgung persekutuan luarnya adalah...", options: ["12 cm", "$6\\sqrt{2}$ cm", "13 cm", "$10\\sqrt{2}$ cm"], answer: "$6\\sqrt{2}$ cm" },
+            { no: 16, question: "Pada segitiga siku-siku ABC dengan siku-siku di B, ditarik garis tinggi BD ke sisi miring AC. Jika AD=9 cm dan CD=16 cm, maka panjang BD adalah...", options: ["10 cm", "12 cm", "15 cm", "20 cm"], answer: "12 cm" },
+            { no: 17, question: "Panjang diagonal sebuah persegi adalah $8\\sqrt{2}$ cm. Panjang diagonal persegi baru yang luasnya dua kali luas persegi awal adalah...", options: ["8 cm", "16 cm", "32 cm", "$16\\sqrt{2}$ cm"], answer: "16 cm" },
+            // Indikator 14
+            { no: 18, question: "Sebuah tangga sepanjang 13 m bersandar di dinding. Ujung bawah tangga berjarak 5 m dari dinding. Jika ujung bawah tangga digeser menjauh 7 m lagi dari dinding, seberapa jauh ujung atas tangga bergeser ke bawah?", options: ["5 m", "7 m", "8 m", "12 m"], answer: "7 m" },
+            { no: 19, question: "Sebuah pesawat terbang pada ketinggian 12 km. Dari sudut pandang pilot, kota A terlihat di depan dengan sudut depresi 30°, sedangkan kota B terlihat di belakang dengan sudut depresi 45°. Jarak antara kota A dan B adalah...", options: ["$12(1+\\sqrt{3})$ km", "$12(1+\\sqrt{2})$ km", "$12\\sqrt{3}$ km", "24 km"], answer: "$12(1+\\sqrt{3})$ km" },
+            { no: 20, question: "Seekor semut berada di pojok bawah sebuah kubus ABCD.EFGH dengan rusuk 10 cm. Semut tersebut akan berjalan ke pojok atas G melalui permukaan kubus. Jarak terpendek yang ditempuh semut adalah...", options: ["$10\\sqrt{2}$ cm", "$10\\sqrt{3}$ cm", "$10\\sqrt{5}$ cm", "$10\\sqrt{6}$ cm"], answer: "$10\\sqrt{5}$ cm" },
+            { no: 28, question: "Dalam segitiga ABC siku-siku di A, panjang AB=20 cm dan AC=15 cm. Sebuah persegi DEFG dibuat di dalam segitiga dengan titik D pada AB, E pada BC, serta F dan G pada AC. Panjang sisi persegi tersebut adalah...", options: ["$\\frac{60}{7}$ cm", "9 cm", "10 cm", "$\\frac{75}{7}$ cm"], answer: "$\\frac{60}{7}$ cm" },
+            // Indikator 16
+            { no: 30, question: "Sebuah bidang tanah berbentuk segiempat ABCD dengan koordinat A(1,2), B(9,2), C(7,8), dan D(3,8). Keliling bidang tanah tersebut adalah...", options: ["$8+4\\sqrt{10}$", "$12+2\\sqrt{10}$", "$12+4\\sqrt{10}$", "$16+2\\sqrt{10}$"], answer: "$12+4\\sqrt{10}$" }
+        ];
+
+        const quizContainer = document.getElementById('quiz-container');
+        const submitButton = document.getElementById('submit-btn');
+        const resultContainer = document.getElementById('result');
+
+        function renderQuiz() {
+            let quizHTML = '';
+            quizData.sort((a, b) => a.no - b.no).forEach((item, index) => {
+                quizHTML += `
+                    <div class="mb-6 pb-6 border-b" id="question-${index}">
+                        <p class="text-lg font-semibold mb-4">
+                            ${item.no}. ${item.question}
+                        </p>
+                        <div class="space-y-3">
+                            ${item.options.map((option, i) => `
+                                <div class="quiz-option">
+                                    <input type="radio" id="q${index}-o${i}" name="question${index}" value="${option}" class="hidden">
+                                    <label for="q${index}-o${i}" class="block w-full text-left p-3 rounded-lg border-2 border-gray-300 hover:bg-gray-100 cursor-pointer transition-colors">
+                                        ${String.fromCharCode(65 + i)}. ${option}
+                                    </label>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            });
+            quizContainer.innerHTML = quizHTML;
+            MathJax.typesetPromise();
+        }
+
+        function checkAnswers() {
+            let score = 0;
+            const sortedData = [...quizData].sort((a, b) => a.no - b.no);
+            sortedData.forEach((item, index) => {
+                const questionElement = document.getElementById(`question-${index}`);
+                const selectedOption = document.querySelector(`input[name="question${index}"]:checked`);
+                const options = questionElement.querySelectorAll('.quiz-option');
+
+                questionElement.querySelectorAll('input[type="radio"]').forEach(radio => {
+                    radio.disabled = true;
+                });
+
+                if (selectedOption) {
+                    const selectedValue = selectedOption.value;
+                    const selectedLabel = selectedOption.parentElement;
+                    
+                    if (selectedValue === item.answer) {
+                        score++;
+                        selectedLabel.classList.add('correct');
+                    } else {
+                        selectedLabel.classList.add('incorrect');
+                        options.forEach(opt => {
+                             if(opt.querySelector('input').value === item.answer){
+                                 opt.classList.add('show-correct');
+                             }
+                        });
+                    }
+                } else {
+                    options.forEach(opt => {
+                         if(opt.querySelector('input').value === item.answer){
+                             opt.classList.add('show-correct');
+                         }
+                    });
+                }
+            });
+
+            const scorePercentage = (score / quizData.length) * 100;
+            let resultMessage = `Skor Anda: ${score} dari ${quizData.length} soal (${scorePercentage.toFixed(0)}%)`;
+            let resultColor = 'text-blue-600';
+            if(scorePercentage >= 80) resultColor = 'text-green-600';
+            else if (scorePercentage < 50) resultColor = 'text-red-600';
+            
+            resultContainer.innerHTML = `<p class="${resultColor}">${resultMessage}</p>`;
+            
+            submitButton.disabled = true;
+            submitButton.classList.add('bg-gray-400', 'cursor-not-allowed');
+            submitButton.classList.remove('hover:bg-blue-700');
+            window.scrollTo(0, document.body.scrollHeight);
+        }
+
+        submitButton.addEventListener('click', checkAnswers);
+
+        document.addEventListener('DOMContentLoaded', renderQuiz);
+    </script>
+</body>
+</html>

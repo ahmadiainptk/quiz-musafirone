@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Latihan Soal UTS Matematika - Tingkat Medium</title>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- MathJax for rendering mathematical formulas -->
+    <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      },
+      svg: {
+        fontCache: 'global'
+      }
+    };
+    </script>
+    <script type="text/javascript" id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .quiz-option input[type="radio"]:checked+label {
+            background-color: #3b82f6; /* bg-blue-500 */
+            color: white;
+            border-color: #2563eb; /* border-blue-600 */
+        }
+        .quiz-option.correct label {
+            background-color: #22c55e; /* bg-green-500 */
+            color: white;
+            border-color: #16a34a; /* border-green-600 */
+        }
+        .quiz-option.incorrect label {
+            background-color: #ef4444; /* bg-red-500 */
+            color: white;
+            border-color: #dc2626; /* border-red-600 */
+        }
+        .quiz-option.show-correct label {
+            border: 2px solid #22c55e;
+            box-shadow: 0 0 5px #22c55e;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800 p-4 sm:p-6 md:p-8">
+
+    <div class="max-w-3xl mx-auto bg-white p-6 sm:p-8 rounded-xl shadow-lg">
+        <header class="text-center mb-8 border-b pb-4">
+            <h1 class="text-3xl font-bold text-gray-900">Latihan Soal Penilaian Tengah Semester</h1>
+            <p class="text-md text-gray-600 mt-1">Matematika - Kelas VIII (Tingkat Medium)</p>
+        </header>
+
+        <main id="quiz-container">
+            <!-- Quiz questions will be inserted here by JavaScript -->
+        </main>
+
+        <footer class="mt-8 text-center">
+            <button id="submit-btn" class="bg-blue-600 text-white font-bold py-3 px-8 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 transition-transform transform hover:scale-105">
+                Cek Jawaban
+            </button>
+            <div id="result" class="mt-6 text-2xl font-semibold"></div>
+        </footer>
+    </div>
+
+    <script>
+        const quizData = [
+            // Indikator 1
+            { no: 1, question: "Hasil dari $\\frac{4^5 \\times 4^{-3}}{4^2}$ adalah...", options: ["1", "4", "16", "64"], answer: "1" },
+            { no: 2, question: "Bentuk sederhana dari $(a^3 b^{-2})^{-4}$ adalah...", options: ["$a^{-12} b^8$", "$a^{-1} b^{-6}$", "$a^{12} b^{-8}$", "$a^7 b^2$"], answer: "$a^{-12} b^8$" },
+            { no: 9, question: "Nilai dari $(\\frac{2}{3})^{-3}$ adalah...", options: ["$-\\frac{8}{27}$", "$\\frac{8}{27}$", "$-\\frac{27}{8}$", "$\\frac{27}{8}$"], answer: "$\\frac{27}{8}$" },
+            // Indikator 2
+            { no: 7, question: "Hasil dari $(3^{-1} + 4^{-1})^{-1}$ adalah...", options: ["7", "$\\frac{1}{7}$", "$\\frac{12}{7}$", "$\\frac{7}{12}$"], answer: "$\\frac{12}{7}$" },
+            { no: 8, question: "Jika $3^{x-1} = 81$, maka nilai $x$ adalah...", options: ["3", "4", "5", "6"], answer: "5" },
+            // Indikator 3
+            { no: 26, question: "Sebuah zat radioaktif memiliki waktu paruh 12 jam. Jika massa awal zat tersebut 160 gram, massa zat yang tersisa setelah 2 hari adalah...", options: ["10 gram", "20 gram", "40 gram", "80 gram"], answer: "10 gram" },
+            // Indikator 4
+            { no: 4, question: "Hasil dari $3\\sqrt{48} - 2\\sqrt{12} + \\sqrt{75}$ adalah...", options: ["$13\\sqrt{3}$", "$15\\sqrt{3}$", "$17\\sqrt{3}$", "$21\\sqrt{3}$"], answer: "$13\\sqrt{3}$" },
+            { no: 5, question: "Hasil dari $(2\\sqrt{5} - 3)(\\sqrt{5} + 1)$ adalah...", options: ["$7 - \\sqrt{5}$", "$7 + \\sqrt{5}$", "$1 - \\sqrt{5}$", "$1 + \\sqrt{5}$"], answer: "$7 - \\sqrt{5}$" },
+            { no: 10, question: "Bentuk sederhana dari $\\frac{\\sqrt{108}}{\\sqrt{3}}$ adalah...", options: ["6", "$\\sqrt{36}$", "36", "18"], answer: "6" },
+            // Indikator 5
+            { no: 6, question: "Bentuk rasional dari $\\frac{12}{3+\\sqrt{3}}$ adalah...", options: ["$6(3-\\sqrt{3})$", "$2(3-\\sqrt{3})$", "$6(3+\\sqrt{3})$", "$2(3+\\sqrt{3})$"], answer: "$2(3-\\sqrt{3})$" },
+            // Indikator 6
+            { no: 27, question: "Panjang diagonal sebuah persegi panjang adalah $\\sqrt{52}$ cm. Jika lebarnya $2\\sqrt{3}$ cm, maka panjangnya adalah...", options: ["$2\\sqrt{10}$ cm", "$\\sqrt{40}$ cm", "40 cm", "10 cm"], answer: "$2\\sqrt{10}$ cm" },
+            // Indikator 7
+            { no: 3, question: "Hasil dari $(6 \\times 10^8) \\times (8 \\times 10^{-4})$ dalam bentuk notasi ilmiah adalah...", options: ["$4,8 \\times 10^4$", "$4,8 \\times 10^5$", "$48 \\times 10^4$", "$48 \\times 10^5$"], answer: "$4,8 \\times 10^5$" },
+            // Indikator 8
+            { no: 21, question: "Bentuk bilangan biasa dari $(2,5 \\times 10^4) + (3 \\times 10^3)$ adalah...", options: ["2.800", "28.000", "55.000", "253.000"], answer: "28.000" },
+            { no: 22, question: "Kecepatan cahaya adalah $3 \\times 10^8$ m/s. Waktu yang dibutuhkan cahaya untuk menempuh jarak 1,5 km adalah...", options: ["$5 \\times 10^{-5}$ s", "$5 \\times 10^{-6}$ s", "$5 \\times 10^{-7}$ s", "$2 \\times 10^5$ s"], answer: "$5 \\times 10^{-6}$ s" },
+            { no: 23, question: "Jika $(a \\times 10^b)$ adalah notasi ilmiah dari 0,0000405, maka nilai $a+b$ adalah...", options: ["-0,95", "-1", "9,05", "-0,95"], answer: "-0,95" },
+            { no: 24, question: "Volume kubus dengan panjang rusuk $2 \\times 10^{-3}$ m adalah...", options: ["$8 \\times 10^{-6}$ m$^3$", "$8 \\times 10^{-9}$ m$^3$", "$6 \\times 10^{-6}$ m$^3$", "$6 \\times 10^{-9}$ m$^3$"], answer: "$8 \\times 10^{-9}$ m$^3$" },
+            { no: 25, question: "Hasil dari $\\frac{1,2 \\times 10^{-3}}{4 \\times 10^{-7}}$ adalah...", options: ["$3 \\times 10^3$", "$3 \\times 10^4$", "$0,3 \\times 10^4$", "$3 \\times 10^{-10}$"], answer: "$3 \\times 10^3$" },
+            // Indikator 9
+            { no: 11, question: "Sebuah segitiga siku-siku memiliki hipotenusa 34 cm dan salah satu sisi penyikunya 16 cm. Panjang sisi penyiku lainnya adalah...", options: ["18 cm", "24 cm", "28 cm", "30 cm"], answer: "30 cm" },
+            // Indikator 10
+            { no: 12, question: "Perhatikan gambar. Jika panjang AC = 20 cm dan AD = 12 cm, maka panjang BD adalah...", options: ["9 cm", "11 cm", "12 cm", "16 cm"], answer: "9 cm" },
+            // Indikator 11
+            { no: 13, question: "Jika $x$, 24, dan 26 merupakan triple Pythagoras dengan $x < 24$, maka nilai $x$ adalah...", options: ["5", "7", "10", "12"], answer: "10" },
+            // Indikator 12
+            { no: 29, question: "Perhatikan gambar trapesium sama kaki ABCD. Jika panjang AB = 25 cm, CD = 15 cm, dan AD = 13 cm, maka tinggi trapesium (DE) adalah...", options: ["10 cm", "11 cm", "12 cm", "14 cm"], answer: "12 cm" },
+            // Indikator 13
+            { no: 14, question: "Panjang diagonal ruang sebuah balok yang berukuran $12 \\text{ cm} \\times 9 \\text{ cm} \\times 8 \\text{ cm}$ adalah...", options: ["15 cm", "17 cm", "20 cm", "25 cm"], answer: "17 cm" },
+            { no: 15, question: "Jarak antara titik A(2, -1) dan B(-6, 14) pada koordinat Kartesius adalah...", options: ["15 satuan", "17 satuan", "20 satuan", "23 satuan"], answer: "17 satuan" },
+            { no: 16, question: "Sebuah lingkaran berpusat di O memiliki jari-jari 10 cm. Tali busur AB memiliki panjang 16 cm. Jarak pusat O ke tali busur AB adalah...", options: ["5 cm", "6 cm", "7 cm", "8 cm"], answer: "6 cm" },
+            { no: 17, question: "Panjang sisi sebuah segitiga sama sisi adalah 10 cm. Tinggi segitiga tersebut adalah...", options: ["$5\\sqrt{2}$ cm", "$5\\sqrt{3}$ cm", "$10\\sqrt{2}$ cm", "$10\\sqrt{3}$ cm"], answer: "$5\\sqrt{3}$ cm" },
+            // Indikator 14
+            { no: 18, question: "Dua buah kapal berangkat dari pelabuhan P pada waktu yang sama. Kapal A berlayar ke arah utara dengan kecepatan 15 km/jam. Kapal B berlayar ke arah timur dengan kecepatan 20 km/jam. Jarak kedua kapal setelah 2 jam adalah...", options: ["25 km", "35 km", "50 km", "70 km"], answer: "50 km" },
+            { no: 19, question: "Seorang pengamat melihat puncak menara dari jarak 120 meter dengan sudut elevasi tertentu. Jika tinggi menara 50 meter, jarak pengamat ke puncak menara adalah...", options: ["130 m", "150 m", "160 m", "170 m"], answer: "130 m" },
+            { no: 20, question: "Sebuah layang-layang dibuat dengan panjang diagonal 16 cm dan 21 cm. Salah satu bagian diagonal yang lebih panjang adalah 6 cm. Panjang benang minimal yang dibutuhkan untuk membuat kerangka layang-layang tersebut adalah...", options: ["40 cm", "45 cm", "50 cm", "52 cm"], answer: "50 cm" },
+            { no: 28, question: "Sebuah foto ditempel pada selembar karton berukuran 40 cm x 60 cm. Di sebelah kiri, kanan, dan atas foto terdapat sisa karton selebar 5 cm. Jika foto dan karton sebangun, lebar sisa karton di bagian bawah foto adalah...", options: ["5 cm", "7,5 cm", "10 cm", "12,5 cm"], answer: "10 cm" },
+            // Indikator 16
+            { no: 30, question: "Keliling sebuah trapesium siku-siku adalah 56 cm. Jika panjang sisi-sisi sejajarnya adalah 15 cm dan 20 cm, dan tinggi trapesium 12 cm, maka panjang sisi miringnya adalah...", options: ["9 cm", "10 cm", "13 cm", "15 cm"], answer: "13 cm" }
+        ];
+
+        // Sisa kode JavaScript sama persis untuk menampilkan soal dan memeriksa jawaban
+        const quizContainer = document.getElementById('quiz-container');
+        const submitButton = document.getElementById('submit-btn');
+        const resultContainer = document.getElementById('result');
+
+        function renderQuiz() {
+            let quizHTML = '';
+            quizData.sort((a, b) => a.no - b.no).forEach((item, index) => {
+                quizHTML += `
+                    <div class="mb-6 pb-6 border-b" id="question-${index}">
+                        <p class="text-lg font-semibold mb-4">
+                            ${item.no}. ${item.question}
+                        </p>
+                        <div class="space-y-3">
+                            ${item.options.map((option, i) => `
+                                <div class="quiz-option">
+                                    <input type="radio" id="q${index}-o${i}" name="question${index}" value="${option}" class="hidden">
+                                    <label for="q${index}-o${i}" class="block w-full text-left p-3 rounded-lg border-2 border-gray-300 hover:bg-gray-100 cursor-pointer transition-colors">
+                                        ${String.fromCharCode(65 + i)}. ${option}
+                                    </label>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            });
+            quizContainer.innerHTML = quizHTML;
+            MathJax.typesetPromise();
+        }
+
+        function checkAnswers() {
+            let score = 0;
+            const sortedData = [...quizData].sort((a, b) => a.no - b.no);
+            sortedData.forEach((item, index) => {
+                const questionElement = document.getElementById(`question-${index}`);
+                const selectedOption = document.querySelector(`input[name="question${index}"]:checked`);
+                const options = questionElement.querySelectorAll('.quiz-option');
+
+                questionElement.querySelectorAll('input[type="radio"]').forEach(radio => {
+                    radio.disabled = true;
+                });
+
+                if (selectedOption) {
+                    const selectedValue = selectedOption.value;
+                    const selectedLabel = selectedOption.parentElement;
+                    
+                    if (selectedValue === item.answer) {
+                        score++;
+                        selectedLabel.classList.add('correct');
+                    } else {
+                        selectedLabel.classList.add('incorrect');
+                        options.forEach(opt => {
+                             if(opt.querySelector('input').value === item.answer){
+                                 opt.classList.add('show-correct');
+                             }
+                        });
+                    }
+                } else {
+                    options.forEach(opt => {
+                         if(opt.querySelector('input').value === item.answer){
+                             opt.classList.add('show-correct');
+                         }
+                    });
+                }
+            });
+
+            const scorePercentage = (score / quizData.length) * 100;
+            let resultMessage = `Skor Anda: ${score} dari ${quizData.length} soal (${scorePercentage.toFixed(0)}%)`;
+            let resultColor = 'text-blue-600';
+            if(scorePercentage >= 80) resultColor = 'text-green-600';
+            else if (scorePercentage < 50) resultColor = 'text-red-600';
+            
+            resultContainer.innerHTML = `<p class="${resultColor}">${resultMessage}</p>`;
+            
+            submitButton.disabled = true;
+            submitButton.classList.add('bg-gray-400', 'cursor-not-allowed');
+            submitButton.classList.remove('hover:bg-blue-700');
+            window.scrollTo(0, document.body.scrollHeight);
+        }
+
+        submitButton.addEventListener('click', checkAnswers);
+
+        document.addEventListener('DOMContentLoaded', renderQuiz);
+    </script>
+</body>
+</html>

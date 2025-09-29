@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Latihan Soal PTS Informatika - Kelas VII</title>
+    <title>Latihan Soal Informatika - Kelas VII</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,7 +12,7 @@
         body {
             font-family: 'Inter', sans-serif;
         }
-        .option-btn:hover {
+        .option-btn:hover:not(:disabled) {
             transform: translateY(-2px);
             box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
         }
@@ -21,6 +21,16 @@
             color: white;
             border-color: #2563eb; /* blue-600 */
         }
+        .option-btn.correct {
+            background-color: #22c55e; /* green-500 */
+            color: white;
+            border-color: #16a34a; /* green-600 */
+        }
+        .option-btn.incorrect {
+            background-color: #ef4444; /* red-500 */
+            color: white;
+            border-color: #dc2626; /* red-600 */
+        }
         .mode-card {
             transition: all 0.2s ease-in-out;
         }
@@ -28,25 +38,11 @@
             transform: scale(1.05);
             box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
         }
-        /* Custom scrollbar for better aesthetics */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #f1f5f9; /* slate-100 */
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #94a3b8; /* slate-400 */
-            border-radius: 10px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #64748b; /* slate-500 */
-        }
     </style>
 </head>
 <body class="bg-slate-100 text-slate-800 flex items-center justify-center min-h-screen p-4">
 
-    <div id="app-container" class="w-full max-w-4xl mx-auto">
+    <div id="app-container" class="w-full max-w-2xl mx-auto">
         
         <!-- Start Screen -->
         <div id="start-screen" class="bg-white p-8 rounded-2xl shadow-lg text-center">
@@ -56,11 +52,11 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div onclick="startQuiz('normal')" class="mode-card bg-green-500 text-white p-6 rounded-xl shadow-md cursor-pointer">
                     <h2 class="text-2xl font-bold mb-2">NORMAL</h2>
-                    <p>Soal-soal dasar untuk pemahaman konsep.</p>
+                    <p>Soal konsep dasar dan definisi.</p>
                 </div>
                 <div onclick="startQuiz('medium')" class="mode-card bg-yellow-500 text-white p-6 rounded-xl shadow-md cursor-pointer">
                     <h2 class="text-2xl font-bold mb-2">MEDIUM</h2>
-                    <p>Soal penerapan konsep dalam skenario.</p>
+                    <p>Soal penerapan dalam contoh.</p>
                 </div>
                 <div onclick="startQuiz('hard')" class="mode-card bg-red-500 text-white p-6 rounded-xl shadow-md cursor-pointer">
                     <h2 class="text-2xl font-bold mb-2">SULIT</h2>
@@ -80,17 +76,19 @@
                         Soal <span id="question-number"></span> dari 30
                     </div>
                 </div>
-
                 <div id="question-container" class="mb-6">
                     <p id="question-text" class="text-lg md:text-xl leading-relaxed"></p>
                 </div>
-
-                <div id="options-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <!-- Options will be dynamically inserted here -->
+                <div id="options-container" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+                
+                <!-- Instant Feedback Container -->
+                <div id="feedback-container" class="hidden mt-6 p-4 border-l-4 border-yellow-500 bg-yellow-50 rounded-lg">
+                    <h4 class="font-bold text-yellow-800">Pembahasan</h4>
+                    <p id="feedback-text" class="text-yellow-700 mt-1"></p>
                 </div>
 
                 <div class="mt-8 flex justify-end">
-                    <button id="next-btn" onclick="nextQuestion()" class="bg-indigo-600 text-white font-bold py-3 px-8 rounded-lg shadow-md hover:bg-indigo-700 transition-colors duration-200 disabled:bg-slate-400 disabled:cursor-not-allowed">
+                    <button id="next-btn" onclick="checkAnswerAndProceed()" class="bg-indigo-600 text-white font-bold py-3 px-8 rounded-lg shadow-md hover:bg-indigo-700 transition-colors duration-200 disabled:bg-slate-400 disabled:cursor-not-allowed">
                         Selanjutnya
                     </button>
                 </div>
@@ -99,29 +97,19 @@
 
         <!-- Result Screen -->
         <div id="result-screen" class="hidden">
-            <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg text-center">
+            <div class="bg-white p-8 rounded-2xl shadow-lg text-center">
                 <h2 class="text-3xl font-bold text-slate-700 mb-2">Latihan Selesai!</h2>
-                <p class="text-lg text-slate-500 mb-6">Berikut adalah hasil pengerjaanmu.</p>
-                
+                <p class="text-lg text-slate-500 mb-6">Selamat, kamu telah menyelesaikan semua soal.</p>
                 <div class="bg-indigo-50 border-2 border-indigo-200 rounded-xl p-6 mb-8">
                     <p class="text-xl text-indigo-800">Skor Akhir</p>
                     <p class="text-6xl font-bold text-indigo-600 my-2"><span id="score"></span></p>
                     <p class="text-xl text-indigo-800"><span id="correct-answers"></span> dari 30 soal benar</p>
                 </div>
-
-                <div class="text-left mb-6">
-                    <h3 class="text-2xl font-bold mb-4 text-slate-700">Pembahasan Soal</h3>
-                    <div id="review-container" class="space-y-4 max-h-[50vh] overflow-y-auto pr-4">
-                        <!-- Review content will be dynamically inserted here -->
-                    </div>
-                </div>
-
                 <button onclick="restartQuiz()" class="w-full md:w-auto bg-indigo-600 text-white font-bold py-3 px-8 rounded-lg shadow-md hover:bg-indigo-700 transition-colors duration-200">
-                    Ulangi Latihan
+                    Coba Lagi
                 </button>
             </div>
         </div>
-
     </div>
 
     <script>
@@ -129,230 +117,231 @@
         const startScreen = document.getElementById('start-screen');
         const quizScreen = document.getElementById('quiz-screen');
         const resultScreen = document.getElementById('result-screen');
-        
         const modeLabel = document.getElementById('mode-label');
-        const questionNumber = document.getElementById('question-number');
+        const questionNumberEl = document.getElementById('question-number');
         const questionText = document.getElementById('question-text');
         const optionsContainer = document.getElementById('options-container');
         const nextBtn = document.getElementById('next-btn');
-
         const scoreEl = document.getElementById('score');
         const correctAnswersEl = document.getElementById('correct-answers');
-        const reviewContainer = document.getElementById('review-container');
+        const feedbackContainer = document.getElementById('feedback-container');
+        const feedbackText = document.getElementById('feedback-text');
 
         // Quiz State
         let currentMode = '';
         let currentQuestionIndex = 0;
-        let userAnswers = [];
-        let questions = {};
+        let score = 0;
+        let selectedAnswer = null;
+        let isShowingFeedback = false;
+        let questions = [];
 
-        // --- DATABASE SOAL INFORMATIKA ---
+        // --- DATABASE SOAL INFORMATIKA KELAS VII ---
         const allQuestions = {
             normal: [
-                { q: "Proses berpikir untuk menyelesaikan masalah secara efektif dan efisien seperti cara kerja komputer disebut...", o: ["Berpikir Kritis", "Berpikir Logis", "Berpikir Komputasional", "Berpikir Kreatif"], a: "Berpikir Komputasional", p: "Berpikir komputasional (Computational Thinking) adalah pendekatan pemecahan masalah yang menggunakan teknik-teknik yang digunakan oleh ilmuwan komputer." },
-                { q: "Tahapan awal dalam berpikir komputasional adalah memecah masalah besar menjadi bagian-bagian yang lebih kecil. Tahapan ini disebut...", o: ["Abstraksi", "Algoritma", "Pengenalan Pola", "Dekomposisi"], a: "Dekomposisi", p: "Dekomposisi adalah langkah pertama untuk membuat masalah yang kompleks menjadi lebih sederhana dan mudah dikelola." },
-                { q: "Melihat kesamaan atau ciri-ciri yang sama di antara masalah-masalah kecil hasil dekomposisi adalah inti dari...", o: ["Abstraksi", "Pengenalan Pola", "Algoritma", "Dekomposisi"], a: "Pengenalan Pola", p: "Dengan mengenali pola, kita bisa menyelesaikan masalah-masalah kecil yang mirip dengan cara yang sama, sehingga lebih efisien." },
-                { q: "Saat membuat peta jalur TransJakarta, kita hanya fokus pada rute dan halte, dan mengabaikan detail seperti gedung atau pohon di sekitarnya. Proses ini adalah contoh...", o: ["Algoritma", "Dekomposisi", "Abstraksi", "Pengenalan Pola"], a: "Abstraksi", p: "Abstraksi adalah proses menyaring dan hanya menampilkan informasi yang relevan, serta menyembunyikan detail yang tidak perlu." },
-                { q: "Langkah-langkah yang disusun secara urut untuk menyelesaikan suatu masalah disebut...", o: ["Dekomposisi", "Pola", "Abstraksi", "Algoritma"], a: "Algoritma", p: "Algoritma adalah serangkaian instruksi atau aturan yang jelas untuk menyelesaikan masalah atau menyelesaikan suatu tugas." },
-                { q: "Saat merakit sebuah lemari, kamu mengikuti buku panduan langkah demi langkah. Buku panduan tersebut dapat dianggap sebagai sebuah...", o: ["Pola", "Algoritma", "Abstraksi", "Dekomposisi"], a: "Algoritma", p: "Buku panduan berisi urutan langkah yang harus diikuti, yang merupakan esensi dari sebuah algoritma." },
-                { q: "Tugasmu adalah membuat nasi goreng. Kamu membagi tugas itu menjadi: menyiapkan bahan, memotong bumbu, memasak, dan menyajikan. Ini adalah contoh penerapan...", o: ["Pengenalan Pola", "Abstraksi", "Dekomposisi", "Algoritma"], a: "Dekomposisi", p: "Memecah proses 'membuat nasi goreng' menjadi tugas-tugas yang lebih kecil adalah contoh dekomposisi." },
-                { q: "Manakah di bawah ini yang merupakan contoh dari pengenalan pola?", o: ["Membuat daftar belanja", "Menyadari bahwa setiap hari Senin ada upacara bendera", "Mengikuti resep kue", "Membersihkan kamar"], a: "Menyadari bahwa setiap hari Senin ada upacara bendera", p: "Menyadari adanya kejadian yang berulang secara teratur (setiap hari Senin) adalah bentuk pengenalan pola." },
-                { q: "Mengabaikan warna dan merek mobil saat belajar menyetir, dan hanya fokus pada pedal gas, rem, dan setir, adalah contoh dari...", o: ["Dekomposisi", "Algoritma", "Pengenalan Pola", "Abstraksi"], a: "Abstraksi", p: "Kita mengabaikan detail yang tidak penting (warna, merek) dan fokus pada komponen utama untuk fungsi menyetir. Ini adalah abstraksi." },
-                { q: "Salah satu manfaat utama dari berpikir komputasional dalam kehidupan sehari-hari adalah...", o: ["Menjadi lebih cepat dalam mengetik", "Mampu menyelesaikan masalah yang kompleks secara sistematis", "Dapat merakit komputer", "Memiliki banyak teman"], a: "Mampu menyelesaikan masalah yang kompleks secara sistematis", p: "Berpikir komputasional melatih kita untuk menghadapi masalah besar dengan cara yang terstruktur, logis, dan efisien." },
-                { q: "Resep untuk membuat secangkir teh manis adalah contoh dari komponen...", o: ["Dekomposisi", "Algoritma", "Abstraksi", "Pengenalan Pola"], a: "Algoritma", p: "Resep berisi urutan langkah-langkah (seduh teh, tambahkan gula, aduk) yang merupakan sebuah algoritma." },
-                { q: "Seorang detektif menemukan kesamaan cara kerja pada beberapa kasus pencurian yang berbeda. Kemampuan detektif ini menunjukkan penerapan...", o: ["Algoritma", "Dekomposisi", "Pengenalan Pola", "Abstraksi"], a: "Pengenalan Pola", p: "Menemukan modus operandi atau pola yang sama dari berbagai kasus adalah contoh nyata dari pengenalan pola." },
-                { q: "Memecah tugas 'Mengerjakan PR Matematika' menjadi 'membaca soal', 'memahami soal', 'mengerjakan soal', dan 'memeriksa jawaban' adalah contoh...", o: ["Algoritma", "Abstraksi", "Dekomposisi", "Pengenalan Pola"], a: "Dekomposisi", p: "Ini adalah proses memecah satu tugas besar menjadi beberapa sub-tugas yang lebih mudah dikerjakan." },
-                { q: "Saat menggambar ikon 'telepon' di HP, kita hanya menggambar bentuk gagang telepon sederhana, bukan telepon dengan semua tombol dan kabelnya. Ini adalah contoh...", o: ["Abstraksi", "Dekomposisi", "Pengenalan Pola", "Algoritma"], a: "Abstraksi", p: "Kita menyederhanakan objek kompleks (telepon) menjadi representasi sederhana (ikon) yang masih bisa dikenali. Ini adalah inti dari abstraksi." },
-                { q: "Urutan instruksi 'Ambil sikat gigi -> Oleskan pasta gigi -> Sikat gigi -> Kumur-kumur' merupakan contoh...", o: ["Abstraksi", "Pengenalan Pola", "Dekomposisi", "Algoritma"], a: "Algoritma", p: "Ini adalah serangkaian langkah yang jelas dan berurutan untuk menyelesaikan tugas 'menyikat gigi'." },
-                { q: "Seorang koki menyadari bahwa resep untuk membuat sup ayam, sup daging, dan sup sayuran memiliki langkah dasar yang sama: tumis bumbu, masukkan bahan utama, tambahkan air, rebus hingga matang. Ini adalah contoh...", o: ["Dekomposisi", "Pengenalan Pola", "Abstraksi", "Algoritma"], a: "Pengenalan Pola", p: "Koki tersebut mengenali pola atau kerangka dasar yang sama dalam memasak berbagai jenis sup." },
-                { q: "Seorang manajer proyek membagi proyek besar 'Pembangunan Gedung' menjadi tahap 'Desain', 'Pengadaan Material', 'Konstruksi', dan 'Finishing'. Tindakan ini adalah...", o: ["Algoritma", "Abstraksi", "Pengenalan Pola", "Dekomposisi"], a: "Dekomposisi", p: "Manajer melakukan dekomposisi untuk membuat proyek raksasa menjadi lebih mudah dikelola dan dijadwalkan." },
-                { q: "Simbol 'play' (segitiga ke kanan) pada pemutar musik adalah bentuk... dari fungsi 'memainkan media'.", o: ["Dekomposisi", "Pengenalan Pola", "Algoritma", "Abstraksi"], a: "Abstraksi", p: "Simbol tersebut adalah penyederhanaan visual dari sebuah konsep atau fungsi yang kompleks." },
-                { q: "Instruksi untuk robot: 'Maju 5 langkah -> Belok kanan 90 derajat -> Maju 3 langkah'. Instruksi ini adalah sebuah...", o: ["Pola", "Dekomposisi", "Algoritma", "Abstraksi"], a: "Algoritma", p: "Serangkaian perintah yang spesifik dan berurutan untuk diikuti oleh robot adalah sebuah algoritma." },
-                { q: "Tujuan utama dari dekomposisi dalam tahapan berpikir komputasional adalah...", o: ["Menemukan pola-pola yang ada", "Membuat masalah menjadi lebih kecil dan mudah dikelola", "Menyembunyikan detail yang tidak penting", "Membuat urutan langkah penyelesaian"], a: "Membuat masalah menjadi lebih kecil dan mudah dikelola", p: "Dengan dekomposisi, masalah yang tadinya terlihat sangat besar dan menakutkan menjadi serangkaian masalah kecil yang lebih mudah untuk dipahami dan diselesaikan." },
-                { q: "Berpikir komputasional adalah metode pemecahan masalah yang didasari oleh konsep-konsep...", o: ["Seni dan Sastra", "Ilmu Komputer", "Filsafat", "Sejarah"], a: "Ilmu Komputer", p: "Berpikir komputasional mengadopsi cara berpikir seorang ilmuwan komputer dalam merancang sistem dan menyelesaikan masalah." },
-                { q: "Mencari perbedaan dan persamaan antara kucing dan anjing untuk mengklasifikasikannya adalah contoh dari...", o: ["Algoritma", "Pengenalan Pola", "Abstraksi", "Dekomposisi"], a: "Pengenalan Pola", p: "Dengan mencari ciri-ciri umum (pola) dan perbedaannya, kita dapat mengelompokkan atau mengenali objek." },
-                { q: "Saat menggunakan mesin pencari seperti Google, kita hanya mengetik kata kunci dan menekan 'Enter', tanpa perlu tahu bagaimana Google mencari data di miliaran situs web. Kemudahan ini adalah hasil dari...", o: ["Dekomposisi", "Abstraksi", "Pengenalan Pola", "Algoritma"], a: "Abstraksi", p: "Abstraksi menyembunyikan kerumitan di balik antarmuka yang sederhana. Kita tidak perlu tahu cara kerja internalnya untuk bisa menggunakannya." },
-                { q: "Panduan evakuasi bencana yang berisi titik kumpul dan jalur evakuasi adalah contoh dari...", o: ["Dekomposisi", "Pengenalan Pola", "Algoritma", "Abstraksi"], a: "Algoritma", p: "Panduan tersebut memberikan serangkaian langkah yang harus diikuti dalam situasi darurat untuk mencapai keselamatan." },
-                { q: "Manakah dari berikut ini yang BUKAN merupakan komponen utama berpikir komputasional?", o: ["Dekomposisi", "Debat", "Abstraksi", "Algoritma"], a: "Debat", p: "Empat komponen utama berpikir komputasional adalah Dekomposisi, Pengenalan Pola, Abstraksi, dan Algoritma." },
-                { q: "Pengertian dari berpikir komputasional adalah...", o: ["Cara berpikir seperti robot", "Kemampuan untuk menggunakan komputer dengan cepat", "Proses pemecahan masalah dengan teknik ilmu komputer", "Menghafal bahasa pemrograman"], a: "Proses pemecahan masalah dengan teknik ilmu komputer", p: "Ini adalah definisi yang paling tepat, menekankan pada proses pemecahan masalah, bukan hanya penggunaan komputer itu sendiri." },
-                { q: "Empat komponen utama dalam berpikir komputasional adalah...", o: ["Membaca, Menulis, Menghitung, Menggambar", "Dekomposisi, Pengenalan Pola, Abstraksi, Algoritma", "Hardware, Software, Brainware, Data", "Input, Proses, Output, Storage"], a: "Dekomposisi, Pengenalan Pola, Abstraksi, Algoritma", p: "Keempat pilar ini adalah fondasi dari berpikir komputasional untuk memecahkan masalah secara efektif." },
-                { q: "Contoh dari dekomposisi adalah...", o: ["Mengikuti resep masakan", "Mengenali bahwa semua sepeda punya dua roda", "Memecah tugas membersihkan rumah menjadi menyapu, mengepel, dan mengelap", "Menggunakan ikon 'save' untuk menyimpan file"], a: "Memecah tugas membersihkan rumah menjadi menyapu, mengepel, dan mengelap", p: "Ini adalah contoh klasik memecah satu masalah besar menjadi beberapa sub-masalah yang lebih kecil." },
-                { q: "Menyusun jadwal pelajaran harian adalah contoh penerapan komponen...", o: ["Abstraksi", "Dekomposisi", "Pengenalan Pola", "Algoritma"], a: "Algoritma", p: "Jadwal pelajaran adalah sebuah rencana atau urutan langkah (mata pelajaran) yang harus diikuti sepanjang hari." },
-                { q: "Manfaat dari menerapkan berpikir komputasional adalah...", o: ["Meningkatkan kemampuan menghafal", "Meningkatkan kepercayaan diri dan kemampuan memecahkan masalah", "Membuat kita lebih sering bermain game", "Mengurangi kebutuhan untuk belajar matematika"], a: "Meningkatkan kepercayaan diri dan kemampuan memecahkan masalah", p: "Dengan berpikir komputasional, kita menjadi lebih terbiasa menghadapi masalah, tidak mudah menyerah, dan percaya diri dalam menemukan solusi yang logis." }
+                { q: "Proses memecah masalah yang kompleks menjadi bagian-bagian yang lebih kecil dan lebih mudah dikelola disebut...", o: ["Algoritma", "Abstraksi", "Dekomposisi", "Pengenalan Pola"], a: "Dekomposisi", p: "Dekomposisi adalah langkah pertama dalam berpikir komputasional, yaitu menguraikan masalah besar menjadi sub-masalah yang lebih sederhana." },
+                { q: "Mencari kesamaan atau tren di antara masalah-masalah kecil hasil dekomposisi adalah inti dari...", o: ["Algoritma", "Abstraksi", "Dekomposisi", "Pengenalan Pola"], a: "Pengenalan Pola", p: "Dengan mengenali pola, kita bisa menyelesaikan masalah serupa dengan cara yang sama, sehingga lebih efisien." },
+                { q: "Proses menyaring detail yang tidak relevan dan fokus pada informasi yang penting saja disebut...", o: ["Algoritma", "Abstraksi", "Dekomposisi", "Pengenalan Pola"], a: "Abstraksi", p: "Abstraksi membantu kita menyederhanakan masalah dengan mengabaikan informasi yang tidak penting untuk solusi." },
+                { q: "Serangkaian instruksi atau langkah-langkah yang jelas untuk menyelesaikan suatu masalah disebut...", o: ["Algoritma", "Abstraksi", "Dekomposisi", "Pengenalan Pola"], a: "Algoritma", p: "Algoritma adalah resep atau prosedur langkah-demi-langkah untuk menyelesaikan tugas atau masalah." },
+                { q: "Saat merakit sebuah lemari, kamu mengikuti buku panduan langkah demi langkah. Aktivitas ini adalah contoh dari...", o: ["Algoritma", "Abstraksi", "Dekomposisi", "Pengenalan Pola"], a: "Algoritma", p: "Buku panduan berisi urutan instruksi yang jelas (algoritma) untuk mencapai hasil akhir, yaitu lemari yang sudah terakit." },
+                { q: "Manakah di antara berikut ini yang merupakan contoh Dekomposisi?", o: ["Membuat daftar belanja sebelum ke pasar", "Menyadari bahwa semua pintu di rumah terbuka dengan cara yang sama", "Mengabaikan warna mobil saat belajar menyetir", "Menyusun langkah-langkah membuat kopi"], a: "Membuat daftar belanja sebelum ke pasar", p: "Membuat daftar belanja adalah cara memecah masalah besar 'belanja kebutuhan' menjadi bagian-bagian kecil (item yang harus dibeli)." },
+                { q: "Seorang koki menyadari bahwa resep untuk membuat sup ayam dan sup daging memiliki langkah dasar yang sama: menumis bumbu, merebus kaldu, memasukkan bahan utama. Kemampuan ini disebut...", o: ["Algoritma", "Abstraksi", "Dekomposisi", "Pengenalan Pola"], a: "Pengenalan Pola", p: "Koki tersebut mengenali pola atau kesamaan langkah dalam membuat berbagai jenis sup." },
+                { q: "Saat menggunakan remote TV, kamu hanya perlu tahu tombol mana yang harus ditekan untuk mengganti channel, tanpa perlu tahu bagaimana sinyal inframerah bekerja. Ini adalah contoh dari...", o: ["Algoritma", "Abstraksi", "Dekomposisi", "Pengenalan Pola"], a: "Abstraksi", p: "Kita fokus pada fungsi tombol (informasi penting) dan mengabaikan cara kerja internal remote (detail tidak relevan)." },
+                { q: "Urutan langkah yang paling tepat untuk membuat teh manis adalah...", o: ["Masukkan gula, masukkan teh, tuang air panas", "Tuang air panas, masukkan gula, masukkan teh", "Masukkan teh, tuang air panas, masukkan gula", "Masukkan teh, masukkan gula, tuang air panas"], a: "Masukkan teh, tuang air panas, masukkan gula", p: "Ini adalah algoritma yang paling umum. Teh diseduh dulu dengan air panas agar sarinya keluar, baru ditambahkan gula." },
+                { q: "Tujuan utama dari berpikir komputasional adalah...", o: ["Membuat semua orang menjadi programmer", "Memecahkan masalah secara efektif dan efisien", "Membuat komputer lebih cepat", "Menghafal rumus matematika"], a: "Memecahkan masalah secara efektif dan efisien", p: "Berpikir komputasional adalah cara berpikir untuk memecahkan masalah, yang bisa diterapkan di berbagai bidang, tidak hanya di komputer." },
+                { q: "Manakah yang BUKAN merupakan komponen dari berpikir komputasional?", o: ["Dekomposisi", "Pengenalan Pola", "Abstraksi", "Komputasi"], a: "Komputasi", p: "Empat pilar utama berpikir komputasional adalah Dekomposisi, Pengenalan Pola, Abstraksi, dan Algoritma. Komputasi adalah proses yang dilakukan oleh komputer." },
+                { q: "Seorang penulis ingin menulis sebuah novel. Ia membaginya menjadi beberapa bab, dan setiap bab menjadi beberapa paragraf. Ini adalah contoh...", o: ["Abstraksi", "Dekomposisi", "Pengenalan Pola", "Algoritma"], a: "Dekomposisi", p: "Penulis memecah tugas besar 'menulis novel' menjadi unit-unit yang lebih kecil dan lebih mudah dikerjakan (bab, paragraf)." },
+                { q: "Setiap hari Senin, siswa memakai seragam putih-biru dan melakukan upacara bendera. Mengetahui rutinitas ini adalah contoh...", o: ["Pengenalan Pola", "Algoritma", "Dekomposisi", "Abstraksi"], a: "Pengenalan Pola", p: "Ini adalah pola atau kebiasaan yang terjadi berulang setiap hari Senin." },
+                { q: "Peta adalah contoh yang sangat baik dari... karena menyederhanakan dunia nyata menjadi garis dan simbol.", o: ["Abstraksi", "Dekomposisi", "Pengenalan Pola", "Algoritma"], a: "Abstraksi", p: "Peta menghilangkan detail yang tidak perlu (seperti setiap pohon atau bangunan) dan hanya menampilkan informasi penting (seperti jalan dan lokasi)." },
+                { q: "Resep masakan adalah contoh nyata dari...", o: ["Algoritma", "Abstraksi", "Dekomposisi", "Pengenalan Pola"], a: "Algoritma", p: "Resep menyediakan daftar bahan dan urutan langkah yang harus diikuti untuk menghasilkan suatu masakan." },
+                { q: "Manfaat utama dekomposisi adalah...", o: ["Membuat masalah terlihat lebih rumit", "Membuat masalah yang besar menjadi lebih mudah dipahami dan diselesaikan", "Menghilangkan bagian penting dari masalah", "Menemukan jawaban secara instan"], a: "Membuat masalah yang besar menjadi lebih mudah dipahami dan diselesaikan", p: "Dengan memecah masalah, kita bisa fokus menyelesaikan satu bagian kecil pada satu waktu." },
+                { q: "Manfaat pengenalan pola adalah...", o: ["Membuat kita bisa menyelesaikan masalah yang mirip dengan lebih cepat", "Menyembunyikan informasi penting", "Membuat algoritma menjadi lebih panjang", "Menambah kerumitan masalah"], a: "Membuat kita bisa menyelesaikan masalah yang mirip dengan lebih cepat", p: "Jika kita sudah tahu cara menyelesaikan suatu pola masalah, kita tidak perlu mencari solusi dari nol lagi saat bertemu masalah serupa." },
+                { q: "Manfaat abstraksi adalah...", o: ["Melihat semua detail kecil dari masalah", "Fokus pada hal-hal penting dan mengabaikan yang tidak relevan", "Membuat masalah menjadi ambigu", "Menambah langkah-langkah yang tidak perlu"], a: "Fokus pada hal-hal penting dan mengabaikan yang tidak relevan", p: "Abstraksi membantu menyederhanakan kompleksitas sehingga kita bisa merancang solusi dengan lebih mudah." },
+                { q: "Ciri-ciri algoritma yang baik adalah...", o: ["Panjang dan rumit", "Hanya bisa dimengerti oleh komputer", "Langkah-langkahnya jelas, terbatas, dan memiliki tujuan akhir", "Memiliki banyak kemungkinan hasil"], a: "Langkah-langkahnya jelas, terbatas, dan memiliki tujuan akhir", p: "Algoritma harus tidak ambigu, memiliki jumlah langkah yang berhingga (tidak berulang selamanya), dan menghasilkan solusi yang diharapkan." },
+                { q: "Ketika membersihkan rumah, kamu membagi tugas menjadi: menyapu, mengepel, mengelap kaca, dan merapikan kamar. Ini adalah penerapan...", o: ["Dekomposisi", "Algoritma", "Abstraksi", "Pengenalan Pola"], a: "Dekomposisi", p: "Tugas 'membersihkan rumah' dipecah menjadi beberapa subtugas yang lebih spesifik dan mudah dilakukan." },
+                { q: "Seorang dokter mendiagnosis penyakit dengan melihat gejala-gejala yang sama pada pasien yang berbeda. Kemampuan dokter ini menerapkan...", o: ["Pengenalan Pola", "Algoritma", "Dekomposisi", "Abstraksi"], a: "Pengenalan Pola", p: "Dokter mengenali pola gejala yang merujuk pada suatu penyakit tertentu berdasarkan pengalamannya." },
+                { q: "Ikon 'save' (gambar disket) pada aplikasi komputer adalah sebuah... Ia mewakili proses penyimpanan file tanpa kita harus tahu detail teknisnya.", o: ["Abstraksi", "Dekomposisi", "Pengenalan Pola", "Algoritma"], a: "Abstraksi", p: "Ikon tersebut adalah representasi sederhana (abstraksi) dari sebuah proses yang kompleks." },
+                { q: "Prosedur evakuasi bencana yang ditempel di dinding adalah contoh dari...", o: ["Algoritma", "Abstraksi", "Dekomposisi", "Pengenalan Pola"], a: "Algoritma", p: "Prosedur tersebut berisi serangkaian langkah yang harus diikuti secara urut dalam situasi darurat." },
+                { q: "Saat belajar bersepeda, pertama kamu belajar keseimbangan, lalu mengayuh, lalu mengerem. Mempelajari skill ini secara bertahap adalah contoh...", o: ["Dekomposisi", "Pengenalan Pola", "Abstraksi", "Algoritma"], a: "Dekomposisi", p: "Keterampilan kompleks 'bersepeda' dipecah menjadi sub-keterampilan yang lebih mudah untuk dipelajari satu per satu." },
+                { q: "Melihat bahwa semua mamalia memiliki ciri umum seperti berbulu, menyusui, dan berdarah panas adalah contoh...", o: ["Pengenalan Pola", "Algoritma", "Dekomposisi", "Abstraksi"], a: "Pengenalan Pola", p: "Kita mengidentifikasi kesamaan atau pola ciri-ciri pada kelompok hewan mamalia." },
+                { q: "Saat mencari informasi di internet, kamu hanya mengetik kata kunci di mesin pencari, bukan alamat IP server. Ini adalah bentuk...", o: ["Abstraksi", "Dekomposisi", "Pengenalan Pola", "Algoritma"], a: "Abstraksi", p: "Mesin pencari menyembunyikan kerumitan teknis pencarian data dan memberikan antarmuka yang sederhana." },
+                { q: "Langkah-langkah untuk login ke akun media sosial (masukkan username, masukkan password, klik login) adalah sebuah...", o: ["Algoritma", "Abstraksi", "Dekomposisi", "Pengenalan Pola"], a: "Algoritma", p: "Ini adalah urutan langkah yang pasti untuk mengakses akun." },
+                { q: "Tujuan utama dekomposisi saat mengerjakan PR Matematika yang sulit adalah...", o: ["Membuat soal menjadi lebih banyak", "Memecah soal menjadi langkah-langkah kecil yang bisa diselesaikan satu per satu", "Mengabaikan angka-angka yang sulit", "Mencontek teman"], a: "Memecah soal menjadi langkah-langkah kecil yang bisa diselesaikan satu per satu", p: "Misalnya, memecahnya menjadi: 'apa yang diketahui?', 'apa yang ditanyakan?', 'rumus apa yang dipakai?', 'lakukan perhitungan'." },
+                { q: "Saat kamu melihat awan gelap dan mendengar guntur, kamu tahu kemungkinan akan hujan. Kemampuan memprediksi ini berdasarkan pengalaman adalah...", o: ["Pengenalan Pola", "Dekomposisi", "Abstraksi", "Algoritma"], a: "Pengenalan Pola", p: "Kamu mengenali pola tanda-tanda alam yang biasanya mendahului hujan." },
+                { q: "Flowchart atau diagram alir digunakan untuk merepresentasikan...", o: ["Abstraksi", "Dekomposisi", "Pengenalan Pola", "Algoritma"], a: "Algoritma", p: "Flowchart secara visual menggambarkan langkah-langkah dan alur keputusan dari sebuah algoritma." }
             ],
             medium: [
-                { q: "Kamu ingin merencanakan pesta ulang tahun. Penerapan dekomposisi yang paling tepat adalah...", o: ["Langsung membeli kue dan dekorasi", "Memecah rencana menjadi: menentukan daftar tamu, memilih lokasi, membuat anggaran, dan menyusun acara", "Menanyakan teman tentang ide pesta", "Berharap pestanya berjalan lancar"], a: "Memecah rencana menjadi: menentukan daftar tamu, memilih lokasi, membuat anggaran, dan menyusun acara", p: "Dekomposisi membantu memastikan tidak ada detail penting yang terlewat dengan membaginya menjadi tugas-tugas yang lebih spesifik." },
-                { q: "Saat bermain catur, seorang pemain profesional bisa mengenali posisi-posisi buah catur yang menguntungkan karena sering melihatnya di pertandingan sebelumnya. Kemampuan ini adalah hasil dari...", o: ["Algoritma yang kaku", "Pengenalan Pola yang tajam", "Dekomposisi yang rumit", "Abstraksi yang berlebihan"], a: "Pengenalan Pola yang tajam", p: "Pemain tersebut telah menginternalisasi banyak pola permainan, sehingga ia bisa dengan cepat mengidentifikasi situasi dan strategi terbaik." },
-                { q: "Setir pada mobil adalah bentuk abstraksi dari sistem kemudi yang kompleks (roda gigi, poros, dll). Tujuan abstraksi dalam konteks ini adalah...", o: ["Membuat mobil lebih mahal", "Menyembunyikan cara kerja mesin", "Memudahkan pengemudi untuk mengontrol arah mobil tanpa perlu tahu detail teknisnya", "Agar setir bisa diganti-ganti"], a: "Memudahkan pengemudi untuk mengontrol arah mobil tanpa perlu tahu detail teknisnya", p: "Abstraksi menciptakan antarmuka yang sederhana (setir) untuk mengoperasikan sistem yang rumit (sistem kemudi), meningkatkan kemudahan penggunaan." },
-                { q: "Sebuah algoritma harus 'unambiguous' (tidak ambigu). Artinya...", o: ["Algoritma harus bisa diubah-ubah", "Setiap langkah dalam algoritma harus memiliki satu makna yang jelas dan pasti", "Algoritma harus ditulis dalam bahasa pemrograman", "Algoritma harus sangat panjang"], a: "Setiap langkah dalam algoritma harus memiliki satu makna yang jelas dan pasti", p: "Jika sebuah langkah bisa diartikan macam-macam, maka komputer atau orang yang menjalankannya akan bingung. Oleh karena itu, setiap instruksi harus presisi." },
-                { q: "Saat mencari file di komputermu, kamu menggunakan fitur 'search' dan mengetik nama file. Komponen berpikir komputasional yang paling dominan kamu manfaatkan adalah...", o: ["Dekomposisi", "Pengenalan Pola", "Abstraksi", "Algoritma"], a: "Abstraksi", p: "Kamu berinteraksi dengan antarmuka sederhana (kotak pencarian) tanpa perlu tahu algoritma kompleks yang digunakan sistem operasi untuk mencari file di seluruh hard drive. Ini adalah abstraksi." },
-                { q: "Seorang ilmuwan data menganalisis data penjualan dan menemukan pola bahwa 'setiap kali produk A dibeli, produk B juga sering dibeli'. Pola ini dapat digunakan untuk...", o: ["Menurunkan harga produk A", "Membuat strategi promosi 'bundling' produk A dan B", "Menghapus produk B dari toko", "Mengubah kemasan produk A"], a: "Membuat strategi promosi 'bundling' produk A dan B", p: "Pengenalan pola dalam data dapat menghasilkan wawasan bisnis yang berharga, seperti strategi penempatan produk atau promosi silang." },
-                { q: "Kamu tersesat di kota dan ingin kembali ke hotel. Kamu memecah masalah ini menjadi: (1) Cari tahu posisiku sekarang, (2) Cari tahu lokasi hotel, (3) Cari rute terbaik. Ini adalah penerapan dari...", o: ["Algoritma", "Dekomposisi", "Abstraksi", "Pengenalan Pola"], a: "Dekomposisi", p: "Masalah 'kembali ke hotel' dipecah menjadi sub-masalah yang lebih spesifik dan berurutan untuk diselesaikan." },
-                { q: "Diagram alir (flowchart) adalah representasi visual dari sebuah...", o: ["Dekomposisi", "Pola", "Abstraksi", "Algoritma"], a: "Algoritma", p: "Flowchart menggunakan simbol-simbol standar untuk menggambarkan urutan langkah dan logika keputusan dalam suatu algoritma, membuatnya lebih mudah dipahami." },
-                { q: "Dalam permainan 'tebak angka' (1-100), strategi yang paling efisien adalah menebak angka tengah (50), lalu jika tebakan salah, menebak angka tengah dari sisa rentang berikutnya. Strategi ini adalah sebuah...", o: ["Pola acak", "Algoritma pencarian biner (binary search)", "Dekomposisi masalah", "Abstraksi angka"], a: "Algoritma pencarian biner (binary search)", p: "Ini adalah algoritma spesifik yang sangat efisien untuk mencari sesuatu dalam kumpulan data yang terurut dengan cara membaginya dua secara berulang." },
-                { q: "Manfaat utama dari Abstraksi adalah...", o: ["Membuat masalah lebih rumit", "Mengurangi kompleksitas dengan menyembunyikan detail yang tidak relevan", "Menambah jumlah langkah penyelesaian", "Menjamin solusi yang ditemukan pasti benar"], a: "Mengurangi kompleksitas dengan menyembunyikan detail yang tidak relevan", p: "Dengan fokus hanya pada hal-hal penting, kita bisa berpikir lebih jernih dan merancang solusi pada level konseptual tanpa terjebak dalam detail teknis." },
-                { q: "Seorang dokter mendiagnosis penyakit dengan cara: (1) Mengumpulkan gejala dari pasien, (2) Mencari pola gejala yang cocok dengan deskripsi penyakit tertentu, (3) Memberikan resep obat sebagai solusi. Langkah (2) adalah contoh dari...", o: ["Dekomposisi", "Pengenalan Pola", "Abstraksi", "Algoritma"], a: "Pengenalan Pola", p: "Dokter menggunakan pengetahuannya untuk mengenali pola dari sekumpulan gejala untuk mengidentifikasi penyakitnya." },
-                { q: "Untuk merapikan koleksi buku, kamu memutuskan untuk mengelompokkannya berdasarkan genre (fiksi, non-fiksi, komik). Tindakan pengelompokan ini didasari oleh komponen...", o: ["Algoritma", "Pengenalan Pola", "Dekomposisi", "Abstraksi"], a: "Pengenalan Pola", p: "Kamu mengenali pola atau kategori (genre) dan menggunakannya untuk menyusun atau mengorganisir koleksi bukumu." },
-                { q: "Manakah dari berikut ini yang menunjukkan proses dekomposisi?", o: ["Menyimpulkan bahwa semua mamalia menyusui", "Membuat ringkasan sebuah film", "Menyusun rencana perjalanan harian menjadi daftar kegiatan per jam", "Mengikuti tutorial video memasak"], a: "Menyusun rencana perjalanan harian menjadi daftar kegiatan per jam", p: "Memecah satu hari perjalanan menjadi unit-unit waktu yang lebih kecil adalah contoh dekomposisi." },
-                { q: "Ketika kamu menggunakan remote TV untuk mengganti channel, kamu tidak perlu tahu tentang sirkuit elektronik di dalamnya. Remote TV adalah bentuk... dari sistem kontrol televisi.", o: ["Algoritma", "Abstraksi", "Pola", "Dekomposisi"], a: "Abstraksi", p: "Remote menyediakan antarmuka sederhana (tombol) untuk mengendalikan fungsi kompleks (penerima sinyal, pemindah frekuensi) di dalam TV." },
-                { q: "Algoritma yang baik harus 'finite' (terbatas). Artinya...", o: ["Algoritma harus menghasilkan output", "Algoritma harus bisa berhenti setelah sejumlah langkah tertentu", "Algoritma harus memiliki input", "Algoritma harus efisien"], a: "Algoritma harus bisa berhenti setelah sejumlah langkah tertentu", p: "Sebuah algoritma tidak boleh berjalan selamanya (infinite loop). Harus ada titik akhir yang jelas di mana masalah dianggap selesai." },
-                { q: "Seorang musisi menciptakan lagu dengan struktur: Intro -> Verse 1 -> Chorus -> Verse 2 -> Chorus -> Bridge -> Chorus -> Outro. Pengulangan bagian 'Chorus' adalah penerapan dari...", o: ["Dekomposisi", "Pengenalan Pola", "Abstraksi", "Algoritma"], a: "Pengenalan Pola", p: "Musisi menggunakan pola (struktur berulang) untuk membuat lagu yang enak didengar dan mudah diingat." },
-                { q: "Membuat 'To-Do List' atau daftar pekerjaan untuk hari ini adalah cara sederhana untuk menerapkan...", o: ["Hanya Algoritma", "Hanya Dekomposisi", "Dekomposisi dan Algoritma", "Abstraksi"], a: "Dekomposisi dan Algoritma", p: "Kita memecah pekerjaan seharian (dekomposisi) dan menyusunnya dalam urutan prioritas (algoritma sederhana)." },
-                { q: "Saat merancang sebuah aplikasi, desainer membuat 'wireframe' yang hanya menunjukkan tata letak dan tombol, tanpa warna atau gambar. Wireframe ini adalah bentuk...", o: ["Algoritma", "Abstraksi", "Dekomposisi", "Pengenalan Pola"], a: "Abstraksi", p: "Wireframe adalah abstraksi dari desain final, fokus pada struktur dan fungsionalitas, mengabaikan detail visual." },
-                { q: "Urutan prioritas operasi matematika (kerjakan dalam kurung, lalu perkalian/pembagian, lalu penjumlahan/pengurangan) adalah sebuah...", o: ["Dekomposisi", "Abstraksi", "Pola", "Algoritma"], a: "Algoritma", p: "Aturan ini adalah algoritma yang harus diikuti untuk memastikan hasil perhitungan matematika konsisten dan benar." },
-                { q: "Tujuan utama dekomposisi adalah menyederhanakan masalah. Apa risiko jika dekomposisi dilakukan secara berlebihan (terlalu detail)?", o: ["Masalah menjadi lebih cepat selesai", "Bisa kehilangan gambaran besar atau hubungan antar bagian", "Solusi menjadi lebih efisien", "Tidak ada risiko"], a: "Bisa kehilangan gambaran besar atau hubungan antar bagian", p: "Dekomposisi yang terlalu rinci bisa membuat kita fokus pada detail kecil dan lupa bagaimana bagian-bagian itu saling terhubung untuk menyelesaikan masalah utama." },
-                { q: "Berpikir komputasional dapat diterapkan pada semua bidang, tidak hanya informatika. Pernyataan ini...", o: ["Salah, karena hanya untuk programmer", "Benar, karena ini adalah metode pemecahan masalah yang universal", "Salah, karena lebih cocok untuk matematika", "Benar, tapi tidak ada gunanya"], a: "Benar, karena ini adalah metode pemecahan masalah yang universal", p: "Prinsip-prinsip dekomposisi, pola, abstraksi, dan algoritma dapat membantu menyelesaikan masalah dalam seni, bisnis, sains, dan kehidupan sehari-hari." },
-                { q: "Bahasa isyarat menggunakan gerakan tangan sebagai... dari kata-kata dan konsep.", o: ["Algoritma", "Dekomposisi", "Abstraksi", "Pola"], a: "Abstraksi", p: "Setiap gerakan adalah representasi atau simbol (abstraksi) yang disederhanakan untuk sebuah makna yang lebih kompleks." },
-                { q: "Membuat ringkasan dari sebuah bab buku pelajaran adalah latihan yang baik untuk melatih kemampuan...", o: ["Algoritma", "Pengenalan Pola", "Abstraksi", "Dekomposisi"], a: "Abstraksi", p: "Saat membuat ringkasan, kita harus memilah informasi penting dan mengabaikan detail atau contoh yang tidak perlu, yang merupakan inti dari abstraksi." },
-                { q: "Sistem penomoran rumah di komplek perumahan (Blok A1, A2, A3; Blok B1, B2, B3) menggunakan prinsip...", o: ["Dekomposisi", "Pengenalan Pola", "Abstraksi", "Algoritma"], a: "Pengenalan Pola", p: "Sistem ini menggunakan pola yang jelas (Blok Huruf, Nomor Urut) untuk memudahkan pencarian dan pengorganisasian alamat." },
-                { q: "Seorang chef mencoba resep baru. Ia mengikuti langkah-langkahnya dengan tepat. Jika hasilnya tidak enak, kemungkinan besar masalahnya ada pada...", o: ["Proses dekomposisi resep", "Algoritma (resep) itu sendiri", "Kemampuan abstraksinya", "Pengenalan polanya"], a: "Algoritma (resep) itu sendiri", p: "Jika langkah-langkah (algoritma) diikuti dengan benar namun hasilnya salah, maka kemungkinan besar ada yang salah dengan algoritma itu sendiri (misalnya takaran salah, urutan keliru)." },
-                { q: "Definisi berpikir komputasional yang paling komprehensif adalah...", o: ["Kemampuan coding", "Sebuah proses berpikir berulang (iteratif) untuk memformulasikan masalah dan solusinya", "Penggunaan software Microsoft Office", "Cara kerja CPU"], a: "Sebuah proses berpikir berulang (iteratif) untuk memformulasikan masalah dan solusinya", p: "Definisi ini mencakup aspek formulasi masalah dan sifat iteratif (berulang), yang menunjukkan bahwa ini adalah sebuah proses, bukan satu tindakan tunggal." },
-                { q: "Pondasi utama dari berpikir komputasional adalah...", o: ["Dekomposisi, Pengenalan Pola, Abstraksi, Algoritma", "Kreativitas, Inovasi, Kolaborasi, Komunikasi", "Logika, Matematika, Fisika, Kimia", "Observasi, Hipotesis, Eksperimen, Kesimpulan"], a: "Dekomposisi, Pengenalan Pola, Abstraksi, Algoritma", p: "Keempat komponen ini sering disebut sebagai 'empat pilar' atau fondasi dari berpikir komputasional." },
-                { q: "Contoh yang paling baik untuk abstraksi adalah...", o: ["Memecah mobil menjadi mesin, roda, dan bodi", "Jadwal kereta api yang hanya menampilkan nama stasiun dan waktu", "Melihat bahwa semua novel misteri memiliki detektif, kasus, dan pelaku", "Urutan cara menyalakan komputer"], a: "Jadwal kereta api yang hanya menampilkan nama stasiun dan waktu", p: "Jadwal ini adalah abstraksi karena menyajikan informasi penting (stasiun, waktu) dan menghilangkan detail tidak relevan (jenis kereta, warna kursi, pemandangan)." },
-                { q: "Urutan langkah-langkah untuk mencari kata di kamus (buka bagian huruf awal, cari kata berdasarkan urutan alfabet) adalah contoh dari...", o: ["Abstraksi", "Algoritma", "Dekomposisi", "Pengenalan Pola"], a: "Algoritma", p: "Ini adalah algoritma pencarian yang efisien yang kita semua gunakan tanpa sadar." },
-                { q: "Bagaimana berpikir komputasional membantu kita menjadi pembelajar yang lebih baik?", o: ["Dengan membuat kita malas berpikir", "Dengan memberikan kita kemampuan untuk memecah materi sulit menjadi bagian-bagian kecil (dekomposisi) dan menemukan inti sari (abstraksi)", "Dengan mengandalkan komputer untuk semua tugas", "Dengan cara menghafal semua informasi"], a: "Dengan memberikan kita kemampuan untuk memecah materi sulit menjadi bagian-bagian kecil (dekomposisi) dan menemukan inti sari (abstraksi)", p: "Berpikir komputasional memberikan kita 'alat' untuk menghadapi materi pelajaran yang kompleks dengan lebih terstruktur dan efektif." }
+                { q: "Untuk membuat sebuah game, tim pengembang membaginya menjadi: desain karakter, pembuatan level, pemrograman logika, dan pengujian. Proses pembagian kerja ini adalah penerapan dari...", o: ["Algoritma", "Abstraksi", "Dekomposisi", "Pengenalan Pola"], a: "Dekomposisi", p: "Proyek besar 'membuat game' dipecah menjadi modul-modul yang lebih kecil dan dapat dikerjakan secara paralel atau berurutan." },
+                { q: "Seorang detektif menemukan sidik jari, jejak sepatu, dan gaya entri yang sama di beberapa lokasi pencurian. Ia menyimpulkan pelakunya sama. Detektif ini menggunakan...", o: ["Abstraksi", "Dekomposisi", "Pengenalan Pola", "Algoritma"], a: "Pengenalan Pola", p: "Detektif mengenali pola atau modus operandi yang konsisten dari pelaku kejahatan." },
+                { q: "Saat kamu mengendarai mobil, kamu berinteraksi dengan setir, pedal gas, dan rem. Ini adalah 'antarmuka' mobil. Kamu tidak perlu tahu detail mesin. Antarmuka ini adalah bentuk dari...", o: ["Dekomposisi", "Pengenalan Pola", "Abstraksi", "Algoritma"], a: "Abstraksi", p: "Abstraksi menyederhanakan sistem yang kompleks (mobil) menjadi interaksi yang mudah digunakan, menyembunyikan detail teknis yang tidak perlu." },
+                { q: "Sebuah program komputer diberikan instruksi: 'Jika nilai > 75, tampilkan 'Lulus'. Jika tidak, tampilkan 'Gagal'.' Instruksi kondisional ini adalah bagian dari...", o: ["Dekomposisi", "Pengenalan Pola", "Abstraksi", "Algoritma"], a: "Algoritma", p: "Ini adalah bagian dari algoritma yang mengandung alur keputusan (percabangan) untuk menentukan hasil berdasarkan suatu kondisi." },
+                { q: "Rencana perjalanan liburan yang berisi: Hari 1 - Kunjungi Museum, Hari 2 - Pergi ke Pantai, Hari 3 - Belanja oleh-oleh, adalah contoh...", o: ["Algoritma", "Dekomposisi", "Abstraksi", "Pengenalan Pola"], a: "Algoritma", p: "Rencana perjalanan (itinerary) adalah sebuah algoritma atau urutan langkah kegiatan yang akan dilakukan." },
+                { q: "Seorang arsitek merancang sebuah gedung dengan memikirkan fondasi, struktur lantai, dinding, dan atap secara terpisah. Ini adalah...", o: ["Dekomposisi", "Abstraksi", "Pengenalan Pola", "Algoritma"], a: "Dekomposisi", p: "Arsitek memecah masalah kompleks 'membangun gedung' menjadi komponen-komponen struktural yang lebih sederhana." },
+                { q: "Kamu menyadari bahwa setiap kali kamu lupa menyiram tanaman, daunnya menjadi layu. Ini adalah...", o: ["Pengenalan Pola", "Abstraksi", "Dekomposisi", "Algoritma"], a: "Pengenalan Pola", p: "Kamu mengenali pola sebab-akibat antara tidak menyiram tanaman dan kondisi tanaman yang layu." },
+                { q: "Sebuah aplikasi peta di ponselmu menampilkan ikon restoran, pom bensin, dan rumah sakit. Ikon-ikon ini adalah bentuk...", o: ["Abstraksi", "Dekomposisi", "Pengenalan Pola", "Algoritma"], a: "Abstraksi", p: "Ikon adalah representasi visual yang sederhana (abstraksi) dari objek atau layanan di dunia nyata, menyembunyikan detail seperti bentuk bangunan atau mereknya." },
+                { q: "Untuk mencari kata di kamus, kamu pertama membuka bagian huruf awal kata, lalu mencari kata tersebut secara urut. Metode pencarian ini adalah sebuah...", o: ["Algoritma", "Abstraksi", "Dekomposisi", "Pengenalan Pola"], a: "Algoritma", p: "Ini adalah algoritma yang efisien untuk menemukan sebuah kata dalam kumpulan data yang sudah terurut (kamus)." },
+                { q: "Saat menyelesaikan puzzle jigsaw, strategi yang umum adalah memisahkan potongan pinggir terlebih dahulu, lalu mengelompokkan potongan berdasarkan warna. Strategi ini adalah penerapan dari...", o: ["Dekomposisi dan Pengenalan Pola", "Abstraksi dan Algoritma", "Hanya Algoritma", "Hanya Abstraksi"], a: "Dekomposisi dan Pengenalan Pola", p: "Memisahkan potongan pinggir adalah dekomposisi (memecah masalah). Mengelompokkan berdasarkan warna adalah pengenalan pola." },
+                { q: "Manakah dari berikut ini yang paling baik dijelaskan sebagai Dekomposisi?", o: ["Membuat ringkasan cerita", "Menguraikan resep menjadi daftar bahan dan langkah-langkah", "Mengikuti petunjuk arah dari GPS", "Menyadari semua kucing mengeong"], a: "Menguraikan resep menjadi daftar bahan dan langkah-langkah", p: "Resep itu sendiri adalah algoritma, tetapi proses 'membuat resep' melibatkan dekomposisi (memikirkan bahan dan langkah secara terpisah)." },
+                { q: "Seorang ilmuwan data melihat lonjakan penjualan es krim setiap kali suhu udara meningkat. Ini adalah...", o: ["Pengenalan Pola", "Abstraksi", "Dekomposisi", "Algoritma"], a: "Pengenalan Pola", p: "Ilmuwan tersebut menemukan korelasi atau pola antara dua variabel: suhu udara dan penjualan es krim." },
+                { q: "Saat membuat jadwal pelajaran, kamu hanya fokus pada nama mata pelajaran, guru, dan jam, bukan pada materi apa yang akan diajarkan di setiap jam. Ini adalah penerapan...", o: ["Abstraksi", "Dekomposisi", "Pengenalan Pola", "Algoritma"], a: "Abstraksi", p: "Kamu mengabaikan detail materi (tidak relevan untuk penjadwalan) dan fokus pada informasi penting (mapel, guru, jam)." },
+                { q: "Sebuah flowchart yang menggambarkan proses 'jika lapar, maka makan, jika tidak, lanjutkan aktivitas' adalah representasi visual dari...", o: ["Algoritma", "Abstraksi", "Dekomposisi", "Pengenalan Pola"], a: "Algoritma", p: "Flowchart tersebut menggambarkan sebuah algoritma sederhana yang melibatkan pengambilan keputusan." },
+                { q: "Mengorganisir file di komputermu ke dalam folder-folder seperti 'Dokumen', 'Gambar', dan 'Musik' adalah bentuk...", o: ["Dekomposisi", "Pengenalan Pola", "Abstraksi", "Algoritma"], a: "Dekomposisi", p: "Kamu memecah 'semua file' menjadi kelompok-kelompok yang lebih kecil dan terorganisir berdasarkan jenisnya." },
+                { q: "Seorang musisi tahu bahwa sebagian besar lagu pop mengikuti struktur: Intro - Verse - Chorus - Verse - Chorus - Bridge - Chorus - Outro. Pengetahuan ini adalah bentuk...", o: ["Pengenalan Pola", "Abstraksi", "Dekomposisi", "Algoritma"], a: "Pengenalan Pola", p: "Musisi tersebut mengenali pola struktur yang umum digunakan dalam genre musik pop." },
+                { q: "Untuk memahami cara kerja jantung, kita sering melihat diagram sederhana yang menunjukkan empat ruang dan aliran darah, tanpa menggambarkan setiap sel otot atau saraf. Diagram ini adalah...", o: ["Abstraksi", "Dekomposisi", "Pengenalan Pola", "Algoritma"], a: "Abstraksi", p: "Diagram tersebut adalah model yang disederhanakan (abstraksi) dari organ jantung yang sangat kompleks." },
+                { q: "Proses mengurutkan angka dari yang terkecil hingga terbesar menggunakan metode 'bubble sort' adalah contoh penerapan...", o: ["Algoritma", "Abstraksi", "Dekomposisi", "Pengenalan Pola"], a: "Algoritma", p: "Bubble sort adalah nama sebuah algoritma spesifik untuk melakukan pengurutan data." },
+                { q: "Saat merencanakan pesta ulang tahun, kamu membuat daftar tugas: 1. Buat daftar tamu, 2. Kirim undangan, 3. Pesan kue, 4. Siapkan dekorasi. Ini adalah...", o: ["Dekomposisi dan Algoritma", "Hanya Pengenalan Pola", "Hanya Abstraksi", "Abstraksi dan Pengenalan Pola"], a: "Dekomposisi dan Algoritma", p: "Membuat daftar tugas adalah dekomposisi. Urutan tugas tersebut membentuk sebuah algoritma perencanaan." },
+                { q: "Seorang pemain catur yang handal dapat mengenali posisi buah catur di papan dan langsung tahu strategi apa yang harus dijalankan. Kemampuan ini adalah...", o: ["Pengenalan Pola", "Dekomposisi", "Abstraksi", "Algoritma"], a: "Pengenalan Pola", p: "Pemain tersebut telah mempelajari dan mengenali ribuan pola permainan catur." },
+                { q: "Konsep 'variabel' dalam pemrograman, yang bisa menyimpan angka atau teks tanpa kita peduli bagaimana komputer menyimpannya di memori, adalah bentuk...", o: ["Abstraksi", "Dekomposisi", "Pengenalan Pola", "Algoritma"], a: "Abstraksi", p: "Variabel adalah abstraksi dari lokasi memori. Kita hanya perlu tahu namanya, bukan alamat fisiknya." },
+                { q: "Petunjuk 'Cuci dengan air dingin, jangan gunakan pemutih, setrika dengan suhu rendah' pada label pakaian adalah sebuah...", o: ["Algoritma", "Abstraksi", "Dekomposisi", "Pengenalan Pola"], a: "Algoritma", p: "Ini adalah serangkaian instruksi (algoritma) untuk merawat pakaian tersebut dengan benar." },
+                { q: "Membagi sebuah esai menjadi paragraf pendahuluan, isi, dan penutup adalah contoh...", o: ["Dekomposisi", "Pengenalan Pola", "Abstraksi", "Algoritma"], a: "Dekomposisi", p: "Struktur esai dipecah menjadi bagian-bagian logis yang lebih kecil." },
+                { q: "Seorang peramal cuaca melihat pola pergerakan awan dan tekanan udara untuk memprediksi cuaca esok hari. Ini adalah penerapan...", o: ["Pengenalan Pola", "Dekomposisi", "Abstraksi", "Algoritma"], a: "Pengenalan Pola", p: "Mereka menggunakan data historis untuk mengenali pola yang mengindikasikan perubahan cuaca." },
+                { q: "Saat kamu menggambar denah rumah, kamu hanya menggambar dinding dan pintu sebagai garis, bukan sebagai tembok bata yang tebal. Ini adalah...", o: ["Abstraksi", "Dekomposisi", "Pengenalan Pola", "Algoritma"], a: "Abstraksi", p: "Kamu menyederhanakan representasi objek nyata untuk fokus pada tata letak (informasi penting)." },
+                { q: "Prosedur standar operasional (SOP) di sebuah perusahaan adalah kumpulan dari...", o: ["Algoritma", "Abstraksi", "Dekomposisi", "Pengenalan Pola"], a: "Algoritma", p: "SOP berisi algoritma atau langkah-langkah baku yang harus diikuti karyawan untuk melakukan tugas tertentu." },
+                { q: "Seorang siswa mengerjakan soal cerita fisika dengan cara: 1. Menulis apa yang diketahui. 2. Menulis apa yang ditanya. 3. Memilih rumus yang tepat. 4. Melakukan perhitungan. Siswa ini menerapkan...", o: ["Dekomposisi dan Algoritma", "Hanya Abstraksi", "Hanya Pengenalan Pola", "Abstraksi dan Algoritma"], a: "Dekomposisi dan Algoritma", p: "Langkah 1-3 adalah dekomposisi (memecah masalah), dan keseluruhan urutan 1-4 adalah algoritma penyelesaian." },
+                { q: "Kamu melihat banyak anjing berbeda (poodle, husky, bulldog) tetapi kamu bisa mengenali semuanya sebagai 'anjing'. Kemampuan ini adalah...", o: ["Pengenalan Pola dan Abstraksi", "Hanya Dekomposisi", "Hanya Algoritma", "Dekomposisi dan Algoritma"], a: "Pengenalan Pola dan Abstraksi", p: "Kamu mengenali pola ciri umum 'anjing' (kaki empat, menggonggong) dan mengabstraksikan perbedaan detail (warna, ukuran bulu)." },
+                { q: "Dalam permainan tebak kata, kamu diberi petunjuk dan mencoba menebak kata huruf demi huruf. Strategi yang kamu gunakan adalah...", o: ["Algoritma", "Abstraksi", "Dekomposisi", "Pengenalan Pola"], a: "Algoritma", p: "Kamu mengikuti algoritma tertentu, misalnya mencoba huruf vokal terlebih dahulu, lalu huruf konsonan yang paling umum." },
+                { q: "Saat merakit komputer, kamu harus memasang komponen seperti CPU, RAM, dan Hard Drive ke motherboard secara terpisah sebelum merakitnya menjadi satu unit. Ini adalah...", o: ["Dekomposisi", "Pengenalan Pola", "Abstraksi", "Algoritma"], a: "Dekomposisi", p: "Proses perakitan komputer dipecah menjadi pemasangan komponen-komponen yang lebih kecil." }
             ],
             hard: [
-                { q: "Saat mengembangkan game, seorang programmer memisahkan logika pergerakan karakter, sistem penilaian, dan desain level menjadi modul-modul terpisah. Pendekatan ini adalah penerapan dari...", o: ["Abstraksi, karena menyembunyikan detail", "Dekomposisi, untuk mengelola kompleksitas pengembangan", "Algoritma, karena game adalah urutan langkah", "Pengenalan Pola, untuk mencari bug"], a: "Dekomposisi, untuk mengelola kompleksitas pengembangan", p: "Dengan memecah game menjadi modul independen (dekomposisi), tim dapat mengerjakan bagian yang berbeda secara paralel dan lebih mudah untuk melacak kesalahan (debug)." },
-                { q: "Seorang dokter melihat rekam medis ribuan pasien dan menemukan korelasi kuat antara kebiasaan merokok dengan risiko kanker paru-paru. Dalam berpikir komputasional, proses ini paling sesuai dengan...", o: ["Dekomposisi data pasien", "Pengenalan Pola dalam data berskala besar", "Abstraksi gejala penyakit", "Algoritma pengobatan"], a: "Pengenalan Pola dalam data berskala besar", p: "Ini adalah contoh nyata bagaimana pengenalan pola (sering disebut 'data mining') digunakan dalam sains untuk menemukan hubungan tersembunyi dari kumpulan data yang sangat besar." },
-                { q: "Konsep 'Objek' dalam Pemrograman Berorientasi Objek (OOP) seperti 'Mobil' yang memiliki data (warna, kecepatan) dan fungsi (maju, mundur) adalah contoh tingkat lanjut dari...", o: ["Dekomposisi", "Algoritma", "Abstraksi", "Pengenalan Pola"], a: "Abstraksi", p: "Konsep 'Objek' adalah bentuk abstraksi yang kuat, di mana detail implementasi yang rumit dibungkus (encapsulation) menjadi sebuah unit yang mudah digunakan." },
-                { q: "Dua algoritma dibuat untuk mengurutkan 1 juta angka. Algoritma A selesai dalam 1 detik, Algoritma B selesai dalam 10 menit. Meskipun keduanya benar, Algoritma A lebih baik karena memenuhi kriteria...", o: ["Efektivitas (menghasilkan output benar)", "Efisiensi (menggunakan sumber daya minimal)", "Ambiguitas (memiliki banyak arti)", "Finiteness (bisa berhenti)"], a: "Efisiensi (menggunakan sumber daya minimal)", p: "Selain harus benar, algoritma yang baik juga harus efisien dalam hal waktu (time complexity) dan memori (space complexity) yang dibutuhkan." },
-                { q: "Mana dari empat komponen berpikir komputasional yang paling fundamental dalam tahap *perumusan masalah*?", o: ["Algoritma", "Dekomposisi dan Abstraksi", "Pengenalan Pola", "Hanya Algoritma"], a: "Dekomposisi dan Abstraksi", p: "Sebelum bisa membuat algoritma, kita harus terlebih dahulu memahami masalahnya dengan memecahnya (dekomposisi) dan mengidentifikasi bagian-bagian intinya (abstraksi)." },
-                { q: "Sistem rekomendasi di platform streaming musik menganalisis lagu yang kamu sukai dan menemukan pengguna lain dengan selera musik yang 'mirip'. Kemudian, sistem merekomendasikan lagu yang disukai pengguna 'mirip' itu tetapi belum kamu dengar. Teknik ini sangat bergantung pada...", o: ["Dekomposisi playlist", "Pengenalan Pola dan kesamaan (similarity)", "Abstraksi lirik lagu", "Algoritma pengacakan lagu"], a: "Pengenalan Pola dan kesamaan (similarity)", p: "Inti dari sistem rekomendasi adalah menemukan pola dalam perilaku pengguna untuk memprediksi preferensi mereka." },
-                { q: "Anda diminta untuk membuat algoritma 'mencari jarum di tumpukan jerami'. Algoritma yang paling naif adalah 'ambil satu jerami, periksa apakah itu jarum, ulangi sampai ketemu'. Bagaimana cara meningkatkan efisiensi algoritma ini?", o: ["Dengan menambah jumlah jerami", "Dengan menggunakan magnet yang besar (mengubah pendekatan/alat)", "Dengan memeriksa setiap jerami dua kali", "Dengan mencari di malam hari"], a: "Dengan menggunakan magnet yang besar (mengubah pendekatan/alat)", p: "Berpikir komputasional tidak hanya tentang membuat langkah-langkah, tetapi juga memikirkan cara paling cerdas dan efisien. Menggunakan magnet adalah perubahan fundamental dalam algoritma yang jauh lebih efisien." },
-                { q: "Sebuah program gagal berjalan. Langkah pertama seorang programmer adalah mencari tahu di bagian mana kesalahan terjadi (misal: di bagian input, proses, atau output). Langkah ini adalah...", o: ["Abstraksi bug", "Dekomposisi masalah (debugging)", "Pola error", "Algoritma perbaikan"], a: "Dekomposisi masalah (debugging)", p: "Debugging adalah contoh klasik dekomposisi. Daripada memeriksa seluruh kode, programmer melokalisasi masalah ke bagian yang lebih kecil." },
-                { q: "Pernyataan 'Semua burung bisa terbang' adalah sebuah abstraksi yang salah karena mengabaikan detail penting (misalnya, burung unta, pinguin). Hal ini menunjukkan bahwa abstraksi yang buruk dapat menyebabkan...", o: ["Solusi yang lebih cepat", "Model atau kesimpulan yang tidak akurat", "Kode yang lebih efisien", "Pola yang lebih jelas"], a: "Model atau kesimpulan yang tidak akurat", p: "Kunci dari abstraksi yang baik adalah membuang detail yang *tidak relevan*. Jika detail yang dibuang ternyata relevan, maka abstraksi tersebut akan menghasilkan model yang salah." },
-                { q: "Manakah dari berikut ini yang merupakan contoh penerapan berpikir komputasional untuk memecahkan masalah sosial?", o: ["Mengeluh tentang kemacetan di media sosial", "Merancang sistem lampu lalu lintas adaptif yang menggunakan data kepadatan kendaraan untuk mengatur durasi lampu hijau (abstraksi, algoritma, pola)", "Menyalahkan pemerintah atas kemacetan", "Menghindari jalanan yang macet"], a: "Merancang sistem lampu lalu lintas adaptif yang menggunakan data kepadatan kendaraan untuk mengatur durasi lampu hijau (abstraksi, algoritma, pola)", p: "Ini adalah solusi sistematis yang menggunakan data (pola), menyederhanakan masalah (abstraksi), dan menerapkan aturan (algoritma) untuk mengatasi masalah kompleks." },
-                { q: "Dalam sebuah resep (algoritma), terdapat instruksi 'tambahkan garam secukupnya'. Mengapa instruksi ini dianggap sebagai algoritma yang buruk untuk komputer?", o: ["Karena komputer tidak suka garam", "Karena instruksi 'secukupnya' bersifat ambigu dan subjektif", "Karena garam sulit ditemukan", "Karena instruksi harus panjang"], a: "Karena instruksi 'secukupnya' bersifat ambigu dan subjektif", p: "Komputer membutuhkan perintah yang presisi dan kuantitatif (misalnya, 'tambahkan 5 gram garam'). Instruksi kualitatif seperti 'secukupnya' tidak dapat dieksekusi." },
-                { q: "Seorang siswa mengerjakan 10 soal matematika. Dia menyadari bahwa soal no 1, 4, dan 7 dapat diselesaikan dengan rumus Pythagoras. Kemampuan ini menunjukkan...", o: ["Dekomposisi soal", "Pengenalan Pola", "Abstraksi rumus", "Algoritma menghitung"], a: "Pengenalan Pola", p: "Siswa tersebut mengenali pola atau tipe masalah yang sama dan tahu bahwa solusi yang sama (rumus Pythagoras) dapat diterapkan." },
-                { q: "Saat merancang jembatan, seorang insinyur menggunakan hukum-hukum fisika (seperti hukum Newton) untuk memodelkan kekuatan dan beban. Hukum fisika dalam konteks ini berfungsi sebagai bentuk...", o: ["Dekomposisi jembatan", "Algoritma pembangunan", "Abstraksi dari realitas yang kompleks", "Pola cuaca"], a: "Abstraksi dari realitas yang kompleks", p: "Hukum fisika adalah model matematika (abstraksi) yang menyederhanakan realitas yang sangat kompleks untuk memungkinkan kita membuat prediksi dan perhitungan yang akurat." },
-                { q: "Membuat flowchart untuk proses 'Login Pengguna' yang mencakup kondisi 'jika password salah, tampilkan pesan error; jika benar, masuk ke halaman utama' adalah penerapan dari...", o: ["Dekomposisi dan Algoritma dengan logika percabangan (conditional logic)", "Pengenalan Pola dan Abstraksi", "Hanya Dekomposisi", "Hanya Abstraksi"], a: "Dekomposisi dan Algoritma dengan logika percabangan (conditional logic)", p: "Flowchart ini tidak hanya berisi urutan langkah, tetapi juga aturan keputusan ('jika...maka...'), yang merupakan bagian penting dari algoritma yang canggih." },
-                { q: "Seorang anak kecil belajar bahwa benda bulat (bola, kelereng) bisa menggelinding, sedangkan benda kotak (dadu, kotak mainan) tidak. Proses belajar ini didasarkan pada...", o: ["Algoritma", "Dekomposisi", "Pengenalan Pola", "Abstraksi"], a: "Pengenalan Pola", p: "Anak tersebut mengidentifikasi pola hubungan antara bentuk (atribut) dan perilaku (menggelinding) melalui observasi." },
-                { q: "Jika dekomposisi adalah tentang memecah, dan algoritma tentang menyusun langkah, maka abstraksi dan pengenalan pola lebih fokus pada...", o: ["Eksekusi dan hasil akhir", "Menemukan ide dan menyederhanakan konsep", "Menguji dan memperbaiki", "Mendokumentasikan dan melaporkan"], a: "Menemukan ide dan menyederhanakan konsep", p: "Abstraksi dan pengenalan pola adalah proses berpikir tingkat tinggi yang membantu kita memahami 'apa' inti masalahnya, sebelum kita menentukan 'bagaimana' menyelesaikannya (algoritma)." },
-                { q: "Manakah masalah berikut yang paling membutuhkan dekomposisi sebagai langkah pertama yang krusial?", o: ["Menghitung 2+2", "Memilih baju untuk dipakai hari ini", "Mengorganisir acara pensi sekolah untuk 1000 orang", "Menyiram tanaman"], a: "Mengorganisir acara pensi sekolah untuk 1000 orang", p: "Semakin kompleks dan multi-faset sebuah masalah, semakin penting peran dekomposisi untuk membuatnya dapat dikelola." },
-                { q: "Tombol 'Undo' (Ctrl+Z) pada aplikasi adalah contoh abstraksi yang sangat berguna. Ia menyembunyikan proses kompleks yaitu...", o: ["Menyimpan file ke status terbaru", "Mengingat dan mengembalikan keadaan (state) sistem ke satu langkah sebelumnya", "Menutup aplikasi tanpa menyimpan", "Menghapus semua data"], a: "Mengingat dan mengembalikan keadaan (state) sistem ke satu langkah sebelumnya", p: "Di balik tombol sederhana itu, ada algoritma kompleks untuk melacak histori perubahan dan mengembalikannya, namun pengguna tidak perlu tahu." },
-                { q: "Membuat 'pseudocode' (kode semu) sebelum menulis kode program yang sebenarnya adalah langkah antara...", o: ["Observasi dan Hipotesis", "Dekomposisi dan Pengenalan Pola", "Perancangan Algoritma dan Implementasi", "Pengujian dan Deployment"], a: "Perancangan Algoritma dan Implementasi", p: "Pseudocode adalah cara untuk menuliskan algoritma dalam bahasa yang mirip bahasa manusia tetapi terstruktur, sebagai jembatan sebelum diterjemahkan ke bahasa pemrograman." },
-                { q: "Tujuan utama dekomposisi adalah menyederhanakan. Apa tujuan utama dari 'rekomposisi' (langkah implisit setelah dekomposisi)?", o: ["Membuat masalah semakin rumit", "Mengintegrasikan solusi dari sub-masalah menjadi solusi untuk masalah besar", "Mengabaikan masalah-masalah kecil", "Memulai lagi dari awal"], a: "Mengintegrasikan solusi dari sub-masalah menjadi solusi untuk masalah besar", p: "Setelah masalah kecil diselesaikan, solusinya harus digabungkan kembali secara logis untuk menyelesaikan masalah awal. Ini adalah langkah integrasi atau rekomposisi." },
-                { q: "Bagaimana cara kerja mesin pencari (seperti Google) mengaplikasikan keempat pilar berpikir komputasional?", o: ["Dengan bertanya kepada pengguna satu per satu", "Ia menggunakan algoritma PageRank (algoritma), mengurai web menjadi halaman-halaman (dekomposisi), mengabaikan desain web dan fokus pada link dan teks (abstraksi), dan mengelompokkan situs serupa (pola).", "Hanya dengan menyimpan semua halaman web", "Dengan menebak situs web yang relevan"], a: "Ia menggunakan algoritma PageRank (algoritma), mengurai web menjadi halaman-halaman (dekomposisi), mengabaikan desain web dan fokus pada link dan teks (abstraksi), dan mengelompokkan situs serupa (pola).", p: "Mesin pencari adalah salah satu contoh paling canggih dari penerapan semua pilar berpikir komputasional secara terintegrasi untuk menyelesaikan masalah masif." },
-                { q: "Manakah yang merupakan contoh algoritma yang paling efisien untuk mencari nama 'Zebra' dalam kamus yang sudah terurut?", o: ["Membuka dari halaman pertama dan membaca kata per kata sampai 'Zebra' ditemukan (Linear Search)", "Membuka kamus di halaman tengah, jika kata lebih besar dari 'Z', cari di paruh kedua, jika lebih kecil, cari di paruh pertama, ulangi (Binary Search)", "Membuka halaman secara acak sampai menemukan 'Zebra'", "Membaca kamus dari halaman terakhir mundur"], a: "Membuka kamus di halaman tengah, jika kata lebih besar dari 'Z', cari di paruh kedua, jika lebih kecil, cari di paruh pertama, ulangi (Binary Search)", p: "Binary Search secara drastis mengurangi jumlah data yang harus diperiksa di setiap langkah, membuatnya jauh lebih efisien daripada linear search untuk data terurut." },
-                { q: "Bahasa pemrograman tingkat tinggi (seperti Python) lebih mudah digunakan daripada bahasa mesin (kode biner). Ini karena Python menyediakan... yang lebih baik.", o: ["Dekomposisi", "Algoritma", "Abstraksi", "Pengenalan Pola"], a: "Abstraksi", p: "Python mengabstraksikan detail-detail tingkat rendah yang rumit (seperti manajemen memori atau operasi CPU) menjadi perintah yang lebih sederhana dan mirip bahasa manusia." },
-                { q: "Seorang arsitek merancang sebuah gedung. Dia tidak menggambar setiap batu bata, tetapi menggunakan simbol untuk 'dinding', 'pintu', dan 'jendela'. Penggunaan simbol ini adalah contoh dari...", o: ["Dekomposisi dan Abstraksi", "Algoritma dan Pengenalan Pola", "Hanya Algoritma", "Hanya Dekomposisi"], a: "Dekomposisi dan Abstraksi", p: "Dia memecah gedung menjadi komponen-komponen fungsional (dekomposisi) dan merepresentasikannya dengan simbol sederhana (abstraksi)." },
-                { q: "Berpikir komputasional pada dasarnya adalah tentang mengubah masalah yang tidak terdefinisi dengan baik menjadi masalah yang...", o: ["Lebih rumit dan filosofis", "Dapat diabaikan dan dilupakan", "Terstruktur sedemikian rupa sehingga komputer (atau manusia) dapat menyelesaikannya", "Hanya bisa diselesaikan dengan uang"], a: "Terstruktur sedemikian rupa sehingga komputer (atau manusia) dapat menyelesaikannya", p: "Tujuan akhirnya adalah membuat masalah menjadi 'computable' atau dapat dihitung/diselesaikan melalui serangkaian langkah yang logis." },
-                { q: "Proses 'trial and error' (coba-coba) adalah bentuk pemecahan masalah. Bagaimana berpikir komputasional membuatnya lebih baik?", o: ["Dengan melarang 'trial and error'", "Dengan membuat 'trial and error' lebih sistematis: memecah masalah, mencoba solusi pada bagian kecil, mengenali pola kegagalan, dan menyusun algoritma perbaikan", "Dengan menggantinya dengan keberuntungan", "Dengan hanya melakukan satu kali percobaan"], a: "Dengan membuat 'trial and error' lebih sistematis: memecah masalah, mencoba solusi pada bagian kecil, mengenali pola kegagalan, dan menyusun algoritma perbaikan", p: "Berpikir komputasional memberikan kerangka kerja untuk membuat proses coba-coba menjadi lebih terarah, terukur, dan cerdas." },
-                { q: "Manakah dari komponen berikut yang paling berkaitan dengan pembuatan model dan simulasi?", o: ["Algoritma", "Dekomposisi", "Abstraksi", "Pengenalan Pola"], a: "Abstraksi", p: "Model (misalnya, model cuaca atau ekonomi) pada dasarnya adalah abstraksi dari sistem dunia nyata. Ia menyederhanakan realitas untuk memungkinkan kita melakukan simulasi dan prediksi." },
-                { q: "Saat Anda mengikuti petunjuk GPS, Anda sedang mengeksekusi sebuah... yang dibuat oleh aplikasi berdasarkan... lalu lintas.", o: ["Dekomposisi; abstraksi", "Algoritma; pengenalan pola", "Abstraksi; dekomposisi", "Pengenalan pola; algoritma"], a: "Algoritma; pengenalan pola", p: "Aplikasi memberikan rute (algoritma) yang optimal berdasarkan analisis data historis dan real-time (pengenalan pola) untuk memprediksi kemacetan." },
-                { q: "Contoh terbaik dari algoritma dalam biologi adalah...", o: ["Bentuk sel yang beragam", "Proses replikasi DNA yang mengikuti urutan langkah yang sangat presisi", "Ekosistem hutan hujan", "Evolusi spesies"], a: "Proses replikasi DNA yang mengikuti urutan langkah yang sangat presisi", p: "Replikasi DNA adalah proses biologis yang sangat algoritmik, di mana setiap langkah terjadi dalam urutan yang ketat dan ditentukan untuk menghasilkan salinan yang akurat." },
-                { q: "Manfaat jangka panjang dari menguasai berpikir komputasional bagi karir di masa depan adalah...", o: ["Dijamin menjadi programmer", "Kemampuan beradaptasi dan memecahkan masalah-masalah baru yang belum pernah ada sebelumnya", "Tidak perlu lagi belajar hal baru", "Bisa bekerja dari rumah"], a: "Kemampuan beradaptasi dan memecahkan masalah-masalah baru yang belum pernah ada sebelumnya", p: "Berpikir komputasional bukan tentang menghafal solusi, tapi tentang memiliki kerangka berpikir untuk mengatasi tantangan apa pun, yang sangat berharga di dunia yang terus berubah." }
+                { q: "Sebuah perusahaan ingin mengoptimalkan rute pengiriman barang ke 10 kota. Masalah ini paling baik diselesaikan dengan merancang sebuah... yang efisien.", o: ["Algoritma", "Abstraksi", "Dekomposisi", "Pengenalan Pola"], a: "Algoritma", p: "Masalah ini dikenal sebagai 'Travelling Salesperson Problem' yang solusinya adalah menemukan algoritma untuk mencari rute terpendek." },
+                { q: "Saat merancang sistem 'smart home', seorang insinyur membuat model abstrak dari 'rumah' yang hanya berisi 'lampu', 'pintu', dan 'suhu', lalu mendefinisikan aksi seperti 'nyalakan()', 'kunci()', 'setSuhu()'. Proses ini adalah contoh kuat dari...", o: ["Abstraksi", "Dekomposisi", "Pengenalan Pola", "Algoritma"], a: "Abstraksi", p: "Insinyur tersebut mengabaikan detail fisik (merek lampu, bahan pintu) dan fokus pada properti dan fungsi esensial untuk membangun sistem." },
+                { q: "Diberikan urutan angka: 1, 1, 2, 3, 5, 8, 13, ... . Langkah pertama untuk menemukan angka berikutnya adalah... dengan menyadari bahwa setiap angka adalah jumlah dari dua angka sebelumnya.", o: ["Pengenalan Pola", "Dekomposisi", "Abstraksi", "Algoritma"], a: "Pengenalan Pola", p: "Mengenali pola deret Fibonacci ini adalah kunci untuk bisa melanjutkan urutannya. Algoritma dibuat setelah polanya dikenali." },
+                { q: "Untuk membangun aplikasi kompleks seperti Instagram, pengembang tidak membangun dari nol. Mereka memecahnya menjadi layanan-layanan kecil (microservices) seperti layanan autentikasi, layanan unggah foto, layanan feed. Pendekatan arsitektur ini adalah contoh canggih dari...", o: ["Dekomposisi", "Pengenalan Pola", "Abstraksi", "Algoritma"], a: "Dekomposisi", p: "Aplikasi monolitik yang besar dipecah menjadi layanan-layanan independen yang lebih kecil dan mudah dikelola." },
+                { q: "Bayangkan kamu harus menjelaskan konsep 'persahabatan' kepada alien. Kamu tidak akan menjelaskan setiap interaksi temanmu, melainkan menyebutkan ciri-ciri umum seperti 'kepercayaan', 'saling membantu', 'menghabiskan waktu bersama'. Apa yang kamu lakukan?", o: ["Abstraksi", "Dekomposisi", "Pengenalan Pola", "Algoritma"], a: "Abstraksi", p: "Kamu membuat model abstrak dari konsep 'persahabatan' dengan menyaring karakteristik utamanya dan mengabaikan contoh-contoh spesifik." },
+                { q: "Dua program ditulis untuk mengurutkan 1 juta angka. Program A selesai dalam 1 detik, Program B selesai dalam 10 menit. Perbedaan ini terletak pada efisiensi... yang mereka gunakan.", o: ["Algoritma", "Abstraksi", "Dekomposisi", "Pengenalan Pola"], a: "Algoritma", p: "Algoritma yang berbeda (misalnya Quicksort vs Bubble Sort) memiliki efisiensi waktu yang sangat berbeda untuk tugas yang sama, terutama pada data besar." },
+                { q: "Seorang analis pasar saham mempelajari grafik harga saham selama bertahun-tahun dan menemukan pola 'head and shoulders' yang seringkali diikuti oleh penurunan harga. Analis ini sangat ahli dalam...", o: ["Pengenalan Pola", "Dekomposisi", "Abstraksi", "Algoritma"], a: "Pengenalan Pola", p: "Analisis teknikal dalam saham sangat bergantung pada kemampuan mengenali pola-pola grafik yang berulang." },
+                { q: "Kamu diminta untuk membuat sistem pemesanan tiket bioskop. Pertama, kamu memecahnya menjadi: modul pemilihan film, modul pemilihan kursi, dan modul pembayaran. Kemudian, kamu menyadari modul pemilihan kursi untuk film A dan film B pada dasarnya sama. Kemampuan mana yang kamu gunakan?", o: ["Dekomposisi lalu Pengenalan Pola", "Hanya Algoritma", "Abstraksi lalu Algoritma", "Hanya Dekomposisi"], a: "Dekomposisi lalu Pengenalan Pola", p: "Pertama, kamu memecah masalah (dekomposisi). Lalu, kamu menemukan kesamaan (pola) di antara sub-masalah, yang memungkinkanmu menggunakan solusi yang sama." },
+                { q: "Sistem klasifikasi makhluk hidup (Kingdom, Phylum, Class, Order, Family, Genus, Species) adalah sebuah hierarki yang merupakan hasil dari...", o: ["Dekomposisi dan Abstraksi", "Hanya Algoritma", "Pengenalan Pola dan Algoritma", "Hanya Pengenalan Pola"], a: "Dekomposisi dan Abstraksi", p: "Kerajaan besar (hewan) dipecah (dekomposisi) ke kelompok lebih kecil. Setiap tingkatan taksonomi adalah sebuah abstraksi yang mengelompokkan organisme berdasarkan ciri-ciri umum." },
+                { q: "Manakah situasi yang paling membutuhkan perancangan Algoritma yang cermat?", o: ["Menggambar pemandangan", "Menentukan rute terpendek untuk robot pembersih di sebuah ruangan penuh perabotan", "Memilih baju untuk dipakai hari ini", "Mendengarkan musik"], a: "Menentukan rute terpendek untuk robot pembersih di sebuah ruangan penuh perabotan", p: "Ini adalah masalah optimasi jalur yang kompleks dan membutuhkan algoritma yang efisien agar robot tidak membuang waktu dan energi." },
+                { q: "Saat mendesain sebuah mobil, para insinyur menggunakan simulasi komputer untuk menguji aerodinamika. Simulasi ini adalah model... dari mobil nyata, yang hanya memperhitungkan bentuk dan aliran udara, mengabaikan warna cat atau interior.", o: ["Abstraksi", "Dekomposisi", "Pengenalan Pola", "Algoritma"], a: "Abstraksi", p: "Simulasi adalah bentuk abstraksi dari dunia nyata yang memungkinkan pengujian efisien dengan fokus pada parameter-parameter kunci." },
+                { q: "Jika kamu ingin mengajari komputer untuk mengenali gambar kucing, kamu akan memberinya ribuan gambar kucing dari berbagai jenis. Komputer akan belajar sendiri ciri-ciri umumnya. Proses 'belajar' ini pada dasarnya adalah...", o: ["Pengenalan Pola", "Dekomposisi", "Abstraksi", "Algoritma"], a: "Pengenalan Pola", p: "Machine learning, khususnya dalam pengenalan gambar, adalah bentuk pengenalan pola yang dilakukan secara otomatis oleh mesin." },
+                { q: "Seorang chef ingin menciptakan resep baru. Ia mulai dengan memikirkan komponen rasa: harus ada manis, asam, gurih, dan pedas. Lalu ia memilih bahan untuk setiap komponen rasa tersebut. Pendekatan ini adalah...", o: ["Dekomposisi", "Pengenalan Pola", "Abstraksi", "Algoritma"], a: "Dekomposisi", p: "Chef tersebut memecah masalah 'menciptakan rasa kompleks' menjadi komponen-komponen rasa dasar." },
+                { q: "Bahasa pemrograman tingkat tinggi (seperti Python) memungkinkan kita menulis `print('Hello')` untuk menampilkan teks. Ini menyembunyikan ratusan instruksi mesin tingkat rendah yang sebenarnya terjadi. Bahasa pemrograman ini adalah sebuah...", o: ["Abstraksi", "Dekomposisi", "Pengenalan Pola", "Algoritma"], a: "Abstraksi", p: "Bahasa pemrograman adalah abstraksi yang membuat interaksi dengan hardware komputer menjadi jauh lebih mudah bagi manusia." },
+                { q: "Sebuah game strategi membutuhkan AI (kecerdasan buatan) untuk musuh. AI ini harus bisa memutuskan kapan harus menyerang, bertahan, atau mundur. Logika pengambilan keputusan AI ini adalah sebuah...", o: ["Algoritma", "Abstraksi", "Dekomposisi", "Pengenalan Pola"], a: "Algoritma", p: "Perilaku AI diatur oleh serangkaian aturan dan algoritma yang kompleks untuk merespons situasi permainan." },
+                { q: "Kamu menemukan bahwa bug (kesalahan) pada sebuah aplikasi selalu muncul setelah kamu mengklik tombol A, lalu tombol B. Menemukan urutan penyebab bug ini adalah contoh...", o: ["Pengenalan Pola", "Dekomposisi", "Abstraksi", "Algoritma"], a: "Pengenalan Pola", p: "Kamu mengenali pola aksi-reaksi yang konsisten yang menyebabkan munculnya sebuah masalah." },
+                { q: "Peta jaringan kereta bawah tanah (subway map) yang menggunakan garis lurus dan sudut 45/90 derajat, meskipun rute aslinya berkelok-kelok, adalah contoh ekstrem dari...", o: ["Abstraksi", "Dekomposisi", "Pengenalan Pola", "Algoritma"], a: "Abstraksi", p: "Peta ini mengorbankan akurasi geografis demi kejelasan informasi (urutan stasiun dan jalur), sebuah bentuk abstraksi yang sangat efektif." },
+                { q: "Seorang manajer proyek memecah proyek besar menjadi 'milestones' (target capaian), lalu setiap milestone dipecah lagi menjadi 'tasks' (tugas-tugas spesifik). Struktur ini adalah penerapan berlapis dari...", o: ["Dekomposisi", "Pengenalan Pola", "Abstraksi", "Algoritma"], a: "Dekomposisi", p: "Dekomposisi tidak hanya terjadi satu kali, tetapi bisa dilakukan secara berulang untuk memecah masalah menjadi bagian yang semakin kecil." },
+                { q: "Algoritma pencarian Google bekerja dengan menganalisis miliaran halaman web untuk menemukan yang paling relevan dengan kata kuncimu. Jika kamu dan temanmu mencari hal yang sama, hasilnya akan mirip. Konsistensi ini menunjukkan adanya...", o: ["Algoritma dan Pengenalan Pola", "Hanya Dekomposisi", "Hanya Abstraksi", "Hanya Algoritma"], a: "Algoritma dan Pengenalan Pola", p: "Ada algoritma pencarian yang pasti. Algoritma itu sendiri bekerja dengan mengenali pola relevansi antara kata kunci dan konten halaman." },
+                { q: "Dalam biologi, konsep 'sel' adalah sebuah... Ia menyatukan ide bahwa semua organisme, dari bakteri hingga paus, tersusun dari unit dasar yang sama, meskipun detail selnya berbeda.", o: ["Abstraksi", "Dekomposisi", "Algoritma", "Pengenalan Pola"], a: "Abstraksi", p: "Konsep 'sel' adalah sebuah prinsip umum (abstraksi) yang menyederhanakan pemahaman kita tentang struktur kehidupan." },
+                { q: "Seorang cryptographer (ahli sandi) mencoba memecahkan kode rahasia. Ia mencari huruf atau simbol yang paling sering muncul dalam pesan sandi tersebut, dengan asumsi itu adalah pengganti huruf 'E' atau 'A'. Strategi ini berbasis pada...", o: ["Pengenalan Pola", "Dekomposisi", "Abstraksi", "Algoritma"], a: "Pengenalan Pola", p: "Ia menggunakan pola frekuensi huruf dalam bahasa untuk memecahkan sandi." },
+                { q: "Kamu menulis algoritma untuk robot: 'Maju 5 langkah, Belok Kanan 90 derajat'. Kamu mengulangi instruksi ini 4 kali. Bentuk geometris apa yang akan dilalui robot?", o: ["Persegi", "Segitiga", "Lingkaran", "Garis Lurus"], a: "Persegi", p: "Ini adalah soal yang menguji kemampuan menvisualisasikan hasil dari sebuah algoritma sederhana. Empat sisi sama panjang dengan empat sudut siku-siku akan membentuk persegi." },
+                { q: "Manakah dari berikut ini yang merupakan contoh abstraksi yang paling tinggi tingkatannya?", o: ["Variabel 'x' dalam matematika yang bisa mewakili angka apapun", "Gambar detail sebuah kucing", "Resep membuat nasi goreng", "Daftar belanjaan"], a: "Variabel 'x' dalam matematika yang bisa mewakili angka apapun", p: "'x' adalah abstraksi murni dari sebuah kuantitas; ia tidak memiliki atribut fisik sama sekali, tidak seperti pilihan lainnya yang lebih konkret." },
+                { q: "Sebuah program antivirus bekerja dengan mencocokkan kode file di komputermu dengan database 'tanda tangan' virus yang sudah dikenal. Proses ini adalah...", o: ["Pengenalan Pola", "Dekomposisi", "Abstraksi", "Algoritma"], a: "Pengenalan Pola", p: "Antivirus tersebut mencari pola kode yang cocok dengan pola kode berbahaya yang ada di databasenya." },
+                { q: "Kamu ingin membuat sebuah algoritma untuk mencari jalan keluar dari sebuah labirin. Strategi 'selalu belok kanan setiap bertemu persimpangan' adalah sebuah algoritma, namun tidak menjamin solusi. Algoritma yang lebih baik mungkin melibatkan 'menandai jalan yang sudah dilewati'. Peningkatan ini menunjukkan pentingnya...", o: ["Memori atau 'state' dalam algoritma", "Dekomposisi yang lebih baik", "Abstraksi yang lebih tinggi", "Pola yang lebih jelas"], a: "Memori atau 'state' dalam algoritma", p: "Algoritma yang baik seringkali perlu 'mengingat' apa yang telah dilakukannya (state) untuk membuat keputusan yang lebih cerdas di masa depan dan menghindari perulangan tanpa akhir." },
+                { q: "Saat debugging (mencari kesalahan) sebuah program yang rumit, seorang programmer sering menggunakan teknik 'Divide and Conquer'. Ia membagi kode menjadi dua bagian dan memeriksa di bagian mana kesalahan terjadi, lalu mengulangi proses itu pada bagian yang salah. Teknik ini pada dasarnya adalah...", o: ["Dekomposisi", "Pengenalan Pola", "Abstraksi", "Algoritma"], a: "Dekomposisi", p: "'Divide and Conquer' adalah strategi pemecahan masalah yang berpusat pada dekomposisi secara rekursif (berulang) untuk mengisolasi sumber masalah." },
+                { q: "Kamu diminta membuat algoritma untuk mengurutkan tumpukan buku berdasarkan tinggi. Algoritma mana yang paling intuitif bagi manusia?", o: ["Selection Sort: Cari buku tertinggi, pindahkan ke ujung. Ulangi.", "Merge Sort: Bagi tumpukan jadi dua, urutkan masing-masing, gabungkan.", "Random Sort: Acak terus menerus sampai terurut.", "Hanya bisa dengan komputer."], a: "Selection Sort: Cari buku tertinggi, pindahkan ke ujung. Ulangi.", p: "Selection sort meniru cara manusia berpikir secara alami: cari yang paling menonjol (tertinggi/terpendek), pisahkan, lalu ulangi prosesnya pada sisa tumpukan." },
+                { q: "Seorang dokter bedah merencanakan sebuah operasi kompleks. Ia membaginya menjadi tahapan: persiapan, anestesi, pembedahan utama, dan penutupan luka. Lalu, setiap tahapan dirinci lagi menjadi langkah-langkah yang sangat detail. Ini menunjukkan bahwa... sangat fundamental dalam tugas berisiko tinggi.", o: ["Dekomposisi dan Algoritma", "Abstraksi dan Pengenalan Pola", "Hanya Pengenalan Pola", "Hanya Abstraksi"], a: "Dekomposisi dan Algoritma", p: "Masalah dipecah (dekomposisi) menjadi tahapan, dan setiap tahapan memiliki prosedur (algoritma) yang harus diikuti dengan presisi." },
+                { q: "Mengapa abstraksi dianggap 'pedang bermata dua' dalam pemecahan masalah?", o: ["Karena bisa menyederhanakan masalah, tetapi jika berlebihan bisa menghilangkan detail penting.", "Karena hanya berguna untuk masalah yang mudah.", "Karena selalu membuat algoritma lebih lambat.", "Karena sulit dipahami."], a: "Karena bisa menyederhanakan masalah, tetapi jika berlebihan bisa menghilangkan detail penting.", p: "Abstraksi yang baik menyaring hal yang tidak relevan. Abstraksi yang buruk bisa saja secara tidak sengaja membuang informasi krusial yang dibutuhkan untuk solusi yang benar." },
+                { q: "Sistem rekomendasi di YouTube menyarankan video baru berdasarkan video yang pernah kamu tonton. Sistem ini bekerja dengan...", o: ["Pengenalan Pola", "Dekomposisi", "Abstraksi", "Algoritma"], a: "Pengenalan Pola", p: "Sistem ini mengenali pola tontonanmu (misalnya, suka video sains) dan mencari video lain dengan pola serupa untuk direkomendasikan." }
             ]
         };
 
-        // --- Quiz Logic ---
 
         function startQuiz(mode) {
             currentMode = mode;
             currentQuestionIndex = 0;
-            userAnswers = new Array(allQuestions[mode].length).fill(null);
+            score = 0;
+            selectedAnswer = null;
+            isShowingFeedback = false;
             questions = allQuestions[mode];
             
-            modeLabel.textContent = mode;
             startScreen.classList.add('hidden');
             resultScreen.classList.add('hidden');
             quizScreen.classList.remove('hidden');
-            
-            document.getElementById('question-number').parentElement.textContent = `Soal ${currentQuestionIndex + 1} dari ${questions.length}`;
-            
+
             displayQuestion();
         }
 
         function displayQuestion() {
+            isShowingFeedback = false;
+            selectedAnswer = null;
+            feedbackContainer.classList.add('hidden');
+
             const question = questions[currentQuestionIndex];
+            questionNumberEl.textContent = currentQuestionIndex + 1;
+            modeLabel.textContent = currentMode;
+            questionText.innerHTML = question.q;
             
-            const questionCountEl = document.querySelector('.bg-slate-100.text-slate-700');
-            questionCountEl.innerHTML = `Soal <span id="question-number">${currentQuestionIndex + 1}</span> dari ${questions.length}`;
-
-            questionText.innerHTML = question.q.replace(/\n/g, '<br>');
-
             optionsContainer.innerHTML = '';
-            question.o.forEach((option, index) => {
+            question.o.forEach((option) => {
                 const optionElement = document.createElement('button');
                 optionElement.innerHTML = option;
                 optionElement.classList.add('option-btn', 'w-full', 'p-4', 'border-2', 'border-slate-300', 'rounded-lg', 'text-left', 'transition-all', 'duration-200');
-                optionElement.onclick = () => selectAnswer(index);
+                optionElement.onclick = () => selectOption(option, optionElement);
                 optionsContainer.appendChild(optionElement);
             });
-            
-            updateNavigation();
+
+            nextBtn.disabled = true;
+            nextBtn.textContent = 'Selanjutnya';
         }
 
-        function selectAnswer(index) {
-            userAnswers[currentQuestionIndex] = questions[currentQuestionIndex].o[index];
-            
+        function selectOption(option, element) {
+            if (isShowingFeedback) return;
+
+            selectedAnswer = option;
             const optionButtons = optionsContainer.querySelectorAll('.option-btn');
-            optionButtons.forEach((btn, btnIndex) => {
-                btn.classList.toggle('selected', btnIndex === index);
-            });
-
-            updateNavigation();
+            optionButtons.forEach(btn => btn.classList.remove('selected'));
+            element.classList.add('selected');
+            nextBtn.disabled = false;
         }
 
-        function updateNavigation() {
-            nextBtn.disabled = userAnswers[currentQuestionIndex] === null;
-            nextBtn.textContent = (currentQuestionIndex === questions.length - 1) ? 'Selesai' : 'Selanjutnya';
-        }
-
-        function nextQuestion() {
-            if (currentQuestionIndex < questions.length - 1) {
+        function checkAnswerAndProceed() {
+            if (isShowingFeedback) {
+                // Lanjut ke soal berikutnya setelah melihat pembahasan
                 currentQuestionIndex++;
-                displayQuestion();
+                if (currentQuestionIndex < questions.length) {
+                    displayQuestion();
+                } else {
+                    showResults();
+                }
+                return;
+            }
+
+            const question = questions[currentQuestionIndex];
+            const isCorrect = selectedAnswer === question.a;
+
+            if (isCorrect) {
+                score++;
+                // Jawaban benar, langsung lanjut
+                currentQuestionIndex++;
+                if (currentQuestionIndex < questions.length) {
+                    displayQuestion();
+                } else {
+                    showResults();
+                }
             } else {
-                showResults();
+                // Jawaban salah, tampilkan pembahasan
+                isShowingFeedback = true;
+                feedbackText.innerHTML = question.p;
+                feedbackContainer.classList.remove('hidden');
+
+                // Tandai jawaban
+                const optionButtons = optionsContainer.querySelectorAll('.option-btn');
+                optionButtons.forEach(btn => {
+                    btn.disabled = true; // Nonaktifkan pilihan
+                    if (btn.innerHTML === question.a) {
+                        btn.classList.add('correct');
+                    } else if (btn.innerHTML === selectedAnswer) {
+                        btn.classList.add('incorrect');
+                    }
+                });
+                
+                nextBtn.textContent = 'Lanjutkan';
+                nextBtn.disabled = false;
             }
         }
 
         function showResults() {
             quizScreen.classList.add('hidden');
             resultScreen.classList.remove('hidden');
-
-            let correctCount = 0;
-            questions.forEach((q, index) => {
-                if (userAnswers[index] === q.a) {
-                    correctCount++;
-                }
-            });
-
-            const finalScore = Math.round((correctCount / questions.length) * 100);
+            
+            const finalScore = Math.round((score / questions.length) * 100);
             scoreEl.textContent = finalScore;
-            correctAnswersEl.textContent = correctCount;
-            document.querySelector('#result-screen .text-xl.text-indigo-800:last-of-type').textContent = `${correctCount} dari ${questions.length} soal benar`;
-
-            displayReview();
+            correctAnswersEl.textContent = score;
+            // Update text di halaman hasil
+            const resultText = document.querySelector('#result-screen .text-xl.text-indigo-800:last-of-type');
+            resultText.textContent = `${score} dari ${questions.length} soal benar`;
         }
 
-        function displayReview() {
-            reviewContainer.innerHTML = '';
-            questions.forEach((q, index) => {
-                const isCorrect = userAnswers[index] === q.a;
-                const reviewItem = document.createElement('div');
-                reviewItem.classList.add('p-4', 'border', 'rounded-lg', isCorrect ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200');
-
-                let userAnswerHtml = userAnswers[index] ? `"${userAnswers[index]}"` : "<i>Tidak dijawab</i>";
-                let answerStatusHtml = isCorrect 
-                    ? `<span class="font-semibold text-green-700">(Benar)</span>` 
-                    : `<span class="font-semibold text-red-700">(Salah)</span>`;
-
-                reviewItem.innerHTML = `
-                    <p class="font-semibold text-slate-800 mb-2">Soal ${index + 1}: ${q.q.replace(/\n/g, '<br>')}</p>
-                    <p class="text-sm text-slate-600 mb-1">Jawabanmu: ${userAnswerHtml} ${answerStatusHtml}</p>
-                    ${!isCorrect ? `<p class="text-sm text-slate-600 mb-2">Jawaban Benar: <span class="font-semibold">"${q.a}"</span></p>` : ''}
-                    <div class="mt-2 pt-2 border-t border-dashed ${isCorrect ? 'border-green-200' : 'border-red-200'}">
-                        <p class="text-sm font-semibold text-indigo-800">Pembahasan:</p>
-                        <p class="text-sm text-slate-700">${q.p}</p>
-                    </div>
-                `;
-                reviewContainer.appendChild(reviewItem);
-            });
-        }
-        
         function restartQuiz() {
             resultScreen.classList.add('hidden');
             startScreen.classList.remove('hidden');
@@ -360,3 +349,4 @@
     </script>
 </body>
 </html>
+

@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Latihan Soal PTS IPA - Kelas VII</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .option-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        .option-btn.selected {
+            background-color: #3b82f6; /* blue-500 */
+            color: white;
+            border-color: #2563eb; /* blue-600 */
+        }
+        .mode-card {
+            transition: all 0.2s ease-in-out;
+        }
+        .mode-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        /* Custom scrollbar for better aesthetics */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9; /* slate-100 */
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #94a3b8; /* slate-400 */
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #64748b; /* slate-500 */
+        }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 flex items-center justify-center min-h-screen p-4">
+
+    <div id="app-container" class="w-full max-w-4xl mx-auto">
+        
+        <!-- Start Screen -->
+        <div id="start-screen" class="bg-white p-8 rounded-2xl shadow-lg text-center">
+            <h1 class="text-3xl md:text-4xl font-bold text-slate-700 mb-2">Latihan Soal IPA</h1>
+            <p class="text-lg text-slate-500 mb-8">Kelas VII - Sesuai Kisi-Kisi Ujian</p>
+            <p class="mb-6">Silakan pilih tingkat kesulitan untuk memulai latihan. Setiap mode berisi 30 soal.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div onclick="startQuiz('normal')" class="mode-card bg-green-500 text-white p-6 rounded-xl shadow-md cursor-pointer">
+                    <h2 class="text-2xl font-bold mb-2">NORMAL</h2>
+                    <p>Soal-soal dasar untuk pemahaman konsep.</p>
+                </div>
+                <div onclick="startQuiz('medium')" class="mode-card bg-yellow-500 text-white p-6 rounded-xl shadow-md cursor-pointer">
+                    <h2 class="text-2xl font-bold mb-2">MEDIUM</h2>
+                    <p>Soal yang membutuhkan penerapan konsep.</p>
+                </div>
+                <div onclick="startQuiz('hard')" class="mode-card bg-red-500 text-white p-6 rounded-xl shadow-md cursor-pointer">
+                    <h2 class="text-2xl font-bold mb-2">SULIT</h2>
+                    <p>Soal analisis dan evaluasi percobaan.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quiz Screen -->
+        <div id="quiz-screen" class="hidden">
+            <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg">
+                <div class="flex justify-between items-center mb-6">
+                    <div class="text-sm font-semibold bg-indigo-100 text-indigo-700 py-1 px-3 rounded-full">
+                        Mode: <span id="mode-label" class="capitalize"></span>
+                    </div>
+                    <div class="text-sm font-semibold bg-slate-100 text-slate-700 py-1 px-3 rounded-full">
+                        Soal <span id="question-number"></span> dari 30
+                    </div>
+                </div>
+
+                <div id="question-container" class="mb-6">
+                    <p id="question-text" class="text-lg md:text-xl leading-relaxed"></p>
+                    <div id="question-image-container" class="mt-4 flex justify-center"></div>
+                </div>
+
+                <div id="options-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Options will be dynamically inserted here -->
+                </div>
+
+                <div class="mt-8 flex justify-end">
+                    <button id="next-btn" onclick="nextQuestion()" class="bg-indigo-600 text-white font-bold py-3 px-8 rounded-lg shadow-md hover:bg-indigo-700 transition-colors duration-200 disabled:bg-slate-400 disabled:cursor-not-allowed">
+                        Selanjutnya
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Result Screen -->
+        <div id="result-screen" class="hidden">
+            <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg text-center">
+                <h2 class="text-3xl font-bold text-slate-700 mb-2">Latihan Selesai!</h2>
+                <p class="text-lg text-slate-500 mb-6">Berikut adalah hasil pengerjaanmu.</p>
+                
+                <div class="bg-indigo-50 border-2 border-indigo-200 rounded-xl p-6 mb-8">
+                    <p class="text-xl text-indigo-800">Skor Akhir</p>
+                    <p class="text-6xl font-bold text-indigo-600 my-2"><span id="score"></span></p>
+                    <p class="text-xl text-indigo-800"><span id="correct-answers"></span> dari 30 soal benar</p>
+                </div>
+
+                <div class="text-left mb-6">
+                    <h3 class="text-2xl font-bold mb-4 text-slate-700">Pembahasan Soal</h3>
+                    <div id="review-container" class="space-y-4 max-h-[50vh] overflow-y-auto pr-4">
+                        <!-- Review content will be dynamically inserted here -->
+                    </div>
+                </div>
+
+                <button onclick="restartQuiz()" class="w-full md:w-auto bg-indigo-600 text-white font-bold py-3 px-8 rounded-lg shadow-md hover:bg-indigo-700 transition-colors duration-200">
+                    Ulangi Latihan
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // DOM Elements
+        const startScreen = document.getElementById('start-screen');
+        const quizScreen = document.getElementById('quiz-screen');
+        const resultScreen = document.getElementById('result-screen');
+        
+        const modeLabel = document.getElementById('mode-label');
+        const questionNumber = document.getElementById('question-number');
+        const questionText = document.getElementById('question-text');
+        const questionImageContainer = document.getElementById('question-image-container');
+        const optionsContainer = document.getElementById('options-container');
+        const nextBtn = document.getElementById('next-btn');
+
+        const scoreEl = document.getElementById('score');
+        const correctAnswersEl = document.getElementById('correct-answers');
+        const reviewContainer = document.getElementById('review-container');
+
+        // Quiz State
+        let currentMode = '';
+        let currentQuestionIndex = 0;
+        let userAnswers = [];
+        let questions = {};
+
+        // --- DATABASE SOAL IPA ---
+        const allQuestions = {
+            normal: [
+                { q: "Alat laboratorium yang berfungsi untuk mengukur volume larutan dengan akurat adalah...", o: ["Gelas beker", "Labu erlenmeyer", "Gelas ukur", "Cawan petri"], a: "Gelas ukur", p: "Gelas ukur memiliki skala volume yang jelas dan dirancang khusus untuk mengukur volume cairan secara presisi." },
+                { q: "Gambar tengkorak dan tulang bersilang pada botol bahan kimia memiliki arti...", o: ["Mudah terbakar", "Beracun", "Korosif", "Radioaktif"], a: "Beracun", p: "Simbol tengkorak dan tulang bersilang (toxic) menandakan bahwa bahan di dalamnya beracun dan berbahaya jika terhirup, tertelan, atau terserap kulit." },
+                { q: "Seorang siswa meneliti pengaruh cahaya terhadap pertumbuhan kecambah. Setelah seminggu, ia menemukan bahwa kecambah di tempat gelap lebih tinggi. Pernyataan ini adalah bagian dari...", o: ["Hipotesis", "Observasi", "Kesimpulan", "Variabel"], a: "Kesimpulan", p: "Kesimpulan adalah pernyataan akhir yang ditarik berdasarkan hasil pengamatan atau data dari sebuah percobaan." },
+                { q: "Ilmu yang mempelajari tentang makhluk hidup dan interaksinya adalah...", o: ["Kimia", "Fisika", "Biologi", "Geologi"], a: "Biologi", p: "Biologi adalah cabang ilmu sains yang fokus pada studi tentang kehidupan dan organisme hidup." },
+                { q: "Sains bersifat empiris, artinya pengetahuan sains didapatkan melalui...", o: ["Pendapat pribadi", "Kabar burung", "Pengamatan dan percobaan yang dapat dibuktikan", "Peruntungan"], a: "Pengamatan dan percobaan yang dapat dibuktikan", p: "Sifat empiris berarti sains didasarkan pada bukti-bukti yang diperoleh dari observasi dan eksperimen, bukan sekadar opini." },
+                { q: "Dalam penelitian 'Pengaruh Suhu Air terhadap Kelarutan Gula', yang menjadi variabel bebas adalah...", o: ["Suhu air", "Jumlah gula", "Waktu larut", "Jenis wadah"], a: "Suhu air", p: "Variabel bebas adalah faktor yang sengaja diubah atau dimanipulasi oleh peneliti untuk dilihat pengaruhnya." },
+                { q: "Dugaan sementara yang dibuat sebelum melakukan penelitian disebut...", o: ["Kesimpulan", "Data", "Hipotesis", "Observasi"], a: "Hipotesis", p: "Hipotesis adalah jawaban atau prediksi sementara terhadap masalah penelitian yang kebenarannya perlu diuji melalui eksperimen." },
+                { q: "Dalam penelitian 'Pengaruh Jenis Pupuk terhadap Tinggi Tanaman', yang menjadi variabel terikat adalah...", o: ["Jenis pupuk", "Jumlah air", "Tinggi tanaman", "Jenis tanaman"], a: "Tinggi tanaman", p: "Variabel terikat adalah faktor yang diukur atau diamati sebagai hasil dari perubahan variabel bebas." },
+                { q: "Untuk memanaskan larutan dalam jumlah sedikit, sebaiknya menggunakan alat...", o: ["Gelas beker", "Tabung reaksi", "Pipet tetes", "Corong"], a: "Tabung reaksi", p: "Tabung reaksi dirancang untuk menampung dan memanaskan bahan kimia dalam volume kecil." },
+                { q: "Fungsi utama dari mikroskop di laboratorium adalah...", o: ["Menimbang benda", "Mengamati benda-benda berukuran sangat kecil", "Mengukur suhu", "Mencampur larutan"], a: "Mengamati benda-benda berukuran sangat kecil", p: "Mikroskop adalah alat bantu optik untuk mengamati objek yang tidak bisa dilihat dengan mata telanjang, seperti sel dan mikroorganisme." },
+                { q: "Panjang, massa, dan waktu termasuk dalam kelompok besaran...", o: ["Turunan", "Pokok", "Skalar", "Vektor"], a: "Pokok", p: "Besaran pokok adalah besaran dasar yang satuannya telah ditetapkan terlebih dahulu dan tidak diturunkan dari besaran lain." },
+                { q: "Berikut ini yang semuanya termasuk besaran pokok dalam Sistem Internasional (SI) adalah...", o: ["Panjang, luas, suhu", "Massa, waktu, kecepatan", "Panjang, massa, waktu", "Volume, gaya, kuat arus"], a: "Panjang, massa, waktu", p: "Ada 7 besaran pokok SI, di antaranya adalah panjang (meter), massa (kilogram), dan waktu (sekon)." },
+                { q: "Sebuah pensil diukur dengan jangka sorong. Hasil pengukurannya adalah 7,25 cm. Angka ini dituliskan dalam satuan centimeter karena jangka sorong memiliki ketelitian tinggi.", o: ["7,25 cm", "72,5 cm", "0,725 cm", "725 cm"], a: "7,25 cm", p: "Membaca jangka sorong melibatkan skala utama dan skala nonius. Jika skala utama menunjuk 7,2 cm dan nonius yang segaris adalah 5, maka hasilnya 7,2 + 0,05 = 7,25 cm." },
+                { q: "Saat menimbang massa benda dengan neraca, sikap yang harus dimiliki adalah...", o: ["Tergesa-gesa", "Curang agar hasil bagus", "Jujur dan teliti", "Asal-asalan"], a: "Jujur dan teliti", p: "Kejujuran dan ketelitian adalah sikap ilmiah yang penting dalam setiap pengukuran untuk mendapatkan data yang akurat." },
+                { q: "Sebuah meja memiliki panjang 200 sentimeter. Jika diubah ke dalam satuan meter, panjang meja tersebut adalah...", o: ["0,2 meter", "2 meter", "20 meter", "2000 meter"], a: "2 meter", p: "Untuk mengubah sentimeter (cm) ke meter (m), nilai dibagi 100. Jadi, 200 cm / 100 = 2 meter." },
+                { q: "Seorang atlet berlari selama 1 menit 30 detik. Waktu tersebut jika dinyatakan dalam satuan sekon adalah...", o: ["130 sekon", "90 sekon", "60 sekon", "30 sekon"], a: "90 sekon", p: "1 menit sama dengan 60 sekon. Jadi, 1 menit 30 detik = 60 sekon + 30 sekon = 90 sekon." },
+                { q: "Langkah yang tepat untuk melaporkan hasil pengukuran panjang dalam Satuan Internasional (SI) adalah...", o: ["Melaporkan dalam satuan jengkal", "Melaporkan dalam satuan sentimeter", "Melaporkan dalam satuan meter", "Melaporkan dalam satuan kilometer"], a: "Melaporkan dalam satuan meter", p: "Satuan Internasional (SI) untuk besaran panjang adalah meter (m)." },
+                { q: "Semakin banyak angka penting yang dituliskan dalam hasil pengukuran, menunjukkan bahwa tingkat ketelitian alat ukur semakin...", o: ["Rendah", "Tinggi", "Tidak berpengaruh", "Salah"], a: "Tinggi", p: "Jumlah angka penting mencerminkan ketelitian suatu alat ukur. Semakin banyak angka penting, berarti alat tersebut mampu mengukur dengan lebih detail dan teliti." },
+                { q: "Luas adalah contoh besaran turunan karena diturunkan dari besaran pokok...", o: ["Panjang dan waktu", "Panjang", "Massa dan waktu", "Waktu"], a: "Panjang", p: "Luas (misalnya, persegi) didapat dari hasil perkalian panjang dengan panjang (sisi x sisi). Oleh karena itu, luas diturunkan dari besaran pokok panjang." },
+                { q: "Cara mengukur volume benda yang bentuknya tidak beraturan, seperti batu, adalah...", o: ["Dengan mengalikannya dengan massa jenis", "Dengan memasukkannya ke dalam gelas ukur berisi air", "Dengan menimbangnya di neraca", "Dengan mengukurnya menggunakan penggaris"], a: "Dengan memasukkannya ke dalam gelas ukur berisi air", p: "Volume batu dapat diukur dari selisih volume air sebelum dan sesudah batu dimasukkan ke dalam gelas ukur." },
+                { q: "Satuan dari besaran pokok suhu dalam Sistem Internasional (SI) adalah...", o: ["Celcius", "Fahrenheit", "Reamur", "Kelvin"], a: "Kelvin", p: "Meskipun kita sering menggunakan Celcius, satuan SI yang resmi untuk suhu adalah Kelvin (K)." },
+                { q: "Cabang ilmu sains yang mempelajari tentang materi, energinya, dan perubahannya seperti gerak dan gaya adalah...", o: ["Biologi", "Kimia", "Fisika", "Astronomi"], a: "Fisika", p: "Fisika adalah ilmu dasar yang menjelaskan fenomena alam yang tidak hidup, termasuk gerak, gaya, energi, cahaya, dan suara." },
+                { q: "Urutan langkah-langkah metode ilmiah yang benar adalah...", o: ["Hipotesis -> Observasi -> Eksperimen -> Kesimpulan", "Observasi -> Hipotesis -> Eksperimen -> Kesimpulan", "Eksperimen -> Kesimpulan -> Observasi -> Hipotesis", "Kesimpulan -> Observasi -> Hipotesis -> Eksperimen"], a: "Observasi -> Hipotesis -> Eksperimen -> Kesimpulan", p: "Metode ilmiah dimulai dari mengamati masalah, membuat dugaan (hipotesis), menguji dugaan (eksperimen), dan menarik kesimpulan." },
+                { q: "Dalam percobaan 'Pengaruh jenis pupuk terhadap pertumbuhan tanaman', yang menjadi variabel kontrol adalah...", o: ["Jenis pupuk yang berbeda-beda", "Tinggi akhir tanaman", "Jenis tanaman, jumlah air, dan cahaya matahari", "Warna daun"], a: "Jenis tanaman, jumlah air, dan cahaya matahari", p: "Variabel kontrol adalah semua faktor yang sengaja dibuat sama agar tidak memengaruhi hasil, sehingga yang berpengaruh hanyalah variabel bebas." },
+                { q: "Mengukur panjang meja menggunakan jengkal adalah contoh penggunaan satuan...", o: ["Baku", "Tidak baku", "Internasional", "Pokok"], a: "Tidak baku", p: "Satuan tidak baku adalah satuan yang hasilnya bisa berbeda-beda jika dilakukan oleh orang yang berbeda, karena ukuran jengkal setiap orang tidak sama." },
+                { q: "Agar hasil pengukuran lebih akurat, posisi mata saat membaca skala pada gelas ukur harus...", o: ["Dari atas", "Dari bawah", "Sejajar dengan permukaan cairan (meniskus)", "Dari samping jauh"], a: "Sejajar dengan permukaan cairan (meniskus)", p: "Ini dilakukan untuk menghindari kesalahan paralaks, yaitu kesalahan pembacaan akibat sudut pandang yang tidak tegak lurus." },
+                { q: "Variabel yang sengaja dibuat berbeda-beda oleh peneliti untuk diuji pengaruhnya disebut variabel...", o: ["Kontrol", "Bebas", "Terikat", "Pengganggu"], a: "Bebas", p: "Variabel bebas adalah variabel yang dimanipulasi atau diubah-ubah oleh peneliti." },
+                { q: "Mengapa penggunaan satuan baku seperti meter lebih adil dalam transaksi jual beli dibandingkan jengkal?", o: ["Karena lebih mudah diucapkan", "Karena meter adalah satuan yang nilainya tetap dan sama di seluruh dunia", "Karena jengkal hanya bisa digunakan orang dewasa", "Karena meter lebih menguntungkan penjual"], a: "Karena meter adalah satuan yang nilainya tetap dan sama di seluruh dunia", p: "Satuan baku memberikan hasil pengukuran yang konsisten dan universal, sehingga tidak menimbulkan perselisihan dan lebih adil bagi semua pihak." },
+                { q: "Seorang siswa mengukur panjang pensil sebanyak 3 kali dan mendapatkan hasil: 15,1 cm; 15,2 cm; 15,0 cm. Tindakan ini dilakukan untuk...", o: ["Menghabiskan waktu", "Meningkatkan akurasi dan mengurangi kesalahan acak", "Merusak pensil", "Membuat laporan lebih tebal"], a: "Meningkatkan akurasi dan mengurangi kesalahan acak", p: "Pengukuran berulang lalu dirata-rata adalah cara untuk meminimalkan kesalahan acak dan mendapatkan hasil yang lebih mendekati nilai sebenarnya (akurat)." },
+                { q: "Kalibrasi alat ukur sebelum digunakan bertujuan untuk...", o: ["Membuat alat terlihat baru", "Memastikan alat menunjukkan angka nol saat belum digunakan", "Membersihkan alat dari debu", "Mengubah satuan alat"], a: "Memastikan alat menunjukkan angka nol saat belum digunakan", p: "Kalibrasi adalah proses menyetel ulang alat ke kondisi awal (biasanya ke titik nol) untuk memastikan hasil pengukurannya akurat." }
+            ],
+            medium: [
+                { q: "Seorang siswa ingin memindahkan 10 mL larutan asam klorida dari botol ke tabung reaksi. Kombinasi alat yang paling tepat untuk akurasi dan keamanan adalah...", o: ["Gelas beker dan corong", "Gelas ukur dan pipet tetes", "Pipet gondok dan labu erlenmeyer", "Cawan petri dan sendok"], a: "Gelas ukur dan pipet tetes", p: "Gelas ukur digunakan untuk mengambil volume 10 mL secara akurat, dan pipet tetes dapat membantu menepatkan volume hingga garis ukur atau memindahkannya tanpa tumpah." },
+                { q: "Pada label botol alkohol terdapat simbol api. Tindakan yang harus dihindari saat menggunakan bahan tersebut di laboratorium adalah...", o: ["Menggunakannya di ruang terbuka", "Menjauhkannya dari sumber api atau pemanas", "Memakainya dengan sarung tangan", "Menyimpannya di lemari asam"], a: "Menjauhkannya dari sumber api atau pemanas", p: "Simbol api (flammable) menandakan bahan tersebut mudah terbakar. Oleh karena itu, harus dijauhkan dari percikan api, pemanas, atau sumber panas lainnya." },
+                { q: "Sebuah penelitian menyimpulkan: 'Semakin tinggi suhu air, semakin cepat gula larut'. Kesimpulan ini didapat setelah peneliti...", o: ["Membuat hipotesis tentang gula", "Membaca teori tentang kelarutan", "Melakukan percobaan dengan berbagai suhu dan mengukur waktunya", "Menanyakan pendapat teman"], a: "Melakukan percobaan dengan berbagai suhu dan mengukur waktunya", p: "Kesimpulan ilmiah yang valid harus didasarkan pada data hasil eksperimen yang sistematis, bukan sekadar teori atau opini." },
+                { q: "Seorang ahli vulkanologi mempelajari aktivitas gunung berapi untuk memprediksi letusan. Ahli tersebut bekerja dalam cabang ilmu...", o: ["Biologi", "Kimia", "Geologi", "Astronomi"], a: "Geologi", p: "Geologi adalah cabang ilmu sains yang mempelajari bumi, komposisinya, strukturnya, dan proses-proses yang membentuknya, termasuk aktivitas vulkanik." },
+                { q: "Seorang ilmuwan mengumumkan penemuan obat baru. Ilmuwan lain di seluruh dunia kemudian mencoba mengulangi eksperimennya. Jika mereka mendapatkan hasil yang sama, hal ini membuktikan sifat sains yang...", o: ["Subjektif", "Objektif dan dapat diverifikasi", "Rumit", "Tidak pasti"], a: "Objektif dan dapat diverifikasi", p: "Hasil penemuan ilmiah harus dapat diuji ulang (diverifikasi) oleh siapa pun. Jika hasilnya konsisten, maka penemuan tersebut dianggap objektif dan valid." },
+                { q: "Dalam penelitian 'Pengaruh intensitas cahaya (terang, remang-remang, gelap) terhadap kecepatan fotosintesis tanaman hidrila', yang menjadi variabel bebas adalah...", o: ["Jumlah gelembung oksigen", "Jenis tanaman hidrila", "Intensitas cahaya", "Volume air"], a: "Intensitas cahaya", p: "Variabel bebas adalah faktor yang sengaja dibuat bervariasi (terang, remang-remang, gelap) untuk diteliti pengaruhnya." },
+                { q: "Seorang petani mengamati bahwa tanaman jagung yang diberi pupuk A tumbuh lebih subur daripada yang tidak diberi pupuk. Hipotesis yang paling tepat untuk penelitian selanjutnya adalah...", o: ["'Tanaman jagung membutuhkan air'", "'Ada pengaruh pemberian pupuk A terhadap kesuburan tanaman jagung'", "'Semua pupuk membuat tanaman subur'", "'Cahaya menghambat pertumbuhan jagung'"], a: "'Ada pengaruh pemberian pupuk A terhadap kesuburan tanaman jagung'", p: "Hipotesis harus spesifik, dapat diuji, dan merupakan jawaban sementara atas observasi. Hipotesis ini menghubungkan variabel bebas (pupuk A) dan variabel terikat (kesuburan)." },
+                { q: "Dalam percobaan 'Pengaruh deterjen terhadap kehidupan ikan', variabel terikatnya adalah jumlah ikan yang mati. Variabel kontrol yang harus dijaga adalah...", o: ["Konsentrasi deterjen yang berbeda", "Jumlah ikan yang mati", "Jenis dan ukuran ikan, volume air, ukuran akuarium", "Merek deterjen"], a: "Jenis dan ukuran ikan, volume air, ukuran akuarium", p: "Variabel kontrol adalah faktor-faktor lain yang bisa memengaruhi kematian ikan (selain deterjen), sehingga harus dibuat sama di semua perlakuan." },
+                { q: "Siswa ingin memisahkan campuran pasir dan air. Alat laboratorium yang paling sesuai untuk digunakan adalah...", o: ["Mikroskop dan kaca preparat", "Pemanas spiritus dan tabung reaksi", "Corong dan kertas saring", "Neraca dan gelas ukur"], a: "Corong dan kertas saring", p: "Metode filtrasi (penyaringan) menggunakan corong dan kertas saring sangat efektif untuk memisahkan zat padat (pasir) dari zat cair (air)." },
+                { q: "Untuk mengamati struktur sel bawang merah, urutan alat yang digunakan adalah...", o: ["Pisau -> Kaca preparat -> Mikroskop", "Gelas beker -> Mikroskop -> Tabung reaksi", "Mikroskop -> Pipet tetes -> Corong", "Neraca -> Gelas ukur -> Mikroskop"], a: "Pisau -> Kaca preparat -> Mikroskop", p: "Pertama, siapkan spesimen (irisan bawang dengan pisau), letakkan di kaca preparat, lalu amati di bawah mikroskop." },
+                { q: "Besaran kecepatan memiliki satuan m/s. Satuan ini diturunkan dari besaran pokok...", o: ["Massa dan waktu", "Panjang dan massa", "Panjang dan waktu", "Waktu dan suhu"], a: "Panjang dan waktu", p: "Kecepatan adalah perpindahan (besaran panjang, satuan meter) dibagi waktu (besaran waktu, satuan sekon). Jadi, diturunkan dari panjang dan waktu." },
+                { q: "Dari kelompok besaran berikut: (1) Massa, (2) Volume, (3) Kuat arus, (4) Gaya. Yang termasuk besaran pokok SI adalah...", o: ["(1) dan (2)", "(2) dan (4)", "(1) dan (3)", "(3) dan (4)"], a: "(1) dan (3)", p: "Massa (satuan kg) dan Kuat Arus Listrik (satuan Ampere) adalah bagian dari 7 besaran pokok. Volume dan Gaya adalah besaran turunan." },
+                { q: "Sebuah mikrometer sekrup menunjukkan skala utama 4,5 mm dan skala nonius menunjuk angka 28. Hasil pengukurannya adalah...", o: ["4,528 mm", "4,78 mm", "4,28 mm", "7,3 mm"], a: "4,78 mm", p: "Hasil = Skala Utama + (Skala Nonius x 0,01 mm) = 4,5 mm + (28 x 0,01 mm) = 4,5 mm + 0,28 mm = 4,78 mm." },
+                { q: "Seorang pedagang kain menggunakan meteran kayu yang ujungnya sudah sedikit aus. Kesalahan pengukuran yang mungkin terjadi disebut...", o: ["Kesalahan acak", "Kesalahan paralaks", "Kesalahan sistematis (kerusakan alat)", "Kesalahan manusiawi"], a: "Kesalahan sistematis (kerusakan alat)", p: "Kesalahan sistematis adalah kesalahan yang disebabkan oleh alat ukur itu sendiri (misalnya rusak, tidak terkalibrasi) dan akan menghasilkan kesalahan yang konsisten." },
+                { q: "Sebuah mobil bergerak dengan kecepatan 72 km/jam. Jika dikonversi ke satuan SI (m/s), kecepatannya adalah...", o: ["10 m/s", "20 m/s", "36 m/s", "72 m/s"], a: "20 m/s", p: "1 km = 1000 m; 1 jam = 3600 s. Maka, 72 km/jam = (72 x 1000 m) / 3600 s = 72000 / 3600 = 20 m/s." },
+                { q: "Pengukuran waktu dengan stopwatch digital lebih teliti daripada jam pasir karena...", o: ["Stopwatch lebih mahal", "Stopwatch memiliki skala terkecil yang lebih presisi (misalnya 0,01 s)", "Jam pasir lebih mudah digunakan", "Stopwatch menggunakan baterai"], a: "Stopwatch memiliki skala terkecil yang lebih presisi (misalnya 0,01 s)", p: "Tingkat ketelitian (presisi) alat ukur ditentukan oleh nilai skala terkecilnya. Stopwatch digital memiliki skala yang jauh lebih kecil daripada jam pasir." },
+                { q: "Sebuah papan tulis memiliki luas 3 m². Jika dinyatakan dalam cm², luasnya menjadi...", o: ["300 cm²", "3.000 cm²", "30.000 cm²", "300.000 cm²"], a: "30.000 cm²", p: "Karena 1 m = 100 cm, maka 1 m² = (100 cm) x (100 cm) = 10.000 cm². Jadi, 3 m² = 3 x 10.000 cm² = 30.000 cm²." },
+                { q: "Siswa A mengukur panjang meja 150,1 cm. Siswa B mengukur 150,12 cm. Pengukuran siswa B lebih teliti. Namun, jika panjang meja sebenarnya 152,00 cm, maka pengukuran yang lebih akurat adalah...", o: ["Siswa A", "Siswa B", "Keduanya sama akurat", "Tidak ada yang akurat"], a: "Tidak ada yang akurat", p: "Akurasi adalah kedekatan hasil ukur dengan nilai sebenarnya. Karena kedua hasil (150,1 dan 150,12) jauh dari 152,00, keduanya tidak akurat. Presisi (ketelitian) tidak menjamin akurasi." },
+                { q: "Massa jenis (ρ) dihitung dengan rumus massa (m) dibagi volume (V). Maka, massa jenis adalah besaran turunan dari...", o: ["Massa dan panjang", "Panjang dan waktu", "Massa dan waktu", "Massa, panjang, dan waktu"], a: "Massa dan panjang", p: "Massa jenis (kg/m³) diturunkan dari besaran pokok massa (kg) dan besaran pokok panjang (karena volume = panjang x panjang x panjang, satuannya m³)." },
+                { q: "Sebuah batu dimasukkan ke gelas ukur berisi air 50 mL. Permukaan air naik menjadi 85 mL. Berapa volume batu tersebut dalam cm³?", o: ["35 cm³", "50 cm³", "85 cm³", "135 cm³"], a: "35 cm³", p: "Volume batu = Volume akhir - Volume awal = 85 mL - 50 mL = 35 mL. Karena 1 mL setara dengan 1 cm³, maka volume batu adalah 35 cm³." },
+                { q: "Suhu suatu benda adalah 313 K. Jika diubah ke skala Celcius, suhu benda tersebut adalah...", o: ["30 °C", "40 °C", "100 °C", "313 °C"], a: "40 °C", p: "Rumus konversi dari Kelvin ke Celcius adalah °C = K - 273. Jadi, Suhu = 313 - 273 = 40 °C." },
+                { q: "Seorang ahli farmasi meneliti dan meracik senyawa kimia untuk membuat obat baru. Ia bekerja dalam cabang ilmu...", o: ["Fisika", "Biologi", "Ekologi", "Kimia"], a: "Kimia", p: "Kimia adalah ilmu yang mempelajari tentang komposisi, struktur, sifat, dan perubahan materi, termasuk peracikan senyawa obat." },
+                { q: "Seorang peneliti ingin membuktikan hipotesis 'kafein meningkatkan denyut jantung'. Langkah eksperimen yang paling tepat adalah...", o: ["Mengukur denyut jantung beberapa orang setelah minum kopi dan air putih, lalu membandingkannya", "Mengukur denyut jantung satu orang saja", "Menyuruh orang minum kopi dan menanyakan perasaannya", "Membaca artikel tentang bahaya kafein"], a: "Mengukur denyut jantung beberapa orang setelah minum kopi dan air putih, lalu membandingkannya", p: "Eksperimen yang baik harus memiliki kelompok perlakuan (minum kopi) dan kelompok kontrol (minum air putih) untuk perbandingan yang valid." },
+                { q: "Dalam percobaan menguji pengaruh pupuk, peneliti menggunakan tiga pot (A, B, C) dengan tanaman sejenis. Pot A diberi pupuk X, Pot B diberi pupuk Y, Pot C tidak diberi pupuk. Pot C dalam percobaan ini berfungsi sebagai...", o: ["Variabel bebas", "Variabel terikat", "Kelompok kontrol", "Variabel pengganggu"], a: "Kelompok kontrol", p: "Kelompok kontrol (tanpa perlakuan) digunakan sebagai pembanding standar untuk mengetahui apakah perlakuan pada kelompok eksperimen benar-benar memberikan efek." },
+                { q: "Seorang penjual emas menggunakan timbangan digital, bukan 'kati' atau 'tahil'. Alasan utamanya adalah satuan gram pada timbangan digital...", o: ["Lebih tradisional", "Merupakan satuan baku yang memberikan presisi dan akurasi tinggi", "Lebih menguntungkan penjual", "Lebih mudah dibawa"], a: "Merupakan satuan baku yang memberikan presisi dan akurasi tinggi", p: "Dalam transaksi barang berharga seperti emas, presisi dan akurasi sangat penting. Satuan baku (gram) menjamin hal ini, sedangkan satuan tidak baku tidak." },
+                { q: "Saat menimbang berat badan, jarum timbangan tidak kembali tepat ke angka nol, melainkan ke angka 1 kg. Jika hasil timbangan adalah 50 kg, maka berat badan sebenarnya adalah...", o: ["50 kg", "51 kg", "49 kg", "Tidak bisa ditentukan"], a: "49 kg", p: "Ini adalah contoh kesalahan kalibrasi (zero error). Berat sebenarnya adalah hasil baca dikurangi kesalahan titik nol (50 kg - 1 kg = 49 kg)." },
+                { q: "Siswa ingin mengetahui apakah jenis media tanam (tanah, sekam, pasir) memengaruhi jumlah daun pada tanaman mawar. Variabel terikat dalam rencana penelitian ini adalah...", o: ["Jenis media tanam", "Jumlah daun", "Jumlah air yang disiram", "Tanaman mawar"], a: "Jumlah daun", p: "Variabel terikat adalah hasil yang diukur atau diamati, yang diduga dipengaruhi oleh perubahan variabel bebas (jenis media tanam)." },
+                { q: "Penggunaan satuan baku dalam laporan ilmiah sangat penting agar...", o: ["Laporan terlihat lebih rumit", "Hanya peneliti itu yang paham", "Peneliti lain di seluruh dunia dapat memahami dan mereplikasi percobaan tersebut", "Laporan menjadi lebih panjang"], a: "Peneliti lain di seluruh dunia dapat memahami dan mereplikasi percobaan tersebut", p: "Satuan baku bersifat universal, memungkinkan komunikasi yang jelas dan reproduktifitas hasil penelitian di antara komunitas ilmiah global." },
+                { q: "Seorang siswa mengukur diameter koin dengan jangka sorong dan mendapatkan hasil 2,53 cm. Berapa banyak angka penting pada hasil pengukuran tersebut?", o: ["Satu", "Dua", "Tiga", "Empat"], a: "Tiga", p: "Semua angka bukan nol (2, 5, 3) adalah angka penting. Jadi, ada 3 angka penting. Ini menunjukkan ketelitian alat ukur." },
+                { q: "Untuk mendapatkan pengukuran yang akurat saat menggunakan stopwatch manual, yang perlu diperhatikan adalah...", o: ["Warna stopwatch", "Kekuatan menekan tombol", "Kecepatan reaksi (response time) pengukur saat memulai dan menghentikan", "Merek stopwatch"], a: "Kecepatan reaksi (response time) pengukur saat memulai dan menghentikan", p: "Kesalahan waktu reaksi manusia adalah sumber utama kesalahan acak dalam penggunaan stopwatch manual. Diperlukan konsistensi untuk mengurangi kesalahan ini." }
+            ],
+            hard: [
+                 { q: "Dalam laboratorium, mengapa larutan asam pekat harus dituangkan ke dalam air, dan bukan sebaliknya?", o: ["Agar warnanya tidak berubah", "Karena air lebih berat dari asam", "Untuk mencegah reaksi eksotermik hebat yang bisa menyebabkan percikan berbahaya", "Agar larutan lebih cepat dingin"], a: "Untuk mencegah reaksi eksotermik hebat yang bisa menyebabkan percikan berbahaya", p: "Penambahan air ke asam pekat menghasilkan panas yang sangat besar (reaksi eksotermik) secara mendadak, yang bisa mendidihkan air dan menyemprotkan larutan asam." },
+                { q: "Sebuah bahan kimia memiliki simbol 'oksidator' (lingkaran dengan api di atasnya) dan 'korosif'. Skenario paling berbahaya saat menangani bahan ini adalah...", o: ["Menyimpannya di dekat bahan organik yang mudah terbakar", "Menggunakannya tanpa sarung tangan", "Menumpahkannya di lantai keramik", "Keduanya, baik A maupun B, sangat berbahaya"], a: "Keduanya, baik A maupun B, sangat berbahaya", p: "Sifat oksidator membuatnya dapat memicu kebakaran jika kontak dengan bahan mudah terbakar. Sifat korosifnya bisa merusak kulit. Kombinasi keduanya sangat berbahaya." },
+                { q: "Dalam suatu percobaan, data menunjukkan bahwa tanaman yang disiram 100 ml air per hari tumbuh optimal, sedangkan yang disiram 50 ml atau 150 ml tumbuh lebih lambat. Kesimpulan yang paling tepat adalah...", o: ["Air tidak berpengaruh pada tanaman", "Semakin banyak air semakin baik", "Ada jumlah air optimal untuk pertumbuhan tanaman tersebut, kelebihan atau kekurangan air bersifat menghambat", "Tanaman tidak perlu disiram"], a: "Ada jumlah air optimal untuk pertumbuhan tanaman tersebut, kelebihan atau kekurangan air bersifat menghambat", p: "Kesimpulan yang baik tidak hanya menyatakan ada pengaruh, tetapi juga menjelaskan pola pengaruh tersebut berdasarkan data yang ada." },
+                { q: "Studi tentang bagaimana polusi dari pabrik (kimia) memengaruhi ekosistem sungai (biologi) dan pola alirannya (fisika) adalah contoh pendekatan studi sains yang bersifat...", o: ["Parsial", "Interdisipliner", "Subjektif", "Historis"], a: "Interdisipliner", p: "Pendekatan interdisipliner melibatkan penggunaan beberapa cabang ilmu (kimia, biologi, fisika) secara bersamaan untuk memahami suatu fenomena yang kompleks." },
+                { q: "Sebuah teori ilmiah yang sudah mapan, seperti Teori Relativitas Einstein, masih bisa diubah atau disempurnakan jika ditemukan bukti empiris baru yang bertentangan. Hal ini menunjukkan bahwa kebenaran dalam sains bersifat...", o: ["Mutlak dan abadi", "Tentatif (terbuka terhadap perubahan)", "Hanya berlaku di masa lalu", "Subjektif sesuai keyakinan ilmuwan"], a: "Tentatif (terbuka terhadap perubahan)", p: "Sains selalu berkembang. Teori yang ada saat ini adalah penjelasan terbaik berdasarkan bukti yang ada, namun bisa diperbaiki atau diganti jika ada bukti baru yang lebih kuat." },
+                { q: "Seorang peneliti ingin mengetahui efek dari 3 jenis antibiotik (A, B, C) terhadap bakteri E. coli. Bagaimana desain eksperimen yang paling valid untuk menentukan antibiotik mana yang paling efektif?", o: ["Memberikan ketiga antibiotik sekaligus ke satu kultur bakteri", "Menyiapkan 4 cawan petri berisi kultur bakteri: 1 untuk kontrol (tanpa antibiotik), 3 lainnya masing-masing diberi antibiotik A, B, dan C", "Mencampur semua antibiotik dan bakteri dalam satu gelas beker", "Hanya menguji antibiotik A karena paling terkenal"], a: "Menyiapkan 4 cawan petri berisi kultur bakteri: 1 untuk kontrol (tanpa antibiotik), 3 lainnya masing-masing diberi antibiotik A, B, dan C", p: "Desain ini memungkinkan perbandingan yang adil antara efek masing-masing antibiotik dan juga dengan kelompok kontrol untuk memastikan bahwa kematian bakteri disebabkan oleh antibiotik." },
+                { q: "Berdasarkan observasi 'bangkai ikan sering ditemukan di sungai setelah hujan deras pertama di musim kemarau', hipotesis yang paling logis dan dapat diuji adalah...", o: ["'Ikan tidak suka air hujan'", "'Perubahan pH air sungai akibat hujan asam menyebabkan kematian ikan'", "'Ikan mati karena kedinginan'", "'Hujan membawa racun dari langit'"], a: "'Perubahan pH air sungai akibat hujan asam menyebabkan kematian ikan'", p: "Hipotesis ini spesifik, menghubungkan sebab (hujan asam) dan akibat (kematian ikan) melalui mekanisme yang dapat diukur (pH), sehingga dapat diuji secara ilmiah." },
+                { q: "Dalam penelitian 'Pengaruh dosis kafein (0 mg, 50 mg, 100 mg) pada waktu reaksi manusia', apa variabel terikat dan bagaimana cara mengukurnya?", o: ["Variabel terikat: dosis kafein, diukur dengan timbangan.", "Variabel terikat: waktu reaksi, diukur dengan stopwatch atau sensor.", "Variabel terikat: jenis kelamin, diukur dengan kuesioner.", "Variabel terikat: rasa kopi, diukur dengan skala suka/tidak suka."], a: "Variabel terikat: waktu reaksi, diukur dengan stopwatch atau sensor.", p: "Variabel terikat adalah apa yang diukur sebagai 'efek' (waktu reaksi), dan harus diukur dengan alat yang sesuai (stopwatch) untuk mendapatkan data kuantitatif." },
+                { q: "Anda perlu membuat larutan garam 1 Molar (satuan konsentrasi). Alat ukur apa saja yang mutlak diperlukan untuk membuatnya secara akurat?", o: ["Gelas beker dan sendok", "Neraca analitik (untuk menimbang massa garam) dan labu ukur (untuk volume pelarut)", "Gelas ukur dan termometer", "Tabung reaksi dan pipet tetes"], a: "Neraca analitik (untuk menimbang massa garam) dan labu ukur (untuk volume pelarut)", p: "Konsentrasi molar bergantung pada jumlah mol zat terlarut (dihitung dari massa) dan volume larutan total yang presisi. Neraca analitik dan labu ukur adalah alat yang tepat untuk kedua pengukuran ini." },
+                { q: "Pembakar spiritus (Bunsen burner) memiliki pengatur udara. Jika lubang udara dibuka lebih lebar, nyala api menjadi biru dan lebih panas. Mengapa demikian?", o: ["Karena spiritus menjadi lebih banyak", "Karena suplai oksigen untuk pembakaran menjadi lebih banyak, sehingga pembakaran lebih sempurna", "Karena api biru lebih indah", "Karena tekanan udara meningkat"], a: "Karena suplai oksigen untuk pembakaran menjadi lebih banyak, sehingga pembakaran lebih sempurna", p: "Pembakaran sempurna (dengan oksigen cukup) menghasilkan lebih banyak energi (panas) dan warnanya biru. Pembakaran tidak sempurna (oksigen kurang) menghasilkan jelaga dan nyala kuning/oranye." },
+                { q: "Besaran turunan 'daya' memiliki satuan Watt, yang setara dengan Joule/sekon. Joule sendiri setara dengan (kg·m²)/s². Maka, satuan daya dalam besaran pokok SI adalah...", o: ["kg·m/s", "kg·m²/s³", "kg·m/s²", "kg²/m·s"], a: "kg·m²/s³", p: "Daya = Joule/s = ((kg·m²)/s²)/s = kg·m²/s³." },
+                { q: "Mengapa 'jumlah zat' dengan satuan 'mol' dianggap sebagai besaran pokok, padahal kita bisa menghitungnya?", o: ["Karena mol tidak bisa diukur", "Karena mol menghubungkan skala mikroskopis (jumlah partikel) dengan skala makroskopis (massa) yang tidak bisa diturunkan dari besaran lain", "Karena ditemukan oleh ilmuwan bernama Mol", "Agar jumlah besaran pokok menjadi 7"], a: "Karena mol menghubungkan skala mikroskopis (jumlah partikel) dengan skala makroskopis (massa) yang tidak bisa diturunkan dari besaran lain", p: "Mol adalah konsep fundamental yang unik. Ia tidak bisa dinyatakan sebagai kombinasi dari panjang, massa, atau waktu, sehingga ditetapkan sebagai besaran pokok tersendiri." },
+                { q: "Hasil pengukuran panjang sebuah benda ditulis sebagai (5,4 ± 0,05) cm. Angka '± 0,05 cm' merepresentasikan...", o: ["Nilai sebenarnya dari benda", "Kesalahan yang disengaja", "Ketidakpastian pengukuran, yang biasanya setengah dari skala terkecil alat", "Harga benda tersebut"], a: "Ketidakpastian pengukuran, yang biasanya setengah dari skala terkecil alat", p: "Dalam pelaporan ilmiah, ketidakpastian (uncertainty) wajib dicantumkan untuk menunjukkan rentang di mana nilai sebenarnya kemungkinan besar berada. Ini mencerminkan keterbatasan alat ukur." },
+                { q: "Seorang siswa menimbang massa 50 butir beras dan mendapat hasil 1,00 gram. Jika ia hanya menimbang satu butir beras dengan neraca yang sama, hasilnya mungkin tidak terdeteksi. Mengapa demikian?", o: ["Beras tidak memiliki massa", "Massa satu butir beras terlalu kecil, di bawah batas ketelitian neraca", "Neraca rusak", "Siswa melakukan kesalahan"], a: "Massa satu butir beras terlalu kecil, di bawah batas ketelitian neraca", p: "Setiap alat ukur memiliki batas resolusi/ketelitian. Menimbang dalam jumlah banyak lalu merata-ratakannya adalah teknik untuk mengukur benda yang massanya di bawah batas resolusi alat." },
+                { q: "Sebuah pesawat terbang pada ketinggian 30.000 kaki. Jika 1 kaki = 30,48 cm, berapakah ketinggian pesawat dalam satuan kilometer (km)?", o: ["9,144 km", "91,44 km", "914,4 km", "0,9144 km"], a: "9,144 km", p: "Ketinggian (cm) = 30.000 x 30,48 = 914.400 cm. Ubah ke meter (bagi 100) = 9.144 m. Ubah ke km (bagi 1000) = 9,144 km." },
+                { q: "Mengapa stopwatch atom digunakan sebagai standar waktu internasional, bukan jam matahari atau jam mekanik?", o: ["Karena lebih murah", "Karena didasarkan pada getaran atom Cesium-133 yang sangat stabil dan tidak berubah", "Karena ukurannya paling kecil", "Karena jam matahari tidak akurat di malam hari"], a: "Karena didasarkan pada getaran atom Cesium-133 yang sangat stabil dan tidak berubah", p: "Standar satuan harus didasarkan pada fenomena alam yang fundamental dan konstan. Getaran atom adalah salah satu fenomena paling stabil yang diketahui, sehingga ideal sebagai standar waktu." },
+                { q: "Sebuah balok memiliki ukuran (10,0 cm) x (5,0 cm) x (2,0 cm). Menurut aturan angka penting, volume balok tersebut harus ditulis sebagai...", o: ["100 cm³", "1,0 x 10² cm³", "100,0 cm³", "1 x 10² cm³"], a: "1,0 x 10² cm³", p: "Hasil perkalian harus memiliki jumlah angka penting sama dengan jumlah angka penting terkecil dari bilangan yang dikalikan. 5,0 dan 2,0 memiliki 2 angka penting, maka hasilnya harus ditulis dengan 2 angka penting (1,0 x 10²)." },
+                { q: "Perbedaan antara akurasi dan presisi adalah...", o: ["Akurasi adalah kedekatan ke nilai benar, presisi adalah kedekatan antar hasil pengukuran berulang", "Presisi adalah kebenaran, akurasi adalah ketelitian", "Tidak ada perbedaan", "Akurasi untuk alat digital, presisi untuk alat analog"], a: "Akurasi adalah kedekatan ke nilai benar, presisi adalah kedekatan antar hasil pengukuran berulang", p: "Anda bisa presisi (hasil tembakan mengumpul di satu titik) tetapi tidak akurat (jauh dari target). Idealnya, pengukuran harus akurat dan presisi." },
+                { q: "Percepatan (m/s²) dan Gaya (Newton = kg·m/s²) adalah contoh besaran...", o: ["Pokok", "Skalar (hanya punya nilai)", "Vektor (punya nilai dan arah)", "Tidak baku"], a: "Vektor (punya nilai dan arah)", p: "Besaran vektor adalah besaran yang deskripsinya tidak lengkap tanpa menyebutkan arahnya. Percepatan dan gaya adalah contoh utamanya." },
+                { q: "Teknik titrasi di laboratorium kimia digunakan untuk menentukan konsentrasi suatu larutan. Volume larutan diukur dengan sangat teliti menggunakan buret. Ini menunjukkan pentingnya pengukuran yang... dalam analisis kimia.", o: ["Cepat", "Kualitatif", "Kuantitatif dan akurat", "Murah"], a: "Kuantitatif dan akurat", p: "Analisis kimia sangat bergantung pada data kuantitatif (berupa angka) yang akurat dan presisi untuk mendapatkan kesimpulan yang valid." },
+                { q: "Suhu tubuh manusia normal sekitar 37 °C. Jika astronot di Stasiun Luar Angkasa Internasional (ISS) mengukurnya, ia harus melaporkannya dalam satuan Kelvin. Berapa suhunya?", o: ["310 K", "236 K", "-236 K", "37 K"], a: "310 K", p: "Suhu (K) = Suhu (°C) + 273 = 37 + 273 = 310 K. Dalam konteks ilmiah dan teknis universal, Kelvin adalah standar yang digunakan." },
+                { q: "Paleontologi, studi tentang fosil, adalah cabang ilmu yang menggabungkan prinsip-prinsip dari...", o: ["Fisika dan Kimia", "Biologi dan Geologi", "Astronomi dan Botani", "Kimia dan Zoologi"], a: "Biologi dan Geologi", p: "Paleontologi mempelajari sisa-sisa kehidupan masa lalu (Biologi) yang ditemukan dalam lapisan batuan bumi (Geologi)." },
+                { q: "Sebuah perusahaan farmasi mengklaim obat X dapat menurunkan berat badan. Untuk menguji ini, peneliti merekrut 100 orang, lalu secara acak membaginya menjadi 2 kelompok: 50 orang minum obat X, 50 orang minum plasebo (pil kosong). Peneliti dan peserta tidak tahu siapa mendapat apa. Metode ini disebut...", o: ["Studi observasional", "Uji klinis acak tersamar ganda (Double-blind randomized clinical trial)", "Survei sederhana", "Studi kasus"], a: "Uji klinis acak tersamar ganda (Double-blind randomized clinical trial)", p: "Ini adalah 'standar emas' dalam penelitian medis untuk menghilangkan bias, baik dari peneliti maupun subjek, sehingga hasilnya sangat objektif." },
+                { q: "Dalam eksperimen pengaruh musik (rock, klasik, senyap) terhadap kemampuan siswa mengerjakan soal matematika, ditemukan bahwa siswa dengan musik klasik mendapat skor tertinggi. Namun, peneliti lupa bahwa kelompok 'klasik' secara kebetulan adalah siswa-siswa peringkat atas. Faktor 'kemampuan awal siswa' ini disebut...", o: ["Variabel bebas", "Variabel terikat", "Variabel perancu (confounding variable)", "Variabel kontrol"], a: "Variabel perancu (confounding variable)", p: "Variabel perancu adalah variabel 'tersembunyi' yang memengaruhi variabel bebas dan terikat, sehingga menyebabkan kesimpulan yang salah jika tidak dikendalikan." },
+                { q: "Di Indonesia, transaksi jual beli tanah menggunakan satuan 'meter persegi' (m²), bukan 'tumbak' atau 'bata'. Hal ini diatur oleh hukum melalui Badan Pertanahan Nasional (BPN) untuk menjamin...", o: ["Kecepatan transaksi", "Harga tanah yang murah", "Kepastian hukum dan keadilan bagi semua pihak", "Agar semua tanah berbentuk persegi"], a: "Kepastian hukum dan keadilan bagi semua pihak", p: "Penggunaan satuan baku yang dilegalkan oleh negara memberikan standar yang jelas dan adil, mencegah sengketa, dan memberikan kepastian hukum dalam sertifikasi." },
+                { q: "Seorang penembak jitu selalu mengenai area yang sama pada target, tetapi konsisten 5 cm di sebelah kiri titik pusat. Penembak ini memiliki... yang tinggi, namun... yang rendah. Untuk memperbaikinya, ia perlu melakukan...", o: ["Akurasi; Presisi; Latihan", "Presisi; Akurasi; Kalibrasi pada alat bidiknya", "Akurasi; Kalibrasi; Ganti target", "Presisi; Latihan; Membidik lebih cepat"], a: "Presisi; Akurasi; Kalibrasi pada alat bidiknya", p: "Hasilnya presisi (konsisten) tapi tidak akurat (tidak tepat sasaran). Ini menunjukkan adanya kesalahan sistematis, kemungkinan besar pada alat bidiknya yang perlu dikalibrasi/disetel ulang." },
+                { q: "Seorang ilmuwan ingin mengetahui apakah tidur siang (ya/tidak) memengaruhi tingkat konsentrasi. Variabel bebasnya adalah 'tidur siang'. Namun, 'durasi tidur siang' (15 menit vs 2 jam) bisa sangat memengaruhi hasil. 'Durasi' dalam hal ini perlu...", o: ["Diabaikan saja", "Didefinisikan secara operasional dan dikontrol", "Dijadikan variabel terikat", "Ditanyakan setelah selesai"], a: "Didefinisikan secara operasional dan dikontrol", p: "Untuk penelitian yang baik, variabel harus didefinisikan secara jelas (misalnya, tidur siang didefinisikan sebagai tidur selama 20 menit). Ini disebut definisi operasional, dan penting untuk mengontrolnya." },
+                { q: "Satuan SI untuk energi adalah Joule. Satuan kalori (biasa digunakan untuk makanan) adalah satuan non-SI. Mengapa dalam fisika dan kimia lebih disukai menggunakan Joule?", o: ["Karena Joule lebih mudah dihitung", "Karena Joule secara langsung terhubung dengan besaran mekanik dasar (gaya dan jarak; 1 J = 1 N·m)", "Karena kalori hanya untuk makanan", "Karena Joule terdengar lebih ilmiah"], a: "Karena Joule secara langsung terhubung dengan besaran mekanik dasar (gaya dan jarak; 1 J = 1 N·m)", p: "Joule adalah satuan yang koheren dalam sistem SI, artinya ia terdefinisi secara konsisten dari besaran-besaran pokok lainnya. Ini memudahkan analisis dan perhitungan lintas disiplin (misalnya dari energi listrik ke mekanik)." },
+                { q: "Seorang siswa melaporkan hasil pengukuran massa jenis air sebagai 1,02345 g/cm³. Guru menganggap laporan ini kurang baik, meskipun angkanya banyak. Mengapa?", o: ["Karena massa jenis air seharusnya 1,00 g/cm³", "Karena jumlah angka penting yang dilaporkan melebihi ketelitian alat ukur yang digunakan", "Karena satuannya salah", "Karena angkanya terlalu rumit"], a: "Karena jumlah angka penting yang dilaporkan melebihi ketelitian alat ukur yang digunakan", p: "Laporan hasil tidak boleh lebih presisi daripada alat ukurnya. Jika neraca hanya teliti hingga 2 desimal dan gelas ukur 1 desimal, hasilnya tidak mungkin teliti hingga 5 desimal. Ini disebut presisi palsu." },
+                { q: "Kalibrasi neraca analitik di laboratorium sering menggunakan anak timbangan standar yang tersertifikasi. Tujuannya adalah...", o: ["Agar neraca terlihat canggih", "Untuk mencocokkan pembacaan neraca dengan massa standar internasional yang diakui", "Untuk membersihkan piringan neraca", "Untuk menakut-nakuti siswa"], a: "Untuk mencocokkan pembacaan neraca dengan massa standar internasional yang diakui", p: "Kalibrasi memastikan bahwa pengukuran yang dilakukan di laboratorium tersebut 'terhubung' dan sebanding dengan standar massa global, menjamin validitas dan komparabilitas data." }
+            ]
+        };
+
+        // --- Quiz Logic ---
+
+        function startQuiz(mode) {
+            currentMode = mode;
+            currentQuestionIndex = 0;
+            userAnswers = new Array(allQuestions[mode].length).fill(null);
+            questions = allQuestions[mode];
+            
+            modeLabel.textContent = mode;
+            startScreen.classList.add('hidden');
+            resultScreen.classList.add('hidden');
+            quizScreen.classList.remove('hidden');
+            
+            document.getElementById('question-number').parentElement.textContent = `Soal ${currentQuestionIndex + 1} dari ${questions.length}`;
+            
+            displayQuestion();
+        }
+
+        function displayQuestion() {
+            const question = questions[currentQuestionIndex];
+            questionNumber.textContent = currentQuestionIndex + 1;
+            
+            // Update the question count text
+            const questionCountEl = document.querySelector('.bg-slate-100.text-slate-700');
+            questionCountEl.innerHTML = `Soal <span id="question-number">${currentQuestionIndex + 1}</span> dari ${questions.length}`;
+
+            questionText.innerHTML = question.q.replace(/\n/g, '<br>'); // Handle multiline questions
+            
+            // Handle image if exists
+            if (question.img) {
+                questionImageContainer.innerHTML = `<img src="${question.img}" alt="Gambar Soal" class="max-w-xs mx-auto rounded-lg shadow-md">`;
+            } else {
+                questionImageContainer.innerHTML = '';
+            }
+
+            optionsContainer.innerHTML = '';
+            question.o.forEach((option, index) => {
+                const optionElement = document.createElement('button');
+                optionElement.innerHTML = option;
+                optionElement.classList.add('option-btn', 'w-full', 'p-4', 'border-2', 'border-slate-300', 'rounded-lg', 'text-left', 'transition-all', 'duration-200');
+                optionElement.onclick = () => selectAnswer(index);
+                optionsContainer.appendChild(optionElement);
+            });
+            
+            updateNavigation();
+        }
+
+        function selectAnswer(index) {
+            userAnswers[currentQuestionIndex] = questions[currentQuestionIndex].o[index];
+            
+            const optionButtons = optionsContainer.querySelectorAll('.option-btn');
+            optionButtons.forEach((btn, btnIndex) => {
+                if (btnIndex === index) {
+                    btn.classList.add('selected');
+                } else {
+                    btn.classList.remove('selected');
+                }
+            });
+
+            updateNavigation();
+        }
+
+        function updateNavigation() {
+            if (userAnswers[currentQuestionIndex] !== null) {
+                nextBtn.disabled = false;
+            } else {
+                nextBtn.disabled = true;
+            }
+
+            if (currentQuestionIndex === questions.length - 1) {
+                nextBtn.textContent = 'Selesai';
+            } else {
+                nextBtn.textContent = 'Selanjutnya';
+            }
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                displayQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function showResults() {
+            quizScreen.classList.add('hidden');
+            resultScreen.classList.remove('hidden');
+
+            let correctCount = 0;
+            questions.forEach((q, index) => {
+                if (userAnswers[index] === q.a) {
+                    correctCount++;
+                }
+            });
+
+            const finalScore = Math.round((correctCount / questions.length) * 100);
+            scoreEl.textContent = finalScore;
+            correctAnswersEl.textContent = correctCount;
+            document.querySelector('#result-screen .text-xl.text-indigo-800:last-of-type').textContent = `${correctCount} dari ${questions.length} soal benar`;
+
+            displayReview();
+        }
+
+        function displayReview() {
+            reviewContainer.innerHTML = '';
+            questions.forEach((q, index) => {
+                const isCorrect = userAnswers[index] === q.a;
+                const reviewItem = document.createElement('div');
+                reviewItem.classList.add('p-4', 'border', 'rounded-lg', isCorrect ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200');
+
+                let userAnswerHtml = userAnswers[index] ? `"${userAnswers[index]}"` : "<i>Tidak dijawab</i>";
+                let answerStatusHtml = isCorrect 
+                    ? `<span class="font-semibold text-green-700">(Benar)</span>` 
+                    : `<span class="font-semibold text-red-700">(Salah)</span>`;
+
+                reviewItem.innerHTML = `
+                    <p class="font-semibold text-slate-800 mb-2">Soal ${index + 1}: ${q.q.replace(/\n/g, '<br>')}</p>
+                    <p class="text-sm text-slate-600 mb-1">Jawabanmu: ${userAnswerHtml} ${answerStatusHtml}</p>
+                    ${!isCorrect ? `<p class="text-sm text-slate-600 mb-2">Jawaban Benar: <span class="font-semibold">"${q.a}"</span></p>` : ''}
+                    <div class="mt-2 pt-2 border-t border-dashed ${isCorrect ? 'border-green-200' : 'border-red-200'}">
+                        <p class="text-sm font-semibold text-indigo-800">Pembahasan:</p>
+                        <p class="text-sm text-slate-700">${q.p}</p>
+                    </div>
+                `;
+                reviewContainer.appendChild(reviewItem);
+            });
+        }
+        
+        function restartQuiz() {
+            resultScreen.classList.add('hidden');
+            startScreen.classList.remove('hidden');
+        }
+
+    </script>
+</body>
+</html>

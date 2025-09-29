@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Latihan Soal IPA - Kelas VIII</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .option-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        .option-btn.selected {
+            background-color: #3b82f6; /* blue-500 */
+            color: white;
+            border-color: #2563eb; /* blue-600 */
+        }
+        .option-btn.correct {
+            background-color: #22c55e; /* green-500 */
+            color: white;
+            border-color: #16a34a; /* green-600 */
+        }
+        .option-btn.incorrect {
+            background-color: #ef4444; /* red-500 */
+            color: white;
+            border-color: #dc2626; /* red-600 */
+        }
+        .mode-card {
+            transition: all 0.2s ease-in-out;
+        }
+        .mode-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 flex items-center justify-center min-h-screen p-4">
+
+    <div id="app-container" class="w-full max-w-2xl mx-auto">
+        
+        <!-- Start Screen -->
+        <div id="start-screen" class="bg-white p-8 rounded-2xl shadow-lg text-center">
+            <h1 class="text-3xl md:text-4xl font-bold text-slate-700 mb-2">Latihan Soal IPA</h1>
+            <p class="text-lg text-slate-500 mb-8">Kelas VIII</p>
+            <p class="mb-6">Silakan pilih tingkat kesulitan untuk memulai latihan. Setiap mode berisi 30 soal.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div onclick="startQuiz('normal')" class="mode-card bg-green-500 text-white p-6 rounded-xl shadow-md cursor-pointer">
+                    <h2 class="text-2xl font-bold mb-2">NORMAL</h2>
+                    <p>Soal konsep dasar dan definisi.</p>
+                </div>
+                <div onclick="startQuiz('medium')" class="mode-card bg-yellow-500 text-white p-6 rounded-xl shadow-md cursor-pointer">
+                    <h2 class="text-2xl font-bold mb-2">MEDIUM</h2>
+                    <p>Soal penerapan dan identifikasi.</p>
+                </div>
+                <div onclick="startQuiz('hard')" class="mode-card bg-red-500 text-white p-6 rounded-xl shadow-md cursor-pointer">
+                    <h2 class="text-2xl font-bold mb-2">SULIT</h2>
+                    <p>Soal analisis dan studi kasus.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quiz Screen -->
+        <div id="quiz-screen" class="hidden">
+            <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg">
+                <div class="flex justify-between items-center mb-6">
+                    <div class="text-sm font-semibold bg-indigo-100 text-indigo-700 py-1 px-3 rounded-full">
+                        Mode: <span id="mode-label" class="capitalize"></span>
+                    </div>
+                    <div class="text-sm font-semibold bg-slate-100 text-slate-700 py-1 px-3 rounded-full">
+                        Soal <span id="question-number"></span> dari 30
+                    </div>
+                </div>
+                <div id="question-container" class="mb-6">
+                    <p id="question-text" class="text-lg md:text-xl leading-relaxed"></p>
+                </div>
+                <div id="options-container" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+                
+                <!-- Instant Feedback Container -->
+                <div id="feedback-container" class="hidden mt-6 p-4 border-l-4 border-yellow-500 bg-yellow-50 rounded-lg">
+                    <h4 class="font-bold text-yellow-800">Pembahasan</h4>
+                    <p id="feedback-text" class="text-yellow-700 mt-1"></p>
+                </div>
+
+                <div class="mt-8 flex justify-end">
+                    <button id="next-btn" onclick="checkAnswerAndProceed()" class="bg-indigo-600 text-white font-bold py-3 px-8 rounded-lg shadow-md hover:bg-indigo-700 transition-colors duration-200 disabled:bg-slate-400 disabled:cursor-not-allowed">
+                        Selanjutnya
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Result Screen -->
+        <div id="result-screen" class="hidden">
+            <div class="bg-white p-8 rounded-2xl shadow-lg text-center">
+                <h2 class="text-3xl font-bold text-slate-700 mb-2">Latihan Selesai!</h2>
+                <p class="text-lg text-slate-500 mb-6">Selamat, kamu telah menyelesaikan semua soal.</p>
+                <div class="bg-indigo-50 border-2 border-indigo-200 rounded-xl p-6 mb-8">
+                    <p class="text-xl text-indigo-800">Skor Akhir</p>
+                    <p class="text-6xl font-bold text-indigo-600 my-2"><span id="score"></span></p>
+                    <p class="text-xl text-indigo-800"><span id="correct-answers"></span> dari 30 soal benar</p>
+                </div>
+                <button onclick="restartQuiz()" class="w-full md:w-auto bg-indigo-600 text-white font-bold py-3 px-8 rounded-lg shadow-md hover:bg-indigo-700 transition-colors duration-200">
+                    Coba Lagi
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const startScreen = document.getElementById('start-screen');
+        const quizScreen = document.getElementById('quiz-screen');
+        const resultScreen = document.getElementById('result-screen');
+        const modeLabel = document.getElementById('mode-label');
+        const questionNumberEl = document.getElementById('question-number');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const nextBtn = document.getElementById('next-btn');
+        const scoreEl = document.getElementById('score');
+        const correctAnswersEl = document.getElementById('correct-answers');
+        const feedbackContainer = document.getElementById('feedback-container');
+        const feedbackText = document.getElementById('feedback-text');
+
+        // Quiz State
+        let currentMode = '';
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let selectedAnswer = null;
+        let isShowingFeedback = false;
+        let questions = [];
+
+        // --- DATABASE SOAL IPA KELAS VIII ---
+        const allQuestions = {
+            normal: [
+                { q: "Unit struktural dan fungsional terkecil dari makhluk hidup disebut...", o: ["Jaringan", "Organ", "Sel", "Sistem Organ"], a: "Sel", p: "Sel adalah unit dasar kehidupan yang menyusun semua makhluk hidup, dari yang paling sederhana hingga kompleks." },
+                { q: "Alat yang digunakan untuk mengamati benda-benda berukuran sangat kecil yang tidak bisa dilihat mata telanjang adalah...", o: ["Teleskop", "Lup", "Mikroskop", "Periskop"], a: "Mikroskop", p: "Mikroskop berfungsi untuk memperbesar bayangan objek renik sehingga detail strukturnya dapat diamati." },
+                { q: "Bagian mikroskop yang berfungsi untuk memfokuskan cahaya ke objek adalah...", o: ["Lensa Okuler", "Diafragma", "Kondensor", "Cermin"], a: "Kondensor", p: "Kondensor adalah lensa yang mengumpulkan cahaya dari cermin dan memfokuskannya ke spesimen atau objek." },
+                { q: "Bagian mikroskop yang kita lihat langsung dengan mata untuk mengamati objek disebut...", o: ["Lensa Objektif", "Lensa Okuler", "Revolver", "Tabung"], a: "Lensa Okuler", p: "Lensa okuler terletak di ujung atas tabung mikroskop, tempat kita meletakkan mata untuk melihat bayangan yang diperbesar." },
+                { q: "Organel sel yang berfungsi sebagai pusat pengendali seluruh kegiatan sel adalah...", o: ["Mitokondria", "Ribosom", "Nukleus (Inti Sel)", "Membran Sel"], a: "Nukleus (Inti Sel)", p: "Nukleus atau inti sel mengandung materi genetik (DNA) yang mengatur semua aktivitas sel, termasuk pertumbuhan dan reproduksi." },
+                { q: "Bagian terluar dari sel hewan yang berfungsi melindungi dan mengatur keluar masuknya zat adalah...", o: ["Dinding Sel", "Membran Sel", "Sitoplasma", "Vakuola"], a: "Membran Sel", p: "Sel hewan tidak memiliki dinding sel. Bagian terluarnya adalah membran sel yang bersifat selektif permeabel." },
+                { q: "Organel sel yang hanya dimiliki oleh sel tumbuhan dan berfungsi untuk fotosintesis adalah...", o: ["Kloroplas", "Mitokondria", "Vakuola", "Dinding Sel"], a: "Kloroplas", p: "Kloroplas mengandung klorofil (zat hijau daun) yang berperan penting dalam proses fotosintesis untuk menghasilkan makanan." },
+                { q: "Zat yang ditambahkan ke dalam makanan untuk meningkatkan rasa, penampilan, atau mengawetkan disebut...", o: ["Zat aditif", "Zat adiktif", "Nutrien", "Vitamin"], a: "Zat aditif", p: "Zat aditif adalah bahan tambahan pangan. Contohnya pewarna, pemanis, pengawet, dan penyedap rasa." },
+                { q: "Fungsi utama protein bagi tubuh adalah...", o: ["Sebagai sumber energi utama", "Membangun dan memperbaiki sel-sel tubuh", "Melarutkan vitamin", "Menjaga suhu tubuh"], a: "Membangun dan memperbaiki sel-sel tubuh", p: "Protein adalah 'batu bata' bagi tubuh kita, berfungsi untuk pertumbuhan, perbaikan jaringan yang rusak, dan pembentukan hormon." },
+                { q: "Proses pemecahan makanan dari molekul kompleks menjadi molekul sederhana dengan bantuan enzim disebut pencernaan...", o: ["Mekanik", "Kimiawi", "Fisika", "Biologis"], a: "Kimiawi", p: "Pencernaan kimiawi melibatkan enzim untuk memecah zat makanan. Contohnya enzim amilase di mulut yang memecah karbohidrat." },
+                { q: "Enzim yang terdapat dalam lambung dan berfungsi memecah protein menjadi pepton adalah...", o: ["Amilase", "Lipase", "Pepsin", "Tripsin"], a: "Pepsin", p: "Lambung menghasilkan enzim pepsin yang aktif dalam suasana asam (karena adanya HCl) untuk memulai pencernaan protein." },
+                { q: "Gangguan sistem pencernaan yang ditandai dengan peradangan pada dinding lambung adalah...", o: ["Diare", "Sembelit", "Maag (gastritis)", "Apendisitis"], a: "Maag (gastritis)", p: "Maag atau gastritis disebabkan oleh berbagai faktor seperti infeksi bakteri, stres, atau pola makan tidak teratur yang menyebabkan iritasi pada lambung." },
+                { q: "Pembuluh darah yang membawa darah kaya oksigen dari jantung ke seluruh tubuh adalah...", o: ["Vena", "Arteri (nadi)", "Kapiler", "Vena pulmonalis"], a: "Arteri (nadi)", p: "Arteri memiliki dinding yang tebal dan elastis untuk menahan tekanan darah tinggi yang dipompa dari jantung." },
+                { q: "Peredaran darah yang dimulai dari jantung ke paru-paru dan kembali ke jantung disebut...", o: ["Peredaran darah besar", "Peredaran darah kecil", "Peredaran darah sistemik", "Peredaran darah portal"], a: "Peredaran darah kecil", p: "Fungsi peredaran darah kecil adalah untuk mengambil oksigen di paru-paru dan melepaskan karbon dioksida." },
+                { q: "Komponen darah yang berfungsi dalam proses pembekuan darah saat terjadi luka adalah...", o: ["Sel darah merah (eritrosit)", "Sel darah putih (leukosit)", "Keping darah (trombosit)", "Plasma darah"], a: "Keping darah (trombosit)", p: "Trombosit akan berkumpul di area luka dan melepaskan zat kimia untuk memulai proses pembekuan, mencegah pendarahan berlebih." },
+                { q: "Zat aditif alami yang digunakan sebagai pewarna kuning pada makanan adalah...", o: ["Karamel", "Kunyit", "Daun suji", "Karmin"], a: "Kunyit", p: "Kunyit adalah pewarna alami yang memberikan warna kuning cerah pada masakan seperti nasi kuning." },
+                { q: "Bagian sel yang berfungsi sebagai tempat respirasi seluler untuk menghasilkan energi (ATP) adalah...", o: ["Nukleus", "Ribosom", "Mitokondria", "Lisosom"], a: "Mitokondria", p: "Mitokondria sering disebut 'pembangkit tenaga' sel karena di sinilah proses pengubahan glukosa menjadi energi (ATP) terjadi." },
+                { q: "Vitamin yang larut dalam air adalah...", o: ["Vitamin A", "Vitamin D", "Vitamin E", "Vitamin C"], a: "Vitamin C", p: "Vitamin B dan C larut dalam air, artinya tubuh tidak menyimpannya dalam jumlah banyak dan kelebihannya akan dibuang melalui urin." },
+                { q: "Penyakit akibat kekurangan sel darah merah atau hemoglobin disebut...", o: ["Leukemia", "Hipertensi", "Anemia", "Hemofilia"], a: "Anemia", p: "Anemia menyebabkan tubuh menjadi lemas, lesu, dan pucat karena suplai oksigen ke seluruh tubuh berkurang." },
+                { q: "Organ pencernaan yang berfungsi utama menyerap sari-sari makanan adalah...", o: ["Lambung", "Usus besar", "Usus halus", "Pankreas"], a: "Usus halus", p: "Usus halus memiliki permukaan yang sangat luas karena adanya jonjot-jonjot (vili) untuk memaksimalkan penyerapan nutrisi." },
+                { q: "Organel pada sel tumbuhan yang berukuran besar dan berfungsi menyimpan cadangan makanan serta menjaga tekanan turgor adalah...", o: ["Vakuola", "Kloroplas", "Mitokondria", "Nukleus"], a: "Vakuola", p: "Vakuola pada sel tumbuhan dewasa bisa menempati hingga 90% volume sel, membuatnya kaku dan tegar." },
+                { q: "Monosodium Glutamat (MSG) adalah contoh zat aditif yang berfungsi sebagai...", o: ["Pemanis", "Pengawet", "Penyedap rasa", "Pewarna"], a: "Penyedap rasa", p: "MSG digunakan untuk memberikan dan memperkuat rasa gurih atau umami pada makanan." },
+                { q: "Vitamin A, D, E, dan K adalah kelompok vitamin yang...", o: ["Larut dalam air", "Larut dalam lemak", "Dihasilkan tubuh sendiri", "Harus dikonsumsi setiap jam"], a: "Larut dalam lemak", p: "Vitamin A, D, E, K (disingkat ADEK) membutuhkan lemak untuk bisa diserap oleh tubuh dan dapat disimpan di jaringan lemak." },
+                { q: "Penyakit keturunan yang menyebabkan darah sukar membeku disebut...", o: ["Anemia", "Leukemia", "Talasemia", "Hemofilia"], a: "Hemofilia", p: "Penderita hemofilia kekurangan faktor pembekuan darah, sehingga luka kecil pun bisa menyebabkan pendarahan yang lama." },
+                { q: "Sakarin dan siklamat adalah contoh zat aditif yang berfungsi sebagai...", o: ["Pemanis alami", "Pemanis buatan (sintetis)", "Pengawet", "Penyedap"], a: "Pemanis buatan (sintetis)", p: "Pemanis ini memiliki tingkat kemanisan jauh lebih tinggi dari gula tebu dan tidak mengandung kalori." },
+                { q: "Pembuluh darah yang membawa darah kembali ke jantung adalah...", o: ["Arteri", "Aorta", "Vena (balik)", "Kapiler"], a: "Vena (balik)", p: "Vena memiliki katup di sepanjang pembuluhnya untuk mencegah darah mengalir kembali ke arah yang salah." },
+                { q: "Penyakit kanker darah di mana sumsum tulang memproduksi sel darah putih secara berlebihan disebut...", o: ["Anemia", "Leukemia", "Hipertensi", "Jantung koroner"], a: "Leukemia", p: "Sel darah putih yang abnormal ini tidak berfungsi dengan baik dan mendesak sel darah normal lainnya." },
+                { q: "Di dalam mulut, nasi yang dikunyah lama-kelamaan akan terasa manis. Hal ini karena kerja enzim...", o: ["Pepsin", "Lipase", "Ptialin (amilase)", "Renin"], a: "Ptialin (amilase)", p: "Enzim ptialin atau amilase yang ada di air liur memecah amilum (karbohidrat) dalam nasi menjadi glukosa yang rasanya manis." },
+                { q: "Tekanan darah tinggi yang dapat memicu penyakit jantung dan stroke disebut...", o: ["Hipotensi", "Hipertensi", "Anemia", "Varises"], a: "Hipertensi", p: "Hipertensi atau tekanan darah tinggi terjadi ketika tekanan darah terhadap dinding arteri terlalu tinggi secara konsisten." },
+                { q: "Penyumbatan pembuluh darah arteri jantung oleh lemak atau kolesterol disebut penyakit...", o: ["Stroke", "Gagal jantung", "Jantung koroner", "Aterosklerosis"], a: "Jantung koroner", p: "Penyumbatan ini menyebabkan suplai darah ke otot jantung berkurang, yang dapat memicu serangan jantung." }
+            ],
+            medium: [
+                { q: "Seorang siswa mengamati preparat sel bawang merah menggunakan mikroskop dengan lensa okuler 10x dan lensa objektif 40x. Berapakah total perbesaran yang diamati siswa tersebut?", o: ["10 kali", "40 kali", "50 kali", "400 kali"], a: "400 kali", p: "Perbesaran total mikroskop dihitung dengan mengalikan perbesaran lensa okuler dengan perbesaran lensa objektif. Jadi, 10x * 40x = 400x." },
+                { q: "Pasangan organel sel dan fungsinya yang tepat di bawah ini adalah...", o: ["Ribosom - respirasi sel", "Lisosom - sintesis protein", "Badan Golgi - modifikasi dan transpor protein", "Mitokondria - pencernaan sel"], a: "Badan Golgi - modifikasi dan transpor protein", p: "Badan Golgi berfungsi memodifikasi, menyortir, dan mengemas protein dan lipid untuk sekresi atau dikirim ke organel lain." },
+                { q: "Perbedaan mendasar antara sel hewan dan sel tumbuhan adalah...", o: ["Sel hewan memiliki nukleus, sel tumbuhan tidak", "Sel tumbuhan memiliki mitokondria, sel hewan tidak", "Sel tumbuhan memiliki dinding sel dan kloroplas, sel hewan tidak", "Sel hewan memiliki membran sel, sel tumbuhan tidak"], a: "Sel tumbuhan memiliki dinding sel dan kloroplas, sel hewan tidak", p: "Dinding sel memberikan bentuk kaku pada sel tumbuhan, sementara kloroplas berfungsi untuk fotosintesis. Keduanya tidak ada pada sel hewan." },
+                { q: "Natrium benzoat sering ditemukan pada komposisi saus dan minuman kemasan. Fungsi zat aditif ini adalah sebagai...", o: ["Pemanis", "Pewarna", "Pengawet", "Penyedap"], a: "Pengawet", p: "Natrium benzoat adalah bahan pengawet yang efektif untuk menghambat pertumbuhan jamur dan bakteri dalam produk makanan yang bersifat asam." },
+                { q: "Seorang anak mengalami kesulitan buang air besar (sembelit). Gangguan ini terjadi pada organ pencernaan...", o: ["Lambung", "Usus halus", "Usus besar", "Kerongkongan"], a: "Usus besar", p: "Sembelit atau konstipasi terjadi karena usus besar menyerap terlalu banyak air dari feses, sehingga feses menjadi kering dan keras." },
+                { q: "Urutan jalannya makanan pada sistem pencernaan manusia yang benar adalah...", o: ["Mulut - Lambung - Kerongkongan - Usus Halus - Usus Besar", "Mulut - Kerongkongan - Lambung - Usus Besar - Usus Halus", "Mulut - Kerongkongan - Lambung - Usus Halus - Usus Besar", "Mulut - Tenggorokan - Lambung - Usus Halus - Usus Besar"], a: "Mulut - Kerongkongan - Lambung - Usus Halus - Usus Besar", p: "Makanan masuk melalui mulut, melewati kerongkongan (esofagus), dicerna di lambung, diserap di usus halus, dan sisa-sisanya dibuang setelah melalui usus besar." },
+                { q: "Darah dari seluruh tubuh yang kaya karbon dioksida pertama kali masuk ke jantung melalui...", o: ["Bilik kanan", "Bilik kiri", "Serambi kanan", "Serambi kiri"], a: "Serambi kanan", p: "Serambi kanan (atrium dekster) berfungsi sebagai ruang penerima darah kotor (kaya CO2) dari seluruh tubuh sebelum dipompa ke bilik kanan." },
+                { q: "Jika seseorang bergolongan darah A, maka dalam plasma darahnya terdapat aglutinin...", o: ["Anti-A", "Anti-B", "Anti-A dan Anti-B", "Tidak ada"], a: "Anti-B", p: "Orang dengan golongan darah A memiliki aglutinogen A di eritrositnya dan aglutinin (antibodi) anti-B di plasmanya. Jika diberi darah B, akan terjadi penggumpalan." },
+                { q: "Organel yang berfungsi sebagai 'pabrik' protein dalam sel adalah...", o: ["Mitokondria", "Lisosom", "Ribosom", "Badan Golgi"], a: "Ribosom", p: "Ribosom bertugas menerjemahkan kode genetik dari RNA untuk menyusun asam amino menjadi rantai protein (sintesis protein)." },
+                { q: "Penyedap rasa alami yang berasal dari fermentasi kedelai adalah...", o: ["Garam", "Gula", "Cuka", "Kecap"], a: "Kecap", p: "Kecap dibuat melalui proses fermentasi kacang kedelai yang menghasilkan rasa gurih (umami) secara alami." },
+                { q: "Lemak yang masuk ke tubuh akan diemulsikan oleh getah empedu, kemudian dipecah oleh enzim lipase menjadi...", o: ["Asam amino dan gliserol", "Glukosa dan fruktosa", "Asam lemak dan gliserol", "Pepton dan polipeptida"], a: "Asam lemak dan gliserol", p: "Lipase, yang dihasilkan oleh pankreas, adalah enzim kunci dalam pencernaan lemak, memecahnya menjadi molekul yang lebih kecil agar bisa diserap usus." },
+                { q: "Urutan peredaran darah besar yang benar adalah...", o: ["Bilik kiri -> Aorta -> Seluruh Tubuh -> Vena -> Serambi kanan", "Bilik kanan -> Arteri Pulmonalis -> Paru-paru -> Vena Pulmonalis -> Serambi kiri", "Serambi kiri -> Bilik kiri -> Aorta -> Seluruh Tubuh -> Serambi kanan", "Serambi kanan -> Bilik kanan -> Seluruh Tubuh -> Vena -> Serambi kiri"], a: "Bilik kiri -> Aorta -> Seluruh Tubuh -> Vena -> Serambi kanan", p: "Peredaran darah besar (sistemik) bertugas mengedarkan darah kaya oksigen dari bilik kiri jantung ke seluruh tubuh dan kembali ke serambi kanan." },
+                { q: "Penyakit yang terjadi akibat pelebaran pembuluh darah vena, biasanya di area kaki, disebut...", o: ["Ambeien", "Varises", "Stroke", "Aterosklerosis"], a: "Varises", p: "Varises terjadi ketika katup di pembuluh vena melemah, menyebabkan darah berkumpul dan pembuluh darah menjadi bengkak dan terlihat menonjol." },
+                { q: "Untuk memutar lensa objektif pada mikroskop, bagian yang digunakan adalah...", o: ["Makrometer", "Mikrometer", "Revolver", "Diafragma"], a: "Revolver", p: "Revolver adalah piringan berputar tempat lensa-lensa objektif terpasang, memungkinkan kita memilih perbesaran yang diinginkan." },
+                { q: "Dinding sel tumbuhan tersusun atas selulosa yang membuatnya kaku. Fungsi utama kekakuan ini adalah...", o: ["Mempercepat fotosintesis", "Melindungi dari predator", "Memberi bentuk dan mencegah sel pecah akibat tekanan air", "Menyimpan cadangan makanan"], a: "Memberi bentuk dan mencegah sel pecah akibat tekanan air", p: "Saat air masuk ke sel (osmosis), vakuola membesar dan menekan sitoplasma ke dinding sel. Dinding sel yang kuat mencegah sel pecah." },
+                { q: "Aspartam adalah pemanis buatan yang harus dihindari oleh penderita penyakit...", o: ["Diabetes", "Fenilketonuria (PKU)", "Jantung", "Maag"], a: "Fenilketonuria (PKU)", p: "Penderita PKU tidak dapat memetabolisme asam amino fenilalanin, salah satu komponen penyusun aspartam. Penumpukan fenilalanin dapat merusak otak." },
+                { q: "Zat makanan yang tidak perlu dicerna dan bisa langsung diserap oleh tubuh adalah...", o: ["Karbohidrat kompleks", "Protein", "Lemak", "Vitamin dan mineral"], a: "Vitamin dan mineral", p: "Vitamin, mineral, dan air adalah molekul sederhana yang dapat langsung diserap oleh vili usus halus tanpa perlu dipecah oleh enzim." },
+                { q: "Pada tabel komposisi makanan tertulis 'Tartrazin'. Zat ini berfungsi sebagai...", o: ["Pengawet", "Pewarna kuning sintetis", "Pemanis", "Antioksidan"], a: "Pewarna kuning sintetis", p: "Tartrazin (atau E102) adalah pewarna sintetis yang memberikan warna kuning lemon pada makanan dan minuman." },
+                { q: "Sel darah putih yang berperan melawan infeksi dengan cara memakan kuman (fagositosis) adalah...", o: ["Limfosit", "Neutrofil dan Makrofag", "Basofil", "Eosinofil"], a: "Neutrofil dan Makrofag", p: "Neutrofil dan makrofag adalah jenis leukosit fagositik yang menjadi garda terdepan dalam sistem kekebalan tubuh." },
+                { q: "Jika seseorang yang kekurangan vitamin C mengalami sariawan dan gusi berdarah, maka vitamin C berperan penting dalam...", o: ["Kesehatan tulang", "Penglihatan", "Pembekuan darah", "Menjaga kesehatan jaringan ikat dan kolagen"], a: "Menjaga kesehatan jaringan ikat dan kolagen", p: "Vitamin C penting untuk sintesis kolagen, protein yang membentuk kulit, pembuluh darah, dan gusi. Kekurangannya menyebabkan jaringan ini rapuh." },
+                { q: "Jika cermin pada mikroskop kotor atau berdebu, akibat yang paling mungkin terjadi adalah...", o: ["Bayangan menjadi terbalik", "Perbesaran berkurang", "Medan pandang menjadi gelap atau buram", "Objek tidak dapat digerakkan"], a: "Medan pandang menjadi gelap atau buram", p: "Cermin berfungsi memantulkan cahaya ke objek. Jika kotor, jumlah cahaya yang sampai ke objek akan berkurang sehingga pengamatan menjadi sulit." },
+                { q: "Perbedaan utama antara pencernaan mekanik dan kimiawi di lambung adalah...", o: ["Mekanik oleh enzim, kimiawi oleh gerakan otot", "Mekanik oleh gerakan meremas, kimiawi oleh enzim pepsin dan HCl", "Keduanya sama-sama menggunakan enzim", "Mekanik hanya terjadi pada karbohidrat"], a: "Mekanik oleh gerakan meremas, kimiawi oleh enzim pepsin dan HCl", p: "Pencernaan mekanik di lambung adalah gerakan peristaltik yang mengaduk makanan, sedangkan pencernaan kimiawi melibatkan asam lambung (HCl) dan enzim pepsin." },
+                { q: "Seseorang yang tinggal di daerah pantai (dataran rendah) pindah ke daerah pegunungan tinggi. Perubahan yang paling mungkin terjadi pada sistem peredaran darahnya setelah beberapa waktu adalah...", o: ["Jumlah sel darah putihnya meningkat", "Tekanan darahnya menurun drastis", "Jumlah sel darah merahnya meningkat", "Detak jantungnya melambat"], a: "Jumlah sel darah merahnya meningkat", p: "Di pegunungan, kadar oksigen lebih tipis. Tubuh beradaptasi dengan memproduksi lebih banyak sel darah merah untuk meningkatkan kapasitas pengikatan oksigen." },
+                { q: "Manakah pasangan zat aditif dan fungsinya yang TIDAK tepat?", o: ["Sakarin - Pemanis", "Asam sitrat - Pengatur keasaman", "Pektin - Pengental", "Beta karoten - Pengawet"], a: "Beta karoten - Pengawet", p: "Beta karoten adalah zat aditif yang berfungsi sebagai pewarna alami (memberi warna oranye, seperti pada wortel) dan juga sebagai provitamin A." },
+                { q: "Pada penderita anemia, gejala seperti pusing dan cepat lelah muncul karena...", o: ["Kekurangan sel darah putih untuk melawan infeksi", "Darah terlalu kental sehingga aliran lambat", "Kekurangan oksigen yang diangkut ke sel-sel tubuh", "Pembekuan darah yang terlalu cepat"], a: "Kekurangan oksigen yang diangkut ke sel-sel tubuh", p: "Sel darah merah berfungsi mengangkut oksigen. Jika jumlahnya kurang, sel-sel tubuh (termasuk otak dan otot) akan kekurangan energi, menyebabkan pusing dan lelah." },
+                { q: "Saat mengunyah roti, proses yang terjadi di mulut adalah...", o: ["Pencernaan mekanik oleh gigi dan kimiawi oleh enzim ptialin", "Hanya pencernaan mekanik oleh gigi", "Hanya pencernaan kimiawi oleh air liur", "Penyerapan sari-sari roti secara langsung"], a: "Pencernaan mekanik oleh gigi dan kimiawi oleh enzim ptialin", p: "Gigi memotong dan melumatkan roti (mekanik), sementara enzim ptialin (amilase) dalam air liur mulai memecah karbohidratnya (kimiawi)." },
+                { q: "Darah dalam bilik kanan jantung akan dipompa selanjutnya ke...", o: ["Aorta untuk diedarkan ke seluruh tubuh", "Serambi kanan untuk dibersihkan", "Paru-paru melalui arteri pulmonalis", "Serambi kiri melalui vena pulmonalis"], a: "Paru-paru melalui arteri pulmonalis", p: "Darah dari bilik kanan adalah darah kotor (kaya CO2) yang harus dibawa ke paru-paru untuk proses pertukaran gas (melepas CO2, mengikat O2)." },
+                { q: "Seorang siswa menemukan sel dengan ciri: memiliki dinding sel, vakuola besar, dan kloroplas. Sel tersebut kemungkinan besar adalah...", o: ["Sel epitel pipi", "Sel darah merah", "Sel bakteri", "Sel daun tumbuhan"], a: "Sel daun tumbuhan", p: "Ketiga ciri tersebut (dinding sel, vakuola besar, dan kloroplas) adalah karakteristik khas yang membedakan sel tumbuhan dari sel hewan dan sel lainnya." },
+                { q: "Mengapa makanan yang diberi garam dalam jumlah banyak bisa lebih awet?", o: ["Garam membunuh kuman secara langsung", "Garam menciptakan lingkungan yang terlalu asin (hipertonik) sehingga air dari sel kuman keluar dan kuman mati karena dehidrasi", "Garam membuat makanan lebih enak sehingga cepat habis", "Garam mendinginkan makanan"], a: "Garam menciptakan lingkungan yang terlalu asin (hipertonik) sehingga air dari sel kuman keluar dan kuman mati karena dehidrasi", p: "Proses ini disebut osmosis. Garam 'menarik' air keluar dari sel mikroorganisme pembusuk, membuatnya tidak bisa berkembang biak." },
+                { q: "Denyut nadi yang kita rasakan di pergelangan tangan adalah akibat dari...", o: ["Gerakan darah di pembuluh vena", "Kontraksi otot tangan", "Getaran yang dihasilkan oleh pemompaan darah oleh jantung ke arteri", "Aliran sel darah putih"], a: "Getaran yang dihasilkan oleh pemompaan darah oleh jantung ke arteri", p: "Setiap kali jantung memompa darah, dinding arteri yang elastis akan meregang dan kembali normal. Pergerakan inilah yang kita rasakan sebagai denyut nadi." }
+            ],
+            hard: [
+                { q: "Jika sel daun Hydrilla dimasukkan ke dalam larutan garam pekat (hipertonik), maka akan terjadi peristiwa plasmolisis. Peristiwa yang dimaksud adalah...", o: ["Sel akan pecah karena terlalu banyak air masuk", "Membran sel akan lepas dari dinding sel karena sel kehilangan air", "Dinding sel akan larut oleh garam", "Kloroplas akan keluar dari sel"], a: "Membran sel akan lepas dari dinding sel karena sel kehilangan air", p: "Air dari dalam sel akan bergerak keluar menuju larutan garam (osmosis). Akibatnya, volume sitoplasma dan vakuola menyusut, menyebabkan membran sel tertarik menjauhi dinding sel." },
+                { q: "Seorang siswa melakukan uji makanan pada suatu bahan. Hasilnya: ditetesi Lugol berwarna biru kehitaman, ditetesi Biuret berwarna ungu, dan ditetesi Benedict setelah dipanaskan berwarna merah bata. Kesimpulannya, bahan makanan tersebut mengandung...", o: ["Amilum dan protein", "Protein dan glukosa", "Amilum, protein, dan glukosa", "Amilum dan lemak"], a: "Amilum, protein, dan glukosa", p: "Lugol positif (biru hitam) menunjukkan ada amilum. Biuret positif (ungu) menunjukkan ada protein. Benedict positif (merah bata) menunjukkan ada glukosa." },
+                { q: "Dinding bilik kiri jantung lebih tebal daripada bilik kanan. Alasan anatomis ini yang paling tepat adalah...", o: ["Karena bilik kiri menampung lebih banyak darah", "Untuk memompa darah ke paru-paru yang dekat", "Untuk menghasilkan tekanan yang lebih kuat guna memompa darah ke seluruh tubuh", "Agar tidak mudah terinfeksi bakteri"], a: "Untuk menghasilkan tekanan yang lebih kuat guna memompa darah ke seluruh tubuh", p: "Bilik kiri harus bekerja lebih keras untuk melawan gravitasi dan mendorong darah melalui sirkulasi sistemik yang panjang, sehingga ototnya lebih tebal dan kuat." },
+                { q: "Pada label minuman 'rendah kalori' sering ditemukan zat aditif aspartam. Mengapa penggunaan aspartam harus disertai peringatan 'mengandung fenilalanin'?", o: ["Karena fenilalanin dapat menyebabkan diabetes", "Untuk melindungi penderita fenilketonuria (PKU) yang tidak bisa memetabolisme fenilalanin", "Karena fenilalanin adalah pengawet berbahaya", "Agar konsumen tahu bahwa produk tersebut manis"], a: "Untuk melindungi penderita fenilketonuria (PKU) yang tidak bisa memetabolisme fenilalanin", p: "Penderita kelainan genetik PKU tidak memiliki enzim untuk mengolah asam amino fenilalanin. Penumpukannya di tubuh dapat bersifat racun bagi otak." },
+                { q: "Jika seseorang mengalami luka, trombosit akan pecah dan mengeluarkan trombokinase. Trombokinase dengan bantuan ion kalsium dan vitamin K akan mengubah...", o: ["Fibrinogen menjadi fibrin", "Protrombin menjadi trombin", "Trombin menjadi protrombin", "Fibrin menjadi fibrinogen"], a: "Protrombin menjadi trombin", p: "Ini adalah tahap kunci dalam kaskade pembekuan darah. Setelah trombin terbentuk, barulah trombin akan mengubah fibrinogen menjadi benang-benang fibrin." },
+                { q: "Seorang pasien didiagnosis menderita aterosklerosis. Kondisi yang terjadi pada sistem peredaran darah pasien tersebut adalah...", o: ["Produksi sel darah putih berlebih", "Kekurangan hemoglobin dalam sel darah merah", "Pengerasan dan penyempitan pembuluh darah arteri akibat penumpukan plak lemak", "Darah sukar membeku karena kekurangan faktor genetik"], a: "Pengerasan dan penyempitan pembuluh darah arteri akibat penumpukan plak lemak", p: "Aterosklerosis adalah penyebab utama penyakit jantung koroner dan stroke, karena plak dapat menghambat aliran darah atau pecah dan membentuk gumpalan." },
+                { q: "Saat mengamati sel di bawah mikroskop, untuk memperjelas atau mempertajam gambar setelah fokus kasar didapat, bagian yang harus diputar adalah...", o: ["Lensa okuler", "Makrometer (pemutar kasar)", "Mikrometer (pemutar halus)", "Diafragma"], a: "Mikrometer (pemutar halus)", p: "Makrometer digunakan untuk mencari fokus awal dengan cepat. Setelah itu, mikrometer digunakan untuk penyesuaian fokus yang lebih presisi dan lambat agar gambar lebih tajam." },
+                { q: "Seseorang yang bergolongan darah B ditransfusi dengan darah dari donor bergolongan darah A. Reaksi aglutinasi (penggumpalan) terjadi karena...", o: ["Aglutinogen A (donor) bertemu dengan aglutinin anti-A (resipien)", "Aglutinogen B (resipien) bertemu dengan aglutinin anti-A (donor)", "Aglutinogen A (donor) bertemu dengan aglutinin anti-B (resipien)", "Tidak ada reaksi yang terjadi"], a: "Aglutinogen A (donor) bertemu dengan aglutinin anti-A (resipien)", p: "Plasma darah resipien (golongan B) mengandung antibodi (aglutinin) anti-A. Antibodi ini akan menyerang sel darah merah donor yang memiliki antigen (aglutinogen) A, menyebabkan penggumpalan." },
+                { q: "Pencernaan karbohidrat dimulai di mulut, berhenti di lambung, dan dilanjutkan kembali di usus halus. Mengapa pencernaan karbohidrat berhenti di lambung?", o: ["Lambung tidak memiliki otot untuk mencerna", "Enzim ptialin (amilase) menjadi tidak aktif karena suasana lambung yang sangat asam", "Karbohidrat sudah selesai dicerna di mulut", "Lambung hanya mencerna protein dan lemak"], a: "Enzim ptialin (amilase) menjadi tidak aktif karena suasana lambung yang sangat asam", p: "Enzim amilase bekerja optimal pada pH netral (sekitar 6.7-7.0). Asam lambung (HCl) yang memiliki pH 1.5-3.5 akan merusak struktur enzim ini (denaturasi)." },
+                { q: "Seorang pasien mengeluh lemas dan hasil tes darah menunjukkan kadar Hb rendah. Dokter menyarankan untuk mengonsumsi bayam dan hati sapi. Zat nutrien spesifik yang ingin ditingkatkan dari makanan tersebut adalah...", o: ["Vitamin C", "Kalsium", "Zat Besi", "Kalium"], a: "Zat Besi", p: "Zat besi adalah komponen inti dalam pembentukan hemoglobin (Hb) di dalam sel darah merah. Kekurangan zat besi adalah penyebab paling umum dari anemia." },
+                { q: "Manakah pernyataan yang paling tepat menjelaskan fungsi vakuola kontraktil pada organisme bersel satu seperti Paramecium?", o: ["Sebagai otak sel untuk mengontrol aktivitas", "Untuk mencerna makanan yang masuk", "Sebagai pompa air untuk mengeluarkan kelebihan air dari dalam sel", "Untuk bergerak di dalam air"], a: "Sebagai pompa air untuk mengeluarkan kelebihan air dari dalam sel", p: "Paramecium hidup di air tawar. Air terus masuk ke selnya melalui osmosis. Vakuola kontraktil bekerja seperti pompa untuk mencegah sel pecah." },
+                { q: "Jika seseorang memakan makanan yang mengandung pengawet nitrit (sering pada daging olahan) secara berlebihan, risiko kesehatan yang mungkin timbul adalah...", o: ["Meningkatkan risiko kanker usus (karsogenik)", "Menyebabkan kecanduan", "Meningkatkan kadar gula darah", "Menurunkan tekanan darah"], a: "Meningkatkan risiko kanker usus (karsogenik)", p: "Di dalam tubuh, nitrit dapat bereaksi membentuk senyawa nitrosamin yang diketahui bersifat karsogenik atau dapat memicu pertumbuhan sel kanker." },
+                { q: "Seorang anak mengalami gizi buruk dengan perut buncit (busung lapar). Kondisi yang disebut kwashiorkor ini disebabkan oleh kekurangan...", o: ["Karbohidrat", "Vitamin A", "Protein", "Lemak"], a: "Protein", p: "Kekurangan protein menyebabkan terganggunya keseimbangan cairan tubuh. Protein (albumin) dalam darah menurun, sehingga cairan merembes keluar pembuluh darah dan menumpuk di rongga perut." },
+                { q: "Pada sistem peredaran darah janin, terdapat lubang bernama foramen ovale antara serambi kanan dan serambi kiri. Fungsi lubang ini adalah...", o: ["Mencampurkan darah bersih dan kotor", "Memintas (bypass) peredaran darah ke paru-paru yang belum berfungsi", "Menghasilkan sel darah merah untuk janin", "Menyaring racun dari darah ibu"], a: "Memintas (bypass) peredaran darah ke paru-paru yang belum berfungsi", p: "Janin mendapat oksigen dari plasenta ibu, bukan dari paru-parunya sendiri. Foramen ovale memungkinkan darah dari serambi kanan langsung ke serambi kiri tanpa harus melewati paru-paru." },
+                { q: "Seseorang yang mengalami gagal jantung seringkali mengalami pembengkakan pada kaki (edema). Secara fisiologis, hal ini disebabkan oleh...", o: ["Jantung memompa terlalu banyak darah ke kaki", "Melemahnya pompa jantung sehingga darah terbendung di pembuluh vena dan cairan merembes ke jaringan", "Alergi terhadap obat jantung", "Kekurangan trombosit di area kaki"], a: "Melemahnya pompa jantung sehingga darah terbendung di pembuluh vena dan cairan merembes ke jaringan", p: "Ketika jantung gagal memompa darah secara efektif, tekanan di pembuluh vena meningkat. Hal ini mendorong cairan plasma darah keluar dari kapiler dan menumpuk di jaringan sekitarnya." },
+                { q: "Siswa X melihat preparat dengan lensa okuler 5x dan objektif 10x. Siswa Y melihat preparat yang sama dengan okuler 10x dan objektif 40x. Perbandingan luas medan pandang yang dilihat siswa X terhadap siswa Y adalah...", o: ["Lebih besar 8 kali", "Lebih kecil 8 kali", "Sama besar", "Lebih besar 4 kali"], a: "Lebih besar 8 kali", p: "Perbesaran X=50x, Y=400x. Perbesaran Y adalah 8 kali lipat dari X. Semakin besar perbesaran, semakin sempit medan pandang. Jadi, medan pandang X adalah 8 kali lebih luas dari Y." },
+                { q: "Dalam suatu eksperimen, sel tumbuhan direndam dalam tiga larutan berbeda. Di larutan A sel tampak normal, di B sel mengalami plasmolisis, di C sel tampak sangat tegar (turgid). Urutan konsentrasi larutan dari yang terendah (hipotonik) ke tertinggi (hipertonik) adalah...", o: ["A, B, C", "B, A, C", "C, A, B", "B, C, A"], a: "C, A, B", p: "Sangat tegar (C) berarti larutan paling hipotonik. Normal (A) berarti isotonik. Plasmolisis (B) berarti larutan paling hipertonik. Jadi urutannya C, A, B." },
+                { q: "Seorang pasien yang mengalami kecelakaan kehilangan banyak darah dan membutuhkan transfusi. Pasien tersebut bergolongan darah A, Rhesus positif. Manakah pilihan donor yang paling aman?", o: ["Golongan O, Rhesus negatif", "Golongan AB, Rhesus positif", "Golongan B, Rhesus positif", "Golongan A, Rhesus negatif"], a: "Golongan O, Rhesus negatif", p: "O Rhesus negatif adalah donor universal sejati. Tidak memiliki aglutinogen A, B, maupun Rhesus, sehingga tidak akan memicu reaksi penggumpalan pada resipien manapun." },
+                { q: "Proses pencernaan lemak paling efisien terjadi di usus halus dan bukan di lambung. Hal ini disebabkan karena di usus halus terdapat...", o: ["Asam klorida dan pepsin", "Gerakan peristaltik yang lebih kuat", "Getah empedu untuk mengemulsi dan enzim lipase dari pankreas", "Penyerapan air yang maksimal"], a: "Getah empedu untuk mengemulsi dan enzim lipase dari pankreas", p: "Lemak perlu diemulsi (dipecah menjadi butiran kecil) oleh empedu agar enzim lipase dapat bekerja secara efektif. Keduanya hanya ada di usus halus." },
+                { q: "Seorang pelari maraton dapat bertahan berlari selama berjam-jam. Sumber energi utama yang digunakan tubuhnya setelah cadangan glikogen menipis adalah...", o: ["Protein dari otot", "Lemak dari jaringan adiposa", "Vitamin dari suplemen", "Air dari minum"], a: "Lemak dari jaringan adiposa", p: "Setelah cadangan karbohidrat (glikogen) habis (sekitar 90 menit), tubuh akan beralih ke metabolisme lemak yang menyediakan energi jauh lebih besar untuk aktivitas daya tahan." },
+                { q: "Jika seseorang makan makanan yang sangat pedas, rasa 'panas' tersebut disebabkan oleh zat kapsaisin yang merangsang reseptor rasa sakit. Secara fisiologis, reaksi tubuh untuk meredakannya adalah...", o: ["Meningkatkan produksi asam lambung", "Memperlambat denyut jantung", "Meningkatkan aliran darah ke area tersebut dan melepaskan endorfin", "Menurunkan suhu tubuh"], a: "Meningkatkan aliran darah ke area tersebut dan melepaskan endorfin", p: "Peningkatan aliran darah adalah respons peradangan, sementara pelepasan endorfin adalah upaya alami tubuh untuk meredakan rasa sakit." },
+                { q: "Manakah organel sel yang paling banyak ditemukan pada sel otot jantung?", o: ["Lisosom", "Vakuola", "Kloroplas", "Mitokondria"], a: "Mitokondria", p: "Otot jantung bekerja tanpa henti seumur hidup, sehingga membutuhkan pasokan energi (ATP) yang sangat besar. Oleh karena itu, selnya sangat padat dengan mitokondria, si 'pembangkit energi'." },
+                { q: "Seseorang dengan tekanan darah 120/80 mmHg. Angka 80 mmHg menunjukkan...", o: ["Tekanan saat bilik jantung berkontraksi (sistol)", "Tekanan saat serambi jantung berkontraksi", "Tekanan saat bilik jantung berelaksasi (diastol)", "Rata-rata tekanan darah"], a: "Tekanan saat bilik jantung berelaksasi (diastol)", p: "Angka bawah (diastol) adalah tekanan darah di dalam arteri saat jantung sedang beristirahat di antara detakan, sedangkan angka atas (sistol) adalah saat jantung berkontraksi." },
+                { q: "Vitamin K sangat penting bagi sistem peredaran darah karena...", o: ["Membantu pembentukan sel darah merah", "Merupakan komponen penting untuk aktivasi faktor-faktor pembekuan darah di hati", "Meningkatkan elastisitas pembuluh darah", "Mengangkut oksigen dalam darah"], a: "Merupakan komponen penting untuk aktivasi faktor-faktor pembekuan darah di hati", p: "Tanpa vitamin K, hati tidak dapat memproduksi protrombin dan faktor pembekuan lainnya secara efektif, sehingga proses pembekuan darah akan terganggu." },
+                { q: "Seorang pasien mengalami apendisitis (radang usus buntu). Secara fungsional, usus buntu dianggap sebagai bagian dari sistem...", o: ["Pencernaan dan Imun (kekebalan tubuh)", "Peredaran darah", "Pernapasan", "Saraf"], a: "Pencernaan dan Imun (kekebalan tubuh)", p: "Meskipun merupakan bagian dari saluran cerna, usus buntu juga kaya akan jaringan limfoid yang berperan dalam sistem kekebalan tubuh." },
+                { q: "Jika seseorang hanya makan nasi (karbohidrat) tanpa lauk (protein), maka proses pencernaan kimiawi yang paling dominan terjadi pada organ...", o: ["Mulut dan Usus Halus", "Lambung dan Usus Halus", "Hanya di Lambung", "Mulut dan Lambung"], a: "Mulut dan Usus Halus", p: "Pencernaan karbohidrat dimulai di mulut oleh amilase liur dan diselesaikan di usus halus oleh amilase pankreas. Di lambung, pencernaan karbohidrat berhenti." },
+                { q: "Pernyataan yang paling tepat mengenai pembuluh kapiler adalah...", o: ["Memiliki dinding tebal untuk menahan tekanan tinggi", "Merupakan tempat pertukaran oksigen, nutrisi, dan zat sisa antara darah dan sel tubuh", "Membawa darah kembali ke jantung", "Hanya ditemukan di sekitar jantung dan paru-paru"], a: "Merupakan tempat pertukaran oksigen, nutrisi, dan zat sisa antara darah dan sel tubuh", p: "Dinding kapiler sangat tipis (hanya satu lapis sel) untuk memfasilitasi difusi zat-zat secara efisien antara darah dan jaringan tubuh." },
+                { q: "Seorang anak memakan permen yang mengandung pewarna sintetis Rhodamin B. Mengapa zat ini sangat berbahaya dan dilarang untuk makanan?", o: ["Karena rasanya sangat pahit", "Karena harganya sangat mahal", "Karena merupakan pewarna tekstil yang bersifat karsinogenik dan dapat merusak hati", "Karena warnanya tidak stabil"], a: "Karena merupakan pewarna tekstil yang bersifat karsinogenik dan dapat merusak hati", p: "Rhodamin B bukanlah zat aditif pangan (food grade). Penggunaannya dalam makanan dapat menyebabkan kerusakan organ, terutama hati, dan memicu kanker." },
+                { q: "Sel darah merah manusia tidak memiliki nukleus saat dewasa. Keuntungan utama dari adaptasi ini adalah...", o: ["Agar sel bisa hidup lebih lama", "Untuk memberikan lebih banyak ruang bagi hemoglobin sehingga bisa mengangkut lebih banyak oksigen", "Agar sel bisa membelah lebih cepat", "Supaya tidak bisa diserang oleh virus"], a: "Untuk memberikan lebih banyak ruang bagi hemoglobin sehingga bisa mengangkut lebih banyak oksigen", p: "Dengan menghilangkan nukleus dan organel lain, sel darah merah memaksimalkan volume internalnya untuk diisi hemoglobin, menjadikannya 'kantong' pengangkut oksigen yang sangat efisien." },
+                { q: "Saat ketakutan atau berolahraga, denyut jantung meningkat. Hal ini diatur oleh sistem saraf otonom dan hormon adrenalin. Peningkatan denyut jantung ini bertujuan untuk...", o: ["Menenangkan tubuh", "Mengurangi aliran darah ke otak", "Meningkatkan suplai oksigen dan nutrisi ke otot-otot secara lebih cepat", "Mencerna makanan lebih cepat"], a: "Meningkatkan suplai oksigen dan nutrisi ke otot-otot secara lebih cepat", p: "Dalam kondisi 'fight or flight' (lawan atau lari) atau saat aktivitas fisik meningkat, otot membutuhkan lebih banyak energi. Jantung memompa lebih cepat untuk memenuhi permintaan tersebut." }
+            ]
+        };
+
+
+        function startQuiz(mode) {
+            currentMode = mode;
+            currentQuestionIndex = 0;
+            score = 0;
+            selectedAnswer = null;
+            isShowingFeedback = false;
+            questions = allQuestions[mode];
+            
+            startScreen.classList.add('hidden');
+            resultScreen.classList.add('hidden');
+            quizScreen.classList.remove('hidden');
+
+            displayQuestion();
+        }
+
+        function displayQuestion() {
+            isShowingFeedback = false;
+            selectedAnswer = null;
+            feedbackContainer.classList.add('hidden');
+
+            const question = questions[currentQuestionIndex];
+            questionNumberEl.textContent = currentQuestionIndex + 1;
+            modeLabel.textContent = currentMode;
+            questionText.innerHTML = question.q;
+            
+            optionsContainer.innerHTML = '';
+            question.o.forEach((option) => {
+                const optionElement = document.createElement('button');
+                optionElement.innerHTML = option;
+                optionElement.classList.add('option-btn', 'w-full', 'p-4', 'border-2', 'border-slate-300', 'rounded-lg', 'text-left', 'transition-all', 'duration-200');
+                optionElement.onclick = () => selectOption(option, optionElement);
+                optionsContainer.appendChild(optionElement);
+            });
+
+            nextBtn.disabled = true;
+            nextBtn.textContent = 'Selanjutnya';
+        }
+
+        function selectOption(option, element) {
+            if (isShowingFeedback) return;
+
+            selectedAnswer = option;
+            const optionButtons = optionsContainer.querySelectorAll('.option-btn');
+            optionButtons.forEach(btn => btn.classList.remove('selected'));
+            element.classList.add('selected');
+            nextBtn.disabled = false;
+        }
+
+        function checkAnswerAndProceed() {
+            if (isShowingFeedback) {
+                // Lanjut ke soal berikutnya setelah melihat pembahasan
+                currentQuestionIndex++;
+                if (currentQuestionIndex < questions.length) {
+                    displayQuestion();
+                } else {
+                    showResults();
+                }
+                return;
+            }
+
+            const question = questions[currentQuestionIndex];
+            const isCorrect = selectedAnswer === question.a;
+
+            if (isCorrect) {
+                score++;
+                // Jawaban benar, langsung lanjut
+                currentQuestionIndex++;
+                if (currentQuestionIndex < questions.length) {
+                    displayQuestion();
+                } else {
+                    showResults();
+                }
+            } else {
+                // Jawaban salah, tampilkan pembahasan
+                isShowingFeedback = true;
+                feedbackText.innerHTML = question.p;
+                feedbackContainer.classList.remove('hidden');
+
+                // Tandai jawaban
+                const optionButtons = optionsContainer.querySelectorAll('.option-btn');
+                optionButtons.forEach(btn => {
+                    btn.disabled = true; // Nonaktifkan pilihan
+                    if (btn.innerHTML === question.a) {
+                        btn.classList.add('correct');
+                    } else if (btn.innerHTML === selectedAnswer) {
+                        btn.classList.add('incorrect');
+                    }
+                });
+                
+                nextBtn.textContent = 'Lanjutkan';
+                nextBtn.disabled = false;
+            }
+        }
+
+        function showResults() {
+            quizScreen.classList.add('hidden');
+            resultScreen.classList.remove('hidden');
+            
+            const finalScore = Math.round((score / questions.length) * 100);
+            scoreEl.textContent = finalScore;
+            correctAnswersEl.textContent = score;
+            // Update text di halaman hasil
+            const resultText = document.querySelector('#result-screen .text-xl.text-indigo-800:last-of-type');
+            resultText.textContent = `${score} dari ${questions.length} soal benar`;
+        }
+
+        function restartQuiz() {
+            resultScreen.classList.add('hidden');
+            startScreen.classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>

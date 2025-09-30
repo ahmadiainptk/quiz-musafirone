@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="id" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Latihan Soal Bahasa Arab - Kelas VII</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lateef:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Style untuk teks Arab */
+        .arabic {
+            font-family: 'Lateef', serif;
+            direction: rtl;
+            display: inline-block; /* Penting untuk teks campuran */
+            font-size: 1.5rem; 
+            line-height: 2rem;
+            vertical-align: middle;
+        }
+        /* Style untuk pertanyaan yang mengandung teks campuran */
+        #question-text {
+             line-height: 2.2rem;
+        }
+        .option-btn {
+            display: flex;
+            align-items: center;
+        }
+        .option-btn .arabic {
+            width: 100%;
+            text-align: right;
+        }
+        .option-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        .option-btn.selected {
+            background-color: #3b82f6; /* blue-500 */
+            color: white;
+            border-color: #2563eb; /* blue-600 */
+        }
+        .option-btn.correct {
+            background-color: #22c55e; /* green-500 */
+            color: white;
+            border-color: #16a34a; /* green-600 */
+        }
+        .option-btn.incorrect {
+            background-color: #ef4444; /* red-500 */
+            color: white;
+            border-color: #dc2626; /* red-600 */
+        }
+        .mode-card {
+            transition: all 0.2s ease-in-out;
+        }
+        .mode-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 flex items-center justify-center min-h-screen p-4">
+
+    <div id="app-container" class="w-full max-w-2xl mx-auto">
+        
+        <!-- Start Screen -->
+        <div id="start-screen" class="bg-white p-8 rounded-2xl shadow-lg text-center">
+            <h1 class="text-3xl md:text-4xl font-bold text-slate-700 mb-2">Latihan Soal Bahasa Arab</h1>
+            <p class="text-lg text-slate-500 mb-8">Kelas VII - التعارف والأسرة</p>
+            <p class="mb-6">Silakan pilih tingkat kesulitan untuk memulai latihan. Setiap mode berisi 30 soal.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div onclick="startQuiz('normal')" class="mode-card bg-green-500 text-white p-6 rounded-xl shadow-md cursor-pointer">
+                    <h2 class="text-2xl font-bold mb-2">NORMAL</h2>
+                    <p>Soal mufrodat dasar dan kalimat sederhana.</p>
+                </div>
+                <div onclick="startQuiz('medium')" class="mode-card bg-yellow-500 text-white p-6 rounded-xl shadow-md cursor-pointer">
+                    <h2 class="text-2xl font-bold mb-2">MEDIUM</h2>
+                    <p>Soal melengkapi kalimat dan pemahaman teks.</p>
+                </div>
+                <div onclick="startQuiz('hard')" class="mode-card bg-red-500 text-white p-6 rounded-xl shadow-md cursor-pointer">
+                    <h2 class="text-2xl font-bold mb-2">SULIT</h2>
+                    <p>Soal analisis percakapan dan menjodohkan.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quiz Screen -->
+        <div id="quiz-screen" class="hidden">
+            <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg">
+                <div class="flex justify-between items-center mb-6">
+                    <div class="text-sm font-semibold bg-indigo-100 text-indigo-700 py-1 px-3 rounded-full">
+                        Mode: <span id="mode-label" class="capitalize"></span>
+                    </div>
+                    <div class="text-sm font-semibold bg-slate-100 text-slate-700 py-1 px-3 rounded-full">
+                        Soal <span id="question-number"></span> dari 30
+                    </div>
+                </div>
+                <div id="question-container" class="mb-6">
+                    <p id="question-text" class="text-lg md:text-xl leading-relaxed"></p>
+                </div>
+                <div id="options-container" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+                
+                <!-- Instant Feedback Container -->
+                <div id="feedback-container" class="hidden mt-6 p-4 border-l-4 border-yellow-500 bg-yellow-50 rounded-lg">
+                    <h4 class="font-bold text-yellow-800 arabic">...اَلتَّوْضِيْح</h4>
+                    <p id="feedback-text" class="text-yellow-700 mt-1 arabic"></p>
+                </div>
+
+                <div class="mt-8 flex justify-end">
+                    <button id="next-btn" class="bg-indigo-600 text-white font-bold py-3 px-8 rounded-lg shadow-md hover:bg-indigo-700 transition-colors duration-200 disabled:bg-slate-400 disabled:cursor-not-allowed">
+                        Selanjutnya
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Result Screen -->
+        <div id="result-screen" class="hidden">
+            <div class="bg-white p-8 rounded-2xl shadow-lg text-center">
+                <h2 class="text-3xl font-bold text-slate-700 mb-2">Latihan Selesai!</h2>
+                <p class="text-lg text-slate-500 mb-6 arabic">!أَحْسَنْتَ، لَقَدْ أَكْمَلْتَ جَمِيْعَ الْأَسْئِلَة</p>
+                <div class="bg-indigo-50 border-2 border-indigo-200 rounded-xl p-6 mb-8">
+                    <p class="text-xl text-indigo-800">Skor Akhir</p>
+                    <p class="text-6xl font-bold text-indigo-600 my-2"><span id="score"></span></p>
+                    <p class="text-xl text-indigo-800"><span id="correct-answers"></span> dari 30 soal benar</p>
+                </div>
+                <button onclick="restartQuiz()" class="w-full md:w-auto bg-indigo-600 text-white font-bold py-3 px-8 rounded-lg shadow-md hover:bg-indigo-700 transition-colors duration-200">
+                    Coba Lagi
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const startScreen = document.getElementById('start-screen');
+        const quizScreen = document.getElementById('quiz-screen');
+        const resultScreen = document.getElementById('result-screen');
+        const modeLabel = document.getElementById('mode-label');
+        const questionNumberEl = document.getElementById('question-number');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const nextBtn = document.getElementById('next-btn');
+        const scoreEl = document.getElementById('score');
+        const correctAnswersEl = document.getElementById('correct-answers');
+        const feedbackContainer = document.getElementById('feedback-container');
+        const feedbackText = document.getElementById('feedback-text');
+
+        // Quiz State
+        let currentMode = '';
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let selectedAnswer = null;
+        let isShowingFeedback = false;
+        let questions = [];
+
+        // --- DATABASE SOAL BAHASA ARAB KELAS VII (REVISED) ---
+        const allQuestions = {
+            normal: [
+                { q: "Apa arti dari kata <span class='arabic'>بَيْتٌ</span> ?", o: ["Sekolah", "Rumah", "Masjid", "Pasar"], a: "Rumah", p: ".<span class='arabic'>كَلِمَة 'بَيْتٌ' مَعْنَاهَا هُوَ 'Rumah'</span>" },
+                { q: "Apa arti dari dhomir (kata ganti) <span class='arabic'>أَنَا</span> ?", o: ["Kamu (lk)", "Dia (lk)", "Saya", "Kami"], a: "Saya", p: ".<span class='arabic'>ضَمِيْر 'أَنَا' يُسْتَخْدَمُ لِلْمُتَكَلِّمِ، مَعْنَاهُ 'Saya'</span>" },
+                { q: "Lengkapi percakapan berikut: <br><span class='arabic'>مَا اسْمُكَ؟ اِسْمِيْ ...</span>", o: ["عَائِشَة", "أَحْمَد", "فَاطِمَة", "خَدِيْجَة"], a: "أَحْمَد", p: ".<span class='arabic'>اِسْمُكَ (untuk laki-laki), maka jawabannya juga nama laki-laki</span>" },
+                { q: "Pilihlah jawaban yang tepat untuk pertanyaan ini: <br><span class='arabic'>كَيْفَ حَالُكَ؟ أَنَا ...</span>", o: ["بِخَيْرٍ", "طَالِبٌ", "مُدَرِّسٌ", "مِنْ جَاكَرْتَا"], a: "بِخَيْرٍ", p: ".<span class='arabic'>اَلْجَوَابُ الْمُنَاسِبُ لِسُؤَالِ 'كَيْفَ حَالُكَ؟' هُوَ 'بِخَيْرٍ، اَلْحَمْدُ لِله'</span>" },
+                { q: "Apa jawaban untuk sapaan <span class='arabic'>أَهْلًا وَسَهْلًا</span> ?", o: ["مَعَ السَّلَامَة", "أَهْلًا بِكَ", "صَبَاحُ الْخَيْر", "شُكْرًا"], a: "أَهْلًا بِكَ", p: ".<span class='arabic'>عِنْدَمَا يَقُوْلُ شَخْصٌ 'أَهْلًا وَسَهْلًا'، نُجِيْبُ بِـ 'أَهْلًا بِكَ' أَوْ 'أَهْلًا بِكِ'</span>" },
+                { q: "Pada kalimat <span class='arabic'>هٰذَا أَبِيْ</span>, kata <span class='arabic'>أَبٌ</span> artinya adalah...", o: ["Ibu", "Paman", "Kakek", "Ayah"], a: "Ayah", p: ".<span class='arabic'>كَلِمَةُ 'أَبٌ' مَعْنَاهَا 'Ayah'</span>" },
+                { q: "Pada kalimat <span class='arabic'>هٰذِهِ أُمِّيْ</span>, kata <span class='arabic'>أُمٌّ</span> artinya adalah...", o: ["Nenek", "Bibi", "Ibu", "Saudari"], a: "Ibu", p: ".<span class='arabic'>كَلِمَةُ 'أُمٌّ' مَعْنَاهَا 'Ibu'</span>" },
+                { q: "Lengkapi kalimat berikut: <br><span class='arabic'>مَنْ هٰذَا؟ هٰذَا ...</span>", o: ["جَدَّتِيْ", "أُخْتِيْ", "أَخِيْ", "عَمَّتِيْ"], a: "أَخِيْ", p: ".<span class='arabic'>اِسْمُ الْإِشَارَة 'هٰذَا' يُسْتَخْدَمُ لِلْمُذَكَّرِ (laki-laki). 'أَخِيْ' هُوَ الْوَحِيْدُ الْمُذَكَّرُ فِي الْخِيَارَاتِ</span>" },
+                { q: "Lengkapi kalimat berikut: <br><span class='arabic'>مَنْ هٰذِهِ؟ هٰذِهِ ...</span>", o: ["جَدِّيْ", "أَبِيْ", "أُخْتِيْ", "أَخِيْ"], a: "أُخْتِيْ", p: ".<span class='arabic'>اِسْمُ الْإِشَارَة 'هٰذِهِ' يُسْتَخْدَمُ لِلْمُؤَنَّثِ (perempuan). 'أُخْتِيْ' هِيَ الْوَحِيْدَةُ الْمُؤَنَّثَةُ فِي الْخِيَارَاتِ</span>" },
+                { q: "Apa jawaban untuk ucapan selamat pagi <span class='arabic'>صَبَاحُ الْخَيْرِ</span> ?", o: ["صَبَاحُ النُّوْرِ", "مَسَاءُ الْخَيْرِ", "شُكْرًا", "عَفْوًا"], a: "صَبَاحُ النُّوْرِ", p: ".<span class='arabic'>جَوَابُ 'صَبَاحُ الْخَيْرِ' هُوَ 'صَبَاحُ النُّوْرِ'</span>" },
+                { q: "Apa arti dari kata <span class='arabic'>طَالِبٌ</span> ?", o: ["Guru", "Siswa", "Kepala Sekolah", "Dokter"], a: "Siswa", p: ".<span class='arabic'>كَلِمَةُ 'طَالِبٌ' مَعْنَاهَا 'Siswa (laki-laki)'</span>" },
+                { q: "Apa arti dari kata <span class='arabic'>مَدْرَسَةٌ</span> ?", o: ["Rumah", "Taman", "Kelas", "Sekolah"], a: "Sekolah", p: ".<span class='arabic'>كَلِمَةُ 'مَدْرَسَةٌ' مَعْنَاهَا 'Sekolah'</span>" },
+                { q: "Dalam kalimat <span class='arabic'>أَنْتَ تِلْمِيْذٌ</span>, kata <span class='arabic'>أَنْتَ</span> artinya...", o: ["Kamu (pr)", "Saya", "Dia (lk)", "Kamu (lk)"], a: "Kamu (lk)", p: ".<span class='arabic'>اَلضَّمِيْرُ 'أَنْتَ' يُسْتَخْدَمُ لِلْمُخَاطَبِ الْمُذَكَّرِ، مَعْنَاهُ 'Kamu (laki-laki)'</span>" },
+                { q: "Dalam kalimat <span class='arabic'>أَنْتِ تِلْمِيْذَةٌ</span>, kata <span class='arabic'>أَنْتِ</span> artinya...", o: ["Kamu (lk)", "Kamu (pr)", "Dia (pr)", "Saya"], a: "Kamu (pr)", p: ".<span class='arabic'>اَلضَّمِيْرُ 'أَنْتِ' يُسْتَخْدَمُ لِلْمُخَاطَبِ الْمُؤَنَّثِ، مَعْنَاهُ 'Kamu (perempuan)'</span>" },
+                { q: "Apa arti dari kata ganti <span class='arabic'>هُوَ</span> pada kalimat <span class='arabic'>هُوَ مُدَرِّسٌ</span> ?", o: ["Dia (pr)", "Dia (lk)", "Mereka", "Kalian"], a: "Dia (lk)", p: ".<span class='arabic'>اَلضَّمِيْرُ 'هُوَ' يُسْتَخْدَمُ لِلْغَائِبِ الْمُذَكَّرِ، مَعْنَاهُ 'Dia (laki-laki)'</span>" },
+                { q: "Apa arti dari kata ganti <span class='arabic'>هِيَ</span> pada kalimat <span class='arabic'>هِيَ مُدَرِّسَةٌ</span> ?", o: ["Dia (pr)", "Dia (lk)", "Kamu (pr)", "Saya"], a: "Dia (pr)", p: ".<span class='arabic'>اَلضَّمِيْرُ 'هِيَ' يُسْتَخْدَمُ لِلْغَائِبِ الْمُؤَنَّثِ، مَعْنَاهُ 'Dia (perempuan)'</span>" },
+                { q: "Isilah titik-titik berikut: <br><span class='arabic'>هَلْ أَنْتَ طَالِبٌ؟ نَعَمْ، ... طَالِبٌ.</span>", o: ["هُوَ", "أَنْتَ", "أَنَا", "هِيَ"], a: "أَنَا", p: ".<span class='arabic'>عِنْدَمَا يُسْأَلُ بِـ 'أَنْتَ'، فَالْجَوَابُ يَكُوْنُ بِـ 'أَنَا'</span>" },
+                { q: "Apa arti dari kata <span class='arabic'>جَدٌّ</span> ?", o: ["Ayah", "Paman", "Kakek", "Anak laki-laki"], a: "Kakek", p: ".<span class='arabic'>كَلِمَةُ 'جَدٌّ' مَعْنَاهَا 'Kakek'</span>" },
+                { q: "Apa arti dari kata <span class='arabic'>جَدَّةٌ</span> ?", o: ["Nenek", "Ibu", "Bibi", "Anak perempuan"], a: "Nenek", p: ".<span class='arabic'>كَلِمَةُ 'جَدَّةٌ' مَعْنَاهَا 'Nenek'</span>" },
+                { q: "Apa arti dari kata <span class='arabic'>أُسْرَةٌ</span> ?", o: ["Teman", "Tetangga", "Keluarga", "Sekolah"], a: "Keluarga", p: ".<span class='arabic'>كَلِمَةُ 'أُسْرَةٌ' مَعْنَاهَا 'Keluarga'</span>" },
+                { q: "Apa arti dari ucapan <span class='arabic'>شُكْرًا</span> ?", o: ["Sama-sama", "Maaf", "Terima kasih", "Tolong"], a: "Terima kasih", p: ".<span class='arabic'>كَلِمَةُ 'شُكْرًا' تُقَالُ لِلتَّعْبِيْرِ عَنِ الْاِمْتِنَانِ، مَعْنَاهَا 'Terima kasih'</span>" },
+                { q: "Bagaimana cara menjawab ucapan <span class='arabic'>شُكْرًا</span> ?", o: ["أَهْلًا بِكَ", "عَفْوًا", "مَعَ السَّلَامَة", "إِلَى اللِّقَاءِ"], a: "عَفْوًا", p: ".<span class='arabic'>اَلْجَوَابُ الْمُنَاسِبُ لِكَلِمَةِ 'شُكْرًا' هُوَ 'عَفْوًا' الَّتِيْ تَعْنِيْ 'Sama-sama'</span>" },
+                { q: "Apa arti dari pertanyaan <span class='arabic'>مِنْ أَيْنَ أَنْتَ؟</span> ?", o: ["Siapa namamu?", "Bagaimana kabarmu?", "Kamu dari mana?", "Di mana rumahmu?"], a: "Kamu dari mana?", p: ".<span class='arabic'>هٰذَا السُّؤَالُ يُسْتَخْدَمُ لِلسُّؤَالِ عَنْ أَصْلِ الشَّخْصِ أَوْ مَكَانِ إِقَامَتِهِ</span>" },
+                { q: "Pada kalimat <span class='arabic'>أَنَا مِنْ جَاكَرْتَا</span>, kata <span class='arabic'>مِنْ</span> artinya...", o: ["Di", "Ke", "Dari", "Pada"], a: "Dari", p: ".<span class='arabic'>حَرْفُ الْجَرِّ 'مِنْ' يَدُلُّ عَلَى ابْتِدَاءِ الْغَايَةِ الْمَكَانِيَّةِ، مَعْنَاهُ 'Dari'</span>" },
+                { q: "Kata <span class='arabic'>صَدِيْقٌ</span> dalam kalimat <span class='arabic'>اِسْمِيْ حَسَنٌ، وَهٰذَا صَدِيْقِيْ</span> artinya adalah...", o: ["Musuh", "Guru", "Saudara", "Teman"], a: "Teman", p: ".<span class='arabic'>كَلِمَةُ 'صَدِيْقٌ' تُسْتَخْدَمُ لِلدَّلَالَةِ عَلَى 'Teman (laki-laki)'</span>" },
+                { q: "Apa arti dari kata <span class='arabic'>عَمٌّ</span> ?", o: ["Paman (dari pihak ayah)", "Paman (dari pihak ibu)", "Kakek", "Sepupu"], a: "Paman (dari pihak ayah)", p: ".<span class='arabic'>كَلِمَةُ 'عَمٌّ' تُشِيْرُ إِلَى أَخِي الْأَبِ</span>" },
+                { q: "Apa arti dari kata <span class='arabic'>خَالٌ</span> ?", o: ["Paman (dari pihak ayah)", "Paman (dari pihak ibu)", "Kakek", "Sepupu"], a: "Paman (dari pihak ibu)", p: ".<span class='arabic'>كَلِمَةُ 'خَالٌ' تُشِيْرُ إِلَى أَخِي الْأُمِّ</span>" },
+                { q: "Apa arti dari ucapan perpisahan <span class='arabic'>مَعَ السَّلَامَة</span> ?", o: ["Selamat datang", "Sampai jumpa", "Selamat pagi", "Terima kasih"], a: "Sampai jumpa", p: ".<span class='arabic'>هٰذِهِ الْعِبَارَةُ تُقَالُ عِنْدَ الْوَدَاعِ، مَعْنَاهَا 'Selamat tinggal' atau 'Sampai jumpa'</span>" },
+                { q: "Bagaimana cara menjawab ucapan <span class='arabic'>مَعَ السَّلَامَة</span> ?", o: ["إِلَى اللِّقَاءِ", "أَهْلًا وَسَهْلًا", "صَبَاحُ النُّوْرِ", "عَفْوًا"], a: "إِلَى اللِّقَاءِ", p: ".<span class='arabic'>جَوَابُهَا الْمُنَاسِبُ هُوَ 'إِلَى اللِّقَاءِ' الَّتِيْ تَعْنِيْ 'Sampai bertemu lagi'</span>" },
+                { q: "Pada kalimat <span class='arabic'>هٰذِهِ صُوْرَةُ أُسْرَتِيْ</span>, kata <span class='arabic'>صُوْرَةٌ</span> artinya...", o: ["Buku", "Rumah", "Foto", "Cerita"], a: "Foto", p: ".<span class='arabic'>كَلِمَةُ 'صُوْرَةٌ' مَعْنَاهَا 'Gambar' atau 'Foto'</span>" }
+            ],
+            medium: [
+                { q: "Lengkapi kalimat berikut: <br><span class='arabic'>أَنَا أَحْمَد. أَنَا ... مِنَ الْمَدْرَسَةِ الْمُتَوَسِّطَةِ الْإِسْلَامِيَّةِ.</span>", o: ["طَالِبَةٌ", "مُدَرِّسَةٌ", "طَبِيْبٌ", "طَالِبٌ"], a: "طَالِبٌ", p: ".<span class='arabic'>لِأَنَّ 'أَحْمَد' اِسْمٌ مُذَكَّرٌ، فَالْكَلِمَةُ الْمُنَاسِبَةُ هِيَ 'طَالِبٌ' وَلَيْسَتْ 'طَالِبَةٌ'</span>" },
+                { q: "Lengkapi kalimat berikut: <br><span class='arabic'>مَرْحَبًا، اِسْمِيْ فَاطِمَة. ... طَالِبَةٌ جَدِيْدَةٌ.</span>", o: ["هُوَ", "أَنْتِ", "أَنَا", "هِيَ"], a: "أَنَا", p: ".<span class='arabic'>عِنْدَمَا نَتَحَدَّثُ عَنْ أَنْفُسِنَا نَسْتَخْدِمُ الضَّمِيْرَ 'أَنَا'</span>" },
+                { q: "Pilihlah jawaban yang benar: <br><span class='arabic'>عُمَر: السَّلَامُ عَلَيْكُمْ. عُثْمَان: ...</span>", o: ["وَ عَلَيْكُمُ السَّلَامُ", "أَهْلًا بِكَ", "صَبَاحُ الْخَيْرِ", "شُكْرًا جَزِيْلًا"], a: "وَ عَلَيْكُمُ السَّلَامُ", p: ".<span class='arabic'>جَوَابُ التَّحِيَّةِ 'السَّلَامُ عَلَيْكُمْ' هُوَ 'وَ عَلَيْكُمُ السَّلَامُ وَرَحْمَةُ اللهِ وَبَرَكَاتُهُ'</span>" },
+                { q: "Pilihlah profesi yang tepat: <br><span class='arabic'>هٰذَا أَبِيْ، اِسْمُهُ السَّيِّدُ إِبْرَاهِيْم. هُوَ ... فِيْ مُسْتَشْفَى.</span>", o: ["فَلَّاحٌ", "طَبِيْبٌ", "مُهَنْدِسٌ", "تَاجِرٌ"], a: "طَبِيْبٌ", p: ".<span class='arabic'>الْكَلِمَةُ 'مُسْتَشْفَى' (Rumah Sakit) تَدُلُّ عَلَى أَنَّ الْمِهْنَةَ الْمُنَاسِبَةَ هِيَ 'طَبِيْبٌ' (Dokter)</span>" },
+                { q: "Pilihlah profesi yang tepat: <br><span class='arabic'>هٰذِهِ أُمِّيْ، اِسْمُهَا السَّيِّدَةُ زَيْنَب. هِيَ ... فِي الْمَدْرَسَةِ.</span>", o: ["طَبِيْبَةٌ", "مُمَرِّضَةٌ", "مُدَرِّسَةٌ", "تَاجِرَةٌ"], a: "مُدَرِّسَةٌ", p: ".<span class='arabic'>الْكَلِمَةُ 'الْمَدْرَسَةِ' (Sekolah) تَدُلُّ عَلَى أَنَّ الْمِهْنَةَ الْمُنَاسِبَةَ هِيَ 'مُدَرِّسَةٌ' (Guru perempuan)</span>" },
+                { q: "<span class='arabic'>فِيْ أُسْرَتِيْ جَدٌّ وَ ...، وَأَبٌ وَأُمٌّ، وَأَخٌ وَأُخْتٌ.</span>", o: ["جَدَّةٌ", "عَمٌّ", "خَالٌ", "اِبْنٌ"], a: "جَدَّةٌ", p: ".<span class='arabic'>فِي الْأُسْرَةِ عَادَةً يَكُوْنُ هُنَاكَ 'جَدٌّ' (Kakek) وَ 'جَدَّةٌ' (Nenek) كَزَوْجَيْنِ</span>" },
+                { q: "Pilihlah kata sifat yang sesuai: <br><span class='arabic'>عِنْدِيْ أَخٌ كَبِيْرٌ وَأُخْتٌ ...</span>", o: ["كَبِيْرَةٌ", "صَغِيْرَةٌ", "صَغِيْرٌ", "كَبِيْرٌ"], a: "صَغِيْرَةٌ", p: ".<span class='arabic'>اَلْكَلِمَةُ 'أُخْتٌ' مُؤَنَّثَةٌ، فَالصِّفَةُ يَجِبُ أَنْ تَكُوْنَ مُؤَنَّثَةً أَيْضًا. عَكْسُ 'كَبِيْر' هُوَ 'صَغِيْر'.</span>" },
+                { q: "Apa arti dari istilah <span class='arabic'>رَبَّةُ الْبَيْتِ</span>?", o: ["Ibu Guru", "Ibu Dokter", "Ibu Rumah Tangga", "Ibu Pedagang"], a: "Ibu Rumah Tangga", p: ".<span class='arabic'>الْمُصْطَلَحُ 'رَبَّةُ الْبَيْتِ' يُسْتَخْدَمُ لِلْإِشَارَةِ إِلَى الْمَرْأَةِ الَّتِيْ تَعْمَلُ فِيْ تَدْبِيْرِ شُؤُوْنِ مَنْزِلِهَا</span>" },
+                { q: "Apa arti dari <span class='arabic'>الصَّفِّ السَّابِعِ</span> dalam kalimat <span class='arabic'>أَنَا تِلْمِيْذٌ فِي الصَّفِّ السَّابِعِ</span>?", o: ["Kelas Satu", "Kelas Tiga", "Kelas Lima", "Kelas Tujuh"], a: "Kelas Tujuh", p: ".<span class='arabic'>اَلْعَدَدُ التَّرْتِيْبِيُّ 'السَّابِع' يَعْنِيْ 'yang ke-tujuh'</span>" },
+                { q: "<span class='arabic'>أَسْكُنُ فِيْ شَارِعِ سُوْدِيْرْمَان رَقْمُ عَشَرَة.</span> Kata <span class='arabic'>أَسْكُنُ</span> artinya...", o: ["Saya belajar", "Saya tinggal", "Saya pergi", "Saya bermain"], a: "Saya tinggal", p: ".<span class='arabic'>الْفِعْلُ 'سَكَنَ - يَسْكُنُ' يَعْنِيْ 'tinggal' atau 'bertempat tinggal'. 'أَسْكُنُ' هُوَ لِلْمُتَكَلِّمِ</span>" },
+                { q: "Profesi apa yang cocok berdasarkan kalimat ini? <br><span class='arabic'>أُمِّيْ ...، هِيَ تَطْبُخُ الطَّعَامَ فِي الْمَطْبَخِ.</span>", o: ["مُدَرِّسَةٌ", "رَبَّةُ الْبَيْتِ", "طَبِيْبَةٌ", "مُهَنْدِسَةٌ"], a: "رَبَّةُ الْبَيْتِ", p: ".<span class='arabic'>الْفِعْلُ 'تَطْبُخُ الطَّعَامَ' (memasak makanan) يَدُلُّ عَلَى أَنَّهَا 'رَبَّةُ الْبَيْتِ' (Ibu Rumah Tangga)</span>" },
+                { q: "<span class='arabic'>هَلْ عِنْدَكَ أَخٌ؟ نَعَمْ، عِنْدِيْ ... وَاحِدٌ.</span>", o: ["أُخْتٌ", "أَخٌ", "أُخْتَانِ", "أَخَوَانِ"], a: "أَخٌ", p: ".<span class='arabic'>لِأَنَّ السُّؤَالَ يَسْأَلُ عَنْ 'أَخٌ'، فَالْجَوَابُ الْمُنَاسِبُ هُوَ 'أَخٌ'</span>" },
+                { q: "Berapa jumlah anggota keluarga ini? <br><span class='arabic'>أُسْرَتِيْ كَبِيْرَةٌ. فِيْهَا أَبِيْ وَأُمِّيْ وَإِخْوَتِيْ الثَّلَاثَة.</span>", o: ["خَمْسَةُ أَفْرَادٍ", "أَرْبَعَةُ أَفْرَادٍ", "سِتَّةُ أَفْرَادٍ", "ثَلَاثَةُ أَفْرَادٍ"], a: "خَمْسَةُ أَفْرَادٍ", p: ".<span class='arabic'>الْأَبُ (1) + الْأُمُّ (1) + الْإِخْوَةُ الثَّلَاثَةُ (3) = 5 أَفْرَادٍ</span>" },
+                { q: "<span class='arabic'>هٰذَا عَمِّيْ، هُوَ ... أَبِيْ.</span>", o: ["أَخُ", "أُخْتُ", "اِبْنُ", "أَبُ"], a: "أَخُ", p: ".<span class='arabic'>اَلْعَمُّ هُوَ أَخُو الْأَبِ</span>" },
+                { q: "<span class='arabic'>هٰذِهِ خَالَتِيْ، هِيَ ... أُمِّيْ.</span>", o: ["أَخُ", "أُخْتُ", "اِبْنَةُ", "أُمُّ"], a: "أُخْتُ", p: ".<span class='arabic'>الْخَالَةُ هِيَ أُخْتُ الْأُمِّ</span>" },
+                { q: "Apa arti kata <span class='arabic'>أُحِبُّ</span> pada kalimat <span class='arabic'>أَنَا أُحِبُّ أُسْرَتِيْ</span>?", o: ["Saya benci", "Saya sayang/cinta", "Saya tahu", "Saya lupa"], a: "Saya sayang/cinta", p: ".<span class='arabic'>الْفِعْلُ 'أَحَبَّ - يُحِبُّ' يَعْنِيْ 'mencintai' atau 'menyayangi'. 'أُحِبُّ' لِلضَّمِيْرِ 'أَنَا'</span>" },
+                { q: "Di mana seorang petani (فَلَّاحٌ) biasanya bekerja? <br><span class='arabic'>جَدِّيْ فَلَّاحٌ. هُوَ يَزْرَعُ الْأَرُزَّ فِي ...</span>", o: ["الْمَزْرَعَةِ", "الْمَكْتَبَةِ", "الْمُسْتَشْفَى", "الْمَدْرَسَةِ"], a: "الْمَزْرَعَةِ", p: ".<span class='arabic'>الْفَلَّاحُ (Petani) يَعْمَلُ فِي 'الْمَزْرَعَةِ' (sawah/ladang)</span>" },
+                { q: "Pilihlah warna yang tepat (muzakkar): <br><span class='arabic'>مَا لَوْنُ هٰذَا الْقَلَمِ؟ لَوْنُهُ ...</span>", o: ["أَحْمَرُ", "حَمْرَاءُ", "طَوِيْلٌ", "قَصِيْرٌ"], a: "أَحْمَرُ", p: ".<span class='arabic'>اَلْكَلِمَةُ 'قَلَمٌ' مُذَكَّرَةٌ، فَاللَّوْنُ يَجِبُ أَنْ يَكُوْنَ مُذَكَّرًا أَيْضًا. 'أَحْمَرُ' لِلْمُذَكَّرِ</span>" },
+                { q: "Pilihlah warna yang tepat (muannats): <br><span class='arabic'>مَا لَوْنُ تِلْكَ السَّيَّارَةِ؟ لَوْنُهَا ...</span>", o: ["أَبْيَضُ", "بَيْضَاءُ", "كَبِيْرَةٌ", "صَغِيْرَةٌ"], a: "بَيْضَاءُ", p: ".<span class='arabic'>اَلْكَلِمَةُ 'سَيَّارَةٌ' مُؤَنَّثَةٌ، فَاللَّوْنُ يَجِبُ أَنْ يَكُوْنَ مُؤَنَّثًا أَيْضًا. 'بَيْضَاءُ' لِلْمُؤَنَّثِ</span>" },
+                { q: "<span class='arabic'>اِسْمِيْ عَلِيٌّ. ... مِنْ سُوْرَابَايَا. وَأَنْتَ؟</span>", o: ["أَنَا", "هُوَ", "أَنْتَ", "هِيَ"], a: "أَنَا", p: ".<span class='arabic'>عِنْدَ الْإِخْبَارِ عَنِ النَّفْسِ، نَسْتَخْدِمُ الضَّمِيْرَ 'أَنَا'</span>" },
+                { q: "<span class='arabic'>عُمَر: مَسَاءُ الْخَيْرِ. حَسَن: ...</span>", o: ["صَبَاحُ النُّوْرِ", "مَسَاءُ النُّوْرِ", "أَهْلًا بِكَ", "مَعَ السَّلَامَة"], a: "مَسَاءُ النُّوْرِ", p: ".<span class='arabic'>جَوَابُ التَّحِيَّةِ 'مَسَاءُ الْخَيْرِ' هُوَ 'مَسَاءُ النُّوْرِ'</span>" },
+                { q: "Seorang guru (<span class='arabic'>اَلْمُدَرِّسُ</span>) biasanya menulis di atas...", o: ["السَّبُّوْرَةِ", "الْكِتَابِ", "الْكُرْسِيِّ", "الْمَكْتَبِ"], a: "السَّبُّوْرَةِ", p: ".<span class='arabic'>الْمُدَرِّسُ (Guru) عَادَةً يَكْتُبُ عَلَى 'السَّبُّوْرَةِ' (Papan tulis)</span>" },
+                { q: "Seorang siswa (<span class='arabic'>اَلطَّالِبُ</span>) biasanya duduk di atas...", o: ["السَّبُّوْرَةِ", "الْحَقِيْبَةِ", "الْكُرْسِيِّ", "الْبَابِ"], a: "الْكُرْسِيِّ", p: ".<span class='arabic'>الطَّالِبُ (Siswa) يَجْلِسُ عَلَى 'الْكُرْسِيِّ' (Kursi)</span>" },
+                { q: "Apa arti <span class='arabic'>الْجَرِيْدَةَ</span> pada kalimat <span class='arabic'>أَبِيْ يَقْرَأُ الْجَرِيْدَةَ</span>?", o: ["Majalah", "Buku", "Koran", "Surat"], a: "Koran", p: ".<span class='arabic'>كَلِمَةُ 'الْجَرِيْدَة' مَعْنَاهَا 'Koran' atau 'Surat Kabar'</span>" },
+                { q: "<span class='arabic'>أُخْتِيْ الصَّغِيْرَةُ تَلْعَبُ بِـ ...</span>", o: ["الدُّمْيَةِ", "الْكِتَابِ", "السَّيَّارَةِ", "الْقَلَمِ"], a: "الدُّمْيَةِ", p: ".<span class='arabic'>الْأُخْتُ الصَّغِيْرَةُ (Adik perempuan) عَادَةً تَلْعَبُ بِـ 'الدُّمْيَةِ' (Boneka)</span>" },
+                { q: "Pilihlah kata sifat (na'at) yang benar: <br><span class='arabic'>هٰذَا ... أَخِيْ. هُوَ أَكْبَرُ مِنِّيْ.</span>", o: ["كَبِيْرُ", "الْكَبِيْرُ", "كَبِيْرَةٌ", "الْكَبِيْرَةُ"], a: "الْكَبِيْرُ", p: ".<span class='arabic'>لِأَنَّهَا تُوَضِّحُ 'أَخِيْ' الَّتِيْ هِيَ مَعْرِفَةٌ، فَالصِّفَةُ تَكُوْنُ مَعْرِفَةً أَيْضًا بِـ 'الْ'. وَلِأَنَّ 'أَخٌ' مُذَكَّرٌ، نَخْتَارُ 'الْكَبِيْرُ'</span>" },
+                { q: "<span class='arabic'>هٰذِهِ أُمِّيْ الْحَبِيْبَةُ. هِيَ ... الطَّعَامَ اللَّذِيْذَ.</span>", o: ["تَقْرَأُ", "تَكْتُبُ", "تَطْبُخُ", "تَذْهَبُ"], a: "تَطْبُخُ", p: ".<span class='arabic'>الْكَلِمَةُ 'الطَّعَامَ' (makanan) مُنَاسِبَةٌ لِلْفِعْلِ 'تَطْبُخُ' (memasak)</span>" },
+                { q: "Di manakah ayah memperbaiki mobil (<span class='arabic'>يُصْلِحُ السَّيَّارَةَ</span>)? <br><span class='arabic'>أَبِيْ فِيْ ...</span>", o: ["الْمَطْبَخِ", "غُرْفَةِ النَّوْمِ", "الْمِرْآبِ", "الْحَدِيْقَةِ"], a: "الْمِرْآبِ", p: ".<span class='arabic'>إِصْلَاحُ السَّيَّارَةِ (memperbaiki mobil) يَتِمُّ عَادَةً فِي 'الْمِرْآبِ' (Garasi)</span>" },
+                { q: "Lengkapi dengan alat transportasi: <br><span class='arabic'>أَنَا أَذْهَبُ إِلَى الْمَدْرَسَةِ بِـ ...</span>", o: ["الْحَافِلَةِ", "الطَّعَامِ", "الْمَلَابِسِ", "الْكُتُبِ"], a: "الْحَافِلَةِ", p: ".<span class='arabic'>الْحَافِلَةُ (Bus) هِيَ وَسِيْلَةُ نَقْلٍ لِلذَّهَابِ إِلَى الْمَدْرَسَةِ</span>" },
+                { q: "<span class='arabic'>هَلْ هٰذَا قَلَمُكَ؟ لَا، هٰذَا قَلَمُ ...</span>", o: ["أَحْمَدَ", "فَاطِمَةَ", "زَيْنَبَ", "عَائِشَةَ"], a: "أَحْمَدَ", p: ".<span class='arabic'>السُّؤَالُ بِـ 'هٰذَا قَلَمُكَ' لِلْمُذَكَّرِ، فَالْجَوَابُ الْمُنَاسِبُ يَذْكُرُ اِسْمًا مُذَكَّرًا</span>" }
+            ],
+            hard: [
+                { q: "حَاوِرْ كَمَا فِي الْمِثَالِ: (أَحْمَد - مُدَرِّسٌ). السُّؤَالُ: مَنْ هُوَ؟ الْجَوَابُ: هُوَ أَحْمَد، هُوَ مُدَرِّسٌ. الْآنَ: (عَائِشَة - طَبِيْبَةٌ). كَيْفَ يَكُوْنُ الْحِوَارُ؟", o: ["مَنْ هُوَ؟ هُوَ عَائِشَة، هُوَ طَبِيْبَةٌ.", "مَنْ هِيَ؟ هِيَ عَائِشَة، هِيَ طَبِيْبَةٌ.", "مَنْ أَنْتِ؟ أَنَا عَائِشَة، أَنَا طَبِيْبَةٌ.", "مَنْ هِيَ؟ هُوَ عَائِشَة، هُوَ طَبِيْبَةٌ."], a: "مَنْ هِيَ؟ هِيَ عَائِشَة، هِيَ طَبِيْبَةٌ.", p: ".<span class='arabic'>لِأَنَّ 'عَائِشَة' مُؤَنَّثَةٌ، نَسْتَخْدِمُ ضَمِيْرَ الْغَائِبِ الْمُؤَنَّث 'هِيَ' لِلسُّؤَالِ وَالْجَوَابِ</span>" },
+                { q: "رَتِّبِ الْكَلِمَاتِ لِتَكُوْنَ جُمْلَةً مُفِيْدَةً: (اِسْمِيْ - وَ - أَنَا - مِنْ - عَلِيٌّ - مِصْرَ).", o: ["أَنَا عَلِيٌّ وَ اِسْمِيْ مِنْ مِصْرَ.", "اِسْمِيْ عَلِيٌّ، وَأَنَا مِنْ مِصْرَ.", "مِنْ مِصْرَ أَنَا وَ عَلِيٌّ اِسْمِيْ.", "عَلِيٌّ اِسْمِيْ وَأَنَا مِنْ مِصْرَ."], a: "اِسْمِيْ عَلِيٌّ، وَأَنَا مِنْ مِصْرَ.", p: ".<span class='arabic'>التَّرْتِيْبُ الصَّحِيْحُ لِلتَّعَارُفِ هُوَ ذِكْرُ الْاِسْمِ أَوَّلًا ثُمَّ ذِكْرُ الْأَصْلِ أَوِ الْبَلَدِ</span>" },
+                { q: "اِخْتَرِ الْجَوَابَ الصَّحِيْحَ. عَمَّار: ...؟ هَاشِم: أَنَا مِنْ إِنْدُوْنِيْسِيَا.", o: ["مَا اسْمُكَ", "كَيْفَ حَالُكَ", "مِنْ أَيْنَ أَنْتَ", "هَلْ أَنْتَ طَالِبٌ"], a: "مِنْ أَيْنَ أَنْتَ", p: ".<span class='arabic'>لِأَنَّ الْجَوَابَ يَذْكُرُ اِسْمَ الْبَلَدِ، فَالسُّؤَالُ الْمُنَاسِبُ هُوَ السُّؤَالُ عَنِ الْأَصْلِ 'مِنْ أَيْنَ أَنْتَ؟'</span>" },
+                { q: "اَلْعَمُّ هُوَ أَخُو الْأَبِ، وَالْخَالُ هُوَ أَخُو الْأُمِّ. إِذَنْ، مَنْ هُوَ ابْنُ الْعَمِّ؟", o: ["Saudara laki-laki", "Sepupu (dari paman pihak ayah)", "Sepupu (dari paman pihak ibu)", "Adik laki-laki"], a: "Sepupu (dari paman pihak ayah)", p: ".<span class='arabic'>ابْنُ الْعَمِّ تَرْجَمَتُهَا الْحَرْفِيَّةُ هِيَ 'anak laki-laki dari paman (saudara ayah)'</span>" },
+                { q: "جَدِّيْ اِسْمُهُ حَسَنٌ، وَجَدَّتِيْ اِسْمُهَا زَهْرَة. هُمَا ...", o: ["وَالِدَايَ", "أَجْدَادِيْ", "أَعْمَامِيْ", "إِخْوَتِيْ"], a: "أَجْدَادِيْ", p: ".<span class='arabic'>اَلْجَدُّ وَالْجَدَّةُ يُشَكِّلَانِ مَا نُسَمِّيْهِ 'الْأَجْدَاد' (Kakek-Nenek). 'وَالِدَايَ' تَعْنِيْ 'Kedua orang tuaku'</span>" },
+                { q: "فِيْ بَيْتِيْ ثَلَاثُ غُرَفٍ: غُرْفَةُ نَوْمٍ لِأَبِيْ وَأُمِّيْ، وَغُرْفَةُ نَوْمٍ لِيْ، وَ... لِلضُّيُوْفِ.", o: ["غُرْفَةُ جُلُوْسٍ", "غُرْفَةُ نَوْمٍ ثَالِثَةٌ", "مَطْبَخٌ", "حَمَّامٌ"], a: "غُرْفَةُ نَوْمٍ ثَالِثَةٌ", p: ".<span class='arabic'>فِي السِّيَاقِ، ذُكِرَتْ غُرْفَتَا نَوْمٍ، فَالْأَكْثَرُ مُنَاسَبَةً هُوَ أَنَّ الْغُرْفَةَ الثَّالِثَةَ هِيَ أَيْضًا غُرْفَةُ نَوْمٍ لِلضُّيُوْفِ</span>" },
+                { q: "اَلْعَائِلَةُ تَجْلِسُ فِيْ غُرْفَةِ الْجُلُوْسِ وَتُشَاهِدُ ...", o: ["التِّلْفَازَ", "السَّرِيْرَ", "الْخِزَانَةَ", "الْفُرْنَ"], a: "التِّلْفَازَ", p: ".<span class='arabic'>فِي غُرْفَةِ الْجُلُوْسِ، الْعَائِلَةُ عَادَةً تُشَاهِدُ 'التِّلْفَازَ' (Televisi)</span>" },
+                { q: "مَا هِيَ الْكَلِمَةُ الْمُخْتَلِفَةُ عَنِ الْمَجْمُوْعَةِ؟ (أَبٌ، أُمٌّ، أَخٌ، مُدَرِّسٌ)", o: ["أَبٌ", "أُمٌّ", "أَخٌ", "مُدَرِّسٌ"], a: "مُدَرِّسٌ", p: ".<span class='arabic'>كَلِمَاتُ 'أَبٌ، أُمٌّ، أَخٌ' كُلُّهَا مِنْ أَفْرَادِ الْأُسْرَةِ، أَمَّا 'مُدَرِّسٌ' فَهِيَ مِهْنَةٌ</span>" },
+                { q: "مَا هِيَ الْكَلِمَةُ الْمُخْتَلِفَةُ عَنِ الْمَجْمُوْعَةِ؟ (يَقْرَأُ، يَكْتُبُ، كُرْسِيٌّ، يَجْلِسُ)", o: ["يَقْرَأُ", "يَكْتُبُ", "كُرْسِيٌّ", "يَجْلِسُ"], a: "كُرْسِيٌّ", p: ".<span class='arabic'>الْكَلِمَاتُ الْأُخْرَى كُلُّهَا أَفْعَالٌ (kata kerja)، أَمَّا 'كُرْسِيٌّ' فَهِيَ اِسْمٌ (kata benda)</span>" },
+                { q: "صِلْ بَيْنَ السُّؤَالِ وَالْجَوَابِ الْمُنَاسِبِ: (1) مَا اسْمُكَ؟ (2) كَيْفَ حَالُكَ؟ (A) بِخَيْرٍ (B) اِسْمِيْ فَارُوْق.", o: ["1-A, 2-B", "1-B, 2-A", "كِلَاهُمَا خَاطِئٌ", "كِلَاهُمَا صَحِيْحٌ"], a: "1-B, 2-A", p: ".<span class='arabic'>سُؤَالُ 'مَا اسْمُكَ؟' جَوَابُهُ 'اِسْمِيْ...'. وَسُؤَالُ 'كَيْفَ حَالُكَ؟' جَوَابُهُ 'بِخَيْرٍ...</span>" },
+                { q: "أَيُّ جُمْلَةٍ تَرْكِيْبُهَا صَحِيْحٌ؟", o: ["هٰذَا فَاطِمَةُ طَالِبَةٌ.", "هٰذِهِ أَحْمَدُ طَالِبٌ.", "هٰذَا مُحَمَّدٌ طَالِبٌ.", "هٰذِهِ خَدِيْجَةُ طَالِبٌ."], a: "هٰذَا مُحَمَّدٌ طَالِبٌ.", p: ".<span class='arabic'>يَجِبُ أَنْ يَتَطَابَقَ اِسْمُ الْإِشَارَةِ (هٰذَا/هٰذِهِ) مَعَ جِنْسِ الْاِسْمِ الَّذِيْ يُشَارُ إِلَيْهِ (مُذَكَّر/مُؤَنَّث)</span>" },
+                { q: "أَنَا أَذْهَبُ إِلَى الْمَدْرَسَةِ صَبَاحًا، وَ ... إِلَى الْبَيْتِ مَسَاءً.", o: ["أَرْجِعُ", "أَكْتُبُ", "أَقْرَأُ", "آكُلُ"], a: "أَرْجِعُ", p: ".<span class='arabic'>بَعْدَ الذَّهَابِ إِلَى مَكَانٍ مَا، الْفِعْلُ الْمُضَادُّ وَالْمُنَاسِبُ هُوَ 'أَرْجِعُ' (Saya kembali/pulang)</span>" },
+                { q: "حَوِّلِ الْجُمْلَةَ إِلَى الْمُؤَنَّثِ: 'هٰذَا أَخِيْ، هُوَ تِلْمِيْذٌ نَشِيْطٌ'.", o: ["هٰذِهِ أُخْتِيْ، هِيَ تِلْمِيْذَةٌ نَشِيْطَةٌ.", "هٰذَا أُخْتِيْ، هِيَ تِلْمِيْذَةٌ نَشِيْطَةٌ.", "هٰذِهِ أُخْتِيْ، هُوَ تِلْمِيْذَةٌ نَشِيْطٌ.", "هٰذِهِ أُخْتِيْ، هِيَ تِلْمِيْذٌ نَشِيْطَةٌ."], a: "هٰذِهِ أُخْتِيْ، هِيَ تِلْمِيْذَةٌ نَشِيْطَةٌ.", p: ".<span class='arabic'>لِلتَّحْوِيْلِ إِلَى الْمُؤَنَّثِ: هٰذا -> هٰذِهِ، أَخِيْ -> أُخْتِيْ، هُوَ -> هِيَ، تِلْمِيْذٌ -> تِلْمِيْذَةٌ، نَشِيْطٌ -> نَشِيْطَةٌ</span>" },
+                { q: "فِيْ غُرْفَةِ نَوْمِيْ سَرِيْرٌ، خِزَانَةٌ، وَ ... أَكْتُبُ عَلَيْهِ وَاجِبَاتِيْ.", o: ["مَكْتَبٌ", "كُرْسِيٌّ", "مِصْبَاحٌ", "نَافِذَةٌ"], a: "مَكْتَبٌ", p: ".<span class='arabic'>الْمَكَانُ الَّذِيْ نَكْتُبُ عَلَيْهِ الْوَاجِبَاتِ هُوَ 'الْمَكْتَبُ' (Meja belajar)</span>" },
+                { q: "عِنْدَمَا أَسْتَيْقِظُ مِنَ النَّوْمِ أَقُوْلُ: ...", o: ["صَبَاحُ الْخَيْرِ", "مَسَاءُ الْخَيْرِ", "تُصْبِحُ عَلَى خَيْرٍ", "أَهْلًا وَسَهْلًا"], a: "صَبَاحُ الْخَيْرِ", p: ".<span class='arabic'>عِبَارَةُ 'صَبَاحُ الْخَيْرِ' هِيَ التَّحِيَّةُ الْمُنَاسِبَةُ فِي الصَّبَاحِ بَعْدَ الْاِسْتِيقَاظِ</span>" },
+                { q: "مَاذَا يَفْعَلُ أَحْمَدُ فِي الْمَكْتَبَةِ؟ هُوَ ... كِتَابًا.", o: ["يَشْتَرِيْ", "يَقْرَأُ", "يَلْعَبُ", "يَأْكُلُ"], a: "يَقْرَأُ", p: ".<span class='arabic'>النَّشَاطُ الْأَسَاسِيُّ فِي 'الْمَكْتَبَةِ' (Perpustakaan) هُوَ الْقِرَاءَةُ</span>" },
+                { q: "أَيُّ جُمْلَةٍ تَدُلُّ عَلَى الْمُسْتَقْبَلِ؟", o: ["أَنَا أَكْتُبُ الدَّرْسَ الْآنَ.", "أَكَلْتُ الطَّعَامَ أَمْسِ.", "سَأَذْهَبُ إِلَى الْمَسْجِدِ غَدًا.", "هُوَ طَالِبٌ نَشِيْطٌ."], a: "سَأَذْهَبُ إِلَى الْمَسْجِدِ غَدًا.", p: ".<span class='arabic'>حَرْفُ 'سَـ' قَبْلَ الْفِعْلِ الْمُضَارِعِ وَكَلِمَةُ 'غَدًا' (besok) يَدُلَّانِ عَلَى الزَّمَنِ الْمُسْتَقْبَلِ</span>" },
+                { q: "أَنَا أَحْتَاجُ إِلَى قَلَمٍ وَمِمْحَاةٍ وَ ... لِأَرْسُمَ خَرِيْطَةً.", o: ["مِسْطَرَةٍ", "مِقَصٍّ", "صَمْغٍ", "كِتَابٍ"], a: "مِسْطَرَةٍ", p: ".<span class='arabic'>لِرَسْمِ خَرِيْطَةٍ، بِالْإِضَافَةِ إِلَى الْقَلَمِ وَالْمِمْحَاةِ، نَحْتَاجُ إِلَى 'مِسْطَرَةٍ' (Penggaris) لِرَسْمِ الْخُطُوْطِ الْمُسْتَقِيْمَةِ</span>" },
+                { q: "فَاطِمَة: هَلْ هٰذِهِ صُوْرَةُ جَدِّكَ؟ عَائِشَة: نَعَمْ، هٰذِهِ صُوْرَةُ ...", o: ["جَدِّيْ", "جَدَّتِيْ", "أَبِيْ", "أُمِّيْ"], a: "جَدِّيْ", p: ".<span class='arabic'>لِأَنَّ السُّؤَالَ يَسْأَلُ عَنْ 'جَدِّكَ' (kakekmu)، فَالْجَوَابُ يَكُوْنُ بِـ 'جَدِّيْ' (kakekku)</span>" },
+                { q: "فِي يَوْمِ الْعُطْلَةِ، أَذْهَبُ مَعَ أُسْرَتِيْ إِلَى ... لِلسِّبَاحَةِ.", o: ["الْمَلْعَبِ", "الشَّاطِئِ", "الْجَبَلِ", "السُّوْقِ"], a: "الشَّاطِئِ", p: ".<span class='arabic'>النَّشَاطُ 'السِّبَاحَة' (berenang) مُنَاسِبٌ لِلْمَكَانِ 'الشَّاطِئِ' (Pantai)</span>" },
+                { q: "اَلْمُدَرِّسُ يَشْرَحُ الدَّرْسَ، وَالطُّلَّابُ ... إِلَيْهِ بِاهْتِمَامٍ.", o: ["يَنْظُرُوْنَ", "يَكْتُبُوْنَ", "يَسْتَمِعُوْنَ", "يَلْعَبُوْنَ"], a: "يَسْتَمِعُوْنَ", p: ".<span class='arabic'>عِنْدَمَا يَقُوْمُ الْمُدَرِّسُ بِالشَّرْحِ، فَإِنَّ الطُّلَّابَ يَجِبُ أَنْ 'يَسْتَمِعُوا' (mendengarkan)</span>" },
+                { q: "صِلْ بَيْنَ الْكَلِمَةِ وَعَكْسِهَا: (1) كَبِيْرٌ (2) طَوِيْلٌ (A) قَصِيْرٌ (B) صَغِيْرٌ.", o: ["1-A, 2-B", "1-B, 2-A", "كِلَاهُمَا خَاطِئٌ", "كِلَاهُمَا صَحِيْحٌ"], a: "1-B, 2-A", p: ".<span class='arabic'>عَكْسُ 'كَبِيْرٌ' (besar) هُوَ 'صَغِيْرٌ' (kecil). وَعَكْسُ 'طَوِيْلٌ' (panjang) هُوَ 'قَصِيْرٌ' (pendek)</span>" },
+                { q: "أَبِيْ أَكْبَرُ مِنْ أُمِّيْ بِثَلَاثِ سَنَوَاتٍ. إِذَنْ، أُمِّيْ ... مِنْ أَبِيْ.", o: ["أَكْبَرُ", "أَصْغَرُ", "أَطْوَلُ", "أَقْصَرُ"], a: "أَصْغَرُ", p: ".<span class='arabic'>إِذَا كَانَ الْأَبُ أَكْبَرَ، فَهٰذَا يَعْنِيْ أَنَّ الْأُمَّ 'أَصْغَرُ' (lebih muda/kecil) سِنًّا مِنْهُ</span>" },
+                { q: "عِنْدِيْ كِتَابٌ جَدِيْدٌ. لَوْنُ ... أَزْرَقُ.", o: ["الْكِتَابِ", "كِتَابٍ", "الْكِتَابُ", "كِتَابًا"], a: "الْكِتَابِ", p: ".<span class='arabic'>كَلِمَةُ 'لَوْنُ' هِيَ مُضَافٌ، وَالْكَلِمَةُ بَعْدَهَا تَكُوْنُ مُضَافًا إِلَيْهِ مَجْرُوْرًا، وَلِأَنَّهُ مَعْرِفَةٌ نَخْتَارُ 'الْكِتَابِ'</span>" },
+                { q: "مَا هِيَ جُمْلَةُ النَّفْيِ الصَّحِيْحَةُ لِـ 'أَنَا أَعْرِفُ الْجَوَابَ'؟", o: ["لَا أَنَا أَعْرِفُ الْجَوَابَ.", "أَنَا لَا أَعْرِفُ الْجَوَابَ.", "أَنَا أَعْرِفُ لَا الْجَوَابَ.", "لَا الْجَوَابُ أَنَا أَعْرِفُ."], a: "أَنَا لَا أَعْرِفُ الْجَوَابَ.", p: ".<span class='arabic'>أَدَاةُ النَّفْيِ 'لَا' تَأْتِيْ عَادَةً قَبْلَ الْفِعْلِ الْمُضَارِعِ مُبَاشَرَةً لِنَفْيِهِ</span>" },
+                { q: "أَيْنَ الْقِطُّ؟ اَلْقِطُّ ... الْكُرْسِيِّ.", o: ["فَوْقَ", "تَحْتَ", "بَيْنَ", "يُمْكِنُ أَنْ يَكُوْنَ فَوْقَ أَوْ تَحْتَ"], a: "يُمْكِنُ أَنْ يَكُوْنَ فَوْقَ أَوْ تَحْتَ", p: ".<span class='arabic'>الْقِطُّ يُمْكِنُ أَنْ يَكُوْنَ 'فَوْقَ' (di atas) أَوْ 'تَحْتَ' (di bawah) الْكُرْسِيِّ، وَكِلَاهُمَا مُحْتَمَلٌ</span>" },
+                { q: "مَاذَا تَفْعَلُ يَا أَحْمَدُ؟ أَنَا ... الْقُرْآنَ الْكَرِيْمَ.", o: ["أَقْرَأُ", "تَقْرَأُ", "يَقْرَأُ", "نَقْرَأُ"], a: "أَقْرَأُ", p: ".<span class='arabic'>عِنْدَمَا يُوَجَّهُ السُّؤَالُ لَكَ بِـ 'تَفْعَلُ'، فَإِنَّكَ تُجِيْبُ بِصِيْغَةِ الْمُتَكَلِّمِ 'أَفْعَلُ'، وَهِيَ هُنَا 'أَقْرَأُ'</span>" },
+                { q: "مَاذَا تَفْعَلِيْنَ يَا فَاطِمَةُ؟ أَنَا ... رِسَالَةً إِلَى صَدِيْقَتِيْ.", o: ["أَكْتُبُ", "تَكْتُبُ", "تَكْتُبِيْنَ", "يَكْتُبُ"], a: "أَكْتُبُ", p: ".<span class='arabic'>سَوَاءٌ كَانَ الْمُخَاطَبُ مُذَكَّرًا أَوْ مُؤَنَّثًا، فَالْجَوَابُ بِصِيْغَةِ الْمُتَكَلِّمِ 'أَنَا' يَظَلُّ نَفْسَهُ، وَهُوَ 'أَكْتُبُ'</span>" },
+                { q: "الْأَبُ وَالْأُمُّ وَالْأَوْلَادُ هُمْ ...", o: ["أَصْدِقَاءٌ", "أُسْرَةٌ", "جِيْرَانٌ", "مُدَرِّسُوْنَ"], a: "أُسْرَةٌ", p: ".<span class='arabic'>هٰذِهِ الْمَجْمُوْعَةُ مِنَ الْأَفْرَادِ تُكَوِّنُ 'أُسْرَةً' (keluarga)</span>" },
+                { q: "اَللَّوْنُ الْأَخْضَرُ هُوَ لَوْنُ ...", o: ["السَّمَاءِ", "الدَّمِ", "أَوْرَاقِ الشَّجَرِ", "الشَّمْسِ"], a: "أَوْرَاقِ الشَّجَرِ", p: ".<span class='arabic'>اَللَّوْنُ الْأَخْضَرُ هُوَ اللَّوْنُ الْمُمَيِّزُ لِـ 'أَوْرَاقِ الشَّجَرِ' (daun-daun pohon)</span>" }
+            ]
+        };
+
+
+        function startQuiz(mode) {
+            currentMode = mode;
+            currentQuestionIndex = 0;
+            score = 0;
+            selectedAnswer = null;
+            isShowingFeedback = false;
+            questions = allQuestions[mode];
+            
+            startScreen.classList.add('hidden');
+            resultScreen.classList.add('hidden');
+            quizScreen.classList.remove('hidden');
+
+            nextBtn.onclick = () => checkAnswerAndProceed();
+            nextBtn.textContent = 'Selanjutnya';
+            
+            displayQuestion();
+        }
+
+        function displayQuestion() {
+            isShowingFeedback = false;
+            selectedAnswer = null;
+            feedbackContainer.classList.add('hidden');
+
+            const question = questions[currentQuestionIndex];
+            questionNumberEl.textContent = currentQuestionIndex + 1;
+            modeLabel.textContent = currentMode;
+            questionText.innerHTML = question.q;
+            
+            optionsContainer.innerHTML = '';
+            question.o.forEach((option) => {
+                const optionElement = document.createElement('button');
+                const contentSpan = document.createElement('span');
+
+                const isArabic = /[\u0600-\u06FF]/.test(option);
+                
+                if (isArabic) {
+                    contentSpan.innerHTML = option;
+                    contentSpan.classList.add('arabic');
+                    optionElement.classList.add('option-btn', 'w-full', 'p-4', 'border-2', 'border-slate-300', 'rounded-lg', 'transition-all', 'duration-200');
+                } else {
+                    contentSpan.innerHTML = option;
+                    optionElement.classList.add('option-btn', 'w-full', 'p-4', 'border-2', 'border-slate-300', 'rounded-lg', 'text-left', 'transition-all', 'duration-200');
+                }
+                
+                optionElement.appendChild(contentSpan);
+                optionElement.onclick = () => selectOption(option, optionElement);
+                optionsContainer.appendChild(optionElement);
+            });
+
+            nextBtn.disabled = true;
+            nextBtn.textContent = 'Selanjutnya';
+        }
+
+        function selectOption(option, element) {
+            if (isShowingFeedback) return;
+
+            selectedAnswer = option;
+            const optionButtons = optionsContainer.querySelectorAll('.option-btn');
+            optionButtons.forEach(btn => btn.classList.remove('selected'));
+            element.classList.add('selected');
+            nextBtn.disabled = false;
+        }
+
+        function checkAnswerAndProceed() {
+            if (isShowingFeedback) {
+                currentQuestionIndex++;
+                if (currentQuestionIndex < questions.length) {
+                    displayQuestion();
+                } else {
+                    showResults();
+                }
+                return;
+            }
+
+            const question = questions[currentQuestionIndex];
+            const isCorrect = selectedAnswer === question.a;
+
+            if (isCorrect) {
+                score++;
+                currentQuestionIndex++;
+                if (currentQuestionIndex < questions.length) {
+                    displayQuestion();
+                } else {
+                    showResults();
+                }
+            } else {
+                isShowingFeedback = true;
+                feedbackText.innerHTML = question.p;
+                feedbackContainer.classList.remove('hidden');
+
+                const optionButtons = optionsContainer.querySelectorAll('.option-btn');
+                optionButtons.forEach(btn => {
+                    btn.disabled = true;
+                    const btnContent = btn.querySelector('span').innerHTML;
+                    if (btnContent === question.a) {
+                        btn.classList.add('correct');
+                    } else if (btnContent === selectedAnswer) {
+                        btn.classList.add('incorrect');
+                    }
+                });
+                
+                nextBtn.textContent = 'Lanjutkan';
+                nextBtn.disabled = false;
+            }
+        }
+
+        function showResults() {
+            quizScreen.classList.add('hidden');
+            resultScreen.classList.remove('hidden');
+            
+            const finalScore = Math.round((score / questions.length) * 100);
+            scoreEl.textContent = finalScore;
+            correctAnswersEl.textContent = score;
+            const resultText = document.querySelector('#result-screen .text-xl.text-indigo-800:last-of-type');
+            resultText.textContent = `${score} dari ${questions.length} soal benar`;
+        }
+
+        function restartQuiz() {
+            resultScreen.classList.add('hidden');
+            startScreen.classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>

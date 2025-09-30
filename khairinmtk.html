@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Latihan Soal PTS Matematika - Kelas VII</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .option-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        .option-btn.selected {
+            background-color: #3b82f6; /* blue-500 */
+            color: white;
+            border-color: #2563eb; /* blue-600 */
+        }
+        .option-btn.correct {
+            background-color: #22c55e; /* green-500 */
+            color: white;
+            border-color: #16a34a; /* green-600 */
+        }
+        .option-btn.incorrect {
+            background-color: #ef4444; /* red-500 */
+            color: white;
+            border-color: #dc2626; /* red-600 */
+        }
+        .mode-card {
+            transition: all 0.2s ease-in-out;
+        }
+        .mode-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 flex items-center justify-center min-h-screen p-4">
+
+    <div id="app-container" class="w-full max-w-2xl mx-auto">
+        
+        <!-- Start Screen -->
+        <div id="start-screen" class="bg-white p-8 rounded-2xl shadow-lg text-center">
+            <h1 class="text-3xl md:text-4xl font-bold text-slate-700 mb-2">Latihan Soal Matematika</h1>
+            <p class="text-lg text-slate-500 mb-8">Kelas VII - Bilangan</p>
+            <p class="mb-6">Silakan pilih tingkat kesulitan untuk memulai latihan. Setiap mode berisi 30 soal.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div onclick="startQuiz('normal')" class="mode-card bg-green-500 text-white p-6 rounded-xl shadow-md cursor-pointer">
+                    <h2 class="text-2xl font-bold mb-2">NORMAL</h2>
+                    <p>Soal konsep dasar dan perhitungan sederhana.</p>
+                </div>
+                <div onclick="startQuiz('medium')" class="mode-card bg-yellow-500 text-white p-6 rounded-xl shadow-md cursor-pointer">
+                    <h2 class="text-2xl font-bold mb-2">MEDIUM</h2>
+                    <p>Soal penerapan dan soal cerita.</p>
+                </div>
+                <div onclick="startQuiz('hard')" class="mode-card bg-red-500 text-white p-6 rounded-xl shadow-md cursor-pointer">
+                    <h2 class="text-2xl font-bold mb-2">SULIT</h2>
+                    <p>Soal analisis dan operasi campuran.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quiz Screen -->
+        <div id="quiz-screen" class="hidden">
+            <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg">
+                <div class="flex justify-between items-center mb-6">
+                    <div class="text-sm font-semibold bg-indigo-100 text-indigo-700 py-1 px-3 rounded-full">
+                        Mode: <span id="mode-label" class="capitalize"></span>
+                    </div>
+                    <div class="text-sm font-semibold bg-slate-100 text-slate-700 py-1 px-3 rounded-full">
+                        Soal <span id="question-number"></span> dari 30
+                    </div>
+                </div>
+                <div id="question-container" class="mb-6">
+                    <p id="question-text" class="text-lg md:text-xl leading-relaxed"></p>
+                </div>
+                <div id="options-container" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+                
+                <!-- Instant Feedback Container -->
+                <div id="feedback-container" class="hidden mt-6 p-4 border-l-4 border-yellow-500 bg-yellow-50 rounded-lg">
+                    <h4 class="font-bold text-yellow-800">Pembahasan</h4>
+                    <p id="feedback-text" class="text-yellow-700 mt-1"></p>
+                </div>
+
+                <div class="mt-8 flex justify-end">
+                    <button id="next-btn" onclick="checkAnswerAndProceed()" class="bg-indigo-600 text-white font-bold py-3 px-8 rounded-lg shadow-md hover:bg-indigo-700 transition-colors duration-200 disabled:bg-slate-400 disabled:cursor-not-allowed">
+                        Selanjutnya
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Result Screen -->
+        <div id="result-screen" class="hidden">
+            <div class="bg-white p-8 rounded-2xl shadow-lg text-center">
+                <h2 class="text-3xl font-bold text-slate-700 mb-2">Latihan Selesai!</h2>
+                <p class="text-lg text-slate-500 mb-6">Selamat, kamu telah menyelesaikan semua soal.</p>
+                <div class="bg-indigo-50 border-2 border-indigo-200 rounded-xl p-6 mb-8">
+                    <p class="text-xl text-indigo-800">Skor Akhir</p>
+                    <p class="text-6xl font-bold text-indigo-600 my-2"><span id="score"></span></p>
+                    <p class="text-xl text-indigo-800"><span id="correct-answers"></span> dari 30 soal benar</p>
+                </div>
+                <button onclick="restartQuiz()" class="w-full md:w-auto bg-indigo-600 text-white font-bold py-3 px-8 rounded-lg shadow-md hover:bg-indigo-700 transition-colors duration-200">
+                    Coba Lagi
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const startScreen = document.getElementById('start-screen');
+        const quizScreen = document.getElementById('quiz-screen');
+        const resultScreen = document.getElementById('result-screen');
+        const modeLabel = document.getElementById('mode-label');
+        const questionNumberEl = document.getElementById('question-number');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const nextBtn = document.getElementById('next-btn');
+        const scoreEl = document.getElementById('score');
+        const correctAnswersEl = document.getElementById('correct-answers');
+        const feedbackContainer = document.getElementById('feedback-container');
+        const feedbackText = document.getElementById('feedback-text');
+
+        // Quiz State
+        let currentMode = '';
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let selectedAnswer = null;
+        let isShowingFeedback = false;
+        let questions = [];
+
+        // --- DATABASE SOAL MATEMATIKA KELAS VII ---
+        const allQuestions = {
+            normal: [
+                { q: "Urutan bilangan bulat berikut dari yang terkecil adalah...", o: ["-5, -3, 0, 2, 4", "0, 2, -3, 4, -5", "4, 2, 0, -3, -5", "-3, -5, 0, 2, 4"], a: "-5, -3, 0, 2, 4", p: "Pada garis bilangan, semakin ke kiri nilainya semakin kecil. Jadi urutan yang benar dimulai dari negatif terbesar yaitu -5." },
+                { q: "Urutan bilangan bulat berikut dari yang terbesar adalah...", o: ["-7, -1, 0, 3, 5", "5, 3, 0, -1, -7", "5, 3, -7, -1, 0", "0, -1, -7, 3, 5"], a: "5, 3, 0, -1, -7", p: "Pada garis bilangan, semakin ke kanan nilainya semakin besar. Jadi urutan yang benar dimulai dari positif terbesar yaitu 5." },
+                { q: "Suhu udara di kota A adalah 10°C, sedangkan suhu di kota B adalah -5°C. Selisih suhu kedua kota tersebut adalah...", o: ["5°C", "10°C", "15°C", "-15°C"], a: "15°C", p: "Selisih suhu dihitung dengan mengurangi suhu yang lebih tinggi dengan suhu yang lebih rendah: 10 - (-5) = 10 + 5 = 15°C." },
+                { q: "Hasil dari 15 + (-7) adalah...", o: ["22", "8", "-8", "-22"], a: "8", p: "Penjumlahan dengan bilangan negatif sama dengan pengurangan: 15 - 7 = 8." },
+                { q: "Hasil dari (-12) - 5 adalah...", o: ["-7", "7", "-17", "17"], a: "-17", p: "Mengurangi dengan bilangan positif sama dengan bergerak ke kiri pada garis bilangan: -12 - 5 = -17." },
+                { q: "Seorang penyelam berada 20 meter di bawah permukaan laut. Kemudian ia naik sejauh 8 meter. Posisi penyelam sekarang adalah...", o: ["28 meter di bawah permukaan laut", "12 meter di bawah permukaan laut", "12 meter di atas permukaan laut", "28 meter di atas permukaan laut"], a: "12 meter di bawah permukaan laut", p: "Posisi awal -20 meter. Naik 8 meter berarti ditambah 8. -20 + 8 = -12 meter. Tanda negatif berarti di bawah permukaan laut." },
+                { q: "Hasil dari 8 x (-4) adalah...", o: ["32", "-32", "12", "4"], a: "-32", p: "Perkalian bilangan positif dengan bilangan negatif hasilnya adalah negatif. 8 x 4 = 32, jadi hasilnya -32." },
+                { q: "Hasil dari (-20) : (-5) adalah...", o: ["4", "-4", "5", "-5"], a: "4", p: "Pembagian bilangan negatif dengan bilangan negatif hasilnya adalah positif. 20 : 5 = 4." },
+                { q: "Jika a x 6 = -42, maka nilai a adalah...", o: ["7", "-7", "8", "-8"], a: "-7", p: "Untuk mencari a, bagi -42 dengan 6. -42 : 6 = -7." },
+                { q: "Suhu sebuah ruangan awalnya 25°C. Kemudian suhu diturunkan 3°C setiap jam. Berapa suhu ruangan setelah 4 jam?", o: ["13°C", "12°C", "21°C", "37°C"], a: "13°C", p: "Total penurunan suhu = 3°C x 4 = 12°C. Suhu akhir = 25°C - 12°C = 13°C." },
+                { q: "Urutan pecahan berikut dari yang terkecil adalah...", o: ["1/2, 1/4, 1/3", "1/4, 1/3, 1/2", "1/3, 1/2, 1/4", "1/2, 1/3, 1/4"], a: "1/4, 1/3, 1/2", p: "Untuk penyebut yang berbeda, semakin besar penyebutnya nilainya semakin kecil (jika pembilang sama). Jadi 1/4 < 1/3 < 1/2." },
+                { q: "Urutan pecahan berikut dari yang terbesar adalah...", o: ["3/5, 4/5, 1/5", "1/5, 3/5, 4/5", "4/5, 3/5, 1/5", "3/5, 1/5, 4/5"], a: "4/5, 3/5, 1/5", p: "Untuk penyebut yang sama, semakin besar pembilangnya, semakin besar nilainya." },
+                { q: "Manakah pernyataan yang benar?", o: ["1/2 > 2/3", "1/4 < 1/5", "3/4 > 2/3", "2/5 = 3/5"], a: "3/4 > 2/3", p: "Untuk membandingkan, samakan penyebutnya. 3/4 = 9/12 dan 2/3 = 8/12. Karena 9 > 8, maka 3/4 > 2/3." },
+                { q: "Bentuk desimal dari pecahan 3/4 adalah...", o: ["0,25", "0,50", "0,75", "3,4"], a: "0,75", p: "3 dibagi 4 sama dengan 0,75." },
+                { q: "Bentuk persen dari pecahan 1/5 adalah...", o: ["15%", "20%", "25%", "50%"], a: "20%", p: "Untuk mengubah ke persen, kalikan dengan 100%. (1/5) x 100% = 20%." },
+                { q: "Hasil dari 2/7 + 3/7 adalah...", o: ["5/14", "6/7", "5/7", "6/49"], a: "5/7", p: "Jika penyebut sudah sama, tinggal jumlahkan pembilangnya. 2 + 3 = 5. Jadi hasilnya 5/7." },
+                { q: "Hasil dari 4/5 - 1/2 adalah...", o: ["3/10", "3/5", "3/3", "1/5"], a: "3/10", p: "Samakan penyebutnya menjadi 10. (4/5)*2/2 = 8/10. (1/2)*5/5 = 5/10. Hasilnya 8/10 - 5/10 = 3/10." },
+                { q: "Ani memiliki 0,5 kg gula. Ia membeli lagi 0,25 kg. Jumlah gula Ani sekarang adalah...", o: ["0,30 kg", "0,75 kg", "0,525 kg", "7,5 kg"], a: "0,75 kg", p: "Penjumlahan desimal: 0,5 + 0,25 = 0,75 kg." },
+                { q: "Hasil dari 2/3 x 1/4 adalah...", o: ["2/12", "3/12", "2/7", "3/7"], a: "2/12", p: "Perkalian pecahan dilakukan dengan mengalikan pembilang dengan pembilang dan penyebut dengan penyebut. 2x1=2, 3x4=12. Hasilnya 2/12 (atau 1/6)." },
+                { q: "Hasil dari 3/5 : 1/2 adalah...", o: ["3/10", "6/5", "5/6", "10/3"], a: "6/5", p: "Pembagian pecahan sama dengan perkalian dengan kebalikan dari pecahan kedua. 3/5 x 2/1 = 6/5." },
+                { q: "Pasangan yang benar antara 5 + (-8) adalah...", o: ["13", "-13", "3", "-3"], a: "-3", p: "5 + (-8) sama dengan 5 - 8 = -3." },
+                { q: "Pasangan yang benar antara (-4) x (-9) adalah...", o: ["-36", "36", "13", "-13"], a: "36", p: "Perkalian negatif dengan negatif hasilnya positif. 4 x 9 = 36." },
+                { q: "Pasangan yang benar antara 12 - 15 adalah...", o: ["3", "-3", "27", "-27"], a: "-3", p: "12 - 15 = -3." },
+                { q: "Pasangan yang benar antara 1/2 + 1/4 adalah...", o: ["2/6", "1/8", "3/4", "2/4"], a: "3/4", p: "Samakan penyebutnya menjadi 4. 1/2 = 2/4. Jadi 2/4 + 1/4 = 3/4." },
+                { q: "Pasangan yang benar antara 50% - 0,25 adalah...", o: ["25%", "75%", "0,25", "0,50"], a: "0,25", p: "50% = 0,5. Jadi 0,5 - 0,25 = 0,25. Atau 0,25 = 25%. 50% - 25% = 25% (0,25)." },
+                { q: "Seorang pedagang membeli 5 karung beras dengan berat masing-masing 20 kg. Jika harga per kg adalah Rp 10.000, berapa total uang yang harus ia bayar?", o: ["Rp 1.000.000", "Rp 200.000", "Rp 500.000", "Rp 100.000"], a: "Rp 1.000.000", p: "Total beras = 5 x 20 kg = 100 kg. Total harga = 100 kg x Rp 10.000/kg = Rp 1.000.000." },
+                { q: "Suhu di dalam kulkas adalah -4°C. Suhu di luar kulkas adalah 28°C. Berapa selisih suhunya?", o: ["24°C", "32°C", "-24°C", "-32°C"], a: "32°C", p: "Selisih = Suhu tinggi - Suhu rendah = 28 - (-4) = 28 + 4 = 32°C." },
+                { q: "Ibu memiliki 2 1/2 liter minyak goreng. Ia menggunakan 1/4 liter untuk memasak. Berapa sisa minyak goreng ibu?", o: ["2 1/4 liter", "2 liter", "1 3/4 liter", "2 3/4 liter"], a: "2 1/4 liter", p: "2 1/2 - 1/4 = 5/2 - 1/4 = 10/4 - 1/4 = 9/4 = 2 1/4 liter." },
+                { q: "Sebuah tongkat panjangnya 12 meter akan dipotong menjadi potongan-potongan kecil sepanjang 3/4 meter. Berapa banyak potongan tongkat yang dihasilkan?", o: ["9 potongan", "12 potongan", "16 potongan", "15 potongan"], a: "16 potongan", p: "Banyak potongan = 12 : 3/4 = 12 x 4/3 = 48/3 = 16 potongan." },
+                { q: "Hasil dari (-10) + 5 x 2 adalah...", o: ["-30", "-10", "0", "10"], a: "0", p: "Kerjakan perkalian terlebih dahulu: 5 x 2 = 10. Kemudian baru penjumlahan: (-10) + 10 = 0." }
+            ],
+            medium: [
+                { q: "Urutan bilangan 2/5; 0,5; 25%; 3/4 dari yang terkecil adalah...", o: ["25%; 2/5; 0,5; 3/4", "2/5; 25%; 0,5; 3/4", "25%; 0,5; 2/5; 3/4", "3/4; 0,5; 2/5; 25%"], a: "25%; 2/5; 0,5; 3/4", p: "Ubah semua ke bentuk desimal: 2/5=0,4; 0,5=0,5; 25%=0,25; 3/4=0,75. Urutan terkecil: 0,25; 0,4; 0,5; 0,75." },
+                { q: "Suhu di Moskow -8°C, di Paris 12°C, di Tokyo 15°C, dan di kutub utara -20°C. Kota dengan suhu paling dingin dan paling hangat adalah...", o: ["Moskow dan Paris", "Kutub Utara dan Tokyo", "Kutub Utara dan Moskow", "Moskow dan Tokyo"], a: "Kutub Utara dan Tokyo", p: "Suhu paling dingin adalah nilai negatif terbesar (-20°C). Suhu paling hangat adalah nilai positif terbesar (15°C)." },
+                { q: "Dalam sebuah kompetisi, skor untuk jawaban benar adalah 4, jawaban salah -2, dan tidak dijawab -1. Dari 50 soal, Budi menjawab 35 soal dengan benar dan 5 soal tidak dijawab. Berapa skor Budi?", o: ["120", "115", "110", "105"], a: "115", p: "Soal salah = 50-35-5=10. Skor = (35x4) + (10x-2) + (5x-1) = 140 - 20 - 5 = 115." },
+                { q: "Hasil dari (-18) + (-7) - (-10) adalah...", o: ["-15", "-25", "-35", "1"], a: "-15", p: "-18 - 7 + 10 = -25 + 10 = -15." },
+                { q: "Sebuah pesawat terbang pada ketinggian 1.800 meter. Karena cuaca buruk, pesawat turun 300 meter. Kemudian naik lagi 150 meter. Ketinggian pesawat sekarang adalah...", o: ["1.350 m", "1.650 m", "1.950 m", "2.250 m"], a: "1.650 m", p: "1800 - 300 + 150 = 1500 + 150 = 1.650 meter." },
+                { q: "Nilai dari 12 : (-4) x 5 adalah...", o: ["-15", "15", "-0,6", "0,6"], a: "-15", p: "Kerjakan dari kiri ke kanan. 12 : (-4) = -3. Kemudian -3 x 5 = -15." },
+                { q: "Bentuk pecahan biasa paling sederhana dari 0,125 adalah...", o: ["1/8", "1/4", "125/100", "5/4"], a: "1/8", p: "0,125 = 125/1000. Keduanya dibagi 125 menjadi 1/8." },
+                { q: "Ibu membeli 3 1/2 kg tepung terigu. Sebanyak 1,2 kg digunakan untuk membuat kue. Sisa tepung terigu ibu adalah...", o: ["2,3 kg", "2,5 kg", "1,3 kg", "1,5 kg"], a: "2,3 kg", p: "Ubah ke desimal: 3 1/2 = 3,5. Sisa = 3,5 kg - 1,2 kg = 2,3 kg." },
+                { q: "Hasil dari 2 1/4 + 0,5 - 50% adalah...", o: ["2,25", "2,50", "1,75", "2,00"], a: "2,25", p: "Ubah semua ke desimal: 2,25 + 0,5 - 0,5 = 2,25." },
+                { q: "Seutas tali panjangnya 15 meter. 2/5 bagian dari tali tersebut diberikan kepada Adi. Berapa meter sisa tali?", o: ["6 meter", "9 meter", "10 meter", "3 meter"], a: "9 meter", p: "Bagian Adi = 2/5 x 15 = 6 meter. Sisa tali = 15 - 6 = 9 meter." },
+                { q: "Hasil dari 0,75 x 2/3 adalah...", o: ["0,5", "1,5", "0,25", "5,0"], a: "0,5", p: "Ubah 0,75 menjadi 3/4. Maka 3/4 x 2/3 = 6/12 = 1/2 = 0,5." },
+                { q: "Sebuah kue dipotong menjadi 12 bagian. Ayah memakan 1/4 bagian dan adik memakan 1/3 bagian. Berapa bagian sisa kue?", o: ["5/12", "7/12", "6/12", "1/2"], a: "5/12", p: "Ayah=1/4=3/12. Adik=1/3=4/12. Total dimakan = 3/12 + 4/12 = 7/12. Sisa = 12/12 - 7/12 = 5/12." },
+                { q: "Pak Budi memanen 1,5 ton padi. 20% dari hasilnya disumbangkan ke panti asuhan. Padi yang disumbangkan sebanyak...", o: ["30 kg", "300 kg", "3 kuintal", "3 ton"], a: "300 kg", p: "1,5 ton = 1500 kg. Sumbangan = 20% x 1500 = (20/100) x 1500 = 300 kg." },
+                { q: "Bentuk persen dari 0,8 adalah...", o: ["8%", "0,8%", "80%", "800%"], a: "80%", p: "0,8 x 100% = 80%." },
+                { q: "Hasil dari 75% : 0,5 adalah...", o: ["1,5", "15", "150", "0,15"], a: "1,5", p: "Ubah ke desimal: 0,75 : 0,5 = 1,5." },
+                { q: "Di sebuah kelas, 3/5 siswanya adalah perempuan. Jika jumlah siswa seluruhnya 40 orang, maka jumlah siswa laki-laki adalah...", o: ["24 orang", "16 orang", "20 orang", "15 orang"], a: "16 orang", p: "Siswa perempuan = 3/5 x 40 = 24 orang. Siswa laki-laki = 40 - 24 = 16 orang." },
+                { q: "Suhu air dalam panci 22°C. Setelah dipanaskan selama 5 menit, suhunya naik menjadi 72°C. Berapa kenaikan suhu air per menit?", o: ["10°C", "12°C", "14,4°C", "50°C"], a: "10°C", p: "Total kenaikan = 72 - 22 = 50°C. Kenaikan per menit = 50°C / 5 menit = 10°C/menit." },
+                { q: "Hasil dari 1/2 + 1/3 - 1/4 adalah...", o: ["7/12", "5/12", "1/5", "1/24"], a: "7/12", p: "Samakan penyebutnya menjadi 12. 6/12 + 4/12 - 3/12 = (10-3)/12 = 7/12." },
+                { q: "Jika ( -25 ) : a = 5, maka nilai a adalah...", o: ["5", "-5", "125", "-125"], a: "-5", p: "a = -25 : 5 = -5." },
+                { q: "Ayah memiliki uang Rp 200.000. Sebanyak 1/4 bagian digunakan untuk membeli bensin dan 2/5 bagian untuk belanja. Sisa uang ayah adalah...", o: ["Rp 50.000", "Rp 70.000", "Rp 80.000", "Rp 130.000"], a: "Rp 70.000", p: "Bensin=1/4x200rb=50rb. Belanja=2/5x200rb=80rb. Total keluar=50+80=130rb. Sisa=200rb-130rb=70rb." },
+                { q: "Pasangan yang benar antara -5 - (-15) adalah...", o: ["-20", "20", "10", "-10"], a: "10", p: "-5 - (-15) = -5 + 15 = 10." },
+                { q: "Pasangan yang benar antara 2,5 + 3/4 adalah...", o: ["3,00", "2,75", "3,25", "3,50"], a: "3,25", p: "3/4 = 0,75. Jadi 2,5 + 0,75 = 3,25." },
+                { q: "Pasangan yang benar antara 12 x (-2) + 10 adalah...", o: ["-14", "14", "-34", "34"], a: "-14", p: "Kerjakan perkalian dulu: 12 x (-2) = -24. Kemudian -24 + 10 = -14." },
+                { q: "Pasangan yang benar antara 1 1/2 : 0,25 adalah...", o: ["6", "0,375", "3", "1,75"], a: "6", p: "Ubah ke desimal: 1,5 : 0,25 = 6." },
+                { q: "Pasangan yang benar antara 20 - (-5) x 2 adalah...", o: ["50", "30", "10", "40"], a: "30", p: "Kerjakan perkalian dulu: (-5) x 2 = -10. Kemudian 20 - (-10) = 20 + 10 = 30." },
+                { q: "Sebuah pita dipotong menjadi dua bagian. Bagian pertama 1/3 dari panjang total. Jika panjang bagian kedua adalah 12 meter, berapa panjang pita seluruhnya?", o: ["18 meter", "24 meter", "36 meter", "8 meter"], a: "18 meter", p: "Bagian kedua = 1 - 1/3 = 2/3 bagian. Jika 2/3 = 12 m, maka 1/3 = 6 m. Panjang total = 3/3 = 3 x 6 = 18 m." },
+                { q: "Hasil dari (-6) x (-6) : (-6) adalah...", o: ["6", "-6", "36", "-36"], a: "-6", p: "Dari kiri: (-6)x(-6) = 36. Kemudian 36 : (-6) = -6." },
+                { q: "Urutan 0,6; 55%; 2/3; 0,58 dari terbesar adalah...", o: ["2/3; 0,6; 0,58; 55%", "0,6; 2/3; 0,58; 55%", "2/3; 0,58; 0,6; 55%", "55%; 0,58; 0,6; 2/3"], a: "2/3; 0,6; 0,58; 55%", p: "Ubah ke desimal: 0,6; 0,55; 0,66...; 0,58. Urutan terbesar: 0,66...; 0,6; 0,58; 0,55." },
+                { q: "Seorang pedagang rugi Rp 5.000 pada hari pertama. Hari kedua ia untung Rp 12.000. Hari ketiga rugi lagi Rp 3.000. Bagaimana kondisi keuangan pedagang setelah tiga hari?", o: ["Untung Rp 4.000", "Rugi Rp 4.000", "Untung Rp 20.000", "Rugi Rp 20.000"], a: "Untung Rp 4.000", p: "-5000 + 12000 - 3000 = 7000 - 3000 = 4000. Hasil positif berarti untung." },
+                { q: "Hasil dari 2 1/5 x 1 1/2 adalah...", o: ["3 3/10", "2 1/10", "3 1/5", "2 3/10"], a: "3 3/10", p: "Ubah ke pecahan biasa: 11/5 x 3/2 = 33/10 = 3 3/10." }
+            ],
+            hard: [
+                { q: "Hasil dari 16 : (-2) + 5 x (-3) - (-4) adalah...", o: ["-19", "-27", "21", "-7"], a: "-19", p: "Kerjakan pembagian dan perkalian dulu: (16:(-2)) + (5x(-3)) - (-4) = -8 + (-15) + 4 = -8 - 15 + 4 = -23 + 4 = -19." },
+                { q: "Suhu di kota X adalah -12°C. Suhu di kota Y 10°C lebih hangat dari kota X. Suhu di kota Z 5°C lebih dingin dari kota Y. Berapa suhu di kota Z?", o: ["-7°C", "-3°C", "-2°C", "3°C"], a: "-7°C", p: "Suhu Y = -12 + 10 = -2°C. Suhu Z = -2 - 5 = -7°C." },
+                { q: "Seorang petani memiliki lahan seluas 800 m². 1/4 bagian ditanami jagung, 3/5 bagian ditanami padi, dan sisanya dibuat kolam. Luas kolam adalah...", o: ["120 m²", "150 m²", "480 m²", "200 m²"], a: "120 m²", p: "Jagung=1/4x800=200. Padi=3/5x800=480. Total terpakai=200+480=680. Sisa untuk kolam=800-680=120 m²." },
+                { q: "Nilai n yang memenuhi (n x 3) - 15 = -27 adalah...", o: ["-4", "4", "-14", "14"], a: "-4", p: "n x 3 = -27 + 15 => n x 3 = -12 => n = -12 : 3 => n = -4." },
+                { q: "Di antara pecahan 4/7 dan 5/8, manakah pecahan yang nilainya lebih besar?", o: ["4/7", "5/8", "Keduanya sama besar", "Tidak bisa ditentukan"], a: "5/8", p: "Samakan penyebutnya menjadi 56. 4/7 = 32/56. 5/8 = 35/56. Karena 35 > 32, maka 5/8 lebih besar." },
+                { q: "Hasil dari (1/2 + 3/4) : (2/3 - 1/6) adalah...", o: ["5/2", "2/5", "1/2", "2"], a: "5/2", p: "Kerjakan dalam kurung dulu. (2/4+3/4) : (4/6-1/6) = (5/4) : (3/6) = 5/4 : 1/2 = 5/4 x 2/1 = 10/4 = 5/2." },
+                { q: "Ibu membeli 40 kg gula. Gula tersebut akan dibungkus dalam kantong-kantong kecil berukuran 1/4 kg. Berapa banyak kantong yang dibutuhkan?", o: ["10 kantong", "80 kantong", "120 kantong", "160 kantong"], a: "160 kantong", p: "Jumlah kantong = Total gula : Ukuran per kantong = 40 : (1/4) = 40 x 4 = 160 kantong." },
+                { q: "Pak Adi membagikan 20% dari gajinya kepada 3 anaknya. Anak pertama mendapat 1/3 bagian, anak kedua 2/5 bagian, dan sisanya anak ketiga. Jika gaji Pak Adi Rp 6.000.000, berapa uang yang diterima anak ketiga?", o: ["Rp 320.000", "Rp 400.000", "Rp 480.000", "Rp 1.200.000"], a: "Rp 320.000", p: "Uang yg dibagikan=20%x6jt=1,2jt. Bagian anak ketiga=1-(1/3+2/5)=1-(5/15+6/15)=1-11/15=4/15. Uang anak ketiga=4/15 x 1,2jt=320rb." },
+                { q: "Sebuah mobil menempuh jarak 90 km dengan 12 liter bensin. Jika mobil berisi 30 liter bensin, berapa jarak yang bisa ditempuh?", o: ["225 km", "250 km", "270 km", "360 km"], a: "225 km", p: "Konsumsi per liter = 90km/12L = 7,5 km/L. Jarak tempuh = 30 L x 7,5 km/L = 225 km." },
+                { q: "Nilai dari 2,5 - 1/2 : 25% + 1 1/4 adalah...", o: ["1,75", "2,25", "1,25", "2,75"], a: "1,75", p: "Ubah ke desimal: 2,5 - 0,5:0,25 + 1,25. Kerjakan pembagian: 2,5 - 2 + 1,25 = 0,5 + 1,25 = 1,75." },
+                { q: "Urutan dari yang terkecil: -10, 5, -15, 0, -20, 2.", o: ["-20, -15, -10, 0, 2, 5", "-10, -15, -20, 0, 2, 5", "5, 2, 0, -10, -15, -20", "0, 2, 5, -10, -15, -20"], a: "-20, -15, -10, 0, 2, 5", p: "Nilai negatif terbesar adalah yang terkecil." },
+                { q: "Sebuah bilangan jika dikalikan (-5) kemudian dikurangi 10, hasilnya adalah 30. Bilangan berapakah itu?", o: ["-8", "8", "-4", "4"], a: "-8", p: "Misal bilangan itu n. (n x -5) - 10 = 30 => n x -5 = 40 => n = 40 / -5 = -8." },
+                { q: "Ayah memiliki 3/4 dari sebuah kue. Ia memberikan 1/3 dari bagiannya kepada adik. Berapa bagian kue yang diterima adik dari keseluruhan kue?", o: ["1/4", "1/3", "1/2", "5/12"], a: "1/4", p: "Bagian adik = 1/3 dari 3/4 = (1/3) x (3/4) = 3/12 = 1/4 bagian dari kue utuh." },
+                { q: "Sebuah proyek dijadwalkan selesai dalam 40 hari oleh 20 pekerja. Jika proyek ingin selesai dalam 25 hari, berapa banyak pekerja tambahan yang dibutuhkan?", o: ["12 pekerja", "32 pekerja", "10 pekerja", "15 pekerja"], a: "12 pekerja", p: "Ini perbandingan berbalik nilai. (40/25) x 20 = 32 pekerja. Pekerja tambahan = 32 - 20 = 12 orang." },
+                { q: "Hasil dari ( -4 + 10 ) x 5 : ( -3 ) adalah...", o: ["10", "-10", "30", "-30"], a: "-10", p: "Kerjakan dalam kurung dulu: (6) x 5 : (-3) = 30 : (-3) = -10." },
+                { q: "Sebuah Drum berisi 4/5 bagian air. Ayah mengambil 1/2 dari air yang ada di drum tersebut. Berapa sisa air di dalam drum (dalam bagian)?", o: ["2/5 bagian", "3/10 bagian", "1/5 bagian", "3/5 bagian"], a: "2/5 bagian", p: "Diambil = 1/2 x 4/5 = 4/10 = 2/5 bagian. Sisa = 4/5 - 2/5 = 2/5 bagian." },
+                { q: "Perbandingan uang Ali dan Budi adalah 2:3. Perbandingan uang Budi dan Cici adalah 4:5. Jika jumlah uang mereka bertiga adalah Rp 1.400.000, berapa uang Ali?", o: ["Rp 320.000", "Rp 240.000", "Rp 480.000", "Rp 600.000"], a: "Rp 320.000", p: "Samakan perbandingan Budi. A:B=8:12, B:C=12:15. Jadi A:B:C = 8:12:15. Jumlah rasio=35. Uang Ali = (8/35) x 1.400.000 = 320.000." },
+                { q: "Bentuk desimal dari 7/8 adalah...", o: ["0,875", "0,785", "0,8", "0,75"], a: "0,875", p: "7 dibagi 8 hasilnya 0,875." },
+                { q: "Ibu mempunyai 2,5 kg gula. 40% nya digunakan membuat sirup. Sisa gula ibu adalah...", o: ["1 kg", "1,5 kg", "1,25 kg", "0,5 kg"], a: "1,5 kg", p: "Digunakan = 40% x 2,5 = 0,4 x 2,5 = 1 kg. Sisa = 2,5 kg - 1 kg = 1,5 kg." },
+                { q: "Jika A = -2, B = 5, C = -4, maka nilai dari A x B - C adalah...", o: ["-14", "-6", "6", "14"], a: "-6", p: "(-2 x 5) - (-4) = -10 - (-4) = -10 + 4 = -6." },
+                { q: "Pasangan yang benar antara (3/4 - 1/2) x 8 adalah...", o: ["1", "2", "3", "4"], a: "2", p: "(3/4 - 2/4) x 8 = (1/4) x 8 = 2." },
+                { q: "Pasangan yang benar antara 15 - ( -5 x 2 ) : 2 adalah...", o: ["10", "20", "25", "30"], a: "20", p: "15 - (-10) : 2 = 15 - (-5) = 15 + 5 = 20." },
+                { q: "Pasangan yang benar antara 0,2 x 1/4 + 5% adalah...", o: ["0,1", "1,0", "0,55", "0,01"], a: "0,1", p: "0,2 x 0,25 + 0,05 = 0,05 + 0,05 = 0,1." },
+                { q: "Pasangan yang benar antara 100 : (-50) x 5 + (-15) adalah...", o: ["-25", "5", "-5", "25"], a: "-25", p: "-2 x 5 + (-15) = -10 - 15 = -25." },
+                { q: "Pasangan yang benar antara (2 1/2 : 1/4) - 5 adalah...", o: ["10", "5", "0", "15"], a: "5", p: "(5/2 x 4/1) - 5 = 10 - 5 = 5." },
+                { q: "Ani membaca buku. Hari pertama ia membaca 1/4 bagian, hari kedua 1/3 bagian. Jika sisa halaman yang belum dibaca ada 60 halaman, berapa total halaman buku tersebut?", o: ["120", "144", "150", "180"], a: "144", p: "Dibaca = 1/4+1/3 = 7/12. Sisa = 1-7/12=5/12. Jika 5/12=60 hal, maka 1/12=12 hal. Total=12/12=12x12=144 hal." },
+                { q: "Harga sebuah baju didiskon 15%. Jika harga setelah diskon adalah Rp 170.000, berapa harga awalnya?", o: ["Rp 185.000", "Rp 195.500", "Rp 200.000", "Rp 210.000"], a: "Rp 200.000", p: "Harga setelah diskon = 100% - 15% = 85%. Harga awal = (100/85) x 170.000 = 200.000." },
+                { q: "Budi mengerjakan 10 soal. Jawaban benar +5, salah -2. Budi menjawab 7 soal benar. Berapa skornya?", o: ["35", "29", "25", "21"], a: "29", p: "Benar 7, salah 3. Skor = (7x5) + (3x-2) = 35 - 6 = 29." },
+                { q: "Suhu daging di freezer -18°C. Setelah dikeluarkan, suhunya naik 3°C setiap 4 menit. Berapa suhu daging setelah 20 menit?", o: ["-3°C", "3°C", "-15°C", "15°C"], a: "-3°C", p: "Total kenaikan = (20 menit / 4 menit) x 3°C = 5 x 3°C = 15°C. Suhu akhir = -18°C + 15°C = -3°C." },
+                { q: "Sebuah bilangan pecahan jika ditambah 1/2 hasilnya adalah 5/6. Bilangan pecahan tersebut adalah...", o: ["1/3", "2/3", "1/6", "4/6"], a: "1/3", p: "n + 1/2 = 5/6 => n = 5/6 - 1/2 => n = 5/6 - 3/6 = 2/6 = 1/3." }
+            ]
+        };
+
+
+        function startQuiz(mode) {
+            currentMode = mode;
+            currentQuestionIndex = 0;
+            score = 0;
+            selectedAnswer = null;
+            isShowingFeedback = false;
+            questions = allQuestions[mode];
+            
+            startScreen.classList.add('hidden');
+            resultScreen.classList.add('hidden');
+            quizScreen.classList.remove('hidden');
+
+            displayQuestion();
+        }
+
+        function displayQuestion() {
+            isShowingFeedback = false;
+            selectedAnswer = null;
+            feedbackContainer.classList.add('hidden');
+
+            const question = questions[currentQuestionIndex];
+            questionNumberEl.textContent = currentQuestionIndex + 1;
+            modeLabel.textContent = currentMode;
+            questionText.innerHTML = question.q;
+            
+            optionsContainer.innerHTML = '';
+            question.o.forEach((option) => {
+                const optionElement = document.createElement('button');
+                optionElement.innerHTML = option;
+                optionElement.classList.add('option-btn', 'w-full', 'p-4', 'border-2', 'border-slate-300', 'rounded-lg', 'text-left', 'transition-all', 'duration-200');
+                optionElement.onclick = () => selectOption(option, optionElement);
+                optionsContainer.appendChild(optionElement);
+            });
+
+            nextBtn.disabled = true;
+            nextBtn.textContent = 'Selanjutnya';
+        }
+
+        function selectOption(option, element) {
+            if (isShowingFeedback) return;
+
+            selectedAnswer = option;
+            const optionButtons = optionsContainer.querySelectorAll('.option-btn');
+            optionButtons.forEach(btn => btn.classList.remove('selected'));
+            element.classList.add('selected');
+            nextBtn.disabled = false;
+        }
+
+        function checkAnswerAndProceed() {
+            if (isShowingFeedback) {
+                // Lanjut ke soal berikutnya setelah melihat pembahasan
+                currentQuestionIndex++;
+                if (currentQuestionIndex < questions.length) {
+                    displayQuestion();
+                } else {
+                    showResults();
+                }
+                return;
+            }
+
+            const question = questions[currentQuestionIndex];
+            const isCorrect = selectedAnswer === question.a;
+
+            if (isCorrect) {
+                score++;
+                // Jawaban benar, langsung lanjut
+                currentQuestionIndex++;
+                if (currentQuestionIndex < questions.length) {
+                    displayQuestion();
+                } else {
+                    showResults();
+                }
+            } else {
+                // Jawaban salah, tampilkan pembahasan
+                isShowingFeedback = true;
+                feedbackText.innerHTML = question.p;
+                feedbackContainer.classList.remove('hidden');
+
+                // Tandai jawaban
+                const optionButtons = optionsContainer.querySelectorAll('.option-btn');
+                optionButtons.forEach(btn => {
+                    btn.disabled = true; // Nonaktifkan pilihan
+                    if (btn.innerHTML === question.a) {
+                        btn.classList.add('correct');
+                    } else if (btn.innerHTML === selectedAnswer) {
+                        btn.classList.add('incorrect');
+                    }
+                });
+                
+                nextBtn.textContent = 'Lanjutkan';
+                nextBtn.disabled = false;
+            }
+        }
+
+        function showResults() {
+            quizScreen.classList.add('hidden');
+            resultScreen.classList.remove('hidden');
+            
+            const finalScore = Math.round((score / questions.length) * 100);
+            scoreEl.textContent = finalScore;
+            correctAnswersEl.textContent = score;
+            // Update text di halaman hasil
+            const resultText = document.querySelector('#result-screen .text-xl.text-indigo-800:last-of-type');
+            resultText.textContent = `${score} dari ${questions.length} soal benar`;
+        }
+
+        function restartQuiz() {
+            resultScreen.classList.add('hidden');
+            startScreen.classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Latihan Soal Matematika Kelas 3</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            touch-action: manipulation;
+        }
+        .difficulty-card {
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        .difficulty-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        .option-label {
+            transition: background-color 0.2s;
+        }
+        .option-label.selected {
+             background-color: #60a5fa; /* blue-400 */
+             color: white;
+             border-color: #3b82f6; /* blue-600 */
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800 flex items-center justify-center min-h-screen p-4">
+
+    <div id="app-container" class="w-full max-w-2xl mx-auto">
+        
+        <!-- Layar Awal: Pilihan Tingkat Kesulitan -->
+        <div id="start-screen" class="text-center bg-white p-8 rounded-2xl shadow-lg">
+            <h1 class="text-3xl md:text-4xl font-bold text-blue-600 mb-2">Latihan Soal Matematika</h1>
+            <p class="text-gray-600 mb-8 text-lg">Kelas 3 SD</p>
+            <p class="mb-6 font-semibold text-xl">Pilih Tingkat Kesulitan:</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <button onclick="startQuiz('normal')" class="difficulty-card bg-green-500 hover:bg-green-600 text-white font-bold py-6 px-4 rounded-xl text-xl">Normal</button>
+                <button onclick="startQuiz('medium')" class="difficulty-card bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-6 px-4 rounded-xl text-xl">Medium</button>
+                <button onclick="startQuiz('hard')" class="difficulty-card bg-red-500 hover:bg-red-600 text-white font-bold py-6 px-4 rounded-xl text-xl">Hard</button>
+            </div>
+        </div>
+
+        <!-- Layar Kuis -->
+        <div id="quiz-screen" class="hidden">
+            <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-lg">
+                <div class="flex justify-between items-center mb-6">
+                    <p class="text-sm font-semibold bg-blue-100 text-blue-700 px-3 py-1 rounded-full">Soal <span id="question-number"></span> dari 20</p>
+                    <p class="text-lg font-bold">Skor: <span id="score">0</span></p>
+                </div>
+                <div id="story-container" class="mb-4 p-4 bg-gray-50 border-l-4 border-blue-400 text-gray-700 rounded-r-lg" style="display: none;"></div>
+                <p id="question-text" class="text-lg md:text-xl font-semibold mb-6 min-h-[60px]"></p>
+                <div id="options-container" class="space-y-4">
+                    <!-- Opsi jawaban akan ditambahkan di sini oleh JavaScript -->
+                </div>
+                <button id="check-answer-btn" onclick="checkAnswer()" class="w-full mt-8 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg text-lg transition-transform duration-200 hover:scale-105">Periksa Jawaban</button>
+            </div>
+        </div>
+
+        <!-- Layar Akhir -->
+        <div id="end-screen" class="hidden text-center bg-white p-8 rounded-2xl shadow-lg">
+            <h2 class="text-3xl font-bold mb-4 text-gray-800">Latihan Selesai!</h2>
+            <p class="text-5xl font-bold mb-2 text-blue-600" id="final-score"></p>
+            <p class="text-xl text-gray-600 mb-8" id="final-message"></p>
+            <button onclick="restartQuiz()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg text-lg transition-transform duration-200 hover:scale-105">Coba Lagi</button>
+        </div>
+
+    </div>
+    
+    <!-- Modal untuk Feedback Jawaban -->
+    <div id="feedback-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-2xl shadow-xl p-8 max-w-md w-full text-center">
+            <h3 id="modal-title" class="text-3xl font-bold mb-4"></h3>
+            <div id="modal-explanation" class="text-gray-700 text-left bg-yellow-50 p-4 rounded-lg border border-yellow-200 mb-6" style="display: none;">
+                <h4 class="font-bold mb-2">Pembahasan:</h4>
+                <p id="explanation-text"></p>
+            </div>
+            <button id="next-question-btn" onclick="nextQuestion()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg text-lg">Lanjut</button>
+        </div>
+    </div>
+
+
+<script>
+    // Data Kuis
+    const quizData = {
+        normal: [
+            // --- Soal Pilihan Ganda Normal ---
+            { type: 'single', question: 'Bilangan yang menunjukkan "tiga ratus dua puluh delapan" adalah ....', options: ['382', '238', '328', '823'], answer: ['328'], explanation: 'Bilangan "tiga ratus dua puluh delapan" ditulis dengan angka 3 di tempat ratusan, 2 di tempat puluhan, dan 8 di tempat satuan, yaitu 328.' },
+            { type: 'single', question: 'Angka 5 pada bilangan <b>759</b> berada di nilai tempat ....', options: ['satuan', 'puluhan', 'ratusan', 'ribuan'], answer: ['puluhan'], explanation: 'Pada bilangan 759, angka 7 adalah ratusan, angka 5 adalah puluhan, dan angka 9 adalah satuan.' },
+            { type: 'single', question: 'Urutan bilangan dari yang terkecil hingga terbesar yang benar adalah ....', options: ['415, 451, 405', '451, 415, 405', '405, 451, 415', '405, 415, 451'], answer: ['405, 415, 451'], explanation: 'Untuk mengurutkan dari yang terkecil, kita lihat angka paling depan. 405 adalah yang paling kecil, diikuti 415, dan yang terbesar adalah 451.' },
+            { type: 'single', question: 'Di toko mainan ada 15 mobil-mobilan merah dan 22 mobil-mobilan biru. Jumlah seluruh mobil-mobilan di toko tersebut adalah ....', options: ['27', '35', '37', '47'], answer: ['37'], explanation: 'Untuk mencari jumlah seluruhnya, kita tambahkan kedua jumlah mobil-mobilan: 15 + 22 = 37.' },
+            { type: 'single', story: 'Terdapat perwakilan siswa dari SD Pelita untuk mengikuti lomba kesenian. Beberapa siswa laki-laki dan siswa perempuan menjadi perwakilan dalam kegiatan tersebut.<br>Ada 12 siswa laki-laki yang mengikuti lomba. Jumlah seluruh siswa yang mengikuti lomba adalah 29 siswa.', question: 'Kalimat matematika berdasarkan cerita di atas adalah ....', options: ['12 + 29 = 41', '29 - 12 = 17', '29 + 17 = 46', '17 - 12 = 5'], answer: ['29 - 12 = 17'], explanation: 'Untuk mencari jumlah siswa perempuan, kita kurangi jumlah seluruh siswa (29) dengan jumlah siswa laki-laki (12). Maka kalimat matematikanya adalah 29 - 12 = 17.' },
+            { type: 'single', story: 'Terdapat perwakilan siswa dari SD Pelita untuk mengikuti lomba kesenian. Beberapa siswa laki-laki dan siswa perempuan menjadi perwakilan dalam kegiatan tersebut.<br>Ada 12 siswa laki-laki yang mengikuti lomba. Jumlah seluruh siswa yang mengikuti lomba adalah 29 siswa.', question: 'Banyak siswa perempuan yang mengikuti lomba kesenian ada ... siswa.', options: ['15', '16', '17', '18'], answer: ['17'], explanation: 'Jumlah seluruh siswa (29) dikurangi jumlah siswa laki-laki (12) adalah 17. Jadi, ada 17 siswa perempuan.' },
+            { type: 'single', question: 'Lambang bilangan dari "sembilan ratus tiga" adalah ....', options: ['93', '930', '309', '903'], answer: ['903'], explanation: '"Sembilan ratus tiga" berarti angka 9 di tempat ratusan, 0 di tempat puluhan, dan 3 di tempat satuan, yaitu 903.' },
+            { type: 'single', question: 'Di antara bilangan 245, 254, 235, manakah bilangan yang paling besar?', options: ['245', '254', '235', 'semua sama'], answer: ['254'], explanation: 'Ketiga bilangan memiliki angka ratusan yang sama (2). Kita bandingkan angka puluhannya. 5 adalah angka puluhan terbesar, jadi 254 adalah bilangan yang paling besar.' },
+            { type: 'single', question: 'Ada 4 piring. Setiap piring berisi 5 kue. Jumlah semua kue adalah ....', options: ['9', '15', '20', '24'], answer: ['20'], explanation: 'Ini adalah soal perkalian. Jumlah semua kue adalah 4 piring dikali 5 kue, yaitu 4 x 5 = 20.' },
+            { type: 'single', question: 'Rina memiliki 15 pensil. Dia membeli lagi 10 pensil. Jumlah pensil Rina sekarang adalah ....', options: ['5', '25', '30', '150'], answer: ['25'], explanation: 'Jumlah pensil Rina bertambah. Jadi, kita jumlahkan pensil awal dengan pensil yang baru dibeli: 15 + 10 = 25.' },
+            
+            // --- Soal Multiple Answer Normal ---
+            { type: 'multiple', question: 'Doni memiliki 25 kelereng. Toni memiliki 30 kelereng. Pernyataan yang benar berdasarkan cerita di atas adalah ....', options: ['Jumlah kelereng mereka berdua adalah 55.', 'Selisih kelereng mereka adalah 10.', 'Kelereng Doni lebih banyak dari Toni.', 'Kalimat matematika untuk jumlah kelereng adalah 25 + 30 = 55.'], answer: ['Jumlah kelereng mereka berdua adalah 55.', 'Kalimat matematika untuk jumlah kelereng adalah 25 + 30 = 55.'], explanation: 'Jumlahnya adalah 25 + 30 = 55. Selisihnya 30 - 25 = 5. Kelereng Toni lebih banyak.' },
+            { type: 'multiple', question: 'X + Y = 10. Bilangan pengganti X dan Y yang tepat adalah ....', options: ['X = 5 dan Y = 5', 'X = 4 dan Y = 7', 'X = 8 dan Y = 2', 'X = 1 dan Y = 9'], answer: ['X = 5 dan Y = 5', 'X = 8 dan Y = 2', 'X = 1 dan Y = 9'], explanation: 'Kita cari pasangan angka yang jika dijumlahkan hasilnya 10. 5+5=10, 8+2=10, dan 1+9=10. Sedangkan 4+7=11.' },
+            { type: 'multiple', question: 'Perhatikan bilangan <b>345</b>. Pernyataan yang sesuai dengan bilangan tersebut adalah ....', options: ['Angka 3 menempati nilai ratusan.', 'Angka 4 bernilai 40.', 'Angka 5 adalah satuan.', 'Bilangan tersebut lebih kecil dari 340.'], answer: ['Angka 3 menempati nilai ratusan.', 'Angka 4 bernilai 40.', 'Angka 5 adalah satuan.'], explanation: 'Pada bilangan 345: 3 adalah ratusan, 4 adalah puluhan (bernilai 40), dan 5 adalah satuan. Bilangan 345 lebih besar dari 340.' },
+            { type: 'multiple', question: 'Ibu membeli 12 buah jeruk. Jeruk tersebut akan dibagikan kepada 3 anaknya sama banyak. Pernyataan berikut yang tepat adalah ....', options: ['Setiap anak mendapat 4 buah jeruk.', 'Kalimat matematikanya adalah 12 : 3 = 4.', 'Jika ada 4 anak, maka setiap anak mendapat 3 jeruk.', 'Jumlah jeruk terlalu sedikit untuk dibagi.'], answer: ['Setiap anak mendapat 4 buah jeruk.', 'Kalimat matematikanya adalah 12 : 3 = 4.', 'Jika ada 4 anak, maka setiap anak mendapat 3 jeruk.'], explanation: '12 dibagi 3 adalah 4, jadi setiap anak mendapat 4 jeruk. Jika dibagi 4 anak, maka 12 : 4 = 3, setiap anak mendapat 3 jeruk.' },
+            { type: 'multiple', question: 'Di sebuah keranjang ada 15 apel merah dan 12 apel hijau. Manakah pernyataan yang tidak tepat?', options: ['Jumlah semua apel adalah 27.', 'Apel merah lebih sedikit dari apel hijau.', 'Selisih apel merah dan hijau adalah 3.', 'Apel hijau lebih sedikit dari apel merah.'], answer: ['Apel merah lebih sedikit dari apel hijau.'], explanation: 'Yang tidak tepat adalah "Apel merah lebih sedikit dari apel hijau", karena 15 lebih banyak dari 12.' },
+            { type: 'multiple', question: '20 + ... = 35. Bilangan yang tepat untuk melengkapi kalimat matematika di atas adalah ....', options: ['10', '15', '5 + 10', '40 - 25'], answer: ['15', '5 + 10', '40 - 25'], explanation: 'Bilangan yang dicari adalah 15. Pilihan "5 + 10" dan "40 - 25" keduanya juga menghasilkan 15.' },
+            { type: 'multiple', question: 'Di kelas ada 32 siswa. Sebanyak 18 siswa adalah laki-laki. Pernyataan yang benar adalah ....', options: ['Jumlah siswa perempuan adalah 14.', 'Siswa laki-laki lebih banyak dari siswa perempuan.', 'Selisih siswa laki-laki dan perempuan adalah 4.', 'Kalimat matematikanya adalah 32 - 18 = 14.'], answer: ['Jumlah siswa perempuan adalah 14.', 'Siswa laki-laki lebih banyak dari siswa perempuan.', 'Selisih siswa laki-laki dan perempuan adalah 4.', 'Kalimat matematikanya adalah 32 - 18 = 14.'], explanation: 'Siswa perempuan: 32 - 18 = 14. Siswa laki-laki (18) lebih banyak dari perempuan (14). Selisihnya 18 - 14 = 4.' },
+            { type: 'multiple', question: 'Bilangan yang nilainya lebih besar dari 500 adalah ....', options: ['499', '501', '500', '620'], answer: ['501', '620'], explanation: 'Kita mencari angka yang lebih besar dari 500. Angka 499 lebih kecil dan 500 sama dengan.' },
+            { type: 'multiple', question: 'Dita memiliki 2 kantong permen, setiap kantong berisi 10 permen. Pernyataan yang sesuai adalah ....', options: ['Jumlah permen Dita adalah 12.', 'Jumlah permen Dita adalah 20.', 'Kalimat matematikanya adalah 2 x 10 = 20.', 'Jika Dita memakan 5 permen, sisanya 15.'], answer: ['Jumlah permen Dita adalah 20.', 'Kalimat matematikanya adalah 2 x 10 = 20.', 'Jika Dita memakan 5 permen, sisanya 15.'], explanation: 'Total permen adalah 2 x 10 = 20. Jika dimakan 5, sisanya 20 - 5 = 15.' },
+            { type: 'multiple', question: 'A - B = 8. Pasangan bilangan A dan B yang tepat adalah ....', options: ['A = 10, B = 2', 'A = 18, B = 10', 'A = 8, B = 1', 'A = 20, B = 12'], answer: ['A = 10, B = 2', 'A = 18, B = 10', 'A = 20, B = 12'], explanation: 'Kita cari pasangan angka yang selisihnya 8. 10-2=8, 18-10=8, 20-12=8. Sedangkan 8-1=7.' }
+        ],
+        medium: [
+            // --- Soal Pilihan Ganda Medium ---
+            { type: 'single', question: 'Ayah membeli sebuah meja seharga Rp 1.250.000. Cara membaca harga tersebut adalah ....', options: ['satu juta dua ratus lima puluh', 'seribu dua ratus lima puluh', 'satu juta dua ratus lima puluh ribu', 'dua belas juta lima puluh ribu'], answer: ['satu juta dua ratus lima puluh ribu'], explanation: 'Angka 1.250.000 dibaca "satu juta dua ratus lima puluh ribu".' },
+            { type: 'single', question: 'Pada bilangan <b>9.876</b>, nilai angka 8 adalah ....', options: ['8', '80', '800', '8.000'], answer: ['800'], explanation: 'Pada bilangan 9.876, angka 9 adalah ribuan, 8 adalah ratusan (bernilai 800), 7 adalah puluhan, dan 6 adalah satuan.' },
+            { type: 'single', question: 'Perhatikan kumpulan bilangan berikut: <b>808, 880, 800, 888, 818</b>. Urutan yang benar jika diurutkan dari yang terbesar adalah ....', options: ['800, 808, 818, 880, 888', '888, 880, 818, 808, 800', '888, 880, 808, 818, 800', '800, 818, 808, 880, 888'], answer: ['888, 880, 818, 808, 800'], explanation: 'Untuk mengurutkan dari terbesar, kita bandingkan bilangannya. 888 adalah yang paling besar, diikuti 880, 818, 808, dan yang terkecil adalah 800.' },
+            { type: 'single', question: 'Di perpustakaan sekolah terdapat 125 buku fiksi, 75 buku non-fiksi, dan 50 majalah anak. Jumlah total koleksi bacaan di perpustakaan tersebut adalah ....', options: ['200', '225', '250', '275'], answer: ['250'], explanation: 'Jumlah total didapat dengan menjumlahkan semuanya: 125 + 75 + 50 = 250.' },
+            { type: 'single', question: 'Pak Tani memanen 47 jagung. Ia ingin memasukkan jagung tersebut ke dalam keranjang yang masing-masing berisi 10 jagung. Jumlah keranjang yang terisi penuh dan sisa jagung adalah ....', options: ['4 keranjang, sisa 7 jagung', '7 keranjang, sisa 4 jagung', '4 keranjang, sisa 0 jagung', '5 keranjang, sisa 3 jagung'], answer: ['4 keranjang, sisa 7 jagung'], explanation: '47 dibagi 10 adalah 4 dengan sisa 7. Artinya, ada 4 keranjang yang terisi penuh (40 jagung) dan ada sisa 7 jagung.' },
+            { type: 'single', question: 'Seorang pedagang memiliki 150 butir telur. Sebanyak 35 butir telur pecah. Sisa telur pedagang tersebut adalah ....', options: ['105', '115', '125', '185'], answer: ['115'], explanation: 'Untuk mencari sisa, kita kurangi jumlah awal dengan yang pecah: 150 - 35 = 115.' },
+            { type: 'single', question: 'Bilangan 2.345 dapat diuraikan menjadi ....', options: ['2 ribuan + 3 ratusan + 5 puluhan + 4 satuan', '2 ribuan + 4 ratusan + 3 puluhan + 5 satuan', '2 ribuan + 3 ratusan + 4 puluhan + 5 satuan', '5 ribuan + 4 ratusan + 3 puluhan + 2 satuan'], answer: ['2 ribuan + 3 ratusan + 4 puluhan + 5 satuan'], explanation: 'Bilangan 2.345 terdiri dari 2 ribuan, 3 ratusan, 4 puluhan, dan 5 satuan.' },
+            { type: 'single', question: 'Tanda perbandingan yang tepat untuk mengisi titik-titik antara <b>1.989 ... 1.899</b> adalah ....', options: ['<', '>', '=', '+/-'], answer: ['>'], explanation: 'Bilangan 1.989 lebih besar dari 1.899 karena angka ratusannya (9) lebih besar dari (8). Tanda "lebih besar dari" adalah >.' },
+            { type: 'single', question: 'Sebuah peternakan memiliki 8 kandang ayam. Setiap kandang berisi 10 ekor ayam. Jika peternak membeli lagi 15 ekor ayam, jumlah total ayam sekarang adalah ....', options: ['80', '85', '95', '105'], answer: ['95'], explanation: 'Pertama, hitung jumlah ayam awal: 8 kandang x 10 ekor = 80 ekor. Kemudian tambahkan dengan ayam yang baru dibeli: 80 + 15 = 95 ekor.' },
+            { type: 'single', question: 'Ibu guru memiliki 62 lembar kertas. Kertas tersebut akan dibagikan kepada 8 kelompok siswa secara merata. Setiap kelompok akan mendapat ... lembar, dan tersisa ... lembar.', options: ['7 lembar, sisa 6 lembar', '8 lembar, sisa 2 lembar', '6 lembar, sisa 14 lembar', '8 lembar, sisa 0 lembar'], answer: ['7 lembar, sisa 6 lembar'], explanation: '62 dibagi 8 adalah 7 dengan sisa 6. Jadi, setiap kelompok mendapat 7 lembar dan ada sisa 6 lembar.' },
+            
+            // --- Soal Multiple Answer Medium ---
+            { type: 'multiple', question: 'Pak Dito membawa 75 buah durian ke pasar. Sebanyak 58 durian telah terjual dan 17 durian belum terjual. Pernyataan yang salah berdasarkan cerita di atas adalah ....', options: ['Kalimat matematikanya adalah 75 - 17 = 58.', 'Banyak durian yang diangkut Pak Dito ke pasar ada 58 buah.', 'Kalimat matematikanya adalah 58 + 17 = 75.', 'Banyak durian yang belum terjual ada 58 buah.'], answer: ['Banyak durian yang diangkut Pak Dito ke pasar ada 58 buah.', 'Banyak durian yang belum terjual ada 58 buah.'], explanation: 'Yang salah adalah pernyataan yang menyebutkan durian yang diangkut/belum terjual ada 58. Seharusnya yang diangkut 75 dan yang belum terjual 17.' },
+            { type: 'multiple', question: 'A x B = 24. Bilangan pengganti A dan B yang tepat adalah ....', options: ['A = 4 dan B = 6', 'A = 2 dan B = 12', 'A = 5 dan B = 5', 'A = 8 dan B = 3'], answer: ['A = 4 dan B = 6', 'A = 2 dan B = 12', 'A = 8 dan B = 3'], explanation: 'Kita cari pasangan angka yang hasil perkaliannya adalah 24. 4x6=24, 2x12=24, 8x3=24. Sedangkan 5x5=25.' },
+            { type: 'multiple', question: 'Ada 32 siswa di kelas 3A dan 34 siswa di kelas 3B. Pernyataan yang sesuai dengan data tersebut adalah ....', options: ['Jumlah seluruh siswa adalah 66.', 'Selisih siswa kelas 3A dan 3B adalah 2.', 'Kelas 3A memiliki siswa lebih banyak dari 3B.', 'Jika 5 siswa dari 3B pindah ke 3A, maka jumlah siswa 3A menjadi 37.'], answer: ['Jumlah seluruh siswa adalah 66.', 'Selisih siswa kelas 3A dan 3B adalah 2.', 'Jika 5 siswa dari 3B pindah ke 3A, maka jumlah siswa 3A menjadi 37.'], explanation: 'Jumlah siswa: 32+34=66. Selisih: 34-32=2. Jika 5 pindah: 32+5=37. Pernyataan yang salah adalah kelas 3A lebih banyak.' },
+            { type: 'multiple', question: 'Rina membeli 3 ikat rambutan. Setiap ikat berisi 12 buah rambutan. Pernyataan berikut yang tepat adalah ....', options: ['Jumlah seluruh rambutan Rina adalah 36 buah.', 'Jika Rina memberikan 1 ikat kepada adiknya, sisa rambutannya 24 buah.', 'Kalimat matematikanya adalah 3 x 12 = 36.', 'Jika rambutan tersebut dibagikan kepada 6 temannya, setiap teman mendapat 5 buah.'], answer: ['Jumlah seluruh rambutan Rina adalah 36 buah.', 'Jika Rina memberikan 1 ikat kepada adiknya, sisa rambutannya 24 buah.', 'Kalimat matematikanya adalah 3 x 12 = 36.'], explanation: 'Total rambutan 3x12=36. Jika 1 ikat diberikan (12 buah), sisanya 36-12=24. Jika dibagi 6 teman, 36:6=6 buah, bukan 5.' },
+            { type: 'multiple', question: 'Pada bilangan <b>8.181</b>, pernyataan yang benar adalah ....', options: ['Angka 8 yang pertama bernilai 8.000.', 'Angka 1 yang pertama bernilai 10.', 'Angka 8 yang kedua bernilai 80.', 'Angka 1 yang kedua bernilai 1.'], answer: ['Angka 8 yang pertama bernilai 8.000.', 'Angka 8 yang kedua bernilai 80.', 'Angka 1 yang kedua bernilai 1.'], explanation: 'Uraiannya: 8 (ribuan), 1 (ratusan), 8 (puluhan), 1 (satuan). Jadi angka 1 pertama bernilai 100.' },
+            { type: 'multiple', question: '120 - ... = 75. Bilangan yang tepat untuk melengkapi kalimat matematika di atas adalah ....', options: ['45', '30 + 15', '120 - 75', '55'], answer: ['45', '30 + 15', '120 - 75'], explanation: 'Bilangan yang dicari adalah 45 (karena 120-45=75). Pilihan "30+15" dan "120-75" juga menghasilkan 45.' },
+            { type: 'multiple', question: 'Di toko kue ada 45 donat cokelat, 55 donat keju, dan 30 donat stroberi. Pernyataan yang benar adalah ....', options: ['Jumlah semua donat adalah 130.', 'Donat paling banyak adalah donat cokelat.', 'Donat paling sedikit adalah donat stroberi.', 'Selisih donat keju dan donat cokelat adalah 10.'], answer: ['Donat paling sedikit adalah donat stroberi.', 'Selisih donat keju dan donat cokelat adalah 10.'], explanation: 'Jumlah donat 45+55+30=130 (Salah). Paling banyak donat keju (55). Paling sedikit stroberi (30). Selisih keju dan cokelat 55-45=10.' },
+            { type: 'multiple', question: 'Bilangan yang merupakan hasil dari perkalian 5 adalah ....', options: ['25', '32', '40', '51'], answer: ['25', '40'], explanation: 'Hasil perkalian 5 selalu memiliki angka satuan 0 atau 5. Dari pilihan di atas, 25 (5x5) dan 40 (5x8) adalah jawabannya.' },
+            { type: 'multiple', question: 'Ayah berusia 42 tahun. Ibu berusia 38 tahun. Pernyataan yang sesuai adalah ....', options: ['Usia Ayah lebih tua dari Ibu.', 'Selisih usia mereka adalah 4 tahun.', 'Jumlah usia mereka adalah 70 tahun.', 'Lima tahun lagi, usia Ibu menjadi 43 tahun.'], answer: ['Usia Ayah lebih tua dari Ibu.', 'Selisih usia mereka adalah 4 tahun.', 'Lima tahun lagi, usia Ibu menjadi 43 tahun.'], explanation: 'Ayah lebih tua (42>38). Selisih 42-38=4 tahun. Jumlah usia 42+38=80. Lima tahun lagi usia Ibu 38+5=43.' },
+            { type: 'multiple', question: 'X : Y = 6. Pasangan bilangan X dan Y yang tepat adalah ....', options: ['X = 30, Y = 5', 'X = 12, Y = 3', 'X = 48, Y = 8', 'X = 60, Y = 6'], answer: ['X = 30, Y = 5', 'X = 48, Y = 8'], explanation: 'Kita cari pasangan yang hasil pembagiannya adalah 6. 30:5=6, 48:8=6. Sedangkan 12:3=4 dan 60:6=10.' }
+        ],
+        hard: [
+            // --- Soal Pilihan Ganda Hard ---
+            { type: 'single', question: 'Sebuah bilangan rahasia terdiri dari angka 5 puluhan, 9 ratusan, dan 3 satuan. Bilangan rahasia tersebut adalah ....', options: ['593', '935', '953', '359'], answer: ['953'], explanation: 'Kita susun berdasarkan nilai tempatnya: 9 di ratusan, 5 di puluhan, dan 3 di satuan, menjadi 953.' },
+            { type: 'single', question: 'Pada bilangan <b>747</b>, berapakah selisih antara nilai angka 7 yang pertama dan nilai angka 7 yang kedua?', options: ['0', '630', '693', '707'], answer: ['693'], explanation: 'Angka 7 yang pertama bernilai 700 (ratusan). Angka 7 yang kedua bernilai 7 (satuan). Selisihnya adalah 700 - 7 = 693.' },
+            { type: 'single', question: 'Kalimat matematika yang sesuai untuk soal cerita "Di dalam bus ada 45 penumpang. Di halte pertama, turun 12 penumpang, lalu naik 8 penumpang" untuk menghitung jumlah penumpang sekarang adalah ....', options: ['45 + 12 + 8', '45 - 12 - 8', '45 + 12 - 8', '45 - 12 + 8'], answer: ['45 - 12 + 8'], explanation: 'Jumlah awal 45, "turun" berarti dikurangi (-12), "naik" berarti ditambah (+8). Jadi, kalimatnya 45 - 12 + 8.' },
+            { type: 'single', question: 'Kakak membeli 5 kotak donat. Setiap kotak berisi 6 donat. Semua donat tersebut akan dibagikan kepada teman-temannya sehingga setiap orang mendapat 3 donat. Berapa banyak teman yang akan menerima donat?', options: ['8 orang', '9 orang', '10 orang', '11 orang'], answer: ['10 orang'], explanation: 'Total donat: 5 kotak x 6 donat = 30 donat. Jumlah teman: 30 donat / 3 donat per orang = 10 orang.' },
+            { type: 'single', question: 'Aku adalah sebuah bilangan. Jika aku dikalikan 2, kemudian ditambah 15, hasilnya adalah 45. Bilangan berapakah aku?', options: ['10', '15', '20', '30'], answer: ['15'], explanation: 'Kita hitung mundur. Sebelum ditambah 15 hasilnya adalah 45 - 15 = 30. Sebelum dikali 2, bilangannya adalah 30 / 2 = 15.' },
+            { type: 'single', question: 'Pak Budi memanen 120 buah mangga. Ia memasukkan mangga ke dalam 10 keranjang dengan isi yang sama. Jika 2 keranjang mangga diberikan kepada tetangga, berapa sisa buah mangga Pak Budi?', options: ['24 buah', '96 buah', '100 buah', '108 buah'], answer: ['96 buah'], explanation: 'Sisa keranjang Pak Budi adalah 10 - 2 = 8 keranjang. Isi per keranjang adalah 120 / 10 = 12 buah. Sisa mangga adalah 8 keranjang x 12 buah = 96 buah.' },
+            { type: 'single', question: 'Aku adalah bilangan 3 angka. Angka ratusanku adalah 2 kali angka satuanku. Angka puluhanku adalah 6. Angka satuanku adalah 4. Bilangan berapakah aku?', options: ['264', '468', '864', '642'], answer: ['864'], explanation: 'Satuan = 4. Puluhan = 6. Ratusan = 2 x satuan = 2 x 4 = 8. Jadi, bilangannya adalah 864.' },
+            { type: 'single', question: 'Adi membeli 3 buku tulis seharga Rp 2.500 per buku dan 1 pulpen seharga Rp 3.000. Jika ia membayar dengan uang Rp 20.000, berapa kembalian yang diterima Adi?', options: ['Rp 9.500', 'Rp 10.500', 'Rp 14.500', 'Rp 17.000'], answer: ['Rp 9.500'], explanation: 'Total belanja: (3 x 2.500) + 3.000 = 7.500 + 3.000 = 10.500. Kembalian: 20.000 - 10.500 = 9.500.' },
+            { type: 'single', question: 'Perhatikan pola bilangan berikut: 5, 10, 15, 20, ..., .... Dua bilangan selanjutnya adalah ....', options: ['25, 30', '30, 40', '25, 35', '22, 24'], answer: ['25, 30'], explanation: 'Ini adalah pola bilangan loncat 5 (ditambah 5 terus menerus). Setelah 20, bilangannya adalah 25 dan 30.' },
+            { type: 'single', question: 'Setengah dari sebuah angka, jika dikurangi 5, hasilnya adalah 10. Angka berapakah itu?', options: ['15', '20', '30', '40'], answer: ['30'], explanation: 'Kita hitung mundur. Sebelum dikurangi 5, hasilnya adalah 10 + 5 = 15. Angka 15 adalah setengah dari sebuah angka, maka angka itu adalah 15 x 2 = 30.' },
+
+            // --- Soal Multiple Answer Hard ---
+            { type: 'multiple', question: 'Di sebuah tempat parkir terdapat 15 mobil dan beberapa motor. Jumlah seluruh roda kendaraan adalah 90. Setiap mobil memiliki 4 roda dan setiap motor memiliki 2 roda. Pernyataan yang benar adalah ....', options: ['Jumlah roda mobil adalah 60.', 'Jumlah roda motor adalah 30.', 'Banyak motor di tempat parkir adalah 15.', 'Jumlah seluruh kendaraan adalah 25.'], answer: ['Jumlah roda mobil adalah 60.', 'Jumlah roda motor adalah 30.', 'Banyak motor di tempat parkir adalah 15.'], explanation: 'Roda mobil: 15x4=60. Roda motor: 90-60=30. Jumlah motor: 30:2=15. Jumlah kendaraan 15+15=30.' },
+            { type: 'multiple', question: 'A + B + C = 20. A, B, dan C adalah bilangan berbeda. Kombinasi bilangan yang mungkin adalah ....', options: ['A = 5, B = 7, C = 8', 'A = 10, B = 5, C = 5', 'A = 2, B = 8, C = 10', 'A = 1, B = 9, C = 10'], answer: ['A = 5, B = 7, C = 8', 'A = 2, B = 8, C = 10', 'A = 1, B = 9, C = 10'], explanation: 'Kita cari 3 bilangan BERBEDA yang jumlahnya 20. Pilihan B salah karena ada angka 5 yang sama.' },
+            { type: 'multiple', question: 'Dari 40 siswa, 25 siswa gemar membaca, dan 20 siswa gemar melukis. Sebanyak 10 siswa gemar keduanya. Pernyataan yang sesuai dengan data tersebut adalah ....', options: ['Siswa yang hanya gemar membaca ada 15 orang.', 'Siswa yang hanya gemar melukis ada 10 orang.', 'Jumlah siswa yang gemar membaca atau melukis adalah 35 orang.', 'Ada 5 siswa yang tidak gemar keduanya.'], answer: ['Siswa yang hanya gemar membaca ada 15 orang.', 'Siswa yang hanya gemar melukis ada 10 orang.', 'Jumlah siswa yang gemar membaca atau melukis adalah 35 orang.', 'Ada 5 siswa yang tidak gemar keduanya.'], explanation: 'Hanya membaca: 25-10=15. Hanya melukis: 20-10=10. Total yg gemar: 15+10+10=35. Tidak gemar: 40-35=5.' },
+            { type: 'multiple', question: 'Harga 2 buku dan 3 pensil adalah Rp 13.000. Harga 1 buku adalah Rp 3.500. Pernyataan berikut yang tepat adalah ....', options: ['Harga 2 buku adalah Rp 7.000.', 'Harga 3 pensil adalah Rp 6.000.', 'Harga 1 pensil adalah Rp 2.000.', 'Uang Rp 10.000 cukup untuk membeli 1 buku dan 3 pensil.'], answer: ['Harga 2 buku adalah Rp 7.000.', 'Harga 3 pensil adalah Rp 6.000.', 'Harga 1 pensil adalah Rp 2.000.'], explanation: 'Harga 2 buku: 2x3.500=7.000. Harga 3 pensil: 13.000-7.000=6.000. Harga 1 pensil: 6.000:3=2.000. Beli 1 buku dan 3 pensil: 3.500+6.000=9.500 (cukup dengan 10.000).' },
+            { type: 'multiple', question: 'Suatu bilangan jika dibagi 5 akan bersisa 2. Bilangan tersebut lebih dari 20 dan kurang dari 40. Bilangan yang dimaksud adalah ....', options: ['22', '27', '35', '38'], answer: ['22', '27'], explanation: 'Bilangan kelipatan 5 adalah 20, 25, 30, 35. Jika ditambah 2 maka menjadi 22, 27, 32, 37. Dari pilihan yang ada, jawabannya 22 dan 27. 38 sisa 3.' },
+            { type: 'multiple', question: '(10 x 5) + (20 : 4) = N. Pernyataan yang benar adalah ....', options: ['Hasil dari 10 x 5 adalah 50.', 'Hasil dari 20 : 4 adalah 5.', 'Nilai N adalah 55.', 'Nilai N lebih besar dari 60.'], answer: ['Hasil dari 10 x 5 adalah 50.', 'Hasil dari 20 : 4 adalah 5.', 'Nilai N adalah 55.'], explanation: 'Kerjakan dalam kurung dulu. 10x5=50. 20:4=5. Lalu jumlahkan hasilnya: 50+5=55. Jadi nilai N adalah 55.' },
+            { type: 'multiple', question: 'Umur Kakek sekarang 60 tahun. Usia Ayah adalah 2/3 dari usia Kakek. Usia Ibu 5 tahun lebih muda dari Ayah. Pernyataan yang benar adalah ....', options: ['Usia Ayah sekarang adalah 40 tahun.', 'Usia Ibu sekarang adalah 35 tahun.', 'Jumlah usia Ayah dan Ibu adalah 75 tahun.', 'Selisih usia Kakek dan Ibu adalah 20 tahun.'], answer: ['Usia Ayah sekarang adalah 40 tahun.', 'Usia Ibu sekarang adalah 35 tahun.', 'Jumlah usia Ayah dan Ibu adalah 75 tahun.'], explanation: 'Usia Ayah: (2/3)x60=40 tahun. Usia Ibu: 40-5=35 tahun. Jumlah usia Ayah & Ibu: 40+35=75 tahun. Selisih Kakek & Ibu: 60-35=25 tahun.' },
+            { type: 'multiple', question: 'Bilangan antara 100 dan 150 yang habis dibagi 3 dan 5 adalah ....', options: ['105', '115', '120', '135'], answer: ['105', '120', '135'], explanation: 'Bilangan yang habis dibagi 3 dan 5 berarti bilangan tersebut adalah kelipatan 15. Kelipatan 15 antara 100 dan 150 adalah 105, 120, dan 135.' },
+            { type: 'multiple', question: 'Dito membeli 1/2 kg apel dan 1/4 kg anggur. Berat total belanjaan Dito adalah 750 gram. (1 kg = 1000 gram). Pernyataan yang sesuai adalah ....', options: ['Berat apel yang dibeli Dito adalah 500 gram.', 'Berat anggur yang dibeli Dito adalah 250 gram.', 'Jika Dito membeli 1/2 kg anggur, beratnya 500 gram.', 'Berat total belanjaan Dito kurang dari 1 kg.'], answer: ['Berat apel yang dibeli Dito adalah 500 gram.', 'Berat anggur yang dibeli Dito adalah 250 gram.', 'Jika Dito membeli 1/2 kg anggur, beratnya 500 gram.', 'Berat total belanjaan Dito kurang dari 1 kg.'], explanation: '1/2 kg = 500 gram. 1/4 kg = 250 gram. Total belanjaan 500+250=750 gram. 750 gram kurang dari 1000 gram (1 kg).' },
+            { type: 'multiple', question: 'A x B = 48. A dan B adalah bilangan bulat positif. Pasangan bilangan A dan B yang mungkin adalah ....', options: ['A = 4, B = 12', 'A = 5, B = 9', 'A = 6, B = 8', 'A = 2, B = 24'], answer: ['A = 4, B = 12', 'A = 6, B = 8', 'A = 2, B = 24'], explanation: 'Kita cari pasangan angka yang hasil perkaliannya adalah 48. 4x12=48, 6x8=48, 2x24=48. Sedangkan 5x9=45.' }
+        ]
+    };
+
+    // Variabel status kuis
+    let currentDifficulty;
+    let currentQuestions;
+    let currentQuestionIndex;
+    let score;
+
+    // Elemen DOM
+    const startScreen = document.getElementById('start-screen');
+    const quizScreen = document.getElementById('quiz-screen');
+    const endScreen = document.getElementById('end-screen');
+    const storyContainer = document.getElementById('story-container');
+    const questionText = document.getElementById('question-text');
+    const optionsContainer = document.getElementById('options-container');
+    const questionNumberEl = document.getElementById('question-number');
+    const scoreEl = document.getElementById('score');
+    const finalScoreEl = document.getElementById('final-score');
+    const finalMessageEl = document.getElementById('final-message');
+    const feedbackModal = document.getElementById('feedback-modal');
+    const modalTitle = document.getElementById('modal-title');
+    const modalExplanation = document.getElementById('modal-explanation');
+    const explanationText = document.getElementById('explanation-text');
+    const checkAnswerBtn = document.getElementById('check-answer-btn');
+
+    function startQuiz(difficulty) {
+        currentDifficulty = difficulty;
+        currentQuestions = quizData[difficulty];
+        currentQuestionIndex = 0;
+        score = 0;
+
+        scoreEl.textContent = score;
+        startScreen.classList.add('hidden');
+        quizScreen.classList.remove('hidden');
+        endScreen.classList.add('hidden');
+        
+        showQuestion();
+    }
+    
+    function showQuestion() {
+        const question = currentQuestions[currentQuestionIndex];
+        
+        // Handle story
+        if (question.story) {
+            storyContainer.innerHTML = question.story;
+            storyContainer.style.display = 'block';
+        } else {
+            storyContainer.style.display = 'none';
+        }
+
+        questionNumberEl.textContent = currentQuestionIndex + 1;
+        questionText.innerHTML = question.question;
+        optionsContainer.innerHTML = '';
+
+        question.options.forEach((option, index) => {
+            const inputType = question.type === 'single' ? 'radio' : 'checkbox';
+            const optionId = `option${index}`;
+            const optionEl = document.createElement('div');
+            optionEl.innerHTML = `
+                <input type="${inputType}" name="option" id="${optionId}" value="${option}" class="hidden">
+                <label for="${optionId}" class="option-label block w-full p-4 border-2 border-gray-300 rounded-lg cursor-pointer hover:bg-blue-100 hover:border-blue-300">
+                    ${option}
+                </label>
+            `;
+            optionsContainer.appendChild(optionEl);
+        });
+
+        // Add event listeners for styling selected options
+        document.querySelectorAll('input[name="option"]').forEach(input => {
+            input.addEventListener('change', () => {
+                const labels = document.querySelectorAll('.option-label');
+                labels.forEach(l => l.classList.remove('selected'));
+                const selectedInputs = document.querySelectorAll('input[name="option"]:checked');
+                selectedInputs.forEach(si => {
+                    document.querySelector(`label[for="${si.id}"]`).classList.add('selected');
+                });
+            });
+        });
+
+        checkAnswerBtn.disabled = false;
+    }
+
+    function checkAnswer() {
+        const question = currentQuestions[currentQuestionIndex];
+        const selectedOptions = Array.from(document.querySelectorAll('input[name="option"]:checked')).map(el => el.value);
+
+        if (selectedOptions.length === 0) {
+            alert("Silakan pilih jawaban terlebih dahulu!");
+            return;
+        }
+
+        // Sort arrays to ensure comparison is correct regardless of order
+        const sortedSelected = [...selectedOptions].sort();
+        const sortedAnswer = [...question.answer].sort();
+
+        const isCorrect = JSON.stringify(sortedSelected) === JSON.stringify(sortedAnswer);
+
+        if (isCorrect) {
+            score++;
+            scoreEl.textContent = score;
+            modalTitle.textContent = "Benar! 🎉";
+            modalTitle.className = "text-3xl font-bold mb-4 text-green-500";
+            modalExplanation.style.display = 'none';
+        } else {
+            modalTitle.textContent = "Yah, Salah... 😕";
+            modalTitle.className = "text-3xl font-bold mb-4 text-red-500";
+            explanationText.innerHTML = question.explanation;
+            modalExplanation.style.display = 'block';
+        }
+        
+        checkAnswerBtn.disabled = true;
+        feedbackModal.classList.remove('hidden');
+    }
+    
+    function nextQuestion() {
+        feedbackModal.classList.add('hidden');
+        currentQuestionIndex++;
+        if (currentQuestionIndex < currentQuestions.length) {
+            showQuestion();
+        } else {
+            showEndScreen();
+        }
+    }
+
+    function showEndScreen() {
+        quizScreen.classList.add('hidden');
+        endScreen.classList.remove('hidden');
+
+        const percentage = Math.round((score / currentQuestions.length) * 100);
+        finalScoreEl.textContent = `${score} / ${currentQuestions.length}`;
+        
+        let message = "";
+        if (percentage === 100) {
+            message = "Sempurna! Kamu hebat sekali! 🌟";
+        } else if (percentage >= 80) {
+            message = "Kerja bagus! Terus berlatih ya! 👍";
+        } else if (percentage >= 60) {
+            message = "Cukup bagus! Sedikit lagi pasti bisa! 😊";
+        } else {
+            message = "Jangan menyerah, ayo coba lagi! 💪";
+        }
+        finalMessageEl.textContent = message;
+    }
+
+    function restartQuiz() {
+        endScreen.classList.add('hidden');
+        startScreen.classList.remove('hidden');
+    }
+
+</script>
+</body>
+</html>

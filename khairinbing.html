@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Latihan Soal Bahasa Inggris - Kelas VII</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .option-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        .option-btn.selected {
+            background-color: #3b82f6; /* blue-500 */
+            color: white;
+            border-color: #2563eb; /* blue-600 */
+        }
+        .option-btn.correct {
+            background-color: #22c55e; /* green-500 */
+            color: white;
+            border-color: #16a34a; /* green-600 */
+        }
+        .option-btn.incorrect {
+            background-color: #ef4444; /* red-500 */
+            color: white;
+            border-color: #dc2626; /* red-600 */
+        }
+        .mode-card {
+            transition: all 0.2s ease-in-out;
+        }
+        .mode-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 flex items-center justify-center min-h-screen p-4">
+
+    <div id="app-container" class="w-full max-w-2xl mx-auto">
+        
+        <div id="start-screen" class="bg-white p-8 rounded-2xl shadow-lg text-center">
+            <h1 class="text-3xl md:text-4xl font-bold text-slate-700 mb-2">Latihan Soal Bahasa Inggris</h1>
+            <p class="text-lg text-slate-500 mb-8">Kelas VII</p>
+            <p class="mb-6">Silakan pilih tingkat kesulitan untuk memulai latihan. Setiap mode berisi 30 soal.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div onclick="startQuiz('normal')" class="mode-card bg-green-500 text-white p-6 rounded-xl shadow-md cursor-pointer">
+                    <h2 class="text-2xl font-bold mb-2">NORMAL</h2>
+                    <p>Soal ungkapan dasar dan kosakata.</p>
+                </div>
+                <div onclick="startQuiz('medium')" class="mode-card bg-yellow-500 text-white p-6 rounded-xl shadow-md cursor-pointer">
+                    <h2 class="text-2xl font-bold mb-2">MEDIUM</h2>
+                    <p>Soal pemahaman dialog dan deskripsi.</p>
+                </div>
+                <div onclick="startQuiz('hard')" class="mode-card bg-red-500 text-white p-6 rounded-xl shadow-md cursor-pointer">
+                    <h2 class="text-2xl font-bold mb-2">SULIT</h2>
+                    <p>Soal analisis teks dan struktur kalimat.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="quiz-screen" class="hidden">
+            <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg">
+                <div class="flex justify-between items-center mb-6">
+                    <div class="text-sm font-semibold bg-indigo-100 text-indigo-700 py-1 px-3 rounded-full">
+                        Mode: <span id="mode-label" class="capitalize"></span>
+                    </div>
+                    <div class="text-sm font-semibold bg-slate-100 text-slate-700 py-1 px-3 rounded-full">
+                        Soal <span id="question-number"></span> dari 30
+                    </div>
+                </div>
+                <div id="question-container" class="mb-6">
+                    <p id="question-text" class="text-lg md:text-xl leading-relaxed"></p>
+                </div>
+                <div id="options-container" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+                
+                <div id="feedback-container" class="hidden mt-6 p-4 border-l-4 border-yellow-500 bg-yellow-50 rounded-lg">
+                    <h4 class="font-bold text-yellow-800">Pembahasan</h4>
+                    <p id="feedback-text" class="text-yellow-700 mt-1"></p>
+                </div>
+
+                <div class="mt-8 flex justify-end">
+                    <button id="next-btn" onclick="checkAnswerAndProceed()" class="bg-indigo-600 text-white font-bold py-3 px-8 rounded-lg shadow-md hover:bg-indigo-700 transition-colors duration-200 disabled:bg-slate-400 disabled:cursor-not-allowed">
+                        Selanjutnya
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="result-screen" class="hidden">
+            <div class="bg-white p-8 rounded-2xl shadow-lg text-center">
+                <h2 class="text-3xl font-bold text-slate-700 mb-2">Latihan Selesai!</h2>
+                <p class="text-lg text-slate-500 mb-6">Great job! You have completed all the questions.</p>
+                <div class="bg-indigo-50 border-2 border-indigo-200 rounded-xl p-6 mb-8">
+                    <p class="text-xl text-indigo-800">Skor Akhir</p>
+                    <p class="text-6xl font-bold text-indigo-600 my-2"><span id="score"></span></p>
+                    <p class="text-xl text-indigo-800"><span id="correct-answers"></span> dari 30 soal benar</p>
+                </div>
+                <button onclick="restartQuiz()" class="w-full md:w-auto bg-indigo-600 text-white font-bold py-3 px-8 rounded-lg shadow-md hover:bg-indigo-700 transition-colors duration-200">
+                    Coba Lagi
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const startScreen = document.getElementById('start-screen');
+        const quizScreen = document.getElementById('quiz-screen');
+        const resultScreen = document.getElementById('result-screen');
+        const modeLabel = document.getElementById('mode-label');
+        const questionNumberEl = document.getElementById('question-number');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const nextBtn = document.getElementById('next-btn');
+        const scoreEl = document.getElementById('score');
+        const correctAnswersEl = document.getElementById('correct-answers');
+        const feedbackContainer = document.getElementById('feedback-container');
+        const feedbackText = document.getElementById('feedback-text');
+
+        // Quiz State
+        let currentMode = '';
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let selectedAnswer = null;
+        let isShowingFeedback = false;
+        let questions = [];
+
+        // --- DATABASE SOAL BAHASA INGGRIS KELAS VII ---
+        const allQuestions = {
+            normal: [
+                { q: "Andi: Hello, Susi. How are you?<br>Susi: ..., thank you.", o: ["I am fine", "My name is Susi", "I am a student", "Goodbye"], a: "I am fine", p: "Ungkapan 'How are you?' (Apa kabarmu?) dijawab dengan 'I am fine' (Saya baik-baik saja)." },
+                { q: "A: What is your name?<br>B: ... is Budi.", o: ["His name", "Her name", "Your name", "My name"], a: "My name", p: "Pertanyaan 'What is your name?' (Siapa namamu?) dijawab dengan 'My name is...' (Nama saya...)." },
+                { q: "I am from Indonesia. The sentence tells us about...", o: ["Hobby", "Origin", "Family", "Food"], a: "Origin", p: "Kalimat 'I am from Indonesia' (Saya dari Indonesia) menjelaskan tentang asal daerah atau negara (Origin)." },
+                { q: "My father has a son. He is my...", o: ["Sister", "Brother", "Mother", "Aunt"], a: "Brother", p: "Anak laki-laki dari ayahmu adalah saudara laki-lakimu (brother)." },
+                { q: "A: Where do you live?<br>B: I live ___ Surabaya.", o: ["on", "at", "in", "from"], a: "in", p: "Untuk menyatakan lokasi di dalam sebuah kota, kita menggunakan preposisi 'in'." },
+                { q: "To introduce your friend, you say...", o: ["My name is...", "This is my friend...", "I am fine", "Nice to meet you"], a: "This is my friend...", p: "Ungkapan 'This is my friend...' (Ini temanku...) digunakan untuk memperkenalkan orang lain." },
+                { q: "I like to play football. 'Football' is my...", o: ["Family", "Origin", "Hobby", "Food"], a: "Hobby", p: "Sepak bola adalah salah satu jenis hobi (hobby)." },
+                { q: "She has long hair. This sentence describes...", o: ["Personality", "Hobby", "Physical Feature", "Food"], a: "Physical Feature", p: "Rambut panjang (long hair) adalah salah satu ciri-ciri fisik (physical feature)." },
+                { q: "My father's mother is my...", o: ["Grandmother", "Grandfather", "Aunt", "Uncle"], a: "Grandmother", p: "Ibu dari ayahmu adalah nenekmu (grandmother)." },
+                { q: "A person who is always smiling and loves to talk with people is...", o: ["Shy", "Friendly", "Lazy", "Angry"], a: "Friendly", p: "'Friendly' (ramah) adalah sifat kepribadian untuk orang yang suka berteman dan berbicara." },
+                { q: "My favorite food is fried rice. The word 'food' means...", o: ["Minuman", "Hobi", "Keluarga", "Makanan"], a: "Makanan", p: "Kata 'food' dalam Bahasa Inggris berarti 'makanan'." },
+                { q: "Lemons taste...", o: ["Sweet", "Sour", "Salty", "Spicy"], a: "Sour", p: "Rasa buah lemon adalah masam (sour)." },
+                { q: "He has a pointed nose. The word 'pointed' describes a...", o: ["Hair", "Eyes", "Nose", "Skin"], a: "Nose", p: "'Pointed nose' berarti hidung mancung, ini mendeskripsikan bentuk hidung (nose)." },
+                { q: "My brother is tall, but I am...", o: ["Short", "Big", "Thin", "Fat"], a: "Short", p: "Lawan kata dari 'tall' (tinggi) adalah 'short' (pendek)." },
+                { q: "Someone who likes to help others is...", o: ["Kind", "Rude", "Lazy", "Selfish"], a: "Kind", p: "'Kind' (baik hati) adalah sifat orang yang suka menolong." },
+                { q: "A: What is your hobby?<br>B: I like...", o: ["Reading books", "My mother", "Jakarta", "An apple"], a: "Reading books", p: "Membaca buku (reading books) adalah sebuah hobi." },
+                { q: "My mother has a sister. She is my...", o: ["Aunt", "Uncle", "Cousin", "Niece"], a: "Aunt", p: "Saudari dari ibumu adalah bibimu (aunt)." },
+                { q: "Donuts are usually sweet. The word 'sweet' describes...", o: ["Texture", "Taste", "Color", "Shape"], a: "Taste", p: "'Sweet' (manis) adalah salah satu jenis rasa (taste)." },
+                { q: "She has beautiful eyes. The word 'beautiful' describes her...", o: ["Physical Feature", "Hobby", "Family", "Personality"], a: "Physical Feature", p: "Mata yang indah (beautiful eyes) adalah bagian dari ciri fisik." },
+                { q: "A: Goodbye, Budi.<br>B: ..., Ana.", o: ["Hello", "Good morning", "Goodbye", "Thank you"], a: "Goodbye", p: "Ucapan perpisahan 'Goodbye' dibalas dengan 'Goodbye' juga." },
+                { q: "The texture of a stone is...", o: ["Soft", "Hard", "Smooth", "Rough"], a: "Hard", p: "Tekstur batu adalah keras (hard)." },
+                { q: "Chili is very...", o: ["Sweet", "Sour", "Spicy", "Salty"], a: "Spicy", p: "Rasa cabai adalah pedas (spicy)." },
+                { q: "My father is a doctor. My mother is a teacher. They are my...", o: ["Siblings", "Parents", "Friends", "Cousins"], a: "Parents", p: "Ayah dan Ibu adalah orang tua kita (parents)." },
+                { q: "I use a ball and a net to play my hobby. My hobby is...", o: ["Swimming", "Basketball", "Reading", "Cooking"], a: "Basketball", p: "Bola (ball) dan jaring (net) adalah peralatan yang digunakan dalam bermain basket (basketball)." },
+                { q: "She always does her homework. She is a ... student.", o: ["Lazy", "Diligent", "Naughty", "Rude"], a: "Diligent", p: "Selalu mengerjakan PR menunjukkan sifat rajin (diligent)." },
+                { q: "The opposite of 'happy' is...", o: ["Sad", "Angry", "Excited", "Tired"], a: "Sad", p: "Lawan kata dari 'happy' (senang) adalah 'sad' (sedih)." },
+                { q: "A: Nice to meet you.<br>B: ...", o: ["Goodbye", "Nice to meet you, too", "I am from Bali", "I am fine"], a: "Nice to meet you, too", p: "Ungkapan 'Nice to meet you' (Senang bertemu denganmu) dibalas dengan 'Nice to meet you, too' (Senang bertemu denganmu juga)." },
+                { q: "To play badminton, I need a racket and a...", o: ["Ball", "Shuttlecock", "Net", "Stick"], a: "Shuttlecock", p: "Bulu tangkis (badminton) dimainkan menggunakan raket dan kok (shuttlecock)." },
+                { q: "He is my uncle. He is my father's...", o: ["Brother", "Sister", "Father", "Son"], a: "Brother", p: "Paman (uncle) bisa berarti saudara laki-laki dari ayah atau ibu." },
+                { q: "My favorite drink is milk. The word 'drink' means...", o: ["Makanan", "Buah", "Sayur", "Minuman"], a: "Minuman", p: "Kata 'drink' dalam Bahasa Inggris berarti 'minuman'." }
+            ],
+            medium: [
+                { q: "This is my brother, David. ___ hobby is playing guitar.", o: ["His", "Her", "My", "Their"], a: "His", p: "Karena David adalah laki-laki (dia laki-laki), kata ganti kepemilikan yang tepat adalah 'His' (miliknya laki-laki)." },
+                { q: "My sister has curly hair and she is very funny. 'Curly' describes her ... and 'funny' describes her ....", o: ["hobby, personality", "physical feature, personality", "family, hobby", "origin, physical feature"], a: "physical feature, personality", p: "Rambut keriting (curly hair) adalah ciri fisik, sedangkan lucu (funny) adalah sifat kepribadian." },
+                { q: "How often do you go swimming? I go swimming ... a week.", o: ["one", "two", "once", "second"], a: "once", p: "Untuk menyatakan frekuensi 'satu kali', kita menggunakan 'once'. Untuk 'dua kali', kita menggunakan 'twice'." },
+                { q: "My favorite food is pizza. It tastes savory and the texture is soft. The word 'savory' means...", o: ["Manis", "Asam", "Asin", "Gurih"], a: "Gurih", p: "'Savory' adalah kata untuk mendeskripsikan rasa yang gurih dan lezat, bukan manis." },
+                { q: "Sinta is never late for school and always submits her assignments on time. She is very...", o: ["Punctual", "Creative", "Talkative", "Shy"], a: "Punctual", p: "'Punctual' berarti tepat waktu. Sifat ini cocok untuk mendeskripsikan Sinta yang tidak pernah terlambat." },
+                { q: "A: What does your father do?<br>B: He is a .... He works in a hospital.", o: ["teacher", "doctor", "pilot", "chef"], a: "doctor", p: "Seseorang yang bekerja di rumah sakit (hospital) kemungkinan besar adalah seorang dokter (doctor)." },
+                { q: "My mother's sister has two children. They are my...", o: ["nephews", "nieces", "siblings", "cousins"], a: "cousins", p: "Anak dari bibi atau paman kita disebut sepupu (cousins)." },
+                { q: "I use a camera to do my hobby. I like ...", o: ["taking pictures", "listening to music", "playing chess", "gardening"], a: "taking pictures", p: "Kamera adalah alat utama yang digunakan untuk hobi mengambil gambar atau fotografi." },
+                { q: "This is my friend. ___ name is Lina. ___ is from Bandung.", o: ["Her, She", "His, He", "Her, He", "His, She"], a: "Her, She", p: "Karena Lina adalah perempuan, kata ganti kepemilikannya adalah 'Her' (namanya) dan kata ganti subjeknya adalah 'She' (dia)." },
+                { q: "The soup is too .... I think you put too much salt.", o: ["sweet", "sour", "spicy", "salty"], a: "salty", p: "Terlalu banyak garam (salt) akan membuat makanan terasa asin (salty)." },
+                { q: "He doesn't have many friends because he is very quiet and doesn't like to talk. He is...", o: ["Friendly", "Shy", "Brave", "Honest"], a: "Shy", p: "Sifat pendiam dan tidak suka berbicara adalah ciri-ciri orang yang pemalu (shy)." },
+                { q: "Which sentence correctly introduces a family member?", o: ["This is my hobby, playing football.", "This my father, Mr. Ahmad.", "This is my father, Mr. Ahmad.", "This is from my father, Mr. Ahmad."], a: "This is my father, Mr. Ahmad.", p: "Struktur kalimat yang benar untuk memperkenalkan seseorang adalah 'This is [person], [name]'." },
+                { q: "Crackers have a crispy ....", o: ["taste", "texture", "smell", "color"], a: "texture", p: "Renyah (crispy) adalah jenis tekstur (texture), bukan rasa." },
+                { q: "I play basketball three times a week. This sentence tells about the ... of my hobby.", o: ["tools", "character", "frequency", "place"], a: "frequency", p: "'Three times a week' (tiga kali seminggu) menjelaskan tentang frekuensi atau seberapa sering hobi itu dilakukan." },
+                { q: "My grandfather has white hair and wears glasses. This describes his...", o: ["personality", "hobby", "origin", "physical features"], a: "physical features", p: "Rambut putih dan kacamata adalah bagian dari penampilan atau ciri-ciri fisik seseorang." },
+                { q: "A good student is not only smart but also ... to the teachers.", o: ["rude", "respectful", "lazy", "noisy"], a: "respectful", p: "Siswa yang baik harus hormat (respectful) kepada guru-gurunya." },
+                { q: "My favorite drink is orange juice. It's sweet and a little bit sour. 'A little bit' means...", o: ["sangat", "tidak pernah", "selalu", "sedikit"], a: "sedikit", p: "Frasa 'a little bit' digunakan untuk menyatakan 'sedikit'." },
+                { q: "To do my hobby, I need a canvas, paint, and brushes. My hobby is...", o: ["Painting", "Singing", "Dancing", "Writing"], a: "Painting", p: "Kanvas, cat, dan kuas adalah peralatan yang digunakan untuk melukis (painting)." },
+                { q: "Dina: Hi, Fara. This is my sister, Clara.<br>Fara: Hello, Clara. Nice to meet you.<br>Clara: ...", o: ["I am fine, thank you.", "Nice to meet you, too.", "My name is Clara.", "Goodbye."], a: "Nice to meet you, too.", p: "Ketika seseorang berkata 'Nice to meet you', balasan yang sopan adalah 'Nice to meet you, too'." },
+                { q: "My uncle is my father's brother. My aunt is my mother's...", o: ["brother", "father", "sister", "mother"], a: "sister", p: "Bibi (aunt) adalah saudara perempuan dari ibu atau ayah." },
+                { q: "He is very generous. He likes to ... his food with his friends.", o: ["eat", "buy", "share", "hide"], a: "share", p: "Orang yang murah hati (generous) suka berbagi (share) dengan teman-temannya." },
+                { q: "The texture of jelly is...", o: ["Hard", "Chewy", "Crispy", "Rough"], a: "Chewy", p: "Tekstur dari jeli atau agar-agar adalah kenyal (chewy)." },
+                { q: "I go to the library every Saturday to borrow books. My hobby is...", o: ["Watching movies", "Reading", "Shopping", "Playing games"], a: "Reading", p: "Pergi ke perpustakaan untuk meminjam buku sangat erat kaitannya dengan hobi membaca (reading)." },
+                { q: "My English teacher is very patient. She always explains everything clearly and never gets angry. 'Patient' is a...", o: ["physical feature", "personality trait", "hobby", "family role"], a: "personality trait", p: "Sabar (patient) adalah sebuah sifat kepribadian (personality trait)." },
+                { q: "Which one is NOT a greeting?", o: ["Good morning", "Hello", "How are you?", "My name is..."], a: "My name is...", p: "'My name is...' adalah bagian dari perkenalan diri (introduction), bukan sapaan (greeting)." },
+                { q: "The character of someone who loves adventure and trying new things is...", o: ["Adventurous", "Calm", "Timid", "Lazy"], a: "Adventurous", p: "Seseorang yang suka berpetualang memiliki karakter petualang (adventurous)." },
+                { q: "The opposite of 'generous' (murah hati) is...", o: ["Kind", "Honest", "Stingy", "Brave"], a: "Stingy", p: "Lawan kata dari murah hati (generous) adalah pelit (stingy)." },
+                { q: "We eat breakfast in the morning, lunch at noon, and ... in the evening.", o: ["snack", "brunch", "dinner", "dessert"], a: "dinner", p: "Makan di malam hari disebut makan malam (dinner)." },
+                { q: "He has a round face and chubby cheeks. These are his...", o: ["hobbies", "personality", "physical features", "family"], a: "physical features", p: "Wajah bulat dan pipi tembem adalah ciri-ciri fisik." },
+                { q: "Arrange the words into a good sentence: is - hobby - My - dancing.", o: ["Hobby is my dancing.", "My hobby is dancing.", "Dancing my hobby is.", "Is my hobby dancing."], a: "My hobby is dancing.", p: "Struktur kalimat yang benar adalah 'My hobby is dancing' (Hobiku adalah menari)." }
+            ],
+            hard: [
+                { q: "Read the text. 'This is my friend, Alex. He is tall and has short black hair. He is very honest; he always tells the truth. He is also very creative. His hobby is drawing comics.' What is Alex's personality trait?", o: ["Tall and creative", "Honest and creative", "Short hair and drawing comics", "Honest and tall"], a: "Honest and creative", p: "Sifat kepribadian (personality trait) Alex yang disebutkan adalah jujur (honest) dan kreatif (creative). Tinggi dan rambut pendek adalah ciri fisik." },
+                { q: "From the text about Alex, what does he look like?", o: ["He is honest and creative.", "He likes drawing comics.", "He is a student.", "He is tall with short black hair."], a: "He is tall with short black hair.", p: "Pertanyaan 'what does he look like?' menanyakan penampilan fisik. Jawabannya adalah dia tinggi dengan rambut hitam pendek." },
+                { q: "My sister, Bella, is a cheerful person. She rarely looks sad and always tries to make people laugh. The word 'rarely' means...", o: ["selalu", "sering", "biasanya", "jarang"], a: "jarang", p: "'Rarely' adalah keterangan frekuensi yang berarti 'jarang'." },
+                { q: "Dina likes sweet food, so she loves chocolate cake. It has a soft texture. On the other hand, her brother, Doni, loves savory food. What would Doni probably like?", o: ["Ice cream", "Candy", "Meatballs", "Pudding"], a: "Meatballs", p: "Bakso (meatballs) adalah contoh makanan yang rasanya gurih (savory), berbeda dengan pilihan lain yang manis (sweet)." },
+                { q: "I have two siblings, a brother and a sister. My brother, Leo, is 15 years old. My sister, Lea, is 10 years old. I am 12 years old. So, ...", o: ["Leo is my older brother.", "Lea is my older sister.", "I am the oldest.", "Leo is my younger brother."], a: "Leo is my older brother.", p: "Leo berumur 15, lebih tua dari kamu (12). Maka, Leo adalah kakak laki-lakimu (older brother)." },
+                { q: "To describe my hobby, I can say: 'I usually do it on weekends. I need a ball and a goal. I play it with 10 other people on my team.' My hobby is...", o: ["Basketball", "Volleyball", "Football/Soccer", "Badminton"], a: "Football/Soccer", p: "Deskripsi hobi yang membutuhkan bola, gawang, dan dimainkan oleh 11 orang (kamu + 10 lainnya) dalam satu tim merujuk pada sepak bola (football/soccer)." },
+                { q: "Which sentence has the correct structure?", o: ["She have long hair.", "He has a brown eyes.", "They has a big house.", "She has straight hair."], a: "She has straight hair.", p: "Untuk subjek 'She' atau 'He', kita menggunakan 'has'. 'Eyes' adalah jamak, jadi tidak perlu 'a'. 'They' menggunakan 'have'." },
+                { q: "My cousin is an optimistic person. This means he always...", o: ["sees the good side of things.", "feels worried about the future.", "thinks he is better than others.", "likes to be alone."], a: "sees the good side of things.", p: "Orang yang optimis (optimistic) cenderung melihat sisi baik dari segala sesuatu dan memiliki harapan positif." },
+                { q: "The food is delicious. It has a complex taste: sweet from the soy sauce, spicy from the chili, and savory from the broth. This description is about...", o: ["Noodles", "Salad", "Cake", "Ice cream"], a: "Noodles", p: "Deskripsi rasa yang kompleks (manis, pedas, gurih) sangat cocok untuk makanan seperti mie (noodles), misalnya mie ayam atau ramen." },
+                { q: "My father is 45 years old. My mother is 3 years younger than him. How old is my mother?", o: ["42 years old", "48 years old", "45 years old", "43 years old"], a: "42 years old", p: "'3 years younger' berarti 3 tahun lebih muda. Jadi, umur ibu adalah 45 - 3 = 42 tahun." },
+                { q: "'He is very reliable.' What does 'reliable' mean?", o: ["Dia sangat lucu.", "Dia sangat bisa diandalkan.", "Dia sangat pemalu.", "Dia sangat pintar."], a: "Dia sangat bisa diandalkan.", p: "Seseorang yang 'reliable' adalah orang yang dapat dipercaya dan diandalkan untuk melakukan sesuatu dengan baik." },
+                { q: "I go cycling every Sunday morning. What are the tools needed for this hobby?", o: ["A bicycle and a helmet", "A swimsuit and goggles", "A computer and a mouse", "A book and glasses"], a: "A bicycle and a helmet", p: "Bersepeda (cycling) membutuhkan sepeda (bicycle) dan helm (helmet) untuk keselamatan." },
+                { q: "Arrange these sentences into a good introduction: (1) I live in Jakarta. (2) My name is Rian. (3) Hello, everyone.", o: ["2-1-3", "3-1-2", "3-2-1", "1-2-3"], a: "3-2-1", p: "Urutan perkenalan diri yang paling logis adalah menyapa (Hello), menyebutkan nama (My name is...), lalu memberikan informasi lain (I live in...)." },
+                { q: "The texture of a ripe avocado is creamy and ....", o: ["hard", "crispy", "soft", "crunchy"], a: "soft", p: "Tekstur alpukat yang matang adalah lembut (soft) dan creamy." },
+                { q: "My best friend is an introvert. This means she...", o: ["enjoys being the center of attention.", "gets her energy from being with many people.", "prefers quiet environments and small groups.", "talks very loudly."], a: "prefers quiet environments and small groups.", p: "Seorang introvert cenderung lebih menyukai situasi yang tenang dan tidak terlalu ramai, serta lebih nyaman berinteraksi dalam kelompok kecil." },
+                { q: "My family has five members: my parents, my older sister, my younger brother, and I. So, I have ... siblings.", o: ["one", "two", "three", "four"], a: "two", p: "Jumlah saudara kandung (siblings) adalah kakak perempuan dan adik laki-laki, jadi totalnya ada dua orang." },
+                { q: "He is so stubborn. It is very hard to change his mind. 'Stubborn' means...", o: ["lucu", "pintar", "keras kepala", "pemalu"], a: "keras kepala", p: "'Stubborn' adalah sifat seseorang yang sulit untuk mengubah pendapat atau pendiriannya, atau disebut juga keras kepala." },
+                { q: "I like my hobby because it's relaxing and I can create something beautiful with my hands. I need yarn and a pair of needles. My hobby is probably...", o: ["Knitting", "Running", "Playing video games", "Watching TV"], a: "Knitting", p: "Hobi yang menenangkan, menggunakan tangan, dan membutuhkan benang (yarn) dan jarum (needles) adalah merajut (knitting)." },
+                { q: "Which question asks about personality?", o: ["What does she look like?", "What is she like?", "Where is she from?", "What is her hobby?"], a: "What is she like?", p: "Pertanyaan 'What does she look like?' menanyakan penampilan fisik, sedangkan 'What is she like?' menanyakan sifat atau kepribadiannya." },
+                { q: "Read the text: 'My favorite drink is iced tea. I like it because it is refreshing, especially on a hot day. I prefer it to be not too sweet.' The word 'refreshing' means...", o: ["mengenyangkan", "menyegarkan", "menyehatkan", "memanaskan"], a: "menyegarkan", p: "'Refreshing' adalah kata sifat untuk mendeskripsikan sesuatu yang memberikan rasa segar, terutama untuk minuman." },
+                { q: "Sarah is my classmate. She has bright eyes and a warm smile. She's always willing to help anyone in need. The phrase 'willing to help' shows that she is...", o: ["Helpful", "Beautiful", "Bright", "Warm"], a: "Helpful", p: "'Willing to help' (bersedia menolong) adalah deskripsi perilaku dari seseorang yang memiliki sifat penolong (helpful)." },
+                { q: "My hobby requires focus and strategy. I play it on a board with black and white squares, using pieces like a king, queen, and knights. What is my hobby?", o: ["Checkers", "Scrabble", "Chess", "Monopoly"], a: "Chess", p: "Deskripsi papan, warna, dan buah catur (raja, ratu, kuda) secara spesifik merujuk pada permainan catur (chess)." },
+                { q: "The food is quite bland. It needs more seasoning. 'Bland' means...", o: ["terlalu pedas", "terlalu asin", "terlalu manis", "hambar"], a: "hambar", p: "Kata 'bland' digunakan untuk mendeskripsikan makanan yang kurang rasa atau hambar." },
+                { q: "My brother and I have the same hobby; we both love collecting stamps. We often trade stamps with each other. This shows a ... hobby.", o: ["shared", "solo", "difficult", "boring"], a: "shared", p: "Karena hobi tersebut dilakukan dan dinikmati bersama, maka itu adalah hobi bersama (shared hobby)." },
+                { q: "John is very talkative, but his twin brother, Jack, is the opposite. Jack is...", o: ["loud", "quiet", "funny", "serious"], a: "quiet", p: "Lawan kata dari 'talkative' (banyak bicara) adalah 'quiet' (pendiam)." },
+                { q: "Which of the following describes a texture?", o: ["Spicy", "Fragrant", "Juicy", "Creamy"], a: "Creamy", p: "Pedas (spicy) dan berair (juicy) adalah rasa, harum (fragrant) adalah aroma. Lembut seperti krim (creamy) adalah tekstur." },
+                { q: "Read the dialogue. Ana: 'Hi Ben, this is my cousin, Maya.' Ben: 'Hello Maya, glad to meet you.' Maya: 'Glad to meet you too, Ben.' What is the relationship between Ana and Maya?", o: ["They are sisters.", "They are friends.", "They are cousins.", "They are classmates."], a: "They are cousins.", p: "Ana secara eksplisit memperkenalkan Maya sebagai sepupunya (cousin)." },
+                { q: "To describe the frequency of a hobby you do every day, you can say...", o: ["I do it once a week.", "I rarely do it.", "I always do it.", "I sometimes do it."], a: "I always do it.", p: "'Always' (selalu) atau 'every day' (setiap hari) digunakan untuk aktivitas yang dilakukan tanpa kecuali." },
+                { q: "He is adventurous and brave, but sometimes he can be reckless. What does 'reckless' mean?", o: ["hati-hati", "ceroboh", "penakut", "pemalu"], a: "ceroboh", p: "'Reckless' adalah sifat negatif yang berarti bertindak tanpa memikirkan konsekuensi atau bahaya; ceroboh." },
+                { q: "My father is an engineer. My mother is a housewife. My sister is a university student. This text describes my family's...", o: ["hobbies", "personalities", "occupations/roles", "physical features"], a: "occupations/roles", p: "Insinyur, ibu rumah tangga, dan mahasiswa universitas adalah deskripsi dari pekerjaan atau peran (occupations/roles) masing-masing anggota keluarga." }
+            ]
+        };
+
+
+        function startQuiz(mode) {
+            currentMode = mode;
+            currentQuestionIndex = 0;
+            score = 0;
+            selectedAnswer = null;
+            isShowingFeedback = false;
+            questions = allQuestions[mode];
+            
+            startScreen.classList.add('hidden');
+            resultScreen.classList.add('hidden');
+            quizScreen.classList.remove('hidden');
+
+            displayQuestion();
+        }
+
+        function displayQuestion() {
+            isShowingFeedback = false;
+            selectedAnswer = null;
+            feedbackContainer.classList.add('hidden');
+
+            const question = questions[currentQuestionIndex];
+            questionNumberEl.textContent = currentQuestionIndex + 1;
+            modeLabel.textContent = currentMode;
+            questionText.innerHTML = question.q;
+            
+            optionsContainer.innerHTML = '';
+            question.o.forEach((option) => {
+                const optionElement = document.createElement('button');
+                optionElement.innerHTML = option;
+                optionElement.classList.add('option-btn', 'w-full', 'p-4', 'border-2', 'border-slate-300', 'rounded-lg', 'text-left', 'transition-all', 'duration-200');
+                optionElement.onclick = () => selectOption(option, optionElement);
+                optionsContainer.appendChild(optionElement);
+            });
+
+            nextBtn.disabled = true;
+            nextBtn.textContent = 'Selanjutnya';
+        }
+
+        function selectOption(option, element) {
+            if (isShowingFeedback) return;
+
+            selectedAnswer = option;
+            const optionButtons = optionsContainer.querySelectorAll('.option-btn');
+            optionButtons.forEach(btn => btn.classList.remove('selected'));
+            element.classList.add('selected');
+            nextBtn.disabled = false;
+        }
+
+        function checkAnswerAndProceed() {
+            if (isShowingFeedback) {
+                // Lanjut ke soal berikutnya setelah melihat pembahasan
+                currentQuestionIndex++;
+                if (currentQuestionIndex < questions.length) {
+                    displayQuestion();
+                } else {
+                    showResults();
+                }
+                return;
+            }
+
+            const question = questions[currentQuestionIndex];
+            const isCorrect = selectedAnswer === question.a;
+
+            if (isCorrect) {
+                score++;
+                // Jawaban benar, langsung lanjut
+                currentQuestionIndex++;
+                if (currentQuestionIndex < questions.length) {
+                    displayQuestion();
+                } else {
+                    showResults();
+                }
+            } else {
+                // Jawaban salah, tampilkan pembahasan
+                isShowingFeedback = true;
+                feedbackText.innerHTML = question.p;
+                feedbackContainer.classList.remove('hidden');
+
+                // Tandai jawaban
+                const optionButtons = optionsContainer.querySelectorAll('.option-btn');
+                optionButtons.forEach(btn => {
+                    btn.disabled = true; // Nonaktifkan pilihan
+                    if (btn.innerHTML === question.a) {
+                        btn.classList.add('correct');
+                    } else if (btn.innerHTML === selectedAnswer) {
+                        btn.classList.add('incorrect');
+                    }
+                });
+                
+                nextBtn.textContent = 'Lanjutkan';
+                nextBtn.disabled = false;
+            }
+        }
+
+        function showResults() {
+            quizScreen.classList.add('hidden');
+            resultScreen.classList.remove('hidden');
+            
+            const finalScore = Math.round((score / questions.length) * 100);
+            scoreEl.textContent = finalScore;
+            correctAnswersEl.textContent = score;
+            // Update text di halaman hasil
+            const resultText = document.querySelector('#result-screen .text-xl.text-indigo-800:last-of-type');
+            resultText.textContent = `${score} dari ${questions.length} soal benar`;
+        }
+
+        function restartQuiz() {
+            resultScreen.classList.add('hidden');
+            startScreen.classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>

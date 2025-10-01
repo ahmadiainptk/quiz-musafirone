@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="id" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Latihan Soal BPI - Kelas VII</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lateef:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Style untuk teks Arab */
+        .arabic {
+            font-family: 'Lateef', serif;
+            direction: rtl;
+            display: block; /* Agar teks Arab full width dan rata kanan */
+            font-size: 1.75rem; 
+            line-height: 2.5rem;
+        }
+         /* Style untuk pertanyaan yang mengandung teks campuran */
+        #question-text {
+             line-height: 2.2rem;
+        }
+        .option-btn {
+            display: flex;
+            align-items: center;
+        }
+        .option-btn .arabic {
+            width: 100%;
+            text-align: right;
+        }
+        .option-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        .option-btn.selected {
+            background-color: #3b82f6; /* blue-500 */
+            color: white;
+            border-color: #2563eb; /* blue-600 */
+        }
+        .option-btn.correct {
+            background-color: #22c55e; /* green-500 */
+            color: white;
+            border-color: #16a34a; /* green-600 */
+        }
+        .option-btn.incorrect {
+            background-color: #ef4444; /* red-500 */
+            color: white;
+            border-color: #dc2626; /* red-600 */
+        }
+        .mode-card {
+            transition: all 0.2s ease-in-out;
+        }
+        .mode-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 flex items-center justify-center min-h-screen p-4">
+
+    <div id="app-container" class="w-full max-w-2xl mx-auto">
+        
+        <!-- Start Screen -->
+        <div id="start-screen" class="bg-white p-8 rounded-2xl shadow-lg text-center">
+            <h1 class="text-3xl md:text-4xl font-bold text-slate-700 mb-2">Latihan Soal BPI</h1>
+            <p class="text-lg text-slate-500 mb-8">Kelas VII - (Budi Pekerti Islam)</p>
+            <p class="mb-6">Silakan pilih tingkat kesulitan untuk memulai latihan. Setiap mode berisi soal-soal pilihan ganda yang dirancang untuk menguji pemahaman mendalam sesuai kisi-kisi.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div onclick="startQuiz('normal')" class="mode-card bg-green-500 text-white p-6 rounded-xl shadow-md cursor-pointer">
+                    <h2 class="text-2xl font-bold mb-2">NORMAL</h2>
+                    <p>Soal pemahaman konsep dan makna dasar.</p>
+                </div>
+                <div onclick="startQuiz('medium')" class="mode-card bg-yellow-500 text-white p-6 rounded-xl shadow-md cursor-pointer">
+                    <h2 class="text-2xl font-bold mb-2">MEDIUM</h2>
+                    <p>Soal korelasi antar dalil dan studi kasus sederhana.</p>
+                </div>
+                <div onclick="startQuiz('hard')" class="mode-card bg-red-500 text-white p-6 rounded-xl shadow-md cursor-pointer">
+                    <h2 class="text-2xl font-bold mb-2">SULIT</h2>
+                    <p>Soal analisis makna dan penerapan dalam kasus kompleks.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quiz Screen -->
+        <div id="quiz-screen" class="hidden">
+            <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg">
+                <div class="flex justify-between items-center mb-6">
+                    <div class="text-sm font-semibold bg-indigo-100 text-indigo-700 py-1 px-3 rounded-full">
+                        Mode: <span id="mode-label" class="capitalize"></span>
+                    </div>
+                    <div class="text-sm font-semibold bg-slate-100 text-slate-700 py-1 px-3 rounded-full">
+                        Soal <span id="question-number"></span> dari 20
+                    </div>
+                </div>
+                <div id="question-container" class="mb-6">
+                    <p id="question-text" class="text-lg md:text-xl leading-relaxed"></p>
+                </div>
+                <div id="options-container" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+                
+                <!-- Instant Feedback Container -->
+                <div id="feedback-container" class="hidden mt-6 p-4 border-l-4 border-yellow-500 bg-yellow-50 rounded-lg">
+                    <h4 class="font-bold text-yellow-800">Pembahasan</h4>
+                    <p id="feedback-text" class="text-yellow-700 mt-1"></p>
+                </div>
+
+                <div class="mt-8 flex justify-end">
+                    <button id="next-btn" onclick="checkAnswerAndProceed()" class="bg-indigo-600 text-white font-bold py-3 px-8 rounded-lg shadow-md hover:bg-indigo-700 transition-colors duration-200 disabled:bg-slate-400 disabled:cursor-not-allowed">
+                        Selanjutnya
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Result Screen -->
+        <div id="result-screen" class="hidden">
+            <div class="bg-white p-8 rounded-2xl shadow-lg text-center">
+                <h2 class="text-3xl font-bold text-slate-700 mb-2">Latihan Selesai!</h2>
+                <p class="text-lg text-slate-500 mb-6">Barakallah! Kamu telah menyelesaikan semua soal.</p>
+                <div class="bg-indigo-50 border-2 border-indigo-200 rounded-xl p-6 mb-8">
+                    <p class="text-xl text-indigo-800">Skor Akhir</p>
+                    <p class="text-6xl font-bold text-indigo-600 my-2"><span id="score"></span></p>
+                    <p class="text-xl text-indigo-800"><span id="correct-answers"></span> dari 20 soal benar</p>
+                </div>
+                <button onclick="restartQuiz()" class="w-full md:w-auto bg-indigo-600 text-white font-bold py-3 px-8 rounded-lg shadow-md hover:bg-indigo-700 transition-colors duration-200">
+                    Coba Lagi
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const startScreen = document.getElementById('start-screen');
+        const quizScreen = document.getElementById('quiz-screen');
+        const resultScreen = document.getElementById('result-screen');
+        const modeLabel = document.getElementById('mode-label');
+        const questionNumberEl = document.getElementById('question-number');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const nextBtn = document.getElementById('next-btn');
+        const scoreEl = document.getElementById('score');
+        const correctAnswersEl = document.getElementById('correct-answers');
+        const feedbackContainer = document.getElementById('feedback-container');
+        const feedbackText = document.getElementById('feedback-text');
+
+        // Quiz State
+        let currentMode = '';
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let selectedAnswer = null;
+        let isShowingFeedback = false;
+        let questions = [];
+        const TOTAL_QUESTIONS = 20;
+
+        // --- DATABASE SOAL BPI KELAS VII ---
+        const allQuestions = {
+            normal: [
+                // Taharah
+                { q: "Hadis yang menyatakan 'Kesucian itu setengah dari iman' menunjukkan bahwa...", o: ["Iman tidak penting jika sudah suci", "Taharah (bersuci) memiliki kedudukan yang sangat penting dalam Islam", "Orang beriman tidak perlu bersuci", "Hanya orang suci yang beriman"], a: "Taharah (bersuci) memiliki kedudukan yang sangat penting dalam Islam", p: "Hadis ini menunjukkan korelasi erat antara kebersihan fisik (taharah) dan kebersihan batin (iman). Keduanya saling melengkapi dan tidak bisa dipisahkan." },
+                { q: "Ahmad hendak sholat, namun ia baru saja buang air kecil dan belum berwudhu. Agar sholatnya sah, solusi yang harus dilakukan Ahmad adalah...", o: ["Langsung sholat saja", "Bertayamum dengan tanah", "Berwudhu terlebih dahulu", "Mandi wajib"], a: "Berwudhu terlebih dahulu", p: "Buang air kecil adalah hadas kecil. Cara menyucikannya adalah dengan beristinja (membersihkan) lalu berwudhu sebelum sholat." },
+                // Sholat
+                { q: "Perhatikan ayat: <span class='arabic'>اِنَّ الصَّلٰوةَ كَانَتْ عَلَى الْمُؤْمِنِيْنَ كِتٰبًا مَّوْقُوْتًا</span>. Makna utama dari ayat ini adalah...", o: ["Sholat boleh dilakukan kapan saja", "Sholat adalah kewajiban yang telah ditentukan waktunya", "Sholat hanya untuk orang-orang tertentu", "Sholat adalah tulisan di dalam kitab"], a: "Sholat adalah kewajiban yang telah ditentukan waktunya", p: "Ayat ini (Q.S. An-Nisa: 103) menegaskan bahwa sholat adalah ibadah wajib yang pelaksanaannya terikat oleh waktu-waktu tertentu (pagi, siang, sore, malam)." },
+                { q: "Seorang siswa selalu menyontek saat ujian karena merasa tidak ada yang melihat. Sikap ini berkebalikan dengan hikmah sholat, yaitu...", o: ["Mencegah perbuatan keji dan munkar", "Melatih kedisiplinan waktu", "Menjaga kebersihan badan", "Meningkatkan konsentrasi"], a: "Mencegah perbuatan keji dan munkar", p: "Sholat yang benar akan melahirkan kesadaran bahwa Allah selalu mengawasi (muraqabah), sehingga ia akan malu untuk berbuat curang (munkar) seperti menyontek." },
+                // QS. Al-'Alaq
+                { q: "Hadis tentang 'Mencari ilmu itu wajib bagi setiap muslim' memiliki korelasi makna dengan Q.S. Al-'Alaq ayat 1, yaitu sama-sama berisi perintah untuk...", o: ["Berperang", "Membaca dan belajar", "Bersedekah", "Berpuasa"], a: "Membaca dan belajar", p: "Perintah pertama dalam Islam adalah 'Iqra' (bacalah), yang menjadi dasar kewajiban untuk menuntut ilmu sepanjang hayat." },
+                { q: "Di dalam majelis ilmu, Amir sibuk bermain ponsel dan mengobrol dengan temannya. Adab yang dilanggar oleh Amir adalah...", o: ["Menghormati guru dan ilmu", "Berpakaian yang rapi", "Datang tepat waktu", "Mencatat pelajaran"], a: "Menghormati guru dan ilmu", p: "Adab utama dalam majelis ilmu adalah mendengarkan dengan saksama dan menghormati orang yang menyampaikan ilmu. Mengobrol dan bermain ponsel menunjukkan sikap tidak menghargai." },
+                // QS. Adh-Dhuha
+                { q: "Seorang anak yatim piatu hidup dalam keterbatasan, namun ia tetap rajin belajar dan tidak pernah mengeluh. Sikap ini merupakan cerminan dari...", o: ["Kesyukuran atas nikmat Allah", "Keputusasaan", "Kemalasan", "Kesombongan"], a: "Kesyukuran atas nikmat Allah", p: "Q.S. Adh-Dhuha mengajarkan untuk tidak menghardik anak yatim dan selalu bersyukur. Sikap anak tersebut menunjukkan rasa syukur atas nikmat kehidupan yang masih ia miliki." },
+                { q: "Korelasi antara makna syukur dalam Q.S. Adh-Dhuha dengan kehidupan sehari-hari adalah...", o: ["Hanya bersyukur jika mendapat banyak uang", "Menggunakan nikmat (kesehatan, waktu, harta) untuk berbuat baik", "Mengeluh saat mendapat kesulitan", "Merasa lebih baik dari orang lain"], a: "Menggunakan nikmat (kesehatan, waktu, harta) untuk berbuat baik", p: "Wujud syukur yang sebenarnya adalah menggunakan setiap nikmat yang Allah berikan untuk hal-hal yang positif dan diridhai-Nya." },
+                // Hadist 1 (Niat)
+                { q: "Makna pokok dari hadis <span class='arabic'>إِنَّمَا الْأَعْمَالُ بِالنِّيَّاتِ</span> adalah...", o: ["Semua amal akan diterima", "Setiap perbuatan tergantung pada niatnya", "Niat tidak penting, yang penting perbuatan", "Amal baik tidak perlu niat"], a: "Setiap perbuatan tergantung pada niatnya", p: "Hadis ini menegaskan bahwa nilai atau pahala dari suatu perbuatan sangat ditentukan oleh niat atau tujuan di dalam hati pelakunya." },
+                // QS. Al-Ikhlas
+                { q: "Makna yang terkandung dalam lafadz <span class='arabic'>اَللّٰهُ الصَّمَدُ</span> adalah...", o: ["Allah Maha Esa", "Allah tempat bergantung segala sesuatu", "Allah tidak beranak dan tidak diperanakkan", "Tidak ada yang setara dengan-Nya"], a: "Allah tempat bergantung segala sesuatu", p: "Lafadz 'As-Shamad' berarti bahwa hanya Allah-lah satu-satunya tempat seluruh makhluk bergantung dan meminta segala keperluan mereka." },
+            ],
+            medium: [
+                // Taharah
+                { q: "Hadis pertama: 'Kunci sholat adalah bersuci'. Hadis kedua: 'Allah tidak menerima sholat seseorang di antara kamu jika ia berhadas hingga ia berwudhu'. Korelasi dari kedua hadis tersebut adalah...", o: ["Sholat dan wudhu adalah dua hal terpisah", "Wudhu adalah syarat sah sholat", "Boleh sholat tanpa wudhu jika terpaksa", "Semua hadis tentang taharah sama saja"], a: "Wudhu adalah syarat sah sholat", p: "Kedua hadis ini saling menguatkan. Hadis pertama menyebut bersuci sebagai 'kunci' sholat, dan hadis kedua menegaskan bahwa sholat 'tidak diterima' tanpa bersuci (wudhu), yang berarti taharah adalah syarat mutlak sahnya sholat." },
+                { q: "Setelah bermain bola, kaki Fahmi terkena lumpur. Lumpur termasuk najis mutawassitah. Solusi yang benar agar Fahmi bisa sholat adalah...", o: ["Cukup mengusap lumpur dengan tisu", "Menghilangkan wujud lumpur (warna, bau, rasa) dengan air suci", "Langsung berwudhu tanpa membersihkan lumpur", "Bertayamum karena sulit mencari air"], a: "Menghilangkan wujud lumpur (warna, bau, rasa) dengan air suci", p: "Cara menyucikan najis mutawassitah (sedang) adalah dengan membersihkannya menggunakan air mutlak (suci dan menyucikan) hingga hilang sifat-sifat najisnya (wujud, warna, bau, rasa)." },
+                // Sholat
+                { q: "Perhatikan Q.S. Al-Ankabut: 45: <span class='arabic'>...إِنَّ الصَّلَاةَ تَنْهَىٰ عَنِ الْفَحْشَاءِ وَالْمُنكَرِ...</span>. Korelasinya dengan kasus seorang pejabat yang rajin sholat tetapi masih korupsi adalah...", o: ["Sholat dan korupsi tidak ada hubungannya", "Sholatnya belum benar dan belum meresap ke dalam hati", "Korupsi adalah hal yang wajar bagi pejabat", "Pejabat tersebut hanya perlu menambah rakaat sholatnya"], a: "Sholatnya belum benar dan belum meresap ke dalam hati", p: "Ayat tersebut menegaskan sholat mencegah perbuatan keji (korupsi). Jika seseorang masih melakukannya, berarti ada yang salah dengan kualitas sholatnya; belum dilaksanakan dengan khusyuk dan penuh penghayatan." },
+                 // QS. Al-'Alaq
+                { q: "Perhatikan hadis 'Tuntutlah ilmu dari buaian hingga liang lahat'. Apa korelasi makna hadis ini dengan wahyu pertama (Q.S. Al-'Alaq 1-5)?", o: ["Ilmu hanya untuk anak-anak", "Belajar tidak dibatasi oleh usia, sebagaimana perintah 'membaca' yang berlaku seumur hidup", "Membaca hanya diwajibkan saat turunnya wahyu", "Orang tua tidak perlu lagi belajar"], a: "Belajar tidak dibatasi oleh usia, sebagaimana perintah 'membaca' yang berlaku seumur hidup", p: "Perintah 'Iqra' (bacalah) tidak ditujukan untuk usia tertentu. Ini sejalan dengan hadis tersebut, yang menegaskan bahwa kewajiban belajar (membaca, meneliti, dsb.) berlaku sepanjang hayat manusia." },
+                { q: "Fahri selalu berusaha datang lebih awal ke pengajian agar mendapat tempat di shaf depan. Ia juga tidak pernah memotong pembicaraan ustadz. Sikap Fahri menunjukkan...", o: ["Keinginan untuk pamer", "Adab dalam menuntut ilmu", "Sifat yang aneh", "Ketakutan pada ustadz"], a: "Adab dalam menuntut ilmu", p: "Bersegera datang ke majelis ilmu dan mendengarkan dengan saksama adalah bagian dari adab yang diajarkan Islam untuk menghormati ilmu dan ahlinya." },
+                // QS. Adh-Dhuha
+                { q: "Ani selalu mendapat ranking 1 di kelasnya. Ia menggunakan kepintarannya untuk mengajari teman-temannya yang kesulitan. Sikap Ani adalah bentuk korelasi dari makna syukur dalam Q.S. Adh-Dhuha, yaitu...", o: ["Menyombongkan nikmat", "Menyembunyikan nikmat", "Menampakkan dan memanfaatkan nikmat untuk kebaikan", "Menukar nikmat dengan uang"], a: "Menampakkan dan memanfaatkan nikmat untuk kebaikan", p: "Perintah <span class='arabic'>وَأَمَّا بِنِعْمَةِ رَبِّكَ فَحَدِّثْ</span> (dan terhadap nikmat Tuhanmu, hendaklah engkau nyatakan) diwujudkan dengan memanfaatkan nikmat (kepintaran) untuk hal positif seperti menolong orang lain." },
+                // Hadist 1 (Niat)
+                { q: "Dua orang sama-sama menyumbang Rp 100.000 ke masjid. Orang pertama niatnya ikhlas karena Allah. Orang kedua niatnya agar dipuji sebagai dermawan. Berdasarkan hadis tentang niat, manakah pernyataan yang benar?", o: ["Keduanya mendapat pahala yang sama", "Hanya orang pertama yang mendapat pahala di sisi Allah", "Hanya orang kedua yang amalnya dicatat", "Niat tidak mempengaruhi nilai sumbangan"], a: "Hanya orang pertama yang mendapat pahala di sisi Allah", p: "Hadis tentang niat menegaskan bahwa Allah hanya menilai amal berdasarkan keikhlasan niatnya. Amal yang disertai riya' (pamer) akan sia-sia." },
+                 // QS. Al-Ikhlas
+                { q: "Makna yang terkandung dalam lafadz <span class='arabic'>وَلَمْ يَكُنْ لَّهٗ كُفُوًا اَحَدٌ</span> adalah penolakan terhadap konsep...", o: ["Keesaan Tuhan", "Politeisme (menyekutukan Tuhan)", "Keadilan Tuhan", "Kasih sayang Tuhan"], a: "Politeisme (menyekutukan Tuhan)", p: "Ayat ini menegaskan bahwa tidak ada satu pun makhluk yang setara, sebanding, atau dapat menandingi Allah SWT. Ini adalah penegasan utama tauhid dan penolakan terhadap segala bentuk kemusyrikan." },
+                // Tambahan
+                { q: "Apa makna dari hadis 'Barangsiapa menempuh jalan untuk mencari ilmu, maka Allah akan memudahkan baginya jalan menuju surga'?", o: ["Orang pintar pasti masuk surga", "Ilmu dunia tidak penting", "Islam sangat menghargai dan memotivasi umatnya untuk menuntut ilmu", "Surga hanya untuk para ilmuwan"], a: "Islam sangat menghargai dan memotivasi umatnya untuk menuntut ilmu", p: "Hadis ini menunjukkan betapa tingginya kedudukan ilmu dan orang yang berilmu dalam Islam, di mana proses mencari ilmu itu sendiri dinilai sebagai jalan menuju surga." },
+                { q: "Korelasi antara sholat dan taharah ibarat...", o: ["Pintu dan kunci", "Buku dan pensil", "Rumah dan jalan", "Makanan dan minuman"], a: "Pintu dan kunci", p: "Sholat adalah 'pintu' ibadah utama, dan taharah adalah 'kunci' untuk membukanya. Tanpa kunci (taharah), pintu (sholat) tidak akan bisa dibuka (tidak sah)." },
+            ],
+            hard: [
+                 // Taharah
+                { q: "Hadis A: 'Fitrah itu ada lima... (salah satunya) memotong kuku'. Hadis B: 'Kebersihan adalah sebagian dari iman'. Analisislah korelasi kedua hadis ini dalam konteks taharah yang lebih luas!", o: ["Memotong kuku tidak ada hubungannya dengan iman", "Taharah dalam Islam tidak hanya tentang wudhu dan mandi, tetapi mencakup kebersihan personal secara menyeluruh", "Kebersihan hanya penting saat akan sholat", "Iman hanya berkaitan dengan kebersihan hati"], a: "Taharah dalam Islam tidak hanya tentang wudhu dan mandi, tetapi mencakup kebersihan personal secara menyeluruh", p: "Korelasi keduanya menunjukkan bahwa konsep 'bersuci' dalam Islam sangat komprehensif. Tidak hanya menyucikan diri dari hadas (syarat ibadah), tetapi juga menjaga kebersihan fitrah (kebersihan diri) yang merupakan cerminan dari keimanan seseorang." },
+                { q: "Sebuah desa mengalami kekeringan ekstrem sehingga tidak ada air sama sekali. Penduduk desa hendak melaksanakan sholat Jumat. Solusi syar'i yang paling tepat untuk bersuci dalam kasus ini adalah...", o: ["Tidak sholat sampai ada air", "Sholat tanpa bersuci", "Semua penduduk melakukan tayamum sebagai pengganti wudhu", "Mencari sumber air di desa lain meskipun akan terlambat sholat Jumat"], a: "Semua penduduk melakukan tayamum sebagai pengganti wudhu", p: "Tayamum disyariatkan sebagai pengganti wudhu atau mandi ketika tidak ada air atau ada halangan menggunakan air. Dalam kondisi kekeringan ekstrem, tayamum adalah solusi yang sah agar kewajiban sholat tetap bisa dilaksanakan." },
+                // Sholat
+                { q: "Perhatikan Q.S. Al-Ma'un ayat 4-5: <span class='arabic'>فَوَيْلٌ لِّلْمُصَلِّيْنَۙ الَّذِيْنَ هُمْ عَنْ صَلَاتِهِمْ سَاهُوْنَ</span> (Maka celakalah orang yang sholat, yaitu orang-orang yang lalai terhadap sholatnya). Apa korelasi ayat ini dengan kasus seseorang yang sholat tapi sering di akhir waktu dan terburu-buru?", o: ["Tidak apa-apa, yang penting masih sholat", "Orang tersebut termasuk dalam ancaman ayat karena 'lalai' mencakup menunda-nunda dan tidak khusyuk", "Ayat ini hanya untuk orang yang tidak sholat", "Keterlambatan sholat adalah hal biasa"], a: "Orang tersebut termasuk dalam ancaman ayat karena 'lalai' mencakup menunda-nunda dan tidak khusyuk", p: "Kata <span class='arabic'>سَاهُوْنَ</span> (lalai) memiliki makna luas, tidak hanya meninggalkan sholat, tetapi juga meremehkannya, seperti sengaja menunda hingga akhir waktu dan melaksanakannya tanpa kekhusyukan. Ini menunjukkan pentingnya kualitas sholat, bukan hanya kuantitas." },
+                // QS. Al-'Alaq
+                { q: "Dalam Q.S. Al-'Alaq, Allah memperkenalkan diri-Nya sebagai 'Tuhan yang menciptakan' dan 'Tuhan yang mengajar dengan pena'. Analisislah korelasi antara 'penciptaan' dan 'ilmu' dalam ayat ini!", o: ["Ilmu tidak ada hubungannya dengan penciptaan", "Allah menciptakan manusia dan langsung memberinya ilmu tanpa belajar", "Allah menciptakan manusia lalu memberinya potensi dan sarana (seperti pena/kemampuan menulis) untuk meraih ilmu", "Penciptaan lebih penting daripada ilmu"], a: "Allah menciptakan manusia lalu memberinya potensi dan sarana (seperti pena/kemampuan menulis) untuk meraih ilmu", p: "Ayat-ayat ini menunjukkan bahwa setelah menciptakan manusia, Allah tidak membiarkannya begitu saja. Allah memuliakan manusia dengan memberinya alat untuk belajar (akal dan kemampuan baca-tulis) agar ia bisa memahami ciptaan-Nya." },
+                // QS. Adh-Dhuha
+                { q: "Seseorang yang sukses dan kaya raya menjadi sombong dan merendahkan orang miskin. Sikap ini sangat bertentangan dengan pesan utama dalam Q.S. Adh-Dhuha. Mengapa?", o: ["Karena Q.S. Adh-Dhuha melarang menjadi kaya", "Karena surat tersebut mengingatkan bahwa semua nikmat adalah pemberian Allah yang seharusnya membuat kita peduli pada sesama, bukan sombong", "Karena orang miskin lebih mulia dari orang kaya", "Karena kesombongan adalah hak orang kaya"], a: "Karena surat tersebut mengingatkan bahwa semua nikmat adalah pemberian Allah yang seharusnya membuat kita peduli pada sesama, bukan sombong", p: "Q.S. Adh-Dhuha mengingatkan Nabi (dan kita) akan keadaan masa lalunya yang sulit, lalu Allah memberinya nikmat. Pesannya adalah agar kita tidak melupakan masa lalu dan menggunakan nikmat untuk membantu orang lain (anak yatim, peminta-minta), bukan untuk menyombongkan diri." },
+                 // Hadist 1 (Niat)
+                { q: "Amir rajin belajar dengan niat agar bisa menjadi ilmuwan hebat dan bermanfaat bagi banyak orang. Budi juga rajin belajar, tetapi niatnya hanya untuk mendapat ranking 1 dan pujian. Dari perspektif hadis tentang niat, apa perbedaan kualitas dari amal mereka?", o: ["Amal mereka sama saja nilainya", "Amal Amir bernilai ibadah dan duniawi, sementara amal Budi hanya bernilai duniawi", "Hanya Budi yang akan berhasil", "Niat tidak mempengaruhi hasil belajar"], a: "Amal Amir bernilai ibadah dan duniawi, sementara amal Budi hanya bernilai duniawi", p: "Niat Amir yang luhur (bermanfaat bagi umat) mengubah kegiatan belajarnya menjadi bernilai ibadah di sisi Allah. Sebaliknya, niat Budi yang sempit hanya akan menghasilkan keuntungan duniawi (pujian), tanpa nilai pahala akhirat." },
+                 // QS. Al-Ikhlas
+                { q: "Mengapa Q.S. Al-Ikhlas dianggap sebagai fondasi utama dalam akidah Islam?", o: ["Karena suratnya paling pendek dan mudah dihafal", "Karena surat ini secara murni dan tegas menjelaskan konsep Tauhid, yaitu mengesakan Allah dan menolak segala bentuk kemusyrikan", "Karena surat ini sering dibaca dalam sholat", "Karena semua sahabat menyukai surat ini"], a: "Karena surat ini secara murni dan tegas menjelaskan konsep Tauhid, yaitu mengesakan Allah dan menolak segala bentuk kemusyrikan", p: "Surat Al-Ikhlas mengandung esensi dari ajaran Islam, yaitu Tauhid. Ia menjawab pertanyaan fundamental 'Siapakah Tuhanmu?' dengan jawaban yang menolak konsep Tuhan beranak, diperanakkan, atau memiliki sekutu. Ini adalah inti dari keimanan." },
+                // Tambahan
+                { q: "Seseorang melakukan taharah dengan sangat teliti, namun hatinya penuh dengan rasa iri dan dengki kepada orang lain. Manakah pernyataan yang paling tepat?", o: ["Taharahnya sudah sempurna", "Taharah fisiknya benar, namun ia belum melakukan 'taharah batin'", "Iri dan dengki tidak ada hubungannya dengan taharah", "Yang penting taharah fisik, masalah hati urusan nanti"], a: "Taharah fisiknya benar, namun ia belum melakukan 'taharah batin'", p: "Islam mengajarkan keseimbangan antara taharah lahir (membersihkan badan dari najis dan hadas) dan taharah batin (membersihkan hati dari penyakit seperti iri, dengki, sombong). Keduanya harus berjalan seiringan." },
+                { q: "Bagaimana korelasi antara perintah 'membaca' (Q.S. Al-'Alaq) dengan perintah menjaga adab di majelis ilmu?", o: ["Tidak ada korelasi sama sekali", "Ilmu yang diperoleh dari 'membaca' hanya akan berkah dan bermanfaat jika diiringi dengan adab (rasa hormat)", "Adab lebih penting daripada membaca", "Membaca tidak perlu adab"], a: "Ilmu yang diperoleh dari 'membaca' hanya akan berkah dan bermanfaat jika diiringi dengan adab (rasa hormat)", p: "Perintah 'membaca' bukan hanya soal teknis, tetapi juga proses mencari ilmu. Proses ini tidak akan sempurna dan tidak akan mendatangkan keberkahan jika tidak dilandasi dengan adab, seperti menghormati sumber ilmu (guru, buku) dan majelisnya." },
+                { q: "Analisislah hubungan antara makna Q.S. Adh-Dhuha dengan Q.S. Al-Ikhlas!", o: ["Keduanya sama-sama surat pendek", "Adh-Dhuha tentang syukur atas nikmat, Al-Ikhlas tentang siapa pemberi nikmat tersebut", "Adh-Dhuha untuk sholat dhuha, Al-Ikhlas untuk sholat malam", "Tidak ada hubungan makna"], a: "Adh-Dhuha tentang syukur atas nikmat, Al-Ikhlas tentang siapa pemberi nikmat tersebut", p: "Keduanya saling melengkapi. Q.S. Adh-Dhuha mengajarkan kita untuk bersyukur atas nikmat Allah. Q.S. Al-Ikhlas menjelaskan siapa sesungguhnya Allah, Sang Pemberi Nikmat yang Esa dan menjadi tempat bergantung, sehingga rasa syukur kita menjadi tepat sasaran." },
+            ]
+        };
+
+
+        function startQuiz(mode) {
+            currentMode = mode;
+            currentQuestionIndex = 0;
+            score = 0;
+            selectedAnswer = null;
+            isShowingFeedback = false;
+            // Disesuaikan dengan jumlah soal yang lebih sedikit
+            const questionPool = allQuestions[mode];
+            questions = questionPool.sort(() => 0.5 - Math.random()).slice(0, TOTAL_QUESTIONS);
+            
+            startScreen.classList.add('hidden');
+            resultScreen.classList.add('hidden');
+            quizScreen.classList.remove('hidden');
+
+            document.getElementById('question-number').parentElement.textContent = `Soal ${currentQuestionIndex + 1} dari ${TOTAL_QUESTIONS}`;
+
+            displayQuestion();
+        }
+
+        function displayQuestion() {
+            isShowingFeedback = false;
+            selectedAnswer = null;
+            feedbackContainer.classList.add('hidden');
+
+            const question = questions[currentQuestionIndex];
+            questionNumberEl.textContent = currentQuestionIndex + 1;
+            modeLabel.textContent = currentMode;
+            questionText.innerHTML = question.q;
+            
+            document.getElementById('question-number').parentElement.textContent = `Soal ${currentQuestionIndex + 1} dari ${TOTAL_QUESTIONS}`;
+            
+            optionsContainer.innerHTML = '';
+            question.o.forEach((option) => {
+                const optionElement = document.createElement('button');
+                const isArabic = /[\u0600-\u06FF]/.test(option);
+
+                if (isArabic) {
+                    const contentSpan = document.createElement('span');
+                    contentSpan.innerHTML = option;
+                    contentSpan.classList.add('arabic');
+                    optionElement.appendChild(contentSpan);
+                    optionElement.classList.add('option-btn', 'w-full', 'p-2', 'border-2', 'border-slate-300', 'rounded-lg', 'transition-all', 'duration-200');
+                } else {
+                    optionElement.innerHTML = option;
+                    optionElement.classList.add('option-btn', 'w-full', 'p-4', 'border-2', 'border-slate-300', 'rounded-lg', 'text-left', 'transition-all', 'duration-200');
+                }
+                
+                optionElement.onclick = () => selectOption(option, optionElement);
+                optionsContainer.appendChild(optionElement);
+            });
+
+            nextBtn.disabled = true;
+            nextBtn.textContent = 'Selanjutnya';
+        }
+
+        function selectOption(option, element) {
+            if (isShowingFeedback) return;
+
+            selectedAnswer = option;
+            const optionButtons = optionsContainer.querySelectorAll('.option-btn');
+            optionButtons.forEach(btn => btn.classList.remove('selected'));
+            element.classList.add('selected');
+            nextBtn.disabled = false;
+        }
+
+        function checkAnswerAndProceed() {
+            if (isShowingFeedback) {
+                currentQuestionIndex++;
+                if (currentQuestionIndex < questions.length) {
+                    displayQuestion();
+                } else {
+                    showResults();
+                }
+                return;
+            }
+
+            const question = questions[currentQuestionIndex];
+            const isCorrect = selectedAnswer === question.a;
+
+            if (isCorrect) {
+                score++;
+                currentQuestionIndex++;
+                if (currentQuestionIndex < questions.length) {
+                    displayQuestion();
+                } else {
+                    showResults();
+                }
+            } else {
+                isShowingFeedback = true;
+                feedbackText.innerHTML = question.p;
+                feedbackContainer.classList.remove('hidden');
+
+                const optionButtons = optionsContainer.querySelectorAll('.option-btn');
+                optionButtons.forEach(btn => {
+                    btn.disabled = true;
+                    const btnContent = btn.querySelector('span') ? btn.querySelector('span').innerHTML : btn.innerHTML;
+                    if (btnContent === question.a) {
+                        btn.classList.add('correct');
+                    } else if (btnContent === selectedAnswer) {
+                        btn.classList.add('incorrect');
+                    }
+                });
+                
+                nextBtn.textContent = 'Lanjutkan';
+                nextBtn.disabled = false;
+            }
+        }
+
+        function showResults() {
+            quizScreen.classList.add('hidden');
+            resultScreen.classList.remove('hidden');
+            
+            const finalScore = Math.round((score / questions.length) * 100);
+            scoreEl.textContent = finalScore;
+            correctAnswersEl.textContent = score;
+            const resultText = document.querySelector('#result-screen .text-xl.text-indigo-800:last-of-type');
+            resultText.textContent = `${score} dari ${questions.length} soal benar`;
+        }
+
+        function restartQuiz() {
+            resultScreen.classList.add('hidden');
+            startScreen.classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>

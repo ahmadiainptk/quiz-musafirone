@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="id" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Latihan Soal PAI - Kelas VII</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lateef:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Style untuk teks Arab */
+        .arabic {
+            font-family: 'Lateef', serif;
+            direction: rtl;
+            display: block; /* Agar teks Arab full width dan rata kanan */
+            font-size: 1.75rem; 
+            line-height: 2.5rem;
+        }
+         /* Style untuk pertanyaan yang mengandung teks campuran */
+        #question-text {
+             line-height: 2.2rem;
+        }
+        .option-btn {
+            display: flex;
+            align-items: center;
+        }
+        .option-btn .arabic {
+            width: 100%;
+            text-align: right;
+        }
+        .option-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        .option-btn.selected {
+            background-color: #3b82f6; /* blue-500 */
+            color: white;
+            border-color: #2563eb; /* blue-600 */
+        }
+        .option-btn.correct {
+            background-color: #22c55e; /* green-500 */
+            color: white;
+            border-color: #16a34a; /* green-600 */
+        }
+        .option-btn.incorrect {
+            background-color: #ef4444; /* red-500 */
+            color: white;
+            border-color: #dc2626; /* red-600 */
+        }
+        .mode-card {
+            transition: all 0.2s ease-in-out;
+        }
+        .mode-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 flex items-center justify-center min-h-screen p-4">
+
+    <div id="app-container" class="w-full max-w-2xl mx-auto">
+        
+        <!-- Start Screen -->
+        <div id="start-screen" class="bg-white p-8 rounded-2xl shadow-lg text-center">
+            <h1 class="text-3xl md:text-4xl font-bold text-slate-700 mb-2">Latihan Soal PAI</h1>
+            <p class="text-lg text-slate-500 mb-8">Kelas VII</p>
+            <p class="mb-6">Silakan pilih tingkat kesulitan untuk memulai latihan. Setiap mode berisi 30 soal.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div onclick="startQuiz('normal')" class="mode-card bg-green-500 text-white p-6 rounded-xl shadow-md cursor-pointer">
+                    <h2 class="text-2xl font-bold mb-2">NORMAL</h2>
+                    <p>Soal pemahaman arti ayat dan konsep dasar.</p>
+                </div>
+                <div onclick="startQuiz('medium')" class="mode-card bg-yellow-500 text-white p-6 rounded-xl shadow-md cursor-pointer">
+                    <h2 class="text-2xl font-bold mb-2">MEDIUM</h2>
+                    <p>Soal identifikasi hukum bacaan dan penerapan.</p>
+                </div>
+                <div onclick="startQuiz('hard')" class="mode-card bg-red-500 text-white p-6 rounded-xl shadow-md cursor-pointer">
+                    <h2 class="text-2xl font-bold mb-2">SULIT</h2>
+                    <p>Soal analisis isi kandungan dan hikmah.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quiz Screen -->
+        <div id="quiz-screen" class="hidden">
+            <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg">
+                <div class="flex justify-between items-center mb-6">
+                    <div class="text-sm font-semibold bg-indigo-100 text-indigo-700 py-1 px-3 rounded-full">
+                        Mode: <span id="mode-label" class="capitalize"></span>
+                    </div>
+                    <div class="text-sm font-semibold bg-slate-100 text-slate-700 py-1 px-3 rounded-full">
+                        Soal <span id="question-number"></span> dari 30
+                    </div>
+                </div>
+                <div id="question-container" class="mb-6">
+                    <p id="question-text" class="text-lg md:text-xl leading-relaxed"></p>
+                </div>
+                <div id="options-container" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+                
+                <!-- Instant Feedback Container -->
+                <div id="feedback-container" class="hidden mt-6 p-4 border-l-4 border-yellow-500 bg-yellow-50 rounded-lg">
+                    <h4 class="font-bold text-yellow-800">Pembahasan</h4>
+                    <p id="feedback-text" class="text-yellow-700 mt-1"></p>
+                </div>
+
+                <div class="mt-8 flex justify-end">
+                    <button id="next-btn" onclick="checkAnswerAndProceed()" class="bg-indigo-600 text-white font-bold py-3 px-8 rounded-lg shadow-md hover:bg-indigo-700 transition-colors duration-200 disabled:bg-slate-400 disabled:cursor-not-allowed">
+                        Selanjutnya
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Result Screen -->
+        <div id="result-screen" class="hidden">
+            <div class="bg-white p-8 rounded-2xl shadow-lg text-center">
+                <h2 class="text-3xl font-bold text-slate-700 mb-2">Latihan Selesai!</h2>
+                <p class="text-lg text-slate-500 mb-6">Masya Allah! Kamu telah menyelesaikan semua soal dengan baik.</p>
+                <div class="bg-indigo-50 border-2 border-indigo-200 rounded-xl p-6 mb-8">
+                    <p class="text-xl text-indigo-800">Skor Akhir</p>
+                    <p class="text-6xl font-bold text-indigo-600 my-2"><span id="score"></span></p>
+                    <p class="text-xl text-indigo-800"><span id="correct-answers"></span> dari 30 soal benar</p>
+                </div>
+                <button onclick="restartQuiz()" class="w-full md:w-auto bg-indigo-600 text-white font-bold py-3 px-8 rounded-lg shadow-md hover:bg-indigo-700 transition-colors duration-200">
+                    Coba Lagi
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const startScreen = document.getElementById('start-screen');
+        const quizScreen = document.getElementById('quiz-screen');
+        const resultScreen = document.getElementById('result-screen');
+        const modeLabel = document.getElementById('mode-label');
+        const questionNumberEl = document.getElementById('question-number');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const nextBtn = document.getElementById('next-btn');
+        const scoreEl = document.getElementById('score');
+        const correctAnswersEl = document.getElementById('correct-answers');
+        const feedbackContainer = document.getElementById('feedback-container');
+        const feedbackText = document.getElementById('feedback-text');
+
+        // Quiz State
+        let currentMode = '';
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let selectedAnswer = null;
+        let isShowingFeedback = false;
+        let questions = [];
+
+        // --- DATABASE SOAL PAI KELAS VII ---
+        const allQuestions = {
+            normal: [
+                { q: "Perhatikan ayat berikut:<br><span class='arabic'>اَلرَّحْمٰنِ الرَّحِيْمِۙ</span><br>Arti dari ayat di atas adalah...", o: ["Segala puji bagi Allah", "Yang Maha Pengasih, Maha Penyayang", "Pemilik hari pembalasan", "Hanya kepada-Mu kami menyembah"], a: "Yang Maha Pengasih, Maha Penyayang", p: "Ayat tersebut merupakan bagian dari surat Al-Fatihah. <span class='arabic'>الرَّحْمٰنِ</span> berarti Yang Maha Pengasih dan <span class='arabic'>الرَّحِيْمِ</span> berarti Maha Penyayang." },
+                { q: "Ayat <span class='arabic'>قُلْ هُوَ اللّٰهُ اَحَدٌۚ</span> merupakan ayat pertama dari surat...", o: ["Al-Falaq", "An-Nas", "Al-Ikhlas", "Al-Fatihah"], a: "Al-Ikhlas", p: "Surat Al-Ikhlas diawali dengan ayat tersebut, yang menegaskan tentang keesaan Allah SWT." },
+                { q: "Isi kandungan utama dari Q.S. An-Nahl ayat 64 adalah bahwa Al-Qur'an diturunkan untuk...", o: ["Menjadi hiasan dinding", "Menjelaskan perselisihan dan menjadi petunjuk", "Dibaca saat upacara saja", "Menakut-nakuti manusia"], a: "Menjelaskan perselisihan dan menjadi petunjuk", p: "Dalam ayat tersebut, Allah menjelaskan bahwa Al-Qur'an berfungsi sebagai penjelas atas apa yang diperselisihkan oleh manusia, serta menjadi petunjuk dan rahmat." },
+                { q: "Potongan ayat <span class='arabic'>وَاَنْزَلْنَآ اِلَيْكَ</span> dari Q.S. An-Nahl: 64 memiliki arti...", o: ["Dan Kami turunkan kepadamu", "Dan Kami ciptakan untukmu", "Dan Kami berikan kepadamu", "Dan Kami perintahkan kepadamu"], a: "Dan Kami turunkan kepadamu", p: "Kata <span class='arabic'>أَنْزَلْنَا</span> berarti 'Kami turunkan' dan <span class='arabic'>إِلَيْكَ</span> berarti 'kepadamu' (Nabi Muhammad SAW)." },
+                { q: "Hadis yang disandarkan kepada perbuatan Nabi Muhammad SAW disebut hadis...", o: ["Qauliyah", "Fi'liyah", "Taqririyah", "Dhaif"], a: "Fi'liyah", p: "Hadis Fi'liyah adalah segala sesuatu yang disandarkan kepada perbuatan atau tindakan Nabi Muhammad SAW, seperti cara beliau salat." },
+                { q: "Hukum bacaan Alif Lam Syamsiyah terjadi apabila Alif Lam (ال) bertemu dengan huruf...", o: ["ب", "ج", "ع", "ت"], a: "ت", p: "Huruf 'Ta' (<span class='arabic'>ت</span>) adalah salah satu dari 14 huruf Syamsiyah. Jika Alif Lam bertemu huruf ini, maka Lam tidak dibaca (melebur)." },
+                { q: "Pada potongan ayat <span class='arabic'>مِنْ رَّبِّهِمْۗ</span> terdapat hukum bacaan...", o: ["Idgham Bighunnah", "Idgham Bilaghunnah", "Iqlab", "Ikhfa"], a: "Idgham Bilaghunnah", p: "Nun sukun (<span class='arabic'>نْ</span>) bertemu dengan huruf 'Ra' (<span class='arabic'>ر</span>), sehingga dibaca dengan melebur tanpa mendengung (Idgham Bilaghunnah)." },
+                { q: "Segala sesuatu yang disandarkan pada ucapan atau perkataan Nabi Muhammad SAW disebut hadis...", o: ["Qauliyah", "Fi'liyah", "Taqririyah", "Maudhu'"], a: "Qauliyah", p: "Qauliyah berasal dari kata 'qaul' yang berarti perkataan. Jadi, hadis Qauliyah adalah hadis yang berupa perkataan Nabi SAW." },
+                { q: "Sumber hukum Islam kedua setelah Al-Qur'an adalah...", o: ["Ijtihad", "Qiyas", "Hadis", "Urf"], a: "Hadis", p: "Hadis berfungsi sebagai penjelas dan penguat hukum-hukum yang ada dalam Al-Qur'an, sehingga menjadi sumber hukum kedua." },
+                { q: "Pemerintah atau pemimpin dalam suatu negara dalam Islam disebut...", o: ["Ulama", "Umara", "Ulil Amri", "Aghniya"], a: "Ulil Amri", p: "Ulil Amri adalah istilah dalam Al-Qur'an (Q.S. An-Nisa: 59) yang merujuk kepada para pemimpin, baik pemerintah maupun ulama, yang harus ditaati." },
+                { q: "Jumlah huruf hijaiyah ada...", o: ["28", "29", "30", "27"], a: "29", p: "Jumlah total huruf hijaiyah adalah 29, dimulai dari Alif (<span class='arabic'>ا</span>) hingga Ya (<span class='arabic'>ي</span>)." },
+                { q: "Persetujuan atau diamnya Nabi Muhammad SAW terhadap perbuatan atau perkataan sahabatnya disebut hadis...", o: ["Qauliyah", "Fi'liyah", "Taqririyah", "Shahih"], a: "Taqririyah", p: "Hadis Taqririyah adalah ketetapan Nabi SAW yang berupa diamnya beliau saat melihat atau mendengar sesuatu dari sahabat, yang menandakan persetujuan." },
+                { q: "Membaca Al-Qur'an dengan baik dan benar sesuai dengan kaidah ilmu tajwid hukumnya adalah...", o: ["Sunnah", "Mubah", "Wajib", "Makruh"], a: "Wajib", p: "Membaca Al-Qur'an dengan tartil (sesuai tajwid) adalah perintah Allah dalam Q.S. Al-Muzzammil ayat 4, sehingga hukumnya wajib." },
+                { q: "Fungsi hadis terhadap Al-Qur'an adalah sebagai 'bayan', yang artinya...", o: ["Pengganti", "Penjelas", "Peringkas", "Penyempurna"], a: "Penjelas", p: "Salah satu fungsi utama hadis (bayan) adalah untuk menjelaskan ayat-ayat Al-Qur'an yang masih bersifat umum, seperti menjelaskan cara salat." },
+                { q: "Salah satu Asmaul Husna adalah 'Al-Alim' (<span class='arabic'>الْعَلِيْمُ</span>), yang artinya...", o: ["Maha Mendengar", "Maha Melihat", "Maha Mengetahui", "Maha Bijaksana"], a: "Maha Mengetahui", p: "'Al-Alim' berasal dari kata 'ilmu' yang berarti pengetahuan. Allah Al-Alim berarti Allah Maha Mengetahui segala sesuatu." },
+                { q: "Asmaul Husna secara bahasa artinya adalah...", o: ["Nama-nama Allah", "Sifat-sifat Allah", "Nama-nama yang baik", "Kekuasaan Allah"], a: "Nama-nama yang baik", p: "'Asma' berarti nama-nama, dan 'Husna' berarti yang paling baik. Jadi, Asmaul Husna adalah nama-nama Allah yang terbaik." },
+                { q: "Allah Maha Mendengar segala sesuatu, baik yang diucapkan lisan maupun yang tersembunyi di dalam hati. Hal ini sesuai dengan Asmaul Husna...", o: ["Al-Khabir", "As-Sami'", "Al-Basir", "Al-Alim"], a: "As-Sami'", p: "'As-Sami'' (<span class='arabic'>السَّمِيْعُ</span>) berarti Allah Maha Mendengar." },
+                { q: "Makna dari Asmaul Husna 'Al-Khabir' (<span class='arabic'>الْخَبِيْرُ</span>) adalah...", o: ["Maha Teliti/Waspada", "Maha Agung", "Maha Kuasa", "Maha Pemberi"], a: "Maha Teliti/Waspada", p: "Al-Khabir berarti Allah Maha Mengetahui secara detail dan mendalam terhadap segala perkara yang tersembunyi sekalipun (Maha Teliti)." },
+                { q: "Jumlah Asmaul Husna yang disebutkan dalam hadis adalah...", o: ["77", "88", "99", "100"], a: "99", p: "Dalam sebuah hadis riwayat Bukhari dan Muslim, disebutkan bahwa Allah memiliki 99 nama yang baik." },
+                { q: "Sikap meneladani sifat 'Al-Basir' (<span class='arabic'>الْبَصِيْرُ</span>) dalam kehidupan sehari-hari adalah...", o: ["Selalu waspada dan teliti dalam bertindak", "Menggunakan mata untuk melihat hal-hal yang baik", "Mendengarkan nasihat orang tua", "Selalu berkata jujur"], a: "Menggunakan mata untuk melihat hal-hal yang baik", p: "Al-Basir artinya Maha Melihat. Kita meneladaninya dengan menggunakan indra penglihatan kita untuk hal-hal yang diridhai Allah." },
+                { q: "Bentuk jamak dari <span class='arabic'>اِسْمٌ</span> (nama) adalah...", o: ["أَسْمَاءٌ", "سَمَوَاتٌ", "مُسْلِمُوْنَ", "كُتُبٌ"], a: "أَسْمَاءٌ", p: "Bentuk jamak (plural) dari kata <span class='arabic'>اِسْمٌ</span> adalah <span class='arabic'>أَسْمَاءٌ</span>, yang berarti 'nama-nama'." },
+                { q: "Berusaha mengetahui dan memahami ciptaan Allah adalah cara meneladani sifat...", o: ["As-Sami'", "Al-Alim", "Al-Basir", "Al-Khabir"], a: "Al-Alim", p: "Karena Allah Maha Mengetahui (Al-Alim), kita sebagai hamba-Nya dianjurkan untuk terus mencari ilmu dan pengetahuan." },
+                { q: "Sikap waspada terhadap semua perbuatan kita karena yakin Allah mengetahuinya secara detail adalah penerapan dari iman kepada Asmaul Husna...", o: ["Al-Khabir", "Ar-Rahman", "Al-Ghafur", "Al-Aziz"], a: "Al-Khabir", p: "Keyakinan bahwa Allah Maha Teliti (Al-Khabir) akan membuat kita selalu berhati-hati dalam setiap tindakan." },
+                { q: "Seluruh alam semesta dengan segala isinya adalah bukti bahwa Allah memiliki sifat...", o: ["Al-Alim dan Al-Khabir", "As-Sami' dan Al-Basir", "Ar-Rahman dan Ar-Rahim", "Al-Malik dan Al-Quddus"], a: "Al-Alim dan Al-Khabir", p: "Keteraturan dan kerumitan alam semesta menunjukkan betapa luasnya ilmu Allah (Al-Alim) dan betapa telitinya Dia dalam menciptakan (Al-Khabir)." },
+                { q: "Berikut ini yang bukan termasuk cara mengamalkan Al-Qur'an dan Hadis adalah...", o: ["Membacanya dengan tartil", "Menghafalkannya", "Memahaminya", "Menjadikannya pajangan saja"], a: "Menjadikannya pajangan saja", p: "Mengamalkan Al-Qur'an dan Hadis berarti menjadikannya pedoman hidup, bukan hanya sebagai hiasan." },
+                { q: "Hukum bacaan 'Alif Lam' terbagi menjadi dua, yaitu...", o: ["Qalqalah dan Mad", "Ikhfa dan Iqlab", "Syamsiyah dan Qamariyah", "Ghunnah dan Tafkhim"], a: "Syamsiyah dan Qamariyah", p: "Aturan membaca Alif Lam (ال) terbagi menjadi dua: Idgham Syamsiyah (melebur) dan Izhar Qamariyah (dibaca jelas)." },
+                { q: "Huruf 'ain (<span class='arabic'>ع</span>) termasuk dalam kelompok huruf...", o: ["Syamsiyah", "Qamariyah", "Ikhfa", "Idgham"], a: "Qamariyah", p: "'Ain adalah salah satu dari 14 huruf Qamariyah. Jika Alif Lam bertemu huruf ini, Lam dibaca jelas." },
+                { q: "Semua perbuatan, perkataan, dan ketetapan dari Nabi Muhammad SAW disebut...", o: ["Al-Qur'an", "Sunnah/Hadis", "Ijma", "Qiyas"], a: "Sunnah/Hadis", p: "Sunnah atau Hadis adalah segala sesuatu yang bersumber dari Nabi Muhammad SAW dan menjadi pedoman bagi umat Islam." },
+                { q: "Meyakini dalam hati, mengucapkan dengan lisan, dan mengamalkan dengan perbuatan adalah pengertian dari...", o: ["Islam", "Iman", "Ihsan", "Taqwa"], a: "Iman", p: "Definisi iman menurut ahlus sunnah wal jama'ah mencakup tiga aspek: keyakinan hati, ucapan lisan, dan amalan anggota badan." },
+                { q: "Manfaat utama mempelajari Asmaul Husna adalah...", o: ["Agar pandai berdebat", "Untuk menambah wawasan saja", "Agar semakin mengenal dan mencintai Allah SWT", "Untuk mendapatkan pujian"], a: "Agar semakin mengenal dan mencintai Allah SWT", p: "Dengan mengenal nama dan sifat-sifat-Nya, kita akan semakin mengagumi kebesaran Allah, yang pada akhirnya akan menumbuhkan rasa cinta kepada-Nya." },
+            ],
+            medium: [
+                { q: "Perhatikan Q.S. An-Nahl: 64. Allah menurunkan Al-Kitab (Al-Qur'an) kepada Nabi Muhammad SAW dengan beberapa tujuan. Salah satunya adalah 'sebagai rahmat bagi orang-orang yang beriman'. Maksud dari 'rahmat' di sini adalah...", o: ["Hukuman", "Kasih sayang dan karunia", "Beban yang berat", "Ujian kesabaran"], a: "Kasih sayang dan karunia", p: "Al-Qur'an adalah bentuk kasih sayang Allah kepada orang beriman, karena dengan mengikutinya, mereka akan mendapatkan kebahagiaan di dunia dan akhirat." },
+                { q: "Hukum bacaan Alif Lam Qamariyah pada lafal <span class='arabic'>اَلْقَمَرُ</span> disebut juga...", o: ["Idgham Qamariyah", "Izhar Qamariyah", "Ikhfa Qamariyah", "Iqlab Qamariyah"], a: "Izhar Qamariyah", p: "Disebut 'Izhar' karena huruf Lam (ل) dibaca secara jelas dan tidak melebur ke huruf setelahnya." },
+                { q: "Perhatikan lafal berikut: <span class='arabic'>وَالشَّمْسِ</span>. Bagaimana cara membaca lafal tersebut sesuai hukum tajwid?", o: ["Wal-syamsi", "Was-syamsi", "Wa-syamsi", "Wal-shamsi"], a: "Was-syamsi", p: "Ini adalah contoh Alif Lam Syamsiyah. Alif Lam (ال) bertemu dengan huruf Syin (ش), sehingga Lam tidak dibaca dan langsung masuk ke huruf Syin dengan tasydid." },
+                { q: "Seorang sahabat melakukan salat dengan cara tertentu di hadapan Nabi, dan Nabi tidak melarang atau mengoreksinya. Sikap diam Nabi ini menjadi dasar sebuah hadis...", o: ["Qauliyah", "Fi'liyah", "Taqririyah", "Mutawatir"], a: "Taqririyah", p: "Diamnya Nabi yang menandakan persetujuan atas perbuatan seorang sahabat adalah definisi dari hadis Taqririyah." },
+                { q: "Fungsi hadis sebagai 'Bayan At-Taqrir' adalah...", o: ["Menjelaskan ayat yang sulit", "Merinci ayat yang umum", "Menetapkan hukum baru yang tidak ada di Al-Qur'an", "Memperkuat dan menegaskan kembali isi Al-Qur'an"], a: "Memperkuat dan menegaskan kembali isi Al-Qur'an", p: "Bayan At-Taqrir berarti hadis tersebut menguatkan apa yang sudah ada dalam Al-Qur'an. Contoh: Hadis tentang kewajiban salat menguatkan ayat tentang salat." },
+                { q: "Ayat Al-Qur'an memerintahkan 'dirikanlah salat', namun tidak merinci caranya. Rincian cara salat, mulai dari takbir hingga salam, dijelaskan dalam...", o: ["Al-Qur'an surat lain", "Hadis Fi'liyah Nabi SAW", "Ijtihad para ulama", "Buku-buku fiqih"], a: "Hadis Fi'liyah Nabi SAW", p: "Ini adalah contoh fungsi hadis sebagai 'Bayan At-Tafsil' (pemerinci), di mana perbuatan Nabi (Fi'liyah) merincikan perintah Al-Qur'an yang masih umum." },
+                { q: "Mentaati 'Ulil Amri' (pemimpin) hukumnya wajib selama perintahnya...", o: ["Menguntungkan diri sendiri", "Populer di masyarakat", "Tidak bertentangan dengan Al-Qur'an dan Hadis", "Disetujui oleh mayoritas rakyat"], a: "Tidak bertentangan dengan Al-Qur'an dan Hadis", p: "Ketaatan kepada pemimpin bersifat terikat (muqayyad), yaitu hanya berlaku pada hal-hal yang tidak merupakan maksiat kepada Allah dan Rasul-Nya." },
+                { q: "Perhatikan potongan ayat <span class='arabic'>اَنْ تَحْكُمُوْا بِالْعَدْلِۗ</span> (Q.S. An-Nisa: 58). Ayat ini berisi perintah untuk...", o: ["Menyampaikan amanah", "Berbuat adil dalam menetapkan hukum", "Mentaati pemimpin", "Berjihad di jalan Allah"], a: "Berbuat adil dalam menetapkan hukum", p: "Ayat tersebut secara jelas memerintahkan agar apabila menetapkan hukum di antara manusia, hendaklah menetapkannya dengan adil." },
+                { q: "Seorang ilmuwan meneliti gerakan semut dan menemukan sistem sosial mereka yang canggih. Penemuan ini semakin menguatkan imannya akan sifat Allah...", o: ["As-Sami'", "Al-Basir", "Al-Khabir", "Ar-Razzaq"], a: "Al-Khabir", p: "Detail dan kerumitan pada ciptaan-Nya, bahkan pada makhluk kecil seperti semut, menunjukkan bahwa Allah Maha Teliti (Al-Khabir) dalam penciptaan-Nya." },
+                { q: "Meyakini bahwa Allah mendengar doa seorang yang sedang kesulitan meskipun hanya diucapkan di dalam hati adalah bentuk iman kepada...", o: ["Al-Alim", "As-Sami'", "Al-Basir", "Al-Khabir"], a: "As-Sami'", p: "Sifat Allah Maha Mendengar (As-Sami') tidak terbatas oleh suara, jarak, atau bahasa. Dia mendengar bahkan bisikan hati sekalipun." },
+                { q: "Perbedaan utama antara ilmu Allah (Al-Alim) dan pengetahuan manusia adalah...", o: ["Ilmu Allah terbatas, pengetahuan manusia tidak terbatas", "Ilmu Allah meliputi masa lalu, kini, dan akan datang, sedangkan pengetahuan manusia terbatas", "Ilmu Allah didapat dari belajar, pengetahuan manusia adalah pemberian", "Tidak ada perbedaan"], a: "Ilmu Allah meliputi masa lalu, kini, dan akan datang, sedangkan pengetahuan manusia terbatas", p: "Ilmu Allah bersifat mutlak, azali, dan abadi, mencakup segala hal. Pengetahuan manusia sangat terbatas dan diperoleh melalui proses belajar." },
+                { q: "Ketika kita melihat pemandangan alam yang indah, hendaknya kita merenungkan kebesaran Allah. Sikap ini adalah cara meneladani Asmaul Husna...", o: ["As-Sami'", "Al-Khabir", "Al-Alim", "Al-Basir"], a: "Al-Basir", p: "Kita menggunakan indra penglihatan (yang merupakan karunia Allah Al-Basir) untuk melihat tanda-tanda kebesaran-Nya di alam semesta." },
+                { q: "Hadis yang diriwayatkan oleh banyak perawi di setiap tingkatan sanadnya sehingga mustahil mereka bersepakat untuk berdusta disebut hadis...", o: ["Ahad", "Shahih", "Mutawatir", "Hasan"], a: "Mutawatir", p: "Hadis Mutawatir memiliki tingkat keyakinan tertinggi karena diriwayatkan oleh jalur yang sangat banyak dan terpercaya." },
+                { q: "Manakah dari kalimat berikut yang mengandung bacaan Alif Lam Syamsiyah?", o: ["<span class='arabic'>اَلْحَمْدُ لِلّٰهِ</span>", "<span class='arabic'>اَلْقَارِعَةُ</span>", "<span class='arabic'>اَلصَّلٰوةَ</span>", "<span class='arabic'>اَلْكِتٰبُ</span>"], a: "<span class='arabic'>اَلصَّلٰوةَ</span>", p: "Pada lafal <span class='arabic'>اَلصَّلٰوةَ</span>, Alif Lam bertemu dengan huruf Shad (<span class='arabic'>ص</span>) yang merupakan huruf Syamsiyah, sehingga Lam tidak dibaca." },
+                { q: "Manakah dari kalimat berikut yang mengandung bacaan Alif Lam Qamariyah?", o: ["<span class='arabic'>اَلتَّكَاثُرُ</span>", "<span class='arabic'>اَلرَّحْمٰنِ</span>", "<span class='arabic'>اَلنَّاسِ</span>", "<span class='arabic'>اَلْعَلَمِيْنَ</span>"], a: "<span class='arabic'>اَلْعَلَمِيْنَ</span>", p: "Pada lafal <span class='arabic'>اَلْعَلَمِيْنَ</span>, Alif Lam bertemu dengan huruf 'Ain (<span class='arabic'>ع</span>) yang merupakan huruf Qamariyah, sehingga Lam dibaca jelas." },
+                { q: "Seseorang yang selalu berhati-hati dalam berbicara karena yakin setiap ucapannya didengar Allah berarti ia mengimani sifat Allah...", o: ["Al-Alim", "As-Sami'", "Al-Basir", "Al-Khabir"], a: "As-Sami'", p: "Iman kepada sifat As-Sami' akan membuat seseorang menjaga lisannya dari perkataan yang tidak baik." },
+                { q: "Penerapan Asmaul Husna 'Al-Khabir' dalam kehidupan seorang pelajar adalah...", o: ["Belajar dengan teliti dan tidak ceroboh saat mengerjakan soal", "Mendengarkan penjelasan guru dengan saksama", "Melihat contoh-contoh soal di buku", "Selalu ingin tahu hal-hal baru"], a: "Belajar dengan teliti dan tidak ceroboh saat mengerjakan soal", p: "Sifat Maha Teliti (Al-Khabir) dapat diteladani dengan bersikap teliti, cermat, dan waspada dalam setiap pekerjaan, termasuk saat belajar dan ujian." },
+                { q: "Hadis yang menjelaskan hukum waris atau hukum rajam merupakan contoh fungsi hadis sebagai 'Bayan At-Tasyri''. Artinya...", o: ["Memperkuat hukum di Al-Qur'an", "Merinci hukum di Al-Qur'an", "Menetapkan hukum baru yang tidak dijelaskan di Al-Qur'an", "Menghapus hukum di Al-Qur'an"], a: "Menetapkan hukum baru yang tidak dijelaskan di Al-Qur'an", p: "Bayan At-Tasyri' adalah fungsi hadis dalam menetapkan suatu hukum syariat yang tidak terdapat penjelasannya secara eksplisit di dalam Al-Qur'an." },
+                { q: "Pernyataan 'Allah mengetahui jumlah daun yang gugur di seluruh dunia' menunjukkan sifat Allah...", o: ["As-Sami'", "Al-Basir", "Al-Alim", "Al-Aziz"], a: "Al-Alim", p: "Pengetahuan Allah (Al-Alim) meliputi segala sesuatu, baik yang besar maupun yang sangat kecil dan detail." },
+                { q: "Berikut ini adalah sikap yang mencerminkan pengamalan Q.S. An-Nisa ayat 59 tentang ketaatan, kecuali...", o: ["Menaati peraturan sekolah", "Mengikuti nasihat orang tua dalam kebaikan", "Mematuhi rambu lalu lintas", "Mengikuti ajakan teman untuk membolos"], a: "Mengikuti ajakan teman untuk membolos", p: "Membolos adalah perbuatan yang melanggar aturan (maksiat), sehingga tidak termasuk dalam ketaatan yang diperintahkan." },
+                { q: "Seorang hakim harus memutuskan perkara berdasarkan bukti yang ada tanpa memihak. Sikap ini sejalan dengan isi kandungan Q.S....", o: ["An-Nahl: 64", "An-Nisa: 58", "Al-Fatihah: 1", "Al-Ikhlas: 2"], a: "An-Nisa: 58", p: "Q.S. An-Nisa: 58 secara spesifik memerintahkan untuk berlaku adil dalam menetapkan hukum." },
+                { q: "Mengapa Al-Qur'an dan Hadis disebut sebagai pedoman hidup?", o: ["Karena keduanya berisi cerita masa lalu", "Karena keduanya mengatur seluruh aspek kehidupan manusia", "Karena hanya berlaku untuk bangsa Arab", "Karena sulit untuk dipelajari"], a: "Karena keduanya mengatur seluruh aspek kehidupan manusia", p: "Al-Qur'an dan Hadis memberikan petunjuk lengkap yang mencakup akidah, ibadah, akhlak, muamalah, dan semua aspek lain dalam kehidupan." },
+                { q: "Dalam sebuah musyawarah, seorang pemimpin mendengarkan semua pendapat sebelum mengambil keputusan. Sikap ini meneladani sifat Allah...", o: ["Al-Alim dan As-Sami'", "Al-Basir dan Al-Khabir", "Ar-Rahman dan Ar-Rahim", "Al-Malik dan Al-Quddus"], a: "Al-Alim dan As-Sami'", p: "Pemimpin tersebut berusaha mengetahui (Al-Alim) semua opsi dan mendengarkan (As-Sami') semua masukan agar keputusannya bijaksana." },
+                { q: "Mengintrospeksi diri (muhasabah) atas segala perbuatan yang telah dilakukan adalah cara meneladani sifat Allah...", o: ["Al-Khabir", "As-Sami'", "Al-Basir", "Al-Alim"], a: "Al-Khabir", p: "Dengan meyakini Allah Maha Teliti (Al-Khabir) atas semua amal kita, kita terdorong untuk senantiasa mengevaluasi dan memperbaiki diri." },
+                { q: "Fungsi utama Asmaul Husna bagi seorang muslim adalah...", o: ["Sebagai hiasan kaligrafi", "Sebagai sarana untuk mengenal Allah dan berdoa kepada-Nya", "Sebagai bahan perdebatan teologis", "Untuk dibaca setahun sekali"], a: "Sebagai sarana untuk mengenal Allah dan berdoa kepada-Nya", p: "Allah memerintahkan kita dalam Q.S. Al-A'raf: 180 untuk berdoa dengan menyebut Asmaul Husna. Ini adalah cara kita mendekatkan diri kepada-Nya." },
+                { q: "Hukum bacaan pada lafal <span class='arabic'>اَلسَّمٰوٰتِ</span> adalah...", o: ["Alif Lam Qamariyah", "Alif Lam Syamsiyah", "Izhar Syafawi", "Ikhfa Haqiqi"], a: "Alif Lam Syamsiyah", p: "Alif Lam (ال) bertemu dengan huruf Sin (<span class='arabic'>س</span>) yang merupakan huruf Syamsiyah." },
+                { q: "Hukum bacaan pada lafal <span class='arabic'>اَلْبَصِيْرُ</span> adalah...", o: ["Alif Lam Qamariyah", "Alif Lam Syamsiyah", "Idgham Bighunnah", "Qalqalah"], a: "Alif Lam Qamariyah", p: "Alif Lam (ال) bertemu dengan huruf Ba (<span class='arabic'>ب</span>) yang merupakan huruf Qamariyah." },
+                { q: "Perbedaan antara Hadis Nabawi dan Hadis Qudsi adalah...", o: ["Hadis Nabawi dari Nabi, Hadis Qudsi dari sahabat", "Lafal dan makna Hadis Nabawi dari Nabi, sedangkan Hadis Qudsi maknanya dari Allah dan lafalnya dari Nabi", "Hadis Nabawi lebih shahih dari Hadis Qudsi", "Tidak ada perbedaan"], a: "Lafal dan makna Hadis Nabawi dari Nabi, sedangkan Hadis Qudsi maknanya dari Allah dan lafalnya dari Nabi", p: "Hadis Qudsi adalah firman Allah yang disampaikan melalui lisan Nabi Muhammad SAW, namun tidak termasuk bagian dari Al-Qur'an." },
+                { q: "Penerapan kandungan Q.S. An-Nisa: 59 dalam konteks bernegara adalah...", o: ["Menaati hukum dan peraturan yang dibuat pemerintah yang sah", "Hanya menaati pemimpin yang berasal dari suku sendiri", "Boleh memberontak jika pemimpin tidak disukai", "Tidak peduli terhadap peraturan pemerintah"], a: "Menaati hukum dan peraturan yang dibuat pemerintah yang sah", p: "Ayat tersebut menjadi landasan kewajiban warga negara untuk taat kepada pemerintah (Ulil Amri) selama tidak dalam kemaksiatan." },
+                { q: "Sikap yang paling tepat ketika mendengar ayat Al-Qur'an dibacakan adalah...", o: ["Berbicara dengan teman", "Bermain ponsel", "Mendengarkan dengan tenang dan penuh perhatian", "Segera pergi dari tempat itu"], a: "Mendengarkan dengan tenang dan penuh perhatian", p: "Allah memerintahkan dalam Q.S. Al-A'raf: 204 agar kita mendengarkan dan memperhatikan bacaan Al-Qur'an agar mendapat rahmat." }
+            ],
+            hard: [
+                { q: "Analisis dari Q.S. An-Nahl: 64 menyatakan Al-Qur'an adalah 'petunjuk (hudan) dan rahmat'. Bagaimana Al-Qur'an dapat menjadi 'rahmat' bagi orang yang sedang berselisih paham?", o: ["Dengan menyalahkan salah satu pihak", "Dengan memberikan solusi yang adil dan menenangkan hati kedua belah pihak", "Dengan membiarkan perselisihan berlanjut", "Dengan menghukum kedua belah pihak"], a: "Dengan memberikan solusi yang adil dan menenangkan hati kedua belah pihak", p: "Al-Qur'an memberikan prinsip-prinsip keadilan dan kebenaran yang jika diikuti, akan menyelesaikan perselisihan dengan cara yang mendatangkan kedamaian dan kasih sayang (rahmat), bukan permusuhan." },
+                { q: "Jika seorang pemimpin (Ulil Amri) mengeluarkan kebijakan yang memberatkan rakyat kecil tetapi tidak secara eksplisit melanggar syariat, bagaimana sikap seorang muslim menurut pemahaman Q.S. An-Nisa: 59?", o: ["Wajib taat tanpa syarat", "Boleh langsung memberontak", "Wajib menasihati pemimpin dengan cara yang baik dan sesuai aturan", "Tidak perlu peduli sama sekali"], a: "Wajib menasihati pemimpin dengan cara yang baik dan sesuai aturan", p: "Prinsip 'amar ma'ruf nahi munkar' tetap berlaku. Ketaatan tidak berarti diam terhadap kebijakan yang tidak adil. Nasihat harus disampaikan dengan adab dan melalui jalur yang benar." },
+                { q: "Seorang ilmuwan menemukan bahwa sidik jari setiap manusia berbeda. Penemuan ini memperkuat keyakinan terhadap Asmaul Husna Al-Khabir dan Al-Alim. Mengapa?", o: ["Karena Allah Maha Melihat setiap sidik jari", "Karena Allah Maha Mendengar keinginan manusia", "Karena ini menunjukkan ilmu Allah yang tak terbatas dan ketelitian-Nya dalam penciptaan yang paling detail", "Karena Allah Maha Kuasa mengubah sidik jari"], a: "Karena ini menunjukkan ilmu Allah yang tak terbatas dan ketelitian-Nya dalam penciptaan yang paling detail", p: "Fakta bahwa miliaran manusia memiliki sidik jari unik adalah bukti nyata dari ilmu Allah yang Maha Luas (Al-Alim) dan ketelitian-Nya yang luar biasa (Al-Khabir)." },
+                { q: "Bagaimana cara membedakan antara hadis yang shahih dengan yang dhaif (lemah) secara sederhana?", o: ["Dari panjang pendeknya matan (isi) hadis", "Dari nama sahabat yang meriwayatkan", "Melalui penelitian terhadap kualitas para perawi dan ketersambungan sanadnya", "Berdasarkan popularitas hadis di masyarakat"], a: "Melalui penelitian terhadap kualitas para perawi dan ketersambungan sanadnya", p: "Ulama hadis memiliki ilmu khusus (Ilmu Musthalah Hadis) untuk meneliti silsilah perawi (sanad) dan kredibilitas setiap perawi untuk menentukan derajat sebuah hadis." },
+                { q: "Allah memiliki sifat As-Sami' (Maha Mendengar) dan Al-Basir (Maha Melihat). Apa hikmah terbesar bagi seorang mukmin yang mengimani kedua sifat ini secara bersamaan?", o: ["Akan membuatnya menjadi orang yang pendiam", "Menumbuhkan sifat 'muraqabah', yaitu merasa selalu diawasi Allah", "Akan membuatnya takut untuk keluar rumah", "Menjadikannya sempurna seperti malaikat"], a: "Menumbuhkan sifat 'muraqabah', yaitu merasa selalu diawasi Allah", p: "Keyakinan bahwa Allah selalu mendengar dan melihat akan melahirkan sikap 'muraqabah', yaitu kesadaran penuh bahwa ia selalu berada dalam pengawasan Allah, sehingga ia akan malu untuk berbuat maksiat." },
+                { q: "Dalam konteks modern, bagaimana penerapan fungsi hadis sebagai 'Bayan At-Tasyri'' (menetapkan hukum baru)?", o: ["Umat Islam boleh membuat hukum baru sendiri", "Fungsi ini sudah tidak berlaku lagi", "Hanya berlaku untuk masalah yang belum pernah ada dan ditetapkan melalui ijtihad ulama yang merujuk pada prinsip hadis", "Semua orang bisa menetapkan hukum baru"], a: "Hanya berlaku untuk masalah yang belum pernah ada dan ditetapkan melalui ijtihad ulama yang merujuk pada prinsip hadis", p: "Untuk masalah kontemporer (misalnya bayi tabung, cryptocurrency), ulama berijtihad dengan merujuk pada prinsip-prinsip umum yang ada dalam Al-Qur'an dan Hadis. Ini adalah bentuk dinamis dari fungsi tasyri'." },
+                { q: "Jika Al-Qur'an adalah sumber hukum utama dan sudah sempurna, mengapa kita masih membutuhkan hadis?", o: ["Karena Al-Qur'an terlalu sulit dipahami tanpa hadis", "Karena hadis lebih mudah diamalkan daripada Al-Qur'an", "Karena Allah sendiri yang memerintahkan untuk mengikuti Rasul sebagai penjelas Al-Qur'an", "Karena hadis adalah budaya orang Arab"], a: "Karena Allah sendiri yang memerintahkan untuk mengikuti Rasul sebagai penjelas Al-Qur'an", p: "Dalam banyak ayat (misal Q.S. An-Nahl: 44), Allah menegaskan bahwa tugas Rasulullah adalah untuk menjelaskan Al-Qur'an kepada manusia. Penjelasan itulah yang kini kita kenal sebagai hadis." },
+                { q: "Seseorang berinfak dengan jumlah besar, namun ia melakukannya agar dipuji orang lain (riya). Perbuatan ini bertentangan dengan pengamalan Asmaul Husna Al-Khabir. Mengapa?", o: ["Karena Allah tidak suka orang kaya", "Karena jumlah infaknya terlalu besar", "Karena Allah Maha Teliti mengetahui niat tersembunyi di dalam hatinya", "Karena seharusnya infak diberikan diam-diam"], a: "Karena Allah Maha Teliti mengetahui niat tersembunyi di dalam hatinya", p: "Sifat Al-Khabir menunjukkan Allah mengetahui hal yang paling tersembunyi, termasuk niat di dalam hati. Riya' adalah perbuatan yang merusak amal karena niatnya bukan untuk Allah." },
+                { q: "Perbedaan antara Alif Lam Syamsiyah dan Idgham Bighunnah adalah...", o: ["Alif Lam Syamsiyah tidak berdengung, Idgham Bighunnah berdengung", "Keduanya sama-sama tidak berdengung", "Alif Lam Syamsiyah terjadi pada isim, Idgham Bighunnah pada fi'il", "Tidak ada jawaban yang tepat"], a: "Alif Lam Syamsiyah tidak berdengung, Idgham Bighunnah berdengung", p: "Meskipun sama-sama melebur, Alif Lam Syamsiyah tidak disertai dengung (ghunnah), sedangkan Idgham Bighunnah (Nun sukun bertemu Ya, Nun, Mim, Wau) wajib disertai dengung." },
+                { q: "Bagaimana sikap yang tepat jika kita menemukan dua hadis yang tampaknya saling bertentangan?", o: ["Memilih hadis yang paling mudah diamalkan", "Menolak kedua hadis tersebut karena membingungkan", "Mencari penjelasan ulama yang ahli untuk mengkompromikan (al-jam'u wat taufiq) kedua hadis tersebut", "Menyimpulkan bahwa salah satu hadis pasti palsu"], a: "Mencari penjelasan ulama yang ahli untuk mengkompromikan (al-jam'u wat taufiq) kedua hadis tersebut", p: "Ulama memiliki metodologi untuk memahami konteks masing-masing hadis, sehingga pertentangan yang tampak di permukaan dapat dijelaskan dan dipahami secara benar." },
+                { q: "Mengapa dalam berdoa kita dianjurkan menggunakan Asmaul Husna yang sesuai dengan permintaan kita? (Misalnya, memohon ampun dengan 'Ya Ghafur').", o: ["Agar doa terdengar lebih indah", "Karena itu menunjukkan adab dan pengakuan kita terhadap sifat Allah yang relevan dengan doa kita", "Supaya doa lebih cepat terkabul", "Karena itu adalah satu-satunya cara berdoa"], a: "Karena itu menunjukkan adab dan pengakuan kita terhadap sifat Allah yang relevan dengan doa kita", p: "Ini adalah bentuk adab dalam berdoa. Ketika kita memohon ampun, menyebut 'Ya Ghafur' (Wahai Yang Maha Pengampun) menunjukkan kesadaran penuh kita akan sifat Allah yang paling sesuai dengan hajat kita." },
+                { q: "Seorang pemimpin membuat aturan yang mewajibkan semua pabrik mengelola limbahnya agar tidak mencemari sungai. Kebijakan ini merupakan penerapan dari...", o: ["Perintah menaati Ulil Amri sekaligus menjaga amanah Allah (alam)", "Keinginan pribadi pemimpin untuk dipuji", "Hukum yang bertentangan dengan Al-Qur'an", "Aturan yang tidak perlu ditaati"], a: "Perintah menaati Ulil Amri sekaligus menjaga amanah Allah (alam)", p: "Kebijakan ini adalah bentuk kemaslahatan umum yang wajib ditaati sebagai bagian dari ketaatan pada Ulil Amri, dan sejalan dengan perintah Islam untuk menjaga lingkungan." },
+                { q: "Analisis Q.S. Al-Ikhlas. Mengapa surat ini disebut setara dengan sepertiga Al-Qur'an?", o: ["Karena jumlah ayatnya sepertiga dari surat terpanjang", "Karena pahala membacanya setara pahala membaca sepertiga Al-Qur'an", "Karena isinya merupakan inti dari ajaran tauhid yang murni, salah satu dari tiga pokok ajaran Islam", "Karena surat ini sangat mudah dihafal"], a: "Karena isinya merupakan inti dari ajaran tauhid yang murni, salah satu dari tiga pokok ajaran Islam", p: "Ajaran Islam secara garis besar terbagi menjadi tiga: Tauhid, Hukum/Syariat, dan Akhlak/Kisah. Surat Al-Ikhlas secara murni dan ringkas membahas tentang Tauhid, sehingga nilainya setara sepertiga Al-Qur'an." },
+                { q: "Seseorang yang hanya mau belajar Al-Qur'an dan menolak hadis sebagai sumber hukum akan mengalami kesulitan dalam...", o: ["Membaca Al-Qur'an", "Memahami makna global Al-Qur'an", "Melaksanakan perintah-perintah Al-Qur'an yang bersifat umum, seperti salat dan zakat", "Menghafal Al-Qur'an"], a: "Melaksanakan perintah-perintah Al-Qur'an yang bersifat umum, seperti salat dan zakat", p: "Tanpa hadis, kita tidak akan tahu tata cara pelaksanaan ibadah secara rinci, karena Al-Qur'an hanya memberikan perintahnya secara garis besar." },
+                { q: "Hubungan antara sifat Al-Alim dan Al-Khabir adalah...", o: ["Al-Alim lebih umum, sedangkan Al-Khabir lebih spesifik pada hal-hal yang tersembunyi dan mendetail", "Keduanya memiliki makna yang sama persis", "Al-Khabir adalah bagian dari Al-Alim", "Al-Alim untuk masa lalu, Al-Khabir untuk masa depan"], a: "Al-Alim lebih umum, sedangkan Al-Khabir lebih spesifik pada hal-hal yang tersembunyi dan mendetail", p: "Ilmu Allah (Al-Alim) meliputi segala sesuatu. Sedangkan Al-Khabir menekankan pada aspek pengetahuan-Nya yang mendalam dan meliputi hal-hal batiniah/tersembunyi." },
+                { q: "Seorang siswa belajar dengan giat bukan karena ingin ranking 1, tetapi karena ia sadar bahwa mencari ilmu adalah perintah Allah. Sikap ini menunjukkan...", o: ["Pemahaman yang mendalam tentang tujuan hidup seorang muslim", "Keinginan untuk pamer kepada teman", "Sikap yang ambisius dan egois", "Ketakutan pada hukuman orang tua"], a: "Pemahaman yang mendalam tentang tujuan hidup seorang muslim", p: "Sikap ini mencerminkan keikhlasan, di mana motivasi utama dari sebuah amalan (belajar) adalah untuk menaati perintah Allah, bukan tujuan duniawi semata." },
+                { q: "Seorang arsitek merancang sebuah bangunan dengan sangat teliti, memperhitungkan setiap detail kekuatan dan keindahannya. Dalam bekerja, ia sedang berusaha meneladani sifat Allah...", o: ["Al-Khabir", "As-Sami'", "Ar-Rahman", "Al-Basir"], a: "Al-Khabir", p: "Ketelitian, kecermatan, dan perhatian pada detail dalam sebuah pekerjaan adalah bentuk sederhana dari upaya meneladani sifat Allah yang Maha Teliti." },
+                { q: "Bagaimana Al-Qur'an dan Hadis tetap relevan sebagai pedoman hidup di zaman modern yang penuh dengan teknologi?", o: ["Keduanya harus ditafsirkan ulang secara bebas", "Nilai-nilai dan prinsip dasarnya bersifat universal dan abadi, dapat diterapkan dalam konteks apa pun", "Hanya relevan untuk urusan ibadah saja", "Sudah tidak relevan lagi"], a: "Nilai-nilai dan prinsip dasarnya bersifat universal dan abadi, dapat diterapkan dalam konteks apa pun", p: "Prinsip keadilan, kejujuran, amanah, dan larangan merusak yang ada dalam Al-Qur'an dan Hadis bersifat universal dan dapat menjadi panduan dalam menghadapi tantangan zaman modern, termasuk dalam berteknologi." },
+                { q: "Apa perbedaan mendasar antara wahyu (Al-Qur'an) dan ilham?", o: ["Wahyu hanya untuk Nabi, ilham bisa untuk siapa saja", "Wahyu pasti benar, ilham bisa benar bisa salah", "Wahyu disampaikan melalui Malaikat Jibril, ilham tidak", "Semua jawaban benar"], a: "Semua jawaban benar", p: "Wahyu (khususnya Al-Qur'an) bersifat mutlak kebenarannya, diturunkan hanya kepada para nabi dan rasul melalui perantara Jibril. Sedangkan ilham bisa datang kepada manusia biasa dan kebenarannya tidak mutlak." },
+                { q: "Hikmah dari adanya huruf-huruf muqatha'ah (misalnya <span class='arabic'>الۤمّۤ</span>) di awal beberapa surat Al-Qur'an, yang artinya hanya Allah yang tahu, adalah...", o: ["Untuk membuat Al-Qur'an terlihat sulit", "Menunjukkan keterbatasan ilmu manusia di hadapan ilmu Allah", "Sebagai hiasan saja", "Tidak ada hikmahnya"], a: "Menunjukkan keterbatasan ilmu manusia di hadapan ilmu Allah", p: "Adanya ayat-ayat yang maknanya hanya diketahui Allah menjadi pengingat bagi manusia bahwa sehebat apa pun ilmunya, ia tetap terbatas dan hanya Allah yang ilmunya meliputi segala sesuatu." }
+            ]
+        };
+
+
+        function startQuiz(mode) {
+            currentMode = mode;
+            currentQuestionIndex = 0;
+            score = 0;
+            selectedAnswer = null;
+            isShowingFeedback = false;
+            questions = allQuestions[mode];
+            
+            startScreen.classList.add('hidden');
+            resultScreen.classList.add('hidden');
+            quizScreen.classList.remove('hidden');
+
+            displayQuestion();
+        }
+
+        function displayQuestion() {
+            isShowingFeedback = false;
+            selectedAnswer = null;
+            feedbackContainer.classList.add('hidden');
+
+            const question = questions[currentQuestionIndex];
+            questionNumberEl.textContent = currentQuestionIndex + 1;
+            modeLabel.textContent = currentMode;
+            questionText.innerHTML = question.q;
+            
+            optionsContainer.innerHTML = '';
+            question.o.forEach((option) => {
+                const optionElement = document.createElement('button');
+                const isArabic = /[\u0600-\u06FF]/.test(option);
+
+                if (isArabic) {
+                    const contentSpan = document.createElement('span');
+                    contentSpan.innerHTML = option;
+                    contentSpan.classList.add('arabic');
+                    optionElement.appendChild(contentSpan);
+                    optionElement.classList.add('option-btn', 'w-full', 'p-2', 'border-2', 'border-slate-300', 'rounded-lg', 'transition-all', 'duration-200');
+                } else {
+                    optionElement.innerHTML = option;
+                    optionElement.classList.add('option-btn', 'w-full', 'p-4', 'border-2', 'border-slate-300', 'rounded-lg', 'text-left', 'transition-all', 'duration-200');
+                }
+                
+                optionElement.onclick = () => selectOption(option, optionElement);
+                optionsContainer.appendChild(optionElement);
+            });
+
+            nextBtn.disabled = true;
+            nextBtn.textContent = 'Selanjutnya';
+        }
+
+        function selectOption(option, element) {
+            if (isShowingFeedback) return;
+
+            selectedAnswer = option;
+            const optionButtons = optionsContainer.querySelectorAll('.option-btn');
+            optionButtons.forEach(btn => btn.classList.remove('selected'));
+            element.classList.add('selected');
+            nextBtn.disabled = false;
+        }
+
+        function checkAnswerAndProceed() {
+            if (isShowingFeedback) {
+                currentQuestionIndex++;
+                if (currentQuestionIndex < questions.length) {
+                    displayQuestion();
+                } else {
+                    showResults();
+                }
+                return;
+            }
+
+            const question = questions[currentQuestionIndex];
+            const isCorrect = selectedAnswer === question.a;
+
+            if (isCorrect) {
+                score++;
+                currentQuestionIndex++;
+                if (currentQuestionIndex < questions.length) {
+                    displayQuestion();
+                } else {
+                    showResults();
+                }
+            } else {
+                isShowingFeedback = true;
+                feedbackText.innerHTML = question.p;
+                feedbackContainer.classList.remove('hidden');
+
+                const optionButtons = optionsContainer.querySelectorAll('.option-btn');
+                optionButtons.forEach(btn => {
+                    btn.disabled = true;
+                    const btnContent = btn.querySelector('span') ? btn.querySelector('span').innerHTML : btn.innerHTML;
+                    if (btnContent === question.a) {
+                        btn.classList.add('correct');
+                    } else if (btnContent === selectedAnswer) {
+                        btn.classList.add('incorrect');
+                    }
+                });
+                
+                nextBtn.textContent = 'Lanjutkan';
+                nextBtn.disabled = false;
+            }
+        }
+
+        function showResults() {
+            quizScreen.classList.add('hidden');
+            resultScreen.classList.remove('hidden');
+            
+            const finalScore = Math.round((score / questions.length) * 100);
+            scoreEl.textContent = finalScore;
+            correctAnswersEl.textContent = score;
+            const resultText = document.querySelector('#result-screen .text-xl.text-indigo-800:last-of-type');
+            resultText.textContent = `${score} dari ${questions.length} soal benar`;
+        }
+
+        function restartQuiz() {
+            resultScreen.classList.add('hidden');
+            startScreen.classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>

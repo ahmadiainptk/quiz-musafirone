@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Latihan Soal PKN - Kelas VII</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .option-btn:hover:not(:disabled) {
+            transform: translateY(-px);
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        .option-btn.selected {
+            background-color: #3b82f6; /* blue-500 */
+            color: white;
+            border-color: #2563eb; /* blue-600 */
+        }
+        .option-btn.correct {
+            background-color: #22c55e; /* green-500 */
+            color: white;
+            border-color: #16a34a; /* green-600 */
+        }
+        .option-btn.incorrect {
+            background-color: #ef4444; /* red-500 */
+            color: white;
+            border-color: #dc2626; /* red-600 */
+        }
+        .mode-card {
+            transition: all 0.2s ease-in-out;
+        }
+        .mode-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 flex items-center justify-center min-h-screen p-4">
+
+    <div id="app-container" class="w-full max-w-2xl mx-auto">
+        
+        <!-- Start Screen -->
+        <div id="start-screen" class="bg-white p-8 rounded-2xl shadow-lg text-center">
+            <h1 class="text-3xl md:text-4xl font-bold text-slate-700 mb-2">Latihan Soal PKN</h1>
+            <p class="text-lg text-slate-500 mb-8">Kelas VII</p>
+            <p class="mb-6">Silakan pilih tingkat kesulitan untuk memulai latihan. Setiap mode berisi 30 soal.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div onclick="startQuiz('normal')" class="mode-card bg-green-500 text-white p-6 rounded-xl shadow-md cursor-pointer">
+                    <h2 class="text-2xl font-bold mb-2">NORMAL</h2>
+                    <p>Soal pemahaman konsep dasar dan sejarah.</p>
+                </div>
+                <div onclick="startQuiz('medium')" class="mode-card bg-yellow-500 text-white p-6 rounded-xl shadow-md cursor-pointer">
+                    <h2 class="text-2xl font-bold mb-2">MEDIUM</h2>
+                    <p>Soal analisis ringan dan penerapan norma.</p>
+                </div>
+                <div onclick="startQuiz('hard')" class="mode-card bg-red-500 text-white p-6 rounded-xl shadow-md cursor-pointer">
+                    <h2 class="text-2xl font-bold mb-2">SULIT</h2>
+                    <p>Soal analisis kasus dan perbandingan konsep.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quiz Screen -->
+        <div id="quiz-screen" class="hidden">
+            <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg">
+                <div class="flex justify-between items-center mb-6">
+                    <div class="text-sm font-semibold bg-indigo-100 text-indigo-700 py-1 px-3 rounded-full">
+                        Mode: <span id="mode-label" class="capitalize"></span>
+                    </div>
+                    <div class="text-sm font-semibold bg-slate-100 text-slate-700 py-1 px-3 rounded-full">
+                        Soal <span id="question-number"></span> dari 30
+                    </div>
+                </div>
+                <div id="question-container" class="mb-6">
+                    <p id="question-text" class="text-lg md:text-xl leading-relaxed"></p>
+                </div>
+                <div id="options-container" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+                
+                <!-- Instant Feedback Container -->
+                <div id="feedback-container" class="hidden mt-6 p-4 border-l-4 border-yellow-500 bg-yellow-50 rounded-lg">
+                    <h4 class="font-bold text-yellow-800">Pembahasan</h4>
+                    <p id="feedback-text" class="text-yellow-700 mt-1"></p>
+                </div>
+
+                <div class="mt-8 flex justify-end">
+                    <button id="next-btn" onclick="checkAnswerAndProceed()" class="bg-indigo-600 text-white font-bold py-3 px-8 rounded-lg shadow-md hover:bg-indigo-700 transition-colors duration-200 disabled:bg-slate-400 disabled:cursor-not-allowed">
+                        Selanjutnya
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Result Screen -->
+        <div id="result-screen" class="hidden">
+            <div class="bg-white p-8 rounded-2xl shadow-lg text-center">
+                <h2 class="text-3xl font-bold text-slate-700 mb-2">Latihan Selesai!</h2>
+                <p class="text-lg text-slate-500 mb-6">Luar biasa! Kamu telah menyelesaikan semua soal.</p>
+                <div class="bg-indigo-50 border-2 border-indigo-200 rounded-xl p-6 mb-8">
+                    <p class="text-xl text-indigo-800">Skor Akhir</p>
+                    <p class="text-6xl font-bold text-indigo-600 my-2"><span id="score"></span></p>
+                    <p class="text-xl text-indigo-800"><span id="correct-answers"></span> dari 30 soal benar</p>
+                </div>
+                <button onclick="restartQuiz()" class="w-full md:w-auto bg-indigo-600 text-white font-bold py-3 px-8 rounded-lg shadow-md hover:bg-indigo-700 transition-colors duration-200">
+                    Coba Lagi
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const startScreen = document.getElementById('start-screen');
+        const quizScreen = document.getElementById('quiz-screen');
+        const resultScreen = document.getElementById('result-screen');
+        const modeLabel = document.getElementById('mode-label');
+        const questionNumberEl = document.getElementById('question-number');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const nextBtn = document.getElementById('next-btn');
+        const scoreEl = document.getElementById('score');
+        const correctAnswersEl = document.getElementById('correct-answers');
+        const feedbackContainer = document.getElementById('feedback-container');
+        const feedbackText = document.getElementById('feedback-text');
+
+        // Quiz State
+        let currentMode = '';
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let selectedAnswer = null;
+        let isShowingFeedback = false;
+        let questions = [];
+
+        // --- DATABASE SOAL PKN KELAS VII ---
+        const allQuestions = {
+            normal: [
+                { q: "Nilai-nilai Pancasila sudah ada sejak zaman dahulu dan tercermin dalam kehidupan masyarakat Indonesia, misalnya dalam kegiatan gotong royong. Hal ini menunjukkan bahwa Pancasila berakar dari...", o: ["Budaya bangsa asing", "Kepribadian bangsa Indonesia", "Peraturan penjajah", "Ajaran modern"], a: "Kepribadian bangsa Indonesia", p: "Pancasila digali dari nilai-nilai luhur budaya dan kepribadian bangsa Indonesia yang sudah ada sejak lama, seperti musyawarah dan gotong royong." },
+                { q: "Gambar bintang pada lambang negara Garuda Pancasila melambangkan sila...", o: ["Kedua", "Ketiga", "Keempat", "Pertama"], a: "Pertama", p: "Bintang emas melambangkan sila pertama, Ketuhanan Yang Maha Esa, yang diartikan sebagai cahaya rohani bagi setiap manusia." },
+                { q: "Padi dan kapas pada lambang sila kelima Pancasila memiliki makna...", o: ["Kekuatan dan kekuasaan", "Persatuan dan kesatuan", "Keadilan dan kemakmuran", "Keberanian dan kesucian"], a: "Keadilan dan kemakmuran", p: "Padi melambangkan pangan (makanan) dan kapas melambangkan sandang (pakaian), yang merupakan simbol kebutuhan pokok untuk mencapai kemakmuran dan keadilan sosial." },
+                { q: "Kerajaan Sriwijaya menunjukkan penerapan nilai-nilai Pancasila, terutama sila ketiga, melalui upayanya untuk...", o: ["Membangun candi yang megah", "Menguasai perdagangan di Asia Tenggara", "Mempersatukan wilayah nusantara melalui kekuatan maritim", "Mengembangkan sistem tulisan Pallawa"], a: "Mempersatukan wilayah nusantara melalui kekuatan maritim", p: "Upaya Sriwijaya menyatukan wilayah nusantara di bawah kekuasaannya mencerminkan nilai Persatuan Indonesia (sila ketiga)." },
+                { q: "Perjuangan melawan penjajah sebelum tahun 1908 masih bersifat kedaerahan. Hal ini menjadi salah satu penyebab...", o: ["Mudahnya meraih kemerdekaan", "Sulitnya mengusir penjajah", "Cepatnya persatuan terbentuk", "Belanda menyerah tanpa syarat"], a: "Sulitnya mengusir penjajah", p: "Perjuangan yang bersifat kedaerahan dan tidak terkoordinasi membuat bangsa Indonesia mudah diadu domba dan sulit untuk mengusir penjajah secara efektif." },
+                { q: "Organisasi pergerakan nasional pertama yang menjadi tonggak kebangkitan nasional adalah...", o: ["Sarekat Islam", "Indische Partij", "Budi Utomo", "Perhimpunan Indonesia"], a: "Budi Utomo", p: "Lahirnya Budi Utomo pada 20 Mei 1908 dianggap sebagai awal dari pergerakan nasional yang lebih terorganisir, sehingga tanggal tersebut diperingati sebagai Hari Kebangkitan Nasional." },
+                { q: "Tujuan utama dibentuknya BPUPKI (Badan Penyelidik Usaha-usaha Persiapan Kemerdekaan Indonesia) oleh Jepang adalah...", o: ["Memberikan kemerdekaan kepada Indonesia", "Menarik simpati rakyat Indonesia agar membantu Jepang", "Mempersiapkan pemilu pertama di Indonesia", "Membentuk tentara nasional Indonesia"], a: "Menarik simpati rakyat Indonesia agar membantu Jepang", p: "Jepang membentuk BPUPKI untuk mendapatkan dukungan dari rakyat Indonesia dalam Perang Asia Timur Raya dengan menjanjikan kemerdekaan." },
+                { q: "Berikut ini adalah tokoh yang menyampaikan usulan dasar negara dalam sidang pertama BPUPKI, kecuali...", o: ["Mohammad Yamin", "Dr. Soepomo", "Ir. Soekarno", "Mohammad Hatta"], a: "Mohammad Hatta", p: "Tiga tokoh utama yang mengusulkan rumusan dasar negara pada sidang pertama BPUPKI adalah Mohammad Yamin, Dr. Soepomo, dan Ir. Soekarno." },
+                { q: "Istilah 'Pancasila' sebagai nama dasar negara pertama kali dikemukakan oleh...", o: ["Mohammad Yamin", "Dr. Soepomo", "Ir. Soekarno", "K.H. Wachid Hasyim"], a: "Ir. Soekarno", p: "Dalam pidatonya pada tanggal 1 Juni 1945, Ir. Soekarno adalah orang pertama yang mengusulkan nama 'Pancasila' untuk dasar negara Indonesia." },
+                { q: "Panitia Sembilan dibentuk setelah sidang pertama BPUPKI dengan tugas utama untuk...", o: ["Menyusun naskah proklamasi", "Memilih presiden dan wakil presiden", "Merumuskan kembali usulan dasar negara", "Membubarkan BPUPKI"], a: "Merumuskan kembali usulan dasar negara", p: "Panitia Sembilan bertugas untuk menampung dan merumuskan berbagai usulan dasar negara dari anggota BPUPKI menjadi satu rumusan yang dapat disepakati bersama." },
+                { q: "Hasil kerja Panitia Sembilan yang kemudian menjadi cikal bakal Pembukaan UUD 1945 dikenal dengan nama...", o: ["Piagam Jakarta", "Teks Proklamasi", "Dekrit Presiden", "Supersemar"], a: "Piagam Jakarta", p: "Rumusan dasar negara hasil kerja Panitia Sembilan disebut Piagam Jakarta (Jakarta Charter)." },
+                { q: "Tujuh kata dalam Piagam Jakarta, yaitu '...dengan kewajiban menjalankan syariat Islam bagi pemeluk-pemeluknya', akhirnya diubah. Perubahan ini dilakukan demi...", o: ["Kepentingan golongan tertentu", "Menjaga persatuan dan kesatuan bangsa", "Tuntutan dari pihak penjajah", "Menyesuaikan dengan UUD negara lain"], a: "Menjaga persatuan dan kesatuan bangsa", p: "Perubahan tersebut dilakukan atas usulan dari tokoh Indonesia bagian timur untuk menjaga persatuan bangsa yang majemuk." },
+                { q: "Sidang PPKI pada tanggal 18 Agustus 1945 menghasilkan beberapa keputusan penting, salah satunya adalah...", o: ["Membentuk kabinet pertama", "Menetapkan UUD 1945", "Menentukan lambang negara", "Menetapkan lagu kebangsaan"], a: "Menetapkan UUD 1945", p: "Salah satu hasil terpenting sidang PPKI pertama adalah mengesahkan dan menetapkan UUD 1945 sebagai konstitusi negara." },
+                { q: "Aturan atau kaidah yang berfungsi untuk mengatur tingkah laku manusia dalam pergaulan masyarakat disebut...", o: ["Hukum", "Norma", "Adat", "Perintah"], a: "Norma", p: "Norma adalah seperangkat aturan, baik tertulis maupun tidak tertulis, yang berisi perintah, anjuran, dan larangan untuk mengatur perilaku masyarakat." },
+                { q: "Sanksi bagi pelanggar norma kesopanan biasanya berupa...", o: ["Penjara atau denda", "Penyesalan atau perasaan bersalah", "Celaan, cemoohan, atau pengucilan", "Pahala atau dosa"], a: "Celaan, cemoohan, atau pengucilan", p: "Norma kesopanan bersumber dari pergaulan masyarakat, sehingga sanksinya bersifat sosial, seperti dicela atau dikucilkan." },
+                { q: "Contoh perilaku yang sesuai dengan norma agama adalah...", o: ["Membayar pajak tepat waktu", "Menyeberang jalan di zebra cross", "Berbicara sopan kepada orang tua", "Melaksanakan ibadah sesuai ajaran agamanya"], a: "Melaksanakan ibadah sesuai ajaran agamanya", p: "Norma agama bersumber dari Tuhan Yang Maha Esa, dan contoh perilakunya adalah menjalankan perintah-Nya seperti beribadah." },
+                { q: "Setiap warga negara memiliki hak untuk mendapatkan pendidikan. Di sisi lain, setiap siswa memiliki ... untuk belajar dengan rajin.", o: ["Hak", "Kewajiban", "Keinginan", "Kebebasan"], a: "Kewajiban", p: "Hak adalah sesuatu yang kita terima, sedangkan kewajiban adalah sesuatu yang harus kita laksanakan. Belajar dengan rajin adalah kewajiban seorang siswa." },
+                { q: "Menjaga kebersihan lingkungan sekolah adalah kewajiban dari...", o: ["Kepala sekolah saja", "Guru dan karyawan", "Siswa saja", "Seluruh warga sekolah"], a: "Seluruh warga sekolah", p: "Kebersihan dan kenyamanan lingkungan sekolah adalah tanggung jawab bersama seluruh warga sekolah, tanpa terkecuali." },
+                { q: "Sumber hukum tertulis tertinggi di Indonesia adalah...", o: ["Undang-Undang Dasar 1945", "Ketetapan MPR", "Undang-Undang", "Peraturan Presiden"], a: "Undang-Undang Dasar 1945", p: "Dalam tata urutan peraturan perundang-undangan di Indonesia, UUD NRI Tahun 1945 menempati posisi tertinggi sebagai sumber hukum dasar." },
+                { q: "Lembaga negara yang berwenang mengubah dan menetapkan UUD adalah...", o: ["Presiden", "Dewan Perwakilan Rakyat (DPR)", "Mahkamah Konstitusi (MK)", "Majelis Permusyawaratan Rakyat (MPR)"], a: "Majelis Permusyawaratan Rakyat (MPR)", p: "Sesuai dengan Pasal 3 Ayat (1) UUD 1945, wewenang untuk mengubah dan menetapkan UUD ada pada MPR." },
+                { q: "Sebelum diamandemen, UUD 1945 terdiri atas Pembukaan, Batang Tubuh (16 bab, 37 pasal, 49 ayat, 4 pasal Aturan Peralihan, dan 2 ayat Aturan Tambahan), serta...", o: ["Penjelasan", "Lampiran", "Garis-Garis Besar Haluan Negara", "Konsideran"], a: "Penjelasan", p: "Sistematika UUD 1945 sebelum amandemen terdiri dari tiga bagian: Pembukaan, Batang Tubuh, dan Penjelasan." },
+                { q: "Salah satu hasil penting dari amandemen UUD 1945 adalah pemilihan presiden dan wakil presiden secara...", o: ["Langsung oleh rakyat", "Dipilih oleh MPR", "Ditunjuk oleh DPR", "Melalui perwakilan daerah"], a: "Langsung oleh rakyat", p: "Amandemen UUD 1945 mengubah sistem pemilihan presiden dari dipilih oleh MPR menjadi dipilih langsung oleh rakyat melalui pemilihan umum." },
+                { q: "Tidak menyontek saat ulangan adalah contoh penerapan norma...", o: ["Hukum", "Kesusilaan", "Kesopanan", "Agama"], a: "Kesusilaan", p: "Menyontek bertentangan dengan bisikan hati nurani atau akhlak, yang merupakan sumber dari norma kesusilaan. Sanksinya adalah perasaan bersalah dan menyesal." },
+                { q: "Memakai helm saat berkendara sepeda motor adalah kewajiban yang diatur dalam norma...", o: ["Agama", "Kesopanan", "Kesusilaan", "Hukum"], a: "Hukum", p: "Kewajiban memakai helm diatur dalam undang-undang lalu lintas, yang merupakan bagian dari norma hukum. Pelanggarannya akan dikenai sanksi tilang oleh polisi." },
+                { q: "Alasan utama Pancasila dijadikan sebagai dasar negara Indonesia adalah...", o: ["Karena merupakan hadiah dari Jepang", "Karena sesuai dengan nilai-nilai luhur bangsa Indonesia", "Karena merupakan rumusan dari satu orang saja", "Agar Indonesia ditakuti negara lain"], a: "Karena sesuai dengan nilai-nilai luhur bangsa Indonesia", p: "Pancasila dipilih menjadi dasar negara karena nilai-nilainya digali dari kepribadian, budaya, dan pandangan hidup bangsa Indonesia sendiri." },
+                { q: "Menghormati teman yang sedang beribadah meskipun berbeda keyakinan adalah contoh penerapan Pancasila, terutama sila...", o: ["Pertama", "Kedua", "Ketiga", "Keempat"], a: "Pertama", p: "Sikap toleransi dan menghormati kebebasan beragama merupakan salah satu wujud pengamalan sila pertama, Ketuhanan Yang Maha Esa." },
+                { q: "Norma sangat penting dalam kehidupan sosial karena berfungsi untuk...", o: ["Membatasi hak asasi manusia", "Menciptakan kehidupan yang tertib dan harmonis", "Memberikan kebebasan tanpa batas", "Menghukum semua orang yang bersalah"], a: "Menciptakan kehidupan yang tertib dan harmonis", p: "Tujuan utama adanya norma adalah untuk menciptakan keteraturan, ketertiban, dan keharmonisan dalam interaksi masyarakat." },
+                { q: "Contoh penerapan norma kesopanan dalam lingkungan keluarga adalah...", o: ["Melaksanakan salat lima waktu", "Tidak berbohong kepada orang tua", "Membantu ibu membersihkan rumah", "Berpamitan sebelum berangkat sekolah"], a: "Berpamitan sebelum berangkat sekolah", p: "Berpamitan adalah salah satu bentuk etika atau sopan santun yang berlaku dalam keluarga." },
+                { q: "Menurut UUD 1945, yang dimaksud dengan 'warga negara' adalah...", o: ["Orang asing yang tinggal di Indonesia", "Semua orang yang lahir di Indonesia", "Orang-orang bangsa Indonesia asli dan orang-orang bangsa lain yang disahkan dengan undang-undang", "Hanya keturunan pahlawan nasional"], a: "Orang-orang bangsa Indonesia asli dan orang-orang bangsa lain yang disahkan dengan undang-undang", p: "Definisi ini sesuai dengan isi Pasal 26 Ayat (1) UUD NRI Tahun 1945." },
+                { q: "Pembukaan UUD 1945 tidak dapat diubah oleh siapapun, termasuk MPR, karena...", o: ["Terlalu sulit untuk diubah", "Merupakan kaidah pokok negara yang fundamental", "Tidak ada yang berani mengubahnya", "Sudah sempurna dan tidak ada celah"], a: "Merupakan kaidah pokok negara yang fundamental", p: "Pembukaan UUD 1945 memuat cita-cita luhur dan tujuan negara Indonesia, sehingga mengubahnya sama dengan membubarkan Negara Kesatuan Republik Indonesia." },
+            ],
+            medium: [
+                { q: "Salah satu bukti bahwa nilai Pancasila sudah ada sejak zaman kerajaan adalah adanya konsep 'persatuan' yang diwujudkan oleh Kerajaan Majapahit melalui...", o: ["Pembangunan Candi Borobudur", "Sumpah Palapa oleh Gajah Mada", "Perjanjian dengan VOC", "Sistem tanam paksa"], a: "Sumpah Palapa oleh Gajah Mada", p: "Sumpah Palapa adalah ikrar Gajah Mada untuk menyatukan nusantara di bawah kekuasaan Majapahit, yang mencerminkan semangat persatuan." },
+                { q: "Perbedaan utama antara perjuangan sebelum dan sesudah 1908 adalah pada aspek...", o: ["Senjata yang digunakan", "Tujuan perjuangan", "Organisasi dan sifat perjuangan", "Jumlah pejuang"], a: "Organisasi dan sifat perjuangan", p: "Sebelum 1908, perjuangan bersifat kedaerahan dan bergantung pada pemimpin kharismatik. Sesudah 1908, perjuangan menjadi lebih terorganisir, modern, dan bersifat nasional." },
+                { q: "Dalam sidang BPUPKI, terjadi perbedaan pendapat mengenai sila pertama Pancasila. Proses ini menunjukkan bahwa para pendiri bangsa mengutamakan...", o: ["Kepentingan pribadi", "Kepentingan golongan", "Musyawarah untuk mufakat", "Kekuatan mayoritas"], a: "Musyawarah untuk mufakat", p: "Adanya diskusi, perdebatan, dan akhirnya kesepakatan dalam merumuskan Pancasila menunjukkan bahwa para pendiri bangsa menjunjung tinggi nilai musyawarah." },
+                { q: "Perubahan sila pertama dalam Piagam Jakarta menjadi 'Ketuhanan Yang Maha Esa' menunjukkan sikap para pendiri bangsa yang...", o: ["Tidak konsisten dengan keputusan awal", "Mengutamakan persatuan di atas kepentingan golongan", "Takut terhadap kelompok minoritas", "Mengikuti saran dari pihak Jepang"], a: "Mengutamakan persatuan di atas kepentingan golongan", p: "Keputusan ini diambil untuk memastikan semua golongan dan daerah di Indonesia merasa terwakili dan menjadi bagian dari negara baru, sehingga menjaga keutuhan NKRI." },
+                { q: "Setiap pengendara wajib berhenti saat lampu lalu lintas berwarna merah. Aturan ini merupakan contoh norma hukum yang bertujuan untuk...", o: ["Meningkatkan pendapatan negara dari denda", "Mengurangi kecepatan kendaraan", "Menciptakan keselamatan dan ketertiban di jalan raya", "Menguji kesabaran pengendara"], a: "Menciptakan keselamatan dan ketertiban di jalan raya", p: "Aturan lalu lintas dibuat untuk menjamin keselamatan semua pengguna jalan dan menciptakan arus lalu lintas yang tertib." },
+                { q: "Seorang siswa menemukan dompet di kantin sekolah, kemudian menyerahkannya kepada guru. Tindakan siswa tersebut didorong oleh norma...", o: ["Kesopanan dan Hukum", "Agama dan Kesusilaan", "Adat dan Kebiasaan", "Hukum dan Agama"], a: "Agama dan Kesusilaan", p: "Tindakan ini didasari oleh ajaran agama (kejujuran adalah perintah Tuhan) dan bisikan hati nurani (kesusilaan) untuk melakukan hal yang benar." },
+                { q: "Sistematika UUD 1945 setelah amandemen menjadi lebih sederhana, yaitu hanya terdiri dari...", o: ["Pembukaan dan Batang Tubuh", "Pembukaan dan Penjelasan", "Batang Tubuh dan Penjelasan", "Pembukaan, Batang Tubuh, dan Penjelasan"], a: "Pembukaan dan Batang Tubuh", p: "Setelah amandemen, bagian 'Penjelasan' dihapuskan dan isinya yang relevan dimasukkan ke dalam pasal-pasal (Batang Tubuh) untuk menghindari tafsir ganda." },
+                { q: "Amandemen UUD 1945 memperkuat sistem pemerintahan presidensial dengan menegaskan bahwa Presiden...", o: ["Bertanggung jawab kepada MPR", "Tidak dapat diberhentikan di tengah masa jabatan", "Memegang kekuasaan legislatif", "Dipilih langsung oleh rakyat dan tidak bertanggung jawab kepada parlemen"], a: "Dipilih langsung oleh rakyat dan tidak bertanggung jawab kepada parlemen", p: "Dalam sistem presidensial yang diperkuat, presiden (kepala eksekutif) mendapatkan mandat langsung dari rakyat dan tidak tunduk pada parlemen (legislatif)." },
+                { q: "Andi selalu menggunakan bahasa yang halus saat berbicara dengan kakeknya. Perilaku Andi mencerminkan penerapan norma...", o: ["Hukum", "Agama", "Kesopanan", "Kesusilaan"], a: "Kesopanan", p: "Menggunakan bahasa yang halus kepada orang yang lebih tua adalah bagian dari etika dan sopan santun dalam pergaulan masyarakat." },
+                { q: "Hak seorang siswa di sekolah adalah mendapatkan pengajaran, sedangkan kewajibannya adalah...", o: ["Mendapat nilai bagus", "Mendapat teman banyak", "Mendapat fasilitas sekolah", "Menghormati guru dan menaati peraturan"], a: "Menghormati guru dan menaati peraturan", p: "Kewajiban adalah sesuatu yang harus dilakukan sebagai imbal balik dari hak yang diterima. Menghormati guru dan menaati aturan adalah kewajiban dasar seorang siswa." },
+                { q: "Pancasila disebut sebagai 'Philosophische Grondslag' atau dasar filsafat negara. Artinya...", o: ["Pancasila adalah pandangan hidup bangsa", "Pancasila merupakan dasar dalam penyelenggaraan negara dan pemerintahan", "Pancasila adalah perjanjian luhur bangsa", "Pancasila adalah sumber dari segala sumber hukum"], a: "Pancasila merupakan dasar dalam penyelenggaraan negara dan pemerintahan", p: "Sebagai dasar filsafat, Pancasila menjadi landasan berpikir dan acuan bagi seluruh kegiatan penyelenggaraan negara." },
+                { q: "Kepala banteng sebagai lambang sila keempat memiliki makna filosofis bahwa...", o: ["Rakyat Indonesia harus kuat seperti banteng", "Banteng adalah hewan asli Indonesia", "Pengambilan keputusan harus dilakukan secara musyawarah mufakat", "Banteng adalah hewan sosial yang suka berkumpul"], a: "Banteng adalah hewan sosial yang suka berkumpul", p: "Filosofi banteng yang suka berkumpul mencerminkan sifat bangsa Indonesia yang suka bermusyawarah untuk mencapai mufakat dalam mengambil keputusan." },
+                { q: "Seseorang yang membuang sampah sembarangan berarti telah melanggar norma...", o: ["Agama dan kesusilaan", "Hukum dan kesopanan", "Kesusilaan dan adat", "Agama dan hukum"], a: "Hukum dan kesopanan", p: "Membuang sampah sembarangan melanggar Peraturan Daerah (Perda) yang merupakan norma hukum, dan juga dianggap tidak sopan karena mengganggu kenyamanan orang lain." },
+                { q: "Tujuan negara Indonesia yang tercantum dalam Pembukaan UUD 1945 alinea keempat mencakup perlindungan, kesejahteraan, kecerdasan bangsa, dan...", o: ["Menguasai dunia", "Ikut melaksanakan ketertiban dunia", "Menjadi negara adidaya", "Membangun pangkalan militer"], a: "Ikut melaksanakan ketertiban dunia", p: "Tujuan negara yang keempat adalah ikut serta dalam perdamaian dan ketertiban dunia yang berdasarkan kemerdekaan, perdamaian abadi, dan keadilan sosial." },
+                { q: "Perbedaan antara hak dan kewajiban warga negara adalah...", o: ["Hak harus didahulukan daripada kewajiban", "Hak bersifat mutlak, kewajiban bersifat sukarela", "Hak adalah sesuatu yang diterima, kewajiban adalah sesuatu yang harus dilaksanakan", "Kewajiban hanya untuk rakyat, hak hanya untuk pemerintah"], a: "Hak adalah sesuatu yang diterima, kewajiban adalah sesuatu yang harus dilaksanakan", p: "Ini adalah definisi paling mendasar yang membedakan antara hak dan kewajiban. Keduanya harus dijalankan secara seimbang." },
+                { q: "Panitia Persiapan Kemerdekaan Indonesia (PPKI) dibentuk untuk menggantikan BPUPKI. Tugas utama PPKI adalah...", o: ["Melanjutkan perumusan dasar negara", "Mengesahkan UUD dan mempersiapkan pemerintahan", "Melawan tentara sekutu yang datang", "Menyusun teks proklamasi kemerdekaan"], a: "Mengesahkan UUD dan mempersiapkan pemerintahan", p: "Setelah dasar negara dirumuskan oleh BPUPKI, tugas PPKI adalah menyempurnakan, mengesahkan, dan mempersiapkan perangkat pemerintahan awal." },
+                { q: "Dalam tata urutan peraturan perundang-undangan, Peraturan Daerah (Perda) Provinsi harus sejalan dan tidak boleh bertentangan dengan...", o: ["Adat istiadat setempat", "Keinginan gubernur", "Peraturan di bawahnya, seperti Perda Kabupaten/Kota", "Peraturan di atasnya, seperti Undang-Undang"], a: "Peraturan di atasnya, seperti Undang-Undang", p: "Asas hierarki menyatakan bahwa peraturan yang lebih rendah tidak boleh bertentangan dengan peraturan yang lebih tinggi tingkatannya." },
+                { q: "Nilai yang terkandung dalam sila 'Kemanusiaan yang adil dan beradab' antara lain adalah...", o: ["Kebebasan memeluk agama", "Mengakui persamaan derajat antarmanusia", "Menjaga persatuan bangsa", "Menghargai hasil musyawarah"], a: "Mengakui persamaan derajat antarmanusia", p: "Sila kedua menekankan pada penghargaan terhadap harkat dan martabat manusia tanpa membeda-bedakan suku, ras, agama, dan status sosial." },
+                { q: "Pancasila sebagai dasar negara memiliki fungsi untuk...", o: ["Mengatur kehidupan pribadi warga negara", "Menjadi pedoman dalam penyelenggaraan negara", "Menjadi simbol kedaulatan negara", "Mengatur hubungan dengan negara lain"], a: "Menjadi pedoman dalam penyelenggaraan negara", p: "Semua tindakan pemerintah dan peraturan yang dibuat harus berlandaskan dan sesuai dengan nilai-nilai Pancasila." },
+                { q: "Yang dimaksud dengan 'Amandemen' UUD 1945 adalah...", o: ["Penghapusan UUD 1945", "Pembuatan UUD yang baru", "Perubahan atau penambahan pasal-pasal dalam UUD 1945", "Penafsiran ulang UUD 1945"], a: "Perubahan atau penambahan pasal-pasal dalam UUD 1945", p: "Amandemen adalah proses perubahan resmi terhadap dokumen, dalam hal ini adalah pasal-pasal UUD 1945, tanpa mengubah Pembukaannya." },
+                { q: "Jika seorang teman mengajakmu untuk membolos sekolah, menolaknya adalah tindakan yang sesuai dengan norma kesusilaan karena...", o: ["Takut dihukum oleh guru", "Tidak ingin mengecewakan orang tua", "Bertentangan dengan hati nurani yang tahu bahwa itu salah", "Sayang uang jajan jika tidak masuk sekolah"], a: "Bertentangan dengan hati nurani yang tahu bahwa itu salah", p: "Norma kesusilaan bersumber dari hati nurani manusia yang cenderung menolak perbuatan yang tidak baik atau salah." },
+                { q: "Salah satu contoh hak warga negara dalam bidang politik adalah...", o: ["Hak mendapat pekerjaan", "Hak memeluk agama", "Hak memilih dan dipilih dalam pemilu", "Hak mendapat pendidikan"], a: "Hak memilih dan dipilih dalam pemilu", p: "Hak untuk berpartisipasi dalam pemerintahan, seperti memilih dalam pemilu, adalah bagian dari hak politik warga negara." },
+                { q: "Norma yang memiliki sanksi paling tegas dan memaksa adalah norma...", o: ["Agama", "Kesopanan", "Kesusilaan", "Hukum"], a: "Hukum", p: "Norma hukum memiliki aparat penegak (polisi, jaksa, hakim) dan sanksi yang jelas (denda, penjara) yang bersifat memaksa." },
+                { q: "Musyawarah untuk menentukan ketua kelas adalah penerapan sila ke...", o: ["Dua", "Tiga", "Empat", "Lima"], a: "Empat", p: "Kegiatan musyawarah untuk mencapai mufakat dalam mengambil keputusan bersama adalah cerminan dari sila keempat." },
+                { q: "Mengapa Ir. Soekarno, Drs. Moh. Hatta, dan Dr. Radjiman Wedyodiningrat dianggap sebagai tokoh utama dalam pengusul dasar negara?", o: ["Karena mereka yang paling tua", "Karena mereka ketua dan wakil ketua BPUPKI serta pengusul nama Pancasila", "Karena mereka yang menulis teks proklamasi", "Karena mereka yang menjadi presiden pertama"], a: "Karena mereka ketua dan wakil ketua BPUPKI serta pengusul nama Pancasila", p: "Dr. Radjiman adalah ketua BPUPKI, sementara Soekarno dan Hatta (bersama Moh. Yamin & Soepomo) adalah tokoh sentral dalam perumusan dan pengusulan Pancasila." },
+                { q: "Hubungan antara norma dan UUD 1945 adalah...", o: ["Norma lebih tinggi dari UUD 1945", "UUD 1945 adalah sumber dari segala norma hukum di Indonesia", "Norma dan UUD 1945 tidak berhubungan", "UUD 1945 hanya mengatur norma hukum"], a: "UUD 1945 adalah sumber dari segala norma hukum di Indonesia", p: "Sebagai hukum dasar tertinggi, UUD 1945 menjadi acuan dan sumber bagi pembentukan semua peraturan hukum (norma hukum) di bawahnya." },
+                { q: "Contoh sikap positif terhadap pokok pikiran Pembukaan UUD 1945 tentang persatuan adalah...", o: ["Hanya mau berteman dengan yang satu suku", "Mengikuti upacara bendera dengan khidmat", "Mementingkan pendapat pribadi saat musyawarah", "Menuntut hak tanpa melaksanakan kewajiban"], a: "Mengikuti upacara bendera dengan khidmat", p: "Mengikuti upacara bendera adalah salah satu cara menunjukkan rasa cinta tanah air dan komitmen terhadap persatuan bangsa." },
+                { q: "Sistematika UUD 1945 yang berlaku saat ini adalah...", o: ["Pembukaan, Pasal-pasal, Penjelasan", "Pembukaan dan Pasal-pasal", "Pasal-pasal dan Penjelasan", "Pembukaan saja"], a: "Pembukaan dan Pasal-pasal", p: "Setelah amandemen, bagian Penjelasan resmi dihapus dari sistematika UUD NRI Tahun 1945." },
+                { q: "Sikap yang sesuai dengan norma dalam kehidupan sosial berdasarkan QS. Al-Maidah ayat 2 adalah...", o: ["Saling menolong dalam keburukan", "Bekerja sama dalam kebaikan dan takwa", "Membiarkan teman yang berbuat salah", "Tidak peduli dengan kesulitan orang lain"], a: "Bekerja sama dalam kebaikan dan takwa", p: "Ayat tersebut berisi perintah untuk saling tolong-menolong dalam mengerjakan kebajikan dan takwa, dan larangan tolong-menolong dalam berbuat dosa dan permusuhan." },
+                { q: "Pentingnya menaati norma sosial kesopanan berdasarkan QS. An-Nur ayat 27 adalah untuk...", o: ["Mendapatkan pujian dari orang lain", "Menjaga privasi dan menghormati pemilik rumah", "Menunjukkan bahwa kita lebih baik dari orang lain", "Agar bisa masuk ke rumah orang tanpa izin"], a: "Menjaga privasi dan menghormati pemilik rumah", p: "Ayat tersebut mengajarkan adab meminta izin sebelum memasuki rumah orang lain, yang bertujuan untuk menjaga kehormatan dan privasi penghuninya." }
+            ],
+            hard: [
+                { q: "Meskipun nilai-nilai Pancasila sudah ada sejak lama, perumusannya sebagai dasar negara yang sistematis baru terjadi pada masa persiapan kemerdekaan. Apa yang membedakan nilai Pancasila sebelum dan sesudah tahun 1945?", o: ["Sebelum 1945 bersifat universal, sesudah 1945 bersifat nasional", "Sebelum 1945 tidak tertulis, sesudah 1945 dirumuskan secara formal dan sah", "Sebelum 1945 hanya mitos, sesudah 1945 menjadi fakta sejarah", "Tidak ada perbedaan sama sekali"], a: "Sebelum 1945 tidak tertulis, sesudah 1945 dirumuskan secara formal dan sah", p: "Sebelum kemerdekaan, nilai-nilai Pancasila hidup dalam adat dan budaya (tidak tertulis). Setelah 1945, nilai-nilai tersebut dirumuskan, disahkan, dan dilembagakan menjadi dasar negara yang formal." },
+                { q: "Analisis makna dari rantai yang saling berkaitan pada lambang sila kedua adalah...", o: ["Semua manusia terikat oleh takdir yang sama", "Hubungan antarmanusia yang setara dan tidak terputus", "Kekuatan persatuan yang sulit dihancurkan", "Pentingnya kerja sama untuk mencapai tujuan"], a: "Hubungan antarmanusia yang setara dan tidak terputus", p: "Rantai dengan mata rantai bulat (wanita) dan persegi (pria) yang saling menyambung melambangkan bahwa setiap manusia, pria dan wanita, saling membutuhkan dan harus bersatu dalam semangat kemanusiaan yang adil dan beradab." },
+                { q: "Bandingkan tujuan organisasi Budi Utomo dengan Indische Partij. Perbedaan mendasar keduanya terletak pada...", o: ["Bidang perjuangan (pendidikan vs politik)", "Keanggotaan (Jawa vs semua golongan)", "Tujuan akhir (kemerdekaan vs kemajuan budaya)", "Semua jawaban benar"], a: "Semua jawaban benar", p: "Budi Utomo fokus pada pendidikan dan budaya untuk kalangan priyayi Jawa. Sebaliknya, Indische Partij secara terang-terangan berpolitik, keanggotaannya terbuka untuk semua golongan, dan tujuannya adalah kemerdekaan Indonesia." },
+                { q: "Jika BPUPKI tidak mencapai kesepakatan dalam merumuskan dasar negara, kemungkinan terbesar yang akan terjadi adalah...", o: ["Proklamasi kemerdekaan akan tetap berjalan lancar", "Terjadinya penundaan proklamasi dan potensi perpecahan bangsa", "Jepang akan mengambil alih kembali perumusan dasar negara", "Indonesia akan mengadopsi dasar negara dari negara lain"], a: "Terjadinya penundaan proklamasi dan potensi perpecahan bangsa", p: "Dasar negara adalah fondasi utama sebuah negara. Tanpa kesepakatan mengenai fondasi ini, persatuan bangsa akan terancam dan proses menuju kemerdekaan akan terhambat." },
+                { q: "Analisis alasan mengapa norma hukum memerlukan sanksi yang bersifat memaksa, tidak seperti norma lainnya?", o: ["Karena norma hukum dibuat oleh penguasa", "Agar negara mendapat pemasukan dari denda", "Untuk memberikan efek jera dan menjamin kepastian hukum", "Karena pelanggaran norma hukum lebih berbahaya"], a: "Untuk memberikan efek jera dan menjamin kepastian hukum", p: "Sanksi yang memaksa bertujuan untuk mencegah orang melanggar (efek jera) dan memastikan bahwa setiap pelanggaran akan ditindak secara adil dan pasti, sehingga aturan benar-benar ditaati." },
+                { q: "Di suatu daerah, ada kebiasaan untuk tidak keluar rumah saat magrib. Kebiasaan ini ditaati oleh warga. Jika ada yang melanggar, ia akan ditegur oleh para tetua. Norma yang berlaku dalam kasus ini adalah...", o: ["Norma Hukum", "Norma Kesusilaan", "Norma Adat/Kebiasaan", "Norma Agama"], a: "Norma Adat/Kebiasaan", p: "Aturan yang hidup dan diyakini oleh suatu masyarakat secara turun-temurun, dengan sanksi sosial dari komunitas tersebut, termasuk dalam kategori norma adat atau kebiasaan." },
+                { q: "Seorang pejabat negara melakukan korupsi. Ia melanggar beberapa norma sekaligus, yaitu...", o: ["Hukum, Agama, dan Kesusilaan", "Kesopanan, Adat, dan Hukum", "Agama, Kesopanan, dan Adat", "Hanya norma Hukum"], a: "Hukum, Agama, dan Kesusilaan", p: "Korupsi melanggar hukum negara (UU Tipikor), ajaran agama (mencuri/mengambil yang bukan haknya), dan hati nurani (kesusilaan)." },
+                { q: "Hubungan kausal (sebab-akibat) antara Pembukaan UUD 1945 dengan Batang Tubuh UUD 1945 adalah...", o: ["Pembukaan adalah ringkasan dari Batang Tubuh", "Batang Tubuh adalah penjelasan rinci dari Pembukaan", "Keduanya tidak memiliki hubungan sebab-akibat", "Pembukaan menjabarkan pokok-pokok pikiran yang kemudian diuraikan dalam pasal-pasal Batang Tubuh"], a: "Pembukaan menjabarkan pokok-pokok pikiran yang kemudian diuraikan dalam pasal-pasal Batang Tubuh", p: "Pokok-pokok pikiran yang terkandung dalam Pembukaan (misalnya, negara melindungi segenap bangsa) kemudian dijabarkan secara rinci dalam bentuk pasal-pasal di Batang Tubuh." },
+                { q: "Salah satu kritik terhadap sistematika UUD 1945 sebelum amandemen adalah adanya bagian 'Penjelasan' yang dianggap...", o: ["Terlalu singkat dan tidak jelas", "Dapat menimbulkan penafsiran ganda dan dianggap lebih tinggi dari pasal", "Tidak sesuai dengan budaya Indonesia", "Meniru konstitusi negara lain"], a: "Dapat menimbulkan penafsiran ganda dan dianggap lebih tinggi dari pasal", p: "Adanya 'Penjelasan' seringkali membuat penafsiran hukum menjadi tidak pasti dan terkadang dianggap 'mengunci' makna pasal, sehingga bagian ini dihapus saat amandemen." },
+                { q: "Seorang siswa berhak mendapatkan perlakuan yang adil dari guru. Namun, jika siswa tersebut tidak mengerjakan tugas, guru memberikan sanksi. Tindakan guru tersebut...", o: ["Melanggar hak siswa", "Tidak adil dan diskriminatif", "Benar, karena hak dan kewajiban harus seimbang", "Sebaiknya tidak dilakukan agar siswa senang"], a: "Benar, karena hak dan kewajiban harus seimbang", p: "Keadilan bukan berarti perlakuan yang sama rata. Memberikan sanksi atas kelalaian kewajiban adalah bagian dari mendidik dan menegakkan aturan, yang juga merupakan bentuk keadilan." },
+                { q: "Mengapa rumusan sila pertama 'Ketuhanan' dalam Pancasila tidak menyebutkan nama agama tertentu?", o: ["Agar semua agama bisa masuk", "Untuk memberikan ruang bagi kepercayaan lain di luar agama resmi", "Untuk merangkul dan melindungi semua pemeluk agama dan kepercayaan di Indonesia", "Karena para pendiri bangsa tidak religius"], a: "Untuk merangkul dan melindungi semua pemeluk agama dan kepercayaan di Indonesia", p: "Penggunaan istilah 'Ketuhanan Yang Maha Esa' bersifat inklusif, artinya merangkul semua agama yang mengakui adanya Tuhan, sesuai dengan kondisi bangsa Indonesia yang majemuk." },
+                { q: "Pohon beringin melambangkan persatuan Indonesia. Akar gantungnya yang banyak melambangkan...", o: ["Beragamnya suku, agama, dan budaya yang tetap bernaung di bawah persatuan Indonesia", "Kekuatan TNI yang menjaga keutuhan negara", "Sumber daya alam Indonesia yang melimpah", "Pentingnya sejarah sebagai akar bangsa"], a: "Beragamnya suku, agama, dan budaya yang tetap bernaung di bawah persatuan Indonesia", p: "Pohon beringin yang besar dan rindang menjadi tempat bernaung, sementara akarnya yang menjalar ke mana-mana melambangkan keragaman yang menjadi bagian dari satu kesatuan." },
+                { q: "Jika tidak ada norma dalam masyarakat, maka yang akan terjadi adalah 'homo homini lupus', yang artinya...", o: ["Manusia adalah makhluk sosial", "Manusia menjadi serigala bagi manusia lainnya", "Manusia akan hidup damai", "Manusia akan kembali ke alam"], a: "Manusia menjadi serigala bagi manusia lainnya", p: "Istilah ini berarti tanpa aturan, manusia akan saling memangsa dan menghancurkan karena hanya mengikuti hawa nafsunya. Ini menggambarkan kondisi anarki atau kekacauan." },
+                { q: "Analisis perbedaan mendasar antara BPUPKI dan PPKI dari segi keanggotaan dan statusnya.", o: ["BPUPKI lebih banyak anggotanya, PPKI lebih sedikit", "BPUPKI dibentuk Jepang, PPKI dibentuk oleh bangsa Indonesia sendiri", "Keanggotaan BPUPKI lebih beragam, sedangkan PPKI lebih mewakili bangsa Indonesia dan statusnya lebih mandiri", "Tidak ada perbedaan yang signifikan"], a: "Keanggotaan BPUPKI lebih beragam, sedangkan PPKI lebih mewakili bangsa Indonesia dan statusnya lebih mandiri", p: "Keanggotaan PPKI diubah dengan menambahkan tokoh-tokoh dari luar Jawa sehingga lebih representatif. PPKI juga dianggap lebih mandiri karena bekerja setelah Jepang menyerah." },
+                { q: "Amandemen UUD 1945 melahirkan lembaga-lembaga negara baru seperti Mahkamah Konstitusi (MK) dan Dewan Perwakilan Daerah (DPD). Tujuan pembentukan lembaga-lembaga ini adalah...", o: ["Menambah jumlah pejabat negara", "Menerapkan sistem 'checks and balances' dan memperkuat perwakilan daerah", "Mengurangi kekuasaan presiden", "Menyaingi kekuasaan DPR dan MPR"], a: "Menerapkan sistem 'checks and balances' dan memperkuat perwakilan daerah", p: "MK dibentuk untuk menguji undang-undang (checks and balances), sementara DPD dibentuk untuk memastikan aspirasi dan kepentingan daerah terwakili di tingkat nasional." },
+                { q: "Seorang YouTuber membuat konten yang isinya menghina suku tertentu. Selain melanggar norma hukum (UU ITE), tindakan ini juga sangat bertentangan dengan semangat Pancasila, terutama sila...", o: ["Pertama", "Kedua", "Ketiga", "Kelima"], a: "Ketiga", p: "Tindakan menghina suku lain secara langsung merusak persatuan dan kesatuan bangsa, yang merupakan inti dari sila ketiga, Persatuan Indonesia." },
+                { q: "Seorang ayah menerapkan aturan di rumah bahwa anak-anaknya harus sudah di rumah sebelum pukul 21.00. Aturan ini termasuk dalam...", o: ["Norma hukum negara", "Norma kesusilaan universal", "Norma tidak tertulis dalam lingkup keluarga", "Norma adat masyarakat"], a: "Norma tidak tertulis dalam lingkup keluarga", p: "Ini adalah contoh norma atau aturan yang berlaku spesifik dalam sebuah kelompok kecil (keluarga) untuk menjaga ketertiban anggotanya." },
+                { q: "Bagaimana Pancasila dapat dianggap sebagai solusi atas keberagaman bangsa Indonesia?", o: ["Dengan menghapuskan semua perbedaan yang ada", "Dengan menjadikan satu agama sebagai agama negara", "Dengan menyediakan nilai-nilai bersama yang dapat diterima semua golongan", "Dengan membatasi budaya daerah agar tidak berkembang"], a: "Dengan menyediakan nilai-nilai bersama yang dapat diterima semua golongan", p: "Pancasila berfungsi sebagai 'common platform' atau titik temu bagi semua suku, agama, dan golongan yang berbeda di Indonesia untuk hidup bersama dalam satu negara." },
+                { q: "Dalam hierarki perundang-undangan, Undang-Undang (UU) dibuat oleh DPR bersama Presiden. Jika sebuah UU dianggap bertentangan dengan UUD 1945, lembaga yang berwenang mengujinya adalah...", o: ["Majelis Permusyawaratan Rakyat (MPR)", "Mahkamah Agung (MA)", "Komisi Yudisial (KY)", "Mahkamah Konstitusi (MK)"], a: "Mahkamah Konstitusi (MK)", p: "Salah satu wewenang utama Mahkamah Konstitusi adalah melakukan pengujian yudisial (judicial review) terhadap undang-undang terhadap UUD." },
+                { q: "Mengapa Pembukaan UUD 1945 memiliki kedudukan yang lebih tinggi daripada pasal-pasalnya?", o: ["Karena letaknya di bagian awal dokumen", "Karena isinya lebih panjang dari pasal-pasal", "Karena memuat kaidah negara yang fundamental dan tidak bisa diubah", "Karena ditulis oleh Ir. Soekarno seorang diri"], a: "Karena memuat kaidah negara yang fundamental dan tidak bisa diubah", p: "Pembukaan UUD 1945 berisi dasar filosofis (Pancasila) dan tujuan negara yang menjadi sumber bagi pasal-pasal di dalamnya, sehingga kedudukannya bersifat fundamental." },
+                { q: "Contoh konflik antara hak individu dan kewajiban kepada masyarakat adalah...", o: ["Hak membangun rumah dan kewajiban membayar pajak bumi dan bangunan", "Hak kebebasan berekspresi dan kewajiban tidak menyebarkan ujaran kebencian", "Hak mendapat pendidikan dan kewajiban belajar", "Hak hidup sehat dan kewajiban menjaga kebersihan"], a: "Hak kebebasan berekspresi dan kewajiban tidak menyebarkan ujaran kebencian", p: "Seseorang bebas berekspresi (hak), tetapi kebebasan itu dibatasi oleh kewajiban untuk tidak merugikan orang lain, misalnya dengan menyebarkan kebencian." },
+                { q: "Jika kamu melihat temanmu menyontek saat ujian, dilema yang kamu hadapi adalah antara norma kesusilaan (kejujuran) dan norma kesopanan (menjaga perasaan teman). Sikap yang paling bijak adalah...", o: ["Membiarkannya karena bukan urusanmu", "Ikut menyontek agar adil", "Menegurnya secara halus setelah ujian selesai", "Melaporkannya langsung kepada pengawas dengan suara keras"], a: "Menegurnya secara halus setelah ujian selesai", p: "Sikap ini menjunjung tinggi kejujuran (norma kesusilaan) tanpa melanggar norma kesopanan secara berlebihan, yaitu dengan tidak mempermalukan teman di depan umum." },
+                { q: "Pancasila sebagai 'perjanjian luhur' bangsa Indonesia memiliki makna bahwa...", o: ["Pancasila dibuat melalui proses yang panjang dan disepakati oleh para pendiri bangsa", "Pancasila adalah dokumen yang tidak boleh disentuh", "Hanya para pahlawan yang boleh menafsirkan Pancasila", "Pancasila adalah warisan nenek moyang yang sakral"], a: "Pancasila dibuat melalui proses yang panjang dan disepakati oleh para pendiri bangsa", p: "Istilah 'perjanjian luhur' merujuk pada kesepakatan agung dari para wakil bangsa pada saat negara Indonesia didirikan." },
+                { q: "Perbedaan konsep negara kebangsaan yang diusulkan Soekarno dengan konsep negara integralistik dari Soepomo adalah...", o: ["Soekarno menekankan persatuan wilayah, Soepomo menekankan persatuan rakyat", "Soekarno menekankan gotong royong, Soepomo menekankan persatuan antara pemimpin dan rakyat", "Soekarno menolak agama, Soepomo menerima agama", "Tidak ada perbedaan signifikan"], a: "Soekarno menekankan gotong royong, Soepomo menekankan persatuan antara pemimpin dan rakyat", p: "Konsep integralistik Soepomo memandang negara sebagai satu kesatuan organik di mana individu dan golongan menyatu dengan negara dan pemimpinnya, tidak ada pemisahan." },
+                { q: "Pasal 29 UUD 1945 menjamin kemerdekaan tiap-tiap penduduk untuk memeluk agamanya masing-masing. Jaminan ini merupakan penjabaran dari Pancasila, sila...", o: ["Pertama", "Kedua", "Ketiga", "Keempat"], a: "Pertama", p: "Pasal tersebut secara langsung menguraikan dan memberikan landasan hukum bagi penerapan sila Ketuhanan Yang Maha Esa." },
+                { q: "Saat pemilihan ketua OSIS, calon A menang dengan selisih suara tipis dari calon B. Sebagai pendukung calon B, sikap yang sesuai dengan nilai demokrasi Pancasila adalah...", o: ["Memprotes hasil dan meminta pemilihan ulang", "Tidak mau mengakui ketua OSIS terpilih", "Menerima hasil dengan lapang dada dan mendukung program ketua terpilih", "Membentuk OSIS tandingan"], a: "Menerima hasil dengan lapang dada dan mendukung program ketua terpilih", p: "Demokrasi Pancasila mengajarkan untuk menghargai keputusan bersama (hasil pemungutan suara) dan tetap menjaga persatuan meskipun ada perbedaan pilihan." },
+                { q: "Perbedaan mendasar antara konstitusi tertulis (seperti UUD 1945) dan konstitusi tidak tertulis (konvensi) adalah...", o: ["Konstitusi tertulis lebih kuat daripada yang tidak tertulis", "Konstitusi tertulis sengaja dibuat, yang tidak tertulis tumbuh dari kebiasaan", "Konstitusi tertulis tidak bisa diubah, yang tidak tertulis bisa", "Konstitusi tertulis ada dalam naskah, yang tidak tertulis hidup dalam praktik ketatanegaraan"], a: "Konstitusi tertulis ada dalam naskah, yang tidak tertulis hidup dalam praktik ketatanegaraan", p: "Konstitusi tidak tertulis (konvensi) adalah aturan-aturan yang timbul dan terpelihara dalam praktik penyelenggaraan negara meskipun tidak tertulis dalam dokumen resmi." },
+                { q: "Mengapa amandemen UUD 1945 dilakukan sebanyak empat kali dalam periode yang singkat (1999-2002)?", o: ["Karena desakan dari negara asing", "Untuk menyesuaikan dengan perkembangan zaman dan tuntutan reformasi", "Karena UUD 1945 yang lama banyak kesalahan", "Agar MPR memiliki pekerjaan"], a: "Untuk menyesuaikan dengan perkembangan zaman dan tuntutan reformasi", p: "Amandemen dilakukan sebagai jawaban atas tuntutan reformasi untuk menciptakan sistem ketatanegaraan yang lebih demokratis, transparan, dan akuntabel." },
+                { q: "Penerapan nilai Pancasila dalam keluarga, misalnya sila keempat, dapat diwujudkan melalui...", o: ["Rajin beribadah bersama", "Membantu orang tua tanpa pamrih", "Berdiskusi untuk menentukan tujuan liburan keluarga", "Adil dalam membagi mainan dengan saudara"], a: "Berdiskusi untuk menentukan tujuan liburan keluarga", p: "Mengadakan diskusi atau musyawarah keluarga untuk mengambil keputusan bersama adalah cerminan langsung dari sila keempat di lingkungan terkecil." },
+                { q: "Pentingnya menaati norma sosial kesopanan berdasarkan QS. An-Nur (24:27) dalam konteks kehidupan modern adalah...", o: ["Agar dianggap sebagai orang yang religius", "Untuk menghormati privasi orang lain, baik di dunia nyata maupun digital (misal: tidak membuka chat tanpa izin)", "Supaya bisa diterima di semua lingkungan pergaulan", "Karena merupakan aturan yang tidak bisa dilanggar"], a: "Untuk menghormati privasi orang lain, baik di dunia nyata maupun digital (misal: tidak membuka chat tanpa izin)", p: "Prinsip meminta izin sebelum 'masuk' (seperti dalam ayat tersebut) sangat relevan saat ini untuk menghargai ruang pribadi orang lain, termasuk dalam interaksi di media sosial." }
+            ]
+        };
+
+
+        function startQuiz(mode) {
+            currentMode = mode;
+            currentQuestionIndex = 0;
+            score = 0;
+            selectedAnswer = null;
+            isShowingFeedback = false;
+            questions = allQuestions[mode];
+            
+            startScreen.classList.add('hidden');
+            resultScreen.classList.add('hidden');
+            quizScreen.classList.remove('hidden');
+
+            displayQuestion();
+        }
+
+        function displayQuestion() {
+            isShowingFeedback = false;
+            selectedAnswer = null;
+            feedbackContainer.classList.add('hidden');
+
+            const question = questions[currentQuestionIndex];
+            questionNumberEl.textContent = currentQuestionIndex + 1;
+            modeLabel.textContent = currentMode;
+            questionText.innerHTML = question.q;
+            
+            optionsContainer.innerHTML = '';
+            question.o.forEach((option) => {
+                const optionElement = document.createElement('button');
+                optionElement.innerHTML = option;
+                optionElement.classList.add('option-btn', 'w-full', 'p-4', 'border-2', 'border-slate-300', 'rounded-lg', 'text-left', 'transition-all', 'duration-200');
+                optionElement.onclick = () => selectOption(option, optionElement);
+                optionsContainer.appendChild(optionElement);
+            });
+
+            nextBtn.disabled = true;
+            nextBtn.textContent = 'Selanjutnya';
+        }
+
+        function selectOption(option, element) {
+            if (isShowingFeedback) return;
+
+            selectedAnswer = option;
+            const optionButtons = optionsContainer.querySelectorAll('.option-btn');
+            optionButtons.forEach(btn => btn.classList.remove('selected'));
+            element.classList.add('selected');
+            nextBtn.disabled = false;
+        }
+
+        function checkAnswerAndProceed() {
+            if (isShowingFeedback) {
+                currentQuestionIndex++;
+                if (currentQuestionIndex < questions.length) {
+                    displayQuestion();
+                } else {
+                    showResults();
+                }
+                return;
+            }
+
+            const question = questions[currentQuestionIndex];
+            const isCorrect = selectedAnswer === question.a;
+
+            if (isCorrect) {
+                score++;
+                currentQuestionIndex++;
+                if (currentQuestionIndex < questions.length) {
+                    displayQuestion();
+                } else {
+                    showResults();
+                }
+            } else {
+                isShowingFeedback = true;
+                feedbackText.innerHTML = question.p;
+                feedbackContainer.classList.remove('hidden');
+
+                const optionButtons = optionsContainer.querySelectorAll('.option-btn');
+                optionButtons.forEach(btn => {
+                    btn.disabled = true;
+                    if (btn.innerHTML === question.a) {
+                        btn.classList.add('correct');
+                    } else if (btn.innerHTML === selectedAnswer) {
+                        btn.classList.add('incorrect');
+                    }
+                });
+                
+                nextBtn.textContent = 'Lanjutkan';
+                nextBtn.disabled = false;
+            }
+        }
+
+        function showResults() {
+            quizScreen.classList.add('hidden');
+            resultScreen.classList.remove('hidden');
+            
+            const finalScore = Math.round((score / questions.length) * 100);
+            scoreEl.textContent = finalScore;
+            correctAnswersEl.textContent = score;
+            const resultText = document.querySelector('#result-screen .text-xl.text-indigo-800:last-of-type');
+            resultText.textContent = `${score} dari ${questions.length} soal benar`;
+        }
+
+        function restartQuiz() {
+            resultScreen.classList.add('hidden');
+            startScreen.classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>

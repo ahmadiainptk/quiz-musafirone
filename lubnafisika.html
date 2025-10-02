@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuis Interaktif Fisika - Kelas X</title>
+    <!-- Menggunakan Tailwind CSS untuk styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Menggunakan Google Fonts untuk tampilan yang lebih menarik -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Custom styles dan animasi */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .card {
+            background-color: white;
+            border-radius: 1.5rem; /* 24px */
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            transform: scale(0.95);
+            opacity: 0;
+            animation: fadeIn 0.5s forwards;
+        }
+        @keyframes fadeIn {
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        .btn {
+            transition: all 0.2s ease-in-out;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        .btn-correct {
+            animation: pulse-green 0.8s;
+        }
+        .btn-incorrect {
+            animation: shake 0.5s;
+        }
+        @keyframes pulse-green {
+            0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(34, 197, 94, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 flex items-center justify-center min-h-screen p-4">
+
+    <div id="quiz-container" class="w-full max-w-2xl mx-auto">
+        
+        <!-- Halaman Awal: Pemilihan Tingkat Kesulitan -->
+        <div id="start-screen" class="card p-8 text-center">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-2">Kuis Fisika Kelas X</h1>
+            <p class="text-gray-600 dark:text-gray-400 mb-8">Uji pemahamanmu tentang dasar-dasar fisika. Pilih tingkat kesulitan untuk memulai!</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <button onclick="startQuiz('normal')" class="btn w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-4 rounded-lg text-lg">
+                    Normal
+                </button>
+                <button onclick="startQuiz('medium')" class="btn w-full bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-3 px-4 rounded-lg text-lg">
+                    Medium
+                </button>
+                <button onclick="startQuiz('hard')" class="btn w-full bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-4 rounded-lg text-lg">
+                    Hard
+                </button>
+            </div>
+        </div>
+
+        <!-- Halaman Kuis -->
+        <div id="quiz-screen" class="card p-6 md:p-8 hidden">
+            <div class="mb-6">
+                <p id="question-counter" class="text-sm text-gray-500 dark:text-gray-400">Pertanyaan 1 dari 10</p>
+                <h2 id="question-text" class="text-xl md:text-2xl font-semibold my-4 text-gray-900 dark:text-white"></h2>
+            </div>
+            <div id="answer-buttons" class="grid grid-cols-1 gap-4">
+                <!-- Tombol jawaban akan di-generate oleh JavaScript -->
+            </div>
+            <div id="explanation-box" class="mt-6 p-4 rounded-lg bg-gray-50 dark:bg-gray-800 hidden">
+                <h3 class="font-bold text-lg mb-2 text-gray-900 dark:text-white">Penjelasan</h3>
+                <p id="explanation-text" class="text-gray-700 dark:text-gray-300"></p>
+                <button id="next-button" class="btn w-full mt-4 bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded-lg">Lanjut</button>
+            </div>
+        </div>
+
+        <!-- Halaman Hasil -->
+        <div id="result-screen" class="card p-8 text-center hidden">
+            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Kuis Selesai!</h2>
+            <p class="text-gray-600 dark:text-gray-400 mb-6">Berikut adalah hasil pencapaianmu:</p>
+            <div id="score-circle" class="relative w-40 h-40 mx-auto mb-6 flex items-center justify-center text-4xl font-bold bg-gray-200 dark:bg-gray-700 rounded-full">
+                <span id="score-percentage"></span>
+            </div>
+            <p id="score-text" class="text-lg mb-8"></p>
+            <button onclick="restartQuiz()" class="btn w-full bg-gray-700 hover:bg-gray-800 text-white font-bold py-3 px-4 rounded-lg text-lg">Coba Lagi</button>
+        </div>
+    </div>
+
+<script>
+    // --- DATABASE SOAL ---
+    // Berisi 40 soal yang mencakup 5 topik dengan 3 tingkat kesulitan
+    const allQuestions = [
+        // 1. Hakikat Fisika, Keselamatan Kerja & Metode Ilmiah
+        {
+            topic: "Hakikat Fisika",
+            difficulty: 'normal',
+            question: "Cabang ilmu pengetahuan yang mempelajari gejala alam yang tidak hidup atau materi dalam lingkup ruang dan waktu adalah...",
+            options: ["Biologi", "Kimia", "Fisika", "Geografi"],
+            answer: 2,
+            explanation: "Fisika adalah ilmu yang mempelajari materi, energi, ruang, dan waktu, serta interaksi antar komponen tersebut."
+        },
+        {
+            topic: "Hakikat Fisika",
+            difficulty: 'normal',
+            question: "Berikut ini yang merupakan langkah awal dalam metode ilmiah adalah...",
+            options: ["Menarik kesimpulan", "Melakukan observasi", "Membuat hipotesis", "Melakukan eksperimen"],
+            answer: 1,
+            explanation: "Metode ilmiah selalu diawali dengan pengamatan atau observasi terhadap suatu fenomena untuk menemukan masalah."
+        },
+        {
+            topic: "Hakikat Fisika",
+            difficulty: 'normal',
+            question: "Saat berada di laboratorium, sikap yang harus dihindari adalah...",
+            options: ["Mengenakan jas lab", "Makan dan minum", "Mengikat rambut panjang", "Membersihkan alat setelah digunakan"],
+            answer: 1,
+            explanation: "Makan dan minum di laboratorium sangat dilarang karena berisiko terkontaminasi zat kimia berbahaya."
+        },
+        {
+            topic: "Hakikat Fisika",
+            difficulty: 'medium',
+            question: "Dugaan sementara terhadap masalah yang sedang diteliti dalam metode ilmiah disebut...",
+            options: ["Teori", "Hukum", "Hipotesis", "Variabel"],
+            answer: 2,
+            explanation: "Hipotesis adalah jawaban atau dugaan sementara yang kebenarannya masih perlu diuji melalui eksperimen."
+        },
+         {
+            topic: "Hakikat Fisika",
+            difficulty: 'medium',
+            question: "Dalam sebuah eksperimen untuk menguji pengaruh suhu air terhadap kelarutan gula, yang menjadi variabel terikat adalah...",
+            options: ["Suhu air", "Jumlah gula yang larut", "Jenis wadah", "Waktu pengadukan"],
+            answer: 1,
+            explanation: "Variabel terikat adalah faktor yang diukur atau diamati sebagai hasil dari perubahan variabel bebas. Dalam kasus ini, jumlah gula yang larut dipengaruhi oleh suhu air (variabel bebas)."
+        },
+        {
+            topic: "Hakikat Fisika",
+            difficulty: 'hard',
+            question: "Seorang siswa ingin meneliti 'Apakah intensitas cahaya mempengaruhi laju fotosintesis?'. Manakah rumusan hipotesis yang paling tepat?",
+            options: ["Fotosintesis dipengaruhi oleh cahaya", "Semakin terang cahaya, semakin cepat laju fotosintesis", "Cahaya penting untuk tumbuhan", "Tumbuhan akan mati tanpa cahaya"],
+            answer: 1,
+            explanation: "Hipotesis yang baik harus spesifik dan dapat diuji. Pilihan ini menyatakan hubungan sebab-akibat yang jelas antara variabel bebas (intensitas cahaya) dan variabel terikat (laju fotosintesis)."
+        },
+        {
+            topic: "Hakikat Fisika",
+            difficulty: 'hard',
+            question: "Jika hasil eksperimen berulang kali tidak mendukung hipotesis awal, langkah yang seharusnya dilakukan seorang ilmuwan adalah...",
+            options: ["Mengubah data agar sesuai hipotesis", "Mengabaikan hasil tersebut", "Menolak atau merevisi hipotesis", "Menyalahkan alat yang digunakan"],
+            answer: 2,
+            explanation: "Integritas ilmiah menuntut seorang ilmuwan untuk menolak atau merevisi hipotesis jika data eksperimen secara konsisten tidak mendukungnya."
+        },
+         {
+            topic: "Hakikat Fisika",
+            difficulty: 'medium',
+            question: "Simbol bahaya di lab dengan gambar tengkorak dan tulang bersilang menandakan bahan yang bersifat...",
+            options: ["Mudah terbakar", "Korosif", "Beracun (toksik)", "Radioaktif"],
+            answer: 2,
+            explanation: "Simbol tengkorak dan tulang bersilang (skull and crossbones) adalah peringatan universal untuk bahan beracun atau toksik yang berbahaya jika tertelan, terhirup, atau terserap kulit."
+        },
+        // 2. Besaran dan Satuan
+        {
+            topic: "Besaran dan Satuan",
+            difficulty: 'normal',
+            question: "Di antara besaran berikut, yang termasuk besaran pokok adalah...",
+            options: ["Kecepatan", "Percepatan", "Suhu", "Gaya"],
+            answer: 2,
+            explanation: "Terdapat 7 besaran pokok dalam SI, salah satunya adalah Suhu dengan satuan Kelvin."
+        },
+        {
+            topic: "Besaran dan Satuan",
+            difficulty: 'normal',
+            question: "Satuan Internasional (SI) untuk besaran massa adalah...",
+            options: ["Gram", "Kilogram", "Pound", "Ons"],
+            answer: 1,
+            explanation: "Meskipun gram sering digunakan, satuan SI standar untuk massa adalah kilogram (kg)."
+        },
+        {
+            topic: "Besaran dan Satuan",
+            difficulty: 'normal',
+            question: "Besaran yang diturunkan dari besaran panjang dan waktu adalah...",
+            options: ["Massa jenis", "Kecepatan", "Suhu", "Kuat arus"],
+            answer: 1,
+            explanation: "Kecepatan memiliki satuan m/s, yang diturunkan dari besaran panjang (meter) dan waktu (sekon)."
+        },
+        {
+            topic: "Besaran dan Satuan",
+            difficulty: 'medium',
+            question: "Dimensi dari besaran percepatan adalah...",
+            options: ["[L][T]⁻¹", "[L][T]⁻²", "[M][L][T]⁻¹", "[M][L][T]⁻²"],
+            answer: 1,
+            explanation: "Percepatan memiliki satuan m/s². Meter adalah satuan panjang [L] dan sekon adalah satuan waktu [T], sehingga dimensinya adalah [L]/[T]² atau [L][T]⁻²."
+        },
+        {
+            topic: "Besaran dan Satuan",
+            difficulty: 'medium',
+            question: "Kelompok besaran berikut yang semuanya merupakan besaran turunan adalah...",
+            options: ["Massa, waktu, kecepatan", "Panjang, luas, volume", "Usaha, daya, gaya", "Suhu, intensitas cahaya, jumlah zat"],
+            answer: 2,
+            explanation: "Usaha, daya, dan gaya semuanya diturunkan dari kombinasi besaran-besaran pokok seperti massa, panjang, dan waktu."
+        },
+         {
+            topic: "Besaran dan Satuan",
+            difficulty: 'hard',
+            question: "Sebuah konstanta fisika memiliki satuan kg.m²/s². Besaran apakah yang paling mungkin diwakili oleh konstanta ini?",
+            options: ["Daya", "Tekanan", "Energi", "Momentum"],
+            answer: 2,
+            explanation: "Satuan kg.m²/s² adalah Joule, yang merupakan satuan untuk Energi atau Usaha. Dimensinya adalah [M][L]²[T]⁻²."
+        },
+        {
+            topic: "Besaran dan Satuan",
+            difficulty: 'hard',
+            question: "Jika gaya (F) memiliki dimensi [M][L][T]⁻² dan percepatan (a) memiliki dimensi [L][T]⁻², maka besaran F/a memiliki dimensi...",
+            options: ["[M]", "[L]", "[T]", "[M][L]"],
+            answer: 0,
+            explanation: "Berdasarkan Hukum II Newton (F=ma), maka m = F/a. Jadi, F/a memiliki dimensi yang sama dengan massa, yaitu [M]."
+        },
+         {
+            topic: "Besaran dan Satuan",
+            difficulty: 'hard',
+            question: "Analisis dimensi dapat digunakan untuk... ",
+            options: ["Menentukan nilai konstanta universal", "Membuktikan kebenaran suatu rumus secara kualitatif", "Menghitung nilai besaran secara pasti", "Menemukan semua rumus fisika"],
+            answer: 1,
+            explanation: "Analisis dimensi berguna untuk memeriksa apakah suatu persamaan atau rumus fisika konsisten secara dimensi. Jika dimensi di kedua sisi persamaan tidak sama, rumus tersebut pasti salah."
+        },
+        // 3. Awalan dan Konversi Satuan
+        {
+            topic: "Awalan dan Konversi Satuan",
+            difficulty: 'normal',
+            question: "Awalan 'kilo' dalam sistem SI merepresentasikan faktor perkalian...",
+            options: ["100", "1.000", "1.000.000", "0,001"],
+            answer: 1,
+            explanation: "Kilo (k) berarti seribu atau 10³."
+        },
+        {
+            topic: "Awalan dan Konversi Satuan",
+            difficulty: 'normal',
+            question: "Nilai dari 2,5 kilometer jika diubah ke dalam satuan meter adalah...",
+            options: ["25 meter", "250 meter", "2.500 meter", "25.000 meter"],
+            answer: 2,
+            explanation: "1 kilometer = 1.000 meter, jadi 2,5 km = 2,5 x 1.000 = 2.500 meter."
+        },
+        {
+            topic: "Awalan dan Konversi Satuan",
+            difficulty: 'medium',
+            question: "Kecepatan sebuah mobil adalah 72 km/jam. Jika dinyatakan dalam m/s, kecepatan mobil tersebut adalah...",
+            options: ["10 m/s", "15 m/s", "20 m/s", "25 m/s"],
+            answer: 2,
+            explanation: "72 km/jam = (72 * 1000 m) / (3600 s) = 72000 / 3600 = 20 m/s."
+        },
+        {
+            topic: "Awalan dan Konversi Satuan",
+            difficulty: 'medium',
+            question: "Luas sebuah ruangan adalah 50.000 cm². Berapakah luas ruangan tersebut dalam m²?",
+            options: ["0,5 m²", "5 m²", "50 m²", "500 m²"],
+            answer: 1,
+            explanation: "1 m = 100 cm, maka 1 m² = (100 cm)² = 10.000 cm². Jadi, 50.000 cm² = 50.000 / 10.000 = 5 m²."
+        },
+        {
+            topic: "Awalan dan Konversi Satuan",
+            difficulty: 'medium',
+            question: "Awalan 'mikro' (μ) memiliki nilai...",
+            options: ["10⁻³", "10⁻⁶", "10⁻⁹", "10⁻¹²"],
+            answer: 1,
+            explanation: "Awalan mikro (μ) berarti sepersejuta, atau 10⁻⁶."
+        },
+        {
+            topic: "Awalan dan Konversi Satuan",
+            difficulty: 'hard',
+            question: "Massa jenis air adalah 1 g/cm³. Jika dikonversi ke satuan SI (kg/m³), nilainya menjadi...",
+            options: ["1 kg/m³", "10 kg/m³", "100 kg/m³", "1000 kg/m³"],
+            answer: 3,
+            explanation: "1 g = 10⁻³ kg dan 1 cm³ = (10⁻² m)³ = 10⁻⁶ m³. Maka, 1 g/cm³ = (10⁻³ kg) / (10⁻⁶ m³) = 10³ kg/m³ = 1000 kg/m³."
+        },
+        {
+            topic: "Awalan dan Konversi Satuan",
+            difficulty: 'hard',
+            question: "Sebuah partikel bergerak dengan energi kinetik 400 Giga Joule (GJ). Berapa nilai energi ini dalam Mega Joule (MJ)?",
+            options: ["400.000 MJ", "40.000 MJ", "4.000 MJ", "400 MJ"],
+            answer: 0,
+            explanation: "Giga (G) = 10⁹ dan Mega (M) = 10⁶. Perbedaan faktornya adalah 10³ atau 1000. Jadi, 400 GJ = 400 x 1000 MJ = 400.000 MJ."
+        },
+        {
+            topic: "Awalan dan Konversi Satuan",
+            difficulty: 'hard',
+            question: "Volume sebuah drum adalah 0.25 m³. Berapa volume drum tersebut dalam mililiter (mL)?",
+            options: ["2.500 mL", "25.000 mL", "250.000 mL", "2.500.000 mL"],
+            answer: 2,
+            explanation: "1 m³ = 1000 Liter, dan 1 Liter = 1000 mL. Jadi 1 m³ = 1.000.000 mL. Maka, 0.25 m³ = 0.25 x 1.000.000 = 250.000 mL."
+        },
+        // 4. Pengukuran dengan Jangka Sorong dan Mikrometer Sekrup
+        {
+            topic: "Pengukuran Panjang",
+            difficulty: 'normal',
+            question: "Alat ukur yang paling tepat untuk mengukur diameter dalam sebuah pipa kecil adalah...",
+            options: ["Mistar", "Jangka sorong", "Mikrometer sekrup", "Meteran gulung"],
+            answer: 1,
+            explanation: "Jangka sorong memiliki rahang dalam yang dirancang khusus untuk mengukur diameter bagian dalam suatu objek."
+        },
+        {
+            topic: "Pengukuran Panjang",
+            difficulty: 'normal',
+            question: "Tingkat ketelitian (nilai skala terkecil) pada mikrometer sekrup pada umumnya adalah...",
+            options: ["1 mm", "0,1 mm", "0,5 mm", "0,01 mm"],
+            answer: 3,
+            explanation: "Mikrometer sekrup memiliki ketelitian yang sangat tinggi, yaitu hingga 0,01 mm, membuatnya cocok untuk mengukur ketebalan benda tipis."
+        },
+        {
+            topic: "Pengukuran Panjang",
+            difficulty: 'medium',
+            question: "Skala utama pada sebuah jangka sorong menunjukkan 4,7 cm. Skala nonius yang berimpit adalah skala ke-5. Hasil pengukurannya adalah...",
+            options: ["4,75 cm", "4,705 cm", "4,57 cm", "5,2 cm"],
+            answer: 0,
+            explanation: "Hasil = Skala Utama + (Skala Nonius x ketelitian) = 4,7 cm + (5 x 0,01 cm) = 4,7 cm + 0,05 cm = 4,75 cm."
+        },
+        {
+            topic: "Pengukuran Panjang",
+            difficulty: 'medium',
+            question: "Sebuah mikrometer sekrup menunjukkan skala utama 8,5 mm. Skala putar menunjukkan angka 23. Hasil pengukurannya adalah...",
+            options: ["8,523 mm", "8,73 mm", "8,23 mm", "10,8 mm"],
+            answer: 1,
+            explanation: "Hasil = Skala Utama + (Skala Putar x ketelitian) = 8,5 mm + (23 x 0,01 mm) = 8,5 mm + 0,23 mm = 8,73 mm."
+        },
+        {
+            topic: "Pengukuran Panjang",
+            difficulty: 'hard',
+            question: "Untuk mengukur ketebalan selembar kertas, alat ukur yang memberikan hasil paling akurat dan presisi adalah...",
+            options: ["Penggaris 30 cm", "Jangka sorong digital", "Mikrometer sekrup", "Meteran kain"],
+            answer: 2,
+            explanation: "Kertas sangat tipis, sehingga memerlukan alat dengan ketelitian sangat tinggi. Mikrometer sekrup (ketelitian 0,01 mm) adalah pilihan terbaik dibandingkan yang lain."
+        },
+        {
+            topic: "Pengukuran Panjang",
+            difficulty: 'hard',
+            question: "Perbedaan utama antara fungsi rahang atas dan rahang bawah pada jangka sorong adalah...",
+            options: ["Mengukur panjang dan lebar", "Mengukur diameter luar dan dalam", "Mengukur ketebalan dan kedalaman", "Sama saja, hanya beda ukuran"],
+            answer: 1,
+            explanation: "Rahang bawah (rahang besar) digunakan untuk mengukur dimensi luar (seperti diameter luar), sedangkan rahang atas (rahang kecil) untuk mengukur dimensi dalam."
+        },
+        {
+            topic: "Pengukuran Panjang",
+            difficulty: 'medium',
+            question: "Bagian dari jangka sorong yang digunakan untuk mengukur kedalaman sebuah lubang adalah...",
+            options: ["Rahang atas", "Rahang bawah", "Skala utama", "Batang pengukur kedalaman (depth rod)"],
+            answer: 3,
+            explanation: "Di ujung jangka sorong terdapat batang tipis yang akan keluar saat rahang digeser. Batang inilah yang digunakan untuk mengukur kedalaman."
+        },
+        {
+            topic: "Pengukuran Panjang",
+            difficulty: 'normal',
+            question: "Skala nonius pada jangka sorong berfungsi untuk...",
+            options: ["Menambah panjang pengukuran", "Mengunci posisi pengukuran", "Meningkatkan ketelitian pengukuran", "Sebagai skala utama"],
+            answer: 2,
+            explanation: "Skala nonius memungkinkan kita untuk membaca nilai pengukuran yang lebih kecil dari skala terkecil pada skala utama, sehingga meningkatkan ketelitian alat."
+        },
+        // 5. Pengukuran dan Ketidakpastian
+        {
+            topic: "Pengukuran dan Ketidakpastian",
+            difficulty: 'normal',
+            question: "Kesalahan yang disebabkan oleh keterbatasan pengamat, seperti salah membaca skala, disebut...",
+            options: ["Kesalahan sistematis", "Kesalahan acak", "Kesalahan kalibrasi", "Kesalahan paralaks"],
+            answer: 3,
+            explanation: "Kesalahan paralaks terjadi karena posisi mata pengamat tidak tegak lurus terhadap skala alat ukur, ini termasuk kesalahan akibat keterbatasan pengamat."
+        },
+        {
+            topic: "Pengukuran dan Ketidakpastian",
+            difficulty: 'normal',
+            question: "Ketidakpastian pada pengukuran tunggal biasanya diambil dari...",
+            options: ["Nilai pengukuran itu sendiri", "Dua kali nilai skala terkecil", "Setengah dari nilai skala terkecil", "Nilai maksimum alat ukur"],
+            answer: 2,
+            explanation: "Untuk pengukuran tunggal, ketidakpastian (Δx) umumnya dianggap sama dengan setengah dari nilai skala terkecil (NST) alat ukur yang digunakan."
+        },
+        {
+            topic: "Pengukuran dan Ketidakpastian",
+            difficulty: 'medium',
+            question: "Seorang siswa mengukur panjang pensil sebanyak 5 kali dan mendapatkan hasil: 15,2 cm; 15,4 cm; 15,3 cm; 15,2 cm; 15,4 cm. Berapakah rata-rata hasil pengukurannya?",
+            options: ["15,25 cm", "15,30 cm", "15,35 cm", "15,40 cm"],
+            answer: 1,
+            explanation: "Rata-rata = (15,2 + 15,4 + 15,3 + 15,2 + 15,4) / 5 = 76,5 / 5 = 15,3 cm."
+        },
+        {
+            topic: "Pengukuran dan Ketidakpastian",
+            difficulty: 'medium',
+            question: "Kesalahan yang disebabkan oleh kerusakan atau pergeseran titik nol pada alat ukur disebut...",
+            options: ["Kesalahan acak", "Kesalahan paralaks", "Kesalahan lingkungan", "Kesalahan kalibrasi (titik nol)"],
+            answer: 3,
+            explanation: "Kesalahan kalibrasi atau kesalahan titik nol adalah jenis kesalahan sistematis di mana titik awal pengukuran alat tidak tepat berada di angka nol."
+        },
+        {
+            topic: "Pengukuran dan Ketidakpastian",
+            difficulty: 'hard',
+            question: "Sebuah penggaris memiliki skala terkecil 1 mm. Panjang sebuah buku diukur dan hasilnya 25,4 cm. Penulisan hasil pengukuran yang benar beserta ketidakpastiannya adalah...",
+            options: ["(25,4 ± 0,1) cm", "(25,4 ± 0,05) cm", "(25,40 ± 0,05) cm", "(25,4 ± 1) cm"],
+            answer: 1,
+            explanation: "Skala terkecil = 1 mm = 0,1 cm. Ketidakpastian (Δx) = ½ x NST = ½ x 0,1 cm = 0,05 cm. Jadi, hasil ditulis sebagai (25,40 ± 0,05) cm. Angka 0 ditambahkan agar jumlah angka di belakang koma sesuai dengan ketidakpastiannya."
+        },
+        {
+            topic: "Pengukuran dan Ketidakpastian",
+            difficulty: 'hard',
+            question: "Manakah yang menunjukkan hasil pengukuran yang paling presisi?",
+            options: ["(10,5 ± 0,5) m", "(10,52 ± 0,05) m", "(10,525 ± 0,005) m", "(10,525 ± 0,1) m"],
+            answer: 2,
+            explanation: "Presisi berkaitan dengan ketidakpastian relatif yang paling kecil. Pilihan C memiliki ketidakpastian absolut (0,005 m) terkecil dibandingkan dengan nilai pengukurannya, sehingga ini adalah yang paling presisi."
+        }
+    ];
+
+    // --- VARIABEL GLOBAL UNTUK KUIS ---
+    const startScreen = document.getElementById('start-screen');
+    const quizScreen = document.getElementById('quiz-screen');
+    const resultScreen = document.getElementById('result-screen');
+
+    const questionCounter = document.getElementById('question-counter');
+    const questionText = document.getElementById('question-text');
+    const answerButtons = document.getElementById('answer-buttons');
+    const explanationBox = document.getElementById('explanation-box');
+    const explanationText = document.getElementById('explanation-text');
+    const nextButton = document.getElementById('next-button');
+
+    const scorePercentage = document.getElementById('score-percentage');
+    const scoreText = document.getElementById('score-text');
+
+    let currentQuestions = [];
+    let currentQuestionIndex = 0;
+    let score = 0;
+    const QUESTIONS_PER_QUIZ = 10; // Kuis akan terdiri dari 10 soal
+
+    // --- FUNGSI-FUNGSI KUIS ---
+
+    function startQuiz(difficulty) {
+        // Filter soal berdasarkan tingkat kesulitan
+        let filteredQuestions = allQuestions.filter(q => q.difficulty === difficulty);
+        
+        // Acak urutan soal yang sudah difilter
+        filteredQuestions.sort(() => Math.random() - 0.5);
+        
+        // Ambil 10 soal pertama atau sesuai jumlah yang tersedia
+        currentQuestions = filteredQuestions.slice(0, QUESTIONS_PER_QUIZ);
+        
+        currentQuestionIndex = 0;
+        score = 0;
+
+        startScreen.classList.add('hidden');
+        resultScreen.classList.add('hidden');
+        quizScreen.classList.remove('hidden');
+
+        showQuestion();
+    }
+
+    function showQuestion() {
+        resetState();
+        const question = currentQuestions[currentQuestionIndex];
+        
+        questionCounter.innerText = `Pertanyaan ${currentQuestionIndex + 1} dari ${currentQuestions.length}`;
+        questionText.innerText = question.question;
+
+        question.options.forEach((option, index) => {
+            const button = document.createElement('button');
+            button.innerText = option;
+            button.classList.add('btn', 'w-full', 'p-4', 'border', 'border-gray-300', 'dark:border-gray-600', 'rounded-lg', 'text-left', 'hover:bg-gray-100', 'dark:hover:bg-gray-700');
+            button.dataset.correct = (index === question.answer);
+            button.addEventListener('click', selectAnswer);
+            answerButtons.appendChild(button);
+        });
+    }
+
+    function resetState() {
+        explanationBox.classList.add('hidden');
+        while (answerButtons.firstChild) {
+            answerButtons.removeChild(answerButtons.firstChild);
+        }
+    }
+
+    function selectAnswer(e) {
+        const selectedButton = e.target;
+        const isCorrect = selectedButton.dataset.correct === 'true';
+
+        if (isCorrect) {
+            score++;
+            selectedButton.classList.add('bg-green-500', 'text-white', 'border-green-500', 'btn-correct');
+        } else {
+            selectedButton.classList.add('bg-red-500', 'text-white', 'border-red-500', 'btn-incorrect');
+        }
+
+        // Tampilkan penjelasan dan highlight jawaban yang benar
+        explanationText.innerText = currentQuestions[currentQuestionIndex].explanation;
+        Array.from(answerButtons.children).forEach(button => {
+            if (button.dataset.correct === 'true' && !isCorrect) {
+                button.classList.add('bg-green-500', 'text-white', 'border-green-500');
+            }
+            button.disabled = true; // Nonaktifkan semua tombol setelah menjawab
+        });
+
+        explanationBox.classList.remove('hidden');
+    }
+
+    nextButton.addEventListener('click', () => {
+        currentQuestionIndex++;
+        if (currentQuestionIndex < currentQuestions.length) {
+            showQuestion();
+        } else {
+            showResults();
+        }
+    });
+
+    function showResults() {
+        quizScreen.classList.add('hidden');
+        resultScreen.classList.remove('hidden');
+
+        const percentage = Math.round((score / currentQuestions.length) * 100);
+        scorePercentage.innerText = `${percentage}%`;
+        scoreText.innerText = `Kamu berhasil menjawab ${score} dari ${currentQuestions.length} pertanyaan dengan benar!`;
+        
+        // Mengubah warna lingkaran skor berdasarkan hasil
+        const scoreCircle = document.getElementById('score-circle');
+        scoreCircle.classList.remove('bg-red-200', 'bg-yellow-200', 'bg-green-200', 'dark:bg-red-700', 'dark:bg-yellow-700', 'dark:bg-green-700');
+        if (percentage < 50) {
+            scoreCircle.classList.add('bg-red-200', 'dark:bg-red-700');
+        } else if (percentage < 80) {
+            scoreCircle.classList.add('bg-yellow-200', 'dark:bg-yellow-700');
+        } else {
+            scoreCircle.classList.add('bg-green-200', 'dark:bg-green-700');
+        }
+    }
+
+    function restartQuiz() {
+        resultScreen.classList.add('hidden');
+        quizScreen.classList.add('hidden');
+        startScreen.classList.remove('hidden');
+    }
+
+</script>
+</body>
+</html>
+

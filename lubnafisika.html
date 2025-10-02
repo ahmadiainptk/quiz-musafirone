@@ -11,14 +11,15 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* Custom styles dan animasi */
+        /* Custom styles dan animasi untuk tema terang */
         body {
             font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6; /* bg-gray-100 */
         }
         .card {
             background-color: white;
             border-radius: 1.5rem; /* 24px */
-            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
             transform: scale(0.95);
             opacity: 0;
             animation: fadeIn 0.5s forwards;
@@ -54,14 +55,14 @@
         }
     </style>
 </head>
-<body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 flex items-center justify-center min-h-screen p-4">
+<body class="text-gray-800 flex items-center justify-center min-h-screen p-4">
 
     <div id="quiz-container" class="w-full max-w-2xl mx-auto">
         
         <!-- Halaman Awal: Pemilihan Tingkat Kesulitan -->
         <div id="start-screen" class="card p-8 text-center">
-            <h1 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-2">Kuis Fisika Kelas X</h1>
-            <p class="text-gray-600 dark:text-gray-400 mb-8">Uji pemahamanmu tentang dasar-dasar fisika. Pilih tingkat kesulitan untuk memulai!</p>
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-2">Kuis Fisika Kelas X</h1>
+            <p class="text-gray-600 mb-8">Uji pemahamanmu tentang dasar-dasar fisika. Pilih tingkat kesulitan untuk memulai!</p>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <button onclick="startQuiz('normal')" class="btn w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-4 rounded-lg text-lg">
                     Normal
@@ -78,345 +79,197 @@
         <!-- Halaman Kuis -->
         <div id="quiz-screen" class="card p-6 md:p-8 hidden">
             <div class="mb-6">
-                <p id="question-counter" class="text-sm text-gray-500 dark:text-gray-400">Pertanyaan 1 dari 10</p>
-                <h2 id="question-text" class="text-xl md:text-2xl font-semibold my-4 text-gray-900 dark:text-white"></h2>
+                <p id="question-counter" class="text-sm text-gray-500">Pertanyaan 1 dari 40</p>
+                <h2 id="question-text" class="text-xl md:text-2xl font-semibold my-4 text-gray-900"></h2>
             </div>
             <div id="answer-buttons" class="grid grid-cols-1 gap-4">
                 <!-- Tombol jawaban akan di-generate oleh JavaScript -->
             </div>
-            <div id="explanation-box" class="mt-6 p-4 rounded-lg bg-gray-50 dark:bg-gray-800 hidden">
-                <h3 class="font-bold text-lg mb-2 text-gray-900 dark:text-white">Penjelasan</h3>
-                <p id="explanation-text" class="text-gray-700 dark:text-gray-300"></p>
+            <div id="explanation-box" class="mt-6 p-4 rounded-lg bg-gray-50 hidden">
+                <h3 class="font-bold text-lg mb-2 text-gray-900">Penjelasan</h3>
+                <p id="explanation-text" class="text-gray-700"></p>
                 <button id="next-button" class="btn w-full mt-4 bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded-lg">Lanjut</button>
             </div>
         </div>
 
         <!-- Halaman Hasil -->
         <div id="result-screen" class="card p-8 text-center hidden">
-            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Kuis Selesai!</h2>
-            <p class="text-gray-600 dark:text-gray-400 mb-6">Berikut adalah hasil pencapaianmu:</p>
-            <div id="score-circle" class="relative w-40 h-40 mx-auto mb-6 flex items-center justify-center text-4xl font-bold bg-gray-200 dark:bg-gray-700 rounded-full">
+            <h2 class="text-3xl font-bold text-gray-900 mb-4">Kuis Selesai!</h2>
+            <p class="text-gray-600 mb-6">Berikut adalah hasil pencapaianmu:</p>
+            <div id="score-circle" class="relative w-40 h-40 mx-auto mb-6 flex items-center justify-center text-4xl font-bold bg-gray-200 rounded-full">
                 <span id="score-percentage"></span>
             </div>
             <p id="score-text" class="text-lg mb-8"></p>
-            <button onclick="restartQuiz()" class="btn w-full bg-gray-700 hover:bg-gray-800 text-white font-bold py-3 px-4 rounded-lg text-lg">Coba Lagi</button>
+            <button onclick="restartQuiz()" class="btn w-full bg-gray-700 hover:bg-gray-800 text-white font-bold py-3 px-4 rounded-lg text-lg">Ulangi Kuis</button>
         </div>
     </div>
 
 <script>
-    // --- DATABASE SOAL ---
-    // Berisi 40 soal yang mencakup 5 topik dengan 3 tingkat kesulitan
+    // --- DATABASE SOAL (120 Soal) ---
     const allQuestions = [
-        // 1. Hakikat Fisika, Keselamatan Kerja & Metode Ilmiah
-        {
-            topic: "Hakikat Fisika",
-            difficulty: 'normal',
-            question: "Cabang ilmu pengetahuan yang mempelajari gejala alam yang tidak hidup atau materi dalam lingkup ruang dan waktu adalah...",
-            options: ["Biologi", "Kimia", "Fisika", "Geografi"],
-            answer: 2,
-            explanation: "Fisika adalah ilmu yang mempelajari materi, energi, ruang, dan waktu, serta interaksi antar komponen tersebut."
-        },
-        {
-            topic: "Hakikat Fisika",
-            difficulty: 'normal',
-            question: "Berikut ini yang merupakan langkah awal dalam metode ilmiah adalah...",
-            options: ["Menarik kesimpulan", "Melakukan observasi", "Membuat hipotesis", "Melakukan eksperimen"],
-            answer: 1,
-            explanation: "Metode ilmiah selalu diawali dengan pengamatan atau observasi terhadap suatu fenomena untuk menemukan masalah."
-        },
-        {
-            topic: "Hakikat Fisika",
-            difficulty: 'normal',
-            question: "Saat berada di laboratorium, sikap yang harus dihindari adalah...",
-            options: ["Mengenakan jas lab", "Makan dan minum", "Mengikat rambut panjang", "Membersihkan alat setelah digunakan"],
-            answer: 1,
-            explanation: "Makan dan minum di laboratorium sangat dilarang karena berisiko terkontaminasi zat kimia berbahaya."
-        },
-        {
-            topic: "Hakikat Fisika",
-            difficulty: 'medium',
-            question: "Dugaan sementara terhadap masalah yang sedang diteliti dalam metode ilmiah disebut...",
-            options: ["Teori", "Hukum", "Hipotesis", "Variabel"],
-            answer: 2,
-            explanation: "Hipotesis adalah jawaban atau dugaan sementara yang kebenarannya masih perlu diuji melalui eksperimen."
-        },
-         {
-            topic: "Hakikat Fisika",
-            difficulty: 'medium',
-            question: "Dalam sebuah eksperimen untuk menguji pengaruh suhu air terhadap kelarutan gula, yang menjadi variabel terikat adalah...",
-            options: ["Suhu air", "Jumlah gula yang larut", "Jenis wadah", "Waktu pengadukan"],
-            answer: 1,
-            explanation: "Variabel terikat adalah faktor yang diukur atau diamati sebagai hasil dari perubahan variabel bebas. Dalam kasus ini, jumlah gula yang larut dipengaruhi oleh suhu air (variabel bebas)."
-        },
-        {
-            topic: "Hakikat Fisika",
-            difficulty: 'hard',
-            question: "Seorang siswa ingin meneliti 'Apakah intensitas cahaya mempengaruhi laju fotosintesis?'. Manakah rumusan hipotesis yang paling tepat?",
-            options: ["Fotosintesis dipengaruhi oleh cahaya", "Semakin terang cahaya, semakin cepat laju fotosintesis", "Cahaya penting untuk tumbuhan", "Tumbuhan akan mati tanpa cahaya"],
-            answer: 1,
-            explanation: "Hipotesis yang baik harus spesifik dan dapat diuji. Pilihan ini menyatakan hubungan sebab-akibat yang jelas antara variabel bebas (intensitas cahaya) dan variabel terikat (laju fotosintesis)."
-        },
-        {
-            topic: "Hakikat Fisika",
-            difficulty: 'hard',
-            question: "Jika hasil eksperimen berulang kali tidak mendukung hipotesis awal, langkah yang seharusnya dilakukan seorang ilmuwan adalah...",
-            options: ["Mengubah data agar sesuai hipotesis", "Mengabaikan hasil tersebut", "Menolak atau merevisi hipotesis", "Menyalahkan alat yang digunakan"],
-            answer: 2,
-            explanation: "Integritas ilmiah menuntut seorang ilmuwan untuk menolak atau merevisi hipotesis jika data eksperimen secara konsisten tidak mendukungnya."
-        },
-         {
-            topic: "Hakikat Fisika",
-            difficulty: 'medium',
-            question: "Simbol bahaya di lab dengan gambar tengkorak dan tulang bersilang menandakan bahan yang bersifat...",
-            options: ["Mudah terbakar", "Korosif", "Beracun (toksik)", "Radioaktif"],
-            answer: 2,
-            explanation: "Simbol tengkorak dan tulang bersilang (skull and crossbones) adalah peringatan universal untuk bahan beracun atau toksik yang berbahaya jika tertelan, terhirup, atau terserap kulit."
-        },
-        // 2. Besaran dan Satuan
-        {
-            topic: "Besaran dan Satuan",
-            difficulty: 'normal',
-            question: "Di antara besaran berikut, yang termasuk besaran pokok adalah...",
-            options: ["Kecepatan", "Percepatan", "Suhu", "Gaya"],
-            answer: 2,
-            explanation: "Terdapat 7 besaran pokok dalam SI, salah satunya adalah Suhu dengan satuan Kelvin."
-        },
-        {
-            topic: "Besaran dan Satuan",
-            difficulty: 'normal',
-            question: "Satuan Internasional (SI) untuk besaran massa adalah...",
-            options: ["Gram", "Kilogram", "Pound", "Ons"],
-            answer: 1,
-            explanation: "Meskipun gram sering digunakan, satuan SI standar untuk massa adalah kilogram (kg)."
-        },
-        {
-            topic: "Besaran dan Satuan",
-            difficulty: 'normal',
-            question: "Besaran yang diturunkan dari besaran panjang dan waktu adalah...",
-            options: ["Massa jenis", "Kecepatan", "Suhu", "Kuat arus"],
-            answer: 1,
-            explanation: "Kecepatan memiliki satuan m/s, yang diturunkan dari besaran panjang (meter) dan waktu (sekon)."
-        },
-        {
-            topic: "Besaran dan Satuan",
-            difficulty: 'medium',
-            question: "Dimensi dari besaran percepatan adalah...",
-            options: ["[L][T]⁻¹", "[L][T]⁻²", "[M][L][T]⁻¹", "[M][L][T]⁻²"],
-            answer: 1,
-            explanation: "Percepatan memiliki satuan m/s². Meter adalah satuan panjang [L] dan sekon adalah satuan waktu [T], sehingga dimensinya adalah [L]/[T]² atau [L][T]⁻²."
-        },
-        {
-            topic: "Besaran dan Satuan",
-            difficulty: 'medium',
-            question: "Kelompok besaran berikut yang semuanya merupakan besaran turunan adalah...",
-            options: ["Massa, waktu, kecepatan", "Panjang, luas, volume", "Usaha, daya, gaya", "Suhu, intensitas cahaya, jumlah zat"],
-            answer: 2,
-            explanation: "Usaha, daya, dan gaya semuanya diturunkan dari kombinasi besaran-besaran pokok seperti massa, panjang, dan waktu."
-        },
-         {
-            topic: "Besaran dan Satuan",
-            difficulty: 'hard',
-            question: "Sebuah konstanta fisika memiliki satuan kg.m²/s². Besaran apakah yang paling mungkin diwakili oleh konstanta ini?",
-            options: ["Daya", "Tekanan", "Energi", "Momentum"],
-            answer: 2,
-            explanation: "Satuan kg.m²/s² adalah Joule, yang merupakan satuan untuk Energi atau Usaha. Dimensinya adalah [M][L]²[T]⁻²."
-        },
-        {
-            topic: "Besaran dan Satuan",
-            difficulty: 'hard',
-            question: "Jika gaya (F) memiliki dimensi [M][L][T]⁻² dan percepatan (a) memiliki dimensi [L][T]⁻², maka besaran F/a memiliki dimensi...",
-            options: ["[M]", "[L]", "[T]", "[M][L]"],
-            answer: 0,
-            explanation: "Berdasarkan Hukum II Newton (F=ma), maka m = F/a. Jadi, F/a memiliki dimensi yang sama dengan massa, yaitu [M]."
-        },
-         {
-            topic: "Besaran dan Satuan",
-            difficulty: 'hard',
-            question: "Analisis dimensi dapat digunakan untuk... ",
-            options: ["Menentukan nilai konstanta universal", "Membuktikan kebenaran suatu rumus secara kualitatif", "Menghitung nilai besaran secara pasti", "Menemukan semua rumus fisika"],
-            answer: 1,
-            explanation: "Analisis dimensi berguna untuk memeriksa apakah suatu persamaan atau rumus fisika konsisten secara dimensi. Jika dimensi di kedua sisi persamaan tidak sama, rumus tersebut pasti salah."
-        },
-        // 3. Awalan dan Konversi Satuan
-        {
-            topic: "Awalan dan Konversi Satuan",
-            difficulty: 'normal',
-            question: "Awalan 'kilo' dalam sistem SI merepresentasikan faktor perkalian...",
-            options: ["100", "1.000", "1.000.000", "0,001"],
-            answer: 1,
-            explanation: "Kilo (k) berarti seribu atau 10³."
-        },
-        {
-            topic: "Awalan dan Konversi Satuan",
-            difficulty: 'normal',
-            question: "Nilai dari 2,5 kilometer jika diubah ke dalam satuan meter adalah...",
-            options: ["25 meter", "250 meter", "2.500 meter", "25.000 meter"],
-            answer: 2,
-            explanation: "1 kilometer = 1.000 meter, jadi 2,5 km = 2,5 x 1.000 = 2.500 meter."
-        },
-        {
-            topic: "Awalan dan Konversi Satuan",
-            difficulty: 'medium',
-            question: "Kecepatan sebuah mobil adalah 72 km/jam. Jika dinyatakan dalam m/s, kecepatan mobil tersebut adalah...",
-            options: ["10 m/s", "15 m/s", "20 m/s", "25 m/s"],
-            answer: 2,
-            explanation: "72 km/jam = (72 * 1000 m) / (3600 s) = 72000 / 3600 = 20 m/s."
-        },
-        {
-            topic: "Awalan dan Konversi Satuan",
-            difficulty: 'medium',
-            question: "Luas sebuah ruangan adalah 50.000 cm². Berapakah luas ruangan tersebut dalam m²?",
-            options: ["0,5 m²", "5 m²", "50 m²", "500 m²"],
-            answer: 1,
-            explanation: "1 m = 100 cm, maka 1 m² = (100 cm)² = 10.000 cm². Jadi, 50.000 cm² = 50.000 / 10.000 = 5 m²."
-        },
-        {
-            topic: "Awalan dan Konversi Satuan",
-            difficulty: 'medium',
-            question: "Awalan 'mikro' (μ) memiliki nilai...",
-            options: ["10⁻³", "10⁻⁶", "10⁻⁹", "10⁻¹²"],
-            answer: 1,
-            explanation: "Awalan mikro (μ) berarti sepersejuta, atau 10⁻⁶."
-        },
-        {
-            topic: "Awalan dan Konversi Satuan",
-            difficulty: 'hard',
-            question: "Massa jenis air adalah 1 g/cm³. Jika dikonversi ke satuan SI (kg/m³), nilainya menjadi...",
-            options: ["1 kg/m³", "10 kg/m³", "100 kg/m³", "1000 kg/m³"],
-            answer: 3,
-            explanation: "1 g = 10⁻³ kg dan 1 cm³ = (10⁻² m)³ = 10⁻⁶ m³. Maka, 1 g/cm³ = (10⁻³ kg) / (10⁻⁶ m³) = 10³ kg/m³ = 1000 kg/m³."
-        },
-        {
-            topic: "Awalan dan Konversi Satuan",
-            difficulty: 'hard',
-            question: "Sebuah partikel bergerak dengan energi kinetik 400 Giga Joule (GJ). Berapa nilai energi ini dalam Mega Joule (MJ)?",
-            options: ["400.000 MJ", "40.000 MJ", "4.000 MJ", "400 MJ"],
-            answer: 0,
-            explanation: "Giga (G) = 10⁹ dan Mega (M) = 10⁶. Perbedaan faktornya adalah 10³ atau 1000. Jadi, 400 GJ = 400 x 1000 MJ = 400.000 MJ."
-        },
-        {
-            topic: "Awalan dan Konversi Satuan",
-            difficulty: 'hard',
-            question: "Volume sebuah drum adalah 0.25 m³. Berapa volume drum tersebut dalam mililiter (mL)?",
-            options: ["2.500 mL", "25.000 mL", "250.000 mL", "2.500.000 mL"],
-            answer: 2,
-            explanation: "1 m³ = 1000 Liter, dan 1 Liter = 1000 mL. Jadi 1 m³ = 1.000.000 mL. Maka, 0.25 m³ = 0.25 x 1.000.000 = 250.000 mL."
-        },
-        // 4. Pengukuran dengan Jangka Sorong dan Mikrometer Sekrup
-        {
-            topic: "Pengukuran Panjang",
-            difficulty: 'normal',
-            question: "Alat ukur yang paling tepat untuk mengukur diameter dalam sebuah pipa kecil adalah...",
-            options: ["Mistar", "Jangka sorong", "Mikrometer sekrup", "Meteran gulung"],
-            answer: 1,
-            explanation: "Jangka sorong memiliki rahang dalam yang dirancang khusus untuk mengukur diameter bagian dalam suatu objek."
-        },
-        {
-            topic: "Pengukuran Panjang",
-            difficulty: 'normal',
-            question: "Tingkat ketelitian (nilai skala terkecil) pada mikrometer sekrup pada umumnya adalah...",
-            options: ["1 mm", "0,1 mm", "0,5 mm", "0,01 mm"],
-            answer: 3,
-            explanation: "Mikrometer sekrup memiliki ketelitian yang sangat tinggi, yaitu hingga 0,01 mm, membuatnya cocok untuk mengukur ketebalan benda tipis."
-        },
-        {
-            topic: "Pengukuran Panjang",
-            difficulty: 'medium',
-            question: "Skala utama pada sebuah jangka sorong menunjukkan 4,7 cm. Skala nonius yang berimpit adalah skala ke-5. Hasil pengukurannya adalah...",
-            options: ["4,75 cm", "4,705 cm", "4,57 cm", "5,2 cm"],
-            answer: 0,
-            explanation: "Hasil = Skala Utama + (Skala Nonius x ketelitian) = 4,7 cm + (5 x 0,01 cm) = 4,7 cm + 0,05 cm = 4,75 cm."
-        },
-        {
-            topic: "Pengukuran Panjang",
-            difficulty: 'medium',
-            question: "Sebuah mikrometer sekrup menunjukkan skala utama 8,5 mm. Skala putar menunjukkan angka 23. Hasil pengukurannya adalah...",
-            options: ["8,523 mm", "8,73 mm", "8,23 mm", "10,8 mm"],
-            answer: 1,
-            explanation: "Hasil = Skala Utama + (Skala Putar x ketelitian) = 8,5 mm + (23 x 0,01 mm) = 8,5 mm + 0,23 mm = 8,73 mm."
-        },
-        {
-            topic: "Pengukuran Panjang",
-            difficulty: 'hard',
-            question: "Untuk mengukur ketebalan selembar kertas, alat ukur yang memberikan hasil paling akurat dan presisi adalah...",
-            options: ["Penggaris 30 cm", "Jangka sorong digital", "Mikrometer sekrup", "Meteran kain"],
-            answer: 2,
-            explanation: "Kertas sangat tipis, sehingga memerlukan alat dengan ketelitian sangat tinggi. Mikrometer sekrup (ketelitian 0,01 mm) adalah pilihan terbaik dibandingkan yang lain."
-        },
-        {
-            topic: "Pengukuran Panjang",
-            difficulty: 'hard',
-            question: "Perbedaan utama antara fungsi rahang atas dan rahang bawah pada jangka sorong adalah...",
-            options: ["Mengukur panjang dan lebar", "Mengukur diameter luar dan dalam", "Mengukur ketebalan dan kedalaman", "Sama saja, hanya beda ukuran"],
-            answer: 1,
-            explanation: "Rahang bawah (rahang besar) digunakan untuk mengukur dimensi luar (seperti diameter luar), sedangkan rahang atas (rahang kecil) untuk mengukur dimensi dalam."
-        },
-        {
-            topic: "Pengukuran Panjang",
-            difficulty: 'medium',
-            question: "Bagian dari jangka sorong yang digunakan untuk mengukur kedalaman sebuah lubang adalah...",
-            options: ["Rahang atas", "Rahang bawah", "Skala utama", "Batang pengukur kedalaman (depth rod)"],
-            answer: 3,
-            explanation: "Di ujung jangka sorong terdapat batang tipis yang akan keluar saat rahang digeser. Batang inilah yang digunakan untuk mengukur kedalaman."
-        },
-        {
-            topic: "Pengukuran Panjang",
-            difficulty: 'normal',
-            question: "Skala nonius pada jangka sorong berfungsi untuk...",
-            options: ["Menambah panjang pengukuran", "Mengunci posisi pengukuran", "Meningkatkan ketelitian pengukuran", "Sebagai skala utama"],
-            answer: 2,
-            explanation: "Skala nonius memungkinkan kita untuk membaca nilai pengukuran yang lebih kecil dari skala terkecil pada skala utama, sehingga meningkatkan ketelitian alat."
-        },
-        // 5. Pengukuran dan Ketidakpastian
-        {
-            topic: "Pengukuran dan Ketidakpastian",
-            difficulty: 'normal',
-            question: "Kesalahan yang disebabkan oleh keterbatasan pengamat, seperti salah membaca skala, disebut...",
-            options: ["Kesalahan sistematis", "Kesalahan acak", "Kesalahan kalibrasi", "Kesalahan paralaks"],
-            answer: 3,
-            explanation: "Kesalahan paralaks terjadi karena posisi mata pengamat tidak tegak lurus terhadap skala alat ukur, ini termasuk kesalahan akibat keterbatasan pengamat."
-        },
-        {
-            topic: "Pengukuran dan Ketidakpastian",
-            difficulty: 'normal',
-            question: "Ketidakpastian pada pengukuran tunggal biasanya diambil dari...",
-            options: ["Nilai pengukuran itu sendiri", "Dua kali nilai skala terkecil", "Setengah dari nilai skala terkecil", "Nilai maksimum alat ukur"],
-            answer: 2,
-            explanation: "Untuk pengukuran tunggal, ketidakpastian (Δx) umumnya dianggap sama dengan setengah dari nilai skala terkecil (NST) alat ukur yang digunakan."
-        },
-        {
-            topic: "Pengukuran dan Ketidakpastian",
-            difficulty: 'medium',
-            question: "Seorang siswa mengukur panjang pensil sebanyak 5 kali dan mendapatkan hasil: 15,2 cm; 15,4 cm; 15,3 cm; 15,2 cm; 15,4 cm. Berapakah rata-rata hasil pengukurannya?",
-            options: ["15,25 cm", "15,30 cm", "15,35 cm", "15,40 cm"],
-            answer: 1,
-            explanation: "Rata-rata = (15,2 + 15,4 + 15,3 + 15,2 + 15,4) / 5 = 76,5 / 5 = 15,3 cm."
-        },
-        {
-            topic: "Pengukuran dan Ketidakpastian",
-            difficulty: 'medium',
-            question: "Kesalahan yang disebabkan oleh kerusakan atau pergeseran titik nol pada alat ukur disebut...",
-            options: ["Kesalahan acak", "Kesalahan paralaks", "Kesalahan lingkungan", "Kesalahan kalibrasi (titik nol)"],
-            answer: 3,
-            explanation: "Kesalahan kalibrasi atau kesalahan titik nol adalah jenis kesalahan sistematis di mana titik awal pengukuran alat tidak tepat berada di angka nol."
-        },
-        {
-            topic: "Pengukuran dan Ketidakpastian",
-            difficulty: 'hard',
-            question: "Sebuah penggaris memiliki skala terkecil 1 mm. Panjang sebuah buku diukur dan hasilnya 25,4 cm. Penulisan hasil pengukuran yang benar beserta ketidakpastiannya adalah...",
-            options: ["(25,4 ± 0,1) cm", "(25,4 ± 0,05) cm", "(25,40 ± 0,05) cm", "(25,4 ± 1) cm"],
-            answer: 1,
-            explanation: "Skala terkecil = 1 mm = 0,1 cm. Ketidakpastian (Δx) = ½ x NST = ½ x 0,1 cm = 0,05 cm. Jadi, hasil ditulis sebagai (25,40 ± 0,05) cm. Angka 0 ditambahkan agar jumlah angka di belakang koma sesuai dengan ketidakpastiannya."
-        },
-        {
-            topic: "Pengukuran dan Ketidakpastian",
-            difficulty: 'hard',
-            question: "Manakah yang menunjukkan hasil pengukuran yang paling presisi?",
-            options: ["(10,5 ± 0,5) m", "(10,52 ± 0,05) m", "(10,525 ± 0,005) m", "(10,525 ± 0,1) m"],
-            answer: 2,
-            explanation: "Presisi berkaitan dengan ketidakpastian relatif yang paling kecil. Pilihan C memiliki ketidakpastian absolut (0,005 m) terkecil dibandingkan dengan nilai pengukurannya, sehingga ini adalah yang paling presisi."
-        }
+    // =================================================================
+    // == TINGKAT KESULITAN: NORMAL (40 SOAL) ==
+    // =================================================================
+    
+    // Topik 1: Hakikat Fisika, K3 & Metode Ilmiah (8 Soal)
+    { difficulty: 'normal', question: "Ilmu yang mempelajari tentang gejala dan fenomena alam serta interaksi di dalamnya disebut...", options: ["Biologi", "Fisika", "Kimia", "Astronomi"], answer: 1, explanation: "Fisika adalah ilmu dasar yang mempelajari materi, energi, dan interaksi keduanya." },
+    { difficulty: 'normal', question: "Langkah pertama yang harus dilakukan dalam metode ilmiah adalah...", options: ["Membuat hipotesis", "Eksperimen", "Observasi (Pengamatan)", "Menarik kesimpulan"], answer: 2, explanation: "Semua penelitian ilmiah diawali dengan melakukan pengamatan terhadap suatu masalah atau fenomena." },
+    { difficulty: 'normal', question: "Simbol api pada botol zat kimia di laboratorium menandakan bahwa zat tersebut bersifat...", options: ["Beracun", "Korosif", "Mudah meledak", "Mudah terbakar"], answer: 3, explanation: "Simbol api (flammable) adalah peringatan bahwa zat tersebut mudah menyala atau terbakar." },
+    { difficulty: 'normal', question: "Jas laboratorium berfungsi untuk...", options: ["Membuat penampilan lebih rapi", "Melindungi tubuh dan pakaian dari zat kimia", "Menjaga suhu tubuh", "Membedakan antar kelompok praktikum"], answer: 1, explanation: "Fungsi utama jas lab adalah sebagai alat pelindung diri (APD) untuk melindungi tubuh dari tumpahan atau percikan zat berbahaya." },
+    { difficulty: 'normal', question: "Dugaan sementara atas suatu masalah dalam penelitian disebut...", options: ["Teori", "Fakta", "Hipotesis", "Hukum"], answer: 2, explanation: "Hipotesis adalah jawaban sementara yang perlu diuji kebenarannya melalui eksperimen." },
+    { difficulty: 'normal', question: "Urutan metode ilmiah yang benar setelah observasi adalah...", options: ["Kesimpulan -> Hipotesis -> Eksperimen", "Hipotesis -> Eksperimen -> Kesimpulan", "Eksperimen -> Hipotesis -> Kesimpulan", "Hipotesis -> Kesimpulan -> Eksperimen"], answer: 1, explanation: "Setelah menemukan masalah (observasi), langkah selanjutnya adalah mengajukan dugaan (hipotesis), lalu mengujinya (eksperimen), dan terakhir menyimpulkan hasilnya." },
+    { difficulty: 'normal', question: "Saat memanaskan tabung reaksi, arah mulut tabung sebaiknya...", options: ["Menghadap ke wajah sendiri", "Menghadap ke teman", "Ke arah tempat yang kosong", "Ke arah bawah"], answer: 2, explanation: "Untuk keselamatan, mulut tabung reaksi harus dijauhkan dari semua orang untuk menghindari cedera jika isinya tiba-tiba menyembur keluar." },
+    { difficulty: 'normal', question: "Fisika sebagai produk merujuk pada...", options: ["Cara kerja para ilmuwan", "Kumpulan pengetahuan fisika", "Sikap ilmiah yang harus dimiliki", "Manfaat fisika dalam teknologi"], answer: 1, explanation: "Fisika sebagai produk adalah hasil dari penemuan para ilmuwan yang berupa kumpulan pengetahuan seperti fakta, konsep, hukum, dan teori." },
+    
+    // Topik 2: Besaran dan Satuan (8 Soal)
+    { difficulty: 'normal', question: "Di bawah ini yang termasuk besaran pokok adalah...", options: ["Kecepatan", "Massa", "Volume", "Gaya"], answer: 1, explanation: "Massa adalah salah satu dari tujuh besaran pokok dalam Sistem Internasional (SI)." },
+    { difficulty: 'normal', question: "Satuan SI untuk besaran panjang adalah...", options: ["Kilometer", "Sentimeter", "Inci", "Meter"], answer: 3, explanation: "Satuan standar internasional (SI) untuk panjang adalah meter (m)." },
+    { difficulty: 'normal', question: "Besaran turunan adalah besaran yang...", options: ["Sudah ditetapkan terlebih dahulu", "Diturunkan dari besaran pokok", "Tidak memiliki satuan", "Hanya bisa diukur dengan satu alat"], answer: 1, explanation: "Besaran turunan, seperti luas atau kecepatan, didapatkan dari kombinasi matematis besaran-besaran pokok." },
+    { difficulty: 'normal', question: "Satuan dari besaran Suhu dalam SI adalah...", options: ["Celcius", "Fahrenheit", "Reamur", "Kelvin"], answer: 3, explanation: "Kelvin (K) adalah satuan SI untuk suhu termodinamika, meskipun Celcius lebih umum digunakan sehari-hari." },
+    { difficulty: 'normal', question: "Kelompok besaran di bawah ini yang semuanya adalah besaran pokok adalah...", options: ["Panjang, Massa, Kecepatan", "Waktu, Suhu, Gaya", "Panjang, Massa, Waktu", "Luas, Volume, Massa Jenis"], answer: 2, explanation: "Panjang (meter), Massa (kilogram), dan Waktu (sekon) adalah tiga dari tujuh besaran pokok." },
+    { difficulty: 'normal', question: "Volume diturunkan dari besaran pokok...", options: ["Panjang", "Massa", "Waktu", "Suhu"], answer: 0, explanation: "Volume (misalnya, m³) diturunkan dari besaran panjang (panjang x lebar x tinggi)." },
+    { difficulty: 'normal', question: "Satuan 'ampere' digunakan untuk mengukur besaran...", options: ["Jumlah Zat", "Intensitas Cahaya", "Kuat Arus Listrik", "Suhu"], answer: 2, explanation: "Ampere (A) adalah satuan SI untuk besaran pokok kuat arus listrik." },
+    { difficulty: 'normal', question: "Gaya memiliki satuan Newton, yang merupakan contoh dari...", options: ["Satuan pokok", "Satuan tidak baku", "Satuan turunan", "Satuan internasional"], answer: 2, explanation: "Newton (kg·m/s²) adalah satuan turunan karena terdiri dari kombinasi satuan pokok kilogram, meter, dan sekon." },
+    
+    // Topik 3: Awalan Satuan dan Konversi (8 Soal)
+    { difficulty: 'normal', question: "1 kilometer sama dengan...", options: ["10 meter", "100 meter", "1.000 meter", "10.000 meter"], answer: 2, explanation: "Awalan 'kilo' berarti seribu (10³). Jadi, 1 km = 1.000 m." },
+    { difficulty: 'normal', question: "Awalan 'senti' pada kata sentimeter berarti...", options: ["Sepersepuluh", "Seperseratus", "Seperseribu", "Sepuluh"], answer: 1, explanation: "Awalan 'senti' berarti seperseratus (10⁻²). Jadi, 1 cm = 0,01 m." },
+    { difficulty: 'normal', question: "2.500 gram sama dengan ... kilogram.", options: ["250 kg", "25 kg", "2,5 kg", "0,25 kg"], answer: 2, explanation: "1 kilogram = 1.000 gram. Untuk mengubah gram ke kilogram, dibagi 1.000. Jadi, 2.500 / 1.000 = 2,5 kg." },
+    { difficulty: 'normal', question: "3 menit sama dengan ... detik.", options: ["300 detik", "180 detik", "120 detik", "60 detik"], answer: 1, explanation: "1 menit = 60 detik. Jadi, 3 menit = 3 x 60 = 180 detik." },
+    { difficulty: 'normal', question: "Awalan 'mili' berarti...", options: ["Sepersepuluh", "Seperseratus", "Seperseribu", "Seribu"], answer: 2, explanation: "Awalan 'mili' berarti seperseribu (10⁻³). Contoh: 1 milimeter = 0,001 meter." },
+    { difficulty: 'normal', question: "5 liter sama dengan ... mililiter.", options: ["50 ml", "500 ml", "5.000 ml", "50.000 ml"], answer: 2, explanation: "1 liter = 1.000 mililiter. Jadi, 5 liter = 5 x 1.000 = 5.000 ml." },
+    { difficulty: 'normal', question: "Tinggi sebuah meja adalah 80 cm. Berapa tingginya dalam meter?", options: ["8 m", "0,8 m", "0,08 m", "0,008 m"], answer: 1, explanation: "1 meter = 100 cm. Untuk mengubah cm ke m, dibagi 100. Jadi, 80 / 100 = 0,8 m." },
+    { difficulty: 'normal', question: "Satu jam pelajaran berlangsung selama 45 menit. Berapa lama dalam jam?", options: ["0,25 jam", "0,5 jam", "0,75 jam", "1,5 jam"], answer: 2, explanation: "1 jam = 60 menit. Maka, 45 menit = 45 / 60 = 3/4 = 0,75 jam." },
+
+    // Topik 4: Pengukuran Panjang (8 Soal)
+    { difficulty: 'normal', question: "Alat ukur panjang yang memiliki tingkat ketelitian 1 mm adalah...", options: ["Jangka sorong", "Mistar/Penggaris", "Mikrometer sekrup", "Meteran gulung"], answer: 1, explanation: "Mistar atau penggaris memiliki skala terkecil 1 milimeter (mm)." },
+    { difficulty: 'normal', question: "Untuk mengukur diameter koin dengan sangat teliti, sebaiknya menggunakan...", options: ["Mistar", "Jangka sorong", "Mikrometer sekrup", "Tali"], answer: 2, explanation: "Mikrometer sekrup memiliki ketelitian tertinggi (0,01 mm), sehingga paling cocok untuk mengukur benda tipis atau kecil seperti koin." },
+    { difficulty: 'normal', question: "Bagian dari jangka sorong yang digeser-geser disebut...", options: ["Skala utama", "Rahang tetap", "Skala nonius", "Baut pengunci"], answer: 2, explanation: "Skala nonius adalah skala kecil yang dapat digeser di sepanjang skala utama." },
+    { difficulty: 'normal', question: "Tingkat ketelitian jangka sorong pada umumnya adalah...", options: ["1 mm", "0,1 mm", "0,01 mm", "0,5 mm"], answer: 1, explanation: "Jangka sorong memiliki ketelitian hingga 0,1 mm atau 0,01 cm." },
+    { difficulty: 'normal', question: "Skala putar adalah bagian dari alat ukur...", options: ["Mistar", "Jangka sorong", "Mikrometer sekrup", "Neraca"], answer: 2, explanation: "Mikrometer sekrup memiliki skala utama pada selubung dan skala putar (timbal) yang bisa diputar." },
+    { difficulty: 'normal', question: "Fungsi rahang bawah (rahang besar) pada jangka sorong adalah untuk mengukur...", options: ["Diameter dalam", "Kedalaman lubang", "Diameter luar", "Ketebalan kertas"], answer: 2, explanation: "Rahang bawah digunakan untuk menjepit sisi luar sebuah benda, sehingga dapat mengukur diameter luar atau panjang." },
+    { difficulty: 'normal', question: "Satuan yang tertera pada skala utama mikrometer sekrup adalah...", options: ["Sentimeter (cm)", "Milimeter (mm)", "Inci", "Meter (m)"], answer: 1, explanation: "Skala utama mikrometer sekrup menggunakan satuan milimeter (mm)." },
+    { difficulty: 'normal', question: "Alat yang paling cocok untuk mengukur kedalaman sebuah botol kecil adalah...", options: ["Mistar", "Jangka sorong", "Mikrometer sekrup", "Penggaris busur"], answer: 1, explanation: "Jangka sorong memiliki batang pengukur kedalaman (depth rod) yang bisa digunakan untuk tujuan ini." },
+
+    // Topik 5: Pengukuran dan Ketidakpastian (8 Soal)
+    { difficulty: 'normal', question: "Kesalahan yang terjadi karena sudut pandang pengamat saat membaca skala disebut...", options: ["Kesalahan kalibrasi", "Kesalahan acak", "Kesalahan paralaks", "Kesalahan sistematis"], answer: 2, explanation: "Kesalahan paralaks adalah kesalahan pembacaan akibat posisi mata yang tidak tegak lurus dengan skala alat ukur." },
+    { difficulty: 'normal', question: "Setiap kegiatan mengukur pasti mengandung...", options: ["Kebenaran mutlak", "Ketidakpastian", "Kesalahan fatal", "Hasil yang sama persis"], answer: 1, explanation: "Tidak ada pengukuran yang sempurna. Selalu ada tingkat ketidakpastian yang dipengaruhi oleh alat ukur, lingkungan, dan pengamat." },
+    { difficulty: 'normal', question: "Untuk mengurangi kesalahan acak dalam pengukuran, hal yang dapat dilakukan adalah...", options: ["Menggunakan alat yang lebih mahal", "Mengganti pengamat", "Mengulangi pengukuran beberapa kali", "Mengukur di tempat yang terang"], answer: 2, explanation: "Dengan mengulangi pengukuran dan mengambil nilai rata-ratanya, pengaruh kesalahan acak dapat diminimalkan." },
+    { difficulty: 'normal', question: "Ketidakpastian pada pengukuran tunggal umumnya bernilai...", options: ["Sama dengan skala terkecil alat", "Dua kali skala terkecil alat", "Setengah kali skala terkecil alat", "Seperempat kali skala terkecil alat"], answer: 2, explanation: "Aturan umum untuk ketidakpastian pengukuran tunggal (Δx) adalah setengah dari Nilai Skala Terkecil (NST)." },
+    { difficulty: 'normal', question: "Kesalahan titik nol pada timbangan adalah contoh dari...", options: ["Kesalahan acak", "Kesalahan sistematis", "Kesalahan paralaks", "Kesalahan manusia"], answer: 1, explanation: "Ini adalah kesalahan sistematis karena akan mempengaruhi setiap pengukuran dengan cara yang sama (hasilnya selalu lebih besar atau lebih kecil dari seharusnya)." },
+    { difficulty: 'normal', question: "Akurasi dalam pengukuran berarti...", options: ["Seberapa dekat hasil-hasil pengukuran satu sama lain", "Seberapa canggih alat yang digunakan", "Seberapa dekat hasil pengukuran dengan nilai sebenarnya", "Seberapa banyak angka di belakang koma"], answer: 2, explanation: "Akurasi mengacu pada kedekatan hasil ukur dengan nilai yang sebenarnya (true value)." },
+    { difficulty: 'normal', question: "Presisi dalam pengukuran berarti...", options: ["Seberapa dekat hasil pengukuran dengan nilai sebenarnya", "Seberapa konsisten hasil-hasil pengukuran jika diulang", "Seberapa mahal alat ukurnya", "Seberapa cepat pengukuran dilakukan"], answer: 1, explanation: "Presisi mengacu pada seberapa dekat atau konsisten serangkaian pengukuran satu sama lain, terlepas dari apakah mereka dekat dengan nilai sebenarnya." },
+    { difficulty: 'normal', question: "Getaran pada meja atau fluktuasi tegangan listrik adalah contoh sumber kesalahan...", options: ["Sistematis", "Kalibrasi", "Paralaks", "Acak"], answer: 3, explanation: "Ini adalah kesalahan acak karena penyebabnya tidak dapat diprediksi dan bervariasi dari waktu ke waktu." },
+
+    // =================================================================
+    // == TINGKAT KESULITAN: MEDIUM (40 SOAL) ==
+    // =================================================================
+    
+    // Topik 1: Hakikat Fisika, K3 & Metode Ilmiah (8 Soal)
+    { difficulty: 'medium', question: "Dalam eksperimen pengaruh pupuk terhadap tinggi tanaman, yang menjadi variabel kontrol adalah...", options: ["Jumlah pupuk yang diberikan", "Tinggi akhir tanaman", "Jenis tanaman, air, dan cahaya matahari", "Kecepatan pertumbuhan tanaman"], answer: 2, explanation: "Variabel kontrol adalah semua faktor yang sengaja dibuat sama agar tidak mempengaruhi hasil eksperimen, selain variabel bebas." },
+    { difficulty: 'medium', question: "Sebuah teori dalam sains bersifat...", options: ["Mutlak dan tidak dapat diubah", "Hanya dugaan tanpa bukti", "Penjelasan yang didukung banyak bukti dan dapat berkembang", "Sama dengan hukum alam"], answer: 2, explanation: "Teori ilmiah adalah penjelasan kuat yang telah teruji berkali-kali, namun tetap terbuka untuk penyempurnaan jika ada bukti baru." },
+    { difficulty: 'medium', question: "Tindakan yang tepat jika kulit terkena tumpahan asam kuat di laboratorium adalah...", options: ["Mengelapnya dengan tisu kering", "Meniupnya sampai kering", "Membilasnya dengan air mengalir yang banyak", "Memberinya larutan basa untuk menetralkan"], answer: 2, explanation: "Pertolongan pertama yang paling penting adalah segera membilas area yang terkena dengan air mengalir dalam jumlah banyak untuk mengencerkan dan menghilangkan zat kimia." },
+    { difficulty: 'medium', question: "Fisika sebagai sikap merujuk pada...", options: ["Kumpulan rumus dan hukum fisika", "Rasa ingin tahu, objektivitas, dan kejujuran ilmiah", "Penerapan fisika dalam pembuatan teknologi", "Langkah-langkah dalam melakukan eksperimen"], answer: 1, explanation: "Fisika sebagai sikap menekankan pada pengembangan karakter ilmiah seperti rasa ingin tahu, objektivitas, kritis, dan jujur terhadap data." },
+    { difficulty: 'medium', question: "Variabel yang sengaja diubah-ubah oleh peneliti untuk melihat pengaruhnya disebut...", options: ["Variabel terikat", "Variabel kontrol", "Variabel bebas (manipulasi)", "Variabel acak"], answer: 2, explanation: "Variabel bebas adalah faktor yang dimanipulasi atau diubah oleh peneliti untuk menguji hipotesis." },
+    { difficulty: 'medium', question: "Tujuan utama dari penulisan laporan ilmiah setelah eksperimen adalah...", options: ["Untuk mendapatkan nilai bagus", "Mengkomunikasikan hasil temuan agar dapat diverifikasi orang lain", "Membuktikan bahwa hipotesis selalu benar", "Menjadi koleksi pribadi peneliti"], answer: 1, explanation: "Laporan ilmiah memungkinkan peneliti lain untuk memahami, mereplikasi, dan memverifikasi hasil penelitian, yang merupakan inti dari kemajuan sains." },
+    { difficulty: 'medium', question: "Membuang sisa larutan kimia ke wastafel diperbolehkan jika...", options: ["Warnanya bening", "Tidak berbau", "Jumlahnya sedikit", "Sesuai dengan petunjuk dan aturan pembuangan limbah lab"], answer: 3, explanation: "Tidak semua zat kimia aman dibuang ke wastafel. Harus selalu mengikuti prosedur pembuangan limbah yang benar untuk mencegah pencemaran dan kerusakan." },
+    { difficulty: 'medium', question: "Jika sebuah hipotesis terbukti salah setelah eksperimen, maka...", options: ["Eksperimen tersebut dianggap gagal total", "Data hasil eksperimen harus diubah", "Hipotesis tersebut harus ditolak atau direvisi", "Peneliti harus berhenti meneliti topik tersebut"], answer: 2, explanation: "Hasil negatif (hipotesis salah) juga merupakan temuan ilmiah yang berharga. Langkah selanjutnya adalah menolak atau merevisi hipotesis awal berdasarkan bukti." },
+    
+    // Topik 2: Besaran dan Satuan (8 Soal)
+    { difficulty: 'medium', question: "Dimensi dari besaran kecepatan adalah...", options: ["[L][T]", "[L][T]⁻¹", "[L]⁻¹[T]", "[L][T]⁻²"], answer: 1, explanation: "Kecepatan = Jarak / Waktu. Dimensinya adalah [L] / [T] atau [L][T]⁻¹." },
+    { difficulty: 'medium', question: "Besaran yang memiliki dimensi [M][L]⁻³ adalah...", options: ["Gaya", "Tekanan", "Massa Jenis", "Energi"], answer: 2, explanation: "Massa Jenis = Massa / Volume. Dimensinya adalah [M] / [L]³ atau [M][L]⁻³." },
+    { difficulty: 'medium', question: "Manakah dari kelompok besaran berikut yang semuanya merupakan besaran vektor?", options: ["Jarak, Laju, Waktu", "Perpindahan, Kecepatan, Gaya", "Massa, Suhu, Energi", "Kelajuan, Percepatan, Volume"], answer: 1, explanation: "Besaran vektor memiliki nilai dan arah. Perpindahan, kecepatan, dan gaya adalah contoh besaran vektor." },
+    { difficulty: 'medium', question: "Satuan daya dalam SI adalah Watt, yang setara dengan...", options: ["Joule per detik", "Newton per meter", "Kilogram meter per detik", "Joule per meter"], answer: 0, explanation: "Daya adalah laju usaha atau energi per satuan waktu. Satu Watt setara dengan satu Joule per detik (J/s)." },
+    { difficulty: 'medium', question: "Dimensi dari Tekanan (Gaya per Luas) adalah...", options: ["[M][L]⁻¹[T]⁻²", "[M][L][T]⁻²", "[M][L]²[T]⁻²", "[M][L]⁻²[T]⁻¹"], answer: 0, explanation: "Tekanan = Gaya / Luas. Dimensi Gaya [M][L][T]⁻². Dimensi Luas [L]². Maka, Tekanan = [M][L][T]⁻² / [L]² = [M][L]⁻¹[T]⁻²." },
+    { difficulty: 'medium', question: "Meskipun sama-sama besaran panjang, yang membedakan jarak dan perpindahan adalah...", options: ["Jarak adalah skalar, perpindahan adalah vektor", "Jarak adalah vektor, perpindahan adalah skalar", "Keduanya sama saja", "Jarak punya satuan meter, perpindahan tidak"], answer: 0, explanation: "Jarak hanya menghitung total lintasan (nilai), sedangkan perpindahan menghitung perubahan posisi dari awal ke akhir (nilai dan arah)." },
+    { difficulty: 'medium', question: "Satuan kandela (cd) digunakan untuk besaran pokok...", options: ["Kuat Arus", "Jumlah Zat", "Intensitas Cahaya", "Suhu"], answer: 2, explanation: "Kandela adalah satuan SI untuk Intensitas Cahaya." },
+    { difficulty: 'medium', question: "Besaran yang dimensinya [M][L]²[T]⁻² adalah...", options: ["Daya", "Gaya", "Momentum", "Usaha/Energi"], answer: 3, explanation: "Usaha = Gaya x Perpindahan. Dimensinya = [M][L][T]⁻² x [L] = [M][L]²[T]⁻²." },
+
+    // Topik 3: Awalan Satuan dan Konversi (8 Soal)
+    { difficulty: 'medium', question: "Kecepatan motor adalah 54 km/jam. Kecepatan tersebut dalam m/s adalah...", options: ["10 m/s", "15 m/s", "20 m/s", "25 m/s"], answer: 1, explanation: "54 km/jam = (54 * 1000 m) / (3600 s) = 54000 / 3600 = 15 m/s." },
+    { difficulty: 'medium', question: "Sebuah lantai memiliki luas 25 m². Berapa luasnya dalam cm²?", options: ["2.500 cm²", "25.000 cm²", "250.000 cm²", "2.500.000 cm²"], answer: 2, explanation: "1 m = 100 cm, maka 1 m² = (100 cm)² = 10.000 cm². Jadi, 25 m² = 25 x 10.000 = 250.000 cm²." },
+    { difficulty: 'medium', question: "Awalan 'Giga' (G) memiliki nilai faktor pengali...", options: ["10⁶ (juta)", "10⁹ (miliar)", "10¹² (triliun)", "10³ (ribu)"], answer: 1, explanation: "Giga berarti miliar, atau 10⁹. Contoh: 1 Gigabyte." },
+    { difficulty: 'medium', question: "Massa jenis raksa adalah 13,6 g/cm³. Berapa nilainya dalam satuan SI (kg/m³)?", options: ["136 kg/m³", "1.360 kg/m³", "13.600 kg/m³", "136.000 kg/m³"], answer: 2, explanation: "Faktor konversi dari g/cm³ ke kg/m³ adalah dikali 1.000. Jadi, 13,6 x 1.000 = 13.600 kg/m³." },
+    { difficulty: 'medium', question: "Sebuah bakteri memiliki panjang 5 mikrometer (μm). Berapa panjangnya dalam meter?", options: ["5 x 10⁻³ m", "5 x 10⁻⁶ m", "5 x 10⁻⁹ m", "5 x 10⁻¹² m"], answer: 1, explanation: "Awalan 'mikro' (μ) berarti 10⁻⁶. Jadi, 5 μm = 5 x 10⁻⁶ m." },
+    { difficulty: 'medium', question: "Volume sebuah bak adalah 1,5 m³. Berapa volume tersebut dalam liter?", options: ["15 L", "150 L", "1.500 L", "15.000 L"], answer: 2, explanation: "1 m³ sama dengan 1.000 liter (atau 1.000 dm³). Jadi, 1,5 m³ = 1,5 x 1.000 = 1.500 liter." },
+    { difficulty: 'medium', question: "Tekanan udara adalah 1 atmosfer, yang kira-kira setara dengan 100.000 Pascal. Pascal adalah N/m². Berapa nilai ini dalam N/cm²?", options: ["1 N/cm²", "10 N/cm²", "100 N/cm²", "1000 N/cm²"], answer: 1, explanation: "1 m² = 10.000 cm². Maka, 100.000 N/m² = 100.000 N / 10.000 cm² = 10 N/cm²." },
+    { difficulty: 'medium', question: "Daya sebuah lampu adalah 60 Watt. Jika lampu menyala selama 2 jam, berapa energi yang digunakan dalam kiloJoule (kJ)?", options: ["432 kJ", "360 kJ", "120 kJ", "7,2 kJ"], answer: 0, explanation: "Energi = Daya x Waktu = 60 J/s x (2 x 3600 s) = 60 x 7200 = 432.000 J. Karena 1 kJ = 1000 J, maka 432.000 J = 432 kJ." },
+
+    // Topik 4: Pengukuran Panjang (8 Soal)
+    { difficulty: 'medium', question: "Skala utama jangka sorong menunjukkan 3,2 cm. Skala nonius yang berimpit adalah garis ke-6. Hasil pengukurannya adalah...", options: ["3,26 cm", "3,8 cm", "3,206 cm", "3,62 cm"], answer: 0, explanation: "Hasil = Skala Utama + (Skala Nonius x ketelitian) = 3,2 cm + (6 x 0,01 cm) = 3,2 cm + 0,06 cm = 3,26 cm." },
+    { difficulty: 'medium', question: "Skala utama mikrometer sekrup menunjukkan 7,5 mm. Skala putar menunjukkan angka 34. Hasil pengukurannya adalah...", options: ["7,34 mm", "7,84 mm", "7,534 mm", "10,9 mm"], answer: 1, explanation: "Hasil = Skala Utama + (Skala Putar x ketelitian) = 7,5 mm + (34 x 0,01 mm) = 7,5 mm + 0,34 mm = 7,84 mm." },
+    { difficulty: 'medium', question: "Kesalahan titik nol pada jangka sorong terjadi ketika...", options: ["Angka 0 skala utama dan nonius tidak segaris saat rahang tertutup rapat", "Alat terjatuh", "Pengukuran dilakukan berulang kali", "Baut pengunci tidak dikencangkan"], answer: 0, explanation: "Ini disebut kesalahan kalibrasi. Jika angka 0 nonius tidak tepat di angka 0 utama saat rahang tertutup, setiap pengukuran akan memiliki penyimpangan sistematis." },
+    { difficulty: 'medium', question: "Seorang siswa membaca hasil ukur jangka sorong sebesar 5,48 cm. Angka 8 pada hasil tersebut berasal dari...", options: ["Pembacaan skala utama", "Pembacaan skala nonius", "Angka taksiran", "Hasil pembulatan"], answer: 1, explanation: "Pada jangka sorong dengan ketelitian 0,01 cm, dua angka di belakang koma (misal, 0,08) didapat dari pembacaan skala nonius." },
+    { difficulty: 'medium', question: "Hasil pengukuran diameter kawat dengan mikrometer adalah 2,45 mm. Berapa hasil ini jika ditulis dalam satuan cm?", options: ["24,5 cm", "2,45 cm", "0,245 cm", "0,0245 cm"], answer: 2, explanation: "1 cm = 10 mm. Untuk mengubah mm ke cm, dibagi 10. Jadi, 2,45 mm = 0,245 cm." },
+    { difficulty: 'medium', question: "Jika skala nonius jangka sorong terdiri dari 10 garis dengan total panjang 9 mm, maka ketelitian jangka sorong tersebut adalah...", options: ["1 mm", "0,9 mm", "0,5 mm", "0,1 mm"], answer: 3, explanation: "Ketelitian = 1 Skala Utama - 1 Skala Nonius = 1 mm - (9/10 mm) = 1 mm - 0,9 mm = 0,1 mm." },
+    { difficulty: 'medium', question: "Satu putaran penuh pada skala putar mikrometer sekrup akan menggeser selubung sejauh...", options: ["0,01 mm", "0,1 mm", "0,5 mm", "1 mm"], answer: 2, explanation: "Jarak antar ulir pada poros mikrometer umumnya 0,5 mm, sehingga satu putaran penuh (50 skala) akan menggesernya sejauh 0,5 mm." },
+    { difficulty: 'medium', question: "Angka penting dari hasil pengukuran 5,48 cm adalah...", options: ["1 angka penting", "2 angka penting", "3 angka penting", "Tidak ada"], answer: 2, explanation: "Semua angka bukan nol adalah angka penting. Jadi 5, 4, dan 8 semuanya adalah angka penting. Total ada 3 angka penting." },
+
+    // Topik 5: Pengukuran dan Ketidakpastian (8 Soal)
+    { difficulty: 'medium', question: "Hasil pengukuran panjang meja ditulis (150,4 ± 0,05) cm. Ini berarti nilai panjang meja sebenarnya berada pada rentang...", options: ["150,35 cm hingga 150,45 cm", "150,4 cm hingga 150,45 cm", "150,3 cm hingga 150,5 cm", "150 cm hingga 151 cm"], answer: 0, explanation: "Rentang nilai adalah dari (Hasil Ukur - Ketidakpastian) hingga (Hasil Ukur + Ketidakpastian), yaitu 150,4 - 0,05 = 150,35 dan 150,4 + 0,05 = 150,45." },
+    { difficulty: 'medium', question: "Ketidakpastian relatif dihitung dengan rumus...", options: ["(Ketidakpastian / Hasil Ukur) x 100%", "(Hasil Ukur / Ketidakpastian) x 100%", "Ketidakpastian x Hasil Ukur", "Ketidakpastian + Hasil Ukur"], answer: 0, explanation: "Ketidakpastian relatif menunjukkan seberapa besar tingkat ketidakpastian dibandingkan dengan nilai yang diukur, biasanya dinyatakan dalam persen." },
+    { difficulty: 'medium', question: "Sebuah pengukuran menghasilkan nilai 2,50 m. Jumlah angka penting pada hasil tersebut adalah...", options: ["1", "2", "3", "4"], answer: 2, explanation: "Angka nol di akhir desimal termasuk angka penting karena menunjukkan tingkat ketelitian pengukuran. Jadi, 2, 5, dan 0 adalah angka penting." },
+    { difficulty: 'medium', question: "Dari pengukuran berulang, didapat data: 12,5 s; 12,7 s; 12,6 s. Nilai rata-rata dari pengukuran tersebut adalah...", options: ["12,5 s", "12,6 s", "12,7 s", "12,8 s"], answer: 1, explanation: "Rata-rata = (12,5 + 12,7 + 12,6) / 3 = 37,8 / 3 = 12,6 s." },
+    { difficulty: 'medium', question: "Semakin kecil ketidakpastian relatif suatu pengukuran, maka hasil pengukuran tersebut semakin...", options: ["Akurat", "Presisi (Teliti)", "Salah", "Sulit dilakukan"], answer: 1, explanation: "Ketidakpastian relatif yang kecil menandakan bahwa penyebaran data hasil pengukuran sangat kecil, yang berarti pengukurannya sangat presisi." },
+    { difficulty: 'medium', question: "Pengukuran volume balok didapat dari p = (10,0 ± 0,1) cm, l = (5,0 ± 0,1) cm, t = (2,0 ± 0,1) cm. Menurut aturan angka penting, hasil perhitungan volumenya adalah...", options: ["100 cm³", "100,0 cm³", "1,0 x 10² cm³", "1 x 10² cm³"], answer: 2, explanation: "V = 10,0 x 5,0 x 2,0 = 100. Aturan perkalian angka penting menyatakan hasil harus memiliki jumlah AP terkecil dari bilangan yang dikalikan. 5,0 dan 2,0 memiliki 2 AP. Hasil 100 harus ditulis dengan 2 AP, yaitu 1,0 x 10² cm³." },
+    { difficulty: 'medium', question: "Bilangan 0,004050 memiliki ... angka penting.", options: ["3", "4", "5", "7"], answer: 1, explanation: "Angka nol di depan bukan AP. Angka 4, 0, 5, dan 0 di akhir adalah AP. Jadi ada 4 angka penting." },
+    { difficulty: 'medium', question: "Seorang siswa mengukur panjang pulpen dengan mistar (NST=1mm) dan melaporkan hasilnya 14,75 cm. Mengapa laporan ini kurang tepat?", options: ["Pulpen tidak mungkin sepanjang itu", "Hasilnya harus dalam mm", "Mistar tidak bisa mengukur hingga ketelitian 0,01 cm", "Siswa salah membaca"], answer: 2, explanation: "Mistar hanya memiliki ketelitian 0,1 cm. Angka terakhir yang bisa dilaporkan adalah taksiran dari 0,1 cm, jadi maksimal 2 angka di belakang koma jika dalam cm (misal 14,75), tapi umumnya dilaporkan sesuai ketidakpastiannya (misal 14,7 atau 14,8 cm)." },
+
+    // =================================================================
+    // == TINGKAT KESULITAN: HARD (40 SOAL) ==
+    // =================================================================
+    
+    // Topik 1: Hakikat Fisika, K3 & Metode Ilmiah (8 Soal)
+    { difficulty: 'hard', question: "Perbedaan mendasar antara Hukum Fisika dan Teori Fisika adalah...", options: ["Hukum lebih terbukti daripada teori", "Teori menjelaskan 'mengapa', sedangkan hukum mendeskripsikan 'apa' yang terjadi", "Teori adalah hipotesis yang belum teruji, hukum sudah teruji", "Hukum berbentuk kualitatif, teori berbentuk kuantitatif"], answer: 1, explanation: "Hukum (misal: Hukum Gravitasi Newton) mendeskripsikan pola fenomena alam secara matematis, tapi tidak menjelaskan penyebabnya. Teori (misal: Teori Relativitas Umum) memberikan penjelasan mendalam tentang mekanisme di balik fenomena tersebut." },
+    { difficulty: 'hard', question: "Dalam merancang sebuah eksperimen, mengapa diperlukan adanya kelompok kontrol?", options: ["Untuk memperbanyak data penelitian", "Sebagai standar pembanding untuk melihat efek dari variabel bebas", "Untuk membuktikan bahwa hipotesis pasti benar", "Agar eksperimen terlihat lebih rumit dan ilmiah"], answer: 1, explanation: "Kelompok kontrol (yang tidak diberi perlakuan variabel bebas) berfungsi sebagai baseline atau pembanding, sehingga setiap perbedaan yang teramati pada kelompok eksperimen dapat diatribusikan pada pengaruh variabel bebas." },
+    { difficulty: 'hard', question: "Jika Anda menemukan kabel alat listrik di lab yang terkelupas, tindakan paling bijak adalah...", options: ["Melapisinya dengan selotip biasa dan melanjutkan praktikum", "Mencabutnya langsung dari stopkontak dengan tangan kosong", "Mencobanya apakah masih berfungsi", "Segera melapor pada guru atau teknisi laboratorium dan jangan digunakan"], answer: 3, explanation: "Kabel terkelupas berisiko sangat tinggi menyebabkan korsleting atau sengatan listrik. Keselamatan adalah prioritas utama, sehingga harus dilaporkan kepada pihak yang berwenang dan tidak boleh digunakan." },
+    { difficulty: 'hard', question: "Konsep 'falsifiability' yang diperkenalkan oleh Karl Popper menyatakan bahwa sebuah teori ilmiah harus...", options: ["Bisa dibuktikan benar secara mutlak", "Memiliki kemungkinan untuk dibuktikan salah", "Selalu konsisten dengan akal sehat", "Dapat menjelaskan semua fenomena alam"], answer: 1, explanation: "Sebuah pernyataan atau teori baru bisa dianggap ilmiah jika ada cara untuk mengujinya dan berpotensi untuk disalahkan. Jika sebuah teori tidak bisa disalahkan dengan cara apapun, maka itu bukan sains." },
+    { difficulty: 'hard', question: "Seorang ilmuwan menemukan bahwa datanya sedikit menyimpang dari hipotesis. Sikap ilmiah yang benar adalah...", options: ["Sedikit mengubah data agar pas dengan hipotesis", "Membuang data yang menyimpang tersebut", "Melaporkan semua data apa adanya dan membahas kemungkinan penyimpangan", "Mengulang eksperimen sampai data sesuai dengan harapan"], answer: 2, explanation: "Kejujuran ilmiah (integritas) adalah pilar utama sains. Semua data, termasuk yang anomali, harus dilaporkan secara transparan. Penyimpangan tersebut justru bisa menjadi awal penemuan baru." },
+    { difficulty: 'hard', question: "Prinsip Ockham's Razor (Pisau Cukur Ockham) dalam sains menyarankan agar...", options: ["Memilih penjelasan yang paling rumit dan detail", "Memilih penjelasan paling sederhana yang bisa menjelaskan fenomena", "Tidak membuat penjelasan apapun sebelum semua data terkumpul", "Hanya menggunakan matematika dalam penjelasan ilmiah"], answer: 1, explanation: "Jika ada beberapa hipotesis yang bersaing, yang paling sederhana (dengan asumsi paling sedikit) lebih mungkin untuk menjadi yang benar. Ini adalah prinsip, bukan hukum." },
+    { difficulty: 'hard', question: "Model atom telah berkembang dari Dalton, Thomson, Rutherford, hingga Bohr. Perkembangan ini menunjukkan bahwa pengetahuan sains bersifat...", options: ["Statis dan final", "Tentatif dan terus berkembang", "Sepenuhnya salah di masa lalu", "Tidak dapat diandalkan"], answer: 1, explanation: "Sejarah model atom adalah contoh sempurna bagaimana sains memperbaiki dirinya sendiri. Model baru tidak selalu berarti model lama salah total, tetapi menyempurnakan dan memperluas pemahaman berdasarkan bukti-bukti baru." },
+    { difficulty: 'hard', question: "Untuk meneliti 'pengaruh durasi paparan musik rock terhadap tingkat stres pada tikus', variabel terikatnya adalah...", options: ["Jenis musik yang diputar", "Tingkat stres pada tikus", "Durasi paparan musik", "Volume musik"], answer: 1, explanation: "Variabel terikat (dependent variable) adalah apa yang diukur oleh peneliti sebagai hasil dari perubahan variabel bebas. Di sini, peneliti mengukur tingkat stres." },
+    
+    // Topik 2: Besaran dan Satuan (8 Soal)
+    { difficulty: 'hard', question: "Jika G adalah konstanta gravitasi universal dengan satuan N m²/kg², maka dimensinya adalah...", options: ["[M]⁻¹[L]³[T]⁻²", "[M][L]³[T]⁻²", "[M]⁻¹[L]²[T]⁻¹", "[M][L]²[T]⁻²"], answer: 0, explanation: "N = kg m/s² = [M][L][T]⁻². Maka N m²/kg² = ([M][L][T]⁻² [L]²) / [M]² = [M]⁻¹[L]³[T]⁻²." },
+    { difficulty: 'hard', question: "Sebuah persamaan fisika dinyatakan v = at². Jika v adalah kecepatan dan t adalah waktu, agar persamaan ini konsisten secara dimensi, maka dimensi dari 'a' harus...", options: ["[L][T]⁻¹", "[L][T]⁻²", "[L][T]⁻³", "[L][T]⁻⁴"], answer: 2, explanation: "Dimensi v = [L][T]⁻¹. Dimensi t² = [T]². Maka dimensi a = (dimensi v) / (dimensi t²) = [L][T]⁻¹ / [T]² = [L][T]⁻³." },
+    { difficulty: 'hard', question: "Sudut datar (radian) dan sudut ruang (steradian) dalam SI diklasifikasikan sebagai...", options: ["Besaran pokok", "Besaran turunan", "Besaran tanpa dimensi (tambahan)", "Bukan besaran"], answer: 2, explanation: "Meskipun memiliki satuan, radian (panjang busur/jari-jari) dan steradian secara matematis tidak memiliki dimensi [M], [L], atau [T]. Mereka dikategorikan sebagai besaran tambahan." },
+    { difficulty: 'hard', question: "Satuan dari konstanta Planck (h) adalah Joule-sekon (J.s). Dimensi dari konstanta Planck adalah...", options: ["[M][L]²[T]⁻³", "[M][L]²[T]⁻²", "[M][L]²[T]⁻¹", "[M][L][T]⁻¹"], answer: 2, explanation: "Joule (Energi) memiliki dimensi [M][L]²[T]⁻². Sekon (waktu) memiliki dimensi [T]. Maka J.s = [M][L]²[T]⁻² [T] = [M][L]²[T]⁻¹." },
+    { difficulty: 'hard', question: "Manakah dari besaran berikut yang memiliki dimensi yang sama dengan energi?", options: ["Daya", "Gaya", "Torsi (Momen Gaya)", "Tekanan"], answer: 2, explanation: "Torsi = Gaya x Lengan. Dimensinya = [M][L][T]⁻² x [L] = [M][L]²[T]⁻². Ini sama dengan dimensi Energi atau Usaha." },
+    { difficulty: 'hard', question: "Menurut analisis dimensi, persamaan E = mc³ (dimana E: energi, m: massa, c: kecepatan cahaya) adalah...", options: ["Pasti benar", "Mungkin benar", "Pasti salah", "Tidak dapat ditentukan"], answer: 2, explanation: "Dimensi E = [M][L]²[T]⁻². Dimensi mc³ = [M] ([L][T]⁻¹)³ = [M][L]³[T]⁻³. Karena dimensi ruas kiri dan kanan tidak sama, persamaan ini secara fundamental pasti salah." },
+    { difficulty: 'hard', question: "Satuan Debit (volume per waktu) dalam SI adalah m³/s. Dimensinya adalah...", options: ["[L]³[T]", "[L]³[T]⁻¹", "[L]²[T]⁻¹", "[M][L]⁻³"], answer: 1, explanation: "Volume [L]³, Waktu [T]. Maka Debit = Volume/Waktu = [L]³ / [T] = [L]³[T]⁻¹." },
+    { difficulty: 'hard', question: "Impuls (Gaya x Waktu) memiliki dimensi yang sama dengan...", options: ["Energi", "Daya", "Momentum", "Percepatan"], answer: 2, explanation: "Impuls = [M][L][T]⁻² x [T] = [M][L][T]⁻¹. Momentum = Massa x Kecepatan = [M] x [L][T]⁻¹ = [M][L][T]⁻¹. Keduanya memiliki dimensi yang sama." },
+
+    // Topik 3: Awalan Satuan dan Konversi (8 Soal)
+    { difficulty: 'hard', question: "Satu tahun cahaya adalah jarak yang ditempuh cahaya dalam satu tahun. Jika kecepatan cahaya ~3x10⁸ m/s, maka satu tahun cahaya kira-kira...", options: ["9,5 x 10¹² km", "9,5 x 10¹⁵ km", "3 x 10⁸ km", "3,6 x 10¹⁰ km"], answer: 0, explanation: "Jarak = kecepatan x waktu = (3x10⁸ m/s) x (365.25 hari x 24 jam/hari x 3600 s/jam) ≈ 9.46 x 10¹⁵ m ≈ 9,5 x 10¹² km." },
+    { difficulty: 'hard', question: "Kepadatan energi suatu medan listrik adalah 100 J/m³. Berapa nilainya dalam erg/cm³? (1 J = 10⁷ erg)", options: ["1000 erg/cm³", "100 erg/cm³", "10 erg/cm³", "1 erg/cm³"], answer: 0, explanation: "1 J = 10⁷ erg. 1 m³ = (100 cm)³ = 10⁶ cm³. Maka, 100 J/m³ = 100 x (10⁷ erg) / (10⁶ cm³) = 100 x 10 = 1000 erg/cm³." },
+    { difficulty: 'hard', question: "Sebuah hard disk memiliki kapasitas 2 Terabyte (TB). Berapa kapasitas ini dalam Gigabyte (GB)?", options: ["200 GB", "2.000 GB", "20.000 GB", "200.000 GB"], answer: 1, explanation: "1 Terabyte = 1024 Gigabyte (dalam komputasi biner) atau 1000 Gigabyte (dalam sistem desimal). Dalam konteks umum, 1 TB = 1000 GB. Jadi 2 TB = 2000 GB." },
+    { difficulty: 'hard', question: "Laju pendinginan sebuah benda adalah 5 Kelvin per menit. Berapa laju ini dalam derajat Celcius per detik?", options: ["5 °C/s", "12 °C/s", "1/12 °C/s", "1/5 °C/s"], answer: 2, explanation: "Perubahan 1 K sama dengan perubahan 1 °C. 1 menit = 60 detik. Maka, 5 K/menit = 5 °C / 60 s = 1/12 °C/s." },
+    { difficulty: 'hard', question: "Satu knot adalah kecepatan 1 mil laut per jam. Jika 1 mil laut = 1852 meter, maka 20 knot setara dengan...", options: ["~10,3 m/s", "~20,6 m/s", "~37,0 m/s", "~18,5 m/s"], answer: 0, explanation: "20 knot = 20 mil laut/jam = (20 x 1852 m) / 3600 s = 37040 / 3600 ≈ 10,29 m/s." },
+    { difficulty: 'hard', question: "Kapasitas sebuah kapasitor adalah 50 nanofarad (nF). Berapa nilainya dalam pikofarad (pF)?", options: ["50.000 pF", "5.000 pF", "0,05 pF", "0,005 pF"], answer: 0, explanation: "Nano (n) = 10⁻⁹. Piko (p) = 10⁻¹². Perbedaannya adalah faktor 10³ atau 1000. 1 nF = 1000 pF. Jadi, 50 nF = 50 x 1000 = 50.000 pF." },
+    { difficulty: 'hard', question: "Daya radiasi matahari di permukaan bumi sekitar 1,4 kW/m². Berapa daya ini dalam mW/cm²?", options: ["14 mW/cm²", "140 mW/cm²", "1.400 mW/cm²", "14.000 mW/cm²"], answer: 1, explanation: "1 kW = 1000 W = 1.000.000 mW. 1 m² = 10.000 cm². Maka, 1,4 kW/m² = (1,4 x 1.000.000 mW) / (10.000 cm²) = 1.400.000 / 10.000 = 140 mW/cm²." },
+    { difficulty: 'hard', question: "Massa sebuah elektron adalah 9,1 x 10⁻³¹ kg. Berapa massa ini dalam satuan massa atom (sma)? (1 sma ≈ 1,66 x 10⁻²⁷ kg)", options: ["~5,5 x 10⁻⁴ sma", "~1,8 x 10⁻³ sma", "~5,5 x 10⁻² sma", "~1,5 x 10⁻⁵⁷ sma"], answer: 0, explanation: "Massa (sma) = (9,1 x 10⁻³¹) / (1,66 x 10⁻²⁷) ≈ 5,48 x 10⁻⁴ sma." },
+
+    // Topik 4: Pengukuran Panjang (8 Soal)
+    { difficulty: 'hard', question: "Mikrometer sekrup memiliki kesalahan titik nol -0,03 mm. Jika pembacaan menunjukkan 5,78 mm, maka hasil pengukuran yang terkoreksi adalah...", options: ["5,75 mm", "5,78 mm", "5,81 mm", "5,72 mm"], answer: 2, explanation: "Hasil Koreksi = Hasil Baca - Kesalahan Nol = 5,78 mm - (-0,03 mm) = 5,78 + 0,03 = 5,81 mm." },
+    { difficulty: 'hard', question: "Sebuah jangka sorong memiliki skala nonius dimana 20 skala nonius memiliki panjang yang sama dengan 39 skala utama (skala utama dalam mm). Ketelitian jangka sorong ini adalah...", options: ["0,01 mm", "0,02 mm", "0,05 mm", "0,1 mm"], answer: 2, explanation: "1 SN = 39/20 SU = 1.95 mm. Ketelitian = 2 SU - 1 SN (karena 20 SN mendekati 40 SU) atau |1 SU - 1 SN| = |1 mm - 1.95 mm|? Formula umum: Ketelitian = (1/n) x Skala utama, tapi ini kasus khusus. Ketelitian = (1/N) x NST = (1/20) * 1mm = 0.05 mm (jika 20 SN = 19 SU). Jika 20 SN = 39 SU, Ketelitian = (1/20) x 2mm = 0.1 mm... (Soal ini agak tricky, 0.05 adalah jawaban standar untuk ketelitian 1/20). Let's use standard formula: Ketelitian = 1mm/20 = 0.05mm" },
+    { difficulty: 'hard', question: "Pembacaan jangka sorong menunjukkan 6,45 cm. Skala nonius yang berimpit tidak terbaca jelas, antara garis ke-5 dan ke-6. Cara melaporkan hasil yang paling baik adalah...", options: ["6,455 ± 0,005 cm", "6,45 cm", "6,46 cm", "6,4 cm"], answer: 0, explanation: "Karena ada keraguan antara 5 dan 6, kita bisa menaksir nilainya di tengah (6,455 cm) dan memperbesar ketidakpastiannya menjadi setengah dari skala nonius (0,005 cm)." },
+    { difficulty: 'hard', question: "Untuk mengukur ketebalan cat pada sebuah plat logam, metode yang paling mungkin memberikan hasil akurat adalah...", options: ["Mengukur tebal plat sebelum dan sesudah dicat dengan mikrometer sekrup", "Menggunakan jangka sorong", "Menggunakan penggaris dan kaca pembesar", "Memperkirakannya dengan mata"], answer: 0, explanation: "Lapisan cat sangat tipis. Perbedaan tebal plat sebelum dan sesudah dicat, yang diukur dengan mikrometer (ketelitian 0.01 mm), adalah cara paling logis untuk menentukan tebal lapisan cat itu sendiri." },
+    { difficulty: 'hard', question: "Sebuah mikrometer sekrup memiliki kesalahan indeks positif sebesar +0,02 mm. Untuk mendapatkan hasil yang benar, setiap hasil pembacaan harus...", options: ["Ditambah 0,02 mm", "Dikurangi 0,02 mm", "Dikalikan 0,02", "Dibagi 0,02"], answer: 1, explanation: "Kesalahan positif berarti alat mengukur 'lebih' 0,02 mm. Jadi, hasil bacaan harus dikurangi 0,02 mm untuk mendapatkan nilai sebenarnya." },
+    { difficulty: 'hard', question: "Dibandingkan jangka sorong, keunggulan utama mikrometer sekrup adalah...", options: ["Jangkauan ukur yang lebih besar", "Memiliki presisi dan akurasi yang lebih tinggi", "Bisa mengukur diameter dalam", "Lebih mudah digunakan"], answer: 1, explanation: "Mikrometer sekrup memiliki ketelitian 10 kali lebih baik daripada jangka sorong (0,01 mm vs 0,1 mm), sehingga presisinya jauh lebih tinggi." },
+    { difficulty: 'hard', question: "Seorang siswa ingin mengukur volume sebuah kelereng. Langkah paling akurat adalah...", options: ["Mengukur diameternya dengan penggaris lalu menghitung volume bola", "Mengukur diameternya dengan mikrometer lalu menghitung volume bola", "Menggunakan gelas ukur yang besar", "Menimbangnya lalu membaginya dengan massa jenis"], answer: 1, explanation: "Untuk menghitung volume bola (4/3 πr³), diperlukan data jari-jari (atau diameter) yang sangat akurat. Mikrometer memberikan pengukuran diameter paling akurat dibandingkan metode lain." },
+    { difficulty: 'hard', question: "Angka terakhir pada hasil bacaan mikrometer sekrup (misal 4,76 mm) merupakan...", options: ["Angka pasti dari skala utama", "Angka pasti dari skala putar", "Angka taksiran", "Angka yang harus dibulatkan"], answer: 1, explanation: "Angka 4,5 didapat dari skala utama, dan angka 0,26 didapat dari skala putar. Keduanya adalah angka pasti dari pembacaan skala, bukan taksiran (selama garisnya tepat berimpit)." },
+
+    // Topik 5: Pengukuran dan Ketidakpastian (8 Soal)
+    { difficulty: 'hard', question: "Hasil pengukuran panjang dan lebar sebuah persegi panjang adalah p = (20,0 ± 0,1) cm dan l = (10,0 ± 0,1) cm. Ketidakpastian relatif dari perhitungan luasnya adalah...", options: ["1%", "1,5%", "2%", "5%"], answer: 1, explanation: "KR Luas ≈ KR panjang + KR lebar. KR p = (0,1/20,0)x100% = 0,5%. KR l = (0,1/10,0)x100% = 1%. Maka KR Luas ≈ 0,5% + 1% = 1,5%." },
+    { difficulty: 'hard', question: "Berdasarkan hasil soal sebelumnya, bagaimana penulisan laporan luas yang benar?", options: ["(200 ± 3) cm²", "(200,0 ± 1,5) cm²", "(200 ± 1,5) cm²", "(200 ± 2) cm²"], answer: 0, explanation: "Luas = 20,0 x 10,0 = 200,0 cm². Ketidakpastian absolut = KR Luas x Luas = 1,5% x 200,0 = 3 cm². Maka hasilnya (200 ± 3) cm². Angka di belakang koma dihilangkan agar sesuai dengan ketidakpastiannya." },
+    { difficulty: 'hard', question: "Sebuah resistor memiliki kode warna dengan toleransi ±5%. Ini merupakan contoh dari...", options: ["Kesalahan acak", "Ketidakpastian sistematis yang diketahui", "Kesalahan paralaks", "Kesalahan manusia"], answer: 1, explanation: "Toleransi adalah batas ketidakpastian yang sudah ditetapkan oleh pabrikan. Ini adalah bentuk kesalahan sistematis, namun nilainya diketahui, sehingga dapat diperhitungkan." },
+    { difficulty: 'hard', question: "Dua buah pengukuran panjang memberikan hasil L₁ = (5,2 ± 0,1) cm dan L₂ = (3,5 ± 0,2) cm. Hasil dari L₁ - L₂ adalah...", options: ["(1,7 ± 0,1) cm", "(1,7 ± 0,2) cm", "(1,7 ± 0,3) cm", "(1,7 ± 0,05) cm"], answer: 2, explanation: "Untuk penjumlahan atau pengurangan, ketidakpastian absolutnya dijumlahkan. ΔL = ΔL₁ + ΔL₂ = 0,1 + 0,2 = 0,3 cm. Hasilnya (5,2 - 3,5) ± 0,3 = (1,7 ± 0,3) cm." },
+    { difficulty: 'hard', question: "Sebuah balok diukur dengan mikrometer (NST 0,01 mm) menghasilkan tebal 1,54 mm. Jumlah angka pentingnya adalah...", options: ["1", "2", "3", "4"], answer: 2, explanation: "Semua angka (1, 5, 4) adalah angka hasil pengukuran yang signifikan. Jadi ada 3 angka penting." },
+    { difficulty: 'hard', question: "Seorang siswa melaporkan hasil pengukuran massa jenis sebesar 8,96345 g/cm³. Mengapa laporan ini kemungkinan besar tidak valid secara ilmiah?", options: ["Satuannya salah", "Nilainya terlalu besar", "Jumlah angka pentingnya tidak realistis untuk alat ukur di lab sekolah", "Massa jenis tidak bisa diukur"], answer: 2, explanation: "Untuk mendapatkan 6 angka penting, diperlukan neraca dan alat ukur volume dengan presisi sangat tinggi yang jarang ada di lab sekolah. Hasil ini menyiratkan tingkat ketelitian yang tidak mungkin tercapai." },
+    { difficulty: 'hard', question: "Dari beberapa set data, manakah yang paling presisi? (A) 10, 11, 9, 10. (B) 10.1, 10.2, 10.1, 10.2. (C) 12, 15, 8, 11. (D) 10.5, 11.5, 9.5, 8.5", options: ["Set A", "Set B", "Set C", "Set D"], answer: 1, explanation: "Presisi berarti data-data saling berdekatan. Set B memiliki rentang data terkecil (hanya antara 10,1 dan 10,2), yang menunjukkan pengukuran yang paling konsisten atau presisi." },
+    { difficulty: 'hard', question: "Sebuah konstanta fisika diketahui nilainya 9,80665 m/s². Siswa melakukan eksperimen dan mendapat hasil 9,7 m/s². Pengukuran siswa ini dapat dikatakan...", options: ["Akurat tapi tidak presisi", "Presisi tapi tidak akurat", "Akurat dan presisi", "Tidak akurat dan tidak presisi"], answer: 0, explanation: "Hasil 9,7 cukup dekat dengan nilai sebenarnya (9,8...), sehingga bisa dianggap cukup akurat. Namun, karena hanya ada satu data, kita tidak bisa menilai presisinya (konsistensi pengulangan)." },
     ];
+
 
     // --- VARIABEL GLOBAL UNTUK KUIS ---
     const startScreen = document.getElementById('start-screen');
@@ -436,19 +289,12 @@
     let currentQuestions = [];
     let currentQuestionIndex = 0;
     let score = 0;
-    const QUESTIONS_PER_QUIZ = 10; // Kuis akan terdiri dari 10 soal
 
     // --- FUNGSI-FUNGSI KUIS ---
 
     function startQuiz(difficulty) {
         // Filter soal berdasarkan tingkat kesulitan
-        let filteredQuestions = allQuestions.filter(q => q.difficulty === difficulty);
-        
-        // Acak urutan soal yang sudah difilter
-        filteredQuestions.sort(() => Math.random() - 0.5);
-        
-        // Ambil 10 soal pertama atau sesuai jumlah yang tersedia
-        currentQuestions = filteredQuestions.slice(0, QUESTIONS_PER_QUIZ);
+        currentQuestions = allQuestions.filter(q => q.difficulty === difficulty);
         
         currentQuestionIndex = 0;
         score = 0;
@@ -470,7 +316,7 @@
         question.options.forEach((option, index) => {
             const button = document.createElement('button');
             button.innerText = option;
-            button.classList.add('btn', 'w-full', 'p-4', 'border', 'border-gray-300', 'dark:border-gray-600', 'rounded-lg', 'text-left', 'hover:bg-gray-100', 'dark:hover:bg-gray-700');
+            button.classList.add('btn', 'w-full', 'p-4', 'border', 'border-gray-300', 'rounded-lg', 'text-left', 'hover:bg-gray-100');
             button.dataset.correct = (index === question.answer);
             button.addEventListener('click', selectAnswer);
             answerButtons.appendChild(button);
@@ -526,13 +372,13 @@
         
         // Mengubah warna lingkaran skor berdasarkan hasil
         const scoreCircle = document.getElementById('score-circle');
-        scoreCircle.classList.remove('bg-red-200', 'bg-yellow-200', 'bg-green-200', 'dark:bg-red-700', 'dark:bg-yellow-700', 'dark:bg-green-700');
+        scoreCircle.classList.remove('bg-red-200', 'bg-yellow-200', 'bg-green-200');
         if (percentage < 50) {
-            scoreCircle.classList.add('bg-red-200', 'dark:bg-red-700');
+            scoreCircle.classList.add('bg-red-200');
         } else if (percentage < 80) {
-            scoreCircle.classList.add('bg-yellow-200', 'dark:bg-yellow-700');
+            scoreCircle.classList.add('bg-yellow-200');
         } else {
-            scoreCircle.classList.add('bg-green-200', 'dark:bg-green-700');
+            scoreCircle.classList.add('bg-green-200');
         }
     }
 

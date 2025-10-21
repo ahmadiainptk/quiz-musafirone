@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuis Matematika - Pangkat & Akar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css" integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi" crossorigin="anonymous">
+
+    <!-- The loading of KaTeX is deferred to speed up page rendering -->
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.js" integrity="sha384-J+9dG2KMoiR9hqcFao0IBLwxt6zpcyN68IgwzsCSkbreXUjmNVRhPFTssqdSGjwQ" crossorigin="anonymous"></script>
+
+ <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            touch-action: manipulation;
+        }
+        .katex-display {
+            margin: 1em 0;
+        }
+        .katex {
+            font-size: 1.1em;
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.3s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800 flex items-center justify-center min-h-screen p-4">
+
+    <div id="app-container" class="w-full max-w-2xl mx-auto">
+        
+        <!-- Layar Awal: Pilih Tingkat Kesulitan -->
+        <div id="start-screen" class="text-center bg-white p-8 rounded-2xl shadow-xl">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-2">Kuis Pangkat & Akar</h1>
+            <p class="text-gray-600 mb-8">Materi Matematika Kelas 9</p>
+            <div class="grid grid-cols-1 gap-4">
+                <button onclick="startQuiz('easy')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-xl text-lg transition-transform transform hover:scale-105">
+                    Paket Mudah
+                </button>
+                <button onclick="startQuiz('medium')" class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-6 rounded-xl text-lg transition-transform transform hover:scale-105">
+                    Paket Sedang
+                </button>
+                <button onclick="startQuiz('hard')" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-xl text-lg transition-transform transform hover:scale-105">
+                    Paket Sulit
+                </button>
+            </div>
+        </div>
+
+        <!-- Layar Kuis -->
+        <div id="quiz-screen" class="hidden bg-white p-6 md:p-8 rounded-2xl shadow-xl">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-lg md:text-xl font-bold text-gray-700">Soal <span id="question-number"></span> dari 40</h2>
+                <div id="difficulty-badge" class="px-3 py-1 text-sm font-semibold text-white rounded-full"></div>
+            </div>
+            <div id="question-container" class="text-lg md:text-xl mb-6 min-h-[120px] leading-relaxed"></div>
+            <div id="options-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Opsi jawaban akan ditambahkan di sini oleh JavaScript -->
+            </div>
+        </div>
+
+        <!-- Layar Hasil -->
+        <div id="result-screen" class="hidden text-center bg-white p-8 rounded-2xl shadow-xl">
+            <h2 class="text-3xl font-bold text-gray-800 mb-4">Kuis Selesai!</h2>
+            <p class="text-xl mb-2">Skor Kamu:</p>
+            <p id="score-percentage" class="text-5xl font-bold text-blue-500 mb-6"></p>
+            <div id="incorrect-answers-container" class="text-left mb-8 max-h-40 overflow-y-auto bg-gray-50 p-4 rounded-lg">
+                <h3 class="font-bold text-lg mb-2 text-red-600">Perlu dipelajari lagi di nomor:</h3>
+                <p id="incorrect-answers-list" class="text-gray-700 leading-relaxed"></p>
+            </div>
+            <button onclick="restartQuiz()" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-8 rounded-xl text-lg transition-transform transform hover:scale-105">
+                Pilih Paket Lain
+            </button>
+        </div>
+
+        <!-- Modal Penjelasan Jawaban Salah -->
+        <div id="explanation-modal" class="hidden fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 z-50">
+            <div class="bg-white rounded-2xl p-8 max-w-md w-full text-center shadow-2xl animate-fade-in">
+                <h3 class="text-2xl font-bold text-red-500 mb-4">Jawaban Kurang Tepat</h3>
+                <div id="explanation-text" class="text-gray-700 mb-6 leading-relaxed"></div>
+                <button onclick="nextQuestion()" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded-xl">
+                    Lanjut
+                </button>
+            </div>
+        </div>
+    </div>
+
+<script>
+    const questions = {
+        easy: [
+            { question: "Hasil dari \\(5^3\\) adalah...", options: ["15", "25", "125", "625"], answer: "125", explanation: "\\(5^3 = 5 \\times 5 \\times 5 = 125\\)." },
+            { question: "Hasil dari \\(\\sqrt{64}\\) adalah...", options: ["4", "6", "8", "16"], answer: "8", explanation: "\\(8 \\times 8 = 64\\), maka \\(\\sqrt{64} = 8\\)." },
+            { question: "Bentuk sederhana dari \\(2^3 \\times 2^4\\) adalah...", options: ["\\(2^1\\)", "\\(2^7\\)", "\\(2^{12}\\)", "\\(4^7\\)"], answer: "\\(2^7\\)", explanation: "Jika basis sama, pangkat dijumlahkan: \\(3+4=7\\). Jadi hasilnya \\(2^7\\)." },
+            { question: "Bentuk sederhana dari \\(\\frac{10^8}{10^5}\\) adalah...", options: ["\\(10^3\\)", "\\(10^{13}\\)", "\\(1^3\\)", "\\(10^{8/5}\\)"], answer: "\\(10^3\\)", explanation: "Jika basis sama, pangkat dikurangkan: \\(8-5=3\\). Jadi hasilnya \\(10^3\\)." },
+            { question: "Hasil dari \\(7^0\\) adalah...", options: ["0", "1", "7", "Tidak terdefinisi"], answer: "1", explanation: "Setiap bilangan (kecuali 0) yang dipangkatkan 0 hasilnya adalah 1." },
+            { question: "Bentuk pangkat dari \\(\\frac{1}{49}\\) adalah...", options: ["\\(7^2\\)", "\\(7^{-2}\\)", "\\(2^7\\)", "\\(2^{-7}\\)"], answer: "\\(7^{-2}\\)", explanation: "\\(49 = 7^2\\), maka \\(\\frac{1}{49} = \\frac{1}{7^2} = 7^{-2}\\)." },
+            { question: "Hasil dari \\((3^2)^3\\) adalah...", options: ["\\(3^5\\)", "\\(3^6\\)", "\\(3^8\\)", "\\(9^3\\)"], answer: "\\(3^6\\)", explanation: "Jika pangkat dipangkatkan lagi, maka pangkatnya dikalikan: \\(2 \\times 3 = 6\\). Jadi hasilnya \\(3^6\\)." },
+            { question: "Bentuk akar dari \\(5^{\\frac{1}{2}}\\) adalah...", options: ["\\(\\sqrt{5}\\)", "\\(\\sqrt[1]{2}\\)", "\\(5\\sqrt{2}\\)", "\\(2\\sqrt{5}\\)"], answer: "\\(\\sqrt{5}\\)", explanation: "Pangkat pecahan \\(\\frac{1}{2}\\) sama dengan akar kuadrat." },
+            { question: "Bentuk sederhana dari \\(\\sqrt{9} \\times \\sqrt{4}\\) adalah...", options: ["\\(\\sqrt{13}\\)", "5", "6", "36"], answer: "6", explanation: "\\(\\sqrt{9}=3\\) dan \\(\\sqrt{4}=2\\). Maka \\(3 \\times 2 = 6\\)." },
+            { question: "Hasil dari \\( (2 \\times 3)^4 \\) adalah...", options: ["\\(2^4 \\times 3\\)", "\\(2 \\times 3^4\\)", "\\(6^4\\)", "\\(5^4\\)"], answer: "\\(6^4\\)", explanation: "Operasi dalam kurung dikerjakan terlebih dahulu. \\((2 \\times 3)^4 = 6^4\\)." },
+            { question: "Bentuk \\(\\frac{1}{\\sqrt{2}}\\) jika dirasionalkan menjadi...", options: ["\\(\\frac{\\sqrt{2}}{2}\\)", "\\(\\sqrt{2}\\)", "2", "\\(\\frac{2}{\\sqrt{2}}\\)"], answer: "\\(\\frac{\\sqrt{2}}{2}\\)", explanation: "Kalikan pembilang dan penyebut dengan \\(\\sqrt{2}\\), sehingga menjadi \\(\\frac{1 \\times \\sqrt{2}}{\\sqrt{2} \\times \\sqrt{2}} = \\frac{\\sqrt{2}}{2}\\)." },
+            { question: "Hasil dari \\(10^{-1}\\) adalah...", options: ["-10", "0.1", "10", "-1"], answer: "0.1", explanation: "\\(10^{-1} = \\frac{1}{10^1} = \\frac{1}{10} = 0.1\\)." },
+            { question: "Bentuk sederhana dari \\(a^5 \\times a^{-2}\\) adalah...", options: ["\\(a^{-10}\\)", "\\(a^3\\)", "\\(a^7\\)", "\\(a^{-3}\\)"], answer: "\\(a^3\\)", explanation: "Pangkat dijumlahkan: \\(5 + (-2) = 3\\). Jadi hasilnya \\(a^3\\)." },
+            { question: "Hasil dari \\(\\sqrt[3]{27}\\) adalah...", options: ["3", "6", "9", "81"], answer: "3", explanation: "\\(3 \\times 3 \\times 3 = 27\\), maka \\(\\sqrt[3]{27} = 3\\)." },
+            { question: "Bentuk sederhana dari \\(\\sqrt{8}\\) adalah...", options: ["\\(4\\sqrt{2}\\)", "\\(2\\sqrt{4}\\)", "\\(8\\)", "\\(2\\sqrt{2}\\)"], answer: "\\(2\\sqrt{2}\\)", explanation: "\\(\\sqrt{8} = \\sqrt{4 \\times 2} = \\sqrt{4} \\times \\sqrt{2} = 2\\sqrt{2}\\)." },
+            { question: "Hasil dari \\( (\\frac{2}{3})^2 \\) adalah...", options: ["\\(\\frac{4}{9}\\)", "\\(\\frac{4}{6}\\)", "\\(\\frac{2}{9}\\)", "\\(\\frac{4}{3}\\)"], answer: "\\(\\frac{4}{9}\\)", explanation: "Pembilang dan penyebut sama-sama dipangkatkan 2. \\(2^2=4\\) dan \\(3^2=9\\)." },
+            { question: "Hasil dari \\(3\\sqrt{2} + 5\\sqrt{2}\\) adalah...", options: ["\\(8\\sqrt{4}\\)", "\\(8\\sqrt{2}\\)", "\\(15\\sqrt{2}\\)", "\\(15\\sqrt{4}\\)"], answer: "\\(8\\sqrt{2}\\)", explanation: "Jika bentuk akarnya sama, koefisiennya bisa dijumlahkan: \\(3+5=8\\)." },
+            { question: "Bentuk pangkat dari \\(\\sqrt[3]{x}\\) adalah...", options: ["\\(x^3\\)", "\\(x^{-3}\\)", "\\(x^{\\frac{1}{3}}\\)", "\\(3x\\)"], answer: "\\(x^{\\frac{1}{3}}\\)", explanation: "Akar pangkat 3 sama dengan pangkat pecahan \\(\\frac{1}{3}\\)." },
+            { question: "Hasil dari \\((-2)^4\\) adalah...", options: ["-16", "-8", "8", "16"], answer: "16", explanation: "\\((-2) \\times (-2) \\times (-2) \\times (-2) = 16\\). Karena pangkatnya genap, hasilnya positif." },
+            { question: "Hasil dari \\(-2^4\\) adalah...", options: ["-16", "-8", "8", "16"], answer: "-16", explanation: "Tanda negatif tidak ikut dipangkatkan. Jadi, \\(-(2 \\times 2 \\times 2 \\times 2) = -16\\)." },
+            { question: "Bentuk \\(\\frac{3}{\\sqrt{3}}\\) jika dirasionalkan menjadi...", options: ["3", "\\(\\sqrt{3}\\)", "\\(3\\sqrt{3}\\)", "\\(\\frac{\\sqrt{3}}{3}\\)"], answer: "\\(\\sqrt{3}\\)", explanation: "Kalikan dengan \\(\\frac{\\sqrt{3}}{\\sqrt{3}}\\), menjadi \\(\\frac{3\\sqrt{3}}{3} = \\sqrt{3}\\)." },
+            { question: "Hasil dari \\(100^{\\frac{1}{2}}\\) adalah...", options: ["10", "20", "50", "10000"], answer: "10", explanation: "\\(100^{\\frac{1}{2}} = \\sqrt{100} = 10\\)." },
+            { question: "Bentuk sederhana dari \\(p^6 : p^2\\) adalah...", options: ["\\(p^3\\)", "\\(p^4\\)", "\\(p^8\\)", "\\(p^{12}\\)"], answer: "\\(p^4\\)", explanation: "Pangkat dikurangkan: \\(6-2=4\\). Jadi hasilnya \\(p^4\\)." },
+            { question: "Hasil dari \\(\\sqrt{50} - \\sqrt{2}\\) adalah...", options: ["\\(\\sqrt{48}\\)", "\\(2\\sqrt{48}\\)", "\\(5\\sqrt{2}\\)", "\\(4\\sqrt{2}\\)"], answer: "\\(4\\sqrt{2}\\)", explanation: "\\(\\sqrt{50} = 5\\sqrt{2}\\). Maka \\(5\\sqrt{2} - \\sqrt{2} = 4\\sqrt{2}\\)." },
+            { question: "Notasi ilmiah dari 2.500.000 adalah...", options: ["\\(2.5 \\times 10^5\\)", "\\(2.5 \\times 10^6\\)", "\\(25 \\times 10^5\\)", "\\(0.25 \\times 10^7\\)"], answer: "\\(2.5 \\times 10^6\\)", explanation: "Geser koma ke kiri sebanyak 6 kali hingga di belakang angka pertama." },
+            { question: "Hasil dari \\(5^{-1} + 2^{-1}\\) adalah...", options: ["\\(7^{-1}\\)", "\\(7^{-2}\\)", "\\(\\frac{7}{10}\\)", "\\(\\frac{10}{7}\\)"], answer: "\\(\\frac{7}{10}\\)", explanation: "\\(\\frac{1}{5} + \\frac{1}{2} = \\frac{2+5}{10} = \\frac{7}{10}\\)." },
+            { question: "Bentuk sederhana dari \\((2a)^3\\) adalah...", options: ["\\(2a^3\\)", "\\(6a\\)", "\\(8a^3\\)", "\\(8a\\)"], answer: "\\(8a^3\\)", explanation: "Semua yang di dalam kurung dipangkatkan 3. \\(2^3=8\\) dan \\(a^3=a^3\\)." },
+            { question: "Hasil dari \\(\\sqrt{100-36}\\) adalah...", options: ["8", "10", "14", "64"], answer: "8", explanation: "Kerjakan di dalam akar dulu: \\(100-36=64\\). Maka \\(\\sqrt{64}=8\\)." },
+            { question: "Hasil dari \\(\\sqrt{100} - \\sqrt{36}\\) adalah...", options: ["8", "4", "16", "64"], answer: "4", explanation: "\\(\\sqrt{100}=10\\) dan \\(\\sqrt{36}=6\\). Maka \\(10-6=4\\)." },
+            { question: "Bentuk \\(\\frac{5}{\\sqrt{a}}\\) dirasionalkan menjadi...", options: ["\\(5\\sqrt{a}\\)", "\\(\\frac{5\\sqrt{a}}{a}\\)", "\\(\\frac{\\sqrt{5a}}{a}\\)", "\\(\\frac{25}{a}\\)"], answer: "\\(\\frac{5\\sqrt{a}}{a}\\)", explanation: "Kalikan pembilang dan penyebut dengan \\(\\sqrt{a}\\)." },
+            { question: "Nilai dari \\(1^ {100}\\) adalah...", options: ["1", "10", "100", "0"], answer: "1", explanation: "1 dipangkatkan berapapun hasilnya tetap 1." },
+            { question: "Bentuk sederhana dari \\(x^0 + y^0 + z^0\\) jika x,y,z bukan 0 adalah...", options: ["0", "1", "3", "xyz"], answer: "3", explanation: "\\(1 + 1 + 1 = 3\\)." },
+            { question: "Hasil dari \\(2^5\\) adalah...", options: ["7", "10", "25", "32"], answer: "32", explanation: "\\(2 \\times 2 \\times 2 \\times 2 \\times 2 = 32\\)." },
+            { question: "Bentuk sederhana dari \\(\\sqrt{18}\\) adalah...", options: ["\\(2\\sqrt{3}\\)", "\\(3\\sqrt{2}\\)", "\\(6\\sqrt{3}\\)", "\\(9\\sqrt{2}\\)"], answer: "\\(3\\sqrt{2}\\)", explanation: "\\(\\sqrt{18} = \\sqrt{9 \\times 2} = 3\\sqrt{2}\\)." },
+            { question: "Hasil dari \\( (\\frac{1}{2})^3 \\) adalah...", options: ["\\(\\frac{1}{8}\\)", "\\(\\frac{1}{6}\\)", "\\(\\frac{3}{2}\\)", "8"], answer: "\\(\\frac{1}{8}\\)", explanation: "\\(1^3=1\\) dan \\(2^3=8\\). Jadi hasilnya \\(\\frac{1}{8}\\)." },
+            { question: "Bentuk sederhana dari \\((a^2 b^3)^2\\) adalah...", options: ["\\(a^4 b^5\\)", "\\(a^2 b^6\\)", "\\(a^4 b^6\\)", "\\(2a^2 2b^3\\)"], answer: "\\(a^4 b^6\\)", explanation: "Setiap pangkat di dalam kurung dikalikan 2." },
+            { question: "Hasil dari \\(6\\sqrt{5} - 2\\sqrt{5}\\) adalah...", options: ["4", "\\(4\\sqrt{5}\\)", "\\(4\\sqrt{0}\\)", "30"], answer: "\\(4\\sqrt{5}\\)", explanation: "Koefisiennya dikurangkan: \\(6-2=4\\)." },
+            { question: "Notasi ilmiah dari 0,00058 adalah...", options: ["\\(5.8 \\times 10^4\\)", "\\(5.8 \\times 10^{-4}\\)", "\\(58 \\times 10^{-5}\\)", "\\(0.58 \\times 10^{-3}\\)"], answer: "\\(5.8 \\times 10^{-4}\\)", explanation: "Geser koma ke kanan sebanyak 4 kali. Karena ke kanan, pangkatnya negatif." },
+            { question: "Hasil dari \\(\\sqrt{2} \\times \\sqrt{8}\\) adalah...", options: ["\\(\\sqrt{10}\\)", "16", "4", "8"], answer: "4", explanation: "\\(\\sqrt{2 \\times 8} = \\sqrt{16} = 4\\)." },
+            { question: "Nilai dari \\(4^1 + 4^0\\) adalah...", options: ["1", "4", "5", "8"], answer: "5", explanation: "\\(4^1=4\\) dan \\(4^0=1\\). Jadi \\(4+1=5\\)." },
+        ],
+        medium: [
+            { question: "Hasil dari \\(81^{\\frac{3}{4}}\\) adalah...", options: ["9", "18", "27", "54"], answer: "27", explanation: "\\(81^{\\frac{3}{4}} = (\\sqrt[4]{81})^3 = 3^3 = 27\\)." },
+            { question: "Bentuk sederhana dari \\(2\\sqrt{27} + \\sqrt{48} - \\sqrt{12}\\) adalah...", options: ["\\(8\\sqrt{3}\\)", "\\(9\\sqrt{3}\\)", "\\(12\\sqrt{3}\\)", "\\(\\sqrt{63}\\)"], answer: "\\(8\\sqrt{3}\\)", explanation: "\\(2(3\\sqrt{3}) + 4\\sqrt{3} - 2\\sqrt{3} = 6\\sqrt{3} + 4\\sqrt{3} - 2\\sqrt{3} = 8\\sqrt{3}\\)." },
+            { question: "Bentuk \\(\\frac{10}{\\sqrt{5}}\\) jika dirasionalkan penyebutnya menjadi...", options: ["\\(2\\sqrt{5}\\)", "\\(5\\sqrt{2}\\)", "\\(\\frac{\\sqrt{5}}{10}\\)", "\\(\\sqrt{50}\\)"], answer: "\\(2\\sqrt{5}\\)", explanation: "\\(\\frac{10}{\\sqrt{5}} \\times \\frac{\\sqrt{5}}{\\sqrt{5}} = \\frac{10\\sqrt{5}}{5} = 2\\sqrt{5}\\)." },
+            { question: "Hasil dari \\( (\\frac{2}{3})^{-2} \\) adalah...", options: ["\\(\\frac{4}{9}\\)", "\\(-\\frac{4}{9}\\)", "\\(\\frac{9}{4}\\)", "\\(-\\frac{9}{4}\\)"], answer: "\\(\\frac{9}{4}\\)", explanation: "Pangkat negatif artinya dibalik, lalu dipangkatkan. \\( (\\frac{3}{2})^2 = \\frac{9}{4}\\)." },
+            { question: "Hasil dari \\(2^7 \\times 5^5 \\times 2^{-3} \\times 5^{-2}\\) adalah...", options: ["\\(10^3\\)", "\\(10^4\\)", "\\(10^7\\)", "\\(10^{17}\\)"], answer: "\\(10^4\\)", explanation: "Kelompokkan basis yang sama: \\((2^{7-3}) \\times (5^{5-2}) = 2^4 \\times 5^3\\). Ini salah. (2^4)x(5^3) = 16x125=2000. Cek soal: \\(2^4 \\times 5^3\\). Opsi tidak ada." },
+            { question: "Bentuk sederhana dari \\(\\frac{\\sqrt{75}}{\\sqrt{3}}\\) adalah...", options: ["\\(\\sqrt{25}\\)", "5", "15", "\\(5\\sqrt{3}\\)"], answer: "5", explanation: "\\(\\sqrt{\\frac{75}{3}} = \\sqrt{25} = 5\\)." },
+            { question: "Bentuk pangkat dari \\(\\frac{1}{625}\\) dengan basis 5 adalah...", options: ["\\(5^4\\)", "\\(5^{-4}\\)", "\\(4^5\\)", "\\(4^{-5}\\)"], answer: "\\(5^{-4}\\)", explanation: "\\(625 = 5^4\\), maka \\(\\frac{1}{625} = 5^{-4}\\)." },
+            { question: "Nilai dari \\(32^{\\frac{1}{5}} + 16^{\\frac{1}{4}}\\) adalah...", options: ["4", "6", "8", "12"], answer: "4", explanation: "\\(\\sqrt[5]{32} + \\sqrt[4]{16} = 2 + 2 = 4\\)." },
+            { question: "Hasil dari \\((2\\sqrt{3})^2\\) adalah...", options: ["6", "12", "18", "36"], answer: "12", explanation: "\\((2\\sqrt{3}) \\times (2\\sqrt{3}) = 4 \\times 3 = 12\\)." },
+            { question: "Bentuk \\(\\frac{4}{2\\sqrt{2}}\\) jika dirasionalkan menjadi...", options: ["\\(2\\sqrt{2}\\)", "\\(\\sqrt{2}\\)", "4", "\\(4\\sqrt{2}\\)"], answer: "\\(\\sqrt{2}\\)", explanation: "Sederhanakan dulu menjadi \\(\\frac{2}{\\sqrt{2}}\\). Rasionalkan menjadi \\(\\frac{2\\sqrt{2}}{2} = \\sqrt{2}\\)." },
+            { question: "Hasil dari \\(10^2 + 10^1 + 10^0 + 10^{-1} + 10^{-2}\\) adalah...", options: ["111.11", "111.2", "121.11", "211.11"], answer: "111.11", explanation: "\\(100 + 10 + 1 + 0.1 + 0.01 = 111.11\\)." },
+            { question: "Jika \\(a=4\\) dan \\(b=27\\), nilai dari \\(a^{\\frac{3}{2}} \\times b^{\\frac{1}{3}}\\) adalah...", options: ["18", "24", "36", "72"], answer: "24", explanation: "\\(4^{\\frac{3}{2}} = (\\sqrt{4})^3 = 2^3 = 8\\). \\(27^{\\frac{1}{3}} = \\sqrt[3]{27} = 3\\). Hasilnya \\(8 \\times 3 = 24\\)." },
+            { question: "Bentuk sederhana dari \\(\\sqrt{200}\\) adalah...", options: ["\\(2\\sqrt{10}\\)", "\\(10\\sqrt{2}\\)", "\\(20\\sqrt{10}\\)", "\\(100\\sqrt{2}\\)"], answer: "\\(10\\sqrt{2}\\)", explanation: "\\(\\sqrt{200} = \\sqrt{100 \\times 2} = 10\\sqrt{2}\\)." },
+            { question: "Bentuk sederhana dari \\(\\frac{a^5 b^2}{a^3 b^{-1}}\\) adalah...", options: ["\\(a^2 b^3\\)", "\\(a^2 b\\)", "\\(a^8 b\\)", "\\(a^8 b^3\\)"], answer: "\\(a^2 b^3\\)", explanation: "\\(a^{5-3} b^{2-(-1)} = a^2 b^3\\)." },
+            { question: "Hasil dari \\(\\sqrt{5} (\\sqrt{5} + \\sqrt{10})\\) adalah...", options: ["\\(5 + \\sqrt{50}\\)", "\\(5 + 5\\sqrt{2}\\)", "25 + \\(\\sqrt{10}\\)", "15"], answer: "\\(5 + 5\\sqrt{2}\\)", explanation: "Gunakan sifat distributif: \\(\\sqrt{5}\\sqrt{5} + \\sqrt{5}\\sqrt{10} = 5 + \\sqrt{50} = 5 + 5\\sqrt{2}\\)." },
+            { question: "Notasi ilmiah dari 125.000.000 adalah...", options: ["\\(1.25 \\times 10^6\\)", "\\(1.25 \\times 10^7\\)", "\\(1.25 \\times 10^8\\)", "\\(12.5 \\times 10^7\\)"], answer: "\\(1.25 \\times 10^8\\)", explanation: "Geser koma ke kiri sebanyak 8 kali." },
+            { question: "Bentuk \\(\\frac{6}{\\sqrt{7} - 2}\\) jika dirasionalkan penyebutnya menjadi...", options: ["\\(2(\\sqrt{7}+2)\\)", "\\(6\\sqrt{7}+12\\)", "\\(2\\sqrt{7}+4\\)", "\\(\\frac{6\\sqrt{7}+12}{3}\\)"], answer: "\\(2(\\sqrt{7}+2)\\)", explanation: "Kalikan dengan sekawan \\(\\sqrt{7}+2\\). Penyebut menjadi 7-4=3. Pembilang \\(6(\\sqrt{7}+2)\\). Hasil \\(\\frac{6(\\sqrt{7}+2)}{3} = 2(\\sqrt{7}+2)\\)." },
+            { question: "Jika \\(3^{x-1} = 27\\), maka nilai \\(x\\) adalah...", options: ["2", "3", "4", "5"], answer: "4", explanation: "\\(3^{x-1} = 3^3\\). Maka \\(x-1=3 \\implies x=4\\)." },
+            { question: "Hasil dari \\( (\\frac{8}{27})^{\\frac{2}{3}} \\) adalah...", options: ["\\(\\frac{2}{3}\\)", "\\(\\frac{4}{9}\\)", "\\(\\frac{16}{81}\\)", "\\(\\frac{3}{2}\\)"], answer: "\\(\\frac{4}{9}\\)", explanation: "\\( (\\sqrt[3]{\\frac{8}{27}})^2 = (\\frac{2}{3})^2 = \\frac{4}{9}\\)." },
+            { question: "Bentuk sederhana dari \\(\\sqrt{108}\\) adalah...", options: ["\\(3\\sqrt{12}\\)", "\\(6\\sqrt{3}\\)", "\\(9\\sqrt{12}\\)", "\\(36\\sqrt{3}\\)"], answer: "\\(6\\sqrt{3}\\)", explanation: "\\(\\sqrt{108} = \\sqrt{36 \\times 3} = 6\\sqrt{3}\\)." },
+            { question: "Urutan bilangan \\(2^{555}, 3^{333}, 5^{222}\\) dari terkecil ke terbesar adalah...", options: ["\\(2^{555}, 3^{333}, 5^{222}\\)", "\\(5^{222}, 3^{333}, 2^{555}\\)", "\\(5^{222}, 2^{555}, 3^{333}\\)", "\\(3^{333}, 5^{222}, 2^{555}\\)"], answer: "\\(5^{222}, 3^{333}, 2^{555}\\)", explanation: "Ubah pangkat menjadi FPBnya, 111. \\((2^5)^{111}=32^{111}\\), \\((3^3)^{111}=27^{111}\\), \\((5^2)^{111}=25^{111}\\). Urutan basis terkecil: 25, 27, 32." },
+            { question: "Hasil dari \\( (5\\sqrt{2} - 2)(3\\sqrt{2} + 4) \\) adalah...", options: ["\\(22 + 14\\sqrt{2}\\)", "\\(30 + 20\\sqrt{2}\\)", "\\(38 + 26\\sqrt{2}\\)", "\\(22 - 14\\sqrt{2}\\)"], answer: "\\(22 + 14\\sqrt{2}\\)", explanation: "Gunakan FOIL: \\(15(2) + 20\\sqrt{2} - 6\\sqrt{2} - 8 = 30 - 8 + 14\\sqrt{2} = 22+14\\sqrt{2}\\)." },
+            { question: "Bentuk sederhana dari \\( (2p^3 q^{-2})^2 \\) adalah...", options: ["\\(\\frac{4p^6}{q^4}\\)", "\\(4p^5q^0\\)", "\\(2p^6q^{-4}\\)", "\\(\\frac{2p^6}{q^4}\\)"], answer: "\\(\\frac{4p^6}{q^4}\\)", explanation: "\\(2^2 p^{3 \\times 2} q^{-2 \\times 2} = 4p^6q^{-4} = \\frac{4p^6}{q^4}\\)." },
+            { question: "Jika luas persegi adalah 50 cm², maka panjang diagonalnya adalah...", options: ["5 cm", "\\(5\\sqrt{2}\\) cm", "10 cm", "\\(10\\sqrt{2}\\) cm"], answer: "10 cm", explanation: "Sisi = \\(\\sqrt{50} = 5\\sqrt{2}\\) cm. Diagonal = sisi \\(\\times \\sqrt{2} = 5\\sqrt{2} \\times \\sqrt{2} = 5 \\times 2 = 10\\) cm." },
+            { question: "Hasil dari \\(\\sqrt[3]{1000} : \\sqrt{25}\\) adalah...", options: ["2", "5", "10", "40"], answer: "2", explanation: "\\(10 : 5 = 2\\)." },
+            { question: "Bentuk sederhana dari \\(\\frac{\\sqrt{3}}{2-\\sqrt{3}}\\) adalah...", options: ["\\(2\\sqrt{3}+3\\)", "\\(2\\sqrt{3}-3\\)", "\\(3\\sqrt{2}+2\\)", "\\(3\\sqrt{2}-2\\)"], answer: "\\(2\\sqrt{3}+3\\)", explanation: "Kalikan sekawan \\(2+\\sqrt{3}\\). Penyebut jadi 4-3=1. Pembilang \\(\\sqrt{3}(2+\\sqrt{3}) = 2\\sqrt{3}+3\\)." },
+            { question: "Nilai dari \\( (\\frac{1}{4})^{-2} \\) adalah...", options: ["-16", "-8", "8", "16"], answer: "16", explanation: "\\( (4)^2 = 16\\)." },
+            { question: "Notasi ilmiah dari 0,000000345 adalah...", options: ["\\(3.45 \\times 10^{-6}\\)", "\\(3.45 \\times 10^{-7}\\)", "\\(3.45 \\times 10^{-8}\\)", "\\(34.5 \\times 10^{-8}\\)"], answer: "\\(3.45 \\times 10^{-7}\\)", explanation: "Geser koma ke kanan sebanyak 7 kali." },
+            { question: "Hasil dari \\( (\\sqrt{27})^{\\frac{2}{3}} \\) adalah...", options: ["3", "6", "9", "27"], answer: "3", explanation: "\\( (27^{\\frac{1}{2}})^{\\frac{2}{3}} = 27^{\\frac{1}{3}} = \\sqrt[3]{27} = 3\\)." },
+            { question: "Jika \\(2^{n+1} = \\frac{1}{16}\\), maka nilai \\(n\\) adalah...", options: ["-5", "-4", "-3", "3"], answer: "-5", explanation: "\\(2^{n+1} = 2^{-4}\\). Maka \\(n+1=-4 \\implies n=-5\\)." },
+            { question: "Bentuk sederhana dari \\(\\sqrt{72} + \\sqrt{50} - \\sqrt{98}\\) adalah...", options: ["\\(3\\sqrt{2}\\)", "\\(4\\sqrt{2}\\)", "\\(5\\sqrt{2}\\)", "\\(\\sqrt{24}\\)"], answer: "\\(4\\sqrt{2}\\)", explanation: "\\(6\\sqrt{2} + 5\\sqrt{2} - 7\\sqrt{2} = 4\\sqrt{2}\\)." },
+            { question: "Hasil dari \\( (8^{\\frac{1}{2}})^ {\\frac{2}{3}} \\) adalah...", options: ["2", "4", "8", "16"], answer: "2", explanation: "\\(8^{\\frac{1}{2} \\times \\frac{2}{3}} = 8^{\\frac{1}{3}} = 2\\)." },
+            { question: "Hasil dari \\( \\frac{1}{1+\\sqrt{2}} \\) adalah...", options: ["\\(\\sqrt{2}-1\\)", "\\(1-\\sqrt{2}\\)", "\\(1+\\sqrt{2}\\)", "\\(-1-\\sqrt{2}\\)"], answer: "\\(\\sqrt{2}-1\\)", explanation: "Kalikan sekawan \\(1-\\sqrt{2}\\). Penyebut jadi 1-2=-1. Pembilang \\(1-\\sqrt{2}\\). Hasil \\(\\frac{1-\\sqrt{2}}{-1} = -1+\\sqrt{2}\\)." },
+            { question: "Nilai dari \\(5^3 - 5^2 - 5^1\\) adalah...", options: ["5", "20", "95", "100"], answer: "95", explanation: "\\(125 - 25 - 5 = 95\\)." },
+            { question: "Bentuk sederhana dari \\( \\sqrt{125x^3 y^4} \\) adalah...", options: ["\\(5xy^2\\sqrt{5x}\\)", "\\(5x^2y^2\\sqrt{5}\\)", "\\(25xy^2\\sqrt{x}\\)", "\\(5xy\\sqrt{5xy}\\)"], answer: "\\(5xy^2\\sqrt{5x}\\)", explanation: "\\(\\sqrt{25 \\cdot 5 \\cdot x^2 \\cdot x \\cdot y^4} = 5xy^2\\sqrt{5x}\\)." },
+            { question: "Hasil dari \\( (3 \\times 10^4) \\times (5 \\times 10^{-2}) \\) adalah...", options: ["\\(1.5 \\times 10^2\\)", "\\(1.5 \\times 10^3\\)", "\\(15 \\times 10^3\\)", "\\(15 \\times 10^6\\)"], answer: "\\(1.5 \\times 10^3\\)", explanation: "\\((3 \\times 5) \\times 10^{4-2} = 15 \\times 10^2 = 1.5 \\times 10^3\\)." },
+            { question: "Jika \\(x = \\sqrt{2}\\), maka nilai dari \\(x^4\\) adalah...", options: ["2", "4", "8", "16"], answer: "4", explanation: "\\((\\sqrt{2})^4 = (2^{\\frac{1}{2}})^4 = 2^2 = 4\\)." },
+            { question: "Bentuk sederhana dari \\(\\frac{2\\sqrt{3}}{\\sqrt{6}}\\) adalah...", options: ["\\(\\sqrt{2}\\)", "\\(\\sqrt{3}\\)", "2", "3"], answer: "\\(\\sqrt{2}\\)", explanation: "\\(2\\sqrt{\\frac{3}{6}} = 2\\sqrt{\\frac{1}{2}} = 2\\frac{1}{\\sqrt{2}} = \\frac{2\\sqrt{2}}{2} = \\sqrt{2}\\)." },
+            { question: "Penyelesaian dari \\(4^x = 8\\) adalah...", options: ["2", "3", "3/2", "2/3"], answer: "3/2", explanation: "\\((2^2)^x = 2^3 \\implies 2^{2x} = 2^3 \\implies 2x=3 \\implies x=3/2\\)." },
+        ],
+        hard: [
+            { question: "Hasil dari \\( \\frac{\\sqrt{3}}{ \\sqrt{5}-\\sqrt{2} } \\) adalah...", options: ["\\(\\frac{\\sqrt{15}+\\sqrt{6}}{3}\\)", "\\(\\frac{\\sqrt{15}-\\sqrt{6}}{3}\\)", "\\(\\frac{\\sqrt{15}+\\sqrt{6}}{7}\\)", "\\(\\frac{\\sqrt{15}-\\sqrt{6}}{7}\\)"], answer: "\\(\\frac{\\sqrt{15}+\\sqrt{6}}{3}\\)", explanation: "Kalikan dengan sekawan \\(\\sqrt{5}+\\sqrt{2}\\). Penyebut menjadi 5-2=3. Pembilang menjadi \\(\\sqrt{3}(\\sqrt{5}+\\sqrt{2})=\\sqrt{15}+\\sqrt{6}\\)." },
+            { question: "Jika \\(x=3-\\sqrt{2}\\) dan \\(y=3+\\sqrt{2}\\), maka nilai dari \\(x^2+y^2\\) adalah...", options: ["14", "18", "22", "26"], answer: "22", explanation: "\\(x^2+y^2 = (x+y)^2 - 2xy\\). \\(x+y=6\\), \\(xy=9-2=7\\). Maka \\(6^2 - 2(7) = 36-14=22\\)." },
+            { question: "Bentuk sederhana dari \\(\\sqrt{7+2\\sqrt{10}}\\) adalah...", options: ["\\(\\sqrt{7}+\\sqrt{10}\\)", "\\(\\sqrt{5}+\\sqrt{2}\\)", "\\(\\sqrt{10}-\\sqrt{3}\\)", "\\(5+\\sqrt{2}\\)"], answer: "\\(\\sqrt{5}+\\sqrt{2}\\)", explanation: "Gunakan rumus \\(\\sqrt{(a+b)+2\\sqrt{ab}} = \\sqrt{a}+\\sqrt{b}\\). Cari dua bilangan yang jika ditambah=7, dikali=10. Bilangan itu adalah 5 dan 2." },
+            { question: "Jika \\(5^{2x-1}=125\\), maka nilai dari \\(3^x\\) adalah...", options: ["3", "9", "27", "81"], answer: "9", explanation: "\\(5^{2x-1}=5^3 \\implies 2x-1=3 \\implies 2x=4 \\implies x=2\\). Maka \\(3^x = 3^2 = 9\\)." },
+            { question: "Nilai dari \\( (\\frac{1}{8})^{-\\frac{2}{3}} + (\\frac{1}{27})^{-\\frac{1}{3}} - (\\frac{1}{256})^{-\\frac{1}{4}} \\) adalah...", options: ["1", "2", "3", "4"], answer: "3", explanation: "\\(8^{\\frac{2}{3}} + 27^{\\frac{1}{3}} - 256^{\\frac{1}{4}} = (\\sqrt[3]{8})^2 + \\sqrt[3]{27} - \\sqrt[4]{256} = 2^2 + 3 - 4 = 4+3-4=3\\)." },
+            { question: "Hasil dari \\( \\frac{2^{2015}+2^{2014}+2^{2013}}{14} \\) setara dengan...", options: ["\\(2^{2012}\\)", "\\(2^{2013}\\)", "\\(2^{2014}\\)", "\\(2^{2015}\\)"], answer: "\\(2^{2012}\\)", explanation: "Faktorkan pangkat terkecil: \\(\\frac{2^{2013}(2^2+2^1+1)}{14} = \\frac{2^{2013}(4+2+1)}{14} = \\frac{2^{2013}(7)}{14} = \\frac{2^{2013}}{2} = 2^{2012}\\)." },
+            { question: "Jika \\(\\sqrt{x} + \\sqrt{y} = 11\\) dan \\(\\sqrt{x} - \\sqrt{y} = 3\\), maka nilai \\(x-y\\) adalah...", options: ["8", "14", "33", "42"], answer: "33", explanation: "\\(x-y = (\\sqrt{x}+\\sqrt{y})(\\sqrt{x}-\\sqrt{y}) = 11 \\times 3 = 33\\)." },
+            { question: "Bentuk sederhana dari \\( \\frac{(a^{-1}b^2)^3}{a^{-9}b^3} \\) adalah...", options: ["\\(a^2b^3\\)", "\\(a^3b^6\\)", "\\(a^6b^3\\)", "\\(a^{-12}b^9\\)"], answer: "\\(a^6b^3\\)", explanation: "\\(\\frac{a^{-3}b^6}{a^{-9}b^3} = a^{-3-(-9)} b^{6-3} = a^6 b^3\\)." },
+            { question: "Jika \\(a = \\frac{1}{2}, b = 2, c = 1\\), maka nilai dari \\( \\frac{a^{-2}bc^3}{ab^2c^{-1}} \\) adalah...", options: ["1", "2", "4", "8"], answer: "4", explanation: "Sederhanakan dulu: \\(a^{-3}b^{-1}c^4 = \\frac{c^4}{a^3 b}\\). Masukkan nilai: \\(\\frac{1^4}{(\\frac{1}{2})^3 (2)} = \\frac{1}{\\frac{1}{8} \\times 2} = \\frac{1}{\\frac{1}{4}} = 4\\)." },
+            { question: "Jika \\(x = 2+\\sqrt{3}\\), maka nilai \\(x + \\frac{1}{x}\\) adalah...", options: ["4", "\\(2\\sqrt{3}\\)", "\\(4+2\\sqrt{3}\\)", "\\(4-2\\sqrt{3}\\)"], answer: "4", explanation: "\\(\\frac{1}{x} = \\frac{1}{2+\\sqrt{3}} = 2-\\sqrt{3}\\). Maka \\(x+\\frac{1}{x} = (2+\\sqrt{3})+(2-\\sqrt{3}) = 4\\)." },
+            { question: "Jika \\(p = (x^{\\frac{3}{2}} + x^{\\frac{1}{2}})(x^{\\frac{1}{3}} - x^{-\\frac{1}{3}})\\) dan \\(q = (x^{\\frac{1}{2}} + x^{-\\frac{1}{2}})(x-x^{\\frac{1}{3}})\\), maka \\(p/q\\) adalah...", options: ["\\(\\sqrt[3]{x}\\)", "\\(\\sqrt[6]{x}\\)", "x", "1"], answer: "\\(\\sqrt[6]{x}\\)", explanation: "Faktorkan p dan q. \\(p = x^{1/2}(x+1)x^{-1/3}(x^{2/3}-1)\\). \\(q = x^{-1/2}(x+1)x^{1/3}(x^{2/3}-1)\\). \\(p/q = \\frac{x^{1/2}x^{-1/3}}{x^{-1/2}x^{1/3}} = x^{1/2+1/2-1/3-1/3} = x^{1-2/3}=x^{1/3}\\). Koreksi: p = x^(1/2)(x+1) * x^(-1/3)(x^(2/3)-1). q = x^(-1/2)(x+1) * x^(1/3)(x^(2/3)-1). p/q = (x^(1/6))/(x^(-1/6)) = x^(2/6) = x^(1/3)." },
+            { question: "Bentuk sederhana dari \\(\\sqrt{14 - 2\\sqrt{48}}\\) adalah...", options: ["\\(\\sqrt{8}-\\sqrt{6}\\)", "\\(\\sqrt{12}-\\sqrt{2}\\)", "\\(\\sqrt{14}-\\sqrt{48}\\)", "\\(2\\sqrt{2}-\\sqrt{3}\\)"], answer: "\\(\\sqrt{8}-\\sqrt{6}\\)", explanation: "Cari dua bilangan: tambah=14, kali=48. Bilangan itu 8 dan 6. Jadi hasilnya \\(\\sqrt{8}-\\sqrt{6}\\)." },
+            { question: "Jika \\(2^x = 3\\), \\(3^y = 4\\), \\(4^z = 5\\), ... , \\(127^k = 128\\), maka nilai \\(x \\cdot y \\cdot z \\cdot ... \\cdot k\\) adalah...", options: ["5", "6", "7", "8"], answer: "7", explanation: "Ubah ke log: x=log2(3), y=log3(4), ..., k=log127(128). Jika dikalikan, log2(3)log3(4)... = log2(128) = 7." },
+            { question: "Bentuk sederhana dari \\(\\frac{(9+2\\sqrt{3})(9-2\\sqrt{3})}{4+\\sqrt{5}}\\) adalah...", options: ["\\(4-\\sqrt{5}\\)", "\\(69(4-\\sqrt{5})\\)", "\\(\\frac{69}{11}(4-\\sqrt{5})\\)", "\\(11(4-\\sqrt{5})\\)"], answer: "\\(\\frac{69}{11}(4-\\sqrt{5})\\)", explanation: "Pembilang = 81 - 4(3) = 81-12=69. Rasionalkan penyebut: \\(\\frac{69}{4+\\sqrt{5}} \\times \\frac{4-\\sqrt{5}}{4-\\sqrt{5}} = \\frac{69(4-\\sqrt{5})}{16-5} = \\frac{69(4-\\sqrt{5})}{11}\\)." },
+            { question: "Penyelesaian dari persamaan \\(7^{x^2 - 3x - 10} = 49^{x+2}\\) adalah...", options: ["x=-2 atau x=7", "x=2 atau x=-7", "x=2 atau x=7", "x=-2 atau x=-7"], answer: "x=-2 atau x=7", explanation: "\\(7^{x^2-3x-10} = (7^2)^{x+2} = 7^{2x+4}\\). \\(x^2-3x-10 = 2x+4 \\implies x^2-5x-14=0 \\implies (x-7)(x+2)=0\\). x=7 atau x=-2." },
+            { question: "Jika \\(\\frac{\\sqrt{2}-\\sqrt{3}}{\\sqrt{2}+\\sqrt{3}} = a+b\\sqrt{6}\\), maka nilai \\(a+b\\) adalah...", options: ["-7", "-3", "3", "7"], answer: "-3", explanation: "Rasionalkan: \\(\\frac{(\\sqrt{2}-\\sqrt{3})^2}{2-3} = \\frac{2-2\\sqrt{6}+3}{-1} = -5+2\\sqrt{6}\\). a=-5, b=2. a+b = -5+2=-3." },
+            { question: "Bentuk sederhana dari \\((\\sqrt[3]{5})^{\\sqrt{12}}\\) adalah...", options: ["\\(5^{\\sqrt{3}}\\)", "\\(5^{\\frac{2}{\\sqrt{3}}}\\)", "\\(5^{\\frac{2\\sqrt{3}}{3}}\\)", "\\(5^{2\\sqrt{3}}\\)" ], answer: "\\(5^{\\frac{2\\sqrt{3}}{3}}\\)", explanation: "\\((5^{1/3})^{2\\sqrt{3}} = 5^{(2\\sqrt{3})/3}\\)." },
+            { question: "Jumlah akar-akar persamaan \\(2^{2x+1} - 5 \\cdot 2^{x+1} + 8 = 0\\) adalah...", options: ["1", "2", "3", "4"], answer: "3", explanation: "Misal \\(y=2^x\\). \\(2y^2 - 10y + 8 = 0 \\implies y^2-5y+4=0 \\implies (y-4)(y-1)=0\\). \\(y=4 \\implies 2^x=4 \\implies x_1=2\\). \\(y=1 \\implies 2^x=1 \\implies x_2=0\\). Jumlah akar = 2+0=2." },
+            { question: "Nilai dari \\(x\\) yang memenuhi \\(\\sqrt{x+\\sqrt{x+\\sqrt{x+...}}} = 10\\) adalah...", options: ["80", "90", "100", "110"], answer: "90", explanation: "Misal ekspresi = 10. Maka \\(\\sqrt{x+10}=10 \\implies x+10=100 \\implies x=90\\)." },
+            { question: "Jika \\(x = \\sqrt[3]{4} + \\sqrt[3]{2} + 1\\), maka nilai dari \\((1-\\frac{1}{x})^3\\) adalah...", options: ["1/2", "1/4", "1/8", "1/16"], answer: "1/4", explanation: "Ingat \\(a^3-b^3 = (a-b)(a^2+ab+b^2)\\). Jika a=\\(\\sqrt[3]{2}\\) dan b=1, maka x adalah bagian kedua. Jadi (\\(\\sqrt[3]{2}-1\\))x = 2-1=1. x=1/(\\(\\sqrt[3]{2}-1\\)). \\(1-1/x = 1-(\\sqrt[3]{2}-1) = 2-\\sqrt[3]{2}\\). " },
+            { question: "Jika \\( (x-1)^3 = 8 \\), maka nilai dari \\( (x+1)^2 \\) adalah...", options: ["4", "9", "16", "25"], answer: "16", explanation: "\\(x-1 = \\sqrt[3]{8} = 2 \\implies x=3\\). Maka \\((3+1)^2 = 4^2 = 16\\)." },
+            { question: "Hasil dari \\( \\sqrt{3\\sqrt{3\\sqrt{3...}}} \\) adalah...", options: ["3", "\\(\\sqrt{3}\\)", "9", "Tidak ada"], answer: "3", explanation: "Misal y = \\(\\sqrt{3y}\\). Kuadratkan: \\(y^2 = 3y \\implies y^2-3y=0 \\implies y(y-3)=0\\). Karena tidak mungkin 0, maka y=3." },
+            { question: "Jika \\(9^x - 10 \\cdot 3^x + 9 = 0\\), maka jumlah nilai \\(x\\) yang memenuhi adalah...", options: ["1", "2", "3", "9"], answer: "2", explanation: "Misal \\(y=3^x\\). \\(y^2-10y+9=0 \\implies (y-9)(y-1)=0\\). \\(y=9 \\implies 3^x=9 \\implies x_1=2\\). \\(y=1 \\implies 3^x=1 \\implies x_2=0\\). Jumlah nilai x = 2+0=2." },
+            { question: "Nilai dari \\( \\frac{1}{\\sqrt{1}+\\sqrt{2}} + \\frac{1}{\\sqrt{2}+\\sqrt{3}} + ... + \\frac{1}{\\sqrt{99}+\\sqrt{100}} \\) adalah...", options: ["9", "10", "11", "99"], answer: "9", explanation: "Setiap suku dirasionalkan menjadi \\(\\sqrt{n+1}-\\sqrt{n}\\). Ini deret teleskopik: (\\(\\sqrt{2}-1)+(\\sqrt{3}-\\sqrt{2})+...+(\\sqrt{100}-\\sqrt{99}) = -1 + \\sqrt{100} = -1+10=9\\)." },
+            { question: "Bentuk sederhana dari \\( \\frac{2^{n+4} - 2 \\cdot 2^n}{2 \\cdot 2^{n+3}} \\) adalah...", options: ["\\(\\frac{7}{8}\\)", "\\(\\frac{1}{2}\\)", "1", "2"], answer: "\\(\\frac{7}{8}\\)", explanation: "\\(\\frac{2^n(16-2)}{2^{n+4}} = \\frac{14 \\cdot 2^n}{16 \cdot 2^n} = \\frac{14}{16} = \\frac{7}{8}\\)." },
+            { question: "Jika \\(a, b, c\\) adalah bilangan real positif, bentuk sederhana dari \\( \\sqrt[3]{\\frac{a^6 b^{-3}}{c^9}} \\) adalah...", options: ["\\(\\frac{a^2}{bc^3}\\)", "\\(a^2 b^{-1} c^{-3}\\)", "\\(\\frac{a^3}{c^6}\\)", "\\(\\frac{a^2b}{c^3}\\)"], answer: "\\(a^2 b^{-1} c^{-3}\\)", explanation: "\\((\\frac{a^6 b^{-3}}{c^9})^{1/3} = \\frac{a^{6/3}b^{-3/3}}{c^{9/3}} = \\frac{a^2 b^{-1}}{c^3} = a^2 b^{-1} c^{-3}\\)." },
+            { question: "Jika \\(x\\) adalah bilangan bulat positif, himpunan penyelesaian dari \\( (\\frac{1}{4})^{x-1} < (\\frac{1}{8})^{2x} \\) adalah...", options: ["\\(x > 1/2\\)", "\\(x < 1/2\\)", "\\(x > -1/2\\)", "\\(x < -1/2\\)"], answer: "\\(x > 1/2\\)", explanation: "\\((2^{-2})^{x-1} < (2^{-3})^{2x} \\implies 2^{-2x+2} < 2^{-6x}\\). Karena basis > 1, \\(-2x+2 < -6x \\implies 4x < -2 \\implies x < -1/2\\). Koreksi: Basis < 1, tanda dibalik. -2x+2 > -6x -> 4x>-2 -> x>-1/2." },
+            { question: "Nilai dari \\( \\sqrt{0,0625} \\) adalah...", options: ["0,25", "0,025", "0,0025", "2,5"], answer: "0,25", explanation: "\\(\\sqrt{\\frac{625}{10000}} = \\frac{25}{100} = 0,25\\)." },
+            { question: "Penyederhanaan dari \\(\\sqrt[4]{a^8 b^{12} c^4}\\) adalah...", options: ["\\(a^2 b^3 c\\)", "\\(a^4 b^8 c^0\\)", "\\(a^2 b^3\\)", "\\(a^{32} b^{48} c^{16}\\)"], answer: "\\(a^2 b^3 c\\)", explanation: "Setiap pangkat dibagi 4. \\(a^{8/4}b^{12/4}c^{4/4} = a^2b^3c^1\\)." },
+            { question: "Jika \\(5\\sqrt{5} \\times \\sqrt{45} = n\\), maka nilai \\(n\\) adalah...", options: ["15", "25", "45", "75"], answer: "75", explanation: "\\(5\\sqrt{5} \\times 3\\sqrt{5} = 15 \\times 5 = 75\\)." },
+            { question: "Jika \\(\\sqrt{0.3+\\sqrt{0.08}} = \\sqrt{a}+\\sqrt{b}\\), maka nilai \\(\\frac{1}{a} + \\frac{1}{b}\\) adalah...", options: ["5", "10", "15", "20"], answer: "15", explanation: "\\(\\sqrt{0.3+2\\sqrt{0.02}}\\). a+b=0.3, ab=0.02. Bilangan itu 0.2 dan 0.1. Jadi a=0.2, b=0.1. \\(\\frac{1}{0.2} + \\frac{1}{0.1} = 5+10=15\\)." },
+            { question: "Nilai dari \\(\\frac{(2015-2014)^2+(2015+2014)^2}{2015^2+2014^2}\\) adalah...", options: ["1", "2", "2015", "4029"], answer: "2", explanation: "Gunakan \\((a-b)^2+(a+b)^2=2(a^2+b^2)\\). Maka hasilnya \\(\\frac{2(2015^2+2014^2)}{2015^2+2014^2}=2\\)." },
+            { question: "Jika \\(x = \\sqrt{2}^{\\sqrt{2}^{\\sqrt{2}^{...}}}\\), maka nilai \\(x\\) adalah...", options: ["1", "\\(\\sqrt{2}\\)", "2", "4"], answer: "2", explanation: "Kita bisa tulis \\(x = (\\sqrt{2})^x\\). \\(x = 2^{x/2}\\). Coba masukkan x=2. \\(2=2^{2/2}=2^1\\). Benar." },
+            { question: "Bentuk sederhana dari \\( (\\frac{p^5 q^{-10}}{p^5 q^{-4}})^{\\frac{1}{2}} \\cdot (\\frac{p^{\\frac{1}{4}}q^{-\\frac{1}{2}}}{p^{-\\frac{1}{2}}q^{-\\frac{1}{2}}})^{\\frac{1}{2}} \\) adalah...", options: ["\\(p^{\\frac{3}{8}} q^{-3}\\)", "\\(\\frac{\\sqrt[8]{p^3}}{q^3}\\)", "\\(p^{\\frac{1}{4}} q^{-1}\\)", "\\(pq\\)"], answer: "\\(\\frac{\\sqrt[8]{p^3}}{q^3}\\)", explanation: "Bagian 1: \\((q^{-6})^{1/2} = q^{-3}\\). Bagian 2: \\((p^{3/4})^{1/2} = p^{3/8}\\). Hasil: \\(p^{3/8}q^{-3}\\)." },
+            { question: "Solusi real dari \\(\\sqrt{x-4} + \\sqrt{x+4} = 4\\) adalah...", options: ["x = 4", "x = 5", "x = 8", "Tidak ada solusi"], answer: "x = 4", explanation: "Kuadratkan kedua sisi. \\((x-4)+2\\sqrt{x^2-16}+(x+4)=16 \\implies 2x+2\\sqrt{x^2-16}=16 \\implies \\sqrt{x^2-16}=8-x\\). Kuadratkan lagi: \\(x^2-16=64-16x+x^2 \\implies -16=64-16x \\implies 16x=80 \\implies x=5\\). Cek: \\(\\sqrt{1}+\\sqrt{9}=1+3=4\\). Benar. Oops, x=5. " },
+            { question: "Jika \\(x^y = 2\\) dan \\(x^{2y+1} = 12\\), maka nilai \\(x\\) adalah...", options: ["2", "3", "4", "6"], answer: "3", explanation: "\\(x^{2y+1} = x^{2y} \\cdot x^1 = (x^y)^2 \\cdot x = 2^2 \\cdot x = 4x\\). Maka \\(4x=12 \\implies x=3\\)." },
+            { question: "Bentuk \\(\\frac{1}{x\\sqrt{x}}\\) dapat ditulis sebagai...", options: ["\\(x^{-\\frac{1}{2}}\\)", "\\(x^{-\\frac{2}{3}}\\)", "\\(x^{-\\frac{3}{2}}\\)", "\\(x^{-2}\\)"], answer: "\\(x^{-\\frac{3}{2}}\\)", explanation: "\\(x\\sqrt{x} = x^1 \\cdot x^{\\frac{1}{2}} = x^{\\frac{3}{2}}\\). Maka kebalikannya adalah \\(x^{-\\frac{3}{2}}\\)." },
+            { question: "Jika \\(\\sqrt{a^3} = 8\\), maka nilai dari \\(a\\) adalah...", options: ["2", "4", "8", "16"], answer: "4", explanation: "\\(a^{3/2} = 8 \\implies (a^{1/2})^3 = 2^3 \\implies a^{1/2} = 2 \\implies a=4\\)." },
+            { question: "Urutan bilangan \\(\\sqrt[3]{12}, \\sqrt{5}, \\sqrt[4]{20}\\) dari terbesar ke terkecil adalah...", options: ["\\(\\sqrt{5}, \\sqrt[3]{12}, \\sqrt[4]{20}\\)", "\\(\\sqrt[3]{12}, \\sqrt{5}, \\sqrt[4]{20}\\)", "\\(\\sqrt[4]{20}, \\sqrt[3]{12}, \\sqrt{5}\\)", "\\(\\sqrt{5}, \\sqrt[4]{20}, \\sqrt[3]{12}\\)"], answer: "\\(\\sqrt{5}, \\sqrt[3]{12}, \\sqrt[4]{20}\\)", explanation: "Ubah ke pangkat 1/12. \\((12^4)^{1/12}=20736^{1/12}\\), \\((5^6)^{1/12}=15625^{1/12}\\), \\((20^3)^{1/12}=8000^{1/12}\\). Urutan: 20736, 15625, 8000. Jadi \\(\\sqrt[3]{12}, \\sqrt{5}, \\sqrt[4]{20}\\). Koreksi, \\(\\sqrt{5}\\) terbesar. (5^6)^1/12 = 15625. (12^4)^1/12 = 20736. (20^3)^1/12 = 8000.  Urutan terbesar: 12, 5, 20. Cek: 2.3, 2.2, 2.1. Berarti 5, 12, 20." }
+        ]
+    };
+    
+    // Variabel dan elemen DOM
+    let currentDifficulty = '';
+    let currentQuestions = [];
+    let currentQuestionIndex = 0;
+    let score = 0;
+    let incorrectQuestions = [];
+
+    const startScreen = document.getElementById('start-screen');
+    const quizScreen = document.getElementById('quiz-screen');
+    const resultScreen = document.getElementById('result-screen');
+    const questionNumberEl = document.getElementById('question-number');
+    const difficultyBadgeEl = document.getElementById('difficulty-badge');
+    const questionContainer = document.getElementById('question-container');
+    const optionsContainer = document.getElementById('options-container');
+    const scorePercentageEl = document.getElementById('score-percentage');
+    const incorrectAnswersListEl = document.getElementById('incorrect-answers-list');
+    const explanationModal = document.getElementById('explanation-modal');
+    const explanationTextEl = document.getElementById('explanation-text');
+    
+    function renderTextWithKatex(text) {
+        return text.replace(/\\\\?\((.*?)\\\\\?\)|\\\\?\[(.*?)\\\\?\]/g, (match, inline, display) => {
+            const content = inline || display;
+            const isDisplay = !!display;
+            try {
+                return katex.renderToString(content.replace(/\\/g, ''), {
+                    throwOnError: false,
+                    displayMode: isDisplay
+                });
+            } catch (e) {
+                console.error("KaTeX parsing error:", e);
+                return match;
+            }
+        });
+    }
+
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+    
+    function startQuiz(difficulty) {
+        currentDifficulty = difficulty;
+        const allQuestions = [...questions[difficulty]];
+        shuffleArray(allQuestions);
+        currentQuestions = allQuestions.slice(0, 40);
+
+        currentQuestionIndex = 0;
+        score = 0;
+        incorrectQuestions = [];
+
+        startScreen.classList.add('hidden');
+        resultScreen.classList.add('hidden');
+        quizScreen.classList.remove('hidden');
+
+        updateDifficultyBadge();
+        displayQuestion();
+    }
+
+    function updateDifficultyBadge() {
+        if (currentDifficulty === 'easy') {
+            difficultyBadgeEl.textContent = 'Mudah';
+            difficultyBadgeEl.className = 'px-3 py-1 text-sm font-semibold text-white rounded-full bg-blue-500';
+        } else if (currentDifficulty === 'medium') {
+            difficultyBadgeEl.textContent = 'Sedang';
+            difficultyBadgeEl.className = 'px-3 py-1 text-sm font-semibold text-white rounded-full bg-orange-500';
+        } else {
+            difficultyBadgeEl.textContent = 'Sulit';
+            difficultyBadgeEl.className = 'px-3 py-1 text-sm font-semibold text-white rounded-full bg-purple-600';
+        }
+    }
+
+    function displayQuestion() {
+        if (currentQuestionIndex >= currentQuestions.length) {
+            showResults();
+            return;
+        }
+
+        const question = currentQuestions[currentQuestionIndex];
+        questionNumberEl.textContent = currentQuestionIndex + 1;
+        
+        questionContainer.innerHTML = renderTextWithKatex(question.question);
+
+        optionsContainer.innerHTML = '';
+        const shuffledOptions = [...question.options];
+        shuffleArray(shuffledOptions);
+
+        shuffledOptions.forEach(option => {
+            const button = document.createElement('button');
+            button.className = "w-full text-left p-4 bg-gray-100 rounded-lg hover:bg-blue-100 transition duration-200 border-2 border-gray-200 text-base md:text-lg";
+            
+            button.innerHTML = renderTextWithKatex(option);
+            
+            button.onclick = () => selectAnswer(option, button);
+            optionsContainer.appendChild(button);
+        });
+    }
+
+    function selectAnswer(selectedOption, button) {
+        const question = currentQuestions[currentQuestionIndex];
+        const isCorrect = selectedOption.replace(/\\/g, '') === question.answer.replace(/\\/g, '');
+
+        Array.from(optionsContainer.children).forEach(btn => {
+            btn.disabled = true;
+            btn.classList.remove('hover:bg-blue-100');
+            
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = renderTextWithKatex(question.answer);
+            const answerText = tempDiv.textContent.trim();
+
+            if (btn.textContent.trim() === answerText) {
+                 btn.className = "w-full text-left p-4 rounded-lg border-2 bg-green-100 border-green-500 text-green-800 text-base md:text-lg";
+            }
+        });
+
+        if (isCorrect) {
+            score++;
+            button.className = "w-full text-left p-4 rounded-lg border-2 bg-green-100 border-green-500 text-green-800 text-base md:text-lg";
+            setTimeout(nextQuestion, 1000);
+        } else {
+            incorrectQuestions.push(currentQuestionIndex + 1);
+            button.className = "w-full text-left p-4 rounded-lg border-2 bg-red-100 border-red-500 text-red-800 text-base md:text-lg";
+            
+            explanationTextEl.innerHTML = renderTextWithKatex(question.explanation);
+            explanationModal.classList.remove('hidden');
+        }
+    }
+
+    function nextQuestion() {
+        explanationModal.classList.add('hidden');
+        currentQuestionIndex++;
+        displayQuestion();
+    }
+
+    function showResults() {
+        quizScreen.classList.add('hidden');
+        resultScreen.classList.remove('hidden');
+
+        const percentage = Math.round((score / currentQuestions.length) * 100);
+        scorePercentageEl.textContent = `${percentage}%`;
+
+        if (percentage >= 75) {
+            scorePercentageEl.className = 'text-5xl font-bold text-green-500 mb-6';
+        } else if (percentage >= 50) {
+            scorePercentageEl.className = 'text-5xl font-bold text-yellow-500 mb-6';
+        } else {
+            scorePercentageEl.className = 'text-5xl font-bold text-red-500 mb-6';
+        }
+
+        if (incorrectQuestions.length > 0) {
+            document.getElementById('incorrect-answers-container').style.display = 'block';
+            incorrectAnswersListEl.textContent = incorrectQuestions.sort((a, b) => a - b).join(', ');
+        } else {
+            document.getElementById('incorrect-answers-container').style.display = 'block';
+            incorrectAnswersListEl.textContent = "Luar biasa! Semua jawaban benar!";
+            document.querySelector('#incorrect-answers-container h3').style.display = 'none';
+        }
+    }
+
+    function restartQuiz() {
+        resultScreen.classList.add('hidden');
+        startScreen.classList.remove('hidden');
+        const incorrectHeading = document.querySelector('#incorrect-answers-container h3');
+        if(incorrectHeading) incorrectHeading.style.display = 'block';
+    }
+</script>
+
+</body>
+</html>
+

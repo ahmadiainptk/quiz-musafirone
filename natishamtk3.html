@@ -274,7 +274,7 @@
      */
     function renderTextWithKatex(text) {
         // Mengganti semua kemunculan \\(...) dan \\[...\\] dengan hasil render KaTeX
-        return text.replace(/\\\\\((.*?)\\\\\)|\\\\\\[(.*?)\\\\\\]/g, (match, inline, display) => {
+        return text.replace(/\\\[(.*?)\\\]/g, (match, inline, display) => {
             const content = inline || display;
             const isDisplay = !!display;
             try {

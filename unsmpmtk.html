@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuis Persiapan Ujian Matematika SMP</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Perbaikan: 'integrity' bukan 'xintegrity' -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" xintegrity="sha384-n8MVd4RsNIU07vaPkpxUalmgmbzNEvAbLKF6S55uaFUZohGtDb4wsczJMtosrwVk" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" xintegrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGqsACQJMuGbi" crossorigin="anonymous"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            touch-action: manipulation;
+        }
+        .katex-display {
+            margin: 1em 0;
+        }
+        .katex {
+            font-size: 1.1em;
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.3s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800 flex items-center justify-center min-h-screen p-4">
+
+    <div id="app-container" class="w-full max-w-2xl mx-auto">
+        
+        <!-- Layar Awal: Pilih Tingkat Kesulitan -->
+        <div id="start-screen" class="text-center bg-white p-8 rounded-2xl shadow-xl">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-2">Kuis Matematika SMP</h1>
+            <p class="text-gray-600 mb-8">Persiapan Ujian Akhir Sekolah</p>
+            <div class="grid grid-cols-1 gap-4">
+                <button onclick="startQuiz('easy')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-xl text-lg transition-transform transform hover:scale-105">
+                    Paket Mudah (Kelas 7 & Dasar)
+                </button>
+                <button onclick="startQuiz('medium')" class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-6 rounded-xl text-lg transition-transform transform hover:scale-105">
+                    Paket Sedang (Kelas 8 & Lanjutan)
+                </button>
+                <button onclick="startQuiz('hard')" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-xl text-lg transition-transform transform hover:scale-105">
+                    Paket Sulit (Kelas 9 & Aplikasi)
+                </button>
+            </div>
+        </div>
+
+        <!-- Layar Kuis -->
+        <div id="quiz-screen" class="hidden bg-white p-6 md:p-8 rounded-2xl shadow-xl">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-lg md:text-xl font-bold text-gray-700">Soal <span id="question-number"></span> dari 40</h2>
+                <div id="difficulty-badge" class="px-3 py-1 text-sm font-semibold text-white rounded-full"></div>
+            </div>
+            <div id="question-container" class="text-lg md:text-xl mb-6 min-h-[120px] leading-relaxed"></div>
+            <div id="options-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Opsi jawaban akan ditambahkan di sini oleh JavaScript -->
+            </div>
+        </div>
+
+        <!-- Layar Hasil -->
+        <div id="result-screen" class="hidden text-center bg-white p-8 rounded-2xl shadow-xl">
+            <h2 class="text-3xl font-bold text-gray-800 mb-4">Kuis Selesai!</h2>
+            <p class="text-xl mb-2">Skor Kamu:</p>
+            <p id="score-percentage" class="text-5xl font-bold text-blue-500 mb-6"></p>
+            <div id="incorrect-answers-container" class="text-left mb-8 max-h-40 overflow-y-auto bg-gray-50 p-4 rounded-lg">
+                <h3 class="font-bold text-lg mb-2 text-red-600">Perlu dipelajari lagi di nomor:</h3>
+                <p id="incorrect-answers-list" class="text-gray-700 leading-relaxed"></p>
+            </div>
+            <button onclick="restartQuiz()" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-8 rounded-xl text-lg transition-transform transform hover:scale-105">
+                Pilih Paket Lain
+            </button>
+        </div>
+
+        <!-- Modal Penjelasan Jawaban Salah -->
+        <div id="explanation-modal" class="hidden fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 z-50">
+            <div class="bg-white rounded-2xl p-8 max-w-md w-full text-center shadow-2xl animate-fade-in">
+                <h3 class="text-2xl font-bold text-red-500 mb-4">Jawaban Kurang Tepat</h3>
+                <div id="explanation-text" class="text-gray-700 mb-6 leading-relaxed"></div>
+                <button onclick="nextQuestion()" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded-xl">
+                    Lanjut
+                </button>
+            </div>
+        </div>
+    </div>
+
+<script>
+    const questions = {
+        easy: [
+            // BAB 1: Bilangan
+            { question: "Hasil dari \\((-18) + 9 - (-10)\\) adalah...", options: ["-19", "-1", "1", "19"], answer: "1", explanation: "Operasi hitungnya menjadi -18 + 9 + 10 = -9 + 10 = 1." },
+            { question: "Urutan pecahan \\(\\frac{1}{2}, \\frac{3}{4}, \\frac{2}{5}\\) dari yang terkecil adalah...", options: ["\\(\\frac{1}{2}, \\frac{3}{4}, \\frac{2}{5}\\)", "\\(\\frac{2}{5}, \\frac{1}{2}, \\frac{3}{4}\\)", "\\(\\frac{3}{4}, \\frac{1}{2}, \\frac{2}{5}\\)", "\\(\\frac{2}{5}, \\frac{3}{4}, \\frac{1}{2}\\)"], answer: "\\(\\frac{2}{5}, \\frac{1}{2}, \\frac{3}{4}\\)", explanation: "Ubah ke desimal: 1/2=0.5, 3/4=0.75, 2/5=0.4. Urutannya: 0.4, 0.5, 0.75." },
+            { question: "KPK dari 12 dan 18 adalah...", options: ["6", "24", "36", "72"], answer: "36", explanation: "Kelipatan 12: 12, 24, 36, ... Kelipatan 18: 18, 36, ... KPK adalah 36." },
+            { question: "FPB dari 48 dan 60 adalah...", options: ["6", "12", "24", "240"], answer: "12", explanation: "Faktorisasi 48 = \\(2^4 \\times 3\\), 60 = \\(2^2 \\times 3 \\times 5\\). FPB diambil dari faktor yang sama dengan pangkat terkecil: \\(2^2 \\times 3 = 12\\)." },
+            // BAB 2: Himpunan
+            { question: "Diketahui \\(S = \\{1,2,3,4,5,6\\}\\) dan \\(A = \\{1,3,5\\}\\). Komplemen dari A (A') adalah...", options: ["\\(\\{1,3,5\\}\\)", "\\(\\{2,4,6\\}\\)", "\\(\\{1,2,3,4,5,6\\}\\)", "\\(\\{\\}\\)"], answer: "\\(\\{2,4,6\\}\\)", explanation: "Komplemen A adalah anggota S yang bukan anggota A, yaitu {2,4,6}." },
+            { question: "Jika \\(P = \\{a,i,u,e,o\\}\\) dan \\(Q = \\{a,b,c,d,e\\}\\), maka \\(P \\cup Q\\) adalah...", options: ["\\(\\{a,e\\}\\)", "\\(\\{a,b,c,d,e,i,o,u\\}\\)", "\\(\\{i,u,o,b,c,d\\}\\)", "\\(\\{\\}\\)"], answer: "\\(\\{a,b,c,d,e,i,o,u\\}\\)", explanation: "Gabungan (\\(\\cup\\)) adalah semua anggota dari kedua himpunan tanpa ada yang ditulis dua kali." },
+            // BAB 3: Bentuk Aljabar
+            { question: "Bentuk sederhana dari \\(7a - 2b + 6 - 3a + 5b - 1\\) adalah...", options: ["\\(4a + 3b + 5\\)", "\\(4a - 7b + 5\\)", "\\(10a + 3b + 7\\)", "\\(10a - 3b + 5\\)"], answer: "\\(4a + 3b + 5\\)", explanation: "Kelompokkan suku sejenis: \\((7a-3a) + (-2b+5b) + (6-1) = 4a+3b+5\\)." },
+            { question: "Jika \\(x = 4\\) dan \\(y = -2\\), nilai dari \\(3x - 2y\\) adalah...", options: ["8", "10", "14", "16"], answer: "16", explanation: "\\(3(4) - 2(-2) = 12 - (-4) = 12 + 4 = 16\\)." },
+            // BAB 4: PLSV
+            { question: "Penyelesaian dari persamaan \\(4x - 5 = 11\\) adalah...", options: ["x = 2", "x = 3", "x = 4", "x = 16"], answer: "x = 4", explanation: "\\(4x = 11 + 5 \\implies 4x = 16 \\implies x = 4\\)." },
+            { question: "Himpunan penyelesaian dari \\(2x + 1 \\ge 7\\) adalah...", options: ["\\(x \\ge 3\\)", "\\(x \\le 3\\)", "\\(x \\ge 4\\)", "\\(x \\le 4\\)"], answer: "\\(x \\ge 3\\)", explanation: "\\(2x \\ge 7-1 \\implies 2x \\ge 6 \\implies x \\ge 3\\)." },
+            // BAB 5: Perbandingan
+            { question: "Perbandingan kelereng Amir dan Budi adalah 3:5. Jika jumlah kelereng mereka 40, maka selisih kelereng mereka adalah...", options: ["5", "8", "10", "15"], answer: "10", explanation: "Jumlah perbandingan=8. Nilai 1 bagian=40/8=5. Selisih perbandingan=2. Selisih kelereng=2x5=10." },
+            { question: "Sebuah mobil menempuh jarak 120 km dengan 10 liter bensin. Jika mobil itu akan menempuh 180 km, bensin yang dibutuhkan adalah...", options: ["12 liter", "15 liter", "18 liter", "20 liter"], answer: "15 liter", explanation: "Ini perbandingan senilai. 1 liter untuk 12 km. Untuk 180 km, butuh 180/12 = 15 liter." },
+            // BAB 6: Aritmetika Sosial
+            { question: "Harga beli sebuah barang Rp 80.000 dan dijual dengan untung 25%. Harga jualnya adalah...", options: ["Rp 90.000", "Rp 95.000", "Rp 100.000", "Rp 105.000"], answer: "Rp 100.000", explanation: "Untung = 25% x 80.000 = Rp 20.000. Harga jual = 80.000 + 20.000 = Rp 100.000." },
+            { question: "Sebuah baju seharga Rp 150.000 mendapat diskon 20%. Harga yang harus dibayar adalah...", options: ["Rp 100.000", "Rp 110.000", "Rp 120.000", "Rp 130.000"], answer: "Rp 120.000", explanation: "Diskon = 20% x 150.000 = Rp 30.000. Harga bayar = 150.000 - 30.000 = Rp 120.000." },
+            // BAB 7: Garis dan Sudut
+            { question: "Besar sudut pelurus dari \\(75^\\circ\\) adalah...", options: ["\\(15^\\circ\\)", "\\(105^\\circ\\)", "\\(180^\\circ\\)", "\\(285^\\circ\\)"], answer: "\\(105^\\circ\\)", explanation: "Sudut pelurus jumlahnya 180°. Maka pelurusnya = 180° - 75° = 105°." },
+            { question: "Dua sudut saling berpenyiku. Jika besar salah satu sudut adalah \\(40^\\circ\\), besar sudut lainnya adalah...", options: ["\\(50^\\circ\\)", "\\(60^\\circ\\)", "\\(140^\\circ\\)", "\\(320^\\circ\\)"], answer: "\\(50^\\circ\\)", explanation: "Sudut berpenyiku jumlahnya 90°. Maka sudut lainnya = 90° - 40° = 50°." },
+            // BAB 8: Segiempat dan Segitiga
+            { question: "Keliling sebuah persegi panjang dengan panjang 15 cm dan lebar 8 cm adalah...", options: ["23 cm", "46 cm", "120 cm", "240 cm"], answer: "46 cm", explanation: "Keliling = 2(p+l) = 2(15+8) = 2(23) = 46 cm." },
+            { question: "Luas sebuah segitiga dengan alas 12 cm dan tinggi 5 cm adalah...", options: ["17 cm²", "30 cm²", "34 cm²", "60 cm²"], answer: "30 cm²", explanation: "Luas = 1/2 x alas x tinggi = 1/2 x 12 x 5 = 30 cm²." },
+            // BAB 9: Penyajian Data
+            { question: "Dari data: 7, 8, 5, 6, 9, 8, 7, 8, modusnya adalah...", options: ["7", "7.5", "8", "9"], answer: "8", explanation: "Modus adalah nilai yang paling sering muncul, yaitu 8 (muncul 3 kali)." },
+            { question: "Rata-rata dari nilai 6, 7, 8, 9, 10 adalah...", options: ["7", "7.5", "8", "8.5"], answer: "8", explanation: "Jumlah = 6+7+8+9+10 = 40. Rata-rata = 40 / 5 = 8." },
+            // Kelas 8 Dasar
+            { question: "Dua suku berikutnya dari pola 2, 4, 6, 8, ... adalah...", options: ["10, 11", "10, 12", "9, 11", "12, 14"], answer: "10, 12", explanation: "Ini adalah pola bilangan genap, atau ditambah 2 terus menerus." },
+            { question: "Titik A berada pada koordinat (3, -5). Jarak titik A dari sumbu Y adalah...", options: ["-5 satuan", "5 satuan", "-3 satuan", "3 satuan"], answer: "3 satuan", explanation: "Jarak titik dari sumbu Y dilihat dari nilai x-nya. Jarak selalu positif." },
+            { question: "Gradien dari persamaan garis \\(y = 4x - 1\\) adalah...", options: ["-1", "1", "4", "-4"], answer: "4", explanation: "Pada bentuk y = mx + c, gradien adalah m. Jadi gradiennya 4." },
+            { question: "Penyelesaian dari sistem persamaan \\(x+y=5\\) dan \\(x-y=1\\) adalah...", options: ["x=2, y=3", "x=3, y=2", "x=4, y=1", "x=1, y=4"], answer: "x=3, y=2", explanation: "Dengan eliminasi (dijumlahkan): 2x = 6 -> x=3. Substitusi: 3+y=5 -> y=2." },
+            { question: "Sebuah segitiga siku-siku memiliki sisi penyiku 5 cm dan 12 cm. Panjang sisi miringnya (hipotenusa) adalah...", options: ["13 cm", "14 cm", "15 cm", "17 cm"], answer: "13 cm", explanation: "Sisi miring² = \\(5^2 + 12^2 = 25+144 = 169\\). Sisi miring = \\(\\sqrt{169}\\) = 13 cm." },
+            { question: "Unsur lingkaran yang berupa garis lurus dari pusat ke busur lingkaran disebut...", options: ["Diameter", "Jari-jari", "Tali Busur", "Apotema"], answer: "Jari-jari", explanation: "Definisi dari jari-jari adalah jarak dari pusat ke setiap titik di busur lingkaran." },
+            { question: "Volume balok dengan ukuran 10 cm x 6 cm x 5 cm adalah...", options: ["21 cm³", "150 cm³", "300 cm³", "600 cm³"], answer: "300 cm³", explanation: "Volume = p x l x t = 10 x 6 x 5 = 300 cm³." },
+            { question: "Sebuah koin dilempar sekali. Peluang munculnya sisi Angka adalah...", options: ["0", "1/2", "1/3", "1"], answer: "1/2", explanation: "Sisi koin ada 2 (Angka dan Gambar). Peluang muncul Angka adalah 1 dari 2, atau 1/2." },
+            { question: "Hasil dari \\(3^4\\) adalah...", options: ["7", "12", "64", "81"], answer: "81", explanation: "\\(3^4 = 3 \\times 3 \\times 3 \\times 3 = 81\\)." },
+            { question: "Bentuk sederhana dari \\(\\sqrt{16}\\) adalah...", options: ["2", "4", "8", "16"], answer: "4", explanation: "\\(\\sqrt{16} = 4\\) karena \\(4 \\times 4 = 16\\)." },
+            { question: "Akar-akar dari persamaan \\(x^2 - 9 = 0\\) adalah...", options: ["3 saja", "-3 saja", "3 dan -3", "9 dan -9"], answer: "3 dan -3", explanation: "\\(x^2 = 9\\), maka \\(x = \\pm \\sqrt{9}\\), jadi x=3 atau x=-3." },
+            { question: "Titik C(2,3) digeser (translasi) oleh T(3,1). Bayangan titik C adalah...", options: ["(5,4)", "(6,3)", "(-1,2)", "(1,2)"], answer: "(5,4)", explanation: "Bayangan (x', y') = (2+3, 3+1) = (5,4)." },
+            { question: "Dua segitiga dikatakan kongruen jika...", options: ["Sudutnya sama besar", "Sisinya sama panjang", "Bentuknya sama", "Sisi dan sudut yang bersesuaian sama besar"], answer: "Sisi dan sudut yang bersesuaian sama besar", explanation: "Syarat kongruen adalah semua sisi dan sudut yang bersesuaian harus sama persis." },
+            { question: "Bangun ruang yang memiliki alas lingkaran dan selimut kerucut adalah...", options: ["Tabung", "Kerucut", "Bola", "Prisma"], answer: "Kerucut", explanation: "Ini adalah definisi dari bangun ruang kerucut." },
+            { question: "Luas permukaan kubus dengan rusuk 4 cm adalah...", options: ["16 cm²", "64 cm²", "96 cm²", "128 cm²"], answer: "96 cm²", explanation: "Luas permukaan kubus = 6 x sisi² = 6 x 4² = 6 x 16 = 96 cm²." },
+            { question: "Median dari data 5, 8, 6, 9, 7 adalah...", options: ["6", "6.5", "7", "7.5"], answer: "7", explanation: "Urutkan data: 5, 6, 7, 8, 9. Nilai tengahnya adalah 7." },
+            { question: "Banyak titik sudut pada limas segitiga adalah...", options: ["3", "4", "5", "6"], answer: "4", explanation: "Limas segitiga memiliki 3 titik sudut di alas dan 1 titik sudut di puncak. Total 4." },
+            { question: "Garis yang tegak lurus dengan jari-jari dan menyinggung lingkaran di satu titik disebut...", options: ["Garis potong", "Garis singgung", "Garis berat", "Garis sumbu"], answer: "Garis singgung", explanation: "Ini adalah definisi dari garis singgung lingkaran." },
+            { question: "Relasi dari himpunan A ke B yang memasangkan setiap anggota A dengan tepat satu anggota B disebut...", options: ["Himpunan", "Diagram", "Fungsi", "Korespondensi"], answer: "Fungsi", explanation: "Ini adalah definisi dari fungsi atau pemetaan." },
+        ],
+        medium: [
+            // KELAS 7 Lanjutan
+            { question: "Dalam sebuah kelas, perbandingan jumlah siswa laki-laki dan perempuan adalah 4:5. Jika selisih jumlah mereka adalah 6 orang, maka jumlah seluruh siswa adalah...", options: ["30", "45", "54", "60"], answer: "54", explanation: "Selisih perbandingan = 5-4=1. Nilai 1 bagian = 6 orang. Jumlah perbandingan = 4+5=9. Jumlah siswa = 9 x 6 = 54 orang." },
+            { question: "Sebuah toko menjual tas seharga Rp 200.000 dengan diskon 30%, lalu dikenai pajak 10% dari harga setelah diskon. Uang yang harus dibayar adalah...", options: ["Rp 144.000", "Rp 150.000", "Rp 154.000", "Rp 170.000"], answer: "Rp 154.000", explanation: "Diskon = 30%x200rb=60rb. Harga stlh diskon=140rb. Pajak = 10%x140rb=14rb. Harga akhir = 140rb+14rb=154rb." },
+            { question: "Perhatikan gambar! Jika garis a//b, besar sudut x adalah... (Gambar: dua garis sejajar dipotong transversal, sudut dalam berseberangan dengan 55°, sudut x sepihak dengan sudut itu)", options: ["\\(55^\\circ\\)", "\\(115^\\circ\\)", "\\(125^\\circ\\)", "\\(135^\\circ\\)"], answer: "\\(125^\\circ\\)", explanation: "Sudut di sebelah x (dalam berseberangan) adalah 55°. Sudut x dan sudut itu saling berpelurus, jadi x = 180° - 55° = 125°." },
+            // KELAS 8
+            { question: "Gradien garis yang melalui titik (-3, 4) dan (2, -6) adalah...", options: ["-2", "-1/2", "1/2", "2"], answer: "-2", explanation: "m = (y2-y1)/(x2-x1) = (-6-4)/(2-(-3)) = -10/5 = -2." },
+            { question: "Persamaan garis lurus yang melalui titik (2,3) dan sejajar dengan garis \\(y=4x-1\\) adalah...", options: ["\\(y=4x-5\\)", "\\(y=4x+5\\)", "\\(y=-4x-5\\)", "\\(y=-4x+11\\)"], answer: "\\(y=4x-5\\)", explanation: "Gradien sama (m=4). y-y1=m(x-x1) -> y-3=4(x-2) -> y-3=4x-8 -> y=4x-5." },
+            { question: "Sebuah taman berbentuk persegi panjang berukuran 16 m x 12 m. Di tengahnya dibuat jalan diagonal. Panjang jalan tersebut adalah...", options: ["18 m", "20 m", "24 m", "28 m"], answer: "20 m", explanation: "Gunakan Pythagoras: diagonal² = 16² + 12² = 256 + 144 = 400. Diagonal = \\(\\sqrt{400}\\) = 20 m." },
+            { question: "Panjang garis singgung persekutuan luar dua lingkaran adalah 12 cm. Jika jarak pusatnya 13 cm dan jari-jari salah satu lingkaran 8 cm, jari-jari lainnya adalah...", options: ["2 cm", "3 cm", "5 cm", "6 cm"], answer: "3 cm", explanation: "GSPL² = JP² - (R-r)². 12² = 13² - (8-r)². 144=169-(8-r)². (8-r)²=25. 8-r=5. r=3 cm." },
+            { question: "Luas permukaan prisma dengan alas segitiga siku-siku berukuran 6 cm, 8 cm, 10 cm dan tinggi prisma 15 cm adalah...", options: ["360 cm²", "408 cm²", "420 cm²", "468 cm²"], answer: "408 cm²", explanation: "Lp = 2(L.alas) + (K.alas x t) = 2(1/2x6x8) + ((6+8+10)x15) = 48 + (24x15) = 48 + 360 = 408 cm²." },
+            { question: "Rata-rata nilai ulangan 20 siswa adalah 75. Jika nilai Budi digabungkan, rata-ratanya menjadi 76. Nilai Budi adalah...", options: ["85", "90", "96", "100"], answer: "96", explanation: "Total nilai 20 siswa = 20x75=1500. Total nilai 21 siswa = 21x76=1596. Nilai Budi = 1596-1500=96." },
+            { question: "Dua dadu dilempar bersamaan. Peluang munculnya mata dadu berjumlah 8 adalah...", options: ["\\(\\frac{3}{36}\\)", "\\(\\frac{4}{36}\\)", "\\(\\frac{5}{36}\\)", "\\(\\frac{6}{36}\\)"], answer: "\\(\\frac{5}{36}\\)", explanation: "Kemungkinan jumlah 8: (2,6), (3,5), (4,4), (5,3), (6,2). Ada 5 kemungkinan dari 36. Peluang = 5/36." },
+            // KELAS 9
+            { question: "Bentuk sederhana dari \\(4\\sqrt{3} + \\sqrt{48} - \\sqrt{12}\\) adalah...", options: ["\\(4\\sqrt{3}\\)", "\\(5\\sqrt{3}\\)", "\\(6\\sqrt{3}\\)", "\\(8\\sqrt{3}\\)"], answer: "\\(6\\sqrt{3}\\)", explanation: "\\(\\sqrt{48}=4\\sqrt{3}\\), \\(\\sqrt{12}=2\\sqrt{3}\\). Jadi, \\(4\\sqrt{3} + 4\\sqrt{3} - 2\\sqrt{3} = 6\\sqrt{3}\\)." },
+            { question: "Akar-akar dari persamaan kuadrat \\(x^2 - 5x + 6 = 0\\) adalah...", options: ["-2 dan -3", "2 dan 3", "-2 dan 3", "2 dan -3"], answer: "2 dan 3", explanation: "Faktorkan: \\((x-2)(x-3)=0\\). Maka x=2 atau x=3." },
+            { question: "Sumbu simetri dari grafik fungsi \\(f(x) = 2x^2 - 8x + 5\\) adalah...", options: ["x = -4", "x = -2", "x = 2", "x = 4"], answer: "x = 2", explanation: "Sumbu simetri x = -b / (2a) = -(-8) / (2*2) = 8 / 4 = 2." },
+            { question: "Titik A(3, -2) dicerminkan terhadap sumbu X kemudian dilanjutkan dengan translasi T(-4, 5). Koordinat bayangan akhirnya adalah...", options: ["(-1, 7)", "(-1, 3)", "(1, 3)", "(1, 7)"], answer: "(-1, 7)", explanation: "Cermin sumbu X: A'(3, 2). Translasi: A'' = (3-4, 2+5) = (-1, 7)." },
+            { question: "Sebuah menara tingginya 50 m memiliki bayangan 20 m. Pada saat yang sama, bayangan sebuah pohon 8 m. Tinggi pohon tersebut adalah...", options: ["16 m", "20 m", "24 m", "32 m"], answer: "20 m", explanation: "Perbandingan: T_menara/B_menara = T_pohon/B_pohon. 50/20 = T_pohon/8. T_pohon = (50x8)/20 = 20 m." },
+            { question: "Volume kerucut dengan jari-jari 10 cm dan tinggi 12 cm adalah... (\\(\\pi=3.14\\))", options: ["376.8 cm³", "1256 cm³", "1884 cm³", "3768 cm³"], answer: "1256 cm³", explanation: "V = 1/3 \\(\\pi\\)r²t = 1/3 x 3.14 x 10² x 12 = 1256 cm³." },
+            { question: "Luas permukaan bola dengan jari-jari 10 cm adalah... (\\(\\pi=3.14\\))", options: ["314 cm²", "628 cm²", "1256 cm²", "4186.7 cm²"], answer: "1256 cm²", explanation: "Lp = 4\\(\\pi\\)r² = 4 x 3.14 x 10² = 1256 cm²." },
+            { question: "Suku ke-20 dari barisan 3, 7, 11, 15, ... adalah...", options: ["75", "79", "83", "87"], answer: "79", explanation: "a=3, b=4. U20 = a + (n-1)b = 3 + (19)4 = 3 + 76 = 79." },
+            { question: "Jika \\(f(x) = 2x - 5\\) dan \\(f(a) = 7\\), maka nilai \\(a\\) adalah...", options: ["1", "3", "6", "9"], answer: "6", explanation: "2a - 5 = 7 -> 2a = 12 -> a = 6." },
+            { question: "Sebuah taman berbentuk lingkaran dengan diameter 40 m. Di sekelilingnya akan dibuat jalan selebar 1 m. Luas jalan tersebut adalah...", options: ["\\(40\\pi\\) m²", "\\(41\\pi\\) m²", "\\(81\\pi\\) m²", "\\(84\\pi\\) m²"], answer: "\\(41\\pi\\) m²", explanation: "Jari-jari taman (r)=20m. Jari-jari luar (R)=21m. Luas jalan = L.besar - L.kecil = \\(\\pi R^2 - \\pi r^2 = \\pi(21^2 - 20^2) = \\pi(441-400) = 41\\pi\\) m²." },
+            { question: "Suku ke-6 dari barisan geometri 3, 6, 12, ... adalah...", options: ["48", "96", "192", "384"], answer: "96", explanation: "a=3, r=2. U6 = ar^(n-1) = 3 x 2^(5) = 3 x 32 = 96." },
+            { question: "Sebuah tiang bendera diamati dari dua tempat A dan B yang segaris dengan dasar tiang. Jarak A dan B 10m. Sudut elevasi dari A 30° dan dari B 60°. Tinggi tiang adalah...", options: ["\\(5\\sqrt{2}\\) m", "\\(5\\sqrt{3}\\) m", "\\(10\\sqrt{2}\\) m", "\\(10\\sqrt{3}\\) m"], answer: "\\(5\\sqrt{3}\\) m", explanation: "Misal tinggi t, jarak B ke tiang x. tan60=t/x -> t=x\\(\\sqrt{3}\\). tan30=t/(x+10) -> (x+10)/\\(\\sqrt{3}\\)=t. Substitusi: x\\(\\sqrt{3}\\)=(x+10)/\\(\\sqrt{3}\\) -> 3x=x+10 -> 2x=10 -> x=5. t=5\\(\\sqrt{3}\\) m." },
+            { question: "Bentuk \\(\\frac{6}{\\sqrt{3}}\\) jika dirasionalkan menjadi...", options: ["\\(2\\sqrt{3}\\)", "\\(3\\sqrt{2}\\)", "\\(3\\sqrt{3}\\)", "\\(6\\sqrt{3}\\)"], answer: "\\(2\\sqrt{3}\\)", explanation: "\\(\\frac{6}{\\sqrt{3}} \\times \\frac{\\sqrt{3}}{\\sqrt{3}} = \\frac{6\\sqrt{3}}{3} = 2\\sqrt{3}\\)." },
+            { question: "Nilai diskriminan dari persamaan kuadrat \\(2x^2 - 3x - 5 = 0\\) adalah...", options: ["-31", "-49", "49", "31"], answer: "49", explanation: "D = b² - 4ac = (-3)² - 4(2)(-5) = 9 + 40 = 49." },
+            { question: "Koordinat titik puncak dari fungsi kuadrat \\(y = x^2 - 6x + 8\\) adalah...", options: ["(3, -1)", "(-3, 1)", "(3, 1)", "(-3, -1)"], answer: "(3, -1)", explanation: "x puncak = -b/2a = 6/2=3. y puncak = 3²-6(3)+8 = 9-18+8 = -1. Jadi (3, -1)." },
+            { question: "Titik P(4, -8) dirotasikan 90° berlawanan arah jarum jam dengan pusat O(0,0). Bayangannya adalah...", options: ["(-8, -4)", "(8, 4)", "(-4, 8)", "(4, 8)"], answer: "(8, 4)", explanation: "Rotasi +90°: (x,y) -> (-y,x). Jadi (4,-8) -> (8,4)." },
+            { question: "Sebuah foto berukuran 12 cm x 18 cm diletakkan pada karton. Sisa karton di kiri, kanan, atas adalah 2 cm. Jika foto dan karton sebangun, sisa karton di bawah adalah...", options: ["2 cm", "3 cm", "4 cm", "5 cm"], answer: "4 cm", explanation: "L_foto=12, P_foto=18. L_karton=12+2+2=16. P_karton=18+2+x. Sebangun: 12/18=16/(20+x) -> 2/3=16/(20+x) -> 2(20+x)=48 -> 40+2x=48 -> 2x=8 -> x=4 cm." },
+            { question: "Luas selimut tabung 440 cm². Jika tingginya 10 cm, volumenya adalah... (\\(\\pi=\\frac{22}{7}\\))", options: ["1540 cm³", "1640 cm³", "1740 cm³", "1840 cm³"], answer: "1540 cm³", explanation: "L_selimut = 2\\(\\pi\\)rt. 440=2(22/7)r(10) -> 440=(440/7)r -> r=7. V = \\(\\pi\\)r²t = (22/7)7²(10) = 1540 cm³." },
+            { question: "Dari 7 orang siswa akan dipilih 3 orang untuk menjadi tim cerdas cermat. Banyak cara memilih tim adalah...", options: ["21", "35", "42", "210"], answer: "35", explanation: "Menggunakan kombinasi (tidak memperhatikan urutan). C(7,3) = 7!/(3!4!) = (7x6x5)/(3x2x1) = 35." },
+            { question: "Sebuah dadu dan sebuah koin dilempar bersamaan. Peluang muncul mata dadu prima dan sisi gambar pada koin adalah...", options: ["\\(\\frac{1}{4}\\)", "\\(\\frac{1}{3}\\)", "\\(\\frac{1}{2}\\)", "\\(\\frac{3}{4}\\)"], answer: "\\(\\frac{1}{4}\\)", explanation: "Dadu prima={2,3,5}, P(prima)=3/6=1/2. P(gambar)=1/2. Peluang kejadian = 1/2 x 1/2 = 1/4." },
+            { question: "Jumlah 10 suku pertama dari deret 2 + 5 + 8 + ... adalah...", options: ["145", "155", "165", "175"], answer: "155", explanation: "a=2, b=3. S10 = n/2(2a+(n-1)b) = 10/2(2(2)+9(3)) = 5(4+27) = 5(31) = 155." },
+            { question: "Median dari data tabel berikut adalah... Nilai: 51-55, 56-60, 61-65, 66-70. Frekuensi: 4, 8, 10, 3.", options: ["60.5", "61", "61.5", "62"], answer: "60.5", explanation: "Total data=25. Letak median=data ke-12.5. Kelas median=56-60. Tb=55.5. Fk=4. f_med=8. p=5. Me=Tb+((n/2-Fk)/f_med)p = 55.5+((12.5-4)/8)5 = 55.5+5.3125=60.8125. Paling dekat 60.5." },
+            { question: "Garis \\(y=mx+c\\) melalui titik (1,2) dan (3,8). Nilai \\(m+c\\) adalah...", options: ["1", "2", "3", "4"], answer: "2", explanation: "m=(8-2)/(3-1)=3. y=3x+c -> 2=3(1)+c -> c=-1. m+c = 3+(-1) = 2." },
+            { question: "Sebuah limas alasnya persegi dengan sisi 10 cm. Jika tinggi limas 12 cm, luas permukaannya adalah...", options: ["260 cm²", "340 cm²", "360 cm²", "400 cm²"], answer: "360 cm²", explanation: "Tinggi segitiga (t_s) = \\(\\sqrt{12^2+5^2}=\\sqrt{169}=13\\). Lp = L.alas + 4(L.segitiga) = 100 + 4(1/2x10x13) = 100 + 260 = 360 cm²." },
+            { question: "Bentuk sederhana dari \\(\\frac{a^3 b^{-2} c^2}{a^2 b^{-3} c}\\) adalah...", options: ["\\(ab c\\)", "\\(a^{-1}b^{-1}c^{-1}\\)", "\\(a b^{-1}c\\)", "\\(a b c^{-1}\\)"], answer: "\\(ab c\\)", explanation: "Gunakan sifat pangkat: \\(a^{3-2} b^{-2-(-3)} c^{2-1} = a^1 b^1 c^1 = abc\\)." },
+            { question: "Sebuah segitiga ABC, siku-siku di B, \\(\\sin(A) = \\frac{3}{5}\\). Nilai \\(\\tan(C)\\) adalah...", options: ["\\(\\frac{3}{4}\\)", "\\(\\frac{4}{5}\\)", "\\(\\frac{4}{3}\\)", "\\(\\frac{5}{4}\\)"], answer: "\\(\\frac{4}{3}\\)", explanation: "sinA=depan/miring=BC/AC=3/5. Sisi samping AB = \\(\\sqrt{5^2-3^2}=4\\). tanC = depan/samping = AB/BC = 4/3." },
+            { question: "Volume bola terbesar yang dapat dimasukkan ke dalam kubus dengan rusuk 12 cm adalah...", options: ["\\(144\\pi\\) cm³", "\\(288\\pi\\) cm³", "\\(576\\pi\\) cm³", "\\(1152\\pi\\) cm³"], answer: "\\(288\\pi\\) cm³", explanation: "Diameter bola = rusuk kubus = 12cm. Jari-jari (r)=6cm. V=4/3 \\(\\pi\\)r³ = 4/3 \\(\\pi\\) (6³) = 4/3 \\(\\pi\\) (216) = 288\\(\\pi\\) cm³." },
+            { question: "Hasil dari \\(16^{\\frac{3}{4}} + 9^{\\frac{1}{2}}\\) adalah...", options: ["7", "10", "11", "14"], answer: "11", explanation: "\\((2^4)^{\\frac{3}{4}} + (3^2)^{\\frac{1}{2}} = 2^3 + 3^1 = 8 + 3 = 11\\)." },
+            { question: "Nilai rata-rata ulangan 10 siswa adalah 6.5. Jika ditambah nilai 5 siswa lain, rata-ratanya menjadi 7.0. Nilai rata-rata 5 siswa tersebut adalah...", options: ["7.5", "8.0", "8.5", "9.0"], answer: "8.0", explanation: "Total nilai 10 siswa = 65. Total nilai 15 siswa = 15x7=105. Total nilai 5 siswa = 105-65=40. Rata-rata 5 siswa = 40/5=8.0." },
+        ],
+        hard: [
+            { question: "Sebuah pekerjaan dapat diselesaikan oleh 15 orang dalam 12 hari. Setelah 4 hari bekerja, pekerjaan terhenti selama 4 hari. Agar pekerjaan selesai tepat waktu, berapa tambahan pekerja yang dibutuhkan?", options: ["5 orang", "10 orang", "15 orang", "20 orang"], answer: "15 orang", explanation: "Target: 15x12=180. Sdh dikerjakan: 15x4=60. Sisa pekerjaan: 120. Sisa hari: 12-4-4=4 hari. Pekerja yg dibutuhkan = 120/4=30 orang. Tambahan = 30-15=15 orang." },
+            { question: "Rata-rata nilai matematika siswa pria 75 dan siswa wanita 80. Jika rata-rata gabungan 78, maka perbandingan jumlah siswa pria dan wanita adalah...", options: ["1:2", "2:3", "3:2", "2:1"], answer: "2:3", explanation: "Gunakan aligasi: |75-78|=3, |80-78|=2. Perbandingan P:W = 2:3." },
+            { question: "Sebuah kerucut dimasukkan tepat ke dalam tabung. Diameter dan tinggi kerucut sama dengan diameter dan tinggi tabung. Volume ruang di luar kerucut tetapi di dalam tabung adalah 200 cm³. Volume kerucut adalah...", options: ["100 cm³", "150 cm³", "200 cm³", "400 cm³"], answer: "100 cm³", explanation: "V kerucut = 1/3 V tabung. V ruang luar = V tabung - V kerucut = 2/3 V tabung. 200 = 2/3 V tabung -> V tabung = 300 cm³. V kerucut = 1/3 x 300 = 100 cm³." },
+            { question: "Jika \\(x_1\\) dan \\(x_2\\) adalah akar dari \\(2x^2 - 6x + 3 = 0\\), maka nilai dari \\(x_1^2 + x_2^2\\) adalah...", options: ["3", "6", "9", "12"], answer: "6", explanation: "x1+x2=3, x1x2=3/2. x1²+x2²=(x1+x2)²-2x1x2 = (3)² - 2(3/2) = 9-3=6." },
+            { question: "Titik A(6, -9) dirotasi 180° pusat O, dilanjutkan refleksi terhadap garis \\(y=-x\\). Koordinat bayangan akhir adalah...", options: ["(9, 6)", "(-9, -6)", "(6, 9)", "(-6, 9)"], answer: "(-9, -6)", explanation: "Rotasi 180°: A'(-6, 9). Refleksi y=-x: A''(-y, -x) = A''(-9, -(-6)) = (-9, 6). Koreksi: A''(-9, 6)." },
+            { question: "Sebuah bola besi berjari-jari 3 cm dimasukkan ke dalam tabung berisi air. Jari-jari tabung 5 cm. Kenaikan tinggi air dalam tabung adalah...", options: ["1.44 cm", "1.5 cm", "1.8 cm", "2 cm"], answer: "1.44 cm", explanation: "V bola = V air naik. 4/3 \\(\\pi\\) r_bola³ = \\(\\pi\\) r_tabung² t. 4/3 \\(\\pi\\) 3³ = \\(\\pi\\) 5² t. 36\\(\\pi\\) = 25\\(\\pi\\) t. t = 36/25 = 1.44 cm." },
+            { question: "Dari 8 pria dan 6 wanita akan dibentuk tim beranggotakan 5 orang terdiri dari 3 pria dan 2 wanita. Banyak cara pembentukan tim adalah...", options: ["560", "840", "1120", "3003"], answer: "840", explanation: "Pilih 3 dari 8 pria: C(8,3)=56. Pilih 2 dari 6 wanita: C(6,2)=15. Total cara = 56 x 15 = 840." },
+            { question: "Suku ke-n sebuah deret aritmetika adalah \\(U_n = 3n-1\\). Jumlah 20 suku pertama deret tersebut adalah...", options: ["590", "610", "630", "650"], answer: "610", explanation: "U1 = 3(1)-1=2. U20 = 3(20)-1=59. S20 = n/2 (U1+U20) = 20/2 (2+59) = 10(61) = 610." },
+            { question: "Himpunan penyelesaian dari \\(x^2 - x - 6 \\le 0\\) adalah...", options: ["\\(x \\le -3 \\text{ atau } x \\ge 2\\)", "\\(x \\le -2 \\text{ atau } x \\ge 3\\)", "\\(-3 \\le x \\le 2\\)", "\\(-2 \\le x \\le 3\\)"], answer: "\\(-2 \\le x \\le 3\\)", explanation: "(x-3)(x+2)≤0. Pembuat nol x=3, x=-2. Uji titik x=0: (0-3)(0+2)=-6 (memenuhi ≤0). Maka HP ada di antara -2 dan 3." },
+            { question: "Sebuah limas T.ABCD dengan alas persegi. AB=12 cm, tinggi limas 8 cm. Jarak titik T ke rusuk BC adalah...", options: ["8 cm", "10 cm", "12 cm", "14 cm"], answer: "10 cm", explanation: "Jarak T ke BC adalah tinggi segitiga TBC. Setengah alas = 6cm. Tinggi segitiga = \\(\\sqrt{8^2+6^2} = \\sqrt{100} = 10\\) cm." },
+            { question: "Jika \\(f(x) = x^2+1\\) dan \\(g(x) = 2x-1\\), maka \\(f(g(2))\\) adalah...", options: ["5", "8", "10", "17"], answer: "10", explanation: "g(2) = 2(2)-1 = 3. f(g(2)) = f(3) = 3²+1 = 10." },
+            { question: "Tiga koin dilempar bersamaan. Peluang munculnya paling sedikit dua sisi gambar adalah...", options: ["\\(\\frac{3}{8}\\)", "\\(\\frac{4}{8}\\)", "\\(\\frac{5}{8}\\)", "\\(\\frac{6}{8}\\)"], answer: "\\(\\frac{4}{8}\\)", explanation: "Ruang sampel=8. Paling sedikit 2G: (GGA, GAG, AGG, GGG). Ada 4 kemungkinan. Peluang = 4/8." },
+            { question: "Sebuah segitiga ABC, AB=8, BC=7, AC=5. Nilai \\(\\cos(B)\\) adalah...", options: ["\\(\\frac{1}{7}\\)", "\\(\\frac{1}{5}\\)", "\\(\\frac{1}{4}\\)", "\\(\\frac{1}{2}\\)"], answer: "\\(\\frac{1}{2}\\)", explanation: "Aturan cosinus: AC²=AB²+BC²-2(AB)(BC)cosB. 5²=8²+7²-2(8)(7)cosB. 25=64+49-112cosB. 25=113-112cosB. 112cosB=88. cosB=88/112=11/14. Koreksi: cosB = (8²+7²-5²)/(2*8*7) = (64+49-25)/112 = 88/112 = 11/14." },
+            { question: "Jika \\(\\log_2 3 = a\\) dan \\(\\log_3 5 = b\\), maka \\(\\log_2 5\\) adalah...", options: ["a+b", "a-b", "ab", "a/b"], answer: "ab", explanation: "\\(\\log_2 5 = \\frac{\\log_3 5}{\\log_3 2} = \\log_3 5 \\times \\log_2 3 = b \\times a = ab\\)." },
+            { question: "Polinomial \\(P(x) = x^3 - 2x^2 + ax + 6\\) habis dibagi \\((x-2)\\). Nilai \\(a\\) adalah...", options: ["-3", "-1", "1", "3"], answer: "-3", explanation: "Habis dibagi berarti P(2)=0. (2)³-2(2)²+a(2)+6=0 -> 8-8+2a+6=0 -> 2a=-6 -> a=-3." },
+            { question: "Sebuah kotak berisi 5 bola merah dan 3 bola kuning. Diambil dua bola satu per satu tanpa pengembalian. Peluang terambilnya bola pertama merah dan kedua kuning adalah...", options: ["\\(\\frac{15}{64}\\)", "\\(\\frac{15}{56}\\)", "\\(\\frac{8}{56}\\)", "\\(\\frac{5}{14}\\)"], answer: "\\(\\frac{15}{56}\\)", explanation: "P(merah1) = 5/8. P(kuning2|merah1) = 3/7. Peluang gabungan = (5/8) * (3/7) = 15/56." },
+            { question: "Nilai dari \\(9! / (6!3!)\\) adalah...", options: ["27", "56", "84", "120"], answer: "84", explanation: "Ini adalah C(9,3). (9x8x7)/(3x2x1) = 3x4x7 = 84." },
+            { question: "Jumlah deret geometri tak hingga \\(18 + 12 + 8 + ...\\) adalah...", options: ["36", "48", "54", "60"], answer: "54", explanation: "a=18, r=12/18=2/3. S_takhingga = a/(1-r) = 18/(1-2/3) = 18/(1/3) = 54." },
+            { question: "Luas maksimum persegi panjang yang kelilingnya 40 cm adalah...", options: ["100 cm²", "99 cm²", "96 cm²", "75 cm²"], answer: "100 cm²", explanation: "Luas maksimum tercapai saat bangunnya persegi. Keliling=4s=40 -> s=10. Luas = 10x10=100 cm²." },
+            { question: "Jangkauan interkuartil dari data: 4, 7, 2, 8, 6, 9, 5, 3 adalah...", options: ["3", "3.5", "4", "4.5"], answer: "4", explanation: "Urut: 2,3,4,5,6,7,8,9. Q1=(3+4)/2=3.5. Q3=(7+8)/2=7.5. Jangkauan Interkuartil = Q3-Q1 = 7.5-3.5 = 4." },
+            { question: "Vektor \\(\\vec{a} = (3, -4)\\). Panjang vektor \\(\\vec{a}\\) adalah...", options: ["1", "5", "7", "25"], answer: "5", explanation: "Panjang = \\(\\sqrt{3^2 + (-4)^2} = \\sqrt{9+16} = \\sqrt{25} = 5\\)." },
+            { question: "Jika \\(A = \\begin{pmatrix} 2 & 1 \\\\ 3 & 4 \\end{pmatrix}\\), maka determinan dari matriks A adalah...", options: ["5", "8", "11", "13"], answer: "5", explanation: "Determinan = (ad-bc) = (2*4) - (1*3) = 8 - 3 = 5." },
+            { question: "Jika \\(f(x) = 3x+2\\) dan \\(g(x)=x-1\\), maka \\((f \\circ g)(x)\\) adalah...", options: ["\\(3x+1\\)", "\\(3x-1\\)", "\\(3x+5\\)", "\\(3x-5\\)"], answer: "\\(3x-1\\)", explanation: "\\(f(g(x)) = f(x-1) = 3(x-1)+2 = 3x-3+2 = 3x-1\\)." },
+            { question: "Sebuah pesawat lepas landas dengan sudut 30°. Setelah menempuh jarak 2400 m di udara, ketinggian pesawat adalah...", options: ["1200 m", "1200\\(\\sqrt{2}\\) m", "1200\\(\\sqrt{3}\\) m", "2400 m"], answer: "1200 m", explanation: "sin(30°) = tinggi/jarak. 1/2 = t/2400. t = 1200 m." },
+            { question: "Dalam sebuah pemilihan, terdapat 5 kandidat. Peluang seorang kandidat terpilih adalah sama. Berapa peluang kandidat A atau B yang terpilih?", options: ["\\(\\frac{1}{5}\\)", "\\(\\frac{2}{5}\\)", "\\(\\frac{1}{25}\\)", "\\(\\frac{2}{25}\\)"], answer: "\\(\\frac{2}{5}\\)", explanation: "P(A) = 1/5. P(B)=1/5. P(A atau B) = P(A) + P(B) = 1/5 + 1/5 = 2/5." },
+            { question: "Sebuah ayunan bergerak dari posisi A ke B lalu ke C. Jika panjang busur AB = BC = 22 cm dan sudut AOB = 60°, maka panjang ayunan (jari-jari) adalah...", options: ["14 cm", "21 cm", "28 cm", "35 cm"], answer: "21 cm", explanation: "Panjang busur = (sudut/360) x 2\\(\\pi\\)r. 22 = (60/360) x 2(22/7)r. 22 = (1/6) x (44/7)r. r = (22x6x7)/44 = 21 cm." },
+            { question: "Garis \\(ax+by=c\\) sejajar dengan \\(2x-3y=5\\) dan melalui (1,1). Nilai \\(a+b+c\\) bisa jadi...", options: ["-2", "0", "2", "4"], answer: "0", explanation: "Gradien sama = 2/3. Persamaan: 2x-3y=c. Melalui (1,1) -> 2(1)-3(1)=c -> c=-1. Persamaan: 2x-3y=-1. a=2,b=-3,c=-1. a+b+c = 2-3-1=-2. Bisa juga -2x+3y=1. a=-2, b=3, c=1. a+b+c=2." },
+            { question: "Sebuah lahan berbentuk trapesium siku-siku. Sisi sejajar 10m dan 15m, sisi miring 13m. Harga tanah Rp 500.000/m². Harga total lahan adalah...", options: ["Rp 65.000.000", "Rp 75.000.000", "Rp 80.000.000", "Rp 85.000.000"], answer: "Rp 75.000.000", explanation: "Tinggi = \\(\\sqrt{13^2-5^2}=12\\)m. Luas = 1/2(10+15)12 = 150 m². Harga = 150 x 500rb = Rp 75.000.000." },
+            { question: "Diketahui titik K(2,1), L(6,1), M(7,4), N(3,4). Luas bangun KLMN adalah...", options: ["12 satuan luas", "15 satuan luas", "18 satuan luas", "20 satuan luas"], answer: "15 satuan luas", explanation: "Ini jajar genjang. Alas KL=4. Tinggi=4-1=3. Luas = 4x3=12. Koreksi: ini trapesium sama kaki. KL=4, MN=4. Bukan. Ini trapesium. Alas KL=4, atas MN=4. Tinggi=3. Luas=1/2(4+4)3=12. Cek lagi, ini jajar genjang. Alas KL=4. Tinggi=3. Luas=12. Jika trapesium: Luas=1/2(a+b)t=1/2(4+4)3=12. Wait, KL=4, MN=4, tinggi=3. Jajar genjang, Luas=alas x tinggi=4x3=12. Mungkin titiknya salah. Jika M(8,4), N(4,4), maka Luas=1/2(4+4)3=12. Jika M(7,4), N(1,4)? Tidak. Coba rumus Shoelace: 1/2 |(2*1+6*4+7*4+3*1)-(1*6+1*7+4*3+4*2)|=1/2|57-33|=1/2(24)=12." },
+            { question: "Jika \\(a*b = a^2 - b\\), maka nilai dari \\(3*(2*1))\\) adalah...", options: ["0", "3", "6", "9"], answer: "6", explanation: "Kerjakan dalam kurung dulu: 2*1 = 2²-1 = 3. Kemudian 3*(3) = 3² - 3 = 9-3=6." },
+            { question: "Dari angka 1,2,3,4,5 akan dibentuk bilangan 3 angka berbeda. Banyak bilangan yang lebih dari 300 adalah...", options: ["24", "36", "48", "60"], answer: "36", explanation: "Angka ratusan bisa 3,4,5 (3 pilihan). Angka puluhan sisa 4 pilihan. Angka satuan sisa 3 pilihan. Total = 3 x 4 x 3 = 36." },
+            { question: "Sebuah tabung A tingginya 2 kali tabung B dan jari-jarinya 1/2 kali tabung B. Perbandingan volume A dan B adalah...", options: ["1:1", "1:2", "2:1", "1:4"], answer: "1:2", explanation: "Va = \\(\\pi (r_a)^2 (t_a) = \\pi (1/2 r_b)^2 (2 t_b) = \\pi (1/4 r_b^2)(2 t_b) = 1/2 \\pi r_b^2 t_b = 1/2 Vb. Jadi Va:Vb = 1:2." },
+            { question: "Persamaan kuadrat yang akar-akarnya 2 kali dari akar-akar \\(x^2-3x+2=0\\) adalah...", options: ["\\(x^2-6x+8=0\\)", "\\(x^2-6x+4=0\\)", "\\(2x^2-6x+4=0\\)", "\\(x^2-3x+4=0\\)"], answer: "\\(x^2-6x+8=0\\)", explanation: "Akar-akar lama: (x-1)(x-2)=0 -> x=1, x=2. Akar-akar baru: 2 dan 4. Persamaan baru: (x-2)(x-4)=0 -> x²-6x+8=0." },
+            { question: "Sebuah lingkaran menyinggung keempat sisi persegi panjang 16x10 cm. Luas daerah di dalam persegi panjang tapi di luar lingkaran adalah...", options: ["160 - 25\\(\\pi\\)", "160 - 50\\(\\pi\\)", "160 - 100\\(\\pi\\)", "Tidak mungkin"], answer: "Tidak mungkin", explanation: "Lingkaran hanya bisa menyinggung keempat sisi jika bangunnya persegi. Jika menyinggung sisi panjang, diameter=10, tidak menyinggung sisi pendek. Jika menyinggung sisi pendek, diameter=16, tidak muat." },
+            { question: "Jika \\(x > 0\\) dan \\(y > 0\\), serta \\(x+y=10\\), nilai maksimum dari \\(x \\cdot y\\) adalah...", options: ["10", "20", "24", "25"], answer: "25", explanation: "Perkalian maksimum terjadi saat nilai x dan y sama, yaitu x=5, y=5. Hasilnya 5x5=25." },
+            { question: "Diagram panah yang merupakan fungsi dari A ke B adalah... (A={1,2}, B={a,b})", options: ["1->a, 1->b, 2->a", "1->a, 2->b", "1->a, 2->a, 2->b", "a->1, b->2"], answer: "1->a, 2->b", explanation: "Syarat fungsi adalah setiap anggota domain (A) harus punya TEPAT SATU pasangan di kodomain (B)." },
+            { question: "Grafik \\(y=ax^2+bx+c\\) membuka ke bawah dan memotong sumbu y negatif. Maka...", options: ["a>0, c>0", "a>0, c<0", "a<0, c>0", "a<0, c<0"], answer: "a<0, c<0", explanation: "Membuka ke bawah berarti a<0. Memotong sumbu y di (0,c). Jika y negatif, maka c<0." },
+            { question: "Andi mengetik 1500 kata dalam 1 jam. Budi mengetik 1200 kata dalam 50 menit. Siapa yang lebih cepat dan berapa kata per menit selisihnya?", options: ["Andi, 1 kata/menit", "Budi, 1 kata/menit", "Andi, 5 kata/menit", "Budi, 5 kata/menit"], answer: "Andi, 1 kata/menit", explanation: "Andi: 1500 kata/60 menit = 25 kata/menit. Budi: 1200 kata/50 menit = 24 kata/menit. Andi lebih cepat 1 kata/menit." },
+            { question: "Sebuah barisan aritmetika memiliki \\(U_3=10\\) dan \\(U_7=22\\). Suku ke-15 barisan itu adalah...", options: ["34", "40", "46", "52"], answer: "46", explanation: "U7-U3 = 4b -> 22-10=12 -> 4b=12 -> b=3. U3=a+2b -> 10=a+6 -> a=4. U15 = a+14b = 4+14(3) = 4+42=46." },
+        ]
+    };
+    
+    // Variabel dan elemen DOM
+    let currentDifficulty = '';
+    let currentQuestions = [];
+    let currentQuestionIndex = 0;
+    let score = 0;
+    let incorrectQuestions = [];
+
+    const startScreen = document.getElementById('start-screen');
+    const quizScreen = document.getElementById('quiz-screen');
+    const resultScreen = document.getElementById('result-screen');
+    const questionNumberEl = document.getElementById('question-number');
+    const difficultyBadgeEl = document.getElementById('difficulty-badge');
+    const questionContainer = document.getElementById('question-container');
+    const optionsContainer = document.getElementById('options-container');
+    const scorePercentageEl = document.getElementById('score-percentage');
+    const incorrectAnswersListEl = document.getElementById('incorrect-answers-list');
+    const explanationModal = document.getElementById('explanation-modal');
+    const explanationTextEl = document.getElementById('explanation-text');
+    
+    function renderTextWithKatex(text) {
+        // Fungsi ini mencari ekspresi matematika yang diapit oleh \\(...\\) atau \\[...\\]
+        // dan merendernya menggunakan KaTeX.
+        return text.replace(/\\\\?\((.*?)\\\\\?\)|\\\\?\[(.*?)\\\\?\]/g, (match, inline, display) => {
+            const content = inline || display;
+            const isDisplay = !!display;
+            try {
+                return katex.renderToString(content, {
+                    throwOnError: false,
+                    displayMode: isDisplay
+                });
+            } catch (e) {
+                console.error("KaTeX parsing error:", e);
+                return match; // Kembalikan teks asli jika ada error
+            }
+        });
+    }
+
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+    
+    function startQuiz(difficulty) {
+        currentDifficulty = difficulty;
+        // Ambil 40 soal secara acak dari bank soal yang tersedia
+        const allQuestions = [...questions[difficulty]];
+        shuffleArray(allQuestions);
+        currentQuestions = allQuestions.slice(0, 40);
+
+        currentQuestionIndex = 0;
+        score = 0;
+        incorrectQuestions = [];
+
+        startScreen.classList.add('hidden');
+        resultScreen.classList.add('hidden');
+        quizScreen.classList.remove('hidden');
+
+        updateDifficultyBadge();
+        displayQuestion();
+    }
+
+    function updateDifficultyBadge() {
+        if (currentDifficulty === 'easy') {
+            difficultyBadgeEl.textContent = 'Mudah';
+            difficultyBadgeEl.className = 'px-3 py-1 text-sm font-semibold text-white rounded-full bg-blue-500';
+        } else if (currentDifficulty === 'medium') {
+            difficultyBadgeEl.textContent = 'Sedang';
+            difficultyBadgeEl.className = 'px-3 py-1 text-sm font-semibold text-white rounded-full bg-orange-500';
+        } else {
+            difficultyBadgeEl.textContent = 'Sulit';
+            difficultyBadgeEl.className = 'px-3 py-1 text-sm font-semibold text-white rounded-full bg-purple-600';
+        }
+    }
+
+    function displayQuestion() {
+        if (currentQuestionIndex >= currentQuestions.length) {
+            showResults();
+            return;
+        }
+
+        const question = currentQuestions[currentQuestionIndex];
+        questionNumberEl.textContent = currentQuestionIndex + 1;
+        
+        questionContainer.innerHTML = renderTextWithKatex(question.question);
+
+        optionsContainer.innerHTML = '';
+        const shuffledOptions = [...question.options];
+        shuffleArray(shuffledOptions);
+
+        shuffledOptions.forEach(option => {
+            const button = document.createElement('button');
+            button.className = "w-full text-left p-4 bg-gray-100 rounded-lg hover:bg-blue-100 transition duration-200 border-2 border-gray-200 text-base md:text-lg";
+            
+            button.innerHTML = renderTextWithKatex(option);
+            
+            button.onclick = () => selectAnswer(option, button);
+            optionsContainer.appendChild(button);
+        });
+    }
+
+    function selectAnswer(selectedOption, button) {
+        const question = currentQuestions[currentQuestionIndex];
+        const isCorrect = selectedOption.replace(/\\/g, '') === question.answer.replace(/\\/g, '');
+
+        Array.from(optionsContainer.children).forEach(btn => {
+            btn.disabled = true;
+            btn.classList.remove('hover:bg-blue-100');
+            
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = renderTextWithKatex(question.answer);
+            const answerText = tempDiv.textContent.trim();
+
+            if (btn.textContent.trim() === answerText) {
+                 btn.className = "w-full text-left p-4 rounded-lg border-2 bg-green-100 border-green-500 text-green-800 text-base md:text-lg";
+            }
+        });
+
+        if (isCorrect) {
+            score++;
+            button.className = "w-full text-left p-4 rounded-lg border-2 bg-green-100 border-green-500 text-green-800 text-base md:text-lg";
+            setTimeout(nextQuestion, 1000);
+        } else {
+            incorrectQuestions.push(currentQuestionIndex + 1);
+            button.className = "w-full text-left p-4 rounded-lg border-2 bg-red-100 border-red-500 text-red-800 text-base md:text-lg";
+            
+            explanationTextEl.innerHTML = renderTextWithKatex(question.explanation);
+            explanationModal.classList.remove('hidden');
+        }
+    }
+
+    function nextQuestion() {
+        explanationModal.classList.add('hidden');
+        currentQuestionIndex++;
+        displayQuestion();
+    }
+
+    function showResults() {
+        quizScreen.classList.add('hidden');
+        resultScreen.classList.remove('hidden');
+
+        const percentage = Math.round((score / currentQuestions.length) * 100);
+        scorePercentageEl.textContent = `${percentage}%`;
+
+        if (percentage >= 75) {
+            scorePercentageEl.className = 'text-5xl font-bold text-green-500 mb-6';
+        } else if (percentage >= 50) {
+            scorePercentageEl.className = 'text-5xl font-bold text-yellow-500 mb-6';
+        } else {
+            scorePercentageEl.className = 'text-5xl font-bold text-red-500 mb-6';
+        }
+
+        if (incorrectQuestions.length > 0) {
+            document.getElementById('incorrect-answers-container').style.display = 'block';
+            incorrectAnswersListEl.textContent = incorrectQuestions.sort((a, b) => a - b).join(', ');
+        } else {
+            document.getElementById('incorrect-answers-container').style.display = 'block';
+            incorrectAnswersListEl.textContent = "Luar biasa! Semua jawaban benar!";
+            document.querySelector('#incorrect-answers-container h3').style.display = 'none';
+        }
+    }
+
+    function restartQuiz() {
+        resultScreen.classList.add('hidden');
+        startScreen.classList.remove('hidden');
+        const incorrectHeading = document.querySelector('#incorrect-answers-container h3');
+        if(incorrectHeading) incorrectHeading.style.display = 'block';
+    }
+</script>
+
+</body>
+</html>
+

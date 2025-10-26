@@ -33,7 +33,9 @@
             <div class="w-full bg-gray-200 rounded-full h-2.5 mb-2">
                 <div id="progress-bar" class="bg-blue-600 h-2.5 rounded-full transition-all duration-300" style="width: 0%"></div>
             </div>
-            <p id="progress-text" class="text-center text-sm text-gray-600 mb-6 font-semibold">Soal 1 dari 40</p>
+            <p id="progress-text" class="text-center text-sm text-gray-600 mb-2 font-semibold">Soal 1 dari 40</p>
+            <!-- Tampilan Skor Baru -->
+            <p id="score-text" class="text-center text-lg text-blue-600 mb-6 font-bold">Skor: 0 / 40</p>
 
             <!-- Kontainer Soal Tunggal -->
             <div id="question-container">
@@ -47,21 +49,35 @@
                 <div id="options-container">
                     <!-- Opsi akan dimuat di sini oleh JavaScript -->
                 </div>
+
+                <!-- Kontainer Feedback Instan (Baru) -->
+                <div id="instant-feedback-container" class="hidden mt-4 p-4 rounded-lg border">
+                    <!-- Konten feedback (pembahasan) akan dimuat di sini -->
+                </div>
             </div>
 
             <!-- Tombol Navigasi -->
-            <button id="next-btn" class="w-full bg-blue-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-blue-700 transition-all duration-300 shadow-lg mt-8 text-lg">
-                Selanjutnya
-            </button>
-            <button id="submit-btn" class="hidden w-full bg-green-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-green-700 transition-all duration-300 shadow-lg mt-8 text-lg">
-                Kumpulkan Jawaban
-            </button>
+            <div class="flex justify-between gap-4 mt-8">
+                <button id="prev-btn" class="w-1/2 bg-gray-500 text-white font-bold py-3 px-6 rounded-lg hover:bg-gray-600 transition-all duration-300 shadow-lg text-lg">
+                    Sebelumnya
+                </button>
+                <button id="next-btn" class="w-1/2 bg-blue-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-blue-700 transition-all duration-300 shadow-lg text-lg">
+                    Selanjutnya
+                </button>
+            </div>
+            
+            <!-- Tombol Submit Dihapus, karena kita pakai mode instan -->
+            <!-- <button id="submit-btn" class="hidden ...">...</button> -->
         </div>
 
         <!-- Area Hasil (disembunyikan awalnya) -->
         <div id="results-container" class="hidden text-center mt-6">
             <h2 class="text-3xl font-bold mb-4">Hasil Kuis Selesai</h2>
             <p class="text-2xl" id="results-text"></p>
+
+            <!-- Kontainer Hasil Detail dan Pembahasan (Dihapus karena feedback instan) -->
+            <!-- <div id="detailed-results" class="mt-8 ...">...</div> -->
+
             <button id="restart-btn" class="w-full bg-blue-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-blue-700 transition-all duration-300 shadow-lg mt-8 text-lg">
                 Ulangi Kuis
             </button>
@@ -70,309 +86,366 @@
     </div>
 
     <script>
+        // Fungsi helper global untuk toggle pembahasan
+        // (Tidak dipakai lagi di mode instan, tapi kita biarkan jika ingin dipakai di mode review)
+        function toggleExplanation(id) {
+            const el = document.getElementById(id);
+            if (el) {
+                el.classList.toggle('hidden');
+            }
+        }
+
         // Data Kuis (40 Soal Lengkap Sesuai Urutan 'No.' di PDF)
         const quizData = [
-            // No. 1
+            // ... (Data 40 soal tetap sama, tidak perlu diubah) ...
             {
                 kisiKisi: "Disajikan gambar stopwatch, murid dapat menentukan hasil pengukuran pada alat ukur sesuai aktivitas",
                 question: "Jarum menit pada stopwatch menunjuk angka '1' dan jarum detik menunjuk angka '25'. Berapa hasil pengukuran waktu tersebut?",
                 options: ["1 menit 25 detik", "25 menit 1 detik", "1,25 menit", "26 detik"],
-                answer: 0
+                answer: 0,
+                explanation: "Jarum menit (lingkaran kecil) menunjuk angka 1, artinya 1 menit. Jarum detik (lingkaran besar) menunjuk angka 25, artinya 25 detik. Jadi, total waktunya adalah 1 menit 25 detik."
             },
             // No. 2
             {
                 kisiKisi: "Disajikan tabel yang berisi massa dan volume benda, murid dapat menentukan kesimpulan pernyataan menentukan massa jenis benda",
                 question: "Perhatikan data: Benda A (Massa=30g, Volume=10cm³), Benda B (Massa=40g, Volume=10cm³). Manakah kesimpulan yang benar?",
                 options: ["Massa jenis A > Massa jenis B", "Massa jenis A < Massa jenis B", "Massa jenis A = Massa jenis B", "Massa jenis tidak bisa dihitung"],
-                answer: 1
+                answer: 1,
+                explanation: "Massa jenis (ρ) dihitung dengan rumus ρ = massa / volume. Massa jenis A = 30g / 10cm³ = 3 g/cm³. Massa jenis B = 40g / 10cm³ = 4 g/cm³. Jadi, massa jenis A lebih kecil dari massa jenis B."
             },
             // No. 3
             {
                 kisiKisi: "Disajikan gambar kamper, murid dapat menentukan perubahan yang serupa dengan kamper",
                 question: "Kamper (kapur barus) di dalam lemari lama-kelamaan akan habis. Peristiwa ini adalah contoh menyublim. Peristiwa manakah yang menunjukkan perubahan wujud yang sama?",
                 options: ["Air menjadi es", "Es kering (dry ice) mengeluarkan asap", "Embun di daun pada pagi hari", "Mentega meleleh di wajan panas"],
-                answer: 1
+                answer: 1,
+                explanation: "Menyublim adalah perubahan wujud dari padat menjadi gas. Kamper berubah dari padat menjadi gas (bau wangi). Es kering (dry ice) juga berubah dari padat (CO2 padat) menjadi gas (CO2 gas), yang terlihat seperti asap."
             },
             // No. 4
             {
                 kisiKisi: "Disajikan grafik kalor, murid dapat menetukan kalor yang diperlukan sesuai grafik",
                 question: "Pada grafik pemanasan es dari -5°C menjadi air 20°C, proses 'melebur' (perubahan wujud dari es menjadi air) ditunjukkan oleh bagian grafik yang...",
                 options: ["Suhunya naik dari -5°C ke 0°C", "Suhunya tetap (konstan) pada 0°C", "Suhunya naik dari 0°C ke 20°C", "Suhunya tetap (konstan) pada 100°C"],
-                answer: 1
+                answer: 1,
+                explanation: "Saat perubahan wujud (melebur dari es ke air atau mendidih dari air ke uap), suhu zat tetap (konstan) meskipun kalor terus diberikan. Proses melebur terjadi pada suhu 0°C."
             },
             // No. 5
             {
                 kisiKisi: "Disajikan gambar putri malu, murid dapat menentukan jenis gerak yang terjadi pada putri malu tersebut",
                 question: "Gerak menutupnya daun putri malu (Mimosa pudica) saat disentuh merupakan contoh dari...",
                 options: ["Fotonasti", "Niktinasti", "Geotropisme", "Seismonasti"],
-                answer: 3
+                answer: 3,
+                explanation: "Seismonasti adalah gerak nasti (arah gerak tidak dipengaruhi arah rangsang) yang disebabkan oleh rangsangan berupa getaran atau sentuhan."
             },
             // No. 6
             {
                 kisiKisi: "Disajikan gambar beberapa gaya yang bekerja pada sebuah benda, muid dapat menentukan resulktan gaya dan arahnya",
                 question: "Sebuah meja didorong oleh Ali ke kanan dengan gaya 25 N dan didorong oleh Budi ke kiri dengan gaya 15 N. Berapa resultan gaya dan ke mana arahnya?",
                 options: ["10 N ke kanan", "10 N ke kiri", "40 N ke kanan", "40 N ke kiri"],
-                answer: 0
+                answer: 0,
+                explanation: "Karena arahnya berlawanan, resultan gaya dihitung dengan mengurangkan gaya yang lebih besar dengan yang lebih kecil. Resultan = 25 N - 15 N = 10 N. Arahnya mengikuti gaya yang lebih besar, yaitu ke kanan."
             },
             // No. 7
             {
                 kisiKisi: "Disajikan beberapa fungsi, murid dapat menentukan fungsi rangka pada manusia",
                 question: "Berikut ini yang BUKAN merupakan fungsi utama dari sistem rangka manusia adalah...",
                 options: ["Sebagai alat gerak aktif", "Melindungi organ-organ vital", "Tempat melekatnya otot", "Memberi bentuk pada tubuh"],
-                answer: 0
+                answer: 0,
+                explanation: "Sistem rangka (tulang) adalah alat gerak PASIF. Yang merupakan alat gerak AKTIF adalah otot, karena ototlah yang berkontraksi dan menggerakkan tulang."
             },
             // No. 8
             {
                 kisiKisi: "Dusajikan beberapa pernyataan, murid dapat menentukan peristiwa yang termasuk gerak lurus berubah beraturan dipercepat",
                 question: "Manakah dari peristiwa berikut yang merupakan contoh Gerak Lurus Berubah Beraturan (GLBB) dipercepat?",
                 options: ["Mobil melaju dengan kecepatan stabil 50 km/jam", "Sepeda yang direm hingga berhenti", "Buah apel yang jatuh bebas dari pohonnya", "Bola yang menggelinding dan berhenti"],
-                answer: 2
+                answer: 2,
+                explanation: "Gerak jatuh bebas (seperti apel jatuh) adalah contoh GLBB dipercepat, di mana percepatannya adalah percepatan gravitasi bumi."
             },
             // No. 9
             {
                 kisiKisi: "Disajikan gambar tanamanan, murid dapat menentukan kunci determinasi tanaman tersebut",
                 question: "Jika kita ingin mengidentifikasi tanaman padi menggunakan kunci determinasi, ciri pertama yang paling mungkin digunakan adalah...",
                 options: ["Memiliki bunga sejati", "Berakar tunggang", "Tulang daun menyirip", "Tidak memiliki pembuluh angkut"],
-                answer: 0
+                answer: 0,
+                explanation: "Padi (Oryza sativa) termasuk dalam kelompok tumbuhan berbunga (Magnoliophyta/Angiospermae), sehingga 'memiliki bunga sejati' adalah ciri awal yang penting untuk memisahkannya dari kelompok seperti lumut atau paku."
             },
             // No. 10
             {
                 kisiKisi: "Disajikan gambar udang murid dapat menentukan filumnya",
                 question: "Udang, kepiting, dan serangga memiliki ciri khas tubuh beruas-ruas dan rangka luar (eksoskeleton). Hewan-hewan ini dikelompokkan ke dalam filum...",
                 options: ["Mollusca", "Annelida", "Arthropoda", "Echinodermata"],
-                answer: 2
+                answer: 2,
+                explanation: "Filum Arthropoda (hewan berbuku-buku) memiliki ciri utama tubuh dan kaki yang beruas-ruas serta memiliki rangka luar (eksoskeleton) yang keras."
             },
             // No. 11
             {
                 kisiKisi: "Disajikan data gejala alam, murid dapat menentukan gejala alam biotik maupun abiotik",
                 question: "Perhatikan gejala alam berikut: (1) Air sungai menguap, (2) Tumbuhan jati menggugurkan daun, (3) Terjadi badai, (4) Populasi elang menurun. Manakah yang termasuk gejala alam biotik?",
                 options: ["(1) dan (3)", "(2) dan (4)", "(1) dan (4)", "(2) dan (3)"],
-                answer: 1
+                answer: 1,
+                explanation: "Gejala alam biotik adalah peristiwa yang melibatkan makhluk hidup. Menggugurkan daun (respon tumbuhan) dan menurunnya populasi (interaksi makhluk hidup) adalah gejala biotik. Air menguap dan badai adalah gejala abiotik."
             },
             // No. 12
             {
                 kisiKisi: "Disajikan peristiwa yang berkaitan degan tanaman, murid dapat menentukan ciri makhluk hidup",
                 question: "Tanaman di dalam pot yang diletakkan di dekat jendela akan tumbuh membengkok ke arah datangnya cahaya. Peristiwa ini membuktikan ciri makhluk hidup yaitu...",
                 options: ["Tumbuh dan berkembang", "Bernapas", "Iritabilitas (menanggapi rangsang)", "Berkembang biak"],
-                answer: 2
+                answer: 2,
+                explanation: "Iritabilitas adalah kemampuan makhluk hidup untuk menanggapi rangsangan. Dalam hal ini, rangsangannya adalah cahaya, dan tanggapannya adalah tanaman tumbuh ke arah cahaya (fototropisme)."
             },
             // No. 13
             {
                 kisiKisi: "Disajikan gambar jaring makanan, murid dapat menentukan hal yang harus dilakukan agar hama tikus tidak mengganggu pertanian",
                 question: "Dalam ekosistem sawah, ular adalah predator bagi tikus. Jika populasi ular menurun drastis, populasi tikus akan meningkat dan merusak padi. Usaha yang paling tepat untuk mengendalikan hama tikus secara alami adalah...",
                 options: ["Menggunakan pestisida tikus secara massal", "Menjaga kelestarian populasi ular", "Menanam tanaman selain padi", "Membakar sawah setelah panen"],
-                answer: 1
+                answer: 1,
+                explanation: "Menjaga kelestarian predator alami (ular) adalah metode pengendalian hayati yang menjaga keseimbangan ekosistem. Jika ular banyak, populasi tikus akan terkendali secara alami."
             },
             // No. 14
             {
                 kisiKisi: "Murid dapat menentukan jenis sel berdasarkan ada atau tidaknya membran inti",
                 question: "Sel yang tidak memiliki membran inti (nukleus tidak terbungkus membran) disebut sel...",
                 options: ["Eukariotik", "Prokariotik", "Uniseluler", "Multiseluler"],
-                answer: 1
+                answer: 1,
+                explanation: "Prokariotik (pro = sebelum, karyon = inti) adalah sel yang tidak memiliki membran inti sejati, contohnya bakteri. Eukariotik (eu = sejati) adalah sel yang memiliki membran inti."
             },
             // No. 15
             {
                 kisiKisi: "Disajikan gambar organel sel, murid dapat menentukan fungsi organel tersebut",
                 question: "Organel sel yang berfungsi sebagai tempat berlangsungnya respirasi sel untuk menghasilkan energi (ATP) adalah...",
                 options: ["Ribosom", "Kloroplas", "Mitokondria", "Badan Golgi"],
-                answer: 2
+                answer: 2,
+                explanation: "Mitokondria sering disebut 'pabrik energi' sel karena di sinilah terjadi respirasi seluler yang mengubah glukosa menjadi ATP (energi)."
             },
             // No. 16
             {
                 kisiKisi: "Disajikan data ciri jaringan pada tumbuhan, murid dapat menentukan nama jaringan yang dimaksud",
                 question: "Jaringan pada tumbuhan yang berfungsi untuk mengangkut air dan garam mineral dari akar ke daun adalah...",
                 options: ["Floem", "Epidermis", "Parenkim", "Xilem"],
-                answer: 3
+                answer: 3,
+                explanation: "Xilem (pembuluh kayu) berfungsi mengangkut air dan mineral dari akar ke seluruh tubuh tumbuhan. Floem (pembuluh tapis) berfungsi mengangkut hasil fotosintesis dari daun."
             },
             // No. 17
             {
                 kisiKisi: "Disajikan gambar beberapa organ pada manusia, murid dapat menentukan organ penyusun sistem pencernaan",
                 question: "Berikut ini, kelompok organ yang seluruhnya merupakan bagian dari sistem pencernaan manusia adalah...",
                 options: ["Mulut, Hati, Ginjal", "Lambung, Usus Halus, Paru-paru", "Mulut, Lambung, Usus Besar", "Kerongkongan, Hati, Jantung"],
-                answer: 2
+                answer: 2,
+                explanation: "Ginjal adalah organ ekskresi. Paru-paru adalah organ pernapasan. Jantung adalah organ peredaran darah. Mulut, Lambung, dan Usus Besar adalah bagian dari saluran pencernaan."
             },
             // No. 18
             {
                 kisiKisi: "Disajikan data komposisi pada makanan, murid dapat menentukan penyataan yang tepat mengenai fungsi komposisi tersebut",
                 question: "Karbohidrat yang terkandung dalam nasi dan roti memiliki fungsi utama bagi tubuh sebagai...",
                 options: ["Sumber energi utama", "Pembangun sel-sel tubuh", "Cadangan energi", "Pelarut vitamin A, D, E, K"],
-                answer: 0
+                answer: 0,
+                explanation: "Fungsi utama karbohidrat adalah sebagai sumber energi utama bagi tubuh. Pembangun sel adalah protein, cadangan energi adalah lemak, dan pelarut vitamin A,D,E,K adalah lemak."
             },
             // No. 19
             {
                 kisiKisi: "Disajikan data ciri sel darah, murid dapat mennetukan ciri leukosit",
                 question: "Manakah ciri-ciri yang tepat untuk sel darah putih (leukosit)?",
                 options: ["Bentuk bikonkaf, tidak berinti, mengandung hemoglobin", "Bentuk tidak tetap, berinti, berfungsi melawan kuman", "Berbentuk kepingan, tidak berinti, untuk pembekuan darah", "Berbentuk bulat, berinti, mengangkut oksigen"],
-                answer: 1
+                answer: 1,
+                explanation: "Sel darah putih (leukosit) memiliki inti sel, bentuknya tidak tetap (amuboid), dan berfungsi utama dalam sistem kekebalan tubuh untuk melawan kuman penyakit."
             },
             // No. 20
             {
                 kisiKisi: "Disajikan data hasil tes darah, murid dapat mennetukan jenis gangguan sesuai hasil tes daarah tersebut",
                 question: "Hasil tes darah Pak Budi menunjukkan kadar hemoglobin (Hb) beliau jauh di bawah normal. Gangguan kesehatan yang dialami Pak Budi disebut...",
                 options: ["Leukemia", "Hemofilia", "Anemia", "Hipertensi"],
-                answer: 2
+                answer: 2,
+                explanation: "Anemia adalah kondisi di mana tubuh kekurangan sel darah merah atau hemoglobin (Hb), yang berfungsi mengikat oksigen. Leukemia adalah kanker darah (kelebihan sel darah putih abnormal)."
             },
             // No. 21
             {
                 kisiKisi: "Disajikan gambar percobaan fotosintesis pada tanaman, murid dapat menentukan tujuan dari tahapan",
                 question: "Dalam percobaan fotosintesis (uji Sachs), daun direbus dalam alkohol panas. Apa tujuan dari langkah tersebut?",
                 options: ["Untuk melarutkan klorofil", "Untuk mematikan sel-sel daun", "Untuk melunakkan dinding sel", "Untuk menguji adanya oksigen"],
-                answer: 0
+                answer: 0,
+                explanation: "Klorofil (zat hijau daun) dapat larut dalam alkohol panas. Langkah ini dilakukan agar warna hijau klorofil tidak menghalangi pengamatan warna biru kehitaman saat daun ditetesi lugol (jika mengandung amilum)."
             },
             // No. 22
             {
                 kisiKisi: "Disajikan gambar tuas, murid dapat menentukan nilai gaya gaya kuasanya",
                 question: "Sebuah pengungkit digunakan untuk mengangkat batu 100 N. Jarak titik tumpu ke batu (lengan beban) adalah 20 cm, dan jarak titik tumpu ke gaya (lengan kuasa) adalah 100 cm. Berapa gaya kuasa (F) yang diperlukan?",
                 options: ["500 N", "100 N", "50 N", "20 N"],
-                answer: 3
+                answer: 3,
+                explanation: "Menggunakan rumus tuas: Beban × Lengan Beban = Kuasa × Lengan Kuasa. 100 N × 20 cm = F × 100 cm. Maka F = (100 × 20) / 100 = 20 N."
             },
             // No. 23
             {
                 kisiKisi: "Disajikan gambar ayunan bandul, murid dapat menentukan definisi satu getaran",
                 question: "Pada ayunan bandul sederhana, satu getaran penuh didefinisikan sebagai gerak dari...",
                 options: ["A ke B", "A ke B lalu ke C", "A ke B ke C, lalu kembali ke B", "A ke B ke C, lalu kembali ke B dan ke A"],
-                answer: 3
+                answer: 3,
+                explanation: "Satu getaran penuh adalah gerak bolak-balik melalui titik keseimbangan dan kembali ke titik awal. Jika dimulai dari A, maka lintasannya adalah A-B-C-B-A."
             },
             // No. 24
             {
                 kisiKisi: "Disajikan gambar gelombang transversal, murid dapat mennetukan cepat rambat gelombang tersebut",
                 question: "Sebuah gelombang transversal memiliki frekuensi 5 Hz dan panjang gelombang 2 meter. Berapa cepat rambat gelombang tersebut?",
                 options: ["0,4 m/s", "2,5 m/s", "7 m/s", "10 m/s"],
-                answer: 3
+                answer: 3,
+                explanation: "Rumus cepat rambat gelombang (v) adalah v = frekuensi (f) × panjang gelombang (λ). Maka v = 5 Hz × 2 m = 10 m/s."
             },
             // No. 25
             {
                 kisiKisi: "Disajikan beberapa penyataan, murid dapat menentukan ciri gelombang bunyi",
                 question: "Manakah pernyataan yang paling tepat mengenai ciri-ciri gelombang bunyi?",
                 options: ["Termasuk gelombang transversal dan dapat merambat di ruang hampa", "Termasuk gelombang longitudinal dan dapat merambat di ruang hampa", "Termasuk gelombang transversal dan butuh medium untuk merambat", "Termasuk gelombang longitudinal dan butuh medium untuk merambat"],
-                answer: 3
+                answer: 3,
+                explanation: "Bunyi adalah gelombang longitudinal (arah rambatnya searah dengan arah getarnya) dan termasuk gelombang mekanik (membutuhkan medium seperti udara, air, atau zat padat untuk merambat). Bunyi tidak bisa merambat di ruang hampa."
             },
             // No. 26
             {
                 kisiKisi: "Disajikan gambar murid dapat menentukan sifat cahaya sesuai gambar tersebut",
                 question: "Ketika kita memasukkan pensil ke dalam gelas berisi air, pensil terlihat patah. Peristiwa ini membuktikan salah satu sifat cahaya, yaitu...",
                 options: ["Cahaya merambat lurus", "Cahaya dapat dipantulkan", "Cahaya dapat dibiaskan", "Cahaya dapat diuraikan"],
-                answer: 2
+                answer: 2,
+                explanation: "Peristiwa pensil terlihat patah disebut pembiasan (refraksi). Ini terjadi karena cahaya melewati dua medium yang berbeda kerapatannya (udara dan air), sehingga cahaya dibelokkan."
             },
             // No. 27
             {
                 kisiKisi: "Disajikan gambar struktur atom, murid dapat menentukan teori atom",
                 question: "Teori atom yang menyatakan bahwa atom terdiri dari inti bermuatan positif di pusat dan elektron bermuatan negatif yang mengelilinginya dalam lintasan tertentu (seperti tata surya) dikemukakan oleh...",
                 options: ["John Dalton", "J.J. Thomson", "Ernest Rutherford", "Niels Bohr"],
-                answer: 2
+                answer: 2,
+                explanation: "Model atom Rutherford (ditemukan dari percobaan hamburan sinar alfa) adalah yang pertama kali mengusulkan adanya inti atom (nukleus) yang bermuatan positif di pusat, dengan elektron mengelilinginya."
             },
             // No. 28
             {
                 kisiKisi: "Disajikan data ciri unsur, murid dapat menentukan kategori unsur yang dimaksud",
                 question: "Suatu unsur memiliki ciri: rapuh, tidak mengilap, dan merupakan isolator (penghantar listrik yang buruk). Unsur tersebut kemungkinan besar termasuk dalam kategori...",
                 options: ["Logam", "Non-logam", "Metaloid (Semi-logam)", "Senyawa"],
-                answer: 1
+                answer: 1,
+                explanation: "Ciri-ciri tersebut (rapuh, tidak mengilap, isolator) adalah sifat-sifat khas dari unsur non-logam, seperti belerang, fosfor, atau karbon (intan)."
             },
             // No. 29
             {
                 kisiKisi: "Disajikan rumus kimia senyawa, murid dapat menentukan jumlah molekul masing-masing penyusun",
                 question: "Dalam satu molekul senyawa Asam Sulfat \\(H_2SO_4\\), berapakah jumlah total atom penyusunnya?",
                 options: ["3", "6", "7", "8"],
-                answer: 2
+                answer: 2,
+                explanation: "Rumus \\(H_2SO_4\\) berarti terdapat 2 atom Hidrogen (H), 1 atom Belerang (S), dan 4 atom Oksigen (O). Total atom = 2 + 1 + 4 = 7 atom."
             },
             // No. 30
             {
                 kisiKisi: "Disajikan data dampat terjadinya pergerakan bumi, murid dapat mennetukan dampak dari revolusi bumi",
                 question: "Manakah dari peristiwa alam berikut yang merupakan dampak dari REVOLUSI Bumi (Bumi mengelilingi Matahari)?",
                 options: ["Terjadinya siang dan malam", "Gerak semu harian matahari", "Perbedaan waktu di berbagai negara", "Terjadinya pergantian musim"],
-                answer: 3
+                answer: 3,
+                explanation: "Revolusi Bumi (Bumi mengelilingi Matahari) dengan sumbu rotasi yang miring menyebabkan terjadinya pergantian musim. Pilihan A, B, dan C adalah dampak dari ROTASI Bumi (Bumi berputar pada porosnya)."
             },
             // No. 31
             {
                 kisiKisi: "Disajikan gambar pergerakan lempeng, murid dapat jenis pergerakan lempeng tektonis",
                 question: "Pergerakan dua lempeng tektonik yang saling bertumbukan sehingga salah satu lempeng menyusup ke bawah lempeng lainnya disebut...",
                 options: ["Divergen", "Konvergen", "Transfrom", "Subduksi"],
-                answer: 3 // Konvergen adalah umumnya, subduksi lebih spesifik untuk penyusupan.
+                answer: 3,
+                explanation: "Gerak Konvergen adalah gerak lempeng saling bertumbukan. Ketika salah satu lempeng (biasanya lempeng samudra) menyusup ke bawah lempeng lainnya (lempeng benua), peristiwa spesifik ini disebut Subduksi."
             },
             // No. 32
             {
                 kisiKisi: "Murid dapat menentukan gambar tahapan pembelahan sel",
                 question: "Tahapan dalam pembelahan mitosis di mana kromatid saudara ditarik ke arah kutub yang berlawanan disebut...",
                 options: ["Profase", "Metafase", "Anafase", "Telofase"],
-                answer: 2
+                answer: 2,
+                explanation: "Anafase adalah tahapan di mana kromatid saudara (yang tadinya berpasangan) berpisah dan ditarik oleh benang spindel menuju kutub sel yang berlawanan."
             },
             // No. 33
             {
                 kisiKisi: "Murid dapat menentukan jenis perkecambahan sesuai pengertian",
                 question: "Perkecambahan pada kacang hijau ditandai dengan kotiledon (biji) yang terangkat ke atas permukaan tanah. Tipe perkecambahan ini disebut...",
                 options: ["Epigeal", "Hipogeal", "Epikotil", "Hipokotil"],
-                answer: 0
+                answer: 0,
+                explanation: "Perkecambahan Epigeal (epi = di atas) ditandai dengan hipokotil yang memanjang sehingga kotiledon terangkat ke atas tanah. Hipogeal (hipo = di bawah) kotiledonnya tetap di bawah tanah."
             },
             // No. 34
             {
                 kisiKisi: "Disajikan gambar hewan bersel satu, murid dapat menentukan jenis perkembangbiakan hewan tersebut",
                 question: "Amoeba dan Paramecium adalah hewan bersel satu yang berkembang biak secara aseksual dengan cara...",
                 options: ["Membelah diri", "Fragmentasi", "Tunas", "Spora"],
-                answer: 0
+                answer: 0,
+                explanation: "Organisme uniseluler (bersel satu) seperti Amoeba, Paramecium, dan bakteri umumnya berkembang biak dengan membelah diri (pembelahan biner), di mana satu sel membelah menjadi dua sel anak."
             },
             // No. 35
             {
                 kisiKisi: "Disajikan sebuah peristiwa, murid dapat menentukan jalur impuls gerak sadar dan gerak refleks",
                 question: "Ketika kaki Anda tidak sengaja menginjak paku, Anda langsung mengangkat kaki sebelum sempat berpikir. Ini adalah gerak refleks. Jalur impuls yang benar adalah...",
                 options: ["Reseptor -> Otak -> Saraf Motorik -> Efektor", "Reseptor -> Saraf Sensorik -> Otak -> Efektor", "Reseptor -> Saraf Sensorik -> Sumsum Tulang Belakang -> Saraf Motorik -> Efektor", "Reseptor -> Saraf Motorik -> Sumsum Tulang Belakang -> Saraf Sensorik -> Efektor"],
-                answer: 2
+                answer: 2,
+                explanation: "Gerak refleks (tidak disadari) diproses di sumsum tulang belakang (bukan otak). Jalurnya: Rangsang -> Reseptor (kulit) -> Saraf Sensorik -> Sumsum Tulang Belakang -> Saraf Motorik -> Efektor (otot kaki)."
             },
             // No. 36
             {
                 kisiKisi: "Disajikan grafik kriminalitas, murid dapat menentukan kesimpulan yang berkaitan dengan penggunaan zat adiktif",
                 question: "Penyalahgunaan zat adiktif dan psikotropika seperti amfetamin dan sabu dapat merusak sistem saraf. Dampak sosial yang sering ditimbulkan oleh pengguna zat ini adalah...",
                 options: ["Meningkatnya prestasi belajar", "Meningkatnya tindak kriminalitas", "Meningkatnya daya tahan tubuh", "Meningkatnya rasa sosial"],
-                answer: 1
+                answer: 1,
+                explanation: "Zat psikotropika dapat menyebabkan perubahan mental, perilaku, halusinasi, dan paranoia, yang seringkali memicu pengguna untuk melakukan tindak kriminal untuk mendapatkan zat tersebut atau karena efek dari zat itu sendiri."
             },
             // No. 37
             {
                 kisiKisi: "Disajikan gambar organ reproduksi perempuan, murid dapat mennetukan nama organ yang ditunjuk",
                 question: "Organ reproduksi wanita yang berfungsi sebagai tempat terjadinya pembuahan (fertilisasi) sel telur oleh sperma adalah...",
                 options: ["Ovarium", "Tuba fallopi (Oviduk)", "Uterus (Rahim)", "Vagina"],
-                answer: 1
+                answer: 1,
+                explanation: "Fertilisasi (pertemuan sel telur dan sperma) umumnya terjadi di Tuba Fallopi (saluran telur atau oviduk). Ovarium adalah tempat produksi sel telur, dan Uterus adalah tempat perkembangan janin."
             },
             // No. 38
             {
                 kisiKisi: "Disajikan ciri-ciri gangguan atau penyakit yang menyerang organ reproduksi, murid dapat menentukan nama penyakitnya",
                 question: "Penyakit menular seksual yang disebabkan oleh bakteri Treponema pallidum dan memiliki gejala luka pada alat kelamin (chancre) pada stadium awal adalah...",
                 options: ["AIDS", "Herpes genital", "Sifilis (Raja Singa)", "Gonore (Kencing Nanah)"],
-                answer: 2
+                answer: 2,
+                explanation: "Sifilis (Raja Singa) disebabkan oleh bakteri Treponema pallidum. Gejala awalnya adalah luka yang tidak sakit (disebut 'chancre') di area infeksi."
             },
             // No. 39
             {
                 kisiKisi: "Disajikan gambar pipa U, murid dapat menghitung nilai gaya salah satu tabung",
                 question: "Sebuah pompa hidrolik memiliki piston kecil (A1) seluas 10 cm² dan piston besar (A2) seluas 50 cm². Jika pada piston kecil diberi gaya (F1) 100 N, berapa gaya (F2) yang dihasilkan pada piston besar?",
                 options: ["20 N", "100 N", "500 N", "5000 N"],
-                answer: 2
+                answer: 2,
+                explanation: "Berdasarkan Hukum Pascal (P1 = P2), maka F1/A1 = F2/A2. 100 N / 10 cm² = F2 / 50 cm². Maka F2 = (100 N × 50 cm²) / 10 cm² = 500 N."
             },
             // No. 40
             {
                 kisiKisi: "Disajikan gambar ikan di dalam akuarium, murid dapat menentukan nilai tekanan hidrostatisnya",
                 question: "Seekor ikan berenang pada kedalaman 80 cm di dalam akuarium. Jika massa jenis air 1.000 kg/m³ dan percepatan gravitasi 10 m/s², berapa tekanan hidrostatis yang dialami ikan? (Ingat: 80 cm = 0,8 m)",
                 options: ["800 Pa", "1.000 Pa", "8.000 Pa", "80.000 Pa"],
-                answer: 2
+                answer: 2,
+                explanation: "Rumus Tekanan Hidrostatis (Ph) = ρ × g × h (massa jenis × gravitasi × kedalaman). Ph = 1.000 kg/m³ × 10 m/s² × 0,8 m = 8.000 Pa (Pascal)."
             }
         ];
 
         let currentQuestionIndex = 0;
-        let selectedAnswers = {}; // Menyimpan jawaban: {0: 1, 1: 3, ...}
+        let score = 0; // Skor dilacak secara live
+        let questionAnswered = {}; // Melacak soal yang sudah dijawab {index: {selected: 2, isCorrect: false}}
 
         // Ambil elemen DOM
         const quizBody = document.getElementById('quiz-body');
         const progressBar = document.getElementById('progress-bar');
         const progressText = document.getElementById('progress-text');
+        const scoreText = document.getElementById('score-text'); // DOM Baru
         const questionText = document.getElementById('question-text');
         const optionsContainer = document.getElementById('options-container');
+        const prevButton = document.getElementById('prev-btn');
         const nextButton = document.getElementById('next-btn');
-        const submitButton = document.getElementById('submit-btn');
+        // const submitButton = document.getElementById('submit-btn'); // Tidak dipakai
         const resultsContainer = document.getElementById('results-container');
         const resultsText = document.getElementById('results-text');
+        // const detailedResults = document.getElementById('detailed-results'); // Tidak dipakai
         const restartButton = document.getElementById('restart-btn');
-        // Elemen baru untuk kisi-kisi
         const kisiKisiText = document.getElementById('kisi-kisi-text');
+        const instantFeedbackContainer = document.getElementById('instant-feedback-container'); // DOM Baru
 
         // Fungsi untuk memuat soal
         function loadQuestion(index) {
+            // Sembunyikan dan bersihkan feedback instan
+            instantFeedbackContainer.classList.add('hidden');
+            instantFeedbackContainer.innerHTML = '';
+            
             // Kosongkan opsi sebelumnya
             optionsContainer.innerHTML = '';
             
@@ -389,7 +462,11 @@
             const progressPercent = ((index + 1) / quizData.length) * 100;
             progressBar.style.width = `${progressPercent}%`;
             progressText.textContent = `Soal ${index + 1} dari ${quizData.length}`;
+            // Update skor (jika sudah ada)
+            scoreText.textContent = `Skor: ${score} / ${quizData.length}`;
             
+            const isAlreadyAnswered = questionAnswered[index] !== undefined;
+
             // Buat dan tampilkan opsi jawaban
             item.options.forEach((option, optionIndex) => {
                 const optionElement = document.createElement('div');
@@ -399,20 +476,36 @@
 
                 // Tambahkan event listener untuk memilih
                 optionElement.addEventListener('click', () => {
-                    selectAnswer(index, optionIndex);
+                    selectAnswer(index, optionIndex, optionElement);
                 });
                 
                 optionsContainer.appendChild(optionElement);
-            });
-            
-            // Tandai jawaban yang sudah dipilih sebelumnya (jika ada)
-            if (selectedAnswers[index] !== undefined) {
-                const selectedOptionElement = document.querySelector(`#options-container .option[data-option='${selectedAnswers[index]}']`);
-                if (selectedOptionElement) {
-                    selectedOptionElement.classList.add('selected');
-                }
-            }
 
+                // Jika soal ini sudah pernah dijawab (saat klik "Sebelumnya")
+                if (isAlreadyAnswered) {
+                    optionElement.style.pointerEvents = 'none'; // Nonaktifkan klik
+                    optionElement.classList.add('opacity-70');
+                    
+                    const storedAnswer = questionAnswered[index].selected;
+                    const correctIndex = item.answer;
+
+                    // Tandai jawaban benar
+                    if (optionIndex === correctIndex) {
+                        optionElement.classList.add('bg-green-100', 'border-green-400');
+                    }
+                    // Tandai jawaban salah (jika yg disimpan salah)
+                    if (optionIndex === storedAnswer && storedAnswer !== correctIndex) {
+                        optionElement.classList.add('bg-red-100', 'border-red-400');
+                    }
+                }
+            });
+
+            // Tampilkan feedback lagi jika soal sudah dijawab
+            if (isAlreadyAnswered) {
+                const { isCorrect } = questionAnswered[index];
+                showFeedback(isCorrect, item.explanation);
+            }
+            
             // Render MathJax untuk rumus matematika
             if (window.MathJax) {
                 // Merender rumus di soal dan opsi
@@ -421,26 +514,93 @@
                 });
             }
             
-            // Atur visibilitas tombol Next/Submit
-            if (index === quizData.length - 1) {
-                nextButton.classList.add('hidden');
-                submitButton.classList.remove('hidden');
+            // Atur visibilitas tombol Navigasi
+            if (index === 0) {
+                prevButton.classList.add('hidden'); // Sembunyikan 'Sebelumnya' di soal pertama
             } else {
-                nextButton.classList.remove('hidden');
-                submitButton.classList.add('hidden');
+                prevButton.classList.remove('hidden');
+            }
+            
+            // Ubah tombol 'Selanjutnya' di soal terakhir
+            if (index === quizData.length - 1) {
+                nextButton.textContent = 'Lihat Hasil';
+                nextButton.classList.replace('bg-blue-600', 'bg-green-600');
+                nextButton.classList.replace('hover:bg-blue-700', 'hover:bg-green-700');
+            } else {
+                nextButton.textContent = 'Selanjutnya';
+                nextButton.classList.replace('bg-green-600', 'bg-blue-600');
+                nextButton.classList.replace('hover:bg-green-700', 'hover:bg-blue-700');
             }
         }
 
-        // Fungsi saat memilih jawaban
-        function selectAnswer(questionIndex, optionIndex) {
-            selectedAnswers[questionIndex] = optionIndex;
+        // Fungsi saat memilih jawaban (Logika Inti Baru)
+        function selectAnswer(questionIndex, optionIndex, selectedElement) {
+            // Hentikan jika soal sudah dijawab
+            if (questionAnswered[questionIndex]) return;
+
+            const item = quizData[questionIndex];
+            const correctIndex = item.answer;
+            const isCorrect = (optionIndex === correctIndex);
+
+            // Simpan status jawaban
+            questionAnswered[questionIndex] = { selected: optionIndex, isCorrect: isCorrect };
+
+            // Nonaktifkan semua opsi
+            const allOptions = optionsContainer.querySelectorAll('.option');
+            allOptions.forEach(opt => {
+                opt.style.pointerEvents = 'none'; // Disable click
+                opt.classList.add('opacity-70');
+            });
+
+            if (isCorrect) {
+                // Jawaban benar
+                score++;
+                selectedElement.classList.add('bg-green-100', 'border-green-400', 'font-bold');
+                showFeedback(true, item.explanation);
+            } else {
+                // Jawaban salah
+                selectedElement.classList.add('bg-red-100', 'border-red-400', 'font-bold');
+                // Tunjukkan jawaban yang benar
+                const correctOptionElement = optionsContainer.querySelector(`.option[data-option='${correctIndex}']`);
+                correctOptionElement.classList.add('bg-green-100', 'border-green-400');
+                showFeedback(false, item.explanation);
+            }
+
+            // Update skor di layar
+            scoreText.textContent = `Skor: ${score} / ${quizData.length}`;
+        }
+
+        // Fungsi baru untuk menampilkan feedback instan
+        function showFeedback(isCorrect, explanation) {
+            instantFeedbackContainer.innerHTML = ''; // Bersihkan
+            instantFeedbackContainer.classList.remove('hidden', 'bg-green-50', 'bg-red-50', 'border-green-300', 'border-red-300');
+
+            let feedbackHTML = '';
+            if (isCorrect) {
+                feedbackHTML = `<p class="font-bold text-green-700">Benar!</p>`;
+                instantFeedbackContainer.classList.add('bg-green-50', 'border', 'border-green-300');
+            } else {
+                feedbackHTML = `<p class="font-bold text-red-700">Salah.</p><p class="mt-2"><strong>Pembahasan:</strong> ${explanation}</p>`;
+                instantFeedbackContainer.classList.add('bg-red-50', 'border', 'border-red-300');
+            }
             
-            // Update tampilan visual pilihan
-            const options = document.querySelectorAll('#options-container .option');
-            options.forEach(opt => opt.classList.remove('selected'));
-            
-            const selectedOptionElement = document.querySelector(`#options-container .option[data-option='${optionIndex}']`);
-            selectedOptionElement.classList.add('selected');
+            instantFeedbackContainer.innerHTML = feedbackHTML;
+            instantFeedbackContainer.classList.remove('hidden');
+
+            // Render MathJax jika ada di pembahasan
+            if (window.MathJax) {
+                window.MathJax.typesetPromise([instantFeedbackContainer]).catch(function (err) {
+                    console.log('MathJax error: ', err.message);
+                });
+            }
+        }
+
+        // Fungsi untuk tombol 'Sebelumnya'
+        function previousQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                loadQuestion(currentQuestionIndex);
+            }
         }
 
         // Fungsi untuk tombol 'Selanjutnya'
@@ -448,38 +608,33 @@
             if (currentQuestionIndex < quizData.length - 1) {
                 currentQuestionIndex++;
                 loadQuestion(currentQuestionIndex);
+            } else {
+                // Jika ini soal terakhir, tombol 'Selanjutnya' berfungsi sebagai 'Lihat Hasil'
+                showFinalResults();
             }
         }
 
-        // Fungsi untuk tombol 'Kumpulkan'
-        function submitQuiz() {
-            // Cek apakah jawaban terakhir sudah dipilih
-            if (selectedAnswers[currentQuestionIndex] === undefined) {
-                 // Opsional: Peringatkan user untuk menjawab
-                 // Untuk sekarang, kita anggap tidak dijawab
-            }
-            
-            let score = 0;
-            quizData.forEach((item, index) => {
-                if (selectedAnswers[index] === item.answer) {
-                    score++;
-                }
-            });
-            
+        // Fungsi untuk tombol 'Kumpulkan' (diubah menjadi 'Lihat Hasil')
+        function showFinalResults() {
             // Sembunyikan badan kuis, tampilkan hasil
             quizBody.classList.add('hidden');
+            resultsText.innerHTML = `Skor Akhir Anda: <span class="text-blue-600 font-bold">${score}</span> dari ${quizData.length} soal benar.`;
             
-            resultsText.innerHTML = `Skor Anda: <span class="text-blue-600 font-bold">${score}</span> dari ${quizData.length} soal benar.`;
+            // Hapus daftar pembahasan detail (tidak perlu lagi)
+            // detailedResults.innerHTML = ''; 
+            
             resultsContainer.classList.remove('hidden');
         }
 
         // Fungsi untuk tombol 'Ulangi Kuis'
         function restartQuiz() {
             currentQuestionIndex = 0;
-            selectedAnswers = {};
+            questionAnswered = {}; // Hapus riwayat jawaban
+            score = 0; // Reset skor
             
             // Sembunyikan hasil, tampilkan kuis
             resultsContainer.classList.add('hidden');
+            // detailedResults.innerHTML = ''; // Tidak dipakai
             quizBody.classList.remove('hidden');
             
             // Muat soal pertama
@@ -488,8 +643,9 @@
 
         // Event Listeners
         document.addEventListener('DOMContentLoaded', () => loadQuestion(0));
+        prevButton.addEventListener('click', previousQuestion);
         nextButton.addEventListener('click', nextQuestion);
-        submitButton.addEventListener('click', submitQuiz);
+        // submitButton.addEventListener('click', submitQuiz); // Listener dihapus
         restartButton.addEventListener('click', restartQuiz);
 
     </script>

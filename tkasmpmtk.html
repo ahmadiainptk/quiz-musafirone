@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuis Try Out Matematika</title>
+    <!-- Memuat Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Memuat MathJax untuk render rumus matematika -->
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" id="MathJax-script"></script>
+    <style>
+        /* Menggunakan font Inter */
+        body {
+            font-family: "Inter", sans-serif;
+        }
+        /* Style kustom untuk opsi yang dipilih */
+        .option.selected {
+            background-color: #dbeafe; /* bg-blue-100 */
+            border-color: #60a5fa; /* border-blue-400 */
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center py-10 px-4">
+
+    <div class="max-w-3xl w-full bg-white p-6 sm:p-8 rounded-xl shadow-2xl">
+        
+        <h1 class="text-3xl font-bold text-center text-gray-800 mb-2">Kuis Try Out Matematika</h1>
+        <p class="text-center text-gray-600 mb-6">Berdasarkan Kisi-Kisi TO 1 2025/2026</p>
+
+        <!-- Kontainer Kuis Utama -->
+        <div id="quiz-body">
+            <!-- Progress Bar -->
+            <div class="w-full bg-gray-200 rounded-full h-2.5 mb-2">
+                <div id="progress-bar" class="bg-blue-600 h-2.5 rounded-full transition-all duration-300" style="width: 0%"></div>
+            </div>
+            <p id="progress-text" class="text-center text-sm text-gray-600 mb-6 font-semibold">Soal 1 dari 40</p>
+
+            <!-- Kontainer Soal Tunggal -->
+            <div id="question-container">
+                <!-- Kontainer Kisi-kisi -->
+                <div id="kisi-kisi-container" class="bg-gray-50 border border-gray-200 text-gray-700 text-sm p-3 rounded-lg mb-4">
+                    <p class="font-semibold">Indikator Soal:</p>
+                    <p id="kisi-kisi-text" class="italic"></p>
+                </div>
+                
+                <p id="question-text" class="text-lg font-semibold text-gray-800 mb-4"></p>
+                <div id="options-container">
+                    <!-- Opsi akan dimuat di sini oleh JavaScript -->
+                </div>
+            </div>
+
+            <!-- Tombol Navigasi -->
+            <button id="next-btn" class="w-full bg-blue-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-blue-700 transition-all duration-300 shadow-lg mt-8 text-lg">
+                Selanjutnya
+            </button>
+            <button id="submit-btn" class="hidden w-full bg-green-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-green-700 transition-all duration-300 shadow-lg mt-8 text-lg">
+                Kumpulkan Jawaban
+            </button>
+        </div>
+
+        <!-- Area Hasil (disembunyikan awalnya) -->
+        <div id="results-container" class="hidden text-center mt-6">
+            <h2 class="text-3xl font-bold mb-4">Hasil Kuis Selesai</h2>
+            <p class="text-2xl" id="results-text"></p>
+            <button id="restart-btn" class="w-full bg-blue-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-blue-700 transition-all duration-300 shadow-lg mt-8 text-lg">
+                Ulangi Kuis
+            </button>
+        </div>
+
+    </div>
+
+    <script>
+        // Data Kuis (40 Soal Lengkap Sesuai Urutan 'No. Soal' di PDF)
+        const quizData = [
+            // No. Soal 1 (Indikator 1)
+            { 
+                kisiKisi: "Disajikan soal cerita tentang lomba cepat tepat, setiap jawaban benar diberi skor 6, jawaban salah diberi skor 3, dan tidak dijawab. Dari sejumlah soal yang diberikan, siswa menjawab benar dan salah. Ditanyakan skor yang diperoleh siswa",
+                question: "Dalam sebuah lomba cepat tepat, setiap jawaban benar diberi skor 6, jawaban salah diberi skor -3, dan tidak dijawab diberi skor 0. Budi menjawab 30 soal, dengan 25 soal benar dan 5 soal salah. Berapa total skor yang diperoleh Budi?", 
+                options: ["150", "135", "120", "165"], 
+                answer: 1 
+            },
+            // No. Soal 2 (Indikator 2)
+            { 
+                kisiKisi: "Disajikan soal cerita tentang seekor penyelam turun ke dasar laut, lalu naik kembali. Siswa menentukan posisi penyelam terhadap permukaan laut sekarang",
+                question: "Seorang penyelam berada 20 meter di bawah permukaan laut. Karena ada arus, ia naik 8 meter. Di manakah posisi penyelam tersebut sekarang relatif terhadap permukaan laut?", 
+                options: ["-28 meter", "+28 meter", "-12 meter", "+12 meter"], 
+                answer: 2 
+            },
+            // No. Soal 3 (Indikator 3)
+            { 
+                kisiKisi: "Disajikan soal cerita tentang siswa yang memiliki pita, kemudian ia membeli lagi pita. Kemudian siswa menggunakan pita miliknya sebagian untuk menghias kelas. Ditanyakan panjang pita siswa yang tersisa sekarang",
+                question: "Ani memiliki pita sepanjang \\(2\\frac{1}{2}\\) meter. Ia membeli lagi pita sepanjang \\(1\\frac{3}{4}\\) meter. Kemudian, ia menggunakan \\(3\\frac{1}{4}\\) meter pita untuk menghias kado. Berapa meter sisa pita Ani sekarang?", 
+                options: ["1 meter", "\\(1\\frac{1}{4}\\) meter", "\\(1\\frac{1}{2}\\) meter", "2 meter"], 
+                answer: 0 
+            },
+            // No. Soal 4 (Indikator 4)
+            { 
+                kisiKisi: "Diketahui perbandingan uang Dina, Edo, dan Fani, Selisih uang Edo dan Dina adalah Rp20.000,00. Siswa menentukan jumlah uang mereka bertiga",
+                question: "Perbandingan uang Dina, Edo, dan Fani adalah 2 : 5 : 7. Jika selisih uang Edo dan Dina adalah Rp 30.000,00, berapakah jumlah uang mereka bertiga?", 
+                options: ["Rp 120.000,00", "Rp 150.000,00", "Rp 210.000,00", "Rp 140.000,00"], 
+                answer: 3 
+            },
+            // No. Soal 5 (Indikator 5)
+            { 
+                kisiKisi: "Seorang pekerja dapat menyelesaikan sejumlah pasang sandal dalam beberapa hari. Jika pekerjaan tersebut dilakukan selama 6 hari, siswa menentukan banyaknya pasang sandal yang dihasilkan",
+                question: "Seorang pekerja dapat menyelesaikan 24 pasang sandal dalam 4 hari. Jika pekerjaan tersebut dilakukan selama 6 hari, berapa banyak pasang sandal yang dihasilkan?", 
+                options: ["30 pasang", "36 pasang", "40 pasang", "48 pasang"], 
+                answer: 1 
+            },
+            // No. Soal 6 (Indikator 6)
+            { 
+                kisiKisi: "Pada suatu peta berskala, jarak antara Kota A dan Kota B adalah 7,5 cm. Siswa menentukan jarak sebenarnya antara kedua kota tersebut",
+                question: "Pada suatu peta berskala 1 : 1.500.000, jarak antara Kota A dan Kota B adalah 7,5 cm. Berapa jarak sebenarnya antara kedua kota tersebut?", 
+                options: ["75 km", "100 km", "112,5 km", "150 km"], 
+                answer: 2 
+            },
+            // No. Soal 7 (Indikator 8)
+            { 
+                kisiKisi: "Disajikan soal cerita tentang seorang arsitek akan membuat gedung pertokoan dengan ukuran gedung diketahui. sebelum pembangunan gedung itu, dibuat denah yang disebutkan dalam soal. Ditanyakan skala yang digunakan untuk membangun gedung tersebut",
+                question: "Seorang arsitek akan membuat denah gedung pertokoan berukuran 60 m × 45 m. Jika denah itu dibuat dengan ukuran 20 cm × 15 cm, berapakah skala yang digunakan?", 
+                options: ["1 : 30", "1 : 300", "1 : 3.000", "1 : 30.000"], 
+                answer: 1 
+            },
+            // No. Soal 8 (Indikator 9)
+            { 
+                kisiKisi: "Menghitung hasil dari penjumlahan 2 buah bilangan berpangkat negatif",
+                question: "Hasil dari \\(2^{-1} + 4^{-1}\\) adalah...", 
+                options: ["\\(\\frac{1}{6}\\)", "\\(\\frac{1}{8}\\)", "\\(\\frac{3}{4}\\)", "\\(\\frac{1}{2}\\)"], 
+                answer: 2 
+            },
+            // No. Soal 9 (Indikator 10)
+            { 
+                kisiKisi: "Menentukan bentuk sederhana dari suatu bentuk akar",
+                question: "Bentuk sederhana dari \\(\\sqrt{75} + \\sqrt{48} - \\sqrt{12}\\) adalah...", 
+                options: ["\\(5\\sqrt{3}\\)", "\\(6\\sqrt{3}\\)", "\\(7\\sqrt{3}\\)", "\\(8\\sqrt{3}\\)"], 
+                answer: 2 
+            },
+            // No. Soal 10 (Indikator 11)
+            { 
+                kisiKisi: "Sebuah taman berbentuk persegi dengan luas diketahui. Petugas taman ingin membuat pagar di sekeliling taman tersebut. Siswa menentukan panjang pagar di sekeliling taman tersebut",
+                question: "Sebuah taman berbentuk persegi dengan luas 169 m². Petugas akan memasang pagar di sekeliling taman tersebut. Berapa panjang pagar yang dibutuhkan?", 
+                options: ["13 m", "39 m", "52 m", "68 m"], 
+                answer: 2 
+            },
+            // No. Soal 11 (Indikator 12)
+            { 
+                kisiKisi: "Panjang sebuah papan tulis diketahui ukuran panjang dan lebar. Siswa menentukan bentuk sederhana dari keliling papan tulis tersebut",
+                question: "Sebuah papan tulis memiliki panjang \\((3x + 5)\\) cm dan lebar \\((2x - 1)\\) cm. Bentuk aljabar sederhana dari keliling papan tulis tersebut adalah...", 
+                options: ["\\(5x + 4\\) cm", "\\(10x + 8\\) cm", "\\(10x + 4\\) cm", "\\(5x + 8\\) cm"], 
+                answer: 1 
+            },
+            // No. Soal 12 (Indikator 13)
+            { 
+                kisiKisi: "Disajikan 4 pernyataan, siswa memilih pernyataan yang benar dari bentuk aljabar",
+                question: "Diketahui bentuk aljabar \\(5x^2 - 7x + 4\\). Manakah pernyataan berikut yang TIDAK benar?", 
+                options: ["Koefisien dari x adalah -7", "Terdapat 3 suku", "Konstantanya adalah 4", "Koefisien dari x² adalah -5"], 
+                answer: 3 
+            },
+            // No. Soal 13 (Indikator 14)
+            { 
+                kisiKisi: "Diketahui suatu persamaan, siswa menghitung nilai x+8",
+                question: "Diketahui persamaan \\(5x - 4 = 2x + 11\\). Berapakah nilai dari \\(x + 8\\)?", 
+                options: ["5", "10", "13", "15"], 
+                answer: 2 
+            },
+            // No. Soal 14 (Indikator 15)
+            { 
+                kisiKisi: "Siswa mencari himpunan penyelesaian dari suatu pertidaksamaan dengan x bilangan bulat",
+                question: "Himpunan penyelesaian dari pertidaksamaan \\(3(x - 2) < 5x + 4\\), dengan x adalah bilangan bulat, adalah...", 
+                options: ["\\(x > -5\\)", "\\(x < -5\\)", "\\(x > 5\\)", "\\(x < 5\\)"], 
+                answer: 0 
+            },
+            // No. Soal 15 (Indikator 17)
+            { 
+                kisiKisi: "Disajikan soal cerita tentang sebuah kelas yang terdiri dari sejumlah siswa, diperoleh data siswa pernah berkunjung ke Dufan, dan siswa pernah berkunjung ke Taman Mini. Jika 10 siswa tidak pernah berkunjung ke Dufan maupun ke Taman Mini, berapa banyak siswa yang pernah berkunjung ke kedua tempat tersebut",
+                question: "Dalam satu kelas terdapat 40 siswa. 20 siswa pernah ke Dufan, 15 siswa pernah ke Taman Mini, dan 10 siswa tidak pernah ke keduanya. Berapa banyak siswa yang pernah berkunjung ke kedua tempat tersebut?", 
+                options: ["5 siswa", "10 siswa", "15 siswa", "20 siswa"], 
+                answer: 0 
+            },
+            // No. Soal 16 (Indikator 18)
+            { 
+                kisiKisi: "Diketahui himpunan S={x|x<11 x bilangan asli}, Himpunan P dan Himpunan Q. Siswa menentukan himpunan (P U Q)^C",
+                question: "Diketahui S = {x | x < 11, x adalah bilangan asli}, P = {bilangan ganjil di S}, dan Q = {bilangan prima di S}. Himpunan \\((P \\cup Q)^c\\) adalah...", 
+                options: ["{1, 9}", "{4, 6, 8}", "{4, 6, 8, 10}", "{ }"], 
+                answer: 2 
+            },
+            // No. Soal 17 (Indikator 19)
+            { 
+                kisiKisi: "Siswa menentukan persamaan garis yang melalui suatu titik dan gradien 1/2",
+                question: "Persamaan garis yang melalui titik (4, 5) dan memiliki gradien \\(\\frac{1}{2}\\) adalah...", 
+                options: ["\\(x - 2y + 6 = 0\\)", "\\(x + 2y - 14 = 0\\)", "\\(2x - y - 3 = 0\\)", "\\(2x + y - 13 = 0\\)"], 
+                answer: 0 
+            },
+            // No. Soal 18 (Indikator 20)
+            { 
+                kisiKisi: "Diketahui sebuah jembatan dibangun melalui titik A dan B, siswa menentukan gradien kemiringan jembatan tersebut",
+                question: "Sebuah jembatan dibangun melalui titik A(2, 3) dan B(10, 7). Gradien kemiringan jembatan tersebut adalah...", 
+                options: ["2", "1", "\\(\\frac{1}{2}\\)", "\\(\\frac{1}{4}\\)"], 
+                answer: 2 
+            },
+            // No. Soal 19 (Indikator 21)
+            { 
+                kisiKisi: "Disajikan soal cerita tentang harga sepasang sepatu dan harga sepasang sandal. siswa membeli 2 pasang sepatu dan 3 pasang sandal dengan harga yang diketahui pada soal. Siswa menghitung harga jika siswa membeli 3 pasang sepatu dan 2 pasang sandal",
+                question: "Harga 2 pasang sepatu dan 3 pasang sandal adalah Rp 270.000,00. Harga 3 pasang sepatu dan 4 pasang sandal adalah Rp 390.000,00. Berapakah harga untuk 1 pasang sepatu dan 1 pasang sandal?", 
+                options: ["Rp 100.000,00", "Rp 110.000,00", "Rp 120.000,00", "Rp 130.000,00"], 
+                answer: 2 
+            },
+            // No. Soal 20 (Indikator 23)
+            { 
+                kisiKisi: "Disajikan suatu gambar, siswa menunjukkan pasangan sudut yang tidak sama besar",
+                question: "Perhatikan gambar dua garis sejajar yang dipotong garis transversal. Pasangan sudut yang TIDAK sama besar adalah...", 
+                options: ["Sudut dalam berseberangan", "Sudut luar berseberangan", "Sudut sehadap", "Sudut dalam sepihak"], 
+                answer: 3 
+            },
+            // No. Soal 21 (Indikator 25)
+            { 
+                kisiKisi: "Disajikan soal cerita tentang selembar seng berbentuk persegipanjang berukuran disebutkan pada soal. Seng itu dibuat tutup kaleng berbentuk lingkaran dengan jari-jari 20 cm. Siswa menghitung luas seng yang tidak digunakan",
+                question: "Selembar seng berbentuk persegipanjang berukuran 100 cm × 50 cm. Seng itu akan dibuat tutup kaleng berbentuk lingkaran dengan jari-jari 20 cm. Luas seng yang tidak terpakai adalah... (\\(\\pi = 3,14\\))", 
+                options: ["5.000 cm²", "1.256 cm²", "3.744 cm²", "2.488 cm²"], 
+                answer: 2 
+            },
+            // No. Soal 22 (Indikator 26)
+            { 
+                kisiKisi: "Diketahui panjang salah satu diagonal belahketupat. Siswa menghitung keliling jika luas belahketupat diketahui, belahketupat",
+                question: "Sebuah belah ketupat memiliki luas 96 cm². Jika panjang salah satu diagonalnya 16 cm, keliling belah ketupat tersebut adalah...", 
+                options: ["32 cm", "40 cm", "48 cm", "52 cm"], 
+                answer: 1 
+            },
+            // No. Soal 23 (Indikator 27)
+            { 
+                kisiKisi: "Disajikan soal cerita tentang sebuah kapal dari pelabuhan A menuju ke arah utara, kemudian dilanjutkan ke arah timur menuju ke pelabuhan B. Siswa menghitung jarak terdekat dari pelabuhan A ke pelabuhan B",
+                question: "Sebuah kapal berlayar dari pelabuhan A ke arah Utara sejauh 120 km. Kemudian, berbelok ke arah Timur sejauh 160 km menuju pelabuhan B. Jarak terdekat dari pelabuhan A ke pelabuhan B adalah...", 
+                options: ["180 km", "200 km", "240 km", "280 km"], 
+                answer: 1 
+            },
+            // No. Soal 24 (Indikator 29)
+            { 
+                kisiKisi: "Disajikan suatu gambar lingkaran. Siswa menghitung panjang busur kecil PQ Jika O pusat lingkaran, dan panjang OP diketahui",
+                question: "Pada sebuah lingkaran dengan pusat O dan panjang jari-jari (OP) 14 cm, terdapat juring POQ dengan sudut pusat 90°. Panjang busur kecil PQ adalah... (\\(\\pi = \\frac{22}{7}\\))", 
+                options: ["11 cm", "22 cm", "44 cm", "88 cm"], 
+                answer: 1 
+            },
+            // No. Soal 25 (Indikator 30)
+            { 
+                kisiKisi: "Disajikan soal cerita tentang diketahui dua buah lingkaran dengan pusat A dan B, dengan panjang jari-jari masing-masing dan jarak AB diketahui. Siswa menghitung panjang garis singgung persekutuan luar",
+                question: "Dua lingkaran memiliki pusat A dan B dengan jarak AB = 25 cm. Jari-jari lingkaran A = 15 cm dan jari-jari lingkaran B = 8 cm. Panjang garis singgung persekutuan luar kedua lingkaran adalah...", 
+                options: ["20 cm", "22 cm", "24 cm", "26 cm"], 
+                answer: 2 
+            },
+            // No. Soal 26 (Indikator 32)
+            { 
+                kisiKisi: "Disajikan soal cerita tentang sebuah aula berbentuk balok dengan ukuran panjang, lebar, dan tinggi diketahui. Dinding bagian dalamnya akan dicat dengan biaya Rp80.000,00 per meter persegi. Siswa menghitung jumlah seluruh biaya pengecatan",
+                question: "Sebuah aula berbentuk balok berukuran panjang 10 m, lebar 8 m, dan tinggi 5 m. Dinding bagian dalamnya (tanpa lantai dan langit-langit) akan dicat dengan biaya Rp 80.000,00 per m². Jumlah seluruh biaya pengecatan adalah...", 
+                options: ["Rp 14.400.000,00", "Rp 7.200.000,00", "Rp 18.000.000,00", "Rp 32.000.000,00"], 
+                answer: 0 
+            },
+            // No. Soal 27 (Indikator 33)
+            { 
+                kisiKisi: "Diketahui sebuah atap rumah berbentuk limas segi empat tegak memiliki alas berbentuk persegi dengan panjang sisi alas dan tinggi sisi tegak limas diketahui. Siswa menentukan luas seluruh permukaan atap rumah",
+                question: "Atap rumah berbentuk limas segi empat tegak beralas persegi dengan panjang sisi 10 m dan tinggi sisi tegak 13 m. Luas seluruh permukaan atap rumah (tanpa alas) adalah...", 
+                options: ["100 m²", "130 m²", "260 m²", "360 m²"], 
+                answer: 2 
+            },
+            // No. Soal 28 (Indikator 35)
+            { 
+                kisiKisi: "Diketahui sebuah ember berbentuk tabung memiliki jari-jari dan tinggi. Jika ember tersebut diisi air penuh, Siswa menentukan volume maksimum air yang dapat ditampung ember itu",
+                question: "Sebuah ember berbentuk tabung memiliki jari-jari alas 20 cm dan tinggi 50 cm. Volume maksimum air yang dapat ditampung ember itu adalah... (\\(\\pi = 3,14\\))", 
+                options: ["31.400 cm³", "62.800 cm³", "15.700 cm³", "125.600 cm³"], 
+                answer: 1 
+            },
+            // No. Soal 29 (Indikator 36)
+            { 
+                kisiKisi: "Diketahui sebuah tenda pramuka berbentuk kerucut tanpa alas memiliki diameter dan tinggi diketahui. Jika biaya kain terpal adalah Rp25.000,00 per m², siswa menghitung biaya pembuatan tenda tersebut",
+                question: "Sebuah tenda pramuka berbentuk kerucut tanpa alas memiliki diameter 10 m dan tinggi 12 m. Biaya kain terpal adalah Rp 25.000,00 per m². Biaya pembuatan tenda adalah... (\\(\\pi = 3,14\\))", 
+                options: ["Rp 5.102.500,00", "Rp 2.355.000,00", "Rp 7.457.500,00", "Rp 9.420.000,00"], 
+                answer: 0 
+            },
+            // No. Soal 30 (Indikator 38)
+            { 
+                kisiKisi: "Diketahui dalam sebuah permainan undian, terdapat 10 di dalam sebuah kotak. Seorang peserta akan menang jika mengambil bola tertentu. Siswa menentukan peluang peserta menang",
+                question: "Dalam sebuah kotak terdapat 10 bola. 4 bola berwarna merah, 3 biru, dan 3 hijau. Peluang menang adalah jika mengambil bola merah. Peluang peserta untuk menang adalah...", 
+                options: ["\\(\\frac{1}{10}\\)", "\\(\\frac{2}{5}\\)", "\\(\\frac{3}{5}\\)", "\\(\\frac{1}{4}\\)"], 
+                answer: 1 
+            },
+            // No. Soal 31 (Indikator 16)
+            { 
+                kisiKisi: "Diketahui seorang siswa ingin membeli penggaris. Ia hanya memiliki uang Rp25.000,00 dan ingin menyisakan sedikit uang untuk tabungan. Siswa menghitung berapa maksimum jumlah penggaris yang dapat ia beli",
+                question: "Seorang siswa ingin membeli penggaris seharga Rp 3.000,00 per buah. Ia memiliki uang Rp 25.000,00 dan ingin menyisakan uang untuk tabungan minimal Rp 4.000,00. Berapa maksimum penggaris yang dapat ia beli?", 
+                options: ["7", "8", "9", "6"], 
+                answer: 0 
+            },
+            // No. Soal 32 (Indikator 34)
+            { 
+                kisiKisi: "Siswa ingin membuat kerangka limas persegi dengan panjang rusuk alas dan rusuk tengaknya diketahui. Jika siswa memiliki kawat dengan panjang diketahui, berapa banyak kerangka limas paling banyak yang dapat dibuat siswa",
+                question: "Siswa ingin membuat kerangka limas persegi dengan panjang rusuk alas 10 cm dan rusuk tegak 13 cm. Jika tersedia kawat 5 meter, berapa banyak kerangka limas paling banyak yang dapat dibuat?", 
+                options: ["4", "5", "6", "7"], 
+                answer: 1 
+            },
+            // No. Soal 33 (Indikator 28)
+            { 
+                kisiKisi: "Sebuah papan miring digunakan untuk menaikkan barang ke truk, siswa menentukan jarak alas papan dari truk",
+                question: "Sebuah papan miring sepanjang 2,5 m digunakan untuk menaikkan barang ke truk yang tingginya 1,5 m. Jarak alas papan dari truk adalah...", 
+                options: ["1 m", "1,5 m", "2 m", "2,2 m"], 
+                answer: 2 
+            },
+            // No. Soal 34 (Indikator 39)
+            { 
+                kisiKisi: "Dua buah dadu dilempar secara bersamaan. Siswa menentukan frekuensi harapan munculnya jumlah mata dadu.",
+                question: "Dua buah dadu dilempar bersamaan sebanyak 180 kali. Frekuensi harapan munculnya jumlah mata dadu 5 adalah...", 
+                options: ["15 kali", "20 kali", "25 kali", "30 kali"], 
+                answer: 1 
+            },
+            // No. Soal 35 (Indikator 7)
+            { 
+                kisiKisi: "Menentukan banyak kue yang didapat 50 anak jika sebelumnya sejumlah kue dibagikan ke 35 anak",
+                question: "Sejumlah kue dibagikan ke 35 anak dan masing-masing mendapat 12 kue. Jika kue tersebut dibagikan kepada 50 anak, berapa banyak kue yang didapat masing-masing anak?", 
+                options: ["8 kue", "9 kue", "10 kue", "8,4 kue (tidak merata)"], 
+                answer: 3 
+            },
+            // No. Soal 36 (Indikator 31)
+            { 
+                kisiKisi: "Sebuah roda gerobak memiliki jari-jari lingkaran. Siswa menentukan jarak yang ditempuh roda tersebut dalam satu putaran penuh",
+                question: "Sebuah roda gerobak memiliki jari-jari 35 cm. Jarak yang ditempuh roda tersebut dalam satu putaran penuh adalah... (\\(\\pi = \\frac{22}{7}\\))", 
+                options: ["110 cm", "220 cm", "3850 cm", "7700 cm"], 
+                answer: 1 
+            },
+            // No. Soal 37 (Indikator 24)
+            { 
+                kisiKisi: "Dua jalan berpotongan membentuk suatu sudut. Siswa menentukan besar sudut berpelurusnya",
+                question: "Dua jalan berpotongan membentuk sudut 70°. Besar sudut pelurus dari sudut tersebut adalah...", 
+                options: ["20°", "90°", "110°", "290°"], 
+                answer: 2 
+            },
+            // No. Soal 38 (Indikator 40)
+            { 
+                kisiKisi: "Siswa menentukan peluang Rafli mendapatkan hadiah jika Rafli melempar sebuah dadu",
+                question: "Rafli melempar sebuah dadu. Peluang Rafli mendapatkan mata dadu genap adalah...", 
+                options: ["\\(\\frac{1}{6}\\)", "\\(\\frac{1}{3}\\)", "\\(\\frac{1}{2}\\)", "\\(\\frac{2}{3}\\)"], 
+                answer: 2 
+            },
+            // No. Soal 39 (Indikator 22)
+            { 
+                kisiKisi: "Disajikan harga paket donat di sebuah toko kue. Siswa menentukan Jika Kakak membeli donat paket 3, maka Kakak harus membayar",
+                question: "Harga 1 paket donat A (3 donat + 2 minuman) adalah Rp 36.000. Harga 1 paket donat B (2 donat + 3 minuman) adalah Rp 44.000. Jika Kakak membeli paket 3 (1 donat + 1 minuman), Kakak harus membayar...", 
+                options: ["Rp 12.000", "Rp 15.000", "Rp 16.000", "Rp 18.000"], 
+                answer: 3 
+            },
+            // No. Soal 40 (Indikator 37)
+            { 
+                kisiKisi: "Menentukan biaya yang harus disediakan untuk membuat tenda panitia pada suatu acara reuni yang akan membuat tenda berbentuk kerucut (tanpa alas) dari kain parasut. Tenda yang akan dibuat memiliki diameter dan tinggi diketahui pada soal. Dan biaya pembuatan tenda tiap m² adalah Rp15.000,00",
+                question: "Sebuah tenda panitia berbentuk kerucut (tanpa alas) akan dibuat dari kain parasut. Tenda memiliki diameter 14 m dan tinggi 24 m. Biaya pembuatan tenda tiap m² adalah Rp 15.000,00. Total biaya yang diperlukan adalah... (\\(\\pi = \\frac{22}{7}\\))", 
+                options: ["Rp 8.250.000,00", "Rp 11.550.000,00", "Rp 16.500.000,00", "Rp 23.100.000,00"], 
+                answer: 0 
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let selectedAnswers = {}; // Menyimpan jawaban: {0: 1, 1: 3, ...}
+
+        // Ambil elemen DOM
+        const quizBody = document.getElementById('quiz-body');
+        const progressBar = document.getElementById('progress-bar');
+        const progressText = document.getElementById('progress-text');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const nextButton = document.getElementById('next-btn');
+        const submitButton = document.getElementById('submit-btn');
+        const resultsContainer = document.getElementById('results-container');
+        const resultsText = document.getElementById('results-text');
+        const restartButton = document.getElementById('restart-btn');
+        // Elemen baru untuk kisi-kisi
+        const kisiKisiText = document.getElementById('kisi-kisi-text');
+
+        // Fungsi untuk memuat soal
+        function loadQuestion(index) {
+            // Kosongkan opsi sebelumnya
+            optionsContainer.innerHTML = '';
+            
+            // Ambil data soal
+            const item = quizData[index];
+            
+            // Tampilkan teks kisi-kisi
+            kisiKisiText.textContent = item.kisiKisi;
+
+            // Tampilkan teks soal
+            questionText.innerHTML = `<strong>${index + 1}.</strong> ${item.question}`;
+            
+            // Update progress bar dan teks
+            const progressPercent = ((index + 1) / quizData.length) * 100;
+            progressBar.style.width = `${progressPercent}%`;
+            progressText.textContent = `Soal ${index + 1} dari ${quizData.length}`;
+            
+            // Buat dan tampilkan opsi jawaban
+            item.options.forEach((option, optionIndex) => {
+                const optionElement = document.createElement('div');
+                optionElement.className = 'option block p-3 my-2 rounded-lg border-2 border-gray-300 cursor-pointer hover:bg-gray-100 transition-all duration-200';
+                optionElement.innerHTML = option;
+                optionElement.dataset.option = optionIndex;
+
+                // Tambahkan event listener untuk memilih
+                optionElement.addEventListener('click', () => {
+                    selectAnswer(index, optionIndex);
+                });
+                
+                optionsContainer.appendChild(optionElement);
+            });
+            
+            // Tandai jawaban yang sudah dipilih sebelumnya (jika ada)
+            if (selectedAnswers[index] !== undefined) {
+                const selectedOptionElement = document.querySelector(`#options-container .option[data-option='${selectedAnswers[index]}']`);
+                if (selectedOptionElement) {
+                    selectedOptionElement.classList.add('selected');
+                }
+            }
+
+            // Render MathJax untuk rumus matematika
+            if (window.MathJax) {
+                window.MathJax.typesetPromise([questionText, optionsContainer]).catch(function (err) {
+                    console.log('MathJax error: ', err.message);
+                });
+            }
+            
+            // Atur visibilitas tombol Next/Submit
+            if (index === quizData.length - 1) {
+                nextButton.classList.add('hidden');
+                submitButton.classList.remove('hidden');
+            } else {
+                nextButton.classList.remove('hidden');
+                submitButton.classList.add('hidden');
+            }
+        }
+
+        // Fungsi saat memilih jawaban
+        function selectAnswer(questionIndex, optionIndex) {
+            selectedAnswers[questionIndex] = optionIndex;
+            
+            // Update tampilan visual pilihan
+            const options = document.querySelectorAll('#options-container .option');
+            options.forEach(opt => opt.classList.remove('selected'));
+            
+            const selectedOptionElement = document.querySelector(`#options-container .option[data-option='${optionIndex}']`);
+            selectedOptionElement.classList.add('selected');
+        }
+
+        // Fungsi untuk tombol 'Selanjutnya'
+        function nextQuestion() {
+            if (currentQuestionIndex < quizData.length - 1) {
+                currentQuestionIndex++;
+                loadQuestion(currentQuestionIndex);
+            }
+        }
+
+        // Fungsi untuk tombol 'Kumpulkan'
+        function submitQuiz() {
+            // Cek apakah jawaban terakhir sudah dipilih
+            if (selectedAnswers[currentQuestionIndex] === undefined) {
+                 // Opsional: Peringatkan user untuk menjawab
+                 // Untuk sekarang, kita anggap tidak dijawab
+            }
+            
+            let score = 0;
+            quizData.forEach((item, index) => {
+                if (selectedAnswers[index] === item.answer) {
+                    score++;
+                }
+            });
+            
+            // Sembunyikan badan kuis, tampilkan hasil
+            quizBody.classList.add('hidden');
+            
+            resultsText.innerHTML = `Skor Anda: <span class="text-blue-600 font-bold">${score}</span> dari ${quizData.length} soal benar.`;
+            resultsContainer.classList.remove('hidden');
+        }
+
+        // Fungsi untuk tombol 'Ulangi Kuis'
+        function restartQuiz() {
+            currentQuestionIndex = 0;
+            selectedAnswers = {};
+            
+            // Sembunyikan hasil, tampilkan kuis
+            resultsContainer.classList.add('hidden');
+            quizBody.classList.remove('hidden');
+            
+            // Muat soal pertama
+            loadQuestion(0);
+        }
+
+        // Event Listeners
+        document.addEventListener('DOMContentLoaded', () => loadQuestion(0));
+        nextButton.addEventListener('click', nextQuestion);
+        submitButton.addEventListener('click', submitQuiz);
+        restartButton.addEventListener('click', restartQuiz);
+
+    </script>
+</body>
+</html>
+

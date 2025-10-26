@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuis Try Out IPA</title>
+    <!-- Memuat Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Memuat MathJax untuk render rumus matematika (tetap dimuat jika ada soal fisika) -->
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" id="MathJax-script"></script>
+    <style>
+        /* Menggunakan font Inter */
+        body {
+            font-family: "Inter", sans-serif;
+        }
+        /* Style kustom untuk opsi yang dipilih */
+        .option.selected {
+            background-color: #dbeafe; /* bg-blue-100 */
+            border-color: #60a5fa; /* border-blue-400 */
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center py-10 px-4">
+
+    <div class="max-w-3xl w-full bg-white p-6 sm:p-8 rounded-xl shadow-2xl">
+        
+        <h1 class="text-3xl font-bold text-center text-gray-800 mb-2">Kuis Try Out IPA</h1>
+        <p class="text-center text-gray-600 mb-6">Berdasarkan Kisi-Kisi TO 1 2025/2026</p>
+
+        <!-- Kontainer Kuis Utama -->
+        <div id="quiz-body">
+            <!-- Progress Bar -->
+            <div class="w-full bg-gray-200 rounded-full h-2.5 mb-2">
+                <div id="progress-bar" class="bg-blue-600 h-2.5 rounded-full transition-all duration-300" style="width: 0%"></div>
+            </div>
+            <p id="progress-text" class="text-center text-sm text-gray-600 mb-6 font-semibold">Soal 1 dari 40</p>
+
+            <!-- Kontainer Soal Tunggal -->
+            <div id="question-container">
+                <!-- Kontainer Kisi-kisi -->
+                <div id="kisi-kisi-container" class="bg-gray-50 border border-gray-200 text-gray-700 text-sm p-3 rounded-lg mb-4">
+                    <p class="font-semibold">Indikator Soal:</p>
+                    <p id="kisi-kisi-text" class="italic"></p>
+                </div>
+                
+                <p id="question-text" class="text-lg font-semibold text-gray-800 mb-4"></p>
+                <div id="options-container">
+                    <!-- Opsi akan dimuat di sini oleh JavaScript -->
+                </div>
+            </div>
+
+            <!-- Tombol Navigasi -->
+            <button id="next-btn" class="w-full bg-blue-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-blue-700 transition-all duration-300 shadow-lg mt-8 text-lg">
+                Selanjutnya
+            </button>
+            <button id="submit-btn" class="hidden w-full bg-green-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-green-700 transition-all duration-300 shadow-lg mt-8 text-lg">
+                Kumpulkan Jawaban
+            </button>
+        </div>
+
+        <!-- Area Hasil (disembunyikan awalnya) -->
+        <div id="results-container" class="hidden text-center mt-6">
+            <h2 class="text-3xl font-bold mb-4">Hasil Kuis Selesai</h2>
+            <p class="text-2xl" id="results-text"></p>
+            <button id="restart-btn" class="w-full bg-blue-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-blue-700 transition-all duration-300 shadow-lg mt-8 text-lg">
+                Ulangi Kuis
+            </button>
+        </div>
+
+    </div>
+
+    <script>
+        // Data Kuis (40 Soal Lengkap Sesuai Urutan 'No.' di PDF)
+        const quizData = [
+            // No. 1
+            {
+                kisiKisi: "Disajikan gambar stopwatch, murid dapat menentukan hasil pengukuran pada alat ukur sesuai aktivitas",
+                question: "Jarum menit pada stopwatch menunjuk angka '1' dan jarum detik menunjuk angka '25'. Berapa hasil pengukuran waktu tersebut?",
+                options: ["1 menit 25 detik", "25 menit 1 detik", "1,25 menit", "26 detik"],
+                answer: 0
+            },
+            // No. 2
+            {
+                kisiKisi: "Disajikan tabel yang berisi massa dan volume benda, murid dapat menentukan kesimpulan pernyataan menentukan massa jenis benda",
+                question: "Perhatikan data: Benda A (Massa=30g, Volume=10cm³), Benda B (Massa=40g, Volume=10cm³). Manakah kesimpulan yang benar?",
+                options: ["Massa jenis A > Massa jenis B", "Massa jenis A < Massa jenis B", "Massa jenis A = Massa jenis B", "Massa jenis tidak bisa dihitung"],
+                answer: 1
+            },
+            // No. 3
+            {
+                kisiKisi: "Disajikan gambar kamper, murid dapat menentukan perubahan yang serupa dengan kamper",
+                question: "Kamper (kapur barus) di dalam lemari lama-kelamaan akan habis. Peristiwa ini adalah contoh menyublim. Peristiwa manakah yang menunjukkan perubahan wujud yang sama?",
+                options: ["Air menjadi es", "Es kering (dry ice) mengeluarkan asap", "Embun di daun pada pagi hari", "Mentega meleleh di wajan panas"],
+                answer: 1
+            },
+            // No. 4
+            {
+                kisiKisi: "Disajikan grafik kalor, murid dapat menetukan kalor yang diperlukan sesuai grafik",
+                question: "Pada grafik pemanasan es dari -5°C menjadi air 20°C, proses 'melebur' (perubahan wujud dari es menjadi air) ditunjukkan oleh bagian grafik yang...",
+                options: ["Suhunya naik dari -5°C ke 0°C", "Suhunya tetap (konstan) pada 0°C", "Suhunya naik dari 0°C ke 20°C", "Suhunya tetap (konstan) pada 100°C"],
+                answer: 1
+            },
+            // No. 5
+            {
+                kisiKisi: "Disajikan gambar putri malu, murid dapat menentukan jenis gerak yang terjadi pada putri malu tersebut",
+                question: "Gerak menutupnya daun putri malu (Mimosa pudica) saat disentuh merupakan contoh dari...",
+                options: ["Fotonasti", "Niktinasti", "Geotropisme", "Seismonasti"],
+                answer: 3
+            },
+            // No. 6
+            {
+                kisiKisi: "Disajikan gambar beberapa gaya yang bekerja pada sebuah benda, muid dapat menentukan resulktan gaya dan arahnya",
+                question: "Sebuah meja didorong oleh Ali ke kanan dengan gaya 25 N dan didorong oleh Budi ke kiri dengan gaya 15 N. Berapa resultan gaya dan ke mana arahnya?",
+                options: ["10 N ke kanan", "10 N ke kiri", "40 N ke kanan", "40 N ke kiri"],
+                answer: 0
+            },
+            // No. 7
+            {
+                kisiKisi: "Disajikan beberapa fungsi, murid dapat menentukan fungsi rangka pada manusia",
+                question: "Berikut ini yang BUKAN merupakan fungsi utama dari sistem rangka manusia adalah...",
+                options: ["Sebagai alat gerak aktif", "Melindungi organ-organ vital", "Tempat melekatnya otot", "Memberi bentuk pada tubuh"],
+                answer: 0
+            },
+            // No. 8
+            {
+                kisiKisi: "Dusajikan beberapa pernyataan, murid dapat menentukan peristiwa yang termasuk gerak lurus berubah beraturan dipercepat",
+                question: "Manakah dari peristiwa berikut yang merupakan contoh Gerak Lurus Berubah Beraturan (GLBB) dipercepat?",
+                options: ["Mobil melaju dengan kecepatan stabil 50 km/jam", "Sepeda yang direm hingga berhenti", "Buah apel yang jatuh bebas dari pohonnya", "Bola yang menggelinding dan berhenti"],
+                answer: 2
+            },
+            // No. 9
+            {
+                kisiKisi: "Disajikan gambar tanamanan, murid dapat menentukan kunci determinasi tanaman tersebut",
+                question: "Jika kita ingin mengidentifikasi tanaman padi menggunakan kunci determinasi, ciri pertama yang paling mungkin digunakan adalah...",
+                options: ["Memiliki bunga sejati", "Berakar tunggang", "Tulang daun menyirip", "Tidak memiliki pembuluh angkut"],
+                answer: 0
+            },
+            // No. 10
+            {
+                kisiKisi: "Disajikan gambar udang murid dapat menentukan filumnya",
+                question: "Udang, kepiting, dan serangga memiliki ciri khas tubuh beruas-ruas dan rangka luar (eksoskeleton). Hewan-hewan ini dikelompokkan ke dalam filum...",
+                options: ["Mollusca", "Annelida", "Arthropoda", "Echinodermata"],
+                answer: 2
+            },
+            // No. 11
+            {
+                kisiKisi: "Disajikan data gejala alam, murid dapat menentukan gejala alam biotik maupun abiotik",
+                question: "Perhatikan gejala alam berikut: (1) Air sungai menguap, (2) Tumbuhan jati menggugurkan daun, (3) Terjadi badai, (4) Populasi elang menurun. Manakah yang termasuk gejala alam biotik?",
+                options: ["(1) dan (3)", "(2) dan (4)", "(1) dan (4)", "(2) dan (3)"],
+                answer: 1
+            },
+            // No. 12
+            {
+                kisiKisi: "Disajikan peristiwa yang berkaitan degan tanaman, murid dapat menentukan ciri makhluk hidup",
+                question: "Tanaman di dalam pot yang diletakkan di dekat jendela akan tumbuh membengkok ke arah datangnya cahaya. Peristiwa ini membuktikan ciri makhluk hidup yaitu...",
+                options: ["Tumbuh dan berkembang", "Bernapas", "Iritabilitas (menanggapi rangsang)", "Berkembang biak"],
+                answer: 2
+            },
+            // No. 13
+            {
+                kisiKisi: "Disajikan gambar jaring makanan, murid dapat menentukan hal yang harus dilakukan agar hama tikus tidak mengganggu pertanian",
+                question: "Dalam ekosistem sawah, ular adalah predator bagi tikus. Jika populasi ular menurun drastis, populasi tikus akan meningkat dan merusak padi. Usaha yang paling tepat untuk mengendalikan hama tikus secara alami adalah...",
+                options: ["Menggunakan pestisida tikus secara massal", "Menjaga kelestarian populasi ular", "Menanam tanaman selain padi", "Membakar sawah setelah panen"],
+                answer: 1
+            },
+            // No. 14
+            {
+                kisiKisi: "Murid dapat menentukan jenis sel berdasarkan ada atau tidaknya membran inti",
+                question: "Sel yang tidak memiliki membran inti (nukleus tidak terbungkus membran) disebut sel...",
+                options: ["Eukariotik", "Prokariotik", "Uniseluler", "Multiseluler"],
+                answer: 1
+            },
+            // No. 15
+            {
+                kisiKisi: "Disajikan gambar organel sel, murid dapat menentukan fungsi organel tersebut",
+                question: "Organel sel yang berfungsi sebagai tempat berlangsungnya respirasi sel untuk menghasilkan energi (ATP) adalah...",
+                options: ["Ribosom", "Kloroplas", "Mitokondria", "Badan Golgi"],
+                answer: 2
+            },
+            // No. 16
+            {
+                kisiKisi: "Disajikan data ciri jaringan pada tumbuhan, murid dapat menentukan nama jaringan yang dimaksud",
+                question: "Jaringan pada tumbuhan yang berfungsi untuk mengangkut air dan garam mineral dari akar ke daun adalah...",
+                options: ["Floem", "Epidermis", "Parenkim", "Xilem"],
+                answer: 3
+            },
+            // No. 17
+            {
+                kisiKisi: "Disajikan gambar beberapa organ pada manusia, murid dapat menentukan organ penyusun sistem pencernaan",
+                question: "Berikut ini, kelompok organ yang seluruhnya merupakan bagian dari sistem pencernaan manusia adalah...",
+                options: ["Mulut, Hati, Ginjal", "Lambung, Usus Halus, Paru-paru", "Mulut, Lambung, Usus Besar", "Kerongkongan, Hati, Jantung"],
+                answer: 2
+            },
+            // No. 18
+            {
+                kisiKisi: "Disajikan data komposisi pada makanan, murid dapat menentukan penyataan yang tepat mengenai fungsi komposisi tersebut",
+                question: "Karbohidrat yang terkandung dalam nasi dan roti memiliki fungsi utama bagi tubuh sebagai...",
+                options: ["Sumber energi utama", "Pembangun sel-sel tubuh", "Cadangan energi", "Pelarut vitamin A, D, E, K"],
+                answer: 0
+            },
+            // No. 19
+            {
+                kisiKisi: "Disajikan data ciri sel darah, murid dapat mennetukan ciri leukosit",
+                question: "Manakah ciri-ciri yang tepat untuk sel darah putih (leukosit)?",
+                options: ["Bentuk bikonkaf, tidak berinti, mengandung hemoglobin", "Bentuk tidak tetap, berinti, berfungsi melawan kuman", "Berbentuk kepingan, tidak berinti, untuk pembekuan darah", "Berbentuk bulat, berinti, mengangkut oksigen"],
+                answer: 1
+            },
+            // No. 20
+            {
+                kisiKisi: "Disajikan data hasil tes darah, murid dapat mennetukan jenis gangguan sesuai hasil tes daarah tersebut",
+                question: "Hasil tes darah Pak Budi menunjukkan kadar hemoglobin (Hb) beliau jauh di bawah normal. Gangguan kesehatan yang dialami Pak Budi disebut...",
+                options: ["Leukemia", "Hemofilia", "Anemia", "Hipertensi"],
+                answer: 2
+            },
+            // No. 21
+            {
+                kisiKisi: "Disajikan gambar percobaan fotosintesis pada tanaman, murid dapat menentukan tujuan dari tahapan",
+                question: "Dalam percobaan fotosintesis (uji Sachs), daun direbus dalam alkohol panas. Apa tujuan dari langkah tersebut?",
+                options: ["Untuk melarutkan klorofil", "Untuk mematikan sel-sel daun", "Untuk melunakkan dinding sel", "Untuk menguji adanya oksigen"],
+                answer: 0
+            },
+            // No. 22
+            {
+                kisiKisi: "Disajikan gambar tuas, murid dapat menentukan nilai gaya gaya kuasanya",
+                question: "Sebuah pengungkit digunakan untuk mengangkat batu 100 N. Jarak titik tumpu ke batu (lengan beban) adalah 20 cm, dan jarak titik tumpu ke gaya (lengan kuasa) adalah 100 cm. Berapa gaya kuasa (F) yang diperlukan?",
+                options: ["500 N", "100 N", "50 N", "20 N"],
+                answer: 3
+            },
+            // No. 23
+            {
+                kisiKisi: "Disajikan gambar ayunan bandul, murid dapat menentukan definisi satu getaran",
+                question: "Pada ayunan bandul sederhana, satu getaran penuh didefinisikan sebagai gerak dari...",
+                options: ["A ke B", "A ke B lalu ke C", "A ke B ke C, lalu kembali ke B", "A ke B ke C, lalu kembali ke B dan ke A"],
+                answer: 3
+            },
+            // No. 24
+            {
+                kisiKisi: "Disajikan gambar gelombang transversal, murid dapat mennetukan cepat rambat gelombang tersebut",
+                question: "Sebuah gelombang transversal memiliki frekuensi 5 Hz dan panjang gelombang 2 meter. Berapa cepat rambat gelombang tersebut?",
+                options: ["0,4 m/s", "2,5 m/s", "7 m/s", "10 m/s"],
+                answer: 3
+            },
+            // No. 25
+            {
+                kisiKisi: "Disajikan beberapa penyataan, murid dapat menentukan ciri gelombang bunyi",
+                question: "Manakah pernyataan yang paling tepat mengenai ciri-ciri gelombang bunyi?",
+                options: ["Termasuk gelombang transversal dan dapat merambat di ruang hampa", "Termasuk gelombang longitudinal dan dapat merambat di ruang hampa", "Termasuk gelombang transversal dan butuh medium untuk merambat", "Termasuk gelombang longitudinal dan butuh medium untuk merambat"],
+                answer: 3
+            },
+            // No. 26
+            {
+                kisiKisi: "Disajikan gambar murid dapat menentukan sifat cahaya sesuai gambar tersebut",
+                question: "Ketika kita memasukkan pensil ke dalam gelas berisi air, pensil terlihat patah. Peristiwa ini membuktikan salah satu sifat cahaya, yaitu...",
+                options: ["Cahaya merambat lurus", "Cahaya dapat dipantulkan", "Cahaya dapat dibiaskan", "Cahaya dapat diuraikan"],
+                answer: 2
+            },
+            // No. 27
+            {
+                kisiKisi: "Disajikan gambar struktur atom, murid dapat menentukan teori atom",
+                question: "Teori atom yang menyatakan bahwa atom terdiri dari inti bermuatan positif di pusat dan elektron bermuatan negatif yang mengelilinginya dalam lintasan tertentu (seperti tata surya) dikemukakan oleh...",
+                options: ["John Dalton", "J.J. Thomson", "Ernest Rutherford", "Niels Bohr"],
+                answer: 2
+            },
+            // No. 28
+            {
+                kisiKisi: "Disajikan data ciri unsur, murid dapat menentukan kategori unsur yang dimaksud",
+                question: "Suatu unsur memiliki ciri: rapuh, tidak mengilap, dan merupakan isolator (penghantar listrik yang buruk). Unsur tersebut kemungkinan besar termasuk dalam kategori...",
+                options: ["Logam", "Non-logam", "Metaloid (Semi-logam)", "Senyawa"],
+                answer: 1
+            },
+            // No. 29
+            {
+                kisiKisi: "Disajikan rumus kimia senyawa, murid dapat menentukan jumlah molekul masing-masing penyusun",
+                question: "Dalam satu molekul senyawa Asam Sulfat \\(H_2SO_4\\), berapakah jumlah total atom penyusunnya?",
+                options: ["3", "6", "7", "8"],
+                answer: 2
+            },
+            // No. 30
+            {
+                kisiKisi: "Disajikan data dampat terjadinya pergerakan bumi, murid dapat mennetukan dampak dari revolusi bumi",
+                question: "Manakah dari peristiwa alam berikut yang merupakan dampak dari REVOLUSI Bumi (Bumi mengelilingi Matahari)?",
+                options: ["Terjadinya siang dan malam", "Gerak semu harian matahari", "Perbedaan waktu di berbagai negara", "Terjadinya pergantian musim"],
+                answer: 3
+            },
+            // No. 31
+            {
+                kisiKisi: "Disajikan gambar pergerakan lempeng, murid dapat jenis pergerakan lempeng tektonis",
+                question: "Pergerakan dua lempeng tektonik yang saling bertumbukan sehingga salah satu lempeng menyusup ke bawah lempeng lainnya disebut...",
+                options: ["Divergen", "Konvergen", "Transfrom", "Subduksi"],
+                answer: 3 // Konvergen adalah umumnya, subduksi lebih spesifik untuk penyusupan.
+            },
+            // No. 32
+            {
+                kisiKisi: "Murid dapat menentukan gambar tahapan pembelahan sel",
+                question: "Tahapan dalam pembelahan mitosis di mana kromatid saudara ditarik ke arah kutub yang berlawanan disebut...",
+                options: ["Profase", "Metafase", "Anafase", "Telofase"],
+                answer: 2
+            },
+            // No. 33
+            {
+                kisiKisi: "Murid dapat menentukan jenis perkecambahan sesuai pengertian",
+                question: "Perkecambahan pada kacang hijau ditandai dengan kotiledon (biji) yang terangkat ke atas permukaan tanah. Tipe perkecambahan ini disebut...",
+                options: ["Epigeal", "Hipogeal", "Epikotil", "Hipokotil"],
+                answer: 0
+            },
+            // No. 34
+            {
+                kisiKisi: "Disajikan gambar hewan bersel satu, murid dapat menentukan jenis perkembangbiakan hewan tersebut",
+                question: "Amoeba dan Paramecium adalah hewan bersel satu yang berkembang biak secara aseksual dengan cara...",
+                options: ["Membelah diri", "Fragmentasi", "Tunas", "Spora"],
+                answer: 0
+            },
+            // No. 35
+            {
+                kisiKisi: "Disajikan sebuah peristiwa, murid dapat menentukan jalur impuls gerak sadar dan gerak refleks",
+                question: "Ketika kaki Anda tidak sengaja menginjak paku, Anda langsung mengangkat kaki sebelum sempat berpikir. Ini adalah gerak refleks. Jalur impuls yang benar adalah...",
+                options: ["Reseptor -> Otak -> Saraf Motorik -> Efektor", "Reseptor -> Saraf Sensorik -> Otak -> Efektor", "Reseptor -> Saraf Sensorik -> Sumsum Tulang Belakang -> Saraf Motorik -> Efektor", "Reseptor -> Saraf Motorik -> Sumsum Tulang Belakang -> Saraf Sensorik -> Efektor"],
+                answer: 2
+            },
+            // No. 36
+            {
+                kisiKisi: "Disajikan grafik kriminalitas, murid dapat menentukan kesimpulan yang berkaitan dengan penggunaan zat adiktif",
+                question: "Penyalahgunaan zat adiktif dan psikotropika seperti amfetamin dan sabu dapat merusak sistem saraf. Dampak sosial yang sering ditimbulkan oleh pengguna zat ini adalah...",
+                options: ["Meningkatnya prestasi belajar", "Meningkatnya tindak kriminalitas", "Meningkatnya daya tahan tubuh", "Meningkatnya rasa sosial"],
+                answer: 1
+            },
+            // No. 37
+            {
+                kisiKisi: "Disajikan gambar organ reproduksi perempuan, murid dapat mennetukan nama organ yang ditunjuk",
+                question: "Organ reproduksi wanita yang berfungsi sebagai tempat terjadinya pembuahan (fertilisasi) sel telur oleh sperma adalah...",
+                options: ["Ovarium", "Tuba fallopi (Oviduk)", "Uterus (Rahim)", "Vagina"],
+                answer: 1
+            },
+            // No. 38
+            {
+                kisiKisi: "Disajikan ciri-ciri gangguan atau penyakit yang menyerang organ reproduksi, murid dapat menentukan nama penyakitnya",
+                question: "Penyakit menular seksual yang disebabkan oleh bakteri Treponema pallidum dan memiliki gejala luka pada alat kelamin (chancre) pada stadium awal adalah...",
+                options: ["AIDS", "Herpes genital", "Sifilis (Raja Singa)", "Gonore (Kencing Nanah)"],
+                answer: 2
+            },
+            // No. 39
+            {
+                kisiKisi: "Disajikan gambar pipa U, murid dapat menghitung nilai gaya salah satu tabung",
+                question: "Sebuah pompa hidrolik memiliki piston kecil (A1) seluas 10 cm² dan piston besar (A2) seluas 50 cm². Jika pada piston kecil diberi gaya (F1) 100 N, berapa gaya (F2) yang dihasilkan pada piston besar?",
+                options: ["20 N", "100 N", "500 N", "5000 N"],
+                answer: 2
+            },
+            // No. 40
+            {
+                kisiKisi: "Disajikan gambar ikan di dalam akuarium, murid dapat menentukan nilai tekanan hidrostatisnya",
+                question: "Seekor ikan berenang pada kedalaman 80 cm di dalam akuarium. Jika massa jenis air 1.000 kg/m³ dan percepatan gravitasi 10 m/s², berapa tekanan hidrostatis yang dialami ikan? (Ingat: 80 cm = 0,8 m)",
+                options: ["800 Pa", "1.000 Pa", "8.000 Pa", "80.000 Pa"],
+                answer: 2
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let selectedAnswers = {}; // Menyimpan jawaban: {0: 1, 1: 3, ...}
+
+        // Ambil elemen DOM
+        const quizBody = document.getElementById('quiz-body');
+        const progressBar = document.getElementById('progress-bar');
+        const progressText = document.getElementById('progress-text');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const nextButton = document.getElementById('next-btn');
+        const submitButton = document.getElementById('submit-btn');
+        const resultsContainer = document.getElementById('results-container');
+        const resultsText = document.getElementById('results-text');
+        const restartButton = document.getElementById('restart-btn');
+        // Elemen baru untuk kisi-kisi
+        const kisiKisiText = document.getElementById('kisi-kisi-text');
+
+        // Fungsi untuk memuat soal
+        function loadQuestion(index) {
+            // Kosongkan opsi sebelumnya
+            optionsContainer.innerHTML = '';
+            
+            // Ambil data soal
+            const item = quizData[index];
+            
+            // Tampilkan teks kisi-kisi
+            kisiKisiText.textContent = item.kisiKisi;
+
+            // Tampilkan teks soal
+            questionText.innerHTML = `<strong>${index + 1}.</strong> ${item.question}`;
+            
+            // Update progress bar dan teks
+            const progressPercent = ((index + 1) / quizData.length) * 100;
+            progressBar.style.width = `${progressPercent}%`;
+            progressText.textContent = `Soal ${index + 1} dari ${quizData.length}`;
+            
+            // Buat dan tampilkan opsi jawaban
+            item.options.forEach((option, optionIndex) => {
+                const optionElement = document.createElement('div');
+                optionElement.className = 'option block p-3 my-2 rounded-lg border-2 border-gray-300 cursor-pointer hover:bg-gray-100 transition-all duration-200';
+                optionElement.innerHTML = option;
+                optionElement.dataset.option = optionIndex;
+
+                // Tambahkan event listener untuk memilih
+                optionElement.addEventListener('click', () => {
+                    selectAnswer(index, optionIndex);
+                });
+                
+                optionsContainer.appendChild(optionElement);
+            });
+            
+            // Tandai jawaban yang sudah dipilih sebelumnya (jika ada)
+            if (selectedAnswers[index] !== undefined) {
+                const selectedOptionElement = document.querySelector(`#options-container .option[data-option='${selectedAnswers[index]}']`);
+                if (selectedOptionElement) {
+                    selectedOptionElement.classList.add('selected');
+                }
+            }
+
+            // Render MathJax untuk rumus matematika
+            if (window.MathJax) {
+                // Merender rumus di soal dan opsi
+                window.MathJax.typesetPromise([questionText, optionsContainer]).catch(function (err) {
+                    console.log('MathJax error: ', err.message);
+                });
+            }
+            
+            // Atur visibilitas tombol Next/Submit
+            if (index === quizData.length - 1) {
+                nextButton.classList.add('hidden');
+                submitButton.classList.remove('hidden');
+            } else {
+                nextButton.classList.remove('hidden');
+                submitButton.classList.add('hidden');
+            }
+        }
+
+        // Fungsi saat memilih jawaban
+        function selectAnswer(questionIndex, optionIndex) {
+            selectedAnswers[questionIndex] = optionIndex;
+            
+            // Update tampilan visual pilihan
+            const options = document.querySelectorAll('#options-container .option');
+            options.forEach(opt => opt.classList.remove('selected'));
+            
+            const selectedOptionElement = document.querySelector(`#options-container .option[data-option='${optionIndex}']`);
+            selectedOptionElement.classList.add('selected');
+        }
+
+        // Fungsi untuk tombol 'Selanjutnya'
+        function nextQuestion() {
+            if (currentQuestionIndex < quizData.length - 1) {
+                currentQuestionIndex++;
+                loadQuestion(currentQuestionIndex);
+            }
+        }
+
+        // Fungsi untuk tombol 'Kumpulkan'
+        function submitQuiz() {
+            // Cek apakah jawaban terakhir sudah dipilih
+            if (selectedAnswers[currentQuestionIndex] === undefined) {
+                 // Opsional: Peringatkan user untuk menjawab
+                 // Untuk sekarang, kita anggap tidak dijawab
+            }
+            
+            let score = 0;
+            quizData.forEach((item, index) => {
+                if (selectedAnswers[index] === item.answer) {
+                    score++;
+                }
+            });
+            
+            // Sembunyikan badan kuis, tampilkan hasil
+            quizBody.classList.add('hidden');
+            
+            resultsText.innerHTML = `Skor Anda: <span class="text-blue-600 font-bold">${score}</span> dari ${quizData.length} soal benar.`;
+            resultsContainer.classList.remove('hidden');
+        }
+
+        // Fungsi untuk tombol 'Ulangi Kuis'
+        function restartQuiz() {
+            currentQuestionIndex = 0;
+            selectedAnswers = {};
+            
+            // Sembunyikan hasil, tampilkan kuis
+            resultsContainer.classList.add('hidden');
+            quizBody.classList.remove('hidden');
+            
+            // Muat soal pertama
+            loadQuestion(0);
+        }
+
+        // Event Listeners
+        document.addEventListener('DOMContentLoaded', () => loadQuestion(0));
+        nextButton.addEventListener('click', nextQuestion);
+        submitButton.addEventListener('click', submitQuiz);
+        restartButton.addEventListener('click', restartQuiz);
+
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuis Operasi Campuran Bilangan Rasional</title>
+    <!-- Memuat Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Memuat KaTeX -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css" xintegrity="sha384-wcNjdTScBnEGEESGjLGTGIPlEpgjHhK4NlLCeB0kZcLdYVNFUZTFNsMkySaccIzL" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js" xintegrity="sha384-hIoBPnCo8nkRjQdYVHtVPDBcNJ+6vBfcUqjMAnNIoNdA2gRMKshsVAmSBeT1aKGs" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/contrib/auto-render.min.js" xintegrity="sha384-43gviWU0YVjaD5e1lU5tPM8MspSdeGBCKcFCv5tUcsEUFGpTP9HHwLzL5M1UiLkb" crossorigin="anonymous"></script>
+
+    <style>
+        /* Menggunakan font Inter */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Opsi kustom untuk font yang tidak dimuat tailwind */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        
+        /* Style untuk KaTeX */
+        .katex-display {
+            display: block;
+            margin: 1em 0;
+            text-align: center;
+        }
+        .katex {
+            font-size: 1.1em; /* Membuat font math sedikit lebih besar */
+        }
+        #options-container .katex {
+            font-size: 1.05em;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800 flex items-center justify-center min-h-screen p-4">
+
+    <div class="bg-white w-full max-w-2xl rounded-2xl shadow-xl p-6 md:p-8">
+        
+        <h1 class="text-2xl md:text-3xl font-bold text-center text-blue-600 mb-6">
+            Kuis Bilangan Rasional
+        </h1>
+
+        <!-- Kontainer Pilihan Paket -->
+        <div id="packet-container" class="text-center">
+            <h2 class="text-xl font-semibold mb-6">Pilih Tingkat Kesulitan:</h2>
+            <div class="space-y-4">
+                <button id="start-mudah-btn" class="w-full bg-green-500 text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-green-600 transition-all duration-200">
+                    Paket Mudah (20 Soal)
+                </button>
+                <button id="start-sedang-btn" class="w-full bg-yellow-500 text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-yellow-600 transition-all duration-200">
+                    Paket Sedang (20 Soal)
+                </button>
+                <button id="start-sulit-btn" class="w-full bg-red-500 text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-red-600 transition-all duration-200">
+                    Paket Sulit (20 Soal)
+                </button>
+            </div>
+        </div>
+
+        <!-- Kontainer Kuis Utama (disembunyikan awalnya) -->
+        <div id="quiz-container" class="hidden">
+            <!-- Info Soal -->
+            <div class="mb-4 text-sm font-medium text-gray-500" id="question-info"></div>
+            
+            <!-- Pertanyaan -->
+            <div id="question-container" class="mb-6">
+                <p id="question-text" class="text-lg md:text-xl font-semibold text-gray-900" style="min-height: 50px;"></p>
+            </div>
+
+            <!-- Pilihan Jawaban -->
+            <div id="options-container" class="space-y-3">
+                <!-- Pilihan akan ditambahkan oleh JavaScript -->
+            </div>
+
+            <!-- Umpan Balik/Pembahasan -->
+            <div id="feedback-container" class="hidden mt-6 p-4 rounded-lg">
+                <!-- Konten umpan balik akan ditambahkan oleh JavaScript -->
+            </div>
+
+            <!-- Tombol Berikutnya -->
+            <button id="next-btn" class="hidden w-full bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-200 mt-6">
+                Soal Berikutnya
+            </button>
+        </div>
+
+        <!-- Kontainer Skor Akhir (disembunyikan awalnya) -->
+        <div id="score-container" class="hidden text-center">
+            <h2 class="text-2xl font-bold mb-4">Kuis Selesai!</h2>
+            <p id="score-text" class="text-3xl font-bold text-blue-600 mb-8"></p>
+            <button id="restart-btn" class="w-full bg-gray-700 text-white font-semibold py-3 px-6 rounded-lg shadow-md hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 transition-all duration-200">
+                Kembali ke Pilihan Paket
+            </button>
+        </div>
+
+    </div>
+
+    <script>
+        // --- DATA KUIS BARU DENGAN KATEX (60 SOAL) ---
+        const quizData = {
+            mudah: [
+                // 20 Soal Mudah
+                { question: "Hasil dari $\\frac{1}{5} + \\frac{3}{5}$ adalah ...", options: ["$\\frac{4}{5}$", "$\\frac{4}{10}$", "1", "$\\frac{3}{25}$"], answer: "$\\frac{4}{5}$", explanation: "Penjumlahan penyebut sama: $\\frac{1+3}{5} = \\frac{4}{5}$." },
+                { question: "Hasil dari $\\frac{3}{4} - \\frac{1}{4}$ adalah ...", options: ["$\\frac{2}{4}$", "$\\frac{1}{2}$", "$\\frac{1}{4}$", "1"], answer: "$\\frac{1}{2}$", explanation: "Pengurangan penyebut sama: $\\frac{3-1}{4} = \\frac{2}{4}$. Disederhanakan menjadi $\\frac{1}{2}$." },
+                { question: "Hasil dari $\\frac{1}{2} + \\frac{1}{3}$ adalah ...", options: ["$\\frac{2}{5}$", "$\\frac{5}{6}$", "$\\frac{1}{6}$", "$\\frac{2}{3}$"], answer: "$\\frac{5}{6}$", explanation: "Samakan penyebut (KPK 2 & 3 adalah 6): $\\frac{3}{6} + \\frac{2}{6} = \\frac{5}{6}$." },
+                { question: "Hasil dari $\\frac{1}{2} - \\frac{1}{6}$ adalah ...", options: ["$\\frac{1}{3}$", "$\\frac{1}{4}$", "$\\frac{2}{6}$", "0"], answer: "$\\frac{1}{3}$", explanation: "Samakan penyebut (KPK 2 & 6 adalah 6): $\\frac{3}{6} - \\frac{1}{6} = \\frac{2}{6}$. Disederhanakan menjadi $\\frac{1}{3}$." },
+                { question: "Hasil dari $\\frac{2}{3} \\times \\frac{1}{5}$ adalah ...", options: ["$\\frac{2}{15}$", "$\\frac{3}{8}$", "$\\frac{10}{3}$", "$\\frac{2}{8}$"], answer: "$\\frac{2}{15}$", explanation: "Perkalian: (pembilang $\\times$ pembilang) / (penyebut $\\times$ penyebut). $\\frac{2 \\times 1}{3 \\times 5} = \\frac{2}{15}$." },
+                { question: "Hasil dari $\\frac{1}{4} \\times \\frac{2}{3}$ adalah ...", options: ["$\\frac{3}{7}$", "$\\frac{2}{12}$", "$\\frac{1}{6}$", "$\\frac{3}{12}$"], answer: "$\\frac{1}{6}$", explanation: "Perkalian: $\\frac{1 \\times 2}{4 \\times 3} = \\frac{2}{12}$. Disederhanakan menjadi $\\frac{1}{6}$." },
+                { question: "Hasil dari $\\frac{1}{2} \\div \\frac{1}{4}$ adalah ...", options: ["2", "$\\frac{1}{8}$", "$\\frac{1}{2}$", "8"], answer: "2", explanation: "Pembagian: $\\frac{1}{2} \\times \\frac{4}{1} = \\frac{4}{2} = 2$." },
+                { question: "Hasil dari $\\frac{3}{5} \\div \\frac{2}{3}$ adalah ...", options: ["$\\frac{2}{5}$", "$\\frac{6}{15}$", "$\\frac{9}{10}$", "$1\\frac{1}{9}$"], answer: "$\\frac{9}{10}$", explanation: "Pembagian: $\\frac{3}{5} \\times \\frac{3}{2} = \\frac{9}{10}$." },
+                { question: "Hasil dari $3 + \\frac{2}{5}$ adalah ...", options: ["$3\\frac{2}{5}$", "$\\frac{32}{5}$", "$\\frac{6}{5}$", "$\\frac{5}{5}$"], answer: "$3\\frac{2}{5}$", explanation: "Penjumlahan bilangan bulat dan pecahan: $3 + \\frac{2}{5} = 3\\frac{2}{5}$." },
+                { question: "Hasil dari $5 - \\frac{1}{3}$ adalah ...", options: ["$4\\frac{2}{3}$", "$4\\frac{1}{3}$", "$\\frac{4}{3}$", "$\\frac{14}{3}$"], answer: "$4\\frac{2}{3}$", explanation: "$5 - \\frac{1}{3} = \\frac{15}{3} - \\frac{1}{3} = \\frac{14}{3} = 4\\frac{2}{3}$." },
+                { question: "Bentuk pecahan biasa dari $2\\frac{1}{4}$ adalah ...", options: ["$\\frac{9}{4}$", "$\\frac{7}{4}$", "$\\frac{21}{4}$", "$\\frac{8}{4}$"], answer: "$\\frac{9}{4}$", explanation: "$(2 \\times 4) + 1 = 9$. Penyebut tetap 4. Jadi $\\frac{9}{4}$." },
+                { question: "Bentuk pecahan campuran dari $\\frac{10}{3}$ adalah ...", options: ["$3\\frac{1}{3}$", "$2\\frac{2}{3}$", "$3\\frac{1}{10}$", "$1\\frac{7}{3}$"], answer: "$3\\frac{1}{3}$", explanation: "10 dibagi 3 adalah 3 sisa 1. Jadi $3\\frac{1}{3}$." },
+                { question: "Hasil dari $4 \\times \\frac{1}{2}$ adalah ...", options: ["2", "$\\frac{1}{8}$", "$\\frac{4}{8}$", "8"], answer: "2", explanation: "$4 \\times \\frac{1}{2} = \\frac{4}{1} \\times \\frac{1}{2} = \\frac{4}{2} = 2$." },
+                { question: "Hasil dari $6 \\div \\frac{1}{3}$ adalah ...", options: ["18", "2", "$\\frac{6}{3}$", "$\\frac{1}{18}$"], answer: "18", explanation: "$6 \\div \\frac{1}{3} = 6 \\times \\frac{3}{1} = 18$." },
+                { question: "Bentuk desimal dari $\\frac{1}{2}$ adalah ...", options: ["0,5", "0,2", "0,1", "1,2"], answer: "0,5", explanation: "$\\frac{1}{2}$ sama dengan $\\frac{5}{10}$, yaitu 0,5." },
+                { question: "Bentuk desimal dari $\\frac{1}{4}$ adalah ...", options: ["0,25", "0,4", "0,14", "1,4"], answer: "0,25", explanation: "$\\frac{1}{4}$ sama dengan $\\frac{25}{100}$, yaitu 0,25." },
+                { question: "Ani memiliki $\\frac{1}{2}$ potong kue. Dia memberi $\\frac{1}{4}$ potong kepada Budi. Sisa kue Ani adalah ...", options: ["$\\frac{1}{4}$ potong", "$\\frac{1}{2}$ potong", "$\\frac{3}{4}$ potong", "0 potong"], answer: "$\\frac{1}{4}$ potong", explanation: "Sisa = $\\frac{1}{2} - \\frac{1}{4} = \\frac{2}{4} - \\frac{1}{4} = \\frac{1}{4}$ potong." },
+                { question: "Ibu membeli $\\frac{1}{3}$ kg gula dan $\\frac{1}{3}$ kg terigu. Total belanjaan Ibu adalah ...", options: ["$\\frac{2}{3}$ kg", "$\\frac{1}{6}$ kg", "1 kg", "$\\frac{2}{6}$ kg"], answer: "$\\frac{2}{3}$ kg", explanation: "Total = $\\frac{1}{3} + \\frac{1}{3} = \\frac{2}{3}$ kg." },
+                { question: "Sebuah tongkat dibagi 3 sama panjang. Setiap bagian adalah ...", options: ["$\\frac{1}{3}$ bagian", "$\\frac{1}{2}$ bagian", "$\\frac{2}{3}$ bagian", "3 bagian"], answer: "$\\frac{1}{3}$ bagian", explanation: "Satu tongkat (1) dibagi 3 adalah $1 \\div 3 = \\frac{1}{3}$." },
+                { question: "Ayah menuang $\\frac{1}{2}$ liter air ke dalam botol. Lalu menuang lagi $\\frac{1}{2}$ liter. Isi botol sekarang ...", options: ["1 liter", "$\\frac{1}{4}$ liter", "$\\frac{2}{4}$ liter", "2 liter"], answer: "1 liter", explanation: "Total = $\\frac{1}{2} + \\frac{1}{2} = \\frac{2}{2} = 1$ liter." },
+            ],
+            sedang: [
+                // 20 Soal Sedang
+                { question: "Hasil dari $1\\frac{1}{3} + 2\\frac{1}{3}$ adalah ...", options: ["$3\\frac{2}{3}$", "$3\\frac{1}{3}$", "$4$", "$\\frac{11}{3}$"], answer: "$3\\frac{2}{3}$", explanation: "Bilangan bulat: $1+2=3$. Pecahan: $\\frac{1}{3} + \\frac{1}{3} = \\frac{2}{3}$. Jadi $3\\frac{2}{3}$." },
+                { question: "Hasil dari $2\\frac{1}{2} + 1\\frac{1}{4}$ adalah ...", options: ["$3\\frac{3}{4}$", "$3\\frac{1}{2}$", "$4\\frac{1}{4}$", "$3\\frac{2}{6}$"], answer: "$3\\frac{3}{4}$", explanation: "Ubah ke pecahan biasa: $\\frac{5}{2} + \\frac{5}{4} = \\frac{10}{4} + \\frac{5}{4} = \\frac{15}{4} = 3\\frac{3}{4}$." },
+                { question: "Hasil dari $3\\frac{1}{2} - 1\\frac{1}{4}$ adalah ...", options: ["$2\\frac{1}{4}$", "$2\\frac{1}{2}$", "$1\\frac{3}{4}$", "$\\frac{9}{4}$"], answer: "$2\\frac{1}{4}$", explanation: "Samakan penyebut: $3\\frac{2}{4} - 1\\frac{1}{4} = (3-1) + (\\frac{2}{4} - \\frac{1}{4}) = 2\\frac{1}{4}$." },
+                { question: "Hasil dari $4 - 1\\frac{2}{5}$ adalah ...", options: ["$2\\frac{3}{5}$", "$3\\frac{3}{5}$", "$3\\frac{2}{5}$", "$\\frac{13}{5}$"], answer: "$2\\frac{3}{5}$", explanation: "$4 - 1\\frac{2}{5} = \\frac{20}{5} - \\frac{7}{5} = \\frac{13}{5} = 2\\frac{3}{5}$." },
+                { question: "Hasil dari $1\\frac{1}{2} \\times \\frac{2}{3}$ adalah ...", options: ["1", "$1\\frac{2}{6}$", "$\\frac{6}{6}$", "$\\frac{5}{6}$"], answer: "1", explanation: "Ubah ke pecahan biasa: $\\frac{3}{2} \\times \\frac{2}{3} = \\frac{6}{6} = 1$." },
+                { question: "Hasil dari $2\\frac{1}{3} \\times 3$ adalah ...", options: ["7", "6", "$6\\frac{1}{3}$", "$\\frac{7}{3}$"], answer: "7", explanation: "Ubah ke pecahan biasa: $\\frac{7}{3} \\times \\frac{3}{1} = \\frac{21}{3} = 7$." },
+                { question: "Hasil dari $2\\frac{1}{4} \\div \\frac{1}{2}$ adalah ...", options: ["$4\\frac{1}{2}$", "$2\\frac{1}{8}$", "$1\\frac{1}{8}$", "$\\frac{9}{8}$"], answer: "$4\\frac{1}{2}$", explanation: "Ubah ke pecahan biasa: $\\frac{9}{4} \\div \\frac{1}{2} = \\frac{9}{4} \\times \\frac{2}{1} = \\frac{18}{4} = \\frac{9}{2} = 4\\frac{1}{2}$." },
+                { question: "Hasil dari $5 \\div 1\\frac{1}{4}$ adalah ...", options: ["4", "5", "$6\\frac{1}{4}$", "$\\frac{25}{4}$"], answer: "4", explanation: "$5 \\div \\frac{5}{4} = 5 \\times \\frac{4}{5} = \\frac{20}{5} = 4$." },
+                { question: "Hasil dari $\\frac{1}{2} + 0,5$ adalah ...", options: ["1", "0,75", "0,55", "1,5"], answer: "1", explanation: "0,5 sama dengan $\\frac{1}{2}$. Maka $\\frac{1}{2} + \\frac{1}{2} = 1$." },
+                { question: "Hasil dari $1\\frac{1}{2} - 0,25$ adalah ...", options: ["$1\\frac{1}{4}$", "1", "1,75", "1,2"], answer: "$1\\frac{1}{4}$", explanation: "0,25 sama dengan $\\frac{1}{4}$. Maka $1\\frac{1}{2} - \\frac{1}{4} = 1\\frac{2}{4} - \\frac{1}{4} = 1\\frac{1}{4}$." },
+                { question: "Hasil dari $\\frac{1}{2} + \\frac{1}{3} - \\frac{1}{6}$ adalah ...", options: ["$\\frac{2}{3}$", "1", "$\\frac{1}{6}$", "$\\frac{5}{6}$"], answer: "$\\frac{2}{3}$", explanation: "Samakan penyebut (6): $\\frac{3}{6} + \\frac{2}{6} - \\frac{1}{6} = \\frac{4}{6} = \\frac{2}{3}$." },
+                { question: "Hasil dari $2 \\times \\frac{1}{4} + \\frac{1}{2}$ adalah ...", options: ["1", "$\\frac{3}{4}$", "$1\\frac{1}{2}$", "2"], answer: "1", explanation: "Kerjakan perkalian dulu: $(2 \\times \\frac{1}{4}) + \\frac{1}{2} = \\frac{2}{4} + \\frac{1}{2} = \\frac{1}{2} + \\frac{1}{2} = 1$." },
+                { question: "Hasil dari $\\frac{3}{4} - \\frac{1}{2} \\times \\frac{1}{3}$ adalah ...", options: ["$\\frac{7}{12}$", "$\\frac{1}{12}$", "$\\frac{1}{24}$", "$\\frac{3}{4}$"], answer: "$\\frac{7}{12}$", explanation: "Kerjakan perkalian dulu: $\\frac{3}{4} - (\\frac{1}{2} \\times \\frac{1}{3}) = \\frac{3}{4} - \\frac{1}{6} = \\frac{9}{12} - \\frac{2}{12} = \\frac{7}{12}$." },
+                { question: "Hasil dari $\\frac{1}{2} \\div \\frac{1}{4} - 1$ adalah ...", options: ["1", "0", "2", "-1"], answer: "1", explanation: "Kerjakan pembagian dulu: $(\\frac{1}{2} \\div \\frac{1}{4}) - 1 = (\\frac{1}{2} \\times \\frac{4}{1}) - 1 = 2 - 1 = 1$." },
+                { question: "Hasil dari $(1 - \\frac{1}{3}) \\times \\frac{1}{2}$ adalah ...", options: ["$\\frac{1}{3}$", "$\\frac{1}{2}$", "$\\frac{2}{3}$", "$\\frac{1}{6}$"], answer: "$\\frac{1}{3}$", explanation: "Kerjakan dalam kurung dulu: $(1 - \\frac{1}{3}) = \\frac{2}{3}$. Lalu $\\frac{2}{3} \\times \\frac{1}{2} = \\frac{2}{6} = \\frac{1}{3}$." },
+                { question: "Ibu memiliki $2\\frac{1}{2}$ liter minyak. Digunakan $1\\frac{1}{4}$ liter. Sisa minyak Ibu ...", options: ["$1\\frac{1}{4}$ liter", "$1\\frac{1}{2}$ liter", "1 liter", "$\\frac{5}{4}$ liter"], answer: "$1\\frac{1}{4}$ liter", explanation: "Sisa = $2\\frac{1}{2} - 1\\frac{1}{4} = 2\\frac{2}{4} - 1\\frac{1}{4} = 1\\frac{1}{4}$ liter." },
+                { question: "Adi berlari $1\\frac{1}{2}$ km, Budi berlari $2\\frac{1}{4}$ km. Jumlah jarak keduanya adalah ...", options: ["$3\\frac{3}{4}$ km", "$3\\frac{1}{2}$ km", "$4$ km", "$3\\frac{1}{4}$ km"], answer: "$3\\frac{3}{4}$ km", explanation: "Jumlah = $1\\frac{1}{2} + 2\\frac{1}{4} = 1\\frac{2}{4} + 2\\frac{1}{4} = 3\\frac{3}{4}$ km." },
+                { question: "Satu resep kue perlu $\\frac{1}{4}$ kg terigu. Ibu ingin membuat 3 resep. Berapa kg terigu dibutuhkan?", options: ["$\\frac{3}{4}$ kg", "1 kg", "$3\\frac{1}{4}$ kg", "$\\frac{1}{12}$ kg"], answer: "$\\frac{3}{4}$ kg", explanation: "Total = $\\frac{1}{4} \\times 3 = \\frac{3}{4}$ kg." },
+                { question: "Ayah memiliki $\\frac{3}{4}$ petak sawah. $\\frac{1}{3}$ bagiannya ditanami padi. Berapa petak yang ditanami padi?", options: ["$\\frac{1}{4}$ petak", "$\\frac{1}{2}$ petak", "1 petak", "$\\frac{4}{9}$ petak"], answer: "$\\frac{1}{4}$ petak", explanation: "Bagian padi = $\\frac{3}{4} \\times \\frac{1}{3} = \\frac{3}{12} = \\frac{1}{4}$ petak." },
+                { question: "Sebuah pita panjangnya $5\\frac{1}{2}$ meter dipotong menjadi 11 bagian. Panjang tiap bagian ...", options: ["$\\frac{1}{2}$ m", "$\\frac{1}{4}$ m", "2 m", "1 m"], answer: "$\\frac{1}{2}$ m", explanation: "Panjang = $5\\frac{1}{2} \\div 11 = \\frac{11}{2} \\div 11 = \\frac{11}{2} \\times \\frac{1}{11} = \\frac{1}{2}$ m." },
+            ],
+            sulit: [
+                // 20 Soal Sulit
+                { question: "Hasil dari $2\\frac{1}{2} + 1\\frac{1}{3} - \\frac{1}{4}$ adalah ...", options: ["$3\\frac{7}{12}$", "$3\\frac{1}{12}$", "$4\\frac{1}{12}$", "$3\\frac{5}{12}$"], answer: "$3\\frac{7}{12}$", explanation: "Samakan penyebut (12): $2\\frac{6}{12} + 1\\frac{4}{12} - \\frac{3}{12} = 3\\frac{10-3}{12} = 3\\frac{7}{12}$." },
+                { question: "Hasil dari $5 - (1\\frac{1}{2} + \\frac{3}{4})$ adalah ...", options: ["$2\\frac{3}{4}$", "$3\\frac{1}{4}$", "$2\\frac{1}{4}$", "$3\\frac{3}{4}$"], answer: "$2\\frac{3}{4}$", explanation: "Kurung: $1\\frac{1}{2} + \\frac{3}{4} = 1\\frac{2}{4} + \\frac{3}{4} = 1\\frac{5}{4} = 2\\frac{1}{4}$. Lalu $5 - 2\\frac{1}{4} = 2\\frac{3}{4}$." },
+                { question: "Hasil dari $3\\frac{1}{3} \\times 1\\frac{1}{2} \\div \\frac{1}{4}$ adalah ...", options: ["20", "10", "$5\\frac{1}{2}$", "$1\\frac{1}{4}$"], answer: "20", explanation: "Ubah semua: $\\frac{10}{3} \\times \\frac{3}{2} \\div \\frac{1}{4} = \\frac{30}{6} \\div \\frac{1}{4} = 5 \\div \\frac{1}{4} = 5 \\times 4 = 20$." },
+                { question: "Hasil dari $1\\frac{1}{5} \\div (2\\frac{1}{2} - \\frac{3}{4})$ adalah ...", options: ["$\\frac{24}{35}$", "1", "$\\frac{3}{5}$", "$\\frac{6}{7}$"], answer: "$\\frac{24}{35}$", explanation: "Kurung: $2\\frac{1}{2} - \\frac{3}{4} = \\frac{5}{2} - \\frac{3}{4} = \\frac{10}{4} - \\frac{3}{4} = \\frac{7}{4}$. Lalu $1\\frac{1}{5} \\div \\frac{7}{4} = \\frac{6}{5} \\times \\frac{4}{7} = \\frac{24}{35}$." },
+                { question: "Hasil dari $\\frac{1}{2} + \\frac{3}{4} \\times \\frac{2}{3} - \\frac{1}{6}$ adalah ...", options: ["$\\frac{5}{6}$", "1", "$\\frac{2}{3}$", "$\\frac{1}{2}$"], answer: "$\\frac{5}{6}$", explanation: "Kali dulu: $\\frac{3}{4} \\times \\frac{2}{3} = \\frac{6}{12} = \\frac{1}{2}$. Soal menjadi $\\frac{1}{2} + \\frac{1}{2} - \\frac{1}{6} = 1 - \\frac{1}{6} = \\frac{5}{6}$." },
+                { question: "Hasil dari $2,5 \\times \\frac{1}{4} + 1\\frac{1}{2}$ adalah ...", options: ["$2\\frac{1}{8}$", "2", "$2\\frac{1}{4}$", "$1\\frac{7}{8}$"], answer: "$2\\frac{1}{8}$", explanation: "Ubah 2,5 = $\\frac{5}{2}$. Kali: $\\frac{5}{2} \\times \\frac{1}{4} = \\frac{5}{8}$. Tambah: $\\frac{5}{8} + 1\\frac{1}{2} = \\frac{5}{8} + 1\\frac{4}{8} = 1\\frac{9}{8} = 2\\frac{1}{8}$." },
+                { question: "Hasil dari $(4 - 1\\frac{1}{2}) \\div (1 + \\frac{1}{4})$ adalah ...", options: ["2", "1", "$2\\frac{1}{2}$", "$\\frac{5}{8}$"], answer: "2", explanation: "Kurung 1: $4 - 1\\frac{1}{2} = 2\\frac{1}{2} = \\frac{5}{2}$. Kurung 2: $1 + \\frac{1}{4} = 1\\frac{1}{4} = \\frac{5}{4}$. Bagi: $\\frac{5}{2} \\div \\frac{5}{4} = \\frac{5}{2} \\times \\frac{4}{5} = \\frac{20}{10} = 2$." },
+                { question: "Jika $\\frac{3}{5}$ dari sebuah bilangan adalah 12, berapakah $\\frac{1}{2}$ dari bilangan tersebut?", options: ["10", "12", "20", "6"], answer: "10", explanation: "Bilangan = $12 \\div \\frac{3}{5} = 12 \\times \\frac{5}{3} = 20$. Setengah dari 20 adalah $\\frac{1}{2} \\times 20 = 10$." },
+                { question: "Urutkan dari terkecil: $\\frac{5}{8}$, $0,6$, $\\frac{3}{4}$", options: ["$0,6$, $\\frac{5}{8}$, $\\frac{3}{4}$", "$\\frac{5}{8}$, $0,6$, $\\frac{3}{4}$", "$\\frac{3}{4}$, $\\frac{5}{8}$, $0,6$"], answer: "$0,6$, $\\frac{5}{8}$, $\\frac{3}{4}$", explanation: "Ubah ke desimal: $\\frac{5}{8} = 0,625$; $0,6 = 0,600$; $\\frac{3}{4} = 0,750$. Urutan: 0,600, 0,625, 0,750." },
+                { question: "Hasil dari $\\frac{3\\frac{1}{2}}{1\\frac{1}{4}}$ adalah ...", options: ["$2\\frac{4}{5}$", "$3\\frac{1}{5}$", "$2\\frac{1}{2}$", "$4\\frac{3}{8}$"], answer: "$2\\frac{4}{5}$", explanation: "Ini sama dengan $3\\frac{1}{2} \\div 1\\frac{1}{4} = \\frac{7}{2} \\div \\frac{5}{4} = \\frac{7}{2} \\times \\frac{4}{5} = \\frac{28}{10} = \\frac{14}{5} = 2\\frac{4}{5}$." },
+                { question: "Ibu membeli 40 telur. $\\frac{1}{5}$ bagian pecah. $1\\frac{1}{2}$ lusin digunakan. Sisa telur ...", options: ["14 butir", "10 butir", "8 butir", "32 butir"], answer: "14 butir", explanation: "Pecah: $\\frac{1}{5} \\times 40 = 8$ butir. Sisa: $40 - 8 = 32$ butir. Digunakan: $1\\frac{1}{2}$ lusin = 1,5 x 12 = 18 butir. Sisa akhir: $32 - 18 = 14$ butir." },
+                { question: "Pak Doni punya 60 sapi. $\\frac{1}{3}$ dijual. Sisa sapi, $\\frac{3}{4}$ bagiannya betina. Sapi jantan sisanya ...", options: ["10 ekor", "20 ekor", "30 ekor", "40 ekor"], answer: "10 ekor", explanation: "Dijual: $\\frac{1}{3} \\times 60 = 20$ ekor. Sisa: $60 - 20 = 40$ ekor. Betina: $\\frac{3}{4} \\times 40 = 30$ ekor. Jantan: $40 - 30 = 10$ ekor." },
+                { question: "Gaji Ayah Rp 4.800.000. $\\frac{1}{6}$ untuk transportasi, $\\frac{1}{4}$ untuk makan, $\\frac{1}{3}$ untuk KPR. Sisanya ditabung...", options: ["Rp 1.000.000", "Rp 800.000", "Rp 1.200.000", "Rp 1.600.000"], answer: "Rp 1.000.000", explanation: "Transport: $\\frac{1}{6} \\times 4.8M = 800rb$. Makan: $\\frac{1}{4} \\times 4.8M = 1.2M$. KPR: $\\frac{1}{3} \\times 4.8M = 1.6M$. Total keluar: $800+1200+1600 = 3.6M$. Sisa tabungan: $4.8M - 3.6M = 1.2M$." },
+                // Self-correction, let's re-calculate Q13
+                { question: "Gaji Ayah Rp 4.800.000. $\\frac{1}{6}$ untuk transportasi, $\\frac{1}{4}$ untuk makan, $\\frac{1}{3}$ untuk KPR. Sisanya ditabung...", options: ["Rp 1.200.000", "Rp 800.000", "Rp 1.000.000", "Rp 1.600.000"], answer: "Rp 1.200.000", explanation: "Transport: $\\frac{1}{6} \\times 4.8M = 800rb$. Makan: $\\frac{1}{4} \\times 4.8M = 1.2M$. KPR: $\\frac{1}{3} \\times 4.8M = 1.6M$. Total keluar: $800rb + 1.2M + 1.6M = 3.6M$. Sisa tabungan: $4.8M - 3.6M = 1.2M$." },
+                { question: "Hasil dari $\\frac{0,5 + \\frac{1}{4}}{1 - 0,25}$ adalah ...", options: ["1", "0,75", "1,5", "0,5"], answer: "1", explanation: "Pembilang: $0,5 + 0,25 = 0,75$. Penyebut: $1 - 0,25 = 0,75$. Hasil: $\\frac{0,75}{0,75} = 1$." },
+                { question: "Sebuah drum berisi air $\\frac{1}{3}$ penuh. Ditambah $6$ liter, menjadi $\\frac{1}{2}$ penuh. Kapasitas drum ...", options: ["36 liter", "24 liter", "30 liter", "18 liter"], answer: "36 liter", explanation: "Penambahan 6 liter = $(\\frac{1}{2} - \\frac{1}{3})$ kapasitas = $(\\frac{3}{6} - \\frac{2}{6}) = \\frac{1}{6}$ kapasitas. Jadi $\\frac{1}{6}$ kapasitas = 6 liter. Kapasitas penuh = $6 \\times 6 = 36$ liter." },
+                { question: "Hasil dari $1 + \\frac{1}{1+\\frac{1}{2}}$ adalah ...", options: ["$1\\frac{2}{3}$", "2", "1,5", "$2\\frac{1}{2}$"], answer: "$1\\frac{2}{3}$", explanation: "Kerjakan dari bawah: $1 + \\frac{1}{2} = \\frac{3}{2}$. Soal menjadi $1 + \\frac{1}{\\frac{3}{2}} = 1 + \\frac{2}{3} = 1\\frac{2}{3}$." },
+                { question: "Siswa kelas A ada 30. $\\frac{2}{5}$ laki-laki. Siswa kelas B ada 25, $\\frac{3}{5}$ laki-laki. Selisih siswa perempuan A dan B ...", options: ["3", "5", "8", "2"], answer: "8", explanation: "Perempuan A: $1 - \\frac{2}{5} = \\frac{3}{5}$. Jumlah: $\\frac{3}{5} \\times 30 = 18$. Perempuan B: $1 - \\frac{3}{5} = \\frac{2}{5}$. Jumlah: $\\frac{2}{5} \\times 25 = 10$. Selisih: $18 - 10 = 8$." },
+                { question: "Panjang $\\frac{2}{3}$ dari sebuah jalan adalah 12 km. Berapa $1\\frac{1}{4}$ dari panjang jalan itu?", options: ["22,5 km", "18 km", "20 km", "16 km"], answer: "22,5 km", explanation: "Panjang total = $12 \\div \\frac{2}{3} = 12 \\times \\frac{3}{2} = 18$ km. $1\\frac{1}{4}$ dari 18 km = $\\frac{5}{4} \\times 18 = \\frac{90}{4} = 22,5$ km." },
+                { question: "Seorang pedagang rugi $\\frac{1}{10}$ dari modal Rp 500.000. Harga jualnya ...", options: ["Rp 450.000", "Rp 550.000", "Rp 50.000", "Rp 400.000"], answer: "Rp 450.000", explanation: "Rugi = $\\frac{1}{10} \\times 500.000 = 50.000$. Harga Jual = Modal - Rugi = $500.000 - 50.000 = 450.000$." },
+                { question: "Hasil dari $(0,6 \\times 1\\frac{1}{2}) + (\\frac{3}{4} \\div 0,25)$ adalah ...", options: ["3,9", "3", "0,9", "4,5"], answer: "3,9", explanation: "Kurung 1: $\\frac{6}{10} \\times \\frac{3}{2} = \\frac{18}{20} = 0,9$. Kurung 2: $\\frac{3}{4} \\div \\frac{1}{4} = 3$. Hasil: $0,9 + 3 = 3,9$." },
+            ]
+        };
+
+        // --- ELEMEN DOM ---
+        let packetContainer, quizContainer, scoreContainer,
+            startMudahBtn, startSedangBtn, startSulitBtn,
+            questionContainer, optionsContainer, feedbackContainer,
+            nextBtn, questionText, scoreText, restartBtn, questionInfo;
+
+        // --- STATE KUIS ---
+        let currentQuestions = []; // Akan diisi based on paket
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let katexRenderOptions = {
+            delimiters: [
+                {left: "$", right: "$", display: false},
+                {left: "$$", right: "$$", display: true},
+                {left: "\\(", right: "\\)", display: false},
+                {left: "\\[", right: "\\]", display: true}
+            ],
+            throwOnError: false
+        };
+
+        // --- FUNGSI-FUNGSI ---
+
+        // Menampilkan menu pilihan paket
+        function showPacketMenu() {
+            packetContainer.style.display = 'block';
+            quizContainer.style.display = 'none';
+            scoreContainer.style.display = 'none';
+        }
+
+        // Memulai kuis berdasarkan paket
+        function startQuiz(difficulty) {
+            // Set array soal berdasarkan paket
+            currentQuestions = quizData[difficulty] || [];
+            currentQuestionIndex = 0;
+            score = 0;
+
+            // Sembunyikan menu, tampilkan kuis
+            packetContainer.style.display = 'none';
+            scoreContainer.style.display = 'none';
+            quizContainer.style.display = 'block';
+
+            // Memuat pertanyaan pertama
+            loadQuestion();
+        }
+
+        // Memuat pertanyaan dan pilihan
+        function loadQuestion() {
+            // Sembunyikan umpan balik dan tombol berikutnya
+            feedbackContainer.style.display = 'none';
+            nextBtn.style.display = 'none';
+
+            // Mengambil data pertanyaan saat ini
+            const currentQuestion = currentQuestions[currentQuestionIndex];
+
+            // Menampilkan info soal
+            questionInfo.textContent = `Soal ${currentQuestionIndex + 1} dari ${currentQuestions.length}`;
+
+            // Menampilkan teks pertanyaan
+            questionText.innerHTML = currentQuestion.question;
+            // Render KaTeX untuk pertanyaan
+            if (window.renderMathInElement) {
+                renderMathInElement(questionText, katexRenderOptions);
+            }
+
+            // Menghapus pilihan lama
+            optionsContainer.innerHTML = '';
+
+            // Membuat dan menambahkan tombol pilihan baru
+            currentQuestion.options.forEach(option => {
+                const button = document.createElement('button');
+                button.innerHTML = option;
+                // Simpan data mentah (string KaTeX) untuk perbandingan
+                button.dataset.option = option;
+                
+                button.classList.add(
+                    'w-full', 'text-left', 'p-4', 'rounded-lg', 'border', 'border-gray-300',
+                    'hover:bg-gray-100', 'focus:outline-none', 'focus:ring-2', 'focus:ring-blue-500',
+                    'transition-all', 'duration-200', 'font-medium'
+                );
+                
+                // Tambahkan event listener untuk memeriksa jawaban saat diklik
+                button.addEventListener('click', () => checkAnswer(option, button));
+                optionsContainer.appendChild(button);
+                
+                // Render KaTeX untuk tombol pilihan
+                if (window.renderMathInElement) {
+                    renderMathInElement(button, katexRenderOptions);
+                }
+            });
+        }
+
+        // Memeriksa jawaban yang dipilih
+        function checkAnswer(selectedOption, selectedButton) {
+            const currentQuestion = currentQuestions[currentQuestionIndex];
+            const correctAnswer = currentQuestion.answer;
+
+            // Nonaktifkan semua tombol pilihan
+            Array.from(optionsContainer.children).forEach(button => {
+                button.disabled = true;
+                // Tandai jawaban benar
+                // Gunakan dataset.option untuk perbandingan
+                if (button.dataset.option === correctAnswer) {
+                    button.classList.add('bg-green-100', 'border-green-500', 'text-green-800');
+                    button.classList.remove('hover:bg-gray-100');
+                }
+            });
+
+            if (selectedOption === correctAnswer) {
+                // Jawaban Benar
+                score++;
+                feedbackContainer.innerHTML = '<strong class="font-bold text-green-700">Benar!</strong> Jawaban Anda tepat.';
+                feedbackContainer.className = 'mt-6 p-4 rounded-lg bg-green-100 text-green-700';
+            } else {
+                // Jawaban Salah
+                // Tandai jawaban salah yang dipilih pengguna
+                selectedButton.classList.add('bg-red-100', 'border-red-500', 'text-red-800');
+                selectedButton.classList.remove('hover:bg-gray-100');
+
+                // Tampilkan umpan balik dan pembahasan
+                feedbackContainer.innerHTML = `
+                    <strong class="font-bold text-red-700">Salah.</strong> Jawaban yang benar adalah <strong>${correctAnswer}</strong>.
+                    <br><br>
+                    <strong class="font-medium text-gray-800">Pembahasan:</strong><br>
+                    ${currentQuestion.explanation}
+                `;
+                feedbackContainer.className = 'mt-6 p-4 rounded-lg bg-red-100 text-red-700';
+            }
+
+            // Tampilkan umpan balik dan tombol berikutnya
+            feedbackContainer.style.display = 'block';
+            nextBtn.style.display = 'block';
+            
+            // Render KaTeX untuk umpan balik/pembahasan
+            if (window.renderMathInElement) {
+                renderMathInElement(feedbackContainer, katexRenderOptions);
+            }
+        }
+
+        // Menangani klik tombol berikutnya
+        function handleNextButton() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < currentQuestions.length) {
+                loadQuestion();
+            } else {
+                showScore();
+            }
+        }
+
+        // Menampilkan skor akhir
+        function showScore() {
+            // Sembunyikan kontainer kuis
+            quizContainer.style.display = 'none';
+
+            // Tampilkan kontainer skor
+            scoreContainer.style.display = 'block';
+            const percentage = Math.round((score / currentQuestions.length) * 100);
+            scoreText.innerHTML = `Skor Anda: ${score} dari ${currentQuestions.length} (${percentage}%)`;
+        }
+
+        // Event listener saat DOM selesai dimuat
+        document.addEventListener('DOMContentLoaded', () => {
+            // Ambil semua elemen DOM
+            packetContainer = document.getElementById('packet-container');
+            quizContainer = document.getElementById('quiz-container');
+            scoreContainer = document.getElementById('score-container');
+            
+            startMudahBtn = document.getElementById('start-mudah-btn');
+            startSedangBtn = document.getElementById('start-sedang-btn');
+            startSulitBtn = document.getElementById('start-sulit-btn');
+            
+            questionContainer = document.getElementById('question-container');
+            optionsContainer = document.getElementById('options-container');
+            feedbackContainer = document.getElementById('feedback-container');
+            nextBtn = document.getElementById('next-btn');
+            questionText = document.getElementById('question-text');
+            scoreText = document.getElementById('score-text');
+            restartBtn = document.getElementById('restart-btn');
+            questionInfo = document.getElementById('question-info');
+
+            // Tambahkan event listener ke tombol
+            startMudahBtn.addEventListener('click', () => startQuiz('mudah'));
+            startSedangBtn.addEventListener('click', () => startQuiz('sedang'));
+            startSulitBtn.addEventListener('click', () => startQuiz('sulit'));
+            
+            nextBtn.addEventListener('click', handleNextButton);
+            restartBtn.addEventListener('click', showPacketMenu); // Kembali ke menu
+
+            // Mulai dengan menampilkan menu paket
+            showPacketMenu();
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Latihan PAS Matematika Kelas IX</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+        .quiz-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .question-card {
+            transition: transform 0.2s;
+        }
+        .option-label {
+            cursor: pointer;
+            transition: background-color 0.2s, border-color 0.2s;
+        }
+        .option-label:hover {
+            background-color: #f1f5f9;
+        }
+        .option-input:checked + .option-content {
+            border-color: #3b82f6;
+            background-color: #eff6ff;
+            color: #1e40af;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body class="min-h-screen pb-10">
+
+    <!-- Header -->
+    <header class="bg-white border-b sticky top-0 z-20 shadow-sm">
+        <div class="max-w-5xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div>
+                <h1 class="text-xl font-bold text-slate-800">Latihan PAS Matematika</h1>
+                <p class="text-xs text-slate-500">Kelas IX - Sesuai Kisi-kisi 2025/2026</p>
+            </div>
+            <div class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-semibold" id="timer">00:00</div>
+        </div>
+    </header>
+
+    <!-- Intro -->
+    <div id="intro-screen" class="quiz-container px-4 py-10 text-center">
+        <div class="bg-white p-8 rounded-2xl shadow-lg border border-slate-100">
+            <div class="w-20 h-20 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg text-white text-3xl font-bold">
+                &Sigma;
+            </div>
+            <h2 class="text-3xl font-bold mb-4 text-slate-800">Siap Mengerjakan?</h2>
+            <p class="text-slate-600 mb-8 max-w-lg mx-auto">
+                Soal disusun berdasarkan indikator resmi: Bilangan Berpangkat, Bangun Ruang (Sisi Datar & Lengkung), dan Persamaan Kuadrat.
+            </p>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-md mx-auto mb-8 text-left text-sm">
+                <div class="bg-slate-50 p-3 rounded border"><span class="font-bold">40</span> Soal Pilihan Ganda</div>
+                <div class="bg-slate-50 p-3 rounded border"><span class="font-bold">100</span> Poin Total</div>
+            </div>
+
+            <button onclick="startQuiz()" class="bg-blue-600 hover:bg-blue-700 text-white text-lg font-semibold py-3 px-10 rounded-xl shadow-md transition-all hover:scale-105">
+                Mulai Ujian
+            </button>
+        </div>
+    </div>
+
+    <!-- Quiz Area -->
+    <div id="quiz-screen" class="hidden quiz-container px-4 py-8">
+        <form id="quiz-form">
+            <div id="questions-container" class="space-y-6">
+                <!-- Questions will be generated here -->
+            </div>
+            
+            <div class="mt-10 text-center">
+                <button type="button" onclick="submitQuiz()" class="bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-12 rounded-xl shadow-lg transition-all text-lg">
+                    Selesai & Kumpulkan
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Result Area -->
+    <div id="result-screen" class="hidden quiz-container px-4 py-8">
+        <div class="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden mb-8">
+            <div class="bg-slate-800 text-white p-8 text-center">
+                <p class="text-sm uppercase tracking-widest opacity-75 mb-2">Nilai Akhir Anda</p>
+                <h2 class="text-6xl font-bold mb-4" id="final-score">0</h2>
+                <div class="flex justify-center gap-8 mt-4">
+                    <div>
+                        <span class="block text-2xl font-bold text-green-400" id="correct-total">0</span>
+                        <span class="text-xs opacity-75">Benar</span>
+                    </div>
+                    <div>
+                        <span class="block text-2xl font-bold text-red-400" id="wrong-total">0</span>
+                        <span class="text-xs opacity-75">Salah</span>
+                    </div>
+                </div>
+            </div>
+            <div class="p-6 bg-slate-50 text-center">
+                <button onclick="location.reload()" class="text-blue-600 font-semibold hover:underline">Kerjakan Ulang</button>
+            </div>
+        </div>
+
+        <h3 class="text-2xl font-bold text-slate-800 mb-6">Pembahasan Soal</h3>
+        <div id="review-container" class="space-y-6">
+            <!-- Review content -->
+        </div>
+    </div>
+
+    <script>
+        // === DATA SOAL BERDASARKAN KISI-KISI ===
+        const questions = [
+            // --- 1. BILANGAN BERPANGKAT & AKAR ---
+            {
+                no: 1,
+                topic: "Bilangan Berpangkat",
+                q: "Bentuk perkalian berulang dari <span class='font-mono font-bold'>(-3)⁴</span> adalah...",
+                options: ["-3 × -3 × -3 × -3", "-(3 × 3 × 3 × 3)", "4 × (-3)", "4 × 4 × 4"],
+                ans: 0,
+                expl: "Pangkat 4 artinya basis (-3) dikalikan sebanyak 4 kali."
+            },
+            {
+                no: 2,
+                topic: "Bilangan Berpangkat",
+                q: "Hasil dari <span class='font-mono font-bold'>2⁻³ + 4⁻¹</span> adalah...",
+                options: ["3/8", "1/4", "5/8", "1/2"],
+                ans: 0,
+                expl: "2⁻³ = 1/8. 4⁻¹ = 1/4. Maka 1/8 + 1/4 = 1/8 + 2/8 = 3/8."
+            },
+            {
+                no: 3,
+                topic: "Bilangan Berpangkat",
+                q: "Pernyataan berikut yang benar mengenai sifat bilangan berpangkat adalah...",
+                options: ["aᵐ × aⁿ = aᵐˣⁿ", "aᵐ : aⁿ = aᵐ⁺ⁿ", "(aᵐ)ⁿ = aᵐˣⁿ", "a⁰ = 0"],
+                ans: 2,
+                expl: "Sifat yang benar: (aᵐ)ⁿ = a^(m×n). Opsi A harusnya a^(m+n), B harusnya a^(m-n), D harusnya a⁰ = 1."
+            },
+            {
+                no: 4,
+                topic: "Operasi Campuran",
+                q: "Hasil dari <span class='font-mono font-bold'>4³ : 2³ × 2²</span> adalah...",
+                options: ["16", "32", "8", "64"],
+                ans: 1,
+                expl: "4³ = (2²)³ = 2⁶. Maka: 2⁶ : 2³ × 2² = 2⁽⁶⁻³⁺²⁾ = 2⁵ = 32."
+            },
+            {
+                no: 5,
+                topic: "Notasi Ilmiah",
+                q: "Bentuk baku (notasi ilmiah) dari <span class='font-mono font-bold'>0,000056</span> adalah...",
+                options: ["5,6 × 10⁻⁵", "5,6 × 10⁻⁶", "56 × 10⁻⁶", "0,56 × 10⁻⁴"],
+                ans: 0,
+                expl: "Geser koma ke kanan 5 kali hingga di belakang angka 5. Jadi 5,6 × 10⁻⁵."
+            },
+            {
+                no: 6,
+                topic: "Bentuk Akar",
+                q: "Hasil dari <span class='font-mono font-bold'>3√2 + √32 - √50</span> adalah...",
+                options: ["2√2", "3√2", "√2", "4√2"],
+                ans: 0,
+                expl: "√32=4√2, √50=5√2. Maka: 3√2 + 4√2 - 5√2 = (3+4-5)√2 = 2√2."
+            },
+            {
+                no: 7,
+                topic: "Bentuk Akar",
+                q: "Hasil dari <span class='font-mono font-bold'>√12 × √6</span> adalah...",
+                options: ["6√2", "6√3", "12√2", "3√2"],
+                ans: 0,
+                expl: "√12 × √6 = √72 = √(36×2) = 6√2."
+            },
+            {
+                no: 8,
+                topic: "Merasionalkan Akar",
+                q: "Bentuk rasional dari pecahan <span class='font-mono font-bold'>6 / √3</span> adalah...",
+                options: ["3√3", "2√3", "6√3", "√3"],
+                ans: 1,
+                expl: "Kalikan dengan (√3/√3). Hasilnya (6√3)/3 = 2√3."
+            },
+            {
+                no: 9,
+                topic: "Merasionalkan Akar",
+                q: "Bentuk rasional dari <span class='font-mono font-bold'>4 / (3 + √5)</span> adalah...",
+                options: ["3 + √5", "3 - √5", "4(3 - √5)", "12 - 4√5"],
+                ans: 1,
+                expl: "Kalikan sekawan (3-√5). Penyebut menjadi 3² - (√5)² = 9-5 = 4. Pembilang 4(3-√5). Hasil = 4(3-√5)/4 = 3-√5."
+            },
+            {
+                no: 10,
+                topic: "Soal Cerita Akar",
+                q: "Sebuah persegi memiliki luas 48 cm². Panjang sisi persegi tersebut adalah...",
+                options: ["4√3 cm", "3√3 cm", "4√2 cm", "16 cm"],
+                ans: 0,
+                expl: "Sisi = √Luas = √48 = √(16×3) = 4√3 cm."
+            },
+            {
+                no: 11,
+                topic: "Menyederhanakan Pangkat",
+                q: "Bentuk sederhana dari <span class='font-mono font-bold'>p⁸ : p³</span> adalah...",
+                options: ["p¹¹", "p⁵", "p²⁴", "p³"],
+                ans: 1,
+                expl: "Pembagian pangkat dengan basis sama: kurangi pangkatnya. 8 - 3 = 5."
+            },
+
+            // --- 2. BANGUN RUANG SISI DATAR ---
+            {
+                no: 12,
+                topic: "Sifat Kubus",
+                q: "Salah satu sifat kubus adalah memiliki sisi berbentuk persegi sebanyak...",
+                options: ["4 buah", "6 buah", "8 buah", "12 buah"],
+                ans: 1,
+                expl: "Kubus memiliki 6 sisi yang semuanya berbentuk persegi kongruen."
+            },
+            {
+                no: 13,
+                topic: "Balok",
+                q: "Luas permukaan balok adalah 376 cm². Jika panjang 10 cm dan lebar 6 cm, maka tinggi balok adalah...",
+                options: ["6 cm", "7 cm", "8 cm", "9 cm"],
+                ans: 2,
+                expl: "L = 2(pl + pt + lt). 376 = 2(60 + 10t + 6t). 188 = 60 + 16t. 128 = 16t. t = 8."
+            },
+            {
+                no: 14,
+                topic: "Kerangka Balok",
+                q: "Kawat sepanjang 5 meter akan dibuat kerangka balok berukuran 15 cm x 12 cm x 13 cm. Banyak kerangka balok maksimal yang dapat dibuat adalah...",
+                options: ["2 buah", "3 buah", "4 buah", "5 buah"],
+                ans: 1,
+                expl: "Panjang 1 kerangka = 4(15+12+13) = 4(40) = 160 cm. Kawat 500 cm. 500/160 = 3,125. Jadi maksimal 3 buah."
+            },
+            {
+                no: 15,
+                topic: "Luas Kubus",
+                q: "Luas permukaan kubus yang panjang sisinya 9 cm adalah...",
+                options: ["486 cm²", "729 cm²", "324 cm²", "216 cm²"],
+                ans: 0,
+                expl: "L = 6 × s² = 6 × 81 = 486 cm²."
+            },
+            {
+                no: 16,
+                topic: "Volume Prisma",
+                q: "Sebuah prisma alasnya segitiga siku-siku dengan sisi 3cm, 4cm, 5cm. Jika tinggi prisma 10cm, volumenya adalah...",
+                options: ["60 cm³", "120 cm³", "600 cm³", "300 cm³"],
+                ans: 0,
+                expl: "Luas alas = 1/2 × 3 × 4 = 6. Volume = La × t = 6 × 10 = 60."
+            },
+            {
+                no: 17,
+                topic: "Tinggi Prisma",
+                q: "Volume prisma tegak adalah 1.200 cm³. Jika luas alasnya 60 cm², maka tinggi prisma tersebut adalah...",
+                options: ["20 cm", "25 cm", "30 cm", "40 cm"],
+                ans: 0,
+                expl: "t = V / La = 1200 / 60 = 20 cm."
+            },
+            {
+                no: 18,
+                topic: "Luas Limas",
+                q: "Limas persegi memiliki keliling alas 40 cm dan tinggi sisi tegak (segitiga) 13 cm. Luas permukaan limas adalah...",
+                options: ["260 cm²", "360 cm²", "340 cm²", "100 cm²"],
+                ans: 1,
+                expl: "Sisi alas = 40/4 = 10. Luas alas = 100. Luas selimut = 4 × (1/2 × 10 × 13) = 260. Total = 100 + 260 = 360."
+            },
+            {
+                no: 19,
+                topic: "Alas Limas",
+                q: "Volume limas adalah 100 cm³. Jika tinggi limas 12 cm, maka luas alas limas tersebut adalah...",
+                options: ["20 cm²", "25 cm²", "30 cm²", "8,3 cm²"],
+                ans: 1,
+                expl: "V = 1/3 × La × t. 100 = 1/3 × La × 12. 100 = 4La. La = 25."
+            },
+            {
+                no: 20,
+                topic: "Luas Prisma",
+                q: "Sebuah prisma alas persegi panjang (10cm x 6cm) memiliki tinggi 5cm. Luas permukaan prisma adalah...",
+                options: ["160 cm²", "280 cm²", "300 cm²", "320 cm²"],
+                ans: 1,
+                expl: "La = 60. Keliling = 2(10+6)=32. L = 2La + K.t = 2(60) + (32×5) = 120 + 160 = 280."
+            },
+
+            // --- 3. BANGUN RUANG SISI LENGKUNG ---
+            {
+                no: 21,
+                topic: "Luas Tabung",
+                q: "Rumus luas permukaan tabung adalah...",
+                options: ["2πr(r + t)", "πr²t", "2πr² + t", "πr(r + s)"],
+                ans: 0,
+                expl: "L = 2πr² + 2πrt = 2πr(r+t)."
+            },
+            {
+                no: 22,
+                topic: "Sifat Belah Ketupat",
+                q: "Sifat bangun datar belah ketupat yang benar adalah...",
+                options: ["Keempat sisinya sama panjang", "Keempat sudutnya siku-siku", "Hanya memiliki sepasang sisi sejajar", "Diagonalnya sama panjang"],
+                ans: 0,
+                expl: "Belah ketupat memiliki 4 sisi sama panjang. (Catatan: Indikator kisi-kisi no 22 menyebutkan belah ketupat meskipun topiknya BRSL)."
+            },
+            {
+                no: 23,
+                topic: "Kerucut",
+                q: "Diketahui volume kerucut 314 cm³ dan jari-jari 10 cm. Maka tinggi kerucut adalah...",
+                options: ["3 cm", "6 cm", "9 cm", "12 cm"],
+                ans: 0,
+                expl: "V = 1/3 πr²t. 314 = 1/3 × 3,14 × 100 × t. 314 = 1/3 × 314 × t. 1 = 1/3 t. t = 3."
+            },
+            {
+                no: 24,
+                topic: "Bola",
+                q: "Volume bola dengan jari-jari 21 cm adalah... (π=22/7)",
+                options: ["38.808 cm³", "11.304 cm³", "4.851 cm³", "29.106 cm³"],
+                ans: 0,
+                expl: "V = 4/3 × 22/7 × 21 × 21 × 21 = 4 × 22 × 21 × 21 = 88 × 441 = 38.808."
+            },
+            {
+                no: 25,
+                topic: "Luas Kerucut",
+                q: "Luas permukaan kerucut dengan jari-jari 7 cm dan garis pelukis 25 cm adalah...",
+                options: ["550 cm²", "704 cm²", "154 cm²", "700 cm²"],
+                ans: 1,
+                expl: "L = πr(r + s) = 22/7 × 7 × (7 + 25) = 22 × 32 = 704."
+            },
+            {
+                no: 26,
+                topic: "Sifat BRSL",
+                q: "Bangun ruang yang memiliki alas berbentuk lingkaran dan satu titik puncak adalah...",
+                options: ["Tabung", "Kerucut", "Bola", "Prisma"],
+                ans: 1,
+                expl: "Ciri khas kerucut adalah alas lingkaran dan 1 titik puncak."
+            },
+            {
+                no: 27,
+                topic: "Tinggi Tabung",
+                q: "Volume sebuah tabung adalah 1.540 cm³. Jika jari-jari alasnya 7 cm, tinggi tabung tersebut adalah...",
+                options: ["10 cm", "15 cm", "20 cm", "25 cm"],
+                ans: 0,
+                expl: "V = πr²t. 1540 = 22/7 × 49 × t. 1540 = 154t. t = 10."
+            },
+            {
+                no: 28,
+                topic: "Bagian Kerucut",
+                q: "Garis yang menghubungkan titik puncak kerucut dengan keliling alas lingkaran disebut...",
+                options: ["Tinggi kerucut", "Diameter", "Garis pelukis (s)", "Jari-jari"],
+                ans: 2,
+                expl: "Garis miring pada selimut kerucut disebut garis pelukis (apotema)."
+            },
+            {
+                no: 29,
+                topic: "Unsur Kerucut",
+                q: "Luas selimut kerucut adalah 550 cm². Jika jari-jarinya 7 cm, maka garis pelukisnya (s) adalah...",
+                options: ["15 cm", "20 cm", "25 cm", "30 cm"],
+                ans: 2,
+                expl: "Ls = πrs. 550 = 22/7 × 7 × s. 550 = 22s. s = 25."
+            },
+            {
+                no: 30,
+                topic: "Identifikasi Gambar",
+                q: "Deskripsi gambar: Bangun ruang ini memiliki 3 sisi (2 lingkaran identik dan 1 selimut). Bangun apakah ini?",
+                options: ["Kerucut", "Tabung", "Bola", "Limas"],
+                ans: 1,
+                expl: "Tabung memiliki alas dan tutup lingkaran serta satu selimut persegi panjang (jika dibuka)."
+            },
+
+            // --- 4. PERSAMAAN & FUNGSI KUADRAT ---
+            {
+                no: 31,
+                topic: "Fungsi Kuadrat",
+                q: "Manakah di bawah ini yang merupakan bentuk umum persamaan kuadrat?",
+                options: ["ax + by = c", "ax² + bx + c = 0", "y = mx + c", "ax³ + bx² + c = 0"],
+                ans: 1,
+                expl: "Persamaan kuadrat ditandai dengan pangkat tertinggi variabelnya adalah 2."
+            },
+            {
+                no: 32,
+                topic: "Operasi Akar",
+                q: "Jika x₁ dan x₂ adalah akar-akar dari x² - 5x + 6 = 0, maka nilai x₁ + x₂ adalah...",
+                options: ["5", "-5", "6", "-6"],
+                ans: 0,
+                expl: "Rumus jumlah akar: x₁ + x₂ = -b/a = -(-5)/1 = 5."
+            },
+            {
+                no: 33,
+                topic: "Bentuk Persamaan",
+                q: "Koefisien x dari persamaan kuadrat 2x² - 3x + 5 = 0 adalah...",
+                options: ["2", "3", "-3", "5"],
+                ans: 2,
+                expl: "Bentuk ax² + bx + c. Koefisien x adalah b, yaitu -3."
+            },
+            {
+                no: 34,
+                topic: "Rumus ABC",
+                q: "Rumus kuadratik (rumus abc) untuk mencari akar persamaan kuadrat adalah...",
+                options: ["x = (-b ± √D) / 2a", "x = (b ± √D) / 2a", "x = (-b ± √D) / a", "x = (b ± √D) / a"],
+                ans: 0,
+                expl: "Rumus abc: x1,2 = (-b ± √(b²-4ac)) / 2a."
+            },
+            {
+                no: 35,
+                topic: "Diskriminan",
+                q: "Jika nilai Diskriminan (D) > 0, maka jenis akar persamaan kuadrat tersebut adalah...",
+                options: ["Akar real dan berbeda", "Akar real dan kembar", "Tidak memiliki akar real", "Akar imajiner"],
+                ans: 0,
+                expl: "D > 0 artinya memotong sumbu x di dua titik (akar real berbeda)."
+            },
+            {
+                no: 36,
+                topic: "Mencari Akar",
+                q: "Akar-akar dari persamaan kuadrat x² - 9 = 0 adalah...",
+                options: ["3 dan 3", "3 dan -3", "9 dan -9", "0 dan 9"],
+                ans: 1,
+                expl: "x² = 9, maka x = ±√9 = ±3."
+            },
+            {
+                no: 37,
+                topic: "Sumbu Simetri",
+                q: "Sumbu simetri dari fungsi kuadrat y = x² - 4x + 3 adalah...",
+                options: ["x = 2", "x = -2", "x = 4", "x = -4"],
+                ans: 0,
+                expl: "Sumbu simetri x = -b/2a = -(-4)/(2×1) = 4/2 = 2."
+            },
+            {
+                no: 38,
+                topic: "Nilai Optimum",
+                q: "Nilai optimum (y puncak) dari fungsi y = x² - 2x - 3 adalah...",
+                options: ["-3", "-4", "4", "2"],
+                ans: 1,
+                expl: "Sumbu simetri x = -(-2)/2 = 1. Substitusi x=1 ke persamaan: 1² - 2(1) - 3 = 1 - 2 - 3 = -4."
+            },
+            {
+                no: 39,
+                topic: "Menyusun PK Baru",
+                q: "Persamaan kuadrat yang akar-akarnya 2 dan 5 adalah...",
+                options: ["x² + 7x + 10 = 0", "x² - 7x + 10 = 0", "x² - 3x - 10 = 0", "x² + 3x - 10 = 0"],
+                ans: 1,
+                expl: "(x - x₁)(x - x₂) = 0 → (x - 2)(x - 5) = x² - 5x - 2x + 10 = x² - 7x + 10."
+            },
+            {
+                no: 40,
+                topic: "Titik Potong Sumbu X",
+                q: "Grafik fungsi y = x² - x - 2 memotong sumbu X di titik...",
+                options: ["(2,0) dan (-1,0)", "(-2,0) dan (1,0)", "(2,0) dan (1,0)", "(-2,0) dan (-1,0)"],
+                ans: 0,
+                expl: "Faktorkan: (x - 2)(x + 1) = 0. x=2 atau x=-1. Titiknya (2,0) dan (-1,0)."
+            }
+        ];
+
+        let timerInterval;
+        let seconds = 0;
+
+        function startQuiz() {
+            document.getElementById('intro-screen').classList.add('hidden');
+            document.getElementById('quiz-screen').classList.remove('hidden');
+            renderQuestions();
+            startTimer();
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                seconds++;
+                const m = Math.floor(seconds / 60).toString().padStart(2, '0');
+                const s = (seconds % 60).toString().padStart(2, '0');
+                document.getElementById('timer').innerText = `${m}:${s}`;
+            }, 1000);
+        }
+
+        function renderQuestions() {
+            const container = document.getElementById('questions-container');
+            questions.forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = 'bg-white p-6 rounded-xl shadow-sm border border-slate-100 question-card';
+                
+                let optionsHtml = '';
+                item.options.forEach((opt, i) => {
+                    optionsHtml += `
+                        <label class="option-label flex items-start p-3 border rounded-lg mb-2 group">
+                            <input type="radio" name="q${index}" value="${i}" class="option-input mt-1 w-4 h-4 text-blue-600 mr-3 flex-shrink-0">
+                            <span class="option-content w-full text-slate-700 group-hover:text-slate-900">${opt}</span>
+                        </label>
+                    `;
+                });
+
+                card.innerHTML = `
+                    <div class="mb-3 flex justify-between items-center">
+                        <span class="bg-blue-100 text-blue-800 text-xs font-bold px-2 py-1 rounded">No. ${item.no}</span>
+                        <span class="text-xs text-slate-400">${item.topic}</span>
+                    </div>
+                    <h3 class="font-semibold text-lg text-slate-800 mb-4">${item.q}</h3>
+                    <div class="space-y-1">${optionsHtml}</div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function submitQuiz() {
+            clearInterval(timerInterval);
+            let score = 0;
+            let correct = 0;
+            const reviewContainer = document.getElementById('review-container');
+            reviewContainer.innerHTML = '';
+
+            questions.forEach((item, index) => {
+                const selected = document.querySelector(`input[name="q${index}"]:checked`);
+                const userAns = selected ? parseInt(selected.value) : -1;
+                const isCorrect = userAns === item.ans;
+
+                if (isCorrect) {
+                    score += 2.5; // 100 / 40
+                    correct++;
+                }
+
+                // Create Review Card
+                const reviewCard = document.createElement('div');
+                reviewCard.className = `p-5 rounded-xl border-l-4 shadow-sm ${isCorrect ? 'bg-green-50 border-green-500' : 'bg-red-50 border-red-500'}`;
+                
+                const userAnsText = userAns === -1 ? "<span class='italic text-slate-500'>Tidak dijawab</span>" : item.options[userAns];
+                
+                reviewCard.innerHTML = `
+                    <div class="flex justify-between mb-2">
+                        <span class="font-bold text-slate-700">Soal ${item.no}</span>
+                        ${isCorrect ? '<span class="text-green-600 font-bold">✔ Benar</span>' : '<span class="text-red-600 font-bold">✘ Salah</span>'}
+                    </div>
+                    <p class="mb-3 text-slate-800">${item.q}</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm mb-3">
+                        <div class="p-2 bg-white rounded border">
+                            <span class="block text-xs text-slate-500 mb-1">Jawaban Kamu:</span>
+                            <span class="${isCorrect ? 'text-green-700 font-bold' : 'text-red-700 font-bold'}">${userAnsText}</span>
+                        </div>
+                        <div class="p-2 bg-white rounded border">
+                            <span class="block text-xs text-slate-500 mb-1">Kunci Jawaban:</span>
+                            <span class="text-green-700 font-bold">${item.options[item.ans]}</span>
+                        </div>
+                    </div>
+                    <div class="text-sm text-slate-600 bg-white p-3 rounded border border-slate-100">
+                        <strong class="text-slate-800">Pembahasan:</strong> ${item.expl}
+                    </div>
+                `;
+                reviewContainer.appendChild(reviewCard);
+            });
+
+            document.getElementById('final-score').innerText = score;
+            document.getElementById('correct-total').innerText = correct;
+            document.getElementById('wrong-total').innerText = 40 - correct;
+
+            document.getElementById('quiz-screen').classList.add('hidden');
+            document.getElementById('result-screen').classList.remove('hidden');
+            window.scrollTo(0, 0);
+        }
+    </script>
+</body>
+</html>
+

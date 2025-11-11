@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Latihan Soal Informatika & TIK</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+        .quiz-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .question-card {
+            transition: all 0.3s ease;
+        }
+        .option-label {
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .option-label:hover {
+            background-color: #f9fafb;
+        }
+        .option-input:checked + .option-content {
+            border-color: #3b82f6;
+            background-color: #eff6ff;
+        }
+        .correct-answer {
+            border-color: #22c55e !important;
+            background-color: #dcfce7 !important;
+        }
+        .wrong-answer {
+            border-color: #ef4444 !important;
+            background-color: #fee2e2 !important;
+        }
+    </style>
+</head>
+<body class="pb-12">
+
+    <!-- Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-10">
+        <div class="max-w-4xl mx-auto px-4 py-4 flex justify-between items-center">
+            <h1 class="text-xl font-bold text-gray-800">Kuis Informatika</h1>
+            <div id="timer" class="text-blue-600 font-semibold hidden">00:00</div>
+        </div>
+    </header>
+
+    <!-- Intro Section -->
+    <div id="intro" class="quiz-container px-4 py-8">
+        <div class="bg-white rounded-xl shadow-lg p-8 text-center">
+            <div class="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <svg class="w-10 h-10 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+            </div>
+            <h2 class="text-3xl font-bold mb-4 text-gray-800">Latihan Soal Informatika</h2>
+            <p class="text-gray-600 mb-6">Materi: User Interface, MS Word, Kecerdasan Buatan (AI), dan TIK.<br>Jumlah Soal: 40 Pilihan Ganda.</p>
+            <button onclick="startQuiz()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg transition duration-300 transform hover:scale-105 shadow-lg">
+                Mulai Mengerjakan
+            </button>
+        </div>
+    </div>
+
+    <!-- Quiz Section -->
+    <div id="quiz" class="quiz-container px-4 py-6 hidden">
+        <!-- Questions will be injected here by JS -->
+        <div id="questions-list" class="space-y-6"></div>
+
+        <div class="mt-8 text-center">
+            <button onclick="submitQuiz()" class="bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-12 rounded-lg transition duration-300 shadow-lg text-lg">
+                Selesai & Lihat Nilai
+            </button>
+        </div>
+    </div>
+
+    <!-- Result Section -->
+    <div id="result" class="quiz-container px-4 py-8 hidden">
+        <div class="bg-white rounded-xl shadow-lg p-8 text-center mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-2">Hasil Pengerjaan</h2>
+            <div class="text-6xl font-bold text-blue-600 mb-2" id="score-display">0</div>
+            <p class="text-gray-500 mb-6">Nilai Akhir Anda</p>
+            <div class="grid grid-cols-2 gap-4 max-w-xs mx-auto text-left">
+                <div class="bg-green-100 p-3 rounded-lg">
+                    <span class="block text-sm text-green-800">Benar</span>
+                    <span class="text-xl font-bold text-green-700" id="correct-count">0</span>
+                </div>
+                <div class="bg-red-100 p-3 rounded-lg">
+                    <span class="block text-sm text-red-800">Salah</span>
+                    <span class="text-xl font-bold text-red-700" id="wrong-count">0</span>
+                </div>
+            </div>
+            <button onclick="location.reload()" class="mt-6 text-blue-600 hover:text-blue-800 font-semibold">
+                &#8635; Ulangi Tes
+            </button>
+        </div>
+
+        <h3 class="text-xl font-bold text-gray-800 mb-4 px-2">Pembahasan Soal</h3>
+        <div id="review-list" class="space-y-6"></div>
+    </div>
+
+    <script>
+        // Database Soal (40 Soal)
+        const questions = [
+            // BAB 1: User Interface (UI)
+            {
+                q: "Apa definisi dari Antar Muka (User Interface)?",
+                options: [
+                    "Perangkat keras yang digunakan untuk mengetik",
+                    "Tampilan dan cara berinteraksi antara pengguna dengan sistem komputer",
+                    "Sistem operasi yang menjalankan komputer",
+                    "Aplikasi untuk membuat dokumen"
+                ],
+                answer: 1, // index 0-3
+                rationale: "UI adalah penghubung visual dan interaksi antara user dan mesin (komputer)."
+            },
+            {
+                q: "Manakah di bawah ini yang merupakan tujuan utama dari User Interface?",
+                options: [
+                    "Membuat komputer menjadi lebih mahal",
+                    "Menyulitkan pengguna agar lebih teliti",
+                    "Meningkatkan efisiensi dan mengurangi kesalahan pengguna",
+                    "Menghapus data yang tidak perlu secara otomatis"
+                ],
+                answer: 2,
+                rationale: "Tujuan UI adalah mempermudah pengguna, efisiensi, kenyamanan, dan mengurangi error."
+            },
+            {
+                q: "Apa kepanjangan dari CLI?",
+                options: [
+                    "Command Line Interface",
+                    "Central Line Interface",
+                    "Computer Local Internet",
+                    "Command Local Interconnect"
+                ],
+                answer: 0,
+                rationale: "CLI singkatan dari Command Line Interface, antarmuka berbasis teks."
+            },
+            {
+                q: "Contoh penerapan Graphical User Interface (GUI) adalah...",
+                options: [
+                    "Mengetik perintah di CMD",
+                    "Menggunakan Terminal Linux tanpa mouse",
+                    "Menggunakan menu ikon di Android atau Windows",
+                    "Menggunakan sensor gerak tubuh"
+                ],
+                answer: 2,
+                rationale: "GUI menggunakan elemen grafis seperti ikon, tombol, dan menu (contoh: Windows, Android)."
+            },
+            {
+                q: "Jenis antarmuka yang menggunakan perintah suara disebut...",
+                options: [
+                    "Gesture Interface",
+                    "Voice User Interface (VUI)",
+                    "Touch User Interface",
+                    "Command Line Interface"
+                ],
+                answer: 1,
+                rationale: "VUI (Voice User Interface) menggunakan suara, contohnya Google Assistant dan Siri."
+            },
+            {
+                q: "Apa fungsi dari komponen 'Scrollbar' pada antarmuka?",
+                options: [
+                    "Mengeksekusi perintah",
+                    "Memilih opsi ganda",
+                    "Menggulir layar ke atas atau bawah",
+                    "Menutup aplikasi"
+                ],
+                answer: 2,
+                rationale: "Scrollbar berfungsi untuk menggulir tampilan layar (scrolling)."
+            },
+            {
+                q: "Komponen antarmuka yang digunakan untuk memilih satu atau lebih opsi dari beberapa pilihan adalah...",
+                options: [
+                    "Checkbox",
+                    "Button",
+                    "Textbox",
+                    "Ikon"
+                ],
+                answer: 0,
+                rationale: "Checkbox memungkinkan pengguna memilih lebih dari satu opsi, sedangkan Radio button biasanya hanya satu."
+            },
+            {
+                q: "Layar menu pada HP Android termasuk jenis antarmuka...",
+                options: [
+                    "CLI",
+                    "GUI & TUI (Touch User Interface)",
+                    "VUI",
+                    "Gesture Only"
+                ],
+                answer: 1,
+                rationale: "Android menggunakan grafis (GUI) dan sentuhan layar (TUI)."
+            },
+            {
+                q: "Kinect dan sensor VR adalah contoh dari jenis antarmuka...",
+                options: [
+                    "Command Line",
+                    "Voice Interface",
+                    "Gesture Interface",
+                    "Graphical Interface"
+                ],
+                answer: 2,
+                rationale: "Gesture Interface menggunakan gerakan tubuh atau tangan."
+            },
+            {
+                q: "Tombol 'Kirim' di WhatsApp adalah contoh komponen UI berupa...",
+                options: [
+                    "Textbox",
+                    "Button (Tombol)",
+                    "Menu",
+                    "Scrollbar"
+                ],
+                answer: 1,
+                rationale: "Tombol Kirim berfungsi untuk mengeksekusi perintah pengiriman pesan (Button)."
+            },
+
+            // BAB 2: MS Word
+            {
+                q: "Microsoft Word adalah aplikasi yang termasuk dalam kategori...",
+                options: [
+                    "Spreadsheet (Pengolah Angka)",
+                    "Word Processor (Pengolah Kata)",
+                    "Presentation (Presentasi)",
+                    "Database Management"
+                ],
+                answer: 1,
+                rationale: "MS Word adalah aplikasi pengolah kata (Word Processor)."
+            },
+            {
+                q: "Bagian yang berada di sisi atas setiap halaman dokumen dan muncul konsisten disebut...",
+                options: [
+                    "Footer",
+                    "Margin",
+                    "Header",
+                    "Paragraph"
+                ],
+                answer: 2,
+                rationale: "Header terletak di bagian atas halaman dokumen."
+            },
+            {
+                q: "Fungsi utama dari Footer biasanya digunakan untuk menampilkan...",
+                options: [
+                    "Judul utama dokumen yang besar",
+                    "Nomor halaman (Page Number)",
+                    "Foto profil penulis",
+                    "Daftar isi otomatis"
+                ],
+                answer: 1,
+                rationale: "Footer (bawah halaman) sering digunakan untuk nomor halaman, copyright, atau catatan kaki."
+            },
+            {
+                q: "Shortcut keyboard untuk membuat dokumen baru di MS Word adalah...",
+                options: [
+                    "Ctrl + O",
+                    "Ctrl + N",
+                    "Ctrl + S",
+                    "Ctrl + P"
+                ],
+                answer: 1,
+                rationale: "Ctrl + N = New Document."
+            },
+            {
+                q: "Jika Anda ingin membatalkan perintah terakhir (Undo), tombol kombinasi yang ditekan adalah...",
+                options: [
+                    "Ctrl + Z",
+                    "Ctrl + Y",
+                    "Ctrl + X",
+                    "Ctrl + V"
+                ],
+                answer: 0,
+                rationale: "Ctrl + Z digunakan untuk Undo. Ctrl + Y untuk Redo."
+            },
+            {
+                q: "Apa fungsi dari shortcut Ctrl + S?",
+                options: [
+                    "Menyalin teks",
+                    "Membuka dokumen",
+                    "Menyimpan dokumen",
+                    "Mencetak dokumen"
+                ],
+                answer: 2,
+                rationale: "Ctrl + S = Save (Menyimpan)."
+            },
+            {
+                q: "Perbedaan antara Ctrl + C dan Ctrl + X adalah...",
+                options: [
+                    "Ctrl + C menghapus teks, Ctrl + X menyalin teks",
+                    "Ctrl + C menyalin (ganda), Ctrl + X memotong (pindah)",
+                    "Ctrl + C mencetak, Ctrl + X keluar",
+                    "Keduanya memiliki fungsi yang sama"
+                ],
+                answer: 1,
+                rationale: "Ctrl + C (Copy) menyalin, Ctrl + X (Cut) memotong/memindahkan."
+            },
+            {
+                q: "Untuk memilih seluruh teks dalam dokumen (Select All), kita menekan...",
+                options: [
+                    "Ctrl + A",
+                    "Ctrl + B",
+                    "Ctrl + S",
+                    "Ctrl + All"
+                ],
+                answer: 0,
+                rationale: "Ctrl + A = Select All."
+            },
+            {
+                q: "Header dapat digunakan untuk menyisipkan...",
+                options: [
+                    "Rumus Excel",
+                    "Logo instansi atau kop surat",
+                    "Video",
+                    "Animasi bergerak"
+                ],
+                answer: 1,
+                rationale: "Header sering dipakai untuk logo, identitas, atau kop surat."
+            },
+            {
+                q: "Shortcut Ctrl + P digunakan untuk...",
+                options: [
+                    "Paste (Tempel)",
+                    "Print (Cetak)",
+                    "Paragraph",
+                    "Page Setup"
+                ],
+                answer: 1,
+                rationale: "Ctrl + P = Print."
+            },
+
+            // BAB 3: AI / Kecerdasan Artifisial
+            {
+                q: "Apa yang dimaksud dengan Artificial Intelligence (AI)?",
+                options: [
+                    "Teknologi jaringan internet super cepat",
+                    "Teknologi yang memungkinkan mesin berpikir/mengambil keputusan seperti manusia",
+                    "Robot yang berbentuk seperti manusia",
+                    "Sistem penyimpanan data awan"
+                ],
+                answer: 1,
+                rationale: "AI adalah simulasi kecerdasan manusia dalam mesin."
+            },
+            {
+                q: "Contoh kemampuan AI dalam mengenali wajah seseorang disebut...",
+                options: [
+                    "Voice Recognition",
+                    "Face Recognition",
+                    "Text Mining",
+                    "Cloud Computing"
+                ],
+                answer: 1,
+                rationale: "Pengenalan wajah disebut Face Recognition."
+            },
+            {
+                q: "Aplikasi AI yang populer untuk menjawab pertanyaan teks dan membantu belajar adalah...",
+                options: [
+                    "Microsoft Excel",
+                    "ChatGPT",
+                    "Adobe Photoshop",
+                    "Winamp"
+                ],
+                answer: 1,
+                rationale: "ChatGPT adalah contoh Generative AI (Chatbot) untuk teks."
+            },
+            {
+                q: "Dalam bidang kesehatan, AI digunakan untuk...",
+                options: [
+                    "Membuat resep masakan",
+                    "Deteksi penyakit dari foto rontgen",
+                    "Mengganti seluruh dokter",
+                    "Mengirim obat via email"
+                ],
+                answer: 1,
+                rationale: "AI Computer Vision digunakan untuk analisis medis seperti rontgen."
+            },
+            {
+                q: "Apa itu 'Computer Vision' dalam jenis AI?",
+                options: [
+                    "AI yang bisa mendengar suara",
+                    "AI yang mampu mengenali gambar, objek, dan wajah",
+                    "AI untuk mengetik cepat",
+                    "AI untuk bermain game"
+                ],
+                answer: 1,
+                rationale: "Computer Vision berkaitan dengan penglihatan mesin (gambar/video)."
+            },
+            {
+                q: "Google Maps yang mencarikan rute tercepat adalah contoh penggunaan AI di bidang...",
+                options: [
+                    "Pendidikan",
+                    "Kesehatan",
+                    "Transportasi",
+                    "Perbankan"
+                ],
+                answer: 2,
+                rationale: "Google Maps mengoptimalkan rute perjalanan (Transportasi)."
+            },
+            {
+                q: "Apa kepanjangan dari 'G' dalam format prompt G-P-E-S?",
+                options: [
+                    "General",
+                    "Guide",
+                    "Goal (Tujuan)",
+                    "Great"
+                ],
+                answer: 2,
+                rationale: "G = Goal (Tujuan apa yang ingin dicapai)."
+            },
+            {
+                q: "Dalam format prompt G-P-E-S, 'E' berarti Expectation, yang maksudnya adalah...",
+                options: [
+                    "Masalah apa yang dihadapi",
+                    "Output seperti apa yang diharapkan (tabel, poin, dll)",
+                    "Gaya bahasa yang digunakan",
+                    "Energi yang dibutuhkan"
+                ],
+                answer: 1,
+                rationale: "E = Expectation (Harapan format output)."
+            },
+            {
+                q: "Deteksi transaksi mencurigakan (fraud detection) adalah contoh AI di bidang...",
+                options: [
+                    "Pendidikan",
+                    "Sosial Media",
+                    "Perbankan / Keuangan",
+                    "Hiburan"
+                ],
+                answer: 2,
+                rationale: "Perbankan menggunakan AI untuk keamanan transaksi."
+            },
+            {
+                q: "Generative AI adalah jenis AI yang mampu...",
+                options: [
+                    "Hanya membaca data",
+                    "Membuat konten baru seperti teks, gambar, atau musik",
+                    "Hanya menghitung angka",
+                    "Memperbaiki perangkat keras"
+                ],
+                answer: 1,
+                rationale: "Generative AI (seperti DALL-E, Gemini) menciptakan konten baru."
+            },
+
+            // BAB 4: TIK (Teknologi Informasi dan Komunikasi)
+            {
+                q: "Apa singkatan dari TIK?",
+                options: [
+                    "Teknik Industri dan Komputer",
+                    "Teknologi Informasi dan Komunikasi",
+                    "Teknologi Internet dan Komputasi",
+                    "Telekomunikasi Induk Komputer"
+                ],
+                answer: 1,
+                rationale: "TIK = Teknologi Informasi dan Komunikasi."
+            },
+            {
+                q: "Manakah yang termasuk perangkat keras (Hardware) TIK?",
+                options: [
+                    "Windows, Android",
+                    "Router, Server, Komputer",
+                    "Aplikasi Chat, Browser",
+                    "Manusia (User)"
+                ],
+                answer: 1,
+                rationale: "Hardware adalah alat fisik seperti Komputer, Router, Server."
+            },
+            {
+                q: "Istilah 'Brainware' dalam komponen TIK merujuk pada...",
+                options: [
+                    "Perangkat lunak otak",
+                    "Jaringan internet",
+                    "Pengguna (Manusia)",
+                    "Kecerdasan buatan"
+                ],
+                answer: 2,
+                rationale: "Brainware adalah manusia/SDM yang mengoperasikan sistem."
+            },
+            {
+                q: "Windows, Android, dan Browser termasuk dalam komponen...",
+                options: [
+                    "Hardware",
+                    "Software (Perangkat Lunak)",
+                    "Brainware",
+                    "Network"
+                ],
+                answer: 1,
+                rationale: "Software adalah program yang menjalankan sistem."
+            },
+            {
+                q: "Ciri khas komunikasi di Era Digital Modern adalah...",
+                options: [
+                    "Lambat dan jangkauan terbatas",
+                    "Satu arah (seperti TV)",
+                    "Real-time, global, dan interaktif",
+                    "Menggunakan merpati pos"
+                ],
+                answer: 2,
+                rationale: "Era digital memungkinkan komunikasi instan (real-time) dua arah secara global."
+            },
+            {
+                q: "Kentongan dan Merpati Pos termasuk media komunikasi era...",
+                options: [
+                    "Tradisional",
+                    "Elektronik Awal",
+                    "Digital Modern",
+                    "Masa Depan"
+                ],
+                answer: 0,
+                rationale: "Alat-alat tersebut digunakan di era tradisional sebelum elektronik."
+            },
+            {
+                q: "E-KTP dan Website Layanan Publik adalah manfaat TIK di bidang...",
+                options: [
+                    "Bisnis",
+                    "Pendidikan",
+                    "Pemerintahan",
+                    "Hiburan"
+                ],
+                answer: 2,
+                rationale: "Layanan publik digital adalah ranah Pemerintahan (E-Government)."
+            },
+            {
+                q: "Contoh penggunaan TIK di bidang Bisnis adalah...",
+                options: [
+                    "Google Classroom",
+                    "Online Shop dan E-Banking",
+                    "Game Online",
+                    "E-KTP"
+                ],
+                answer: 1,
+                rationale: "E-Banking dan Toko Online mendukung kegiatan ekonomi/bisnis."
+            },
+            {
+                q: "Salah satu dampak negatif TIK adalah 'Hoaks', yang artinya...",
+                options: [
+                    "Berita bohong atau informasi palsu",
+                    "Virus komputer",
+                    "Kecepatan internet lambat",
+                    "Pencurian perangkat keras"
+                ],
+                answer: 0,
+                rationale: "Hoaks adalah penyebaran informasi yang tidak benar."
+            },
+            {
+                q: "Dampak negatif lain dari TIK selain hoaks adalah...",
+                options: [
+                    "Pekerjaan lebih efisien",
+                    "Komunikasi mudah",
+                    "Kecanduan gadget dan privasi rentan bocor",
+                    "Informasi lebih cepat didapat"
+                ],
+                answer: 2,
+                rationale: "Kecanduan dan masalah privasi adalah dampak negatif utama."
+            }
+        ];
+
+        function startQuiz() {
+            document.getElementById('intro').classList.add('hidden');
+            document.getElementById('quiz').classList.remove('hidden');
+            renderQuestions();
+        }
+
+        function renderQuestions() {
+            const list = document.getElementById('questions-list');
+            questions.forEach((item, index) => {
+                const questionCard = document.createElement('div');
+                questionCard.className = 'bg-white rounded-xl shadow p-6 question-card';
+                
+                let optionsHtml = '';
+                item.options.forEach((opt, i) => {
+                    optionsHtml += `
+                        <label class="option-label flex items-center p-3 border rounded-lg mb-2">
+                            <input type="radio" name="q${index}" value="${i}" class="option-input w-4 h-4 text-blue-600 focus:ring-blue-500 mr-3">
+                            <span class="option-content w-full text-gray-700">${opt}</span>
+                        </label>
+                    `;
+                });
+
+                questionCard.innerHTML = `
+                    <h3 class="font-bold text-lg text-gray-800 mb-4"><span class="text-blue-600">${index + 1}.</span> ${item.q}</h3>
+                    <div class="space-y-1">
+                        ${optionsHtml}
+                    </div>
+                `;
+                list.appendChild(questionCard);
+            });
+        }
+
+        function submitQuiz() {
+            let score = 0;
+            let correctCount = 0;
+            let wrongCount = 0;
+            const reviewList = document.getElementById('review-list');
+            reviewList.innerHTML = '';
+
+            // Calculate Score & Build Review
+            questions.forEach((item, index) => {
+                const selected = document.querySelector(`input[name="q${index}"]:checked`);
+                const userAnswer = selected ? parseInt(selected.value) : -1;
+                
+                const isCorrect = userAnswer === item.answer;
+                
+                if (isCorrect) {
+                    score += 2.5; // 100 / 40 = 2.5 poin per soal
+                    correctCount++;
+                } else {
+                    wrongCount++;
+                    // Add to review only if wrong
+                    const reviewItem = document.createElement('div');
+                    reviewItem.className = 'bg-white border-l-4 border-red-500 rounded-r-xl shadow p-6';
+                    
+                    const userText = userAnswer === -1 ? "Tidak dijawab" : item.options[userAnswer];
+                    const correctText = item.options[item.answer];
+
+                    reviewItem.innerHTML = `
+                        <p class="font-bold text-gray-800 mb-2"><span class="text-red-500">No. ${index + 1}</span>: ${item.q}</p>
+                        <div class="text-sm mb-2">
+                            <span class="text-red-600 font-semibold">Jawaban Kamu:</span> ${userText}
+                        </div>
+                        <div class="text-sm mb-3">
+                            <span class="text-green-600 font-semibold">Jawaban Benar:</span> ${correctText}
+                        </div>
+                        <div class="bg-blue-50 p-3 rounded text-sm text-blue-800">
+                            <strong>Penjelasan:</strong> ${item.rationale}
+                        </div>
+                    `;
+                    reviewList.appendChild(reviewItem);
+                }
+            });
+
+            // Update UI Results
+            document.getElementById('score-display').innerText = Math.round(score);
+            document.getElementById('correct-count').innerText = correctCount;
+            document.getElementById('wrong-count').innerText = wrongCount;
+
+            if(wrongCount === 0) {
+                reviewList.innerHTML = '<p class="text-center text-green-600 font-bold p-4">Selamat! Anda menjawab semua soal dengan benar.</p>';
+            }
+
+            // Switch Views
+            document.getElementById('quiz').classList.add('hidden');
+            document.getElementById('result').classList.remove('hidden');
+            window.scrollTo(0, 0);
+        }
+    </script>
+</body>
+</html>
+

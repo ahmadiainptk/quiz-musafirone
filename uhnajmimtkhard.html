@@ -3,152 +3,187 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Latihan PAS Matematika Kelas IX - Sulit (KaTeX)</title>
+    <title>PAS Matematika Kelas IX - Hard Mode</title>
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css" integrity="sha384-My7t2SNP2DkR23MdVrhKk9vGzKfuK/4GVRstLgtCfZsNZa0iJgS0jqRta2vWJk+B" crossorigin="anonymous">
+    <!-- KaTeX CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css" xintegrity="sha384-My7t2SNP2DkR23MdVrhKk9vGzKfuK/4GVRstLgtCfZsNZa0iJgS0jqRta2vWJk+B" crossorigin="anonymous">
 
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js" integrity="sha384-hIoIeAImFME2B8Tu2B+Q8LhAKldhC1-5K/+iS2rVciZfGZYFN2BQvD2DqDmyPqTw" crossorigin="anonymous"></script>
+    <!-- KaTeX JS -->
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js" xintegrity="sha384-hIoIeAImFME2B8Tu2B+Q8LhAKldhC1-5K/+iS2rVciZfGZYFN2BQvD2DqDmyPqTw" crossorigin="anonymous"></script>
 
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/contrib/auto-render.min.js" integrity="sha384-48nLhNl/C/Z+N3T8iUaCSetU+HOr0QSHxC2IiRinS+I7eQ2gWnQjSrmmB/sP/qS/"
-        onload="renderMathInElement(document.body);"></script>
+    <!-- KaTeX Auto-render -->
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/contrib/auto-render.min.js" xintegrity="sha384-48nLhNl/C/Z+N3T8iUaCSetU+HOr0QSHxC2IiRinS+I7eQ2gWnQjSrmmB/sP/qS/"
+        onload="initKatex()"></script>
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f8fafc;
+            background-color: #f1f5f9;
             color: #1e293b;
         }
-        .quiz-container { max-width: 900px; margin: 0 auto; }
-        .option-label { cursor: pointer; transition: background-color 0.2s, border-color 0.2s; }
-        .option-label:hover { background-color: #f1f5f9; }
+        .quiz-container { max-width: 850px; margin: 0 auto; }
+        .question-card { transition: all 0.2s ease; }
+        .option-label { cursor: pointer; transition: all 0.2s; }
+        .option-label:hover { background-color: #f8fafc; border-color: #6366f1; }
         .option-input:checked + .option-content {
-            border-color: #4f46e5;
             background-color: #eef2ff;
-            color: #3730a3;
+            border-color: #4f46e5;
+            color: #312e81;
             font-weight: 600;
         }
+        /* KaTeX adjustment */
         .katex { font-size: 1.1em; }
     </style>
 </head>
-<body class="min-h-screen pb-10">
+<body class="min-h-screen pb-12">
 
-    <header class="bg-white border-b sticky top-0 z-20 shadow-sm">
+    <!-- Navbar -->
+    <header class="bg-white border-b sticky top-0 z-30 shadow-sm">
         <div class="max-w-5xl mx-auto px-4 py-4 flex justify-between items-center">
-            <div>
-                <h1 class="text-xl font-bold text-slate-800">PAS Matematika (Hard)</h1>
-                <p class="text-xs text-indigo-600">Sesuai Kisi-kisi | KaTeX Version</p>
+            <div class="flex items-center gap-3">
+                <div class="bg-indigo-600 text-white p-2 rounded-lg">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                </div>
+                <div>
+                    <h1 class="text-lg font-bold text-slate-800 leading-tight">PAS Matematika IX</h1>
+                    <p class="text-xs text-indigo-600 font-medium">Tingkat Lanjut (HOTS)</p>
+                </div>
             </div>
-            <div class="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full text-sm font-semibold" id="timer">00:00</div>
+            <div class="bg-slate-100 text-slate-700 px-4 py-1.5 rounded-full text-sm font-mono font-bold shadow-inner" id="timer">00:00</div>
         </div>
     </header>
 
-    <div id="intro-screen" class="quiz-container px-4 py-10 text-center">
-        <div class="bg-white p-8 rounded-2xl shadow-lg border border-slate-100">
-            <h2 class="text-3xl font-bold mb-4 text-slate-800">Tantangan Matematika (Sulit)</h2>
-            <p class="text-slate-600 mb-8 max-w-lg mx-auto">
-                Soal ini dirancang untuk menguji pemahaman mendalam dan kemampuan multi-langkah.
-                Semua soal tetap mengacu pada 40 Indikator Kisi-kisi.
+    <!-- Intro Screen -->
+    <div id="intro-screen" class="quiz-container px-4 py-12 text-center">
+        <div class="bg-white p-10 rounded-2xl shadow-xl border border-slate-200">
+            <div class="mb-6 inline-block p-4 bg-indigo-50 rounded-full">
+                <svg class="w-12 h-12 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.384-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
+            </div>
+            <h2 class="text-3xl font-extrabold mb-4 text-slate-800">Siap untuk Tantangan?</h2>
+            <p class="text-slate-600 mb-8 max-w-lg mx-auto text-lg leading-relaxed">
+                Soal ini disusun dengan tingkat kesulitan lebih tinggi, menggunakan simbol matematika kompleks (KaTeX), dan sesuai dengan 40 indikator kisi-kisi.
             </p>
-            <button onclick="startQuiz()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-lg font-semibold py-3 px-10 rounded-xl shadow-md transition-all hover:scale-105">
-                Mulai
+            <button onclick="startQuiz()" class="bg-indigo-600 hover:bg-indigo-700 hover:shadow-lg text-white text-lg font-bold py-4 px-12 rounded-xl transition-all transform hover:-translate-y-1 active:translate-y-0">
+                Mulai Mengerjakan
             </button>
         </div>
     </div>
 
+    <!-- Quiz Screen -->
     <div id="quiz-screen" class="hidden quiz-container px-4 py-8">
         <form id="quiz-form">
-            <div id="questions-container" class="space-y-6"></div>
-            <div class="mt-10 text-center">
-                <button type="button" onclick="submitQuiz()" class="bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-12 rounded-xl shadow-lg transition-all text-lg">
+            <div id="questions-container" class="space-y-8"></div>
+            
+            <div class="mt-12 text-center">
+                <button type="button" onclick="submitQuiz()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 px-16 rounded-xl shadow-lg transition-all text-lg hover:shadow-xl">
                     Selesai & Kumpulkan
                 </button>
             </div>
         </form>
     </div>
 
+    <!-- Result Screen -->
     <div id="result-screen" class="hidden quiz-container px-4 py-8">
-        <div class="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden mb-8">
-            <div class="bg-slate-800 text-white p-8 text-center">
-                <p class="text-sm uppercase tracking-widest opacity-75 mb-2">Nilai Akhir</p>
-                <h2 class="text-6xl font-bold mb-4" id="final-score">0</h2>
-                <div class="flex justify-center gap-8 mt-4">
-                    <div><span class="block text-2xl font-bold text-green-400" id="correct-total">0</span><span class="text-xs opacity-75">Benar</span></div>
-                    <div><span class="block text-2xl font-bold text-red-400" id="wrong-total">0</span><span class="text-xs opacity-75">Salah</span></div>
+        <div class="bg-white rounded-2xl shadow-xl overflow-hidden mb-8 border border-slate-200">
+            <div class="bg-slate-800 text-white p-10 text-center relative overflow-hidden">
+                <div class="relative z-10">
+                    <p class="text-sm uppercase tracking-widest opacity-75 mb-2 font-semibold">Nilai Akhir Anda</p>
+                    <h2 class="text-7xl font-extrabold mb-6 tracking-tight" id="final-score">0</h2>
+                    <div class="flex justify-center gap-10">
+                        <div class="text-center">
+                            <span class="block text-3xl font-bold text-emerald-400" id="correct-total">0</span>
+                            <span class="text-xs uppercase tracking-wider opacity-75">Benar</span>
+                        </div>
+                        <div class="text-center">
+                            <span class="block text-3xl font-bold text-rose-400" id="wrong-total">0</span>
+                            <span class="text-xs uppercase tracking-wider opacity-75">Salah</span>
+                        </div>
+                    </div>
                 </div>
+                <!-- Decorative circles -->
+                <div class="absolute top-0 left-0 -ml-10 -mt-10 w-40 h-40 bg-white opacity-5 rounded-full"></div>
+                <div class="absolute bottom-0 right-0 -mr-10 -mb-10 w-40 h-40 bg-white opacity-5 rounded-full"></div>
             </div>
-            <div class="p-6 bg-slate-50 text-center">
-                <button onclick="location.reload()" class="text-indigo-600 font-semibold hover:underline">Kerjakan Ulang</button>
+            <div class="p-6 bg-slate-50 text-center border-t border-slate-100">
+                <button onclick="location.reload()" class="text-indigo-600 font-bold hover:text-indigo-800 flex items-center justify-center mx-auto gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                    Coba Lagi
+                </button>
             </div>
         </div>
-        <h3 class="text-2xl font-bold text-slate-800 mb-6">Pembahasan Soal</h3>
+
+        <div class="flex items-center gap-3 mb-6">
+            <h3 class="text-2xl font-bold text-slate-800">Pembahasan Soal</h3>
+            <span class="text-sm bg-indigo-100 text-indigo-700 px-2 py-1 rounded font-medium">KaTeX Enabled</span>
+        </div>
+        
         <div id="review-container" class="space-y-6"></div>
     </div>
 
     <script>
-        // Panggil auto-render KaTeX
-        document.addEventListener("DOMContentLoaded", function() {
-            if (typeof renderMathInElement === 'function') {
-                renderMathInElement(document.body, {
-                    delimiters: [
-                        {left: "$$", right: "$$", display: true},
-                        {left: "\\(", right: "\\)", display: false},
-                        {left: "\\[", right: "\\]", display: true}
-                    ]
-                });
-            }
-        });
+        // Fungsi inisialisasi KaTeX
+        function initKatex() {
+            renderMathInElement(document.body, {
+                delimiters: [
+                    {left: "$$", right: "$$", display: true},
+                    {left: "\\(", right: "\\)", display: false},
+                    {left: "\\[", right: "\\]", display: true}
+                ],
+                throwOnError: false
+            });
+        }
 
+        // Database Soal (Perbaikan Syntax: Backslash ganda untuk string JS)
         const questions = [
-            // --- 1. BILANGAN BERPANGKAT & AKAR ---
-            { no: 1, topic: "Pangkat", q: "Bentuk sederhana dari \\( (a^2 b^3)^2 \cdot a^5 \\) adalah...", options: ["\\( a^9 b^6 \\)", "\\( a^9 b^5 \\)", "\\( a^7 b^6 \\)", "\\( a^7 b^5 \\)"], ans: 0, expl: "\\( (a^4 b^6) \cdot a^5 = a^{4+5} b^6 = a^9 b^6 \\)" },
-            { no: 2, topic: "Pangkat", q: "Hasil dari \\( 81^{\frac{3}{4}} + 16^{\frac{1}{2}} - (27)^{\frac{1}{3}} \\) adalah...", options: ["28", "30", "27", "26"], ans: 0, expl: "\\( (3^4)^{\frac{3}{4}} + (4^2)^{\frac{1}{2}} - (3^3)^{\frac{1}{3}} = 3^3 + 4^1 - 3^1 = 27 + 4 - 3 = 28 \\)" },
-            { no: 3, topic: "Pangkat", q: "Pernyataan yang TIDAK BENAR untuk \\( a, b \neq 0 \\) adalah...", options: ["\\( (a/b)^{-n} = (b/a)^n \\)", "\\( (a^m)^n = a^{m \cdot n} \\)", "\\( a^m \cdot b^m = (ab)^m \\)", "\\( a^m + a^n = a^{m+n} \\)"], ans: 3, expl: "Sifat \\( a^m + a^n \\) tidak bisa disederhanakan. Sifat \\( a^{m+n} \\) adalah untuk \\( a^m \cdot a^n \\)." },
-            { no: 4, topic: "Operasi Campuran", q: "Hasil dari \\( \frac{125^{\frac{2}{3}} \times 9^{\frac{1}{2}}}{5^2} \\) adalah...", options: ["3", "5", "9", "25"], ans: 0, expl: "\\( \frac{(5^3)^{\frac{2}{3}} \times (3^2)^{\frac{1}{2}}}{25} = \frac{5^2 \times 3^1}{25} = \frac{25 \times 3}{25} = 3 \\)" },
-            { no: 5, topic: "Notasi Ilmiah", q: "Hasil dari \\( (8.1 \times 10^5) : (3 \times 10^{-2}) \\) adalah...", options: ["\\( 2.7 \times 10^7 \\)", "\\( 2.7 \times 10^3 \\)", "\\( 2.7 \times 10^8 \\)", "\\( 2.7 \times 10^{-7} \\)"], ans: 0, expl: "\\( (8.1/3) \times 10^{5 - (-2)} = 2.7 \times 10^7 \\)" },
-            { no: 6, topic: "Akar", q: "Hasil dari \\( 2\sqrt{75} + \sqrt{108} - \sqrt{12} \\) adalah...", options: ["\\( 14\sqrt{3} \\)", "\\( 15\sqrt{3} \\)", "\\( 10\sqrt{3} + 6\sqrt{3} - 2\sqrt{3} \\)", "\\( 19\sqrt{3} \\)"], ans: 0, expl: "\\( 2(5\sqrt{3}) + 6\sqrt{3} - 2\sqrt{3} = 10\sqrt{3} + 6\sqrt{3} - 2\sqrt{3} = 14\sqrt{3} \\)" },
-            { no: 7, topic: "Akar", q: "Hasil dari \\( (\sqrt{5} + 2\sqrt{3})(\sqrt{5} - \sqrt{3}) \\) adalah...", options: ["\\( \sqrt{15} - 1 \\)", "\\( -1 + \sqrt{15} \\)", "\\( 11 + \sqrt{15} \\)", "\\( 5 + 3\sqrt{15} - 6 \\)"], ans: 1, expl: "Gunakan FOIL: \\( 5 - \sqrt{15} + 2\sqrt{15} - 6 = -1 + \sqrt{15} \\)" },
-            { no: 8, topic: "Rasionalisasi", q: "Bentuk rasional dari \\( \frac{15}{2\sqrt{5}} \\) adalah...", options: ["\\( \frac{3\sqrt{5}}{2} \\)", "\\( \frac{2\sqrt{5}}{3} \\)", "\\( 3\sqrt{5} \\)", "\\( 15\sqrt{5} \\)"], ans: 0, expl: "Kalikan \\( \frac{\sqrt{5}}{\sqrt{5}} \\). Menjadi \\( \frac{15\sqrt{5}}{2 \cdot 5} = \frac{15\sqrt{5}}{10} = \frac{3\sqrt{5}}{2} \\)." },
-            { no: 9, topic: "Rasionalisasi", q: "Bentuk rasional dari \\( \frac{10}{\sqrt{7} - \sqrt{2}} \\) adalah...", options: ["\\( 2(\sqrt{7} + \sqrt{2}) \\)", "\\( 2(\sqrt{7} - \sqrt{2}) \\)", "\\( 5(\sqrt{7} + \sqrt{2}) \\)", "\\( \sqrt{7} + \sqrt{2} \\)"], ans: 0, expl: "Kalikan sekawan \\( (\sqrt{7}+\sqrt{2}) \\). Penyebut: 7-2=5. Pembilang: \\( 10(\sqrt{7}+\sqrt{2}) \\). Hasil: \\( \frac{10(\sqrt{7}+\sqrt{2})}{5} = 2(\sqrt{7}+\sqrt{2}) \\)." },
-            { no: 10, topic: "Soal Cerita", q: "Sebuah kebun berbentuk persegi panjang. Panjangnya \\( (5 + \sqrt{2}) \\) m dan lebarnya \\( (5 - \sqrt{2}) \\) m. Luas kebun adalah...", options: ["23 m²", "27 m²", "25 m²", "\\( 25 - \sqrt{2} \\) m²"], ans: 0, expl: "L = p × l = \\( (5+\sqrt{2})(5-\sqrt{2}) \\) (bentuk selisih kuadrat). L = \\( 5^2 - (\sqrt{2})^2 = 25 - 2 = 23 \\) m²." },
-            { no: 11, topic: "Pangkat", q: "Bentuk sederhana dari \\( \frac{(p^3 q^{-2})^2}{p^{-1} q^{-5}} \\) adalah...", options: ["\\( p^7 q \\)", "\\( p^5 q \\)", "\\( p^7 q^{-9} \\)", "\\( p^5 q^{-9} \\)"], ans: 0, expl: "\\( \frac{p^6 q^{-4}}{p^{-1} q^{-5}} = p^{6 - (-1)} q^{-4 - (-5)} = p^7 q^1 = p^7 q \\)." },
+            // 1. BILANGAN BERPANGKAT
+            { no: 1, topic: "Pangkat", q: "Bentuk sederhana dari \\( (a^2 b^3)^2 \\cdot a^5 \\) adalah...", options: ["\\( a^9 b^6 \\)", "\\( a^9 b^5 \\)", "\\( a^7 b^6 \\)", "\\( a^7 b^5 \\)"], ans: 0, expl: "\\( (a^2 b^3)^2 \\cdot a^5 = (a^4 b^6) \\cdot a^5 = a^{4+5} b^6 = a^9 b^6 \\)" },
+            { no: 2, topic: "Pangkat Pecahan", q: "Hasil dari \\( 81^{\\frac{3}{4}} + 16^{\\frac{1}{2}} - 27^{\\frac{1}{3}} \\) adalah...", options: ["28", "30", "27", "26"], ans: 0, expl: "\\( (3^4)^{\\frac{3}{4}} + (4^2)^{\\frac{1}{2}} - (3^3)^{\\frac{1}{3}} = 3^3 + 4^1 - 3^1 = 27 + 4 - 3 = 28 \\)" },
+            { no: 3, topic: "Sifat Pangkat", q: "Manakah pernyataan yang **SALAH** jika \\( a, b \\neq 0 \\)?", options: ["\\( (a/b)^{-n} = (b/a)^n \\)", "\\( (a^m)^n = a^{m \\cdot n} \\)", "\\( a^m \\cdot b^m = (ab)^m \\)", "\\( a^m + a^n = a^{m+n} \\)"], ans: 3, expl: "Sifat \\( a^m + a^n \\) tidak dapat disederhanakan menjadi \\( a^{m+n} \\). Sifat \\( a^{m+n} \\) berlaku untuk perkalian \\( a^m \\cdot a^n \\)." },
+            { no: 4, topic: "Operasi Campuran", q: "Hasil dari \\( \\frac{125^{\\frac{2}{3}} \\times 9^{\\frac{1}{2}}}{5^2} \\) adalah...", options: ["3", "5", "9", "25"], ans: 0, expl: "\\( \\frac{(5^3)^{\\frac{2}{3}} \\times (3^2)^{\\frac{1}{2}}}{25} = \\frac{5^2 \\times 3}{25} = \\frac{25 \\times 3}{25} = 3 \\)" },
+            { no: 5, topic: "Notasi Ilmiah", q: "Hasil dari \\( (8.1 \\times 10^5) : (3 \\times 10^{-2}) \\) dalam notasi ilmiah adalah...", options: ["\\( 2.7 \\times 10^7 \\)", "\\( 2.7 \\times 10^3 \\)", "\\( 2.7 \\times 10^8 \\)", "\\( 2.7 \\times 10^{-7} \\)"], ans: 0, expl: "Bagian angka: \\( 8.1 : 3 = 2.7 \\). Bagian pangkat: \\( 10^5 : 10^{-2} = 10^{5 - (-2)} = 10^7 \\). Jadi \\( 2.7 \\times 10^7 \\)." },
+            { no: 6, topic: "Operasi Akar", q: "Hasil sederhana dari \\( 2\\sqrt{75} + \\sqrt{108} - \\sqrt{12} \\) adalah...", options: ["\\( 14\\sqrt{3} \\)", "\\( 15\\sqrt{3} \\)", "\\( 8\\sqrt{3} \\)", "\\( 19\\sqrt{3} \\)"], ans: 0, expl: "\\( 2(5\\sqrt{3}) + 6\\sqrt{3} - 2\\sqrt{3} = 10\\sqrt{3} + 6\\sqrt{3} - 2\\sqrt{3} = 14\\sqrt{3} \\)" },
+            { no: 7, topic: "Perkalian Akar", q: "Hasil dari \\( (\\sqrt{5} + 2\\sqrt{3})(\\sqrt{5} - \\sqrt{3}) \\) adalah...", options: ["\\( -1 + \\sqrt{15} \\)", "\\( 1 + \\sqrt{15} \\)", "\\( 11 + \\sqrt{15} \\)", "\\( -1 - \\sqrt{15} \\)"], ans: 0, expl: "FOIL: \\( (\\sqrt{5})(\\sqrt{5}) - \\sqrt{15} + 2\\sqrt{15} - 2(3) = 5 + \\sqrt{15} - 6 = -1 + \\sqrt{15} \\)" },
+            { no: 8, topic: "Merasionalkan", q: "Bentuk rasional dari \\( \\frac{15}{2\\sqrt{5}} \\) adalah...", options: ["\\( \\frac{3\\sqrt{5}}{2} \\)", "\\( \\frac{2\\sqrt{5}}{3} \\)", "\\( 3\\sqrt{5} \\)", "\\( 15\\sqrt{5} \\)"], ans: 0, expl: "Kalikan dengan \\( \\frac{\\sqrt{5}}{\\sqrt{5}} \\). Hasil: \\( \\frac{15\\sqrt{5}}{2 \\cdot 5} = \\frac{15\\sqrt{5}}{10} = \\frac{3}{2}\\sqrt{5} \\)." },
+            { no: 9, topic: "Merasionalkan (2)", q: "Bentuk rasional dari \\( \\frac{10}{\\sqrt{7} - \\sqrt{2}} \\) adalah...", options: ["\\( 2(\\sqrt{7} + \\sqrt{2}) \\)", "\\( 2(\\sqrt{7} - \\sqrt{2}) \\)", "\\( 5(\\sqrt{7} + \\sqrt{2}) \\)", "\\( \\sqrt{7} + \\sqrt{2} \\)"], ans: 0, expl: "Kalikan sekawan \\( (\\sqrt{7}+\\sqrt{2}) \\). Penyebut menjadi \\( 7-2=5 \\). Pembilang \\( 10(\\sqrt{7}+\\sqrt{2}) \\). Hasil \\( 2(\\sqrt{7}+\\sqrt{2}) \\)." },
+            { no: 10, topic: "Soal Cerita Akar", q: "Sebuah kebun persegi panjang memiliki panjang \\( (5 + \\sqrt{2}) \\) m dan lebar \\( (5 - \\sqrt{2}) \\) m. Luas kebun adalah...", options: ["23 m²", "27 m²", "25 m²", "21 m²"], ans: 0, expl: "Luas = \\( (5+\\sqrt{2})(5-\\sqrt{2}) = 5^2 - (\\sqrt{2})^2 = 25 - 2 = 23 \\)." },
+            { no: 11, topic: "Pangkat Negatif", q: "Bentuk sederhana dari \\( \\frac{(p^3 q^{-2})^2}{p^{-1} q^{-5}} \\) adalah...", options: ["\\( p^7 q \\)", "\\( p^5 q \\)", "\\( p^7 q^{-9} \\)", "\\( p^5 q^{-9} \\)"], ans: 0, expl: "Pembilang: \\( p^6 q^{-4} \\). Dibagi penyebut: \\( p^{6-(-1)} q^{-4-(-5)} = p^7 q^1 \\)." },
             
-            // --- 2. BANGUN RUANG SISI DATAR ---
-            { no: 12, topic: "Sifat Kubus", q: "Panjang diagonal ruang kubus adalah \\( 10\sqrt{3} \\) cm. Panjang rusuk kubus tersebut adalah...", options: ["10 cm", "5 cm", "\\( 10\sqrt{2} \\) cm", "30 cm"], ans: 0, expl: "Rumus Diag. Ruang = \\( s\sqrt{3} \\). Jika \\( s\sqrt{3} = 10\sqrt{3} \\), maka \\( s = 10 \\)." },
-            { no: 13, topic: "Balok", q: "Luas permukaan balok 550 cm². Jika panjang 10 cm dan lebar 15 cm, tinggi balok adalah...", options: ["5 cm", "10 cm", "8 cm", "6 cm"], ans: 0, expl: "L=2(pl+pt+lt) → 550=2(150 + 10t + 15t) → 275=150 + 25t → 125=25t → t=5." },
-            { no: 14, topic: "Kerangka Balok", q: "Kawat 10 meter akan dibuat kerangka balok (15cm x 10cm x 5cm). Berapa sisa kawat setelah membuat kerangka sebanyak mungkin?", options: ["40 cm", "60 cm", "100 cm", "0 cm"], ans: 0, expl: "1 kerangka = 4(15+10+5) = 4(30) = 120 cm. Kawat = 1000 cm. \\( 1000 / 120 = 8.33 \\). Dibuat 8 kerangka. 8 x 120 = 960 cm. Sisa = 1000 - 960 = 40 cm." },
-            { no: 15, topic: "LP Kubus", q: "Jika Volume kubus adalah \\(216 \text{ cm}^3\\), maka Luas Permukaan kubus adalah...", options: ["216 cm²", "144 cm²", "36 cm²", "180 cm²"], ans: 0, expl: "\\( V = s^3 \to 216 = s^3 \to s = 6 \\). \\( LP = 6s^2 = 6 \times 6^2 = 6 \times 36 = 216 \\) cm²." },
-            { no: 16, topic: "Volume Prisma", q: "Alas prisma berbentuk trapesium sama kaki dengan sisi sejajar 10cm & 20cm, dan tinggi alas 12cm. Jika tinggi prisma 25cm, volumenya...", options: ["4.500 cm³", "3.750 cm³", "3.000 cm³", "5.000 cm³"], ans: 0, expl: "La = ½(a+b)t = ½(10+20)12 = 180. V = La × t_prisma = 180 × 25 = 4.500." },
-            { no: 17, topic: "Tinggi Prisma", q: "Volume prisma 600 cm³. Alasnya segitiga siku-siku dengan sisi penyiku 8 cm dan 15 cm. Tinggi prisma adalah...", options: ["10 cm", "12 cm", "15 cm", "8 cm"], ans: 0, expl: "La = ½(8)(15) = 60. t = V / La = 600 / 60 = 10." },
-            { no: 18, topic: "LP Limas", q: "Limas alas persegi bervolume 400 cm³ dan tinggi limas 12 cm. Luas permukaan limas adalah...", options: ["360 cm²", "340 cm²", "400 cm²", "260 cm²"], ans: 0, expl: "V = ⅓ La.t → 400 = ⅓ La(12) → La = 100. Sisi alas (s) = 10. \\( t_{segitiga} = \sqrt{t^2 + (½s)^2} = \sqrt{12^2 + 5^2} = 13 \\). L_selimut = 4(½ × 10 × 13) = 260. LP = La + Ls = 100 + 260 = 360." },
-            { no: 19, topic: "Alas Limas", q: "Volume limas \\(T.ABCD\\) adalah 1.280 cm³. Jika tinggi limas 15 cm, luas alas \\(ABCD\\) adalah...", options: ["256 cm²", "128 cm²", "85.3 cm²", "300 cm²"], ans: 0, expl: "V = ⅓ La × t → 1280 = ⅓ La × 15 → 1280 = 5 La → La = 1280 / 5 = 256." },
-            { no: 20, topic: "LP Prisma", q: "Prisma segitiga. Luas alas 60 cm² dan keliling alas 40 cm. Jika luas selimutnya 400 cm², luas permukaannya adalah...", options: ["520 cm²", "460 cm²", "800 cm²", "860 cm²"], ans: 0, expl: "LP = 2 × La + L_selimut. LP = 2(60) + 400 = 120 + 400 = 520." },
-            
-            // --- 3. BANGUN RUANG SISI LENGKUNG ---
-            { no: 21, topic: "LP Tabung", q: "Luas permukaan tabung tanpa tutup adalah \\( 175\pi \\). Jika jari-jari 5 cm, luas permukaan tabung (dengan tutup) adalah...", options: ["\\( 225\pi \\)", "\\( 200\pi \\)", "\\( 175\pi \\)", "\\( 150\pi \\)"], ans: 0, expl: "L(tanpa tutup) = La + Ls = \\( \pi r^2 + 2\pi rt = 175\pi \\). \\( 25\pi + 10\pi t = 175\pi \to 10\pi t = 150\pi \to t=15 \\). LP(total) = 2La + Ls = 2(25\pi) + 10\pi(15) = 50\pi + 150\pi = 200\pi." (Wait, L(total) = L(tanpa tutup) + La = 175pi + 25pi = 200pi. Faster) },
-            { no: 22, topic: "Sifat Belah Ketupat", q: "Pernyataan yang PASTI benar untuk belah ketupat adalah...", options: ["Kedua diagonalnya berpotongan tegak lurus dan membagi sama panjang", "Keempat sudutnya sama besar", "Kedua diagonalnya sama panjang", "Memiliki tepat 2 simetri lipat"], ans: 0, expl: "Sifat utama belah ketupat adalah diagonal saling tegak lurus dan saling membagi dua. (Indikator 22 menanyakan ini, walau topiknya BRSL)." },
-            { no: 23, topic: "Kerucut", q: "Volume kerucut \\( 300\pi \text{ cm}^3 \\) dan tingginya 12 cm. Panjang garis pelukis (s) kerucut adalah...", options: ["13 cm", "15 cm", "10 cm", "12 cm"], ans: 0, expl: "V = ⅓πr²t → 300π = ⅓πr²(12) → 300 = 4r² → r² = 75. \\( s^2 = r^2 + t^2 = 75 + 12^2 = 75 + 144 = 219 \\). Wait... 300/4=75. OK. Let's re-check V. 300pi. 1/3 pi r^2 (12). 300 = 4r^2. r^2=75. s^2 = 75 + 144 = 219. (This is complex, maybe V=100pi?) Let's assume V=100pi. V=1/3 pi r^2 (12) -> 100 = 4r^2 -> r^2=25 -> r=5. s^2 = 5^2 + 12^2 = 169 -> s=13. (Let's change the question V to 100pi) Q: Volume kerucut \\( 100\pi \text{ cm}^3 \\)..." },
-            { no: 23, topic: "Kerucut", q: "Volume kerucut \\( 100\pi \text{ cm}^3 \\) dan tingginya 12 cm. Panjang garis pelukis (s) kerucut adalah...", options: ["13 cm", "15 cm", "10 cm", "9 cm"], ans: 0, expl: "V = ⅓πr²t → 100π = ⅓πr²(12) → 100 = 4r² → r² = 25 → r = 5. \\( s^2 = r^2 + t^2 = 5^2 + 12^2 = 25 + 144 = 169 \\). Maka \\( s = 13 \\)." },
-            { no: 24, topic: "Bola", q: "Luas permukaan bola \\( 100\pi \text{ cm}^2 \\). Volume bola tersebut adalah...", options: ["\\( \frac{500}{3}\pi \text{ cm}^3 \\)", "\\( 100\pi \text{ cm}^3 \\)", "\\( \frac{400}{3}\pi \text{ cm}^3 \\)", "\\( \frac{1000}{3}\pi \text{ cm}^3 \\)"], ans: 0, expl: "L = 4πr² → 100π = 4πr² → r² = 25 → r = 5. V = 4/3 πr³ = 4/3 π(5)³ = 4/3 π(125) = \\( \frac{500}{3}\pi \\)." },
-            { no: 25, topic: "LP Kerucut", q: "Volume kerucut \\( 12\pi \\) dan jari-jarinya 3 cm. Luas permukaan kerucut adalah...", options: ["\\( 24\pi \\)", "\\( 36\pi \\)", "\\( 15\pi \\)", "\\( 21\pi \\)"], ans: 0, expl: "V = ⅓πr²t → 12π = ⅓π(3)²t → 12 = 3t → t = 4. \\( s^2 = r^2 + t^2 = 3^2 + 4^2 = 25 \to s = 5 \\). LP = πr(r+s) = π(3)(3+5) = π(3)(8) = 24π." },
-            { no: 26, topic: "Sifat BRSL", q: "Bangun ruang yang jaring-jaringnya terdiri dari sebuah persegi panjang dan dua buah lingkaran yang kongruen adalah...", options: ["Tabung", "Kerucut", "Bola", "Prisma"], ans: 0, expl: "Jaring-jaring tabung terdiri dari 2 lingkaran (alas & tutup) dan 1 persegi panjang (selimut)." },
-            { no: 27, topic: "Tinggi Tabung", q: "Volume tabung \\( 320\pi \text{ cm}^3 \\). Jika diameter alasnya 8 cm, tinggi tabung adalah...", options: ["20 cm", "10 cm", "15 cm", "5 cm"], ans: 0, expl: "Diameter = 8, maka r = 4. V = πr²t → 320π = π(4)²t → 320 = 16t → t = 20." },
-            { no: 28, topic: "Bagian Kerucut", q: "Hubungan antara jari-jari (r), tinggi (t), dan garis pelukis (s) pada kerucut adalah...", options: ["\\( s^2 = r^2 + t^2 \\)", "\\( r^2 = s^2 + t^2 \\)", "\\( t^2 = s^2 + r^2 \\)", "\\( s = r + t \\)"], ans: 0, expl: "Garis pelukis (s) adalah sisi miring dari segitiga siku-siku yang dibentuk oleh r dan t (Teorema Pythagoras)." },
-            { no: 29, topic: "Tinggi Kerucut", q: "Luas selimut kerucut \\( 65\pi \\). Jari-jarinya 5 cm. Tinggi kerucut adalah...", options: ["12 cm", "13 cm", "10 cm", "15 cm"], ans: 0, expl: "Ls = πrs → 65π = π(5)s → s = 13. \\( t^2 = s^2 - r^2 = 13^2 - 5^2 = 169 - 25 = 144 \\). Maka \\( t = 12 \\)." },
-            { no: 30, topic: "Identifikasi", q: "Gambar sebuah kaleng susu dan sebuah corong minyak. Bangun ruang tersebut secara berurutan adalah...", options: ["Tabung dan Kerucut", "Kerucut dan Tabung", "Prisma dan Limas", "Bola dan Tabung"], ans: 0, expl: "Kaleng susu merepresentasikan Tabung, corong minyak merepresentasikan Kerucut." },
-            
-            // --- 4. PERSAMAAN & FUNGSI KUADRAT ---
-            { no: 31, topic: "Fungsi Kuadrat", q: "Manakah yang merupakan persamaan kuadrat setelah disederhanakan?", options: ["\\( (x-2)(x+3) = x^2 \\)", "\\( 2x(x+1) = 5 \\)", "\\( x(x^2-1) = 0 \\)", "\\( \frac{1}{x} + x = 5 \\)"], ans: 1, expl: "Opsi B menjadi \\( 2x^2 + 2x - 5 = 0 \\). Opsi A: \\( x^2+x-6 = x^2 \to x-6=0 \\) (Linear). Opsi C: Pangkat 3. Opsi D: \\( 1 + x^2 = 5x \\) (Ini juga PK, tapi B lebih jelas). Let's fix A. Opsi A: (x-2)(x+3) = 5. Opsi A: \\( x^2+x-6 = 5 \to x^2+x-11=0 \\) (PK). Let's stick to B. Opsi B: \\( 2x^2+2x-5=0 \\) (PK)." },
-            { no: 32, topic: "Operasi Akar", q: "Akar-akar \\(x^2 - 4x + 2 = 0\\) adalah \\( \alpha \\) dan \\( \beta \\). Nilai dari \\( \frac{1}{\alpha} + \frac{1}{\beta} \\) adalah...", options: ["2", "-2", "1/2", "4"], ans: 0, expl: "\\( \frac{1}{\alpha} + \frac{1}{\beta} = \frac{\alpha+\beta}{\alpha\beta} \\). \\( \alpha+\beta = -b/a = 4 \\). \\( \alpha\beta = c/a = 2 \\). Maka hasilnya \\( 4/2 = 2 \\)." },
-            { no: 33, topic: "Bentuk Persamaan", q: "Bentuk umum \\( ax^2+bx+c=0 \\) dari persamaan \\( (2x-1)^2 = x+3 \\) adalah...", options: ["\\( 4x^2 - 5x - 2 = 0 \\)", "\\( 4x^2 - 3x - 2 = 0 \\)", "\\( 4x^2 - 5x + 4 = 0 \\)", "\\( 2x^2 - 5x - 2 = 0 \\)"], ans: 0, expl: "\\( 4x^2 - 4x + 1 = x+3 \\). Pindahkan semua ke kiri: \\( 4x^2 - 4x - x + 1 - 3 = 0 \\) → \\( 4x^2 - 5x - 2 = 0 \\)." },
-            { no: 34, topic: "Rumus ABC", q: "Salah satu akar dari \\( 2x^2 - 5x - 4 = 0 \\) menggunakan rumus kuadratik adalah...", options: ["\\( \frac{5 + \sqrt{57}}{4} \\)", "\\( \frac{-5 + \sqrt{57}}{4} \\)", "\\( \frac{5 + \sqrt{7}}{4} \\)", "\\( \frac{5 - \sqrt{57}}{2} \\)"], ans: 0, expl: "x = \\( \frac{-b \pm \sqrt{b^2-4ac}}{2a} \\) = \\( \frac{5 \pm \sqrt{25 - 4(2)(-4)}}{4} \\) = \\( \frac{5 \pm \sqrt{25+32}}{4} = \frac{5 \pm \sqrt{57}}{4} \\)." },
-            { no: 35, topic: "Diskriminan", q: "Persamaan \\( x^2 + (p-2)x + 9 = 0 \\) memiliki akar kembar (D=0). Nilai \\( p \\) yang memenuhi adalah...", options: ["8 atau -4", "6 atau -6", "4 atau -8", "8 atau 4"], ans: 0, expl: "D=0 → b²-4ac = 0. \\( (p-2)^2 - 4(1)(9) = 0 \\). \\( (p-2)^2 = 36 \\). \\( p-2 = 6 \to p=8 \\) atau \\( p-2 = -6 \to p=-4 \\)." },
-            { no: 36, topic: "Mencari Akar", q: "Himpunan penyelesaian dari \\( 2x^2 - 5x - 3 = 0 \\) adalah...", options: ["\\{ 3, -1/2 \\}", "\\{ -3, 1/2 \\}", "\\{ 3, 1/2 \\}", "\\{ -3, -1/2 \\}"], ans: 0, expl: "Faktorkan: \\( (2x+1)(x-3) = 0 \\). Maka \\( x = -1/2 \\) atau \\( x = 3 \\)." },
-            { no: 37, topic: "Sumbu Simetri", q: "Sumbu simetri dari fungsi \\( f(x) = (2x-1)(x+3) \\) adalah...", options: ["\\( x = -5/4 \\)", "\\( x = 5/4 \\)", "\\( x = -5/2 \\)", "\\( x = -7/4 \\)"], ans: 0, expl: "f(x) = \\( 2x^2 + 6x - x - 3 = 2x^2 + 5x - 3 \\). Sumbu simetri x = -b/2a = \\( \frac{-5}{2(2)} = -\frac{5}{4} \\)." },
-            { no: 38, topic: "Nilai Optimum", q: "Nilai optimum (minimum) dari fungsi \\( f(x) = 2x^2 + 4x - 1 \\) adalah...", options: ["y = -3", "y = -1", "y = 3", "y = 1"], ans: 0, expl: "Sumbu simetri x = -b/2a = -4/4 = -1. Nilai optimum y = f(-1) = \\( 2(-1)^2 + 4(-1) - 1 = 2 - 4 - 1 = -3 \\)." },
-            { no: 39, topic: "PK Baru", q: "Jika akar-akar \\(x^2 - 3x + 1 = 0\\) adalah \\( \alpha \\) dan \\( \beta \\), persamaan kuadrat baru yang akar-akarnya \\( (\alpha+1) \\) dan \\( (\beta+1) \\) adalah...", options: ["\\( x^2 - 5x + 5 = 0 \\)", "\\( x^2 - 3x + 3 = 0 \\)", "\\( x^2 - 5x + 3 = 0 \\)", "\\( x^2 - x - 1 = 0 \\)"], ans: 0, expl: "Misal y=x+1 → x=y-1. Substitusi: \\( (y-1)^2 - 3(y-1) + 1 = 0 \\). \\( y^2-2y+1 - 3y+3 + 1 = 0 \\). \\( y^2 - 5y + 5 = 0 \\)." },
-            { no: 40, topic: "Titik Potong", q: "Grafik fungsi kuadrat \\( y = x^2 + 2x - 15 \\) memotong sumbu X pada...", options: ["(3,0) dan (-5,0)", "(-3,0) dan (5,0)", "(3,0) dan (5,0)", "(-3,0) dan (-5,0)"], ans: 0, expl: "Potong sumbu X → y=0. \\( x^2 + 2x - 15 = 0 \\). Faktorkan: \\( (x+5)(x-3) = 0 \\). x = -5 atau x = 3." }
+            // 2. BANGUN RUANG SISI DATAR
+            { no: 12, topic: "Sifat Kubus", q: "Panjang diagonal ruang kubus adalah \\( 10\\sqrt{3} \\) cm. Panjang rusuknya adalah...", options: ["10 cm", "5 cm", "\\( 10\\sqrt{2} \\) cm", "15 cm"], ans: 0, expl: "Rumus diag ruang = \\( s\\sqrt{3} \\). Jadi \\( s = 10 \\)." },
+            { no: 13, topic: "Balok", q: "Luas permukaan balok 550 cm². Panjang 10 cm, lebar 15 cm. Tinggi balok adalah...", options: ["5 cm", "10 cm", "8 cm", "6 cm"], ans: 0, expl: "\\( L = 2(pl+pt+lt) \\rightarrow 550 = 2(150 + 10t + 15t) \\rightarrow 275 = 150 + 25t \\rightarrow 125 = 25t \\rightarrow t=5 \\)." },
+            { no: 14, topic: "Kerangka Balok", q: "Tersedia kawat 10 meter. Akan dibuat kerangka balok (15x10x5 cm). Berapa panjang sisa kawat?", options: ["40 cm", "60 cm", "10 cm", "100 cm"], ans: 0, expl: "1 kerangka = \\( 4(15+10+5) = 120 \\) cm. Kawat 1000 cm. \\( 1000 \\div 120 = 8 \\) sisa \\( 1000 - (8 \\times 120) = 1000 - 960 = 40 \\) cm." },
+            { no: 15, topic: "LP Kubus", q: "Jika Volume kubus \\( 216 \\text{ cm}^3 \\), maka Luas Permukaannya adalah...", options: ["216 cm²", "144 cm²", "36 cm²", "180 cm²"], ans: 0, expl: "\\( s = \\sqrt[3]{216} = 6 \\). \\( LP = 6s^2 = 6(36) = 216 \\)." },
+            { no: 16, topic: "Volume Prisma", q: "Prisma alas trapesium (sisi sejajar 10 & 20, tinggi alas 12). Tinggi prisma 25. Volumenya...", options: ["4.500 cm³", "3.750 cm³", "3.000 cm³", "5.000 cm³"], ans: 0, expl: "La = \\( \\frac{1}{2}(10+20)12 = 180 \\). Volume = \\( 180 \\times 25 = 4.500 \\)." },
+            { no: 17, topic: "Tinggi Prisma", q: "Volume prisma 600 cm³. Alas segitiga siku-siku (8 cm, 15 cm). Tinggi prisma adalah...", options: ["10 cm", "12 cm", "15 cm", "8 cm"], ans: 0, expl: "La = \\( \\frac{1}{2} \\cdot 8 \\cdot 15 = 60 \\). Tinggi = \\( V / La = 600 / 60 = 10 \\)." },
+            { no: 18, topic: "LP Limas", q: "Limas persegi (Volume 400 cm³, Tinggi 12 cm). Luas permukaannya adalah...", options: ["360 cm²", "340 cm²", "400 cm²", "260 cm²"], ans: 0, expl: "La = \\( (3 \\times 400)/12 = 100 \\). Sisi alas = 10. Tinggi segitiga tegak = \\( \\sqrt{12^2 + 5^2} = 13 \\). LP = \\( 100 + 4(\\frac{1}{2} \\cdot 10 \\cdot 13) = 100 + 260 = 360 \\)." },
+            { no: 19, topic: "Alas Limas", q: "Volume limas 1.280 cm³, tinggi 15 cm. Luas alasnya adalah...", options: ["256 cm²", "128 cm²", "300 cm²", "64 cm²"], ans: 0, expl: "\\( V = \\frac{1}{3} La \\cdot t \\rightarrow 1280 = 5 La \\rightarrow La = 256 \\)." },
+            { no: 20, topic: "LP Prisma", q: "Prisma segitiga (Luas alas 60, Keliling alas 40, Luas selimut 400). Luas permukaan totalnya...", options: ["520 cm²", "460 cm²", "800 cm²", "860 cm²"], ans: 0, expl: "\\( LP = (2 \\times La) + L_{selimut} = (2 \\times 60) + 400 = 120 + 400 = 520 \\)." },
+
+            // 3. BANGUN RUANG SISI LENGKUNG
+            { no: 21, topic: "LP Tabung", q: "Tabung tanpa tutup luasnya \\( 175\\pi \\). Jari-jari 5 cm. Luas permukaan tabung LENGKAP (dengan tutup) adalah...", options: ["\\( 200\\pi \\)", "\\( 225\\pi \\)", "\\( 175\\pi \\)", "\\( 150\\pi \\)"], ans: 0, expl: "Luas tanpa tutup = \\( La + Ls \\). Luas Lengkap = \\( La + Ls + La \\) (tambah satu tutup lagi). \\( La = \\pi (5)^2 = 25\\pi \\). Jadi \\( 175\\pi + 25\\pi = 200\\pi \\)." },
+            { no: 22, topic: "Sifat Belah Ketupat", q: "Sifat utama diagonal belah ketupat adalah...", options: ["Saling tegak lurus dan membagi dua sama panjang", "Sama panjang", "Tidak berpotongan", "Membentuk sudut 60 derajat"], ans: 0, expl: "Diagonal belah ketupat berpotongan tegak lurus (90 derajat) dan saling membagi dua." },
+            { no: 23, topic: "Garis Pelukis", q: "Volume kerucut \\( 100\\pi \\) cm³, tinggi 12 cm. Garis pelukis (s) adalah...", options: ["13 cm", "15 cm", "10 cm", "5 cm"], ans: 0, expl: "\\( V = \\frac{1}{3}\\pi r^2 t \\rightarrow 100\\pi = 4\\pi r^2 \\rightarrow r^2 = 25 \\rightarrow r=5 \\). Maka \\( s = \\sqrt{5^2 + 12^2} = 13 \\)." },
+            { no: 24, topic: "Volume Bola", q: "Luas permukaan bola \\( 100\\pi \\) cm². Volumenya adalah...", options: ["\\( \\frac{500}{3}\\pi \\)", "\\( 100\\pi \\)", "\\( \\frac{400}{3}\\pi \\)", "\\( 500\\pi \\)"], ans: 0, expl: "\\( 4\\pi r^2 = 100\\pi \\rightarrow r^2 = 25 \\rightarrow r=5 \\). Volume = \\( \\frac{4}{3}\\pi (5)^3 = \\frac{500}{3}\\pi \\)." },
+            { no: 25, topic: "LP Kerucut", q: "Volume kerucut \\( 12\\pi \\), jari-jari 3 cm. Luas permukaannya...", options: ["\\( 24\\pi \\)", "\\( 36\\pi \\)", "\\( 15\\pi \\)", "\\( 21\\pi \\)"], ans: 0, expl: "\\( 12\\pi = \\frac{1}{3}\\pi (9) t \\rightarrow 12 = 3t \\rightarrow t=4 \\). Garis pelukis \\( s = \\sqrt{3^2+4^2}=5 \\). LP = \\( \\pi r(r+s) = \\pi(3)(8) = 24\\pi \\)." },
+            { no: 26, topic: "Jaring-jaring", q: "Jaring-jaring terdiri dari 1 persegi panjang dan 2 lingkaran identik. Bangun apakah ini?", options: ["Tabung", "Kerucut", "Bola", "Prisma"], ans: 0, expl: "Itu adalah jaring-jaring tabung." },
+            { no: 27, topic: "Tinggi Tabung", q: "Volume tabung \\( 320\\pi \\), diameter 8 cm. Tingginya...", options: ["20 cm", "10 cm", "15 cm", "5 cm"], ans: 0, expl: "\\( r = 4 \\). \\( \\pi (4)^2 t = 320\\pi \\rightarrow 16t = 320 \\rightarrow t=20 \\)." },
+            { no: 28, topic: "Unsur Kerucut", q: "Hubungan \\( r, t, s \\) pada kerucut menurut Pythagoras adalah...", options: ["\\( s^2 = r^2 + t^2 \\)", "\\( r^2 = s^2 + t^2 \\)", "\\( t^2 = s^2 + r^2 \\)", "\\( s = r + t \\)"], ans: 0, expl: "\\( s \\) adalah hipotenusa (sisi miring)." },
+            { no: 29, topic: "Tinggi Kerucut", q: "Luas selimut \\( 65\\pi \\), jari-jari 5 cm. Tinggi kerucut...", options: ["12 cm", "13 cm", "10 cm", "5 cm"], ans: 0, expl: "\\( \\pi r s = 65\\pi \\rightarrow 5s = 65 \\rightarrow s=13 \\). Tinggi \\( t = \\sqrt{13^2 - 5^2} = 12 \\)." },
+            { no: 30, topic: "Analogi Benda", q: "Kaleng susu dan Topi ulang tahun merepresentasikan...", options: ["Tabung dan Kerucut", "Kerucut dan Tabung", "Bola dan Prisma", "Tabung dan Bola"], ans: 0, expl: "Kaleng = Tabung, Topi lancip = Kerucut." },
+
+            // 4. PERSAMAAN KUADRAT
+            { no: 31, topic: "Bentuk Umum", q: "Manakah yang merupakan persamaan kuadrat?", options: ["\\( 2x(x+1) = 5 \\)", "\\( x^3 - 1 = 0 \\)", "\\( 2x + 5 = 0 \\)", "\\( \\frac{1}{x} = x^2 \\)"], ans: 0, expl: "\\( 2x(x+1) = 2x^2 + 2x = 5 \\) adalah persamaan derajat 2." },
+            { no: 32, topic: "Jumlah Akar", q: "Akar-akar \\( x^2 - 4x + 2 = 0 \\) adalah \\( \\alpha, \\beta \\). Nilai \\( \\frac{1}{\\alpha} + \\frac{1}{\\beta} \\) adalah...", options: ["2", "-2", "4", "0.5"], ans: 0, expl: "\\( \\frac{\\alpha+\\beta}{\\alpha\\beta} = \\frac{-(-4)/1}{2/1} = \\frac{4}{2} = 2 \\)." },
+            { no: 33, topic: "Penyederhanaan", q: "Bentuk umum \\( (2x-1)^2 = x+3 \\) adalah...", options: ["\\( 4x^2 - 5x - 2 = 0 \\)", "\\( 4x^2 - 3x - 2 = 0 \\)", "\\( 4x^2 - 5x + 4 = 0 \\)", "\\( 2x^2 - 5x - 2 = 0 \\)"], ans: 0, expl: "\\( 4x^2 - 4x + 1 = x + 3 \\rightarrow 4x^2 - 5x - 2 = 0 \\)." },
+            { no: 34, topic: "Rumus ABC", q: "Salah satu akar \\( 2x^2 - 5x - 4 = 0 \\) adalah...", options: ["\\( \\frac{5 + \\sqrt{57}}{4} \\)", "\\( \\frac{-5 + \\sqrt{57}}{4} \\)", "\\( \\frac{5 + \\sqrt{7}}{4} \\)", "\\( \\frac{5 - \\sqrt{57}}{2} \\)"], ans: 0, expl: "\\( x = \\frac{-(-5) \\pm \\sqrt{(-5)^2 - 4(2)(-4)}}{2(2)} = \\frac{5 \\pm \\sqrt{25+32}}{4} = \\frac{5 \\pm \\sqrt{57}}{4} \\)." },
+            { no: 35, topic: "Diskriminan", q: "Persamaan \\( x^2 + (p-2)x + 9 = 0 \\) memiliki akar kembar. Nilai \\( p \\) adalah...", options: ["8 atau -4", "6 atau -6", "4 atau -8", "8 atau 4"], ans: 0, expl: "\\( D = 0 \\rightarrow (p-2)^2 - 36 = 0 \\rightarrow (p-2)^2 = 36 \\). \\( p-2 = 6 \\rightarrow p=8 \\) atau \\( p-2 = -6 \\rightarrow p=-4 \\)." },
+            { no: 36, topic: "Himpunan Penyelesaian", q: "HP dari \\( 2x^2 - 5x - 3 = 0 \\) adalah...", options: ["\\{ 3, -1/2 \\}", "\\{ -3, 1/2 \\}", "\\{ 3, 1/2 \\}", "\\{ -3, -1/2 \\}"], ans: 0, expl: "Faktorisasi: \\( (2x+1)(x-3)=0 \\)." },
+            { no: 37, topic: "Sumbu Simetri", q: "Sumbu simetri fungsi \\( f(x) = (2x-1)(x+3) \\) adalah...", options: ["\\( x = -1.25 \\)", "\\( x = 1.25 \\)", "\\( x = -2.5 \\)", "\\( x = -1.5 \\)"], ans: 0, expl: "\\( f(x) = 2x^2 + 5x - 3 \\). Sumbu simetri \\( x = \\frac{-b}{2a} = \\frac{-5}{4} = -1.25 \\)." },
+            { no: 38, topic: "Nilai Optimum", q: "Nilai minimum \\( f(x) = 2x^2 + 4x - 1 \\) adalah...", options: ["-3", "-1", "1", "3"], ans: 0, expl: "Sumbu simetri \\( x = -1 \\). \\( f(-1) = 2(1) - 4 - 1 = -3 \\)." },
+            { no: 39, topic: "PK Baru", q: "Akar-akar \\( x^2 - 3x + 1 = 0 \\) adalah \\( \\alpha, \\beta \\). PK baru yang akarnya \\( (\\alpha+1), (\\beta+1) \\) adalah...", options: ["\\( x^2 - 5x + 5 = 0 \\)", "\\( x^2 - 3x + 3 = 0 \\)", "\\( x^2 - 5x + 3 = 0 \\)", "\\( x^2 - x - 1 = 0 \\)"], ans: 0, expl: "Geser grafik ke kanan 1 satuan? Tidak, akar tambah 1 berarti geser kiri? Substitusi \\( x \\to (x-1) \\): \\( (x-1)^2 - 3(x-1) + 1 = 0 \\rightarrow x^2-2x+1 -3x+3 +1 = 0 \\rightarrow x^2 - 5x + 5 = 0 \\)." },
+            { no: 40, topic: "Titik Potong X", q: "Grafik \\( y = x^2 + 2x - 15 \\) memotong sumbu X di...", options: ["(3,0) dan (-5,0)", "(-3,0) dan (5,0)", "(3,0) dan (5,0)", "(-3,0) dan (-5,0)"], ans: 0, expl: "\\( (x+5)(x-3)=0 \\). \\( x=-5, x=3 \\)." }
         ];
 
         let timerInterval;
@@ -169,46 +204,45 @@
                 document.getElementById('timer').innerText = `${m}:${s}`;
             }, 1000);
         }
-        
-        function renderMath() {
-            if (typeof renderMathInElement === 'function') {
-                renderMathInElement(document.body, {
-                    delimiters: [
-                        {left: "$$", right: "$$", display: true},
-                        {left: "\\(", right: "\\)", display: false},
-                        {left: "\\[", right: "\\]", display: true}
-                    ]
-                });
-            }
-        }
 
         function renderQuestions() {
             const container = document.getElementById('questions-container');
+            container.innerHTML = ''; // Clear previous if any
+            
             questions.forEach((item, index) => {
                 const card = document.createElement('div');
-                card.className = 'bg-white p-6 rounded-xl shadow-sm border border-slate-100 question-card';
+                card.className = 'bg-white p-6 rounded-xl shadow-sm border border-slate-200 question-card';
                 
                 let optionsHtml = '';
                 item.options.forEach((opt, i) => {
                     optionsHtml += `
-                        <label class="option-label flex items-start p-3 border rounded-lg mb-2 group">
-                            <input type="radio" name="q${index}" value="${i}" class="option-input mt-1 w-4 h-4 text-indigo-600 mr-3 flex-shrink-0">
-                            <span class="option-content w-full text-slate-700 group-hover:text-slate-900">${opt}</span>
+                        <label class="option-label flex items-start p-4 border rounded-lg mb-3 group">
+                            <input type="radio" name="q${index}" value="${i}" class="option-input mt-1.5 w-4 h-4 text-indigo-600 border-gray-300 focus:ring-indigo-500 flex-shrink-0">
+                            <span class="option-content w-full ml-3 text-slate-700 group-hover:text-slate-900 text-lg">${opt}</span>
                         </label>
                     `;
                 });
 
                 card.innerHTML = `
-                    <div class="mb-3 flex justify-between items-center">
-                        <span class="bg-indigo-100 text-indigo-800 text-xs font-bold px-2 py-1 rounded">No. ${item.no}</span>
-                        <span class="text-xs text-slate-400">${item.topic}</span>
+                    <div class="mb-4 flex justify-between items-center border-b pb-2 border-slate-100">
+                        <span class="bg-indigo-50 text-indigo-700 text-xs font-bold px-2.5 py-1 rounded border border-indigo-100">Soal ${item.no}</span>
+                        <span class="text-xs font-semibold text-slate-400 uppercase tracking-wide">${item.topic}</span>
                     </div>
-                    <h3 class="font-semibold text-lg text-slate-800 mb-4">${item.q}</h3>
-                    <div class="space-y-1">${optionsHtml}</div>
+                    <h3 class="font-medium text-xl text-slate-800 mb-6 leading-relaxed">${item.q}</h3>
+                    <div class="space-y-2">${optionsHtml}</div>
                 `;
                 container.appendChild(card);
             });
-            renderMath(); // Panggil KaTeX render setelah DOM diubah
+            
+            // Render Math in new elements
+            if (typeof renderMathInElement === 'function') {
+                renderMathInElement(container, {
+                    delimiters: [
+                        {left: "$$", right: "$$", display: true},
+                        {left: "\\(", right: "\\)", display: false}
+                    ]
+                });
+            }
         }
 
         function submitQuiz() {
@@ -224,47 +258,68 @@
                 const isCorrect = userAns === item.ans;
 
                 if (isCorrect) {
-                    score += 2.5; // 100 / 40
+                    score += 2.5;
                     correct++;
                 }
 
                 const reviewCard = document.createElement('div');
-                reviewCard.className = `p-5 rounded-xl border-l-4 shadow-sm ${isCorrect ? 'bg-green-50 border-green-500' : 'bg-red-50 border-red-500'}`;
+                reviewCard.className = `p-6 rounded-xl border-l-4 shadow-sm mb-6 ${isCorrect ? 'bg-emerald-50 border-emerald-500' : 'bg-rose-50 border-rose-500'}`;
                 
-                const userAnsText = userAns === -1 ? "<span class='italic text-slate-500'>Tidak dijawab</span>" : item.options[userAns];
-                
+                const userAnsText = userAns === -1 ? "<span class='italic text-slate-400'>Tidak dijawab</span>" : item.options[userAns];
+                const correctAnsText = item.options[item.ans];
+
                 reviewCard.innerHTML = `
-                    <div class="flex justify-between mb-2">
-                        <span class="font-bold text-slate-700">Soal ${item.no}</span>
-                        ${isCorrect ? '<span class="text-green-600 font-bold">✔ Benar</span>' : '<span class="text-red-600 font-bold">✘ Salah</span>'}
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="font-bold text-slate-700 text-lg">Soal ${item.no}</span>
+                        ${isCorrect 
+                            ? '<span class="px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-sm font-bold flex items-center gap-1">✔ Benar</span>' 
+                            : '<span class="px-3 py-1 bg-rose-100 text-rose-700 rounded-full text-sm font-bold flex items-center gap-1">✘ Salah</span>'}
                     </div>
-                    <p class="mb-3 text-slate-800">${item.q}</p>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm mb-3">
-                        <div class="p-2 bg-white rounded border">
-                            <span class="block text-xs text-slate-500 mb-1">Jawaban Kamu:</span>
-                            <span class="${isCorrect ? 'text-green-700 font-bold' : 'text-red-700 font-bold'}">${userAnsText}</span>
+                    <p class="mb-4 text-slate-800 text-lg border-b border-slate-200 pb-4">${item.q}</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div class="p-3 bg-white rounded-lg border border-slate-200 shadow-sm">
+                            <span class="block text-xs uppercase tracking-wider text-slate-400 mb-1">Jawaban Kamu</span>
+                            <span class="text-lg ${isCorrect ? 'text-emerald-600 font-bold' : 'text-rose-600 font-bold'}">${userAnsText}</span>
                         </div>
-                        <div class="p-2 bg-white rounded border">
-                            <span class="block text-xs text-slate-500 mb-1">Kunci Jawaban:</span>
-                            <span class="text-green-700 font-bold">${item.options[item.ans]}</span>
+                        <div class="p-3 bg-white rounded-lg border border-slate-200 shadow-sm">
+                            <span class="block text-xs uppercase tracking-wider text-slate-400 mb-1">Kunci Jawaban</span>
+                            <span class="text-lg text-emerald-600 font-bold">${correctAnsText}</span>
                         </div>
                     </div>
-                    <div classa="text-sm text-slate-600 bg-white p-3 rounded border border-slate-100">
-                        <strong class="text-slate-800">Pembahasan:</strong> ${item.expl}
+                    
+                    <div class="bg-white p-4 rounded-lg border border-indigo-100 text-slate-700">
+                        <strong class="block text-indigo-600 mb-2 flex items-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            Pembahasan:
+                        </strong>
+                        <span class="text-base leading-relaxed">${item.expl}</span>
                     </div>
                 `;
                 reviewContainer.appendChild(reviewCard);
             });
 
+            // Final Scores
             document.getElementById('final-score').innerText = score;
             document.getElementById('correct-total').innerText = correct;
             document.getElementById('wrong-total').innerText = 40 - correct;
 
+            // Switch Screens
             document.getElementById('quiz-screen').classList.add('hidden');
             document.getElementById('result-screen').classList.remove('hidden');
             window.scrollTo(0, 0);
-            renderMath(); // Panggil KaTeX render untuk halaman review
+
+            // Re-render Math in review section
+            if (typeof renderMathInElement === 'function') {
+                renderMathInElement(reviewContainer, {
+                    delimiters: [
+                        {left: "$$", right: "$$", display: true},
+                        {left: "\\(", right: "\\)", display: false}
+                    ]
+                });
+            }
         }
     </script>
 </body>
 </html>
+

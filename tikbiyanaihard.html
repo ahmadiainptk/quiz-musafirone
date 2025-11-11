@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ujian Informatika & TIK - Tingkat Lanjut</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+        .quiz-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .question-card {
+            transition: all 0.3s ease;
+        }
+        .option-label {
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .option-label:hover {
+            background-color: #f9fafb;
+        }
+        .option-input:checked + .option-content {
+            border-color: #3b82f6;
+            background-color: #eff6ff;
+        }
+        .correct-answer {
+            border-color: #22c55e !important;
+            background-color: #dcfce7 !important;
+        }
+        .wrong-answer {
+            border-color: #ef4444 !important;
+            background-color: #fee2e2 !important;
+        }
+    </style>
+</head>
+<body class="pb-12">
+
+    <!-- Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-10">
+        <div class="max-w-4xl mx-auto px-4 py-4 flex justify-between items-center">
+            <h1 class="text-xl font-bold text-gray-800">Informatika: Tingkat Lanjut</h1>
+            <div class="text-sm text-gray-500">Materi: UI, Word, AI, TIK</div>
+        </div>
+    </header>
+
+    <!-- Intro Section -->
+    <div id="intro" class="quiz-container px-4 py-8">
+        <div class="bg-white rounded-xl shadow-lg p-8 text-center">
+            <div class="w-20 h-20 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <svg class="w-10 h-10 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+            </div>
+            <h2 class="text-3xl font-bold mb-4 text-gray-800">Latihan Soal Tingkat Lanjut</h2>
+            <p class="text-gray-600 mb-6">
+                Soal ini dirancang untuk menguji pemahaman mendalam, analisis kasus, dan ketelitian.<br>
+                Sumber materi tetap mengacu pada dokumen pelajaran.
+            </p>
+            <div class="grid grid-cols-2 gap-4 max-w-md mx-auto mb-8 text-sm text-left">
+                <div class="flex items-center"><span class="w-2 h-2 bg-green-500 rounded-full mr-2"></span> Analisis Kasus</div>
+                <div class="flex items-center"><span class="w-2 h-2 bg-green-500 rounded-full mr-2"></span> Logika UI/UX</div>
+                <div class="flex items-center"><span class="w-2 h-2 bg-green-500 rounded-full mr-2"></span> Studi Kasus AI</div>
+                <div class="flex items-center"><span class="w-2 h-2 bg-green-500 rounded-full mr-2"></span> Dampak TIK</div>
+            </div>
+            <button onclick="startQuiz()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-lg transition duration-300 transform hover:scale-105 shadow-lg">
+                Mulai Tantangan
+            </button>
+        </div>
+    </div>
+
+    <!-- Quiz Section -->
+    <div id="quiz" class="quiz-container px-4 py-6 hidden">
+        <div id="questions-list" class="space-y-6"></div>
+        <div class="mt-8 text-center">
+            <button onclick="submitQuiz()" class="bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-12 rounded-lg transition duration-300 shadow-lg text-lg">
+                Selesai & Lihat Hasil
+            </button>
+        </div>
+    </div>
+
+    <!-- Result Section -->
+    <div id="result" class="quiz-container px-4 py-8 hidden">
+        <div class="bg-white rounded-xl shadow-lg p-8 text-center mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-2">Analisis Hasil</h2>
+            <div class="text-6xl font-bold text-indigo-600 mb-2" id="score-display">0</div>
+            <p class="text-gray-500 mb-6">Skor Akhir (Maks. 100)</p>
+            
+            <div class="grid grid-cols-2 gap-4 max-w-xs mx-auto text-left mb-6">
+                <div class="bg-green-50 p-4 rounded-lg border border-green-100">
+                    <span class="block text-xs text-green-800 uppercase tracking-wider">Benar</span>
+                    <span class="text-2xl font-bold text-green-700" id="correct-count">0</span>
+                </div>
+                <div class="bg-red-50 p-4 rounded-lg border border-red-100">
+                    <span class="block text-xs text-red-800 uppercase tracking-wider">Salah</span>
+                    <span class="text-2xl font-bold text-red-700" id="wrong-count">0</span>
+                </div>
+            </div>
+            <button onclick="location.reload()" class="text-indigo-600 hover:text-indigo-800 font-semibold text-sm">
+                &#8635; Kerjakan Ulang
+            </button>
+        </div>
+
+        <h3 class="text-xl font-bold text-gray-800 mb-4 px-2 border-l-4 border-indigo-600 pl-3">Pembahasan Detail</h3>
+        <div id="review-list" class="space-y-6"></div>
+    </div>
+
+    <script>
+        // Database Soal Tingkat Lanjut (40 Soal)
+        const questions = [
+            // === UI ANALYSIS & CONCEPTS ===
+            {
+                q: "Seorang desainer aplikasi ingin membuat form pendaftaran di mana pengguna harus menyetujui 'Syarat dan Ketentuan' sebelum mendaftar. Komponen UI manakah yang paling tepat digunakan untuk fungsi ini?",
+                options: [
+                    "Radio Button, karena hanya ada satu pilihan mutlak.",
+                    "Checkbox, karena pengguna memilih untuk mengaktifkan opsi persetujuan.",
+                    "Textbox, agar pengguna bisa mengetik 'Setuju'.",
+                    "Button, untuk langsung mengirim data."
+                ],
+                answer: 1,
+                rationale: "Checkbox digunakan untuk memilih opsi (seperti persetujuan) yang bisa dicentang atau tidak (on/off)."
+            },
+            {
+                q: "Perhatikan skenario berikut: Anda sedang menggunakan mesin ATM layar sentuh, namun mesin tersebut juga merespons instruksi suara untuk tunanetra. Kombinasi jenis antarmuka apa yang terjadi?",
+                options: [
+                    "GUI dan CLI",
+                    "TUI (Touch) dan VUI (Voice)",
+                    "Gesture Interface dan GUI",
+                    "CLI dan VUI"
+                ],
+                answer: 1,
+                rationale: "Layar sentuh adalah TUI (Touch User Interface) dan respons suara adalah VUI (Voice User Interface)."
+            },
+            {
+                q: "Mengapa CLI (Command Line Interface) seperti Terminal Linux masih dianggap relevan meskipun GUI lebih menarik secara visual?",
+                options: [
+                    "Karena CLI memiliki ikon yang lebih bagus.",
+                    "Karena CLI menggunakan gerakan tangan yang efisien.",
+                    "Karena CLI berbasis teks dan seringkali lebih cepat untuk eksekusi sistem tingkat lanjut.",
+                    "Karena CLI tidak memerlukan monitor."
+                ],
+                answer: 2,
+                rationale: "CLI berinteraksi dengan mengetik perintah teks, yang efisien untuk tugas sistem tertentu meski tanpa grafis."
+            },
+            {
+                q: "Tujuan antarmuka adalah 'Mengurangi kesalahan pengguna (User Error)'. Manakah contoh fitur di UI yang mencerminkan tujuan ini?",
+                options: [
+                    "Tombol 'Format Harddisk' yang sangat besar di halaman utama.",
+                    "Pesan konfirmasi 'Apakah Anda yakin ingin menghapus?' sebelum data hilang.",
+                    "Menyembunyikan tombol 'Simpan' di dalam sub-menu yang dalam.",
+                    "Menggunakan font yang sangat kecil agar muat banyak informasi."
+                ],
+                answer: 1,
+                rationale: "Konfirmasi tindakan adalah cara mencegah error tidak sengaja dari pengguna."
+            },
+            {
+                q: "Jika sebuah aplikasi kasir memiliki banyak menu makanan, dan kasir harus bisa menggeser layar ke bawah untuk melihat menu lain yang tertutup, komponen apa yang bekerja?",
+                options: [
+                    "Layout",
+                    "Header",
+                    "Scrollbar",
+                    "Input Field"
+                ],
+                answer: 2,
+                rationale: "Scrollbar berfungsi spesifik untuk menggulir layar ketika konten melebihi area tampilan."
+            },
+            {
+                q: "Apa perbedaan mendasar antara Radio Button dan Checkbox dalam sebuah formulir digital?",
+                options: [
+                    "Radio button untuk memilih banyak opsi, Checkbox hanya satu.",
+                    "Radio button untuk memilih satu opsi dari banyak pilihan, Checkbox bisa memilih beberapa opsi.",
+                    "Radio button berbentuk kotak, Checkbox berbentuk bulat.",
+                    "Tidak ada perbedaan fungsi, hanya beda bentuk."
+                ],
+                answer: 1,
+                rationale: "Radio button bersifat eksklusif (pilih 1), sedangkan Checkbox bersifat jamak (pilih banyak)."
+            },
+            {
+                q: "Seorang pengguna bermain game tenis virtual dengan mengayunkan tangannya di depan kamera tanpa memegang alat apapun. Ini adalah penerapan murni dari...",
+                options: [
+                    "Touch User Interface",
+                    "Gesture Interface",
+                    "Voice User Interface",
+                    "Graphical User Interface"
+                ],
+                answer: 1,
+                rationale: "Gesture Interface menggunakan gerakan tubuh atau tangan (seperti Kinect)."
+            },
+            {
+                q: "Manakah pernyataan yang SALAH mengenai Layout dalam komponen antarmuka?",
+                options: [
+                    "Layout mengatur posisi elemen agar rapi.",
+                    "Layout bertujuan membuat tampilan mudah dilihat.",
+                    "Layout adalah alat untuk mengetik perintah teks.",
+                    "Layout mempengaruhi kenyamanan pengguna."
+                ],
+                answer: 2,
+                rationale: "Layout adalah pengaturan tata letak/posisi, BUKAN alat mengetik perintah (itu fungsi CLI/Textbox)."
+            },
+
+            // === MS WORD LOGIC & EFFICIENCY ===
+            {
+                q: "Anda sedang menulis karya ilmiah 100 halaman. Anda ingin Judul Bab muncul di bagian atas setiap halaman secara otomatis, namun nomor halaman harus muncul di bagian bawah. Fitur apa yang Anda gunakan secara bersamaan?",
+                options: [
+                    "Hanya Header",
+                    "Hanya Footer",
+                    "Header untuk Judul, Footer untuk Nomor Halaman",
+                    "Menu Layout dan Paragraph"
+                ],
+                answer: 2,
+                rationale: "Header berada di atas (untuk info konsisten seperti judul), Footer di bawah (untuk nomor halaman)."
+            },
+            {
+                q: "Seorang siswa ingin memindahkan paragraf pertama ke halaman terakhir. Langkah paling efisien menggunakan shortcut adalah...",
+                options: [
+                    "Ctrl+C pada paragraf awal, lalu Ctrl+V di halaman akhir.",
+                    "Ctrl+X pada paragraf awal, lalu Ctrl+V di halaman akhir.",
+                    "Ctrl+A lalu Ctrl+X.",
+                    "Ctrl+Z lalu Ctrl+Y."
+                ],
+                answer: 1,
+                rationale: "Memindahkan berarti 'Cut' (Ctrl+X) lalu 'Paste' (Ctrl+V). Jika 'Copy' (Ctrl+C), teks asli tidak hilang/berpindah."
+            },
+            {
+                q: "Jika Anda tidak sengaja menghapus satu paragraf penting saat mengedit, tombol penyelamat apa yang harus segera ditekan?",
+                options: [
+                    "Ctrl + S",
+                    "Ctrl + N",
+                    "Ctrl + Z",
+                    "Ctrl + Y"
+                ],
+                answer: 2,
+                rationale: "Ctrl + Z (Undo) membatalkan perintah terakhir (termasuk penghapusan tidak sengaja)."
+            },
+            {
+                q: "Apa implikasi dari menekan 'Ctrl + A' diikuti oleh 'Delete'?",
+                options: [
+                    "Menyimpan dokumen lalu menutupnya.",
+                    "Memilih seluruh teks lalu menghapus semuanya.",
+                    "Membatalkan semua perubahan format.",
+                    "Hanya menghapus header dan footer."
+                ],
+                answer: 1,
+                rationale: "Ctrl + A memilih seluruh isi dokumen, tombol Delete akan menghapus apa yang terpilih."
+            },
+            {
+                q: "Anda diminta membuat kop surat resmi sekolah yang berisi Logo dan Alamat yang harus muncul di setiap surat yang dicetak. Di mana Anda menempatkan elemen ini?",
+                options: [
+                    "Di baris pertama setiap paragraf manual.",
+                    "Di dalam Footer.",
+                    "Di dalam Header.",
+                    "Di margin kanan."
+                ],
+                answer: 2,
+                rationale: "Header digunakan untuk menyisipkan logo/kop surat di bagian atas halaman secara konsisten."
+            },
+            {
+                q: "Fungsi 'Redo' (Ctrl + Y) hanya dapat digunakan apabila...",
+                options: [
+                    "Kita belum pernah menyimpan dokumen.",
+                    "Kita baru saja melakukan 'Undo' (Ctrl + Z).",
+                    "Kita ingin mencetak dokumen.",
+                    "Kita ingin menutup aplikasi."
+                ],
+                answer: 1,
+                rationale: "Redo (Mengulangi perintah) adalah kebalikan dari Undo. Ia mengembalikan apa yang baru saja di-Undo."
+            },
+            {
+                q: "Manakah urutan yang benar untuk menggandakan sebuah kalimat ke lokasi lain?",
+                options: [
+                    "Blok teks -> Ctrl+X -> Arahkan kursor -> Ctrl+V",
+                    "Blok teks -> Ctrl+C -> Arahkan kursor -> Ctrl+P",
+                    "Blok teks -> Ctrl+C -> Arahkan kursor -> Ctrl+V",
+                    "Blok teks -> Ctrl+S -> Arahkan kursor -> Ctrl+V"
+                ],
+                answer: 2,
+                rationale: "Menggandakan = Copy (Ctrl+C) + Paste (Ctrl+V). Ctrl+X untuk memindahkan, Ctrl+P untuk print."
+            },
+
+            // === AI ANALYTICAL ===
+            {
+                q: "Dalam format prompt G-P-E-S, jika Anda menulis: 'Buatkan saya tabel perbandingan harga...', bagian 'Tabel' merujuk pada komponen...",
+                options: [
+                    "Goal (Tujuan)",
+                    "Problem (Masalah)",
+                    "Expectation (Harapan Output)",
+                    "Style (Gaya)"
+                ],
+                answer: 2,
+                rationale: "E - Expectation menjelaskan output seperti apa yang diinginkan (misal: format tabel, paragraf, poin)."
+            },
+            {
+                q: "Sebuah mobil otonom (self-driving car) harus bisa melihat rambu lalu lintas dan membedakan pejalan kaki. Teknologi AI spesifik apa yang paling dominan bekerja di sini?",
+                options: [
+                    "Chatbot",
+                    "Generative AI",
+                    "Computer Vision",
+                    "Voice Recognition"
+                ],
+                answer: 2,
+                rationale: "Computer Vision adalah kemampuan AI mengenali gambar, objek, dan situasi visual."
+            },
+            {
+                q: "Manakah pernyataan yang paling tepat menggambarkan cara kerja Machine Learning?",
+                options: [
+                    "Mesin diprogram secara manual untuk setiap kemungkinan.",
+                    "Mesin belajar dari data untuk membuat prediksi tanpa diprogram secara eksplisit untuk setiap aturan.",
+                    "Mesin hanya bisa melakukan perhitungan matematika dasar.",
+                    "Mesin meniru suara manusia saja."
+                ],
+                answer: 1,
+                rationale: "Machine Learning memungkinkan AI belajar dari data (pola) untuk memprediksi, bukan sekadar instruksi statis."
+            },
+            {
+                q: "Jika ChatGPT digunakan untuk membuat puisi tentang hujan, maka ia berfungsi sebagai...",
+                options: [
+                    "Analytical AI",
+                    "Generative AI",
+                    "Computer Vision",
+                    "Robotics"
+                ],
+                answer: 1,
+                rationale: "Generative AI berfungsi membuat konten baru (teks, gambar, musik), seperti puisi."
+            },
+            {
+                q: "Dalam sebuah prompt: 'Jelaskan tentang fotosintesis kepada anak SD kelas 1 dengan bahasa yang ceria.' Bagian 'Bahasa yang ceria' adalah komponen...",
+                options: [
+                    "Goal",
+                    "Problem",
+                    "Expectation",
+                    "Style"
+                ],
+                answer: 3,
+                rationale: "S - Style menentukan gaya bahasa atau nada bicara (formal, ceria, ringkas)."
+            },
+            {
+                q: "Sistem keamanan bank mendeteksi adanya pola pembelian kartu kredit yang tidak wajar di luar negeri dan memblokirnya. Ini adalah penerapan AI untuk...",
+                options: [
+                    "Face Recognition",
+                    "Fraud Detection (Deteksi Kecurangan)",
+                    "Social Media Algorithm",
+                    "E-Learning"
+                ],
+                answer: 1,
+                rationale: "Fraud detection di perbankan menganalisis pola transaksi mencurigakan."
+            },
+            {
+                q: "Apa perbedaan utama antara Chatbot biasa dengan Generative AI (seperti ChatGPT)?",
+                options: [
+                    "Chatbot hanya bisa suara, Generative AI hanya teks.",
+                    "Chatbot biasanya berbasis aturan sederhana, Generative AI bisa menciptakan konten teks baru yang kompleks dan kreatif.",
+                    "Chatbot lebih pintar daripada Generative AI.",
+                    "Tidak ada perbedaan."
+                ],
+                answer: 1,
+                rationale: "Generative AI (ChatGPT) mampu menggenerasikan teks kompleks/kreatif, bukan sekadar respons baku."
+            },
+
+            // === TIK & EVOLUTION ===
+            {
+                q: "Analisis Evolusi: Mengapa 'Surat' dikategorikan sebagai Era Tradisional, sedangkan 'Email' masuk Era Digital Modern?",
+                options: [
+                    "Karena surat ditulis tangan, email diketik.",
+                    "Karena surat lambat dan fisik, sedangkan email real-time, digital, dan global.",
+                    "Karena surat hanya untuk orang tua, email untuk anak muda.",
+                    "Karena email menggunakan listrik, surat tidak."
+                ],
+                answer: 1,
+                rationale: "Ciri Era Digital Modern adalah Real-time (instan), global, dan interaktif, berbeda dengan surat yang lambat."
+            },
+            {
+                q: "Telepon kabel dan Radio dikelompokkan ke dalam Era Elektronik Awal. Apa keterbatasan utama era ini dibandingkan Era Digital Modern?",
+                options: [
+                    "Sama sekali tidak menggunakan listrik.",
+                    "Komunikasinya cenderung satu arah (Radio/TV) atau jangkauan terbatas pada kabel.",
+                    "Sudah bisa video call namun gambar buram.",
+                    "Hanya bisa mengirim teks."
+                ],
+                answer: 1,
+                rationale: "Era Elektronik Awal (TV/Radio) cirinya 'Lebih cepat tapi satu arah' atau terbatas kabel."
+            },
+            {
+                q: "Manakah di bawah ini yang merupakan urutan evolusi teknologi komunikasi yang benar?",
+                options: [
+                    "Kentongan -> WhatsApp -> Telepon Kabel",
+                    "Merpati Pos -> Telepon Kabel -> Cloud/Video Call",
+                    "Radio -> Kentongan -> Email",
+                    "Email -> Surat -> Telepon"
+                ],
+                answer: 1,
+                rationale: "Urutan: Tradisional (Merpati) -> Elektronik Awal (Telepon Kabel) -> Digital (Cloud)."
+            },
+            {
+                q: "Dalam komponen TIK, 'Router' dan 'Server' memiliki peran spesifik sebagai...",
+                options: [
+                    "Alat untuk mengetik dokumen.",
+                    "Hardware pengolah dan pengirim data dalam jaringan.",
+                    "Software untuk menjelajah internet.",
+                    "Brainware yang mengatur jaringan."
+                ],
+                answer: 1,
+                rationale: "Router dan Server adalah Perangkat Keras (Hardware) infrastruktur jaringan."
+            },
+            {
+                q: "Brainware adalah komponen krusial dalam TIK. Tanpa Brainware, apa yang terjadi?",
+                options: [
+                    "Komputer akan berjalan sendiri menggunakan AI.",
+                    "Sistem komputer tidak ada yang mengoperasikan atau menggunakan.",
+                    "Hardware akan berubah menjadi Software.",
+                    "Internet akan menjadi lebih cepat."
+                ],
+                answer: 1,
+                rationale: "Brainware adalah pengguna (manusia). Tanpa user, sistem tidak berjalan/digunakan."
+            },
+            {
+                q: "Aplikasi 'E-KTP' dan 'Layanan Pajak Online' merupakan transformasi TIK di bidang...",
+                options: [
+                    "E-Commerce",
+                    "E-Learning",
+                    "E-Government (Pemerintahan)",
+                    "Social Media"
+                ],
+                answer: 2,
+                rationale: "Layanan publik digital masuk dalam kategori Pemerintahan."
+            },
+            {
+                q: "Salah satu dampak negatif TIK adalah 'Privasi rentan bocor'. Situasi manakah yang menggambarkan hal ini?",
+                options: [
+                    "Seseorang menggunakan Google Maps untuk mencari jalan.",
+                    "Data pribadi pengguna dicuri dari database aplikasi yang tidak aman.",
+                    "Siswa belajar menggunakan Zoom.",
+                    "Internet menjadi lambat saat hujan."
+                ],
+                answer: 1,
+                rationale: "Kebocoran data (privasi) adalah risiko keamanan siber di era digital."
+            },
+            {
+                q: "Google Classroom dan Zoom dikategorikan sebagai manfaat TIK bidang pendidikan karena...",
+                options: [
+                    "Membuat siswa bisa bermain game saat pelajaran.",
+                    "Menggantikan peran guru sepenuhnya.",
+                    "Memungkinkan pembelajaran jarak jauh (E-learning).",
+                    "Menghapus kebutuhan akan buku tulis."
+                ],
+                answer: 2,
+                rationale: "Platform ini mendukung E-learning (pembelajaran elektronik/jarak jauh)."
+            },
+            
+            // === MIXED HARD CONCEPTS ===
+            {
+                q: "Jika prompt AI adalah: 'Saya ingin resep nasi goreng (G), tapi saya alergi udang (P), buatkan daftar bahan saja (E), dengan bahasa santai (S)'. Manakah elemen 'Problem'?",
+                options: [
+                    "Ingin resep nasi goreng",
+                    "Alergi udang",
+                    "Daftar bahan saja",
+                    "Bahasa santai"
+                ],
+                answer: 1,
+                rationale: "Problem (Masalah/Batasan) di sini adalah kondisi 'alergi udang' yang harus diperhatikan AI."
+            },
+            {
+                q: "Hardware tanpa Software ibarat...",
+                options: [
+                    "Tubuh tanpa nyawa/pikiran.",
+                    "Mobil tanpa roda.",
+                    "Kertas tanpa tulisan.",
+                    "Rumah tanpa atap."
+                ],
+                answer: 0,
+                rationale: "Hardware adalah fisik (tubuh), Software adalah sistem/instruksi (pikiran) yang membuatnya hidup."
+            },
+            {
+                q: "Apa fungsi utama 'Ikon' dalam GUI dibandingkan dengan perintah teks di CLI?",
+                options: [
+                    "Ikon mempersulit pencarian aplikasi.",
+                    "Ikon adalah gambar kecil yang mewakili fungsi visual agar lebih mudah dikenali daripada menghafal perintah teks.",
+                    "Ikon hanya hiasan desktop.",
+                    "Ikon membuat komputer lebih lambat."
+                ],
+                answer: 1,
+                rationale: "Ikon adalah representasi visual fungsi/aplikasi (ciri khas GUI) untuk kemudahan penggunaan."
+            },
+            {
+                q: "Sistem 'Face Recognition' pada kunci layar Smartphone menggabungkan konsep...",
+                options: [
+                    "Hardware Kamera, Software AI (Computer Vision), dan Tujuan Keamanan.",
+                    "Hanya Hardware Kamera.",
+                    "Hanya Software Android.",
+                    "Tujuan Hiburan semata."
+                ],
+                answer: 0,
+                rationale: "Ini adalah integrasi Hardware (kamera) + Software AI (pengenalan wajah) untuk tujuan keamanan."
+            },
+            {
+                q: "Mengapa 'Hoaks' menjadi dampak negatif yang sangat berbahaya di era Digital Modern?",
+                options: [
+                    "Karena internet mahal.",
+                    "Karena penyebarannya terjadi secara Real-time, Global, dan sulit dibendung.",
+                    "Karena hoaks hanya terjadi di TV.",
+                    "Karena orang lebih suka membaca koran."
+                ],
+                answer: 1,
+                rationale: "Karakteristik TIK modern (cepat/global) memperparah penyebaran berita palsu (hoaks)."
+            },
+            {
+                q: "Dalam MS Word, jika Anda ingin menyisipkan catatan kaki atau info hak cipta yang tidak mengganggu isi utama teks, area yang paling tepat adalah...",
+                options: [
+                    "Header",
+                    "Body Text",
+                    "Footer",
+                    "Title"
+                ],
+                answer: 2,
+                rationale: "Footer (kaki halaman) adalah tempat standar untuk catatan kaki, nomor halaman, atau copyright."
+            },
+            {
+                q: "Manakah pasangan Shortcut dan Fungsi yang SALAH?",
+                options: [
+                    "Ctrl + N = New Document",
+                    "Ctrl + Z = Undo",
+                    "Ctrl + X = Copy",
+                    "Ctrl + A = Select All"
+                ],
+                answer: 2,
+                rationale: "Pasangan yang salah adalah Ctrl + X = Copy. Seharusnya Ctrl + X = Cut (Potong)."
+            },
+            {
+                q: "Teknologi 'Cloud' dalam era digital modern memungkinkan pengguna untuk...",
+                options: [
+                    "Menyimpan data di awan sungguhan.",
+                    "Menyimpan dan mengakses data dari mana saja melalui internet tanpa bergantung pada satu perangkat fisik saja.",
+                    "Mengirim surat fisik lebih cepat.",
+                    "Menelepon tanpa pulsa dan tanpa internet."
+                ],
+                answer: 1,
+                rationale: "Cloud computing memungkinkan akses data global via internet (ciri Digital Modern)."
+            },
+            {
+                q: "Sebuah aplikasi menggunakan sensor untuk mendeteksi gerakan kepala pengguna guna menggerakkan karakter game. Ini BUKAN contoh dari...",
+                options: [
+                    "Gesture Interface",
+                    "Input Device",
+                    "Command Line Interface (CLI)",
+                    "Interaksi Manusia dan Komputer"
+                ],
+                answer: 2,
+                rationale: "Ini adalah Gesture Interface. Jelas BUKAN CLI karena tidak menggunakan ketikan perintah teks."
+            },
+            {
+                q: "Jika sebuah sistem AI dapat merekomendasikan video YouTube yang sesuai minat Anda, kemampuan ini disebut...",
+                options: [
+                    "Memprediksi dan memberikan rekomendasi",
+                    "Generative Art",
+                    "Robotic Control",
+                    "Voice Synthesis"
+                ],
+                answer: 0,
+                rationale: "Ini adalah fungsi dasar AI dalam memprediksi preferensi user (Rekomendasi)."
+            }
+        ];
+
+        // Functions
+        function startQuiz() {
+            document.getElementById('intro').classList.add('hidden');
+            document.getElementById('quiz').classList.remove('hidden');
+            renderQuestions();
+        }
+
+        function renderQuestions() {
+            const list = document.getElementById('questions-list');
+            questions.forEach((item, index) => {
+                const questionCard = document.createElement('div');
+                questionCard.className = 'bg-white rounded-xl shadow-sm hover:shadow-md p-6 question-card border border-gray-100';
+                
+                let optionsHtml = '';
+                item.options.forEach((opt, i) => {
+                    optionsHtml += `
+                        <label class="option-label flex items-start p-4 border rounded-lg mb-3 group">
+                            <input type="radio" name="q${index}" value="${i}" class="option-input mt-1 w-4 h-4 text-indigo-600 focus:ring-indigo-500 mr-3 flex-shrink-0">
+                            <span class="option-content w-full text-gray-700 group-hover:text-gray-900">${opt}</span>
+                        </label>
+                    `;
+                });
+
+                questionCard.innerHTML = `
+                    <div class="mb-4">
+                        <span class="text-xs font-bold text-indigo-500 uppercase tracking-wide">Soal ${index + 1}</span>
+                        <h3 class="font-bold text-lg text-gray-800 mt-1">${item.q}</h3>
+                    </div>
+                    <div class="space-y-1">
+                        ${optionsHtml}
+                    </div>
+                `;
+                list.appendChild(questionCard);
+            });
+        }
+
+        function submitQuiz() {
+            let score = 0;
+            let correctCount = 0;
+            let wrongCount = 0;
+            const reviewList = document.getElementById('review-list');
+            reviewList.innerHTML = '';
+
+            questions.forEach((item, index) => {
+                const selected = document.querySelector(`input[name="q${index}"]:checked`);
+                const userAnswer = selected ? parseInt(selected.value) : -1;
+                const isCorrect = userAnswer === item.answer;
+                
+                if (isCorrect) {
+                    score += 2.5; 
+                    correctCount++;
+                } else {
+                    wrongCount++;
+                    
+                    const reviewItem = document.createElement('div');
+                    reviewItem.className = 'bg-white border-l-4 border-red-500 rounded-r-xl shadow-sm p-6';
+                    
+                    const userText = userAnswer === -1 ? "Tidak dijawab" : item.options[userAnswer];
+                    const correctText = item.options[item.answer];
+
+                    reviewItem.innerHTML = `
+                        <p class="font-bold text-gray-800 mb-3 text-lg">Soal No. ${index + 1}</p>
+                        <p class="text-gray-600 mb-4 italic">"${item.q}"</p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <div class="bg-red-50 p-3 rounded border border-red-100">
+                                <span class="block text-xs text-red-600 font-bold uppercase mb-1">Jawaban Kamu</span>
+                                <span class="text-red-800">${userText}</span>
+                            </div>
+                            <div class="bg-green-50 p-3 rounded border border-green-100">
+                                <span class="block text-xs text-green-600 font-bold uppercase mb-1">Jawaban Benar</span>
+                                <span class="text-green-800">${correctText}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-blue-50 p-4 rounded text-sm text-blue-900 border border-blue-100">
+                            <strong class="block mb-1 text-blue-700">Penjelasan / Analisis:</strong>
+                            ${item.rationale}
+                        </div>
+                    `;
+                    reviewList.appendChild(reviewItem);
+                }
+            });
+
+            document.getElementById('score-display').innerText = Math.round(score);
+            document.getElementById('correct-count').innerText = correctCount;
+            document.getElementById('wrong-count').innerText = wrongCount;
+
+            if(wrongCount === 0) {
+                reviewList.innerHTML = `
+                <div class="text-center p-8 bg-green-50 rounded-xl border border-green-200">
+                    <svg class="w-16 h-16 text-green-500 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <h3 class="text-xl font-bold text-green-800">Sempurna!</h3>
+                    <p class="text-green-600">Luar biasa, Anda menjawab semua tantangan tingkat lanjut dengan benar.</p>
+                </div>`;
+            }
+
+            document.getElementById('quiz').classList.add('hidden');
+            document.getElementById('result').classList.remove('hidden');
+            window.scrollTo(0, 0);
+        }
+    </script>
+</body>
+</html>
+

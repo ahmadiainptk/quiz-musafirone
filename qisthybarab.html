@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuis Bahasa Arab: Kalender Hijriyah</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Arab yang mudah dibaca: Amiri -->
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f1f5f9;
+            color: #1e293b;
+        }
+        
+        /* Style untuk teks Arab */
+        .arabic-text {
+            font-family: 'Amiri', serif;
+            font-size: 1.8rem; /* Ukuran font yang lebih besar */
+            line-height: 2.5rem;
+            direction: rtl; /* Teks dari kanan ke kiri */
+            text-align: right;
+            margin-bottom: 1rem;
+        }
+
+        .quiz-container { max-width: 850px; margin: 0 auto; }
+        .question-card { transition: all 0.2s ease; }
+        .option-label { cursor: pointer; transition: all 0.2s; }
+        .option-label:hover { background-color: #f8fafc; border-color: #6366f1; }
+        .option-input:checked + .option-content {
+            background-color: #eef2ff;
+            border-color: #4f46e5;
+            color: #312e81;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body class="min-h-screen pb-12">
+
+    <!-- Navbar -->
+    <header class="bg-white border-b sticky top-0 z-30 shadow-sm">
+        <div class="max-w-5xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="bg-indigo-600 text-white p-2 rounded-lg">
+                    <!-- Icon Kitab/Qur'an -->
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.464 9.245 4.5 7.5 4.5 5.518 4.5 4 6.018 4 8c0 2.906 3.039 3.993 4.5 4.5 1.464.507 3.012 1.256 3.5 2.5l.5-2.5m-3.5 0h7"></path></svg>
+                </div>
+                <div>
+                    <h1 class="text-lg font-bold text-slate-800 leading-tight">لُغَةُ الْعَرَبِيَّةِ</h1>
+                    <p class="text-xs text-indigo-600 font-medium">Kalender Hijriyah</p>
+                </div>
+            </div>
+            <div class="bg-slate-100 text-slate-700 px-4 py-1.5 rounded-full text-sm font-mono font-bold shadow-inner" id="timer">00:00</div>
+        </div>
+    </header>
+
+    <!-- Intro Screen -->
+    <div id="intro-screen" class="quiz-container px-4 py-12 text-center">
+        <div class="bg-white p-10 rounded-2xl shadow-xl border border-slate-200">
+            <div class="mb-6 inline-block p-4 bg-indigo-50 rounded-full">
+                <!-- Icon Kalender -->
+                <svg class="w-12 h-12 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-4 4h.01M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+            </div>
+            <h2 class="text-3xl font-extrabold mb-4 text-slate-800">اختبار التقويم الهجري</h2>
+            <p class="text-slate-600 mb-8 max-w-lg mx-auto text-lg leading-relaxed">
+                Uji pengetahuanmu tentang nama dan urutan bulan-bulan dalam Kalender Hijriyah (Total 20 Soal). Pastikan kamu menjawab semua soal!
+            </p>
+            <button onclick="startQuiz()" class="bg-indigo-600 hover:bg-indigo-700 hover:shadow-lg text-white text-lg font-bold py-4 px-12 rounded-xl transition-all transform hover:-translate-y-1 active:translate-y-0">
+                Mulai Mengerjakan
+            </button>
+        </div>
+    </div>
+
+    <!-- Quiz Screen -->
+    <div id="quiz-screen" class="hidden quiz-container px-4 py-8">
+        <form id="quiz-form">
+            <div id="questions-container" class="space-y-8"></div>
+            
+            <div class="mt-12 text-center">
+                <button type="button" onclick="submitQuiz()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 px-16 rounded-xl shadow-lg transition-all text-lg hover:shadow-xl">
+                    Selesai & Kumpulkan
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Result Screen -->
+    <div id="result-screen" class="hidden quiz-container px-4 py-8">
+        <div class="bg-white rounded-2xl shadow-xl overflow-hidden mb-8 border border-slate-200">
+            <div class="bg-slate-800 text-white p-10 text-center relative overflow-hidden">
+                <div class="relative z-10">
+                    <p class="text-sm uppercase tracking-widest opacity-75 mb-2 font-semibold">Nilai Akhir Anda</p>
+                    <h2 class="text-7xl font-extrabold mb-6 tracking-tight" id="final-score">0</h2>
+                    <div class="flex justify-center gap-10">
+                        <div class="text-center">
+                            <span class="block text-3xl font-bold text-emerald-400" id="correct-total">0</span>
+                            <span class="text-xs uppercase tracking-wider opacity-75">Benar</span>
+                        </div>
+                        <div class="text-center">
+                            <span class="block text-3xl font-bold text-rose-400" id="wrong-total">0</span>
+                            <span class="text-xs uppercase tracking-wider opacity-75">Salah</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Decorative circles -->
+                <div class="absolute top-0 left-0 -ml-10 -mt-10 w-40 h-40 bg-white opacity-5 rounded-full"></div>
+                <div class="absolute bottom-0 right-0 -mr-10 -mb-10 w-40 h-40 bg-white opacity-5 rounded-full"></div>
+            </div>
+            <div class="p-6 bg-slate-50 text-center border-t border-slate-100">
+                <button onclick="location.reload()" class="text-indigo-600 font-bold hover:text-indigo-800 flex items-center justify-center mx-auto gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                    Coba Lagi
+                </button>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-3 mb-6">
+            <h3 class="text-2xl font-bold text-slate-800">Pembahasan Soal</h3>
+        </div>
+        
+        <div id="review-container" class="space-y-6"></div>
+    </div>
+
+    <script>
+        // Database Soal Bahasa Arab (20 Soal)
+        const questions = [
+            { 
+                no: 1, 
+                topic: "Urutan Bulan", 
+                q: "Bacalah kalimat berikut! <div class='arabic-text'>الشَّهْرُ الثَّانِي مِنَ التَّقْوِيمِ الْهِجْرِي هُوَ...</div> (Bulan kedua dari kalender Hijriyah adalah...)", 
+                options: ["مُحَرَّمٌ (Muharram)", "صَفَرٌ (Safar)", "ذُو الْقَعْدَةِ (Dzulqa’dah)", "ذُو الْحِجَّةِ (Dzulhijjah)"], 
+                ans: 1, 
+                expl: "Bulan kedua (الثَّانِي) setelah Muharram adalah **صَفَرٌ (Safar)**." 
+            },
+            { 
+                no: 2, 
+                topic: "Urutan Bulan", 
+                q: "Perhatikan nama-nama bulan berikut: (1) رَمَضَانَ (2) شَعْبَانٌ (3) رَجَبَ (4) شَوَالٌ. Urutan nama bulan yang benar adalah:", 
+                options: ["(3) - (2) - (1) - (4)", "(4) - (1) - (2) - (3)", "(1) - (4) - (3) - (2)", "(2) - (3) - (4) - (1)"], 
+                ans: 0, 
+                expl: "Urutan bulan yang benar adalah: Rajab (7), Sya'ban (8), Ramadhan (9), dan Syawwal (10). Jadi: **(3) - (2) - (1) - (4)**." 
+            },
+            { 
+                no: 3, 
+                topic: "Pertanyaan (Setelah)", 
+                q: "Jawaban yang benar untuk menjawab pertanyaan: <div class='arabic-text'>مَا الشَّهْرُ بَعْدَ رَبِيْعُ الْأَوَّلِ؟</div> (Bulan apa setelah Rabi'ul Awwal?)", 
+                options: ["هُوَ رَبْيعُ الثَّانِي", "هُوَ جُمَادُ الْأَوَّلِ", "هُوَ صَفَرُ", "هُوَ جُمَادُ الثَّانِي"], 
+                ans: 0, 
+                expl: "Bulan yang datang setelah Rabi'ul Awwal (Bulan Ketiga) adalah **رَبْيعُ الثَّانِي (Rabi'ul Tsani)** (Bulan Keempat)." 
+            },
+            { 
+                no: 4, 
+                topic: "Pertanyaan (Sebelum)", 
+                q: "Jawaban yang benar untuk menjawab pertanyaan: <div class='arabic-text'>مَا الشَّهْرُ قَبْلَ ذُو الْقَعْدَةِ؟</div> (Bulan apa sebelum Dzulqa'dah?)", 
+                options: ["شَوَالٌ (Syawwal)", "ذُو الْحِجَّةِ (Dzulhijjah)", "شَعْبَانٌ (Sya’ban)", "مُحَرَّمٌ (Muharram)"], 
+                ans: 0, 
+                expl: "Dzulqa'dah adalah bulan ke-11, sehingga bulan yang datang sebelum (قَبْلَ) adalah **شَوَالٌ (Syawwal)** (Bulan Ke-10)." 
+            },
+            { 
+                no: 5, 
+                topic: "Peristiwa Penting", 
+                q: "Kata yang tepat untuk melengkapi kalimat berikut: <div class='arabic-text'>ذِكْرِى إِسْرَاءِ الرَّسُوْلَ وَ مِعْرَاجِهِ فِي شَهْرٍ...</div> (Peringatan Isra' Mi'raj Rasulullah di bulan...)", 
+                options: ["رَجَبُ", "مُحَرَّمٌ", "رَبِيعُ الْأَوَّلِ", "ذُو الْحِجَّةِ"], 
+                ans: 0, 
+                expl: "Peristiwa Isra' Mi'raj diperingati pada bulan **رَجَبُ (Rajab)**." 
+            },
+            { 
+                no: 6, 
+                topic: "Terjemahan", 
+                q: "Terjemahan bahasa Arab yang benar dari kalimat \"Bulan kelima dari kalender Hijriyah adalah Jumadil Awal\" adalah...", 
+                options: ["الشَّهْرُ الْخَامِسُ مِنَ التَّقْوِيمِ الْهِجْرِي هُوَ جُمَادُ الْأَوَّلِ.", "الشَّهْرُ الْأَوَّلُ مِنَ التَّقْويمِ الْهِجْرِي هُوَ جُمَادُ الْأَوَّلِ.", "الشَّهْرُ الثَّالِثُ مِنَ التَّقْويمِ الْهِجْرِي هُوَ جُمَادُ الْأَوَّلِ.", "الشَّهْرُ السَّابِعُ مِنَ التَّقْوِيمِ الْهِجْرِي هُوَ جُمَادُ الْأَوَّلِ."], 
+                ans: 0, 
+                expl: "Kata 'kelima' adalah الْخَامِسُ. Jadi kalimat yang benar adalah **الشَّهْرُ الْخَامِسُ مِنَ التَّقْوِيمِ الْهِجْرِي هُوَ جُمَادُ الْأَوَّلِ**." 
+            },
+            { 
+                no: 7, 
+                topic: "Urutan Bulan", 
+                q: "Kata yang tepat untuk melengkapi kalimat berikut: <div class='arabic-text'>الشَّهْرُ ... مِنَ التَّقْويمِ الْهِجْرِي هُوَ شَوَالٌ.</div> (Bulan... dari kalender Hijriyah adalah Syawwal.)", 
+                options: ["العَاشِرُ (Kesepuluh)", "السَّابِعُ (Ketujuh)", "الثَّامِنُ (Kedelapan)", "التَّاسِعُ (Kesembilan)"], 
+                ans: 0, 
+                expl: "Syawwal adalah bulan ke-10, yang dalam bahasa Arab adalah **العَاشِرُ**." 
+            },
+            { 
+                no: 8, 
+                topic: "Pertanyaan (Hal)", 
+                q: "Jawaban yang benar untuk menjawab pertanyaan: <div class='arabic-text'>هَلِ الشَّهْرُ الْحَادِى عَشَرَ مِنَ التَّقْوِيمِ الْهِجْرِي هُوَ رَمَضَانَ؟</div> (Apakah bulan ke-11 dari kalender Hijriyah adalah Ramadhan?)", 
+                options: ["لاَ، الشَّهْرُ الْحَادِى عَشَرَ مِنَ التَّقْوِيمِ الْهِجْرِي هُوَ ذُو الْقَعْدَةِ.", "لاَ، الشَّهْرُ الْحَادِى عَشَرَ مِنَ التَّقْوِيمِ الْهِجْرِي هُوَ رَمَضَانَ.", "نَعَمْ، الشَّهْرُ الْحَادِى عَشَرَ مِنَ التَّقْوِيمِ الْهِجْرِي هُوَ ذُو الْقَعْدَةِ.", "نَعَمْ، الشَّهْرُ الْحَادِى عَشَرَ مِنَ التَّقْوِيمِ الْهِجْرِي هُوَ رَمَضَانَ."], 
+                ans: 0, 
+                expl: "Bulan ke-11 (الْحَادِى عَشَرَ) adalah Dzulqa'dah (ذُو الْقَعْدَةِ), bukan Ramadhan. Jadi jawabannya 'Tidak' (لاَ)." 
+            },
+            { 
+                no: 9, 
+                topic: "Peristiwa Penting", 
+                q: "Kata yang tepat untuk melengkapi kalimat berikut: <div class='arabic-text'>احْتِفَالُ عِيْدِ الْفِطْرِي فِي شَهْرٍ...</div> (Perayaan Idul Fitri di bulan...)", 
+                options: ["شَوَالٌ", "مُحَرَّمٌ", "رَجَبُ", "رَبِيعُ الْأَوَّلِ"], 
+                ans: 0, 
+                expl: "Perayaan Idul Fitri jatuh pada bulan **شَوَالٌ (Syawwal)**." 
+            },
+            { 
+                no: 10, 
+                topic: "Kosakata", 
+                q: "Arti dari kata <div class='arabic-text'>ذِكْرَى</div> adalah...", 
+                options: ["Peringatan", "Peramalan", "Perayaan", "Perubahan"], 
+                ans: 0, 
+                expl: "Kata ذِكْرَى (Dzikra) berarti **Peringatan**." 
+            },
+            { 
+                no: 11, 
+                topic: "Menyusun Kalimat", 
+                q: "Susunan yang benar dari kata-kata berikut adalah: فِي - الصِّيَامُ - رَمَضَانَ - شَهْرٍ", 
+                options: ["الصِّيَامُ فِي شَهْرِ رَمَضَانَ", "شَهْرٍ رَمَضَانَ الصِّيَامُ فِي", "فِي الصِّيَامُ شَهْرٍ رَمَضَانَ", "رَمَضَانَ شَهْرٍ فِي الصِّيَامُ"], 
+                ans: 0, 
+                expl: "Susunan yang benar adalah: **الصِّيَامُ فِي شَهْرِ رَمَضَانَ** (Puasa di bulan Ramadhan)." 
+            },
+            { 
+                no: 12, 
+                topic: "Urutan Bulan (Isian)", 
+                q: "Lengkapilah kalimat berikut: <div class='arabic-text'>الشَّهْرُ الثَّامِنُ مِنَ التَّقْوِيمِ الْهِجْرِي هُوَ...</div> (Bulan kedelapan dari kalender Hijriyah adalah...)", 
+                options: ["شَعْبَانٌ (Sya’ban)", "رَجَبُ (Rajab)", "رَمَضَانَ (Ramadhan)", "شَوَالٌ (Syawwal)"], 
+                ans: 0, 
+                expl: "Bulan kedelapan (الثَّامِنُ) adalah **شَعْبَانٌ (Sya’ban)**." 
+            },
+            { 
+                no: 13, 
+                topic: "Peristiwa Penting (Isian)", 
+                q: "Lengkapilah kalimat berikut: <div class='arabic-text'>ذِكْرى مَوْلِدِ الرَّسُوْلِ فِي شَهْرٍ...</div> (Peringatan kelahiran Rasulullah di bulan...)", 
+                options: ["رَبِيعُ الْأَوَّلِ", "رَجَبُ", "مُحَرَّمٌ", "ذُو الْحِجَّةِ"], 
+                ans: 0, 
+                expl: "Peringatan Maulid Nabi (kelahiran Rasulullah) jatuh pada bulan **رَبِيعُ الْأَوَّلِ**." 
+            },
+            { 
+                no: 14, 
+                topic: "Terjemahan (Isian)", 
+                q: "Arti yang tepat dari kalimat: <div class='arabic-text'>احْتِفَالُ عِيْدِ الْأَضْحَى فِي شَهْرٍ ذُو الْحِجَّةِ.</div>", 
+                options: ["Perayaan Idul Adha pada bulan Dzulhijjah.", "Peringatan Idul Fitri pada bulan Dzulhijjah.", "Perubahan Idul Adha pada bulan Dzulhijjah.", "Perayaan Kurban di bulan Muharram."], 
+                ans: 0, 
+                expl: "احْتِفَالُ عِيْدِ الْأَضْحَى (Perayaan Idul Adha) فِي شَهْرٍ ذُو الْحِجَّةِ (pada bulan Dzulhijjah)." 
+            },
+            { 
+                no: 15, 
+                topic: "Urutan Bulan (Isian)", 
+                q: "Lengkapilah kalimat berikut: <div class='arabic-text'>الشَّهْرُ الأَوَّلُ مِنَ التَّقْوِيمِ الْهِجْرِي هُوَ...</div> (Bulan pertama dari kalender Hijriyah adalah...)", 
+                options: ["مُحَرَّمٌ (Muharram)", "صَفَرٌ (Safar)", "رَبِيعُ الْأَوَّلِ (Rabi'ul Awwal)", "شَوَالٌ (Syawwal)"], 
+                ans: 0, 
+                expl: "Bulan pertama (الأَوَّلُ) adalah **مُحَرَّمٌ (Muharram)**." 
+            },
+            // 5 Soal Tambahan untuk mencapai total 20 soal
+            { 
+                no: 16, 
+                topic: "Terjemahan Angka", 
+                q: "Terjemahan yang tepat untuk kata الْعَاشِرُ adalah...", 
+                options: ["Kesepuluh", "Kedelapan", "Kedua", "Ketujuh"], 
+                ans: 0, 
+                expl: "الْعَاشِرُ adalah bilangan bertingkat yang berarti **Kesepuluh**." 
+            },
+            { 
+                no: 17, 
+                topic: "Urutan Bulan", 
+                q: "Bulan setelah Jumadil Tsani adalah...", 
+                options: ["رَجَبُ (Rajab)", "شَعْبَانٌ (Sya’ban)", "رَمَضَانَ (Ramadhan)", "شَوَالٌ (Syawwal)"], 
+                ans: 0, 
+                expl: "Jumadil Tsani (Bulan Keenam) diikuti oleh **رَجَبُ (Rajab)** (Bulan Ketujuh)." 
+            },
+            { 
+                no: 18, 
+                topic: "Peristiwa Penting", 
+                q: "Lengkapilah kalimat berikut: <div class='arabic-text'>نُزُوْلُ الْقُرْآنِ فِي شَهْرِ...</div> (Diturunkannya Al-Qur'an di bulan...)", 
+                options: ["رَمَضَانَ", "شَعْبَانٌ", "رَجَبُ", "ذُو الْحِجَّةِ"], 
+                ans: 0, 
+                expl: "Al-Qur'an diturunkan pada malam Lailatul Qadar di bulan **رَمَضَانَ**." 
+            },
+            { 
+                no: 19, 
+                topic: "Kosakata", 
+                q: "Kata yang berarti 'Puasa' dalam bahasa Arab adalah...", 
+                options: ["الصِّيَامُ", "الْفِطْرِي", "الْأَضْحَى", "احْتِفَالُ"], 
+                ans: 0, 
+                expl: "Kata **الصِّيَامُ** berarti Puasa, الْفِطْرِي dan الْأَضْحَى merujuk pada hari raya, dan احْتِفَالُ berarti perayaan." 
+            },
+            { 
+                no: 20, 
+                topic: "Urutan Bulan", 
+                q: "Bulan terakhir dalam kalender Hijriyah adalah...", 
+                options: ["ذُو الْحِجَّةِ (Dzulhijjah)", "مُحَرَّمٌ (Muharram)", "ذُو الْقَعْدَةِ (Dzulqa’dah)", "شَوَالٌ (Syawwal)"], 
+                ans: 0, 
+                expl: "Bulan ke-12 dan terakhir adalah **ذُو الْحِجَّةِ (Dzulhijjah)**." 
+            }
+        ];
+
+        let timerInterval;
+        let seconds = 0;
+        const totalQuestions = questions.length;
+        // Karena total 20 soal, setiap soal bernilai 100 / 20 = 5
+        const scorePerQuestion = 100 / totalQuestions; 
+
+        function startQuiz() {
+            document.getElementById('intro-screen').classList.add('hidden');
+            document.getElementById('quiz-screen').classList.remove('hidden');
+            renderQuestions();
+            startTimer();
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                seconds++;
+                const m = Math.floor(seconds / 60).toString().padStart(2, '0');
+                const s = (seconds % 60).toString().padStart(2, '0');
+                document.getElementById('timer').innerText = `${m}:${s}`;
+            }, 1000);
+        }
+
+        function renderQuestions() {
+            const container = document.getElementById('questions-container');
+            container.innerHTML = ''; // Hapus soal sebelumnya
+            
+            questions.forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = 'bg-white p-6 rounded-xl shadow-sm border border-slate-200 question-card';
+                
+                let optionsHtml = '';
+                item.options.forEach((opt, i) => {
+                    // Terapkan class arabic-text ke opsi jika opsi mengandung teks Arab
+                    const isArabic = /[\u0600-\u06FF]/.test(opt);
+                    const optionContentClass = isArabic ? 'arabic-text' : '';
+
+                    optionsHtml += `
+                        <label class="option-label flex items-start p-4 border rounded-lg mb-3 group">
+                            <input type="radio" name="q${index}" value="${i}" class="option-input mt-1.5 w-4 h-4 text-indigo-600 border-gray-300 focus:ring-indigo-500 flex-shrink-0">
+                            <span class="option-content w-full ml-3 text-slate-700 group-hover:text-slate-900 text-lg ${optionContentClass}">${opt}</span>
+                        </label>
+                    `;
+                });
+
+                // Tambahkan class arabic-text ke pertanyaan jika mengandung teks Arab
+                const questionContent = /[\u0600-\u06FF]/.test(item.q) ? `<div class="arabic-text text-xl">${item.q}</div>` : item.q;
+
+                card.innerHTML = `
+                    <div class="mb-4 flex justify-between items-center border-b pb-2 border-slate-100">
+                        <span class="bg-indigo-50 text-indigo-700 text-xs font-bold px-2.5 py-1 rounded border border-indigo-100">Soal ${item.no}</span>
+                        <span class="text-xs font-semibold text-slate-400 uppercase tracking-wide">${item.topic}</span>
+                    </div>
+                    <h3 class="font-medium text-xl text-slate-800 mb-6 leading-relaxed">${questionContent}</h3>
+                    <div class="space-y-2">${optionsHtml}</div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function submitQuiz() {
+            clearInterval(timerInterval);
+            let score = 0;
+            let correct = 0;
+            const reviewContainer = document.getElementById('review-container');
+            reviewContainer.innerHTML = '';
+
+            questions.forEach((item, index) => {
+                const selected = document.querySelector(`input[name="q${index}"]:checked`);
+                const userAns = selected ? parseInt(selected.value) : -1;
+                const isCorrect = userAns === item.ans;
+
+                if (isCorrect) {
+                    score += scorePerQuestion;
+                    correct++;
+                }
+
+                const reviewCard = document.createElement('div');
+                reviewCard.className = `p-6 rounded-xl border-l-4 shadow-sm mb-6 ${isCorrect ? 'bg-emerald-50 border-emerald-500' : 'bg-rose-50 border-rose-500'}`;
+                
+                const userAnsText = userAns === -1 ? "<span class='italic text-slate-400'>Tidak dijawab</span>" : item.options[userAns];
+                const correctAnsText = item.options[item.ans];
+                
+                // Terapkan class arabic-text untuk tampilan review jawaban/pembahasan
+                const questionContent = /[\u0600-\u06FF]/.test(item.q) ? `<div class="arabic-text text-lg">${item.q}</div>` : item.q;
+                const userAnsContentClass = /[\u0600-\u06FF]/.test(userAnsText) ? 'arabic-text' : '';
+                const correctAnsContentClass = /[\u0600-\u06FF]/.test(correctAnsText) ? 'arabic-text' : '';
+
+                reviewCard.innerHTML = `
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="font-bold text-slate-700 text-lg">Soal ${item.no}</span>
+                        ${isCorrect 
+                            ? '<span class="px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-sm font-bold flex items-center gap-1">✔ Benar</span>' 
+                            : '<span class="px-3 py-1 bg-rose-100 text-rose-700 rounded-full text-sm font-bold flex items-center gap-1">✘ Salah</span>'}
+                    </div>
+                    <p class="mb-4 text-slate-800 text-lg border-b border-slate-200 pb-4">${questionContent}</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div class="p-3 bg-white rounded-lg border border-slate-200 shadow-sm">
+                            <span class="block text-xs uppercase tracking-wider text-slate-400 mb-1">Jawaban Kamu</span>
+                            <span class="text-lg ${isCorrect ? 'text-emerald-600 font-bold' : 'text-rose-600 font-bold'} ${userAnsContentClass}">${userAnsText}</span>
+                        </div>
+                        <div class="p-3 bg-white rounded-lg border border-slate-200 shadow-sm">
+                            <span class="block text-xs uppercase tracking-wider text-slate-400 mb-1">Kunci Jawaban</span>
+                            <span class="text-lg text-emerald-600 font-bold ${correctAnsContentClass}">${correctAnsText}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white p-4 rounded-lg border border-indigo-100 text-slate-700">
+                        <strong class="block text-indigo-600 mb-2 flex items-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            Pembahasan:
+                        </strong>
+                        <span class="text-base leading-relaxed">${item.expl}</span>
+                    </div>
+                `;
+                reviewContainer.appendChild(reviewCard);
+            });
+
+            // Final Scores
+            document.getElementById('final-score').innerText = Math.round(score);
+            document.getElementById('correct-total').innerText = correct;
+            document.getElementById('wrong-total').innerText = totalQuestions - correct;
+
+            // Switch Screens
+            document.getElementById('quiz-screen').classList.add('hidden');
+            document.getElementById('result-screen').classList.remove('hidden');
+            window.scrollTo(0, 0);
+        }
+    </script>
+</body>
+</html>

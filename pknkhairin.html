@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ujian Kebinekaan Indonesia</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Gaya dasar meniru tampilan referensi */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        .container-quiz {
+            width: 100%;
+            max-width: 800px;
+            margin: 20px 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            background-color: #ffffff;
+        }
+
+        .header-quiz {
+            background-color: #0d47a1;
+            color: white;
+            padding: 15px 20px;
+            text-align: center;
+            font-size: 1.25rem;
+            font-weight: bold;
+            border-bottom: 3px solid #1565c0;
+        }
+        
+        /* Area Status dan Timer (Sticky) */
+        .status-bar {
+            position: sticky;
+            top: 0;
+            background-color: #e3f2fd;
+            padding: 10px 20px;
+            border-bottom: 1px solid #bbdefb;
+            z-index: 10;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+            color: #0d47a1;
+        }
+
+        .content-area {
+            padding: 20px;
+        }
+        
+        /* Gaya Layar Mulai */
+        .start-screen {
+            text-align: center;
+            padding: 50px 20px;
+        }
+        .start-screen h2 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .btn-start {
+            padding: 12px 30px;
+            background-color: #4caf50;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .btn-start:hover {
+            background-color: #388e3c;
+        }
+
+        /* Gaya Soal */
+        .question-box {
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 15px;
+            background-color: #fcfcfc;
+        }
+        
+        .question-text {
+            font-size: 1.05rem;
+            margin-bottom: 10px;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .option-group {
+            margin-bottom: 15px;
+        }
+        
+        .option-label {
+            display: block;
+            padding: 8px 10px;
+            margin: 4px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.1s, border-color 0.1s;
+            font-size: 0.95rem;
+            line-height: 1.2;
+        }
+
+        .option-label:hover:not(.disabled):not(.correct):not(.incorrect) {
+            background-color: #e0e0e0;
+        }
+
+        .option-label input[type="radio"] {
+            transform: scale(1.1);
+            margin-right: 8px;
+        }
+
+        /* Gaya Jawaban Setelah Selesai */
+        .option-label.correct {
+            background-color: #c8e6c9;
+            border-color: #4caf50;
+            color: #1b5e20;
+            font-weight: bold;
+        }
+
+        .option-label.incorrect {
+            background-color: #ffcdd2;
+            border-color: #e53935;
+            color: #b71c1c;
+            font-weight: bold;
+        }
+        
+        .option-label.selected-incorrect {
+            background-color: #ffcdd2;
+        }
+        
+        /* Gaya Rasionalisasi */
+        .rationale-box {
+            margin-top: 15px;
+            padding: 12px;
+            border-left: 5px solid #0d47a1;
+            background-color: #e3f2fd;
+            color: #333;
+            font-size: 0.9rem;
+        }
+        
+        .rationale-box strong {
+            color: #0d47a1;
+        }
+        
+        /* Layar Hasil */
+        .result-screen {
+            text-align: center;
+            padding: 30px;
+            border: 2px solid #0d47a1;
+            background-color: #fcfcfc;
+        }
+        .score-final {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #4caf50;
+            display: block;
+            margin: 15px 0;
+        }
+        .time-elapsed-final {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #0d47a1;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container-quiz">
+        <header class="header-quiz">
+            <div class="text-xl">Ujian Pilihan Ganda</div>
+            <div class="text-sm">Kebinekaan Indonesia (60 Soal)</div>
+        </header>
+
+        <!-- LAYAR MULAI -->
+        <div id="start-screen" class="start-screen">
+            <h2>Petunjuk Ujian</h2>
+            <p class="mb-4">Ujian ini terdiri dari **40 soal pilihan ganda** berdasarkan materi Bab IV Kebinekaan Indonesia.</p>
+            <p class="mb-4 font-semibold">Waktu akan dihitung maju (Elapsed Time) untuk mencatat durasi pengerjaan Anda.</p>
+            <p class="mb-6 text-sm">Semua soal akan ditampilkan sekaligus. Jawab dengan memilih salah satu opsi.</p>
+            <button onclick="startQuiz()" class="btn-start">Mulai Mengerjakan</button>
+        </div>
+
+        <!-- AREA STATUS & TIMER (Tersembunyi saat Layar Mulai) -->
+        <div id="quiz-status" class="status-bar hidden">
+            <span>Waktu Pengerjaan: <span id="timer-display">00:00</span></span>
+            <span id="answered-count-display">Dijawab: 0/40</span>
+        </div>
+
+        <!-- KONTEN KUIS (Tersembunyi saat Layar Mulai) -->
+        <div id="quiz-content" class="content-area hidden">
+            <!-- LAYAR HASIL -->
+            <div id="result-screen" class="result-screen hidden">
+                <h2>Hasil Ujian Anda!</h2>
+                <p>Anda berhasil menjawab benar:</p>
+                <span id="final-score" class="score-final">0 / 40</span>
+                <p class="time-elapsed-final">Waktu yang Dihabiskan: <span id="final-time">00:00</span></p>
+                <p id="assessment-message" class="text-lg font-medium text-gray-700 mb-6">Tinjau pembahasan di bawah.</p>
+                <button onclick="restartQuiz()" class="btn-restart btn-submit w-full">Ulangi Ujian</button>
+            </div>
+            
+            <div id="quiz-container">
+                <!-- Semua 40 Soal akan dimuat di sini -->
+            </div>
+
+            <!-- Tombol Submit (Hanya 1 tombol di akhir) -->
+            <div id="submit-area" class="text-center pt-4 mt-4 border-t">
+                <button id="submit-btn" onclick="submitQuiz(false)" class="btn-submit w-full max-w-xs">
+                    Selesaikan Ujian
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Array of 40 questions, answers, and rationales (Data tetap sama)
+        const quizQuestions = [
+            { q: "Apa semboyan yang menjadi simbol keragaman bangsa Indonesia, yang berarti 'berbeda-beda namun satu'?", options: [{ text: "Tunggal Ika Bhinneka", isCorrect: false, rationale: "Semboyan yang benar adalah Bhinneka Tunggal Ika." }, { text: "Eka Prasetya Pancakarsa", isCorrect: false, rationale: "Ini adalah sumpah setia bagi pengamal Pancasila, bukan semboyan kebinekaan." }, { text: "Bhinneka Tunggal Ika", isCorrect: true, rationale: "Semboyan ini tertulis pada pita yang dicengkeram Garuda Pancasila, melambangkan persatuan dalam perbedaan." }, { text: "Satu Nusa Satu Bangsa", isCorrect: false, rationale: "Ini bagian dari ikrar Sumpah Pemuda, tetapi bukan semboyan resmi kebinekaan." }], },
+            { q: "Apa definisi 'gender' menurut Kamus Besar Bahasa Indonesia (KBBI) yang relevan dengan Bab IV materi ini?", options: [{ text: "Perbedaan peran sosial antara laki-laki dan perempuan.", isCorrect: false, rationale: "Gender dalam konteks ini merujuk pada pembedaan jenis kelamin." }, { text: "Jenis kelamin.", isCorrect: true, rationale: "Dalam konteks materi, gender merujuk pada keragaman jenis kelamin yakni perempuan dan laki-laki." }, { text: "Posisi dominan seseorang dalam masyarakat.", isCorrect: false, rationale: "Ini lebih merujuk pada status sosial." }, { text: "Aspek fisiologis dan fungsi reproduksi.", isCorrect: false, rationale: "Ini adalah dasar pembedaan fisiologisnya." }], },
+            { q: "Dalam pandangan antropologi pada zaman pra-tradisional, apa tugas utama laki-laki yang disebutkan dalam teks?", options: [{ text: "Mengolah makanan dan menjaga anak-anak di gua.", isCorrect: false, rationale: "Tugas ini umumnya dilakukan oleh perempuan di masa pra-tradisional." }, { text: "Memimpin upacara adat dan mengambil keputusan.", isCorrect: false, rationale: "Ini adalah peran kepemimpinan yang berkembang kemudian." }, { text: "Mencari makanan dengan berburu dan meramu.", isCorrect: true, rationale: "Laki-laki umumnya bertugas mencari makanan dengan berburu dan meramu di hutan." }, { text: "Membangun rumah dan membuat peralatan kerja.", isCorrect: false, rationale: "Ini adalah kegiatan produktif, tetapi tugas utama harian adalah mencari makan." }], },
+            { q: "Berikut ini adalah upaya yang dilakukan pemerintah Indonesia untuk membangun kesadaran gender, **kecuali**:", options: [{ text: "Membentuk Kementerian Pemberdayaan Perempuan dan Perlindungan Anak.", isCorrect: false, rationale: "Pembentukan kementerian ini merupakan upaya nyata pemerintah sejak tahun 1983." }, { text: "Membentuk Komisi Nasional Perempuan.", isCorrect: false, rationale: "Komnas Perempuan dibentuk untuk melindungi dan memberdayakan perempuan." }, { text: "Menetapkan kuota 50% laki-laki di Dewan Perwakilan Rakyat (DPR).", isCorrect: true, rationale: "Pemerintah menetapkan kuota minimal 30% keterwakilan perempuan di DPR, bukan 50% untuk laki-laki." }, { text: "Mendorong partisipasi perempuan dalam kegiatan politik.", isCorrect: false, rationale: "Keterwakilan 30% di DPR adalah bentuk dorongan partisipasi politik." }], },
+            { q: "Prinsip kesetaraan gender menyatakan bahwa perempuan dan laki-laki memiliki hak yang sama sebagai anggota masyarakat maupun warga negara. Apa dasar utama kesamaan ini?", options: [{ text: "Persamaan kemampuan fisik dan kecerdasan.", isCorrect: false, rationale: "Walaupun setara, ada perbedaan fisiologis." }, { text: "Memiliki posisi yang sama di hadapan Tuhan dan hukum.", isCorrect: true, rationale: "Hak asasi manusia dan kedudukan di mata Tuhan/hukum adalah dasar utama kesetaraan." }, { text: "Sama-sama memiliki fungsi reproduksi.", isCorrect: false, rationale: "Fungsi reproduksi adalah pembeda fisiologis." }, { text: "Kebutuhan untuk bekerja dan berpolitik.", isCorrect: false, rationale: "Ini adalah hak yang sama, tetapi bukan dasar utama kesamaan posisi." }], },
+            { q: "Menurut Badan Pusat Statistik (BPS) hasil survei tahun 2010, berapa perkiraan jumlah suku bangsa yang ada di Indonesia?", options: [{ text: "Kurang dari 300 suku.", isCorrect: false, rationale: "300 suku adalah estimasi minimal jika dipandang dari bahasa dan budaya." }, { text: "Sekitar 512 suku.", isCorrect: false, rationale: "Angka ini terlalu kecil." }, { text: "Sebanyak 1.340 suku.", isCorrect: true, rationale: "Angka 1.340 suku adalah hasil survei BPS tahun 2010 yang dicantumkan dalam materi." }, { text: "Lebih dari 2.000 suku.", isCorrect: false, rationale: "Angka ini terlalu besar dari data resmi." }], },
+            { q: "Apa faktor utama yang menyebabkan wilayah Papua memiliki jumlah suku bangsa paling banyak dan terpisah-pisah?", options: [{ text: "Adanya pengaruh budaya asing yang dominan.", isCorrect: false, rationale: "Keterpisahan suku lebih disebabkan oleh faktor geografis dan alam." }, { text: "Perbedaan keyakinan agama yang kuat antar masyarakat.", isCorrect: false, rationale: "Agama tidak menjadi pembeda utama suku di Papua." }, { text: "Wilayahnya bergunung-gunung dengan medan yang sulit.", isCorrect: true, rationale: "Medan yang sulit dan terisolasi menyebabkan masyarakat terpisah dan membentuk budaya yang berbeda." }, { text: "Tradisi mencari makanan yang berbeda-beda di setiap wilayah.", isCorrect: false, rationale: "Tradisi mencari makan adalah akibat, bukan penyebab utama keterpisahan suku." }], },
+            { q: "Kelompok suku utama di Pulau Jawa yang memiliki jumlah warga paling banyak di Indonesia adalah...", options: [{ text: "Betawi, Cirebon, dan Osing.", isCorrect: false, rationale: "Ini adalah suku-suku kecil atau sub-suku di Jawa." }, { text: "Jawa, Sunda, Madura, dan Banten.", isCorrect: true, rationale: "Empat suku ini merupakan kelompok suku utama dan terbanyak warganya di Jawa/Indonesia." }, { text: "Tengger, Badui, dan Banyumasan.", isCorrect: false, rationale: "Ini adalah kelompok suku kecil yang disebutkan dalam teks." }, { text: "Melayu, Minang, dan Aceh.", isCorrect: false, rationale: "Ini adalah suku-suku dari Pulau Sumatra." }], },
+            { q: "Suku di Indonesia yang terkenal dengan tradisi **Lompat Batu** yang sudah berabad-abad lamanya terdapat di pulau...", options: [{ text: "Madura.", isCorrect: false, rationale: "Madura terkenal dengan tradisi Karapan Sapi." }, { text: "Flores.", isCorrect: false, rationale: "Flores memiliki suku-suku seperti Ende dan Manggarai." }, { text: "Nias.", isCorrect: true, rationale: "Pulau Nias di Sumatra Utara memiliki tradisi Lompat Batu (Fahombo)." }, { text: "Sumba.", isCorrect: false, rationale: "Sumba terkenal dengan upacara Pasola." }], },
+            { q: "Di manakah lokasi rumah adat yang atapnya meniru bentuk tanduk kerbau, yang disebut Rumah Tongkonan?", options: [{ text: "Minang (Sumatra Barat).", isCorrect: false, rationale: "Minang memiliki Rumah Gadang, namanya berbeda." }, { text: "Toraja (Sulawesi Selatan).", isCorrect: true, rationale: "Rumah Tongkonan adalah rumah adat yang sangat khas dari Suku Toraja." }, { text: "Dayak (Kalimantan Tengah).", isCorrect: false, rationale: "Dayak memiliki Rumah Betang atau Rumah Lamin." }, { text: "Sumba (Nusa Tenggara Timur).", isCorrect: false, rationale: "Sumba menggunakan tanduk kerbau sungguhan sebagai penghias rumah adat." }], },
+            { q: "Tari daerah yang dipilih untuk acara pembukaan pesta olahraga Asian Games 2018 dan dilakukan oleh 1.600 siswa SMA di Jakarta adalah...", options: [{ text: "Tari Piring.", isCorrect: false, rationale: "Tari Piring berasal dari Minang." }, { text: "Tari Saman.", isCorrect: true, rationale: "Tari Saman dari Aceh memiliki formasi penari yang sangat banyak dan terkenal dunia." }, { text: "Tari Tor-tor.", isCorrect: false, rationale: "Tari Tor-tor berasal dari Batak." }, { text: "Tari Jaipong.", isCorrect: false, rationale: "Tari Jaipong berasal dari Sunda, Jawa Barat." }], },
+            { q: "Alat musik tradisional yang berasal dari Jawa dan Bali, yang sering dimainkan secara berkelompok dalam suatu ansambel, adalah...", options: [{ text: "Sape'.", isCorrect: false, rationale: "Sape' adalah alat musik petik dari Kalimantan." }, { text: "Kolintang.", isCorrect: false, rationale: "Kolintang adalah alat musik pukul dari Sulawesi." }, { text: "Gamelan.", isCorrect: true, rationale: "Gamelan adalah ansambel musik dari Jawa dan Bali." }, { text: "Tifa.", isCorrect: false, rationale: "Tifa adalah alat musik pukul dari Papua dan Maluku." }], },
+            { q: "Tradisi yang dilakukan oleh Suku Toraja di Sulawesi untuk mengantarkan jenazah, yang jenazahnya tidak dikubur tetapi disimpan dalam gua di dinding tebing tinggi, disebut...", options: [{ text: "Ngaben.", isCorrect: false, rationale: "Ngaben adalah upacara pembakaran mayat di Bali (Hindu)." }, { text: "Tiwah.", isCorrect: false, rationale: "Tiwah adalah upacara kematian Suku Dayak." }, { text: "Sekaten.", isCorrect: false, rationale: "Sekaten adalah upacara perayaan Maulid Nabi di Solo dan Yogyakarta." }, { text: "Rambu Solo.", isCorrect: true, rationale: "Rambu Solo adalah upacara kematian adat Toraja yang sangat terkenal." }], },
+            { q: "Di Banjarmasin, Kalimantan Selatan, terdapat pasar yang seluruh pedagangnya berjualan di sungai menggunakan perahu masing-masing. Tradisi ini dikenal sebagai...", options: [{ text: "Pacu Jalur.", isCorrect: false, rationale: "Pacu Jalur adalah tradisi balap perahu di sungai dari Sumatra." }, { text: "Pasar Terapung.", isCorrect: true, rationale: "Pasar Terapung adalah tradisi khas Banjarmasin." }, { text: "Pasola.", isCorrect: false, rationale: "Pasola adalah tradisi perang-perangan berkuda dari Sumba." }, { text: "Bau Nyale.", isCorrect: false, rationale: "Bau Nyale adalah tradisi mencari cacing laut di Lombok." }], },
+            { q: "Rumah adat yang umumnya berupa **rumah panggung** dengan tiang tinggi untuk berjaga-jaga dari ancaman banjir dan binatang buas banyak terdapat di pulau...", options: [{ text: "Jawa dan Bali.", isCorrect: false, rationale: "Rumah adat di Jawa (Joglo) dan Bali umumnya berlantai di tanah." }, { text: "Sumatra, Kalimantan, dan Sulawesi.", isCorrect: true, rationale: "Karakteristik rumah panggung tinggi banyak ditemukan di ketiga pulau ini." }, { text: "Nusa Tenggara dan Maluku.", isCorrect: false, rationale: "Beberapa di Nusa Tenggara/Maluku berupa panggung pendek, tetapi juga ada yang di tanah." }, { text: "Papua.", isCorrect: false, rationale: "Rumah Honai di Papua berlantai di tanah." }], },
+            { q: "Rumah adat di Papua yang beratap bulat dari jerami atau rumbia, serta tidak memiliki jendela untuk menahan hawa dingin, adalah...", options: [{ text: "Rumah Gadang.", isCorrect: false, rationale: "Rumah Gadang dari Minang." }, { text: "Rumah Honai dan Ebeai.", isCorrect: true, rationale: "Kedua rumah ini adalah rumah adat Papua di kawasan pegunungan dengan arsitektur menahan dingin." }, { text: "Rumah Tongkonan.", isCorrect: false, rationale: "Rumah Tongkonan dari Toraja." }, { text: "Rumah Sasadu.", isCorrect: false, rationale: "Rumah Sasadu adalah rumah adat dari Maluku." }], },
+            { q: "Kampung adat yang terkenal di Flores dengan rumah adatnya yang beratap kerucut meninggi (*Mbaru Niang*) adalah...", options: [{ text: "Kampung Naga.", isCorrect: false, rationale: "Kampung Naga berada di Jawa Barat." }, { text: "Kete Kesu.", isCorrect: false, rationale: "Kete Kesu adalah kampung adat di Toraja." }, { text: "Wae Rebo.", isCorrect: true, rationale: "Wae Rebo di Flores terkenal dengan rumah adat Mbaru Niang yang unik." }, { text: "Desa Sade.", isCorrect: false, rationale: "Desa Sade adalah kampung adat di Lombok." }], },
+            { q: "Manakah lagu daerah yang berasal dari Minahasa, Sulawesi, yang sering dikenal secara nasional?", options: [{ text: "Angin Mamiri.", isCorrect: false, rationale: "Angin Mamiri adalah lagu daerah dari suku Bugis/Makasar." }, { text: "O Ina Ni Keke.", isCorrect: true, rationale: "Lagu ini adalah lagu daerah yang sangat terkenal dari Minahasa, Sulawesi Utara." }, { text: "Ampar-Ampar Pisang.", isCorrect: false, rationale: "Ampar-Ampar Pisang adalah lagu daerah dari Kalimantan." }, { text: "Kampung Nan Jauh di Mato.", isCorrect: false, rationale: "Lagu ini adalah lagu daerah dari Minang." }], },
+            { q: "Apa nama alat musik pukul tradisional dari Sulawesi yang terbuat dari kayu dan dimainkan dengan memukul bilah-bilah kayu yang disusun?", options: [{ text: "Sasando.", isCorrect: false, rationale: "Sasando adalah alat musik petik dari Nusa Tenggara." }, { text: "Kolintang.", isCorrect: true, rationale: "Kolintang adalah alat musik pukul khas Minahasa, Sulawesi Utara." }, { text: "Tifa.", isCorrect: false, rationale: "Tifa adalah gendang dari Papua/Maluku." }, { text: "Gordang.", isCorrect: false, rationale: "Gordang adalah alat musik dari Sumatra." }], },
+            { q: "Apa yang membedakan satu suku bangsa dengan suku bangsa lainnya menurut materi ini?", options: [{ text: "Warna kulit, mata, dan bentuk tubuh.", isCorrect: false, rationale: "Ini adalah ciri pembeda ras, bukan suku." }, { text: "Bahasa, adat istiadat, hingga kebiasaannya.", isCorrect: true, rationale: "Perbedaan budaya inilah yang menjadi ciri pembeda utama suku bangsa." }, { text: "Tingkat ekonomi dan pilihan politik.", isCorrect: false, rationale: "Ini adalah pembeda antargolongan." }, { text: "Tempat ibadah dan kitab suci.", isCorrect: false, rationale: "Ini adalah pembeda agama." }], },
+            { q: "Agama resmi di Indonesia yang perkembangannya didasarkan pada ajaran Sidharta Buddha Gautama dan menggunakan Kitab Tripitaka adalah...", options: [{ text: "Katolik.", isCorrect: false, rationale: "Katolik didasarkan pada ajaran Yesus Kristus dan menggunakan Injil." }, { text: "Hindu.", isCorrect: false, rationale: "Hindu didasarkan pada ajaran dalam Kitab Weda." }, { text: "Buddha.", isCorrect: true, rationale: "Agama Buddha didasarkan pada ajaran Buddha Gautama dan Kitab Tripitaka." }, { text: "Konghucu.", isCorrect: false, rationale: "Konghucu didasarkan pada ajaran Konfusius." }], },
+            { q: "Agama yang mulai berkembang sekitar abad ke-13 hingga abad ke-19 bersama dengan kedatangan bangsa Tiongkok dan berkembang pesat di Kawasan Pecinan adalah...", options: [{ text: "Islam.", isCorrect: false, rationale: "Islam dibawa oleh pedagang Arab, India, dan China mulai Abad ke-7." }, { text: "Kristen Protestan.", isCorrect: false, rationale: "Kristen Protestan dibawa oleh bangsa Eropa sekitar Abad ke-17." }, { text: "Hindu.", isCorrect: false, rationale: "Hindu berkembang sekitar abad ke-5." }, { text: "Konghucu.", isCorrect: true, rationale: "Agama Konghucu sangat identik dengan etnis Tionghoa." }], },
+            { q: "Pernyataan yang benar mengenai waktu masuk dan penyebar agama Islam di Nusantara adalah...", options: [{ text: "Masuk pada Abad ke-16 bersama bangsa Spanyol dan Portugis.", isCorrect: false, rationale: "Ini adalah waktu masuknya agama Katolik." }, { text: "Masuk pada Abad ke-5 bersama pengaruh India.", isCorrect: false, rationale: "Ini adalah waktu masuknya agama Hindu." }, { text: "Mulai masuk ke Nusantara pada Abad ke-7 dan berkembang pesat mulai Abad ke-13 dibawa oleh pedagang Arab, India, dan China.", isCorrect: true, rationale: "Penyebaran Islam didominasi oleh pedagang dari tiga kawasan tersebut." }, { text: "Mulai berkembang di abad ke-8 di masa Kerajaan Sriwijaya.", isCorrect: false, rationale: "Ini adalah waktu masuknya agama Buddha." }], },
+            { q: "Apa yang dimaksud dengan 'Ras' dalam konteks keragaman Indonesia?", options: [{ text: "Perbedaan keyakinan yang dianut oleh masyarakat.", isCorrect: false, rationale: "Ini adalah keragaman agama." }, { text: "Kumpulan manusia berdasarkan genetika tubuh serta tampilan fisiknya (fenotipe).", isCorrect: true, rationale: "Ras adalah 'akar' populasi berdasarkan ciri fisik (fenotipe) dan genetika." }, { text: "Kelompok masyarakat yang memiliki budaya dan bahasa sendiri.", isCorrect: false, rationale: "Ini adalah keragaman suku." }, { text: "Pembedaan status ekonomi dan pekerjaan di masyarakat.", isCorrect: false, rationale: "Ini adalah keragaman antargolongan." }], },
+            { q: "Ras utama di wilayah timur Indonesia (Papua hingga Maluku, Kepulauan Kei dan Aru) yang berciri kulit coklat kehitaman dan berambut keriting adalah...", options: [{ text: "Mongoloid Melayu.", isCorrect: false, rationale: "Ras ini berada di wilayah barat." }, { text: "Kaukasoid.", isCorrect: false, rationale: "Ras Kaukasoid diwakili oleh keturunan Eropa, Arab, dan India." }, { text: "Melanesoid Papua.", isCorrect: true, rationale: "Ras ini adalah ras utama di wilayah timur." }, { text: "Australoid.", isCorrect: false, rationale: "Australoid masih berkerabat dengan Melanesoid." }], },
+            { q: "Keturunan Tiongkok, Jepang, dan Korea di Indonesia mewakili Ras...", options: [{ text: "Australoid.", isCorrect: false, rationale: "Australoid berkerabat dengan Melanesoid Papua." }, { text: "Mongoloid Asiatik.", isCorrect: true, rationale: "Keturunan dari Asia Timur mewakili Ras Mongoloid Asiatik." }, { text: "Kaukasoid.", isCorrect: false, rationale: "Kaukasoid diwakili oleh keturunan Arab, India, dan Eropa." }, { text: "Weddoid.", isCorrect: false, rationale: "Weddoid merupakan ras yang serupa dengan orang-orang Srilanka." }], },
+            { q: "Contoh nyata kerukunan dalam beragama yang ditunjukkan oleh jemaah Masjid Al-Muqarrabien dan Gereja GMIST Mahanaim di Tanjung Priok adalah...", options: [{ text: "Masjid dan gereja dibangun oleh arsitek yang sama.", isCorrect: false, rationale: "Arsitek yang sama adalah kisah Masjid Istiqlal dan Gereja Katedral." }, { text: "Kedua rumah ibadah dipakai bergantian untuk ibadah.", isCorrect: false, rationale: "Masing-masing rumah ibadah dipakai untuk kegiatan agama masing-masing." }, { text: "Saling meminjamkan halaman untuk parkir kendaraan ibadah.", isCorrect: true, rationale: "Ini adalah bentuk kerja sama konkret yang disebutkan dalam teks." }, { text: "Pendeta dan khatib saling bertukar mimbar.", isCorrect: false, rationale: "Hal ini tidak disebutkan dalam teks." }], },
+            { q: "Apa nama Kitab Suci yang menjadi pegangan bagi pemeluk agama Islam?", options: [{ text: "Injil.", isCorrect: false, rationale: "Injil adalah Kitab Suci agama Kristen Protestan dan Katolik." }, { text: "Al-Qur'an.", isCorrect: true, rationale: "Al-Qur'an adalah Kitab Suci agama Islam." }, { text: "Weda.", isCorrect: false, rationale: "Weda adalah Kitab Suci agama Hindu." }, { text: "Tripitaka.", isCorrect: false, rationale: "Tripitaka adalah Kitab Suci agama Buddha." }], },
+            { q: "Golongan masyarakat yang berbeda-beda dapat dikelompokkan berdasarkan hal-hal berikut, **kecuali**...", options: [{ text: "Tingkat ekonomi (mampu atau kurang mampu).", isCorrect: false, rationale: "Perbedaan tingkat ekonomi membentuk golongan masyarakat." }, { text: "Pilihan organisasi dan politik (partai atau ormas).", isCorrect: false, rationale: "Perbedaan pilihan ini juga membentuk golongan." }, { text: "Profesi atau jenis pekerjaan (petani, nelayan, wartawan).", isCorrect: false, rationale: "Profesi juga menjadi dasar pengelompokan golongan masyarakat." }, { text: "Perbedaan Bahasa Indonesia sebagai bahasa persatuan.", isCorrect: true, rationale: "Bahasa Indonesia adalah pemersatu, bukan pembeda golongan." }], },
+            { q: "Ras Weddoid yang serupa dengan ras orang-orang Srilanka, terdapat pada suku-suku kecil seperti Mentawai, Enggano, Kubu, dan Sakai, yang semuanya tersebar di pulau...", options: [{ text: "Jawa.", isCorrect: false, rationale: "Jawa didominasi Ras Mongoloid Melayu." }, { text: "Kalimantan.", isCorrect: false, rationale: "Kalimantan didominasi Ras Mongoloid Melayu dan Dayak." }, { text: "Sumatra.", isCorrect: true, rationale: "Suku-suku kecil yang disebutkan tersebar di berbagai wilayah Sumatra." }, { text: "Sulawesi.", isCorrect: false, rationale: "Tomuna (di Sulawesi) memiliki ras Weddoid." }], },
+            { q: "Apa perumpamaan yang digunakan dalam materi untuk menjelaskan nilai penting kebinekaan, di mana kekuatan terbentuk dari persatuan banyak bagian yang lemah?", options: [{ text: "Air dan Api.", isCorrect: false, rationale: "Perumpamaan ini melambangkan pertentangan." }, { text: "Sapu Lidi.", isCorrect: true, rationale: "Lidi yang dikumpulkan dan diikat menjadi sapu melambangkan persatuan dalam kebinekaan yang menghasilkan kekuatan." }, { text: "Tali dan Jangkar.", isCorrect: false, rationale: "Perumpamaan ini lebih merujuk pada kekuatan ikatan." }, { text: "Kapas dan Benang.", isCorrect: false, rationale: "Perumpamaan ini lebih merujuk pada proses pembuatan produk." }], },
+            { q: "Sikap yang harus dilakukan antarorang atau antarkelompok untuk menjaga nilai kebinekaan Indonesia adalah...", options: [{ text: "Saling merendahkan untuk menunjukkan kelebihan masing-masing.", isCorrect: false, rationale: "Sikap ini merusak kebinekaan." }, { text: "Meningkatkan kualitas diri tanpa perlu bekerja sama dengan pihak lain.", isCorrect: false, rationale: "Menutup diri akan menyebabkan entropi budaya." }, { text: "Menghargai, membangun hubungan, serta bekerja sama dengan yang berbeda.", isCorrect: true, rationale: "Tiga hal ini adalah kunci untuk menjaga kebinekaan dan mencapai kemajuan bersama." }, { text: "Berkompetisi secara ketat tanpa ada interaksi sosial.", isCorrect: false, rationale: "Kompetisi tanpa kerjasama dapat memecah belah." }], },
+            { q: "Mengapa kelompok masyarakat yang menutup diri dan menolak bekerja sama dengan masyarakat lain yang berbeda tidak akan dapat maju?", options: [{ text: "Mereka terlalu fokus pada kebudayaan sendiri.", isCorrect: false, rationale: "Walaupun fokus, tetapi dampaknya adalah penurunan kualitas." }, { text: "Akan mengalami entropi budaya, atau penurunan kualitas budaya.", isCorrect: true, rationale: "Menutup diri mencegah penyerapan hal-hal baru yang bermanfaat, menyebabkan penurunan kualitas budaya." }, { text: "Tidak ada tantangan untuk meningkatkan kualitas diri.", isCorrect: false, rationale: "Masalahnya bukan pada tantangan, tetapi pada penurunan kualitas." }, { text: "Mereka akan diasingkan oleh bangsa lain.", isCorrect: false, rationale: "Alasan utamanya adalah dampak internal (entropi budaya)." }], },
+            { q: "Bagaimana cara setiap umat beragama dapat menjaga kebinekaan dengan baik?", options: [{ text: "Meyakini ajaran agama lain untuk mencapai toleransi.", isCorrect: false, rationale: "Setiap umat harus meyakini agamanya sendiri." }, { text: "Membangun hubungan dan bekerja sama karena tidak takut terpengaruh agama lain.", isCorrect: true, rationale: "Keyakinan yang kuat pada agama sendiri justru mempermudah interaksi positif tanpa rasa takut terpengaruh." }, { text: "Menganggap semua agama adalah sama dan tidak ada perbedaan.", isCorrect: false, rationale: "Pengakuan terhadap perbedaan adalah kunci kebinekaan ('bagiku agamaku, bagimu agamamu')." }, { text: "Beribadah bersama-sama di rumah ibadah yang sama.", isCorrect: false, rationale: "Peribadatan dilakukan sesuai ajaran agama masing-masing." }], },
+            { q: "Salah satu contoh keragaman antargolongan berdasarkan profesi adalah...", options: [{ text: "Perbedaan suku antara Bugis dan Jawa.", isCorrect: false, rationale: "Ini adalah keragaman suku." }, { text: "Perbedaan pilihan partai politik di antara warga.", isCorrect: false, rationale: "Ini adalah keragaman golongan politik." }, { text: "Nelayan bergabung dalam Himpunan Nelayan Seluruh Indonesia (NHSI).", isCorrect: true, rationale: "Pengelompokan berdasarkan profesi membentuk golongan masyarakat, dan NHSI adalah contohnya." }, { text: "Perbedaan Ras Mongoloid dan Melanesoid.", isCorrect: false, rationale: "Ini adalah keragaman ras." }], },
+            { q: "Salah satu upaya untuk meningkatkan kesadaran gender di kalangan siswa adalah dengan mendiskusikan...", options: [{ text: "Perbedaan kemampuan fisik antara laki-laki dan perempuan.", isCorrect: false, rationale: "Fokus harus pada kesetaraan hak." }, { text: "Kesamaan hak dan posisi di sekolah dan masyarakat.", isCorrect: true, rationale: "Peningkatan kesadaran gender berfokus pada kesetaraan posisi dan hak dalam segala aspek." }, { text: "Peran tradisional perempuan sebagai pengurus rumah tangga.", isCorrect: false, rationale: "Fokus ini justru memperkuat stereotip lama." }, { text: "Siapa yang paling cocok menjadi ketua kelas secara fisik.", isCorrect: false, rationale: "Kepemimpinan tidak didasarkan pada fisik." }], },
+            { q: "Mengapa keragaman yang dimiliki bangsa Indonesia merupakan karunia Tuhan Yang Maha Esa yang patut disyukuri?", options: [{ text: "Karena keragaman tersebut hanya dimiliki oleh bangsa Indonesia.", isCorrect: false, rationale: "Banyak bangsa lain juga memiliki keragaman." }, { text: "Karena keragaman adalah dasar untuk memilih pemimpin yang berbeda-beda.", isCorrect: false, rationale: "Alasan utamanya lebih mendasar daripada politik." }, { text: "Karena keragaman tersebut memperkaya bangsa dan menjadi modal persatuan.", isCorrect: true, rationale: "Keragaman adalah kekayaan dan sumber kekuatan bila disyukuri dan dijaga." }, { text: "Karena keragaman membatasi interaksi dengan bangsa lain.", isCorrect: false, rationale: "Keragaman justru mendorong interaksi." }], },
+            { q: "Menurut ajaran agama, apa yang menjadi tolok ukur kemuliaan seseorang di sisi Tuhan, terlepas dari gender (laki-laki atau perempuan)?", options: [{ text: "Kemampuan memimpin atau menjadi kepala keluarga.", isCorrect: false, rationale: "Ini adalah peran sosial." }, { text: "Tingkat pendidikan dan gelar akademis.", isCorrect: false, rationale: "Tingkat pendidikan adalah pencapaian duniawi." }, { text: "Tingkat ketakwaan atau ketaatannya pada Tuhan.", isCorrect: true, rationale: "Teks menyebutkan 'yang paling mulia di sisi Tuhan adalah yang bertakwa' baik perempuan atau laki-laki." }, { text: "Kekuatan fisik dan kemampuan mencari nafkah.", isCorrect: false, rationale: "Ini adalah kelebihan fisik dan ekonomi." }], },
+            { q: "Apa dampak negatif dari sikap menolak dan menutup diri terhadap suku, budaya, atau golongan lain?", options: [{ text: "Masyarakat akan semakin mandiri dan tidak bergantung pada pihak lain.", isCorrect: false, rationale: "Sikap ini justru akan membuat masyarakat sulit berkembang." }, { text: "Masyarakat akan saling menguatkan dan membentuk solidaritas yang kuat.", isCorrect: false, rationale: "Ini adalah dampak positif dari keterbukaan." }, { text: "Masyarakat akan sulit berkembang karena akan saling melemahkan.", isCorrect: true, rationale: "Sikap menutup diri mencegah pertukaran kelebihan dan menyebabkan stagnasi atau kemunduran." }, { text: "Terjadi percampuran ras dan budaya yang tidak diinginkan.", isCorrect: false, rationale: "Menutup diri justru mencegah percampuran." }], },
+            { q: "Bagaimana cara menyadarkan masyarakat bahwa beragamnya warga, termasuk pendatang, akan membuat suatu daerah maju?", options: [{ text: "Meminta pendatang untuk menyesuaikan diri sepenuhnya dengan budaya setempat.", isCorrect: false, rationale: "Ini bisa membatasi kontribusi pendatang." }, { text: "Menekankan bahwa pendatang membawa keahlian dan kelebihan yang dapat digabungkan untuk pembangunan.", isCorrect: true, rationale: "Kemajuan terjadi karena penggabungan kelebihan antar kelompok yang berbeda." }, { text: "Membentuk komite khusus untuk membatasi jumlah pendatang yang masuk.", isCorrect: false, rationale: "Pembatasan tidak sejalan dengan semangat kebinekaan." }, { text: "Mengganti seluruh pejabat daerah dengan penduduk asli.", isCorrect: false, rationale: "Kepemimpinan yang efektif tidak dibatasi oleh suku atau asal usul." }], },
+            { q: "Suku di wilayah timur pulau Sumatra serta kepulauannya yang bahasanya menyebar dan dipakai sebagai bahasa penghubung antarsuku di Indonesia sejak berabad-abad silam adalah suku...", options: [{ text: "Aceh.", isCorrect: false, rationale: "Suku Aceh berada di paling utara Sumatra." }, { text: "Minang.", isCorrect: false, rationale: "Suku Minang berada di pantai barat Sumatra." }, { text: "Melayu.", isCorrect: true, rationale: "Bahasa Melayu menyebar luas sebagai lingua franca dan menjadi cikal bakal Bahasa Indonesia." }, { text: "Tapanuli.", isCorrect: false, rationale: "Suku Tapanuli/Batak berada di Sumatra Utara." }], },
+            { q: "Salah satu upacara yang terkenal di Papua, di mana seluruh warga berkumpul untuk bersyukur atau mengikat perdamaian dengan pesta bersama dan makanan dimasak menggunakan batu yang dibakar, adalah...", options: [{ text: "Upacara Tiwah.", isCorrect: false, rationale: "Tiwah adalah upacara kematian Suku Dayak." }, { text: "Upacara Bakar Batu.", isCorrect: true, rationale: "Upacara ini sangat khas dari Papua." }, { text: "Upacara Pasola.", isCorrect: false, rationale: "Pasola adalah upacara perang-perangan berkuda dari Sumba." }, { text: "Upacara Tabuik.", isCorrect: false, rationale: "Tabuik adalah upacara yang diadakan di Minang." }], },
+            { q: "Perhatikan percampuran ras berikut: Percampuran Ras Mongoloid Melayu dengan Ras Australoid yang masih berkerabat dengan Ras Melanesoid Papua. Percampuran ini terjadi di daerah...", options: [{ text: "Kalimantan.", isCorrect: false, rationale: "Kalimantan lebih banyak percampuran Mongoloid Melayu dengan Dayak/Tionghoa." }, { text: "Jawa Tengah.", isCorrect: false, rationale: "Jawa didominasi Mongoloid Melayu." }, { text: "Nusa Tenggara Timur.", isCorrect: true, rationale: "Wilayah NTT menjadi tempat bertemunya dua ras besar ini." }, { text: "Maluku.", isCorrect: false, rationale: "Maluku lebih banyak percampuran Mongoloid Melayu dengan Melanesoid Papua." }], },
+            { q: "Lagu daerah yang berasal dari Ambon, Maluku, yang dikenal secara luas di Indonesia adalah...", options: [{ text: "Yamko Rambe Yamko.", isCorrect: false, rationale: "Lagu ini dari Papua." }, { text: "O Ina Ni Keke.", isCorrect: false, rationale: "Lagu ini dari Minahasa, Sulawesi." }, { text: "Ambon Manise.", isCorrect: true, rationale: "Judul lagu ini secara spesifik menyebut nama daerah asalnya." }, { text: "Janger.", isCorrect: false, rationale: "Lagu ini dari Bali." }], },
+            { q: "Rumah adat yang lantainya tidak di tanah, melainkan berupa panggung dari kayu untuk berjaga-jaga dari ancaman lingkungan, dikenal dengan sebutan...", options: [{ text: "Rumah Ebeai.", isCorrect: false, rationale: "Rumah Ebeai (Papua) adalah rumah berlantai di tanah." }, { text: "Rumah Joglo.", isCorrect: false, rationale: "Rumah Joglo (Jawa) adalah rumah berlantai di tanah." }, { text: "Rumah Panggung.", isCorrect: true, rationale: "Rumah Panggung adalah istilah umum untuk rumah berlantai tinggi yang didukung tiang." }, { text: "Rumah Musalaki.", isCorrect: false, rationale: "Rumah Musalaki (Nusa Tenggara) adalah rumah berlantai di tanah." }], },
+            { q: "Keragaman apa yang berlaku universal atau bagi seluruh umat manusia di dunia?", options: [{ text: "Keragaman suku.", isCorrect: false, rationale: "Suku hanya ada di wilayah tertentu." }, { text: "Keragaman bahasa.", isCorrect: false, rationale: "Bahasa berbeda-beda di setiap wilayah." }, { text: "Keragaman gender.", isCorrect: true, rationale: "Pembedaan jenis kelamin (perempuan dan laki-laki) berlaku di seluruh dunia." }, { text: "Keragaman ras.", isCorrect: false, rationale: "Ras utama terbagi berdasarkan wilayah dan keturunan." }], },
+            { q: "Bagaimana cara umat Katolik dan Kristen Protestan dibedakan dari segi peribadatan menurut teks?", options: [{ text: "Memiliki Kitab Suci yang berbeda.", isCorrect: false, rationale: "Keduanya menggunakan Kitab Suci Injil." }, { text: "Memiliki Tuhan yang berbeda.", isCorrect: false, rationale: "Keduanya meyakini Trinitas." }, { text: "Memiliki tempat ibadah yang berbeda.", isCorrect: false, rationale: "Keduanya beribadah di gereja." }, { text: "Memiliki peribadatan tersendiri yang berbeda satu sama lain.", isCorrect: true, rationale: "Peribadatan dan tata cara keduanya memiliki perbedaan." }], },
+            { q: "Kelompok ras Kaukasoid di Indonesia diwakili oleh keturunan asing yang berasal dari...", options: [{ text: "Tiongkok dan Jepang.", isCorrect: false, rationale: "Mereka mewakili Ras Mongoloid Asiatik." }, { text: "Papua dan Maluku.", isCorrect: false, rationale: "Mereka mewakili Ras Melanesoid Papua." }, { text: "Arab, India, hingga bangsa-bangsa Eropa.", isCorrect: true, rationale: "Keturunan dari wilayah ini mewakili Ras Kaukasoid." }, { text: "Mentawai dan Enggano.", isCorrect: false, rationale: "Mereka mewakili Ras Weddoid." }], },
+            { q: "Sikap yang sesuai dengan prinsip 'Bagiku agamaku, dan bagimu agamamu' dalam konteks kebinekaan adalah...", options: [{ text: "Mengabaikan perayaan hari besar agama lain.", isCorrect: false, rationale: "Sikap ini menunjukkan ketidakpedulian." }, { text: "Meyakini ajaran agama sendiri sambil menghormati pemeluk agama lain.", isCorrect: true, rationale: "Prinsip ini menegaskan keyakinan kuat pada agama sendiri dan toleransi terhadap yang lain." }, { text: "Berusaha meyakinkan pemeluk agama lain untuk mengikuti ajaran agama kita.", isCorrect: false, rationale: "Ini melanggar prinsip toleransi." }, { text: "Menganggap semua tempat ibadah sama saja.", isCorrect: false, rationale: "Setiap tempat memiliki kekhususan sendiri." }], },
+            { q: "Mengapa laki-laki dan perempuan perlu saling bekerja sama di berbagai bidang agar bisa maju?", options: [{ text: "Agar laki-laki dapat mendominasi peran-peran penting.", isCorrect: false, rationale: "Kerja sama bertujuan untuk kesetaraan." }, { text: "Karena perempuan secara fisik lebih kuat dari laki-laki.", isCorrect: false, rationale: "Ini tidak benar secara umum." }, { text: "Masing-masing punya kelebihan yang perlu digabungkan satu sama lain.", isCorrect: true, rationale: "Menggabungkan kelebihan adalah cara efektif untuk mencapai kemajuan kolektif." }, { text: "Agar dapat membentuk organisasi politik yang baru.", isCorrect: false, rationale: "Alasan utamanya lebih bersifat umum untuk kemajuan sosial." }], },
+            { q: "Di komplek Taman Mini Indonesia Indah (TMII), masjid, gereja, pura, dan wihara pun berdampingan. Hal ini mencerminkan nilai kebinekaan dalam aspek...", options: [{ text: "Ras dan Antargolongan.", isCorrect: false, rationale: "Ini adalah keragaman tempat ibadah." }, { text: "Suku dan Budaya.", isCorrect: false, rationale: "Ini bukan keragaman suku, melainkan agama." }, { text: "Agama dan Kepercayaan.", isCorrect: true, rationale: "Tempat ibadah yang berdampingan adalah simbol keragaman agama dan kerukunan." }, { text: "Gender.", isCorrect: false, rationale: "Gender tidak terkait dengan tempat ibadah." }], },
+            { q: "Suku-suku di kawasan ini adalah Timor, Alor, Sumba, serta suku-suku di Flores seperti Ende, Bajawa, hingga Manggarai. Kawasan yang dimaksud adalah...", options: [{ text: "Papua dan Maluku.", isCorrect: false, rationale: "Ini adalah suku-suku dari wilayah Nusa Tenggara Timur." }, { text: "Sulawesi.", isCorrect: false, rationale: "Sulawesi memiliki suku Bugis, Makasar, Minahasa, dll." }, { text: "Bali dan Nusa Tenggara.", isCorrect: true, rationale: "Suku-suku yang disebutkan adalah suku-suku utama di Nusa Tenggara Timur." }, { text: "Kalimantan.", isCorrect: false, rationale: "Kalimantan memiliki rumpun suku Dayak." }], },
+            { q: "Suku laut yang dikenal berumah di atas laut dan tersebar di daerah Komodo, serta juga ditemukan di wilayah Sulawesi, adalah...", options: [{ text: "Suku Bajo.", isCorrect: true, rationale: "Suku Bajo adalah suku nomaden laut yang tersebar di wilayah Indonesia Timur." }, { text: "Suku Sasak.", isCorrect: false, rationale: "Sasak adalah suku utama di Pulau Lombok." }, { text: "Suku Mentawai.", isCorrect: false, rationale: "Mentawai adalah suku di Sumatra." }, { text: "Suku Asmat.", isCorrect: false, rationale: "Asmat adalah suku di Papua." }], },
+            { q: "Mengapa setiap suku dengan budayanya perlu bekerja sama dengan suku lain, alih-alih merendahkan suku lain karena merasa di daerahnya sendiri?", options: [{ text: "Agar pemerintah pusat memberikan perhatian lebih besar.", isCorrect: false, rationale: "Alasan utamanya adalah untuk kemajuan internal suku itu sendiri." }, { text: "Dengan terbiasa bekerja sama dengan suku lain malah akan membuat sukunya sendiri maju dan berbudaya kuat.", isCorrect: true, rationale: "Interaksi dan kerjasama membawa transfer pengetahuan dan kelebihan yang mendorong kemajuan." }, { text: "Untuk menghindari sanksi sosial dari masyarakat global.", isCorrect: false, rationale: "Alasannya lebih didasari pada manfaat praktis antar kelompok." }, { text: "Karena suku lain tidak memiliki kelebihan apapun.", isCorrect: false, rationale: "Semua suku memiliki kelebihan masing-masing." }], },
+            { q: "Perhatikan tradisi-tradisi berikut: 1) Balapan Sapi (Karapan), 2) Balap Perahu di sungai (Pacu Jalur), 3) Mencari cacing laut (Bau Nyale), 4) Perang-perangan Berkuda (Pasola). Tradisi manakah yang berasal dari Pulau Sumba?", options: [{ text: "1) Karapan Sapi.", isCorrect: false, rationale: "Karapan Sapi berasal dari Madura." }, { text: "2) Pacu Jalur.", isCorrect: false, rationale: "Pacu Jalur berasal dari Sumatra." }, { text: "3) Bau Nyale.", isCorrect: false, rationale: "Bau Nyale berasal dari Lombok." }, { text: "4) Pasola.", isCorrect: true, rationale: "Pasola adalah tradisi khas dari Pulau Sumba, Nusa Tenggara Timur." }], },
+            { q: "Di Indonesia, terdapat warga keturunan asing yang sudah berabad-abad ada, seperti keturunan Arab dan India. Mereka termasuk dalam kelompok ras...", options: [{ text: "Mongoloid Melayu.", isCorrect: false, rationale: "Ras utama pribumi di wilayah Barat." }, { text: "Mongoloid Asiatik.", isCorrect: false, rationale: "Keturunan Asia Timur." }, { text: "Kaukasoid.", isCorrect: true, rationale: "Keturunan dari Arab, India, dan Eropa digolongkan dalam Ras Kaukasoid." }, { text: "Weddoid.", isCorrect: false, rationale: "Suku-suku kecil seperti Kubu dan Mentawai." }], },
+            { q: "Rumah adat Rumah Gadang dan Rumah Tongkonan memiliki kemiripan arsitektur, yaitu...", options: [{ text: "Beratap bulat dari jerami.", isCorrect: false, rationale: "Ini ciri rumah Honai di Papua." }, { text: "Lantai di tanah dan tanpa jendela.", isCorrect: false, rationale: "Ini ciri rumah Honai di Papua." }, { text: "Keduanya merupakan rumah panggung dengan tiang tinggi.", isCorrect: true, rationale: "Rumah adat di Sumatra dan Sulawesi umumnya merupakan rumah panggung tinggi." }, { text: "Keduanya beratap kerucut meninggi tanpa jendela.", isCorrect: false, rationale: "Ini adalah ciri rumah Honai di Papua." }], },
+            { q: "Mengapa persentase keterwakilan 30% perempuan di Dewan Perwakilan Rakyat (DPR) merupakan upaya membangun kesadaran gender?", options: [{ text: "Karena perempuan memiliki kemampuan berpolitik yang lebih baik daripada laki-laki.", isCorrect: false, rationale: "Upaya ini didasarkan pada prinsip kesetaraan dan representasi." }, { text: "Karena hal ini menjamin semua anggota DPR adalah perempuan.", isCorrect: false, rationale: "30% adalah kuota minimal." }, { text: "Karena hal ini mewajibkan perempuan untuk selalu memilih pemimpin perempuan.", isCorrect: false, rationale: "Pemilihan tetap berdasarkan suara." }, { text: "Karena hal ini menjamin representasi suara dan kepentingan perempuan dalam politik nasional.", isCorrect: true, rationale: "Kuota 30% adalah langkah afirmatif untuk menjamin keterwakilan gender yang setara." }], },
+            { q: "Salah satu tradisi masyarakat Tengger di Jawa Timur yang merupakan upacara adat untuk bersyukur dan memohon keselamatan di sekitar Gunung Bromo adalah...", options: [{ text: "Sekaten.", isCorrect: false, rationale: "Sekaten adalah upacara perayaan Maulid Nabi di Solo dan Yogya." }, { text: "Pasola.", isCorrect: false, rationale: "Pasola dari Sumba." }, { text: "Kasodo.", isCorrect: true, rationale: "Upacara Kasodo (Kesodo) adalah upacara suku Tengger yang terkenal." }, { text: "Tabuik.", isCorrect: false, rationale: "Tabuik dari Minang." }], },
+            { q: "Perhatikan karakteristik suku: **1) Suku-suku terbesar di Indonesia, 2) Berada di pulau terpadat, 3) Termasuk Jawa, Sunda, Madura, dan Banten.** Kelompok suku tersebut tergolong dalam Ras...", options: [{ text: "Melanesoid Papua.", isCorrect: false, rationale: "Ras ini berada di timur Indonesia." }, { text: "Australoid Weddoid.", isCorrect: false, rationale: "Ras minoritas di Sumatra dan NTT." }, { text: "Kaukasoid.", isCorrect: false, rationale: "Keturunan asing." }, { text: "Mongoloid Melayu.", isCorrect: true, rationale: "Suku-suku besar di Sumatra, Jawa, Kalimantan, dan Sulawesi termasuk dalam Ras Mongoloid Melayu." }], }
+        ];
+
+        let elapsedTime = 0; // Waktu dalam detik, dimulai dari 0
+        let timerInterval;
+        let userAnswers = new Array(quizQuestions.length).fill(null);
+
+        // Fungsi untuk mengacak urutan jawaban
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+        
+        // Mempersiapkan opsi acak saat pertama kali skrip dimuat
+        quizQuestions.forEach(q => {
+            q.shuffledOptions = [...q.options];
+            shuffleArray(q.shuffledOptions);
+        });
+
+        // --- TIMER FUNCTIONS ---
+        function updateTimerDisplay() {
+            const minutes = Math.floor(elapsedTime / 60);
+            const seconds = elapsedTime % 60;
+            document.getElementById('timer-display').innerText = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                elapsedTime++;
+                updateTimerDisplay();
+            }, 1000);
+        }
+        
+        // --- QUIZ FUNCTIONS ---
+        function startQuiz() {
+            document.getElementById('start-screen').classList.add('hidden');
+            document.getElementById('quiz-status').classList.remove('hidden');
+            document.getElementById('quiz-content').classList.remove('hidden');
+
+            loadAllQuestions();
+            startTimer();
+        }
+
+        function loadAllQuestions() {
+            const container = document.getElementById('quiz-container');
+            container.innerHTML = '';
+            
+            quizQuestions.forEach((questionData, index) => {
+                const questionCard = document.createElement('div');
+                questionCard.className = 'question-box';
+                questionCard.id = `q-${index}`;
+                
+                // Soal
+                const questionText = document.createElement('p');
+                questionText.className = 'question-text';
+                questionText.innerHTML = `${index + 1}. ${questionData.q}`;
+                questionCard.appendChild(questionText);
+
+                // Kotak Opsi Jawaban
+                const optionsContainer = document.createElement('div');
+                optionsContainer.className = 'option-group';
+                
+                questionData.shuffledOptions.forEach((option, optionIndex) => {
+                    const optionLabel = document.createElement('label');
+                    optionLabel.className = 'option-label';
+                    
+                    const input = document.createElement('input');
+                    input.type = 'radio';
+                    input.name = `q${index}`;
+                    input.value = optionIndex;
+                    input.setAttribute('data-question-index', index);
+                    
+                    optionLabel.appendChild(input);
+                    optionLabel.appendChild(document.createTextNode(option.text));
+                    
+                    // Event listener untuk menyimpan jawaban dan memperbarui tampilan
+                    input.addEventListener('change', (e) => {
+                        const qIndex = parseInt(e.target.getAttribute('data-question-index'));
+                        const selectedIndex = parseInt(e.target.value);
+                        userAnswers[qIndex] = selectedIndex;
+                        updateAnsweredCount();
+                        
+                        // Menghapus kelas 'selected' dari label lain dalam grup yang sama
+                        optionsContainer.querySelectorAll('.option-label').forEach(label => label.classList.remove('selected'));
+                        // Menambahkan kelas 'selected' ke label yang baru dipilih
+                        optionLabel.classList.add('selected');
+                    });
+                    
+                    optionsContainer.appendChild(optionLabel);
+                });
+
+                questionCard.appendChild(optionsContainer);
+                container.appendChild(questionCard);
+            });
+            updateAnsweredCount();
+        }
+
+        function updateAnsweredCount() {
+            const answeredCount = userAnswers.filter(a => a !== null).length;
+            document.getElementById('answered-count-display').innerText = `Dijawab: ${answeredCount}/${quizQuestions.length}`;
+        }
+        
+        function submitQuiz(isTimeout) {
+            clearInterval(timerInterval);
+            
+            let finalScore = 0;
+            
+            // Hitung skor dan tandai jawaban
+            quizQuestions.forEach((q, index) => {
+                const selectedOptionIndex = userAnswers[index];
+                const questionElement = document.getElementById(`q-${index}`);
+                const optionLabels = questionElement.querySelectorAll('.option-label');
+
+                // Non-aktifkan semua input radio
+                questionElement.querySelectorAll('input[type="radio"]').forEach(input => input.disabled = true);
+                
+                // Iterasi untuk menandai benar/salah dan menghitung skor
+                q.shuffledOptions.forEach((option, optionIndex) => {
+                    const label = optionLabels[optionIndex];
+                    
+                    if (option.isCorrect) {
+                        label.classList.add('correct'); // Tandai jawaban yang benar dengan hijau
+                        
+                        if (selectedOptionIndex === optionIndex) {
+                            finalScore++;
+                        }
+                    } else if (selectedOptionIndex === optionIndex) {
+                        label.classList.add('incorrect'); // Tandai pilihan user yang salah dengan merah
+                    }
+                    
+                    // Hapus penanda "selected" setelah submit
+                    label.classList.remove('selected');
+                });
+
+                // Tampilkan Rasionalisasi (Pembahasan)
+                const rationaleText = q.shuffledOptions.find(opt => opt.isCorrect).rationale;
+                const rationaleElement = document.createElement('div');
+                rationaleElement.className = 'rationale-box';
+                rationaleElement.innerHTML = `<strong>Pembahasan:</strong> ${rationaleText}`;
+                questionElement.appendChild(rationaleElement);
+            });
+
+            // Tampilkan layar hasil
+            document.getElementById('submit-area').classList.add('hidden');
+            document.getElementById('quiz-status').classList.add('hidden');
+            document.getElementById('result-screen').classList.remove('hidden');
+
+            document.getElementById('final-score').innerText = `${finalScore} / ${quizQuestions.length}`;
+            document.getElementById('final-time').innerText = document.getElementById('timer-display').innerText;
+
+            let message = '';
+            if (isTimeout) {
+                message = "Waktu habis! Jawaban Anda otomatis dikirimkan.";
+            } else if (finalScore >= 35) {
+                message = "Hebat! Pemahaman Anda SANGAT BAIK.";
+            } else if (finalScore >= 25) {
+                message = "Cukup Baik! Pelajari lagi bagian yang salah.";
+            } else {
+                message = "Perlu Belajar Lebih Keras! Tinjau semua pembahasan di bawah.";
+            }
+            document.getElementById('assessment-message').innerText = message;
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function restartQuiz() {
+            elapsedTime = 0;
+            userAnswers = new Array(quizQuestions.length).fill(null);
+            
+            // Mengacak ulang opsi untuk pengalaman baru
+            quizQuestions.forEach(q => {
+                shuffleArray(q.shuffledOptions);
+            });
+
+            document.getElementById('result-screen').classList.add('hidden');
+            document.getElementById('submit-area').classList.remove('hidden');
+            document.getElementById('quiz-content').classList.add('hidden');
+            document.getElementById('start-screen').classList.remove('hidden');
+            document.getElementById('timer-display').innerText = '00:00';
+            
+            // Memastikan konten kuis bersih
+            document.getElementById('quiz-container').innerHTML = ''; 
+        }
+        
+        // Inisialisasi tampilan awal
+        window.onload = function() {
+            updateTimerDisplay();
+        }
+
+    </script>
+
+</body>
+</html>
+

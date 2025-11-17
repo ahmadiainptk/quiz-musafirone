@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuis Bab 3: Kesatuan Indonesia dan Karakteristik Daerah</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f9fc;
+        }
+        .quiz-container {
+            max-width: 900px;
+            margin: auto;
+            padding: 1.5rem;
+        }
+        .question-card {
+            background-color: white;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border-left: 5px solid #10b981; /* Emerald border */
+        }
+        .option-label {
+            display: block;
+            cursor: pointer;
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+            transition: all 0.2s;
+            user-select: none;
+        }
+        .option-label:hover {
+            background-color: #f3f4f6;
+            border-color: #a1a1aa;
+        }
+        input[type="radio"]:checked + .option-label {
+            background-color: #d1fae5; /* Light green for selected */
+            border-color: #10b981;
+            font-weight: 600;
+        }
+        .result-correct {
+            background-color: #d1fae5; /* Green for correct */
+            border: 2px solid #059669;
+        }
+        .result-incorrect {
+            background-color: #fee2e2; /* Red for incorrect */
+            border: 2px solid #dc2626;
+        }
+        .rationale {
+            margin-top: 0.5rem;
+            padding: 0.75rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+        .rationale-correct {
+            background-color: #f0fdf4;
+            color: #059669;
+            border: 1px solid #a7f3d0;
+        }
+        .rationale-incorrect {
+            background-color: #fef2f2;
+            color: #dc2626;
+            border: 1px solid #fecaca;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+
+<div id="quizApp" class="quiz-container">
+    <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">Kuis Bab 3: Kesatuan Indonesia dan Karakteristik Daerah</h1>
+    <p class="text-center text-gray-600 mb-8">Jumlah Soal: 40 Pilihan Ganda</p>
+
+    <!-- Start Screen -->
+    <div id="startScreen" class="text-center bg-white p-8 rounded-lg shadow-xl">
+        <h2 class="text-2xl font-semibold mb-4 text-green-600">Selamat Datang di Kuis!</h2>
+        <p class="mb-6 text-gray-700">Tekan tombol di bawah ini untuk memulai kuis. Timer akan segera berjalan setelah tombol diklik.</p>
+        <button id="startButton" class="px-8 py-3 bg-green-600 text-white font-bold rounded-full hover:bg-green-700 transition duration-300 transform hover:scale-105 shadow-md">
+            Mulai Kuis
+        </button>
+    </div>
+
+    <!-- Quiz Screen -->
+    <div id="quizScreen" class="hidden">
+        <div class="fixed top-0 left-0 right-0 bg-white p-4 shadow-md z-10 md:relative md:p-0 md:bg-transparent md:shadow-none">
+            <div class="flex justify-between items-center max-w-4xl mx-auto md:max-w-none">
+                <div class="text-lg font-semibold text-gray-700">Waktu Tersisa:</div>
+                <div id="timerDisplay" class="text-2xl font-bold text-red-600 bg-red-100 px-3 py-1 rounded-md">00:00</div>
+            </div>
+        </div>
+        
+        <form id="quizForm" class="mt-4 md:mt-0">
+            <!-- Questions will be dynamically inserted here -->
+        </form>
+
+        <div class="mt-8 text-center">
+            <button id="submitButton" class="px-8 py-3 bg-blue-600 text-white font-bold rounded-full hover:bg-blue-700 transition duration-300 transform hover:scale-105 shadow-md disabled:opacity-50" disabled>
+                Kirim Jawaban
+            </button>
+        </div>
+    </div>
+
+    <!-- Result Screen -->
+    <div id="resultScreen" class="hidden bg-white p-8 rounded-lg shadow-xl">
+        <h2 class="text-3xl font-bold text-center mb-4 text-green-700">Hasil Kuis Anda</h2>
+        <div class="text-center mb-6">
+            <p class="text-xl font-semibold text-gray-700">Skor Akhir:</p>
+            <p id="scoreDisplay" class="text-5xl font-extrabold text-blue-600 mt-2">0/40</p>
+            <p id="timeTakenDisplay" class="text-md text-gray-500 mt-4">Waktu yang digunakan: 00:00</p>
+        </div>
+        
+        <h3 class="text-2xl font-semibold mb-4 text-gray-800 border-b pb-2">Pembahasan Jawaban:</h3>
+        <div id="reviewContainer">
+            <!-- Review questions will be inserted here -->
+        </div>
+
+        <div class="mt-8 text-center">
+             <button onclick="window.location.reload();" class="px-6 py-2 bg-gray-500 text-white font-bold rounded-full hover:bg-gray-600 transition duration-300">
+                Ulangi Kuis
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Data Kuis (40 Soal)
+    const quizData = [
+        {
+            q: "Dalam Sidang Kedua BPUPK (10-17 Juli 1945), wilayah negara Indonesia disepakati mencakup kawasan kepulauan di sekitar garis khatulistiwa, yang berada di antara dua benua besar. Benua apakah itu?",
+            options: [
+                { t: "Benua Asia dan Afrika", r: "Indonesia terletak di antara Benua Asia dan Australia.", isCorrect: false },
+                { t: "Benua Asia dan Eropa", r: "Indonesia terletak di antara Benua Asia dan Australia.", isCorrect: false },
+                { t: "Benua Asia dan Australia", r: "Secara geografis, Indonesia berada di antara Benua Asia di utara dan Benua Australia di selatan.", isCorrect: true },
+                { t: "Benua Australia dan Amerika", r: "Indonesia terletak di antara Benua Asia dan Australia.", isCorrect: false }
+            ]
+        },
+        {
+            q: "Muhammad Yamin mengusulkan agar wilayah Indonesia mencakup seluruh wilayah kekuasaan Hindia Belanda ditambah beberapa daerah lain. Salah satu daerah yang disebutnya masuk wilayah Majapahit berdasarkan Kitab Negarakertagama adalah...",
+            options: [
+                { t: "Pulau Sulawesi", r: "Muhammad Yamin dan Soekarno secara spesifik menyebut Papua sebagai bagian dari wilayah Majapahit yang harus dimasukkan.", isCorrect: false },
+                { t: "Timor Portugis", r: "Timor Portugis (sekarang Timor Leste) memang diusulkan, tetapi Papua yang diklaim berdasarkan Negarakertagama.", isCorrect: false },
+                { t: "Pulau Papua", r: "Soekarno mengutip Kitab Negarakertagama untuk mendukung pendapat Yamin bahwa wilayah Indonesia mencakup daerah dari Sumatra hingga Papua.", isCorrect: true },
+                { t: "Pulau Malaya", r: "Malaya (sekarang Malaysia) diusulkan tetapi Papua menjadi poin utamanya.", isCorrect: false }
+            ]
+        },
+        {
+            q: "Dari tiga pilihan penetapan wilayah negara dalam pemungutan suara BPUPK, pilihan manakah yang akhirnya diputuskan untuk dijadikan dasar wilayah Indonesia?",
+            options: [
+                { t: "Seluruh Hindia Belanda", r: "Pilihan ini mendapat 19 suara dan tidak menjadi keputusan final.", isCorrect: false },
+                { t: "Seluruh Hindia Belanda ditambah Malaya, Borneo Utara, Timor, dan Papua.", r: "Pilihan ini mendapat suara terbanyak (39 suara) dan dijadikan dasar penetapan wilayah Indonesia awal.", isCorrect: true },
+                { t: "Seluruh Hindia ditambah Malaya dan Borneo Utara", r: "Pilihan ini hanya mendapat 6 suara.", isCorrect: false },
+                { t: "Seluruh wilayah Nusantara sesuai Sumpah Palapa", r: "Meskipun semangatnya sama, penetapan BPUPK berdasarkan pilihan yang lebih spesifik.", isCorrect: false }
+            ]
+        },
+        {
+            q: "Secara geografis, wilayah Indonesia dilalui oleh garis khayal yang membelah bumi menjadi belahan utara dan selatan. Garis tersebut dikenal sebagai...",
+            options: [
+                { t: "Garis Bujur Timur", r: "Garis Bujur Timur membelah bumi secara vertikal.", isCorrect: false },
+                { t: "Garis Balik Utara", r: "Garis Balik Utara adalah garis lintang yang lebih spesifik di utara.", isCorrect: false },
+                { t: "Garis Khatulistiwa", r: "Garis Khatulistiwa (Ekuator) adalah garis khayal yang membelah bumi menjadi dua belahan utara dan selatan, dan melewati sebagian besar wilayah Indonesia.", isCorrect: true },
+                { t: "Garis Lintang Selatan", r: "Garis Lintang Selatan adalah garis horizontal di selatan Khatulistiwa.", isCorrect: false }
+            ]
+        },
+        {
+            q: "Wilayah Indonesia berada di antara $95^{\circ}$ sampai $141^{\circ}$ Bujur Timur. Batas ini menunjukkan bahwa wilayah Indonesia berada di belahan...",
+            options: [
+                { t: "Belahan Barat", r: "Bujur Timur (BT) menunjukkan belahan timur bumi.", isCorrect: false },
+                { t: "Belahan Utara", r: "Belahan Utara ditentukan oleh Lintang Utara (LU).", isCorrect: false },
+                { t: "Belahan Timur", r: "Bujur Timur (BT) menunjukkan posisi di belahan timur bumi.", isCorrect: true },
+                { t: "Belahan Selatan", r: "Belahan Selatan ditentukan oleh Lintang Selatan (LS).", isCorrect: false }
+            ]
+        },
+        {
+            q: "Menurut ciri-ciri negara kesatuan, kekuasaan pemerintahan di Indonesia dikoordinasikan oleh pemerintahan yang terpusat, yakni beribukota di...",
+            options: [
+                { t: "Yogyakarta", r: "Yogyakarta pernah menjadi ibu kota darurat, namun ibu kota pusat pemerintahan adalah Jakarta.", isCorrect: false },
+                { t: "Bandung", r: "Bandung bukan ibu kota pusat pemerintahan.", isCorrect: false },
+                { t: "Jakarta", r: "Satu Pemerintahan Pusat yang memegang seluruh kekuasaan beribukota di Jakarta, sesuai ciri negara kesatuan.", isCorrect: true },
+                { t: "Surabaya", r: "Surabaya bukan ibu kota pusat pemerintahan.", isCorrect: false }
+            ]
+        },
+        {
+            q: "Dalam konteks bentuk negara, jika setiap daerah menjadi negara bagian yang memiliki pemerintahan dan diatur dengan undang-undang sendiri, bentuk negara tersebut disebut...",
+            options: [
+                { t: "Negara Otonomi Khusus", r: "Otonomi khusus adalah pemberian wewenang yang lebih luas dalam kerangka negara kesatuan.", isCorrect: false },
+                { t: "Negara Konfederasi", r: "Konfederasi adalah persatuan negara-negara berdaulat yang lebih longgar.", isCorrect: false },
+                { t: "Negara Serikat (Federal)", r: "Negara serikat atau federal memiliki ciri di mana setiap daerah menjadi negara bagian dengan otonomi penuh dan undang-undang sendiri.", isCorrect: true },
+                { t: "Negara Uni", r: "Negara Uni adalah gabungan dua negara atau lebih yang dikepalai oleh seorang raja yang sama.", isCorrect: false }
+            ]
+        },
+        {
+            q: "Salah satu tokoh yang mengusulkan bentuk negara Indonesia adalah negara federal (serikat) karena menurutnya lebih cocok dengan keberagaman suku bangsa dan budaya adalah...",
+            options: [
+                { t: "Soepomo", r: "Soepomo mengusulkan negara integral/kesatuan.", isCorrect: false },
+                { t: "Muhammad Yamin", r: "Muhammad Yamin mendukung negara kesatuan.", isCorrect: false },
+                { t: "Muhammad Hatta", r: "Hatta berpendapat negara federal/serikat lebih cocok dengan keberagaman Indonesia agar daerah lebih bebas mengatur diri.", isCorrect: true },
+                { t: "Soekarno", r: "Soekarno mendukung negara kesatuan.", isCorrect: false }
+            ]
+        },
+        {
+            q: "Pasal dalam UUD NRI 1945 yang menegaskan bahwa bentuk Negara Kesatuan Republik Indonesia (NKRI) tidak dapat dilakukan perubahan terdapat pada...",
+            options: [
+                { t: "Pasal 1 ayat (1)", r: "Pasal 1 ayat (1) menegaskan Indonesia adalah negara kesatuan, tetapi Pasal 37 yang menegaskan bentuknya tidak dapat diubah.", isCorrect: false },
+                { t: "Pasal 37", r: "Amendemen Keempat pada tahun 2002 di Pasal 37 UUD NRI 1945 menegaskan kekhususan bentuk NKRI yang tidak dapat diubah.", isCorrect: true },
+                { t: "Pasal 29 ayat (2)", r: "Pasal ini berkaitan dengan kebebasan beragama.", isCorrect: false },
+                { t: "Pasal 33 ayat (1)", r: "Pasal ini berkaitan dengan perekonomian yang disusun sebagai usaha bersama.", isCorrect: false }
+            ]
+        },
+        {
+            q: "Menurut ciri-ciri negara kesatuan, di Indonesia terdapat satu Badan Perwakilan yang mewakili seluruh rakyat. Badan perwakilan tersebut berupa...",
+            options: [
+                { t: "DPRD Provinsi dan DPRD Kabupaten/Kota", r: "DPRD adalah badan perwakilan di tingkat daerah.", isCorrect: false },
+                { t: "Mahkamah Konstitusi dan Mahkamah Agung", r: "MK dan MA adalah lembaga yudikatif (peradilan).", isCorrect: false },
+                { t: "Majelis Permusyawaratan Rakyat (MPR), Dewan Perwakilan Rakyat (DPR), dan Dewan Perwakilan Daerah (DPD)", r: "Ini adalah badan perwakilan di tingkat pusat yang berlaku untuk seluruh negara, sesuai ciri negara kesatuan.", isCorrect: true },
+                { t: "Komisi Pemberantasan Korupsi", r: "KPK adalah lembaga penegak hukum.", isCorrect: false }
+            ]
+        },
+        {
+            q: "Apa makna dari kata 'persatuan' dalam konteks kesatuan bangsa?",
+            options: [
+                { t: "Keadaan berupa suatu keutuhan yang tak terbagi-bagi", r: "Ini adalah makna dari 'kesatuan'.", isCorrect: false },
+                { t: "Gabungan atau terikatnya beberapa bagian menjadi satu", r: "Persatuan adalah gabungan atau terikatnya berbagai komponen menjadi satu entitas.", isCorrect: true },
+                { t: "Perbedaan pendapat antar daerah yang harus dihindari", r: "Persatuan justru mengikat perbedaan menjadi satu.", isCorrect: false },
+                { t: "Kekuasaan penuh yang dipegang oleh pemerintah pusat", r: "Ini adalah ciri-ciri negara kesatuan, bukan makna persatuan.", isCorrect: false }
+            ]
+        },
+        {
+            q: "Sumpah Pemuda pada tanggal 28 Oktober 1928 merupakan salah satu bentuk perjuangan nonfisik yang bertujuan untuk...",
+            options: [
+                { t: "Menciptakan Undang-Undang Dasar yang baru", r: "Sumpah Pemuda berfokus pada penegasan identitas bangsa.", isCorrect: false },
+                { t: "Mendapatkan pengakuan kedaulatan dari Belanda", r: "Pengakuan kedaulatan terjadi setelah Proklamasi.", isCorrect: false },
+                { t: "Meneguhkan tekad bersama sebagai satu bangsa, yakni bangsa Indonesia", r: "Sumpah Pemuda menegaskan kesatuan tanah air, bangsa, dan bahasa.", isCorrect: true },
+                { t: "Mendirikan lembaga pendidikan modern", r: "Meskipun ada gerakan pendidikan, Sumpah Pemuda adalah gerakan politik kebangsaan.", isCorrect: false }
+            ]
+        },
+        {
+            q: "Gerakan politik yang dipandang sebagai pelopor gerakan kebangsaan Indonesia dan tanggal kelahirannya diperingati sebagai Hari Kebangkitan Nasional adalah...",
+            options: [
+                { t: "Partai Nasional Indonesia (PNI)", r: "PNI didirikan oleh Soekarno, bukan yang paling awal.", isCorrect: false },
+                { t: "Sarekat Islam", r: "Sarekat Islam adalah organisasi massa yang besar, namun Budi Utomo dianggap pelopor kebangkitan nasional.", isCorrect: false },
+                { t: "Budi Utomo", r: "Organisasi Budi Utomo yang lahir pada tahun 1908 dipandang sebagai pelopor dan tanggal kelahirannya diperingati sebagai Hari Kebangkitan Nasional.", isCorrect: true },
+                { t: "Indische Partij", r: "Indische Partij adalah organisasi yang lebih radikal, namun Budi Utomo adalah pelopor kebangsaan.", isCorrect: false }
+            ]
+        },
+        {
+            q: "Salah satu pahlawan yang memperjuangkan persatuan dan kesatuan Indonesia melalui jalur pendidikan dengan mendirikan jaringan sekolah Taman Siswa adalah...",
+            options: [
+                { t: "Dewi Sartika", r: "Dewi Sartika berjuang melalui pendidikan khusus perempuan.", isCorrect: false },
+                { t: "Tengku Muhammad Syafei", r: "Tengku Muhammad Syafei mendirikan INS Kayutanam.", isCorrect: false },
+                { t: "Ki Hajar Dewantara", r: "Ki Hajar Dewantara dikenal sebagai tokoh yang berjuang melalui pendidikan dengan mendirikan Taman Siswa.", isCorrect: true },
+                { t: "R.A. Kartini", r: "R.A. Kartini adalah pelopor pendidikan perempuan.", isCorrect: false }
+            ]
+        },
+        {
+            q: "Perjuangan mewujudkan persatuan juga dilakukan melalui sastra. Sastrawan dari Angkatan Pujangga Baru yang dikenal melalui novel dan puisinya adalah...",
+            options: [
+                { t: "Chairil Anwar", r: "Chairil Anwar termasuk sastrawan Angkatan '45.", isCorrect: false },
+                { t: "Sutan Takdir Alisyahbana", r: "Sutan Takdir Alisyahbana adalah salah satu sastrawan utama Angkatan Pujangga Baru.", isCorrect: true },
+                { t: "W.S. Rendra", r: "W.S. Rendra adalah sastrawan setelah Angkatan '45.", isCorrect: false },
+                { t: "Pramoedya Ananta Toer", r: "Pramoedya Ananta Toer adalah sastrawan penting setelah kemerdekaan.", isCorrect: false }
+            ]
+        },
+        {
+            q: "Pemisahan daratan Indonesia menjadi wilayah Timur dan Barat didasarkan pada temuan ilmuwan Inggris bernama Alfred Russel Wallace. Garis batas pemisah tersebut dikenal sebagai...",
+            options: [
+                { t: "Garis Imajiner", r: "Garis Imajiner adalah istilah umum untuk garis khayal.", isCorrect: false },
+                { t: "Garis Weber", r: "Garis Weber adalah garis pemisah fauna Indonesia Timur dan Tengah.", isCorrect: false },
+                { t: "Garis Khatulistiwa", r: "Garis Khatulistiwa adalah garis lintang, bukan batas fauna.", isCorrect: false },
+                { t: "Garis Wallace", r: "Garis Wallace adalah batas imajiner yang memisahkan wilayah fauna Asia (Barat) dan Australia (Timur).", isCorrect: true }
+            ]
+        },
+        {
+            q: "Wilayah Indonesia Timur (seperti Papua, Maluku, Sulawesi) zaman dulu menyatu dengan daratan...",
+            options: [
+                { t: "Asia", r: "Wilayah Barat (Sumatra, Jawa, Kalimantan) menyatu dengan Asia.", isCorrect: false },
+                { t: "Afrika", r: "Tidak ada penyatuan langsung dengan Afrika.", isCorrect: false },
+                { t: "Amerika", r: "Tidak ada penyatuan langsung dengan Amerika.", isCorrect: false },
+                { t: "Australia", r: "Wilayah Timur Indonesia zaman dulu menyatu dengan daratan Australia, sehingga memiliki jenis fauna yang mirip.", isCorrect: true }
+            ]
+        },
+        {
+            q: "Daerah yang ditandai dengan kedekatan lokasinya dengan perbatasan terhadap negara lain, seperti Pulau Sebatik di Kalimantan Utara, disebut sebagai daerah...",
+            options: [
+                { t: "Daerah Terpencil", r: "Daerah terpencil ditandai dengan sulitnya transportasi.", isCorrect: false },
+                { t: "Daerah Pedalaman", r: "Daerah pedalaman adalah wilayah jauh dari pantai.", isCorrect: false },
+                { t: "Daerah Terluar", r: "Daerah terluar merupakan daerah yang paling dekat dengan perbatasan negara lain.", isCorrect: true },
+                { t: "Daerah Maritim", r: "Daerah maritim berkaitan dengan laut.", isCorrect: false }
+            ]
+        },
+        {
+            q: "Berikut adalah ciri-ciri yang umumnya melekat pada wilayah perkotaan di Indonesia, kecuali...",
+            options: [
+                { t: "Padat penduduk", r: "Kepadatan penduduk adalah ciri khas perkotaan.", isCorrect: false },
+                { t: "Banyak kegiatan industri", r: "Kegiatan industri adalah ciri khas perkotaan.", isCorrect: false },
+                { t: "Banyak kegiatan pertanian", r: "Banyak kegiatan pertanian merupakan ciri khas daerah perdesaan.", isCorrect: true },
+                { t: "Transportasi yang relatif mudah", r: "Transportasi yang mudah adalah ciri khas perkotaan.", isCorrect: false }
+            ]
+        },
+        {
+            q: "Di Pulau Sumatra, karakteristik budaya di wilayah tengah umumnya berbudaya...",
+            options: [
+                { t: "Melayu", r: "Melayu dominan di wilayah timur dan pesisir.", isCorrect: false },
+                { t: "Minang", r: "Minang dominan di wilayah barat Sumatra (Sumatra Barat).", isCorrect: false },
+                { t: "Tapanuli", r: "Tapanuli dominan di tengah utara Sumatra (Sumatra Utara).", isCorrect: true },
+                { t: "Aceh", r: "Aceh dominan di wilayah utara pulau.", isCorrect: false }
+            ]
+        },
+        {
+            q: "Sikap yang paling utama untuk mempertahankan persatuan dan kesatuan di lingkungan mana pun (keluarga, sekolah, masyarakat) adalah...",
+            options: [
+                { t: "Bersikap mandiri dan tekun beribadah", r: "Ini penting di lingkungan keluarga, tapi bukan cara yang paling utama secara umum.", isCorrect: false },
+                { t: "Menghindari pergaulan dengan kalangan yang berbeda", r: "Ini justru bertentangan dengan semangat persatuan.", isCorrect: false },
+                { t: "Menjalankan atau mematuhi norma-norma yang berlaku", r: "Mematuhi norma (agama, hukum, sosial) adalah cara fundamental untuk menjaga ketertiban dan kesatuan.", isCorrect: true },
+                { t: "Selalu aktif di media sosial", r: "Aktivitas di media sosial tidak menjamin persatuan, bahkan bisa memecah belah jika tidak bijak.", isCorrect: false }
+            ]
+        },
+        {
+            q: "Berikut adalah contoh upaya mempertahankan persatuan dan kesatuan di lingkungan sekolah, kecuali...",
+            options: [
+                { t: "Tertib dan disiplin dalam pembelajaran", r: "Ini adalah upaya menjaga ketertiban sekolah.", isCorrect: false },
+                { t: "Aktif bergaul dengan semua kalangan siswa tanpa membeda-bedakan", r: "Ini adalah upaya membangun lingkungan sosial yang baik.", isCorrect: false },
+                { t: "Mencegah kekerasan verbal atau lisan antar siswa", r: "Ini adalah upaya pencegahan perpecahan.", isCorrect: false },
+                { t: "Menghindari interaksi dengan siswa dari daerah terluar", r: "Ini adalah tindakan diskriminatif yang merusak persatuan.", isCorrect: true }
+            ]
+        },
+        {
+            q: "Ketaatan pada hukum dan peraturan yang berlaku di lingkungan bangsa dan negara merupakan kunci untuk mempertahankan dan menguatkan persatuan dan kesatuan karena...",
+            options: [
+                { t: "Dapat menjamin kekuasaan penuh bagi pemerintah pusat", r: "Tujuannya adalah keadilan, bukan hanya kekuasaan.", isCorrect: false },
+                { t: "Tanpa ketaatan pada hukum, pilar keadilan tidak dapat ditegakkan sehingga perpecahan mudah terjadi", r: "Hukum adalah pilar keadilan; ketidaktaatan merusak dasar negara kesatuan.", isCorrect: true },
+                { t: "Hanya berlaku untuk kalangan masyarakat kelas atas", r: "Hukum berlaku untuk semua warga negara.", isCorrect: false },
+                { t: "Akan mengurangi peran aktif masyarakat", r: "Justru ketaatan adalah bentuk peran aktif warga negara.", isCorrect: false }
+            ]
+        },
+        {
+            q: "Penyebaran berita palsu atau bohong yang sering disebut **hoax** merupakan ancaman terhadap persatuan dan kesatuan di lingkungan bangsa dan negara. Upaya yang harus dilakukan adalah...",
+            options: [
+                { t: "Terus menyebarkannya agar semua orang tahu", r: "Menyebarkan hoax justru mempercepat perpecahan.", isCorrect: false },
+                { t: "Menciptakan lebih banyak berita bohong untuk menyeimbangkan", r: "Ini adalah tindakan yang salah dan merusak.", isCorrect: false },
+                { t: "Menjauhinya dan mencegah penyebarannya", r: "Menjauhi dan mencegah penyebaran hoax adalah tindakan yang benar untuk menjaga persatuan.", isCorrect: true },
+                { t: "Menganggapnya sebagai hiburan semata", r: "Hoax adalah masalah serius yang memecah belah.", isCorrect: false }
+            ]
+        },
+        {
+            q: "Wilayah Indonesia secara astronomis berada di belahan bumi utara dan selatan karena dilewati garis khatulistiwa. Letak lintangnya berada di antara...",
+            options: [
+                { t: "$6^{\\circ}$ Lintang Utara sampai $11^{\\circ}$ Lintang Utara", r: "Indonesia memiliki wilayah di belahan utara dan selatan, jadi mencakup LU dan LS.", isCorrect: false },
+                { t: "$6^{\\circ}$ Lintang Selatan sampai $11^{\\circ}$ Lintang Selatan", r: "Indonesia memiliki wilayah di belahan utara dan selatan, jadi mencakup LU dan LS.", isCorrect: false },
+                { t: "$6^{\\circ}$ Lintang Utara sampai $11^{\\circ}$ Lintang Selatan", r: "Letak astronomis Indonesia diukur dari Lintang Utara (LU) hingga Lintang Selatan (LS).", isCorrect: true },
+                { t: "$95^{\\circ}$ Bujur Timur sampai $141^{\\circ}$ Bujur Timur", r: "Ini adalah letak Bujur, bukan Lintang.", isCorrect: false }
+            ]
+        },
+        {
+            q: "Panglima Majapahit yang bersumpah untuk menyatukan seluruh daerah Nusantara menjadi satu kesatuan wilayah dalam Sumpah Palapa adalah...",
+            options: [
+                { t: "Mpu Prapanca", r: "Mpu Prapanca adalah penulis Kitab Negarakertagama.", isCorrect: false },
+                { t: "Raden Wijaya", r: "Raden Wijaya adalah pendiri Majapahit.", isCorrect: false },
+                { t: "Hayam Wuruk", r: "Hayam Wuruk adalah Raja Majapahit.", isCorrect: false },
+                { t: "Gajah Mada", r: "Gajah Mada adalah Panglima Majapahit yang mengucapkan Sumpah Palapa.", isCorrect: true }
+            ]
+        },
+        {
+            q: "Wilayah Indonesia di sebelah utara berbatasan langsung dengan negara-negara berikut, kecuali...",
+            options: [
+                { t: "Filipina", r: "Filipina adalah batas utara Indonesia.", isCorrect: false },
+                { t: "Malaysia", r: "Malaysia (Borneo Utara) adalah batas utara Indonesia.", isCorrect: false },
+                { t: "Singapura", r: "Singapura adalah batas utara Indonesia.", isCorrect: false },
+                { t: "Australia", r: "Australia adalah batas selatan Indonesia.", isCorrect: true }
+            ]
+        },
+        {
+            q: "Daerah yang memiliki kepadatan penduduk kurang padat dan banyak kegiatan pertaniannya sering disebut daerah...",
+            options: [
+                { t: "Perkotaan", r: "Perkotaan padat penduduk dan banyak industri.", isCorrect: false },
+                { t: "Metropolitan", r: "Metropolitan adalah kota besar dan padat.", isCorrect: false },
+                { t: "Perdesaan", r: "Perdesaan umumnya memiliki penduduk kurang padat dan aktivitas pertanian yang dominan.", isCorrect: true },
+                { t: "Terpencil", r: "Terpencil lebih merujuk pada akses transportasi yang sulit.", isCorrect: false }
+            ]
+        },
+        {
+            q: "Konsep yang memiliki makna 'keadaan berupa suatu keutuhan' adalah...",
+            options: [
+                { t: "Persatuan", r: "Persatuan adalah gabungan beberapa bagian.", isCorrect: false },
+                { t: "Integrasi", r: "Integrasi adalah proses penyatuan.", isCorrect: false },
+                { t: "Kesatuan", r: "Kesatuan berarti keadaan utuh dan tak terbagi-bagi lagi.", isCorrect: true },
+                { t: "Kohesi", r: "Kohesi merujuk pada gaya tarik antarmolekul.", isCorrect: false }
+            ]
+        },
+        {
+            q: "Pada tanggal 17 Agustus 1950, pemerintah menyatakan Indonesia kembali menjadi negara kesatuan. Perubahan ini terjadi setelah Indonesia sebelumnya berbentuk...",
+            options: [
+                { t: "Kerajaan Majapahit", r: "Majapahit adalah kerajaan kuno.", isCorrect: false },
+                { t: "Negara Protektorat Belanda", r: "Protektorat adalah negara di bawah perlindungan negara lain.", isCorrect: false },
+                { t: "Republik Indonesia Serikat (RIS)", r: "Indonesia berubah menjadi RIS setelah Konferensi Meja Bundar 1949 dan kembali ke NKRI pada 17 Agustus 1950.", isCorrect: true },
+                { t: "Negara Kolonial Jepang", r: "Jepang adalah penjajah.", isCorrect: false }
+            ]
+        },
+        {
+            q: "Salah satu upaya mewujudkan persatuan dan kesatuan Indonesia melalui perjuangan sastra adalah karya sastrawan Angkatan '45, Chairil Anwar, melalui jenis karya...",
+            options: [
+                { t: "Novel", r: "Novel banyak ditulis sastrawan Balai Pustaka.", isCorrect: false },
+                { t: "Drama", r: "Chairil Anwar lebih dikenal dengan puisinya.", isCorrect: false },
+                { t: "Puisi", r: "Chairil Anwar adalah penyair terkenal Angkatan '45 dengan puisi-puisi perjuangannya.", isCorrect: true },
+                { t: "Esai", r: "Esai adalah jenis tulisan nonfiksi.", isCorrect: false }
+            ]
+        },
+        {
+            q: "Di Kalimantan, wilayah tengah umumnya berbudaya Dayak, sedangkan wilayah pesisirnya didominasi oleh budaya...",
+            options: [
+                { t: "Batak dan Karo", r: "Budaya ini dominan di Sumatra Utara.", isCorrect: false },
+                { t: "Bugis dan Makassar", r: "Budaya ini dominan di Sulawesi.", isCorrect: false },
+                { t: "Melayu dan Banjar", r: "Pesisir Kalimantan banyak dipengaruhi budaya Melayu dan Banjar (terutama di Kalimantan Selatan).", isCorrect: true },
+                { t: "Sunda dan Jawa", r: "Budaya ini dominan di Jawa.", isCorrect: false }
+            ]
+        },
+        {
+            q: "Salah satu cara mempertahankan persatuan dan kesatuan di lingkungan keluarga adalah...",
+            options: [
+                { t: "Membentuk komite keluarga untuk membuat undang-undang", r: "Ini terlalu formal dan tidak sesuai untuk keluarga.", isCorrect: false },
+                { t: "Selalu berusaha untuk beribadah bersama-sama dan saling bantu", r: "Kebersamaan dan saling membantu adalah kunci persatuan keluarga.", isCorrect: true },
+                { t: "Memisahkan urusan rumah tangga antar anggota keluarga", r: "Memisahkan urusan bisa mengurangi ikatan kekeluargaan.", isCorrect: false },
+                { t: "Mencari teman dari lingkungan yang berbeda-beda", r: "Ini lebih cocok untuk lingkungan masyarakat atau sekolah.", isCorrect: false }
+            ]
+        },
+        {
+            q: "Terdapat tujuh daerah yang menjadi provinsi kepulauan di Indonesia, termasuk Bali. Enam provinsi kepulauan lainnya adalah...",
+            options: [
+                { t: "Jawa Tengah, Jawa Timur, Maluku, Maluku Utara, NTB, NTT", r: "Jawa Tengah dan Jawa Timur bukan provinsi kepulauan.", isCorrect: false },
+                { t: "Riau, Sumatra Utara, Maluku, Maluku Utara, Bangka Belitung, Bali", r: "Riau dan Sumatra Utara bukan provinsi kepulauan.", isCorrect: false },
+                { t: "Maluku, Maluku Utara, Nusa Tenggara Timur, Nusa Tenggara Barat, Bangka Belitung, Riau Kepulauan", r: "Ketujuh provinsi yang disebut sebagai provinsi kepulauan adalah: Bali, Maluku, Maluku Utara, NTT, NTB, Bangka Belitung, dan Riau Kepulauan.", isCorrect: true },
+                { t: "Kalimantan Utara, Kalimantan Timur, Sulawesi Tengah, Nusa Tenggara Timur, NTB, Bali", r: "Kalimantan Utara, Kalimantan Timur, dan Sulawesi Tengah bukan provinsi kepulauan.", isCorrect: false }
+            ]
+        },
+        {
+            q: "Pembahasan mengenai wilayah Indonesia dalam sidang BPUPK dilakukan pada tanggal...",
+            options: [
+                { t: "29 Mei-1 Juni 1945 (Sidang Pertama)", r: "Sidang Pertama BPUPK membahas dasar negara (Pancasila).", isCorrect: false },
+                { t: "10-17 Juli 1945 (Sidang Kedua)", r: "Soal wilayah negara didiskusikan secara khusus dalam Sidang Kedua BPUPK, tepatnya 10-11 Juli 1945.", isCorrect: true },
+                { t: "7 Agustus 1945 (Pembentukan PPKI)", r: "Tanggal ini adalah pembentukan PPKI.", isCorrect: false },
+                { t: "18 Agustus 1945 (Sidang PPKI)", r: "Sidang PPKI mengesahkan UUD 1945 dan memilih Presiden/Wakil Presiden.", isCorrect: false }
+            ]
+        },
+        {
+            q: "Di wilayah timur, Indonesia berbatasan darat di Pulau Papua dengan negara...",
+            options: [
+                { t: "Timor Leste", r: "Timor Leste berbatasan darat di Pulau Timor.", isCorrect: false },
+                { t: "Australia", r: "Australia berbatasan laut di Laut Arafuru.", isCorrect: false },
+                { t: "Papua Nugini", r: "Indonesia memiliki perbatasan darat di Pulau Papua dengan negara Papua Nugini.", isCorrect: true },
+                { t: "Malaysia", r: "Malaysia berbatasan darat di Pulau Kalimantan.", isCorrect: false }
+            ]
+        },
+        {
+            q: "Menurut Alfred Russel Wallace, jenis hewan seperti burung cendrawasih ditemukan di wilayah...",
+            options: [
+                { t: "Wilayah Barat (Asiatis)", r: "Cendrawasih ditemukan di wilayah Timur.", isCorrect: false },
+                { t: "Wilayah Tengah (Peralihan)", r: "Wilayah Tengah memiliki campuran fauna.", isCorrect: false },
+                { t: "Wilayah Timur (Australis)", r: "Cendrawasih adalah fauna khas wilayah Timur Indonesia yang menyatu dengan daratan Australia.", isCorrect: true },
+                { t: "Hanya di Pulau Jawa", r: "Cendrawasih banyak ditemukan di Papua.", isCorrect: false }
+            ]
+        },
+        {
+            q: "Salah satu pilar utama bangsa dan negara yang dapat ditegakkan dengan ketaatan pada hukum adalah...",
+            options: [
+                { t: "Kemakmuran", r: "Ketaatan pada hukum membantu mencapai kemakmuran, tetapi pilar utamanya adalah keadilan.", isCorrect: false },
+                { t: "Kekuasaan", r: "Kekuasaan adalah urusan pemerintah.", isCorrect: false },
+                { t: "Keadilan", r: "Keadilan merupakan pilar utama bangsa dan negara yang ditegakkan melalui ketaatan pada hukum.", isCorrect: true },
+                { t: "Kedamaian", r: "Kedamaian adalah hasil dari keadilan.", isCorrect: false }
+            ]
+        },
+        {
+            q: "Yang dimaksud dengan **daerah terpencil** di Indonesia adalah daerah yang dicirikan oleh...",
+            options: [
+                { t: "Lokasinya paling dekat dengan perbatasan negara lain", r: "Ini adalah ciri daerah terluar.", isCorrect: false },
+                { t: "Kepadatan penduduk yang sangat tinggi", r: "Ini ciri perkotaan padat.", isCorrect: false },
+                { t: "Transportasi yang sulit untuk menuju ke sana", r: "Transportasi yang sulit menyebabkan daerah tersebut disebut terpencil.", isCorrect: true },
+                { t: "Aktivitas ekonomi yang didominasi oleh industri jasa", r: "Ini ciri daerah maju.", isCorrect: false }
+            ]
+        },
+        {
+            q: "Mengapa Muhammad Hatta menganggap bentuk negara federal lebih cocok bagi Indonesia?",
+            options: [
+                { t: "Sesuai dengan tatanegara asli Indonesia", r: "Ini adalah argumen Soepomo untuk negara kesatuan.", isCorrect: false },
+                { t: "Agar negara tidak terlalu kuat", r: "Hatta ingin daerah lebih merdeka mengatur diri sendiri.", isCorrect: false },
+                { t: "Karena memiliki suku dan budaya daerah yang sangat beragam sehingga daerah lebih bebas mengatur diri sendiri", r: "Hatta meyakini keberagaman memerlukan otonomi yang lebih besar yang ditawarkan oleh negara serikat.", isCorrect: true },
+                { t: "Sesuai dengan semangat Sumpah Pemuda", r: "Ini adalah argumen Soekarno dan Yamin untuk negara kesatuan.", isCorrect: false }
+            ]
+        },
+        {
+            q: "Salah satu ciri-ciri negara kesatuan adalah memiliki satu Kepala Negara dan Kepala Pemerintahan untuk seluruh rakyat. Di Indonesia, pribadi yang menjabat kedua peran tersebut adalah...",
+            options: [
+                { t: "Ketua MPR", r: "Ketua MPR adalah pimpinan lembaga legislatif.", isCorrect: false },
+                { t: "Menteri Koordinator", r: "Menteri Koordinator membantu Presiden.", isCorrect: false },
+                { t: "Presiden Republik Indonesia", r: "Sistem pemerintahan Indonesia menggabungkan Kepala Negara dan Kepala Pemerintahan pada jabatan Presiden.", isCorrect: true },
+                { t: "Ketua Mahkamah Agung", r: "Ketua MA adalah pimpinan lembaga yudikatif.", isCorrect: false }
+            ]
+        },
+        {
+            q: "Konstitusi yang berlaku di seluruh wilayah negara kesatuan Indonesia dan menjadi induk segala aturan adalah...",
+            options: [
+                { t: "Undang-Undang Dasar Sementara 1950", r: "UUD Sementara berlaku saat Indonesia menjadi negara kesatuan kembali (1950-1959).", isCorrect: false },
+                { t: "Pancasila", r: "Pancasila adalah dasar/pondasi negara, bukan dasar hukum tertulis.", isCorrect: false },
+                { t: "Undang-Undang Dasar Negara Republik Indonesia Tahun 1945", r: "UUD NRI 1945 adalah dasar hukum tertulis atau induk segala aturan di negara kesatuan.", isCorrect: true },
+                { t: "Kitab Undang-Undang Hukum Pidana", r: "KUHP adalah salah satu produk hukum, bukan konstitusi.", isCorrect: false }
+            ]
+        },
+        {
+            q: "Wilayah Indonesia di sebelah barat memiliki wilayah laut yang berbatasan dengan negara...",
+            options: [
+                { t: "Timor Leste", r: "Timor Leste ada di timur (Pulau Timor).", isCorrect: false },
+                { t: "India", r: "Indonesia berbatasan laut dengan India di sebelah barat.", isCorrect: true },
+                { t: "Thailand", r: "Thailand berbatasan laut di utara.", isCorrect: false },
+                { t: "Vietnam", r: "Vietnam berbatasan laut di utara.", isCorrect: false }
+            ]
+        },
+        {
+            q: "Salah satu daerah yang termasuk daerah terluar yang berbatasan darat dengan Malaysia di Kalimantan adalah Pulau...",
+            options: [
+                { t: "Pulau Bangka", r: "Pulau Bangka ada di Sumatra.", isCorrect: false },
+                { t: "Pulau Weh", r: "Pulau Weh ada di Aceh.", isCorrect: false },
+                { t: "Pulau Sebatik", r: "Pulau Sebatik di Kalimantan Utara merupakan daerah terluar yang wilayahnya terbelah menjadi dua negara (Indonesia dan Malaysia).", isCorrect: true },
+                { t: "Pulau Rote", r: "Pulau Rote ada di Nusa Tenggara Timur.", isCorrect: false }
+            ]
+        },
+        {
+            q: "Perbedaan karakteristik daerah juga terkait dengan suku dan kebudayaan. Budaya yang dominan di Sulawesi adalah...",
+            options: [
+                { t: "Batak dan Karo", r: "Budaya ini dominan di Sumatra Utara.", isCorrect: false },
+                { t: "Bugis-Makassar dan Minahasa", r: "Bugis-Makassar dan Minahasa merupakan karakteristik budaya yang dominan di Sulawesi.", isCorrect: true },
+                { t: "Dayak dan Banjar", r: "Budaya ini dominan di Kalimantan.", isCorrect: false },
+                { t: "Sasak dan Sumbawa", r: "Budaya ini dominan di Nusa Tenggara Barat.", isCorrect: false }
+            ]
+        },
+        {
+            q: "Mengapa persatuan dan kesatuan Indonesia perlu terus dijaga dan dipertahankan?",
+            options: [
+                { t: "Karena tanpa persatuan, Indonesia akan menjadi negara federal", r: "Bentuk negara sudah final; persatuan dijaga untuk mencapai cita-cita kemerdekaan.", isCorrect: false },
+                { t: "Agar setiap daerah dapat mengatur dirinya sendiri secara bebas", r: "Ini adalah ciri negara serikat, bukan tujuan menjaga kesatuan.", isCorrect: false },
+                { t: "Dengan persatuan yang kuat, cita-cita kemerdekaan untuk mewujudkan masyarakat adil dan makmur akan mudah tercapai", r: "Tujuan utama menjaga persatuan dan kesatuan adalah untuk mencapai cita-cita bangsa.", isCorrect: true },
+                { t: "Supaya Indonesia dikenal di seluruh dunia", r: "Ini hanya dampak, bukan tujuan utama.", isCorrect: false }
+            ]
+        },
+        {
+            q: "Wilayah Indonesia di sebelah selatan berbatasan dengan Laut Indonesia dan Laut Arafuru, yang langsung berbatasan dengan negara...",
+            options: [
+                { t: "India", r: "India berbatasan di barat.", isCorrect: false },
+                { t: "Australia", r: "Australia adalah negara yang berbatasan dengan Indonesia di wilayah selatan.", isCorrect: true },
+                { t: "Timor Leste", r: "Timor Leste berbatasan di selatan-tengah.", isCorrect: false },
+                { t: "Filipina", r: "Filipina berbatasan di utara.", isCorrect: false }
+            ]
+        },
+        {
+            q: "Organisasi seperti PGRI (Persatuan Guru Republik Indonesia) dan PSSI (Persatuan Sepak bola Seluruh Indonesia) adalah contoh konkret dari...",
+            options: [
+                { t: "Kesatuan", r: "Kesatuan adalah keadaan utuh, persatuan adalah prosesnya/gabungannya.", isCorrect: false },
+                { t: "Federalisme", r: "Federalisme adalah bentuk negara.", isCorrect: false },
+                { t: "Konstitusi", r: "Konstitusi adalah dasar hukum.", isCorrect: false },
+                { t: "Persatuan", r: "Organisasi-organisasi ini menunjukkan gabungan beberapa bagian (guru/klub) menjadi satu entitas.", isCorrect: true }
+            ]
+        },
+        {
+            q: "Upaya membangun lingkungan fisik yang baik di sekolah untuk menguatkan persatuan dan kesatuan dapat dilakukan dengan...",
+            options: [
+                { t: "Aktif mengikuti kegiatan ekstrakurikuler", r: "Ini membangun lingkungan sosial.", isCorrect: false },
+                { t: "Menghindari perdebatan dengan guru", r: "Ini berkaitan dengan kepatuhan norma.", isCorrect: false },
+                { t: "Menjaga kebersihan, menata, dan menghias kelas atau halaman sekolah", r: "Ini adalah contoh upaya pembangunan lingkungan fisik yang baik di sekolah.", isCorrect: true },
+                { t: "Menyebarkan informasi tentang kegiatan sekolah di media sosial", r: "Ini berkaitan dengan komunikasi, bukan lingkungan fisik.", isCorrect: false }
+            ]
+        },
+        {
+            q: "Jenis hewan seperti orang utan dan harimau ditemukan di wilayah Indonesia bagian Barat karena zaman dulu wilayah ini menyatu dengan daratan...",
+            options: [
+                { t: "Australia", r: "Fauna Australis (Timur) memiliki ciri berbeda (cendrawasih, kangguru).", isCorrect: false },
+                { t: "Afrika", r: "Wilayah Barat tidak menyatu dengan Afrika.", isCorrect: false },
+                { t: "Asia", r: "Wilayah Barat (Sumatra, Jawa, Kalimantan) zaman dulu menyatu dengan daratan Asia, sehingga memiliki fauna Asiatis (orang utan, harimau).", isCorrect: true },
+                { t: "Amerika", r: "Wilayah Barat tidak menyatu dengan Amerika.", isCorrect: false }
+            ]
+        },
+        {
+            q: "Laut terdalam di Indonesia antara lain terdapat di Selat Makassar yang menjadi bagian dari...",
+            options: [
+                { t: "Garis Imajiner", r: "Garis Imajiner adalah istilah umum.", isCorrect: false },
+                { t: "Garis Lintang", r: "Garis Lintang adalah garis horizontal.", isCorrect: false },
+                { t: "Garis Bujur", r: "Garis Bujur adalah garis vertikal.", isCorrect: false },
+                { t: "Garis Wallace", r: "Selat Makassar menjadi bagian dari Garis Wallace yang memisahkan fauna barat dan timur.", isCorrect: true }
+            ]
+        },
+        {
+            q: "Bagian rumah Pak Mapangara di Pulau Sebatik yang berdiri di negara Malaysia adalah...",
+            options: [
+                { t: "Kamar Tidur", r: "Hanya dapur yang berada di wilayah Malaysia.", isCorrect: false },
+                { t: "Pintu Masuk", r: "Pintu masuk berada di wilayah Indonesia.", isCorrect: false },
+                { t: "Dapur", r: "Dapurnya berada di wilayah Malaysia, sementara rumah utamanya di Indonesia.", isCorrect: true },
+                { t: "Ruang Tamu", r: "Ruang tamu berada di wilayah Indonesia.", isCorrect: false }
+            ]
+        },
+        {
+            q: "Pulau-pulau besar di Indonesia yang menjadi lokasi 27 dari 34 provinsi (di luar Bali dan kepulauan) adalah...",
+            options: [
+                { t: "Maluku, Sulawesi, Kalimantan, Jawa, dan Bali", r: "Maluku adalah provinsi kepulauan.", isCorrect: false },
+                { t: "Sumatra, Jawa, Kalimantan, Sulawesi, dan Papua", r: "Ini adalah lima pulau utama di Indonesia tempat sebagian besar provinsi berada.", isCorrect: true },
+                { t: "Sumatra, Jawa, Nusa Tenggara, Sulawesi, dan Papua", r: "Nusa Tenggara adalah gugusan pulau, bukan satu pulau besar.", isCorrect: false },
+                { t: "Kalimantan, Sulawesi, Papua, Malaya, dan Timor", r: "Malaya dan Timor bukan bagian dari Indonesia saat ini.", isCorrect: false }
+            ]
+        },
+        {
+            q: "Mengapa para pemimpin yang berbeda pendapat (Soepomo vs Hatta) dalam sidang BPUPK dianggap memberikan teladan yang baik?",
+            options: [
+                { t: "Karena mereka saling mengalah dan tidak berdebat", r: "Mereka berdebat, namun secara konstruktif.", isCorrect: false },
+                { t: "Karena mereka memilih untuk menyerahkan keputusan kepada rakyat", r: "Keputusan diserahkan melalui pemungutan suara di sidang.", isCorrect: false },
+                { t: "Karena mereka memberikan teladan bagaimana berdiskusi secara baik untuk mengatasi perbedaan", r: "Diskusi yang baik dan sportif meskipun berbeda pendapat adalah teladan yang diberikan.", isCorrect: true },
+                { t: "Karena pada akhirnya semua mendukung pendapat Soepomo", r: "Hatta tetap pada pendapatnya, namun menerima keputusan sidang.", isCorrect: false }
+            ]
+        }
+    ];
+
+    // Variabel Global
+    let currentQuizState = {};
+    const totalQuestions = quizData.length;
+    const timeLimitMinutes = 30; // Batas waktu 30 menit
+    let timeLeft = timeLimitMinutes * 60;
+    let timerInterval;
+
+    // Fungsi untuk mengacak urutan array
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
+    // Fungsi untuk merender kuis
+    function renderQuiz() {
+        const quizForm = document.getElementById('quizForm');
+        quizForm.innerHTML = '';
+        const questionsToRender = quizData.map((q, index) => ({...q, index: index}));
+
+        questionsToRender.forEach((q, index) => {
+            shuffleArray(q.options);
+            const questionElement = document.createElement('div');
+            questionElement.className = 'question-card';
+            questionElement.innerHTML = `
+                <p class="text-lg font-semibold text-gray-800 mb-4">${index + 1}. ${q.q}</p>
+                <div class="options-container" id="options-${index}">
+                    ${q.options.map((option, optIndex) => `
+                        <div>
+                            <input type="radio" id="q${index}o${optIndex}" name="question${index}" value="${option.t}" class="hidden" data-correct="${option.isCorrect}">
+                            <label for="q${index}o${optIndex}" class="option-label">${option.t}</label>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+            quizForm.appendChild(questionElement);
+        });
+
+        // Enable submit button after rendering
+        document.getElementById('submitButton').disabled = false;
+    }
+
+    // Fungsi untuk memulai timer
+    function startTimer() {
+        const timerDisplay = document.getElementById('timerDisplay');
+        timerInterval = setInterval(() => {
+            timeLeft--;
+            const minutes = String(Math.floor(timeLeft / 60)).padStart(2, '0');
+            const seconds = String(timeLeft % 60).padStart(2, '0');
+            timerDisplay.textContent = `${minutes}:${seconds}`;
+
+            if (timeLeft <= 300) { // 5 menit terakhir
+                timerDisplay.classList.remove('bg-red-100');
+                timerDisplay.classList.add('bg-red-500', 'text-white');
+            }
+
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                alert('Waktu habis! Kuis akan dikirim otomatis.');
+                submitQuiz();
+            }
+        }, 1000);
+    }
+
+    // Fungsi untuk menangani tombol Mulai Kuis
+    document.getElementById('startButton').addEventListener('click', () => {
+        document.getElementById('startScreen').classList.add('hidden');
+        document.getElementById('quizScreen').classList.remove('hidden');
+        
+        renderQuiz();
+        startTimer();
+    });
+
+    // Fungsi untuk menangani pengiriman kuis
+    document.getElementById('submitButton').addEventListener('click', submitQuiz);
+
+    function submitQuiz() {
+        clearInterval(timerInterval);
+        document.getElementById('submitButton').disabled = true;
+        
+        let score = 0;
+        const answers = {};
+        
+        quizData.forEach((q, index) => {
+            const selectedOption = document.querySelector(`input[name="question${index}"]:checked`);
+            const isCorrect = selectedOption ? selectedOption.getAttribute('data-correct') === 'true' : false;
+            
+            answers[index] = {
+                selected: selectedOption ? selectedOption.value : null,
+                isCorrect: isCorrect
+            };
+
+            if (isCorrect) {
+                score++;
+            }
+        });
+
+        currentQuizState = { score, answers, timeTaken: (timeLimitMinutes * 60) - timeLeft };
+        renderResults();
+    }
+
+    // Fungsi untuk merender hasil
+    function renderResults() {
+        document.getElementById('quizScreen').classList.add('hidden');
+        document.getElementById('resultScreen').classList.remove('hidden');
+
+        document.getElementById('scoreDisplay').textContent = `${currentQuizState.score}/${totalQuestions}`;
+        
+        const minutesUsed = String(Math.floor(currentQuizState.timeTaken / 60)).padStart(2, '0');
+        const secondsUsed = String(currentQuizState.timeTaken % 60).padStart(2, '0');
+        document.getElementById('timeTakenDisplay').textContent = `Waktu yang digunakan: ${minutesUsed}:${secondsUsed}`;
+
+
+        const reviewContainer = document.getElementById('reviewContainer');
+        reviewContainer.innerHTML = '';
+
+        quizData.forEach((q, index) => {
+            const result = currentQuizState.answers[index];
+            const isAnsweredCorrectly = result.isCorrect;
+
+            const reviewElement = document.createElement('div');
+            reviewElement.className = 'question-card';
+            
+            let htmlContent = `
+                <p class="text-lg font-semibold mb-4 ${isAnsweredCorrectly ? 'text-green-600' : 'text-red-600'}">
+                    ${index + 1}. ${q.q} 
+                    <span class="ml-2 font-normal">(${isAnsweredCorrectly ? 'Jawaban Anda Benar' : 'Jawaban Anda Salah'})</span>
+                </p>
+                <div class="options-container mb-4">
+            `;
+
+            q.options.forEach(option => {
+                const isSelected = result.selected === option.t;
+                let optionClass = 'option-label';
+                let rationaleClass = 'rationale-incorrect';
+                let rationaleText = option.r;
+                
+                if (option.isCorrect) {
+                    optionClass += ' result-correct';
+                    rationaleClass = 'rationale-correct';
+                } else if (isSelected && !option.isCorrect) {
+                    optionClass += ' result-incorrect';
+                }
+                
+                // Cek apakah jawaban siswa benar atau salah untuk menampilkan teks tambahan
+                let selectedIndicator = isSelected ? ' (Jawaban Anda)' : '';
+                
+                if (option.isCorrect) {
+                    selectedIndicator += ' (Jawaban Benar)';
+                }
+
+
+                htmlContent += `
+                    <div>
+                        <label class="${optionClass} cursor-default">
+                            ${option.t} ${selectedIndicator}
+                        </label>
+                        <div class="rationale ${rationaleClass} mt-1 mb-2">
+                           **Pembahasan:** ${rationaleText}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            htmlContent += `</div>`;
+            reviewElement.innerHTML = htmlContent;
+            reviewContainer.appendChild(reviewElement);
+        });
+    }
+
+</script>
+
+</body>
+</html>
+

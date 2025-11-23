@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PAS Matematika Kelas VIII</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- KaTeX CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css" xintegrity="sha384-My7t2SNP2DkR23MdVrhKk9vGzKfuK/4GVRstLgtCfZsNZa0iJgS0jqRta2vWJk+B" crossorigin="anonymous">
+
+    <!-- KaTeX JS -->
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js" xintegrity="sha384-hIoIeAImFME2B8Tu2B+Q8LhAKldhC1-5K/+iS2rVciZfGZYFN2BQvD2DqDmyPqTw" crossorigin="anonymous"></script>
+
+    <!-- KaTeX Auto-render -->
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/contrib/auto-render.min.js" xintegrity="sha384-48nLhNl/C/Z+N3T8iUaCSetU+HOr0QSHxC2IiRinS+I7eQ2gWnQjSrmmB/sP/qS/"
+        onload="initKatex()"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f1f5f9;
+            color: #1e293b;
+        }
+        .quiz-container { max-width: 850px; margin: 0 auto; }
+        .question-card { transition: all 0.2s ease; }
+        .option-label { cursor: pointer; transition: all 0.2s; }
+        .option-label:hover { background-color: #f8fafc; border-color: #6366f1; }
+        .option-input:checked + .option-content {
+            background-color: #eef2ff;
+            border-color: #4f46e5;
+            color: #312e81;
+            font-weight: 600;
+        }
+        /* KaTeX adjustment */
+        .katex { font-size: 1.1em; }
+    </style>
+</head>
+<body class="min-h-screen pb-12">
+
+    <!-- Navbar -->
+    <header class="bg-white border-b sticky top-0 z-30 shadow-sm">
+        <div class="max-w-5xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="bg-indigo-600 text-white p-2 rounded-lg">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                </div>
+                <div>
+                    <h1 class="text-lg font-bold text-slate-800 leading-tight">PAS Matematika VIII Semester Ganjil</h1>
+                    <p class="text-xs text-indigo-600 font-medium">Tingkat Mudah</p>
+                </div>
+            </div>
+            <div class="bg-slate-100 text-slate-700 px-4 py-1.5 rounded-full text-sm font-mono font-bold shadow-inner" id="timer">00:00</div>
+        </div>
+    </header>
+
+    <!-- Intro Screen -->
+    <div id="intro-screen" class="quiz-container px-4 py-12 text-center">
+        <div class="bg-white p-10 rounded-2xl shadow-xl border border-slate-200">
+            <div class="mb-6 inline-block p-4 bg-indigo-50 rounded-full">
+                <svg class="w-12 h-12 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.384-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
+            </div>
+            <h2 class="text-3xl font-extrabold mb-4 text-slate-800">Siap untuk Tantangan?</h2>
+            <p class="text-slate-600 mb-8 max-w-lg mx-auto text-lg leading-relaxed">
+                Soal ini disusun dengan tingkat kesulitan mudah, menggunakan simbol matematika kompleks (KaTeX), dan sesuai dengan 40 indikator kisi-kisi.
+            </p>
+            <button onclick="startQuiz()" class="bg-indigo-600 hover:bg-indigo-700 hover:shadow-lg text-white text-lg font-bold py-4 px-12 rounded-xl transition-all transform hover:-translate-y-1 active:translate-y-0">
+                Mulai Mengerjakan
+            </button>
+        </div>
+    </div>
+
+    <!-- Quiz Screen -->
+    <div id="quiz-screen" class="hidden quiz-container px-4 py-8">
+        <form id="quiz-form">
+            <div id="questions-container" class="space-y-8"></div>
+            
+            <div class="mt-12 text-center">
+                <button type="button" onclick="submitQuiz()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 px-16 rounded-xl shadow-lg transition-all text-lg hover:shadow-xl">
+                    Selesai & Kumpulkan
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Result Screen -->
+    <div id="result-screen" class="hidden quiz-container px-4 py-8">
+        <div class="bg-white rounded-2xl shadow-xl overflow-hidden mb-8 border border-slate-200">
+            <div class="bg-slate-800 text-white p-10 text-center relative overflow-hidden">
+                <div class="relative z-10">
+                    <p class="text-sm uppercase tracking-widest opacity-75 mb-2 font-semibold">Nilai Akhir Anda</p>
+                    <h2 class="text-7xl font-extrabold mb-6 tracking-tight" id="final-score">0</h2>
+                    <div class="flex justify-center gap-10">
+                        <div class="text-center">
+                            <span class="block text-3xl font-bold text-emerald-400" id="correct-total">0</span>
+                            <span class="text-xs uppercase tracking-wider opacity-75">Benar</span>
+                        </div>
+                        <div class="text-center">
+                            <span class="block text-3xl font-bold text-rose-400" id="wrong-total">0</span>
+                            <span class="text-xs uppercase tracking-wider opacity-75">Salah</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Decorative circles -->
+                <div class="absolute top-0 left-0 -ml-10 -mt-10 w-40 h-40 bg-white opacity-5 rounded-full"></div>
+                <div class="absolute bottom-0 right-0 -mr-10 -mb-10 w-40 h-40 bg-white opacity-5 rounded-full"></div>
+            </div>
+            <div class="p-6 bg-slate-50 text-center border-t border-slate-100">
+                <button onclick="location.reload()" class="text-indigo-600 font-bold hover:text-indigo-800 flex items-center justify-center mx-auto gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                    Coba Lagi
+                </button>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-3 mb-6">
+            <h3 class="text-2xl font-bold text-slate-800">Pembahasan Soal</h3>
+            <span class="text-sm bg-indigo-100 text-indigo-700 px-2 py-1 rounded font-medium">KaTeX Enabled</span>
+        </div>
+        
+        <div id="review-container" class="space-y-6"></div>
+    </div>
+
+    <script>
+        // Fungsi inisialisasi KaTeX
+        function initKatex() {
+            renderMathInElement(document.body, {
+                delimiters: [
+                    {left: "$$", right: "$$", display: true},
+                    {left: "\\(", right: "\\)", display: false},
+                    {left: "\\[", right: "\\]", display: true}
+                ],
+                throwOnError: false
+            });
+        }
+
+        // Database Soal (Perbaikan Syntax: Backslash ganda untuk string JS)
+        const questions = [
+  {
+    "no": 1,
+    "topic": "Operasi Bilangan Berpangkat",
+    "q": "Hasil dari \\( 2^3 \\times 2^2 \\) adalah...",
+    "options": ["10", "16", "32", "64"],
+    "ans": 2,
+    "expl": "\\( 2^{3+2} = 2^5 = 32 \\)."
+  },
+  {
+    "no": 2,
+    "topic": "Notasi Ilmiah",
+    "q": "Bentuk baku dari 3.000.000 adalah...",
+    "options": ["\\( 3 \\times 10^5 \\)", "\\( 3 \\times 10^6 \\)", "\\( 30 \\times 10^5 \\)", "\\( 0,3 \\times 10^7 \\)"],
+    "ans": 1,
+    "expl": "3 diikuti 6 nol, jadi \\( 3 \\times 10^6 \\)."
+  },
+  {
+    "no": 3,
+    "topic": "Operasi Bentuk Akar",
+    "q": "Hasil dari \\( 5\\sqrt{3} + 2\\sqrt{3} \\) adalah...",
+    "options": ["\\( 7\\sqrt{3} \\)", "\\( 7\\sqrt{6} \\)", "\\( 3\\sqrt{3} \\)", "\\( 10\\sqrt{3} \\)"],
+    "ans": 0,
+    "expl": "Cukup jumlahkan angka depannya: \\( (5+2)\\sqrt{3} = 7\\sqrt{3} \\)."
+  },
+  {
+    "no": 4,
+    "topic": "Operasi Bentuk Akar",
+    "q": "Hasil dari \\( \\sqrt{3} \\times \\sqrt{4} \\) adalah...",
+    "options": ["\\( \\sqrt{7} \\)", "\\( \\sqrt{12} \\)", "\\( 2\\sqrt{3} \\)", "\\( 3\\sqrt{4} \\)"],
+    "ans": 2,
+    "expl": "\\( \\sqrt{3 \\times 4} = \\sqrt{12} = \\sqrt{4}\\sqrt{3} = 2\\sqrt{3} \\)."
+  },
+  {
+    "no": 5,
+    "topic": "Arti Bilangan Berpangkat",
+    "q": "Arti dari \\( 5^3 \\) adalah...",
+    "options": ["\\( 5 \\times 3 \\)", "\\( 5 + 5 + 5 \\)", "\\( 5 \\times 5 \\times 5 \\)", "\\( 3 \\times 3 \\times 3 \\times 3 \\times 3 \\)"],
+    "ans": 2,
+    "expl": "Pangkat 3 berarti dikalikan berulang 3 kali."
+  },
+  {
+    "no": 6,
+    "topic": "Hasil Bilangan Berpangkat",
+    "q": "Hasil dari \\( 10^2 - 7^2 \\) adalah...",
+    "options": ["51", "6", "9", "3"],
+    "ans": 0,
+    "expl": "\\( 100 - 49 = 51 \\)."
+  },
+  {
+    "no": 7,
+    "topic": "Operasi Bilangan Berpangkat",
+    "q": "Hasil dari \\( 5^7 : 5^4 \\) adalah...",
+    "options": ["\\( 5^3 \\)", "\\( 5^{11} \\)", "\\( 5^2 \\)", "\\( 1^3 \\)"],
+    "ans": 0,
+    "expl": "Pangkat dikurangi: \\( 7-4=3 \\). Jadi \\( 5^3 \\)."
+  },
+  {
+    "no": 8,
+    "topic": "Merasionalkan Penyebut",
+    "q": "Bentuk rasional dari \\( \\frac{1}{\\sqrt{3}} \\) adalah...",
+    "options": ["\\( 3\\sqrt{3} \\)", "\\( \\frac{1}{3}\\sqrt{3} \\)", "\\( \\sqrt{3} \\)", "\\( 3 \\)"],
+    "ans": 1,
+    "expl": "\\( \\frac{1}{\\sqrt{3}} \\times \\frac{\\sqrt{3}}{\\sqrt{3}} = \\frac{\\sqrt{3}}{3} = \\frac{1}{3}\\sqrt{3} \\)."
+  },
+  {
+    "no": 9,
+    "topic": "Teorema Pythagoras",
+    "q": "Segitiga siku-siku memiliki sisi 3 cm dan 4 cm. Sisi miringnya adalah...",
+    "options": ["5 cm", "6 cm", "7 cm", "8 cm"],
+    "ans": 0,
+    "expl": "Tripel Pythagoras dasar: 3, 4, 5."
+  },
+  {
+    "no": 10,
+    "topic": "Rumus Pythagoras",
+    "q": "Jika sisi miring adalah \\( c \\), dan sisi lainnya \\( a \\) dan \\( b \\), rumus yang benar adalah...",
+    "options": ["\\( c^2 = a^2 - b^2 \\)", "\\( a^2 = b^2 + c^2 \\)", "\\( c^2 = a^2 + b^2 \\)", "\\( b^2 = a^2 + c^2 \\)"],
+    "ans": 2,
+    "expl": "Kuadrat sisi miring sama dengan jumlah kuadrat sisi lainnya."
+  },
+  {
+    "no": 11,
+    "topic": "Keliling Persegi",
+    "q": "Jika panjang sisi persegi 5 cm, maka kelilingnya...",
+    "options": ["20 cm", "25 cm", "10 cm", "15 cm"],
+    "ans": 0,
+    "expl": "\\( 4 \\times 5 = 20 \\) cm."
+  },
+  {
+    "no": 12,
+    "topic": "Soal Cerita Pythagoras",
+    "q": "Tangga 5 meter disandarkan. Jarak bawah 3 meter. Tinggi tembok adalah...",
+    "options": ["3 m", "4 m", "5 m", "6 m"],
+    "ans": 1,
+    "expl": "\\( t = \\sqrt{5^2 - 3^2} = \\sqrt{16} = 4 \\)."
+  },
+  {
+    "no": 13,
+    "topic": "Soal Cerita Pythagoras",
+    "q": "Berjalan ke utara 6 km, lalu ke timur 8 km. Jarak dari titik asal...",
+    "options": ["10 km", "14 km", "100 km", "48 km"],
+    "ans": 0,
+    "expl": "Tripel 6, 8, 10."
+  },
+  {
+    "no": 14,
+    "topic": "Jenis Segitiga",
+    "q": "Segitiga dengan sisi 3, 4, 6 adalah segitiga...",
+    "options": ["Siku-siku", "Tumpul", "Lancip", "Sama sisi"],
+    "ans": 1,
+    "expl": "\\( 3^2+4^2 = 9+16=25 \\). Sisi panjang \\( 6^2=36 \\). Karena \\( 25 < 36 \\), maka tumpul."
+  },
+  {
+    "no": 15,
+    "topic": "Jenis Segitiga",
+    "q": "Manakah yang merupakan tripel Pythagoras?",
+    "options": ["3, 4, 6", "5, 12, 13", "6, 8, 12", "1, 2, 3"],
+    "ans": 1,
+    "expl": "\\( 5^2 + 12^2 = 25+144 = 169 = 13^2 \\)."
+  },
+  {
+    "no": 16,
+    "topic": "Segitiga Istimewa",
+    "q": "Jika sisi persegi 1 cm, panjang diagonalnya adalah...",
+    "options": ["1 cm", "2 cm", "\\( \\sqrt{2} \\) cm", "\\( \\sqrt{3} \\) cm"],
+    "ans": 2,
+    "expl": "Rumus diagonal persegi: \\( s\\sqrt{2} \\)."
+  },
+  {
+    "no": 17,
+    "topic": "Segitiga Istimewa",
+    "q": "Segitiga siku-siku sudut 30 derajat. Sisi miring 10 cm. Sisi pendeknya...",
+    "options": ["5 cm", "6 cm", "8 cm", "9 cm"],
+    "ans": 0,
+    "expl": "Setengah dari sisi miring: 5 cm."
+  },
+  {
+    "no": 18,
+    "topic": "Segitiga Istimewa",
+    "q": "Pada segitiga siku-siku sama kaki, besar sudut-sudut selain siku-siku adalah...",
+    "options": ["30 derajat", "45 derajat", "60 derajat", "90 derajat"],
+    "ans": 1,
+    "expl": "Karena sama kaki, sisa sudut \\( (180-90)/2 = 45 \\)."
+  },
+  {
+    "no": 19,
+    "topic": "Kalimat Tertutup",
+    "q": "Contoh kalimat tertutup yang bernilai benar adalah...",
+    "options": ["Presiden Indonesia adalah Jokowi", "1 + 1 = 5", "x + 2 = 4", "Besok akan hujan"],
+    "ans": 0,
+    "expl": "Fakta yang sudah pasti benar saat ini (konteks umum)."
+  },
+  {
+    "no": 20,
+    "topic": "Kalimat Terbuka",
+    "q": "Contoh kalimat terbuka adalah...",
+    "options": ["2 + 3 = 5", "Ayam berkaki dua", "x + 5 = 9", "Matahari panas"],
+    "ans": 2,
+    "expl": "Memuat variabel x dan belum tahu benar/salahnya."
+  },
+  {
+    "no": 21,
+    "topic": "Identifikasi PLSV",
+    "q": "Yang merupakan PLSV adalah...",
+    "options": ["\\( x + 2 = 5 \\)", "\\( x + y = 5 \\)", "\\( x^2 = 4 \\)", "\\( 2 > 1 \\)"],
+    "ans": 0,
+    "expl": "Satu variabel, pangkat satu, tanda sama dengan."
+  },
+  {
+    "no": 22,
+    "topic": "Model Matematika PLSV",
+    "q": "Suatu bilangan ditambah 5 hasilnya 12. Modelnya...",
+    "options": ["\\( x - 5 = 12 \\)", "\\( x + 5 = 12 \\)", "\\( 5x = 12 \\)", "\\( x : 5 = 12 \\)"],
+    "ans": 1,
+    "expl": "Ditambah artinya plus (+)."
+  },
+  {
+    "no": 23,
+    "topic": "Model Matematika",
+    "q": "Umur Amir (a) ditambah 2 tahun adalah 17. Modelnya...",
+    "options": ["\\( a + 2 = 17 \\)", "\\( a - 2 = 17 \\)", "\\( 2a = 17 \\)", "\\( a = 17 \\)"],
+    "ans": 0,
+    "expl": "Sangat jelas."
+  },
+  {
+    "no": 24,
+    "topic": "Nilai Variabel",
+    "q": "Jika \\( x + 3 = 10 \\), maka \\( x \\) adalah...",
+    "options": ["7", "13", "30", "3"],
+    "ans": 0,
+    "expl": "\\( x = 10 - 3 = 7 \\)."
+  },
+  {
+    "no": 25,
+    "topic": "Soal Cerita PLSV",
+    "q": "Harga permen \\( x \\). Beli 2 permen bayar 1000. Harga satu permen?",
+    "options": ["200", "500", "800", "2000"],
+    "ans": 1,
+    "expl": "\\( 2x = 1000 \\Rightarrow x = 500 \\)."
+  },
+  {
+    "no": 26,
+    "topic": "Soal Cerita PLSV",
+    "q": "Uang Budi 5000 lebih banyak dari Ali. Uang Ali 2000. Uang Budi adalah...",
+    "options": ["3000", "5000", "7000", "10000"],
+    "ans": 2,
+    "expl": "\\( 2000 + 5000 = 7000 \\)."
+  },
+  {
+    "no": 27,
+    "topic": "Soal Cerita PLSV",
+    "q": "Tiga buah buku harganya 9000. Harga 1 buku adalah...",
+    "options": ["2000", "3000", "4000", "4500"],
+    "ans": 1,
+    "expl": "\\( 9000 : 3 = 3000 \\)."
+  },
+  {
+    "no": 28,
+    "topic": "Model PtSLV",
+    "q": "Nilai ulangan harus lebih dari 70. Modelnya...",
+    "options": ["\\( x < 70 \\)", "\\( x > 70 \\)", "\\( x = 70 \\)", "\\( x \\leq 70 \\)"],
+    "ans": 1,
+    "expl": "Lebih dari menggunakan simbol >."
+  },
+  {
+    "no": 29,
+    "topic": "HP PtSLV",
+    "q": "Bilangan asli kurang dari 4 adalah...",
+    "options": ["1, 2, 3", "0, 1, 2, 3", "1, 2, 3, 4", "2, 3, 4"],
+    "ans": 0,
+    "expl": "Bilangan asli mulai dari 1. Kurang dari 4 berarti 4 tidak ikut."
+  },
+  {
+    "no": 30,
+    "topic": "Soal Cerita PtSLV",
+    "q": "Muatan lift maksimal 500 kg. Artinya...",
+    "options": ["Boleh lebih 500", "Harus pas 500", "Kurang atau sama dengan 500", "Harus lebih 500"],
+    "ans": 2,
+    "expl": "Maksimal = paling banyak = \\( \\leq \\)."
+  },
+  {
+    "no": 31,
+    "topic": "Nilai PLSV",
+    "q": "Jika \\( 2x = 8 \\), maka \\( x \\) = ...",
+    "options": ["2", "4", "6", "16"],
+    "ans": 1,
+    "expl": "\\( 8 : 2 = 4 \\)."
+  },
+  {
+    "no": 32,
+    "topic": "Nilai PLSV",
+    "q": "Jika \\( y - 2 = 5 \\), maka \\( y \\) = ...",
+    "options": ["3", "7", "10", "-3"],
+    "ans": 1,
+    "expl": "\\( 5 + 2 = 7 \\)."
+  },
+  {
+    "no": 33,
+    "topic": "Nilai PLSV",
+    "q": "\\( 3a = 15 \\). Nilai \\( a \\) adalah...",
+    "options": ["3", "5", "12", "45"],
+    "ans": 1,
+    "expl": "\\( 15 : 3 = 5 \\)."
+  },
+  {
+    "no": 34,
+    "topic": "Nilai PLSV",
+    "q": "\\( x + x = 10 \\). Nilai \\( x \\) adalah...",
+    "options": ["5", "10", "2", "20"],
+    "ans": 0,
+    "expl": "\\( 2x = 10 \\Rightarrow x=5 \\)."
+  },
+  {
+    "no": 35,
+    "topic": "Nilai PLSV",
+    "q": "\\( 10 - x = 8 \\). Nilai \\( x \\) adalah...",
+    "options": ["18", "2", "-2", "80"],
+    "ans": 1,
+    "expl": "\\( 10 - 2 = 8 \\)."
+  },
+  {
+    "no": 36,
+    "topic": "Substitusi",
+    "q": "Jika \\( x = 3 \\), nilai \\( x + 5 \\) adalah...",
+    "options": ["3", "5", "8", "15"],
+    "ans": 2,
+    "expl": "\\( 3 + 5 = 8 \\)."
+  },
+  {
+    "no": 37,
+    "topic": "Keliling Segitiga",
+    "q": "Segitiga sama sisi kelilingnya 15. Panjang sisinya...",
+    "options": ["3", "5", "6", "7"],
+    "ans": 1,
+    "expl": "\\( 15 : 3 = 5 \\)."
+  },
+  {
+    "no": 38,
+    "topic": "Soal Cerita",
+    "q": "Luas persegi panjang = 20. Panjang 5. Lebarnya...",
+    "options": ["4", "5", "15", "100"],
+    "ans": 0,
+    "expl": "\\( 20 : 5 = 4 \\)."
+  },
+  {
+    "no": 39,
+    "topic": "PtSLV Dasar",
+    "q": "Umur minimal SIM adalah 17. Jika umurmu \\( x \\), maka...",
+    "options": ["\\( x < 17 \\)", "\\( x \\leq 17 \\)", "\\( x > 17 \\)", "\\( x \\geq 17 \\)"],
+    "ans": 3,
+    "expl": "Minimal artinya 17 boleh atau lebih."
+  },
+  {
+    "no": 40,
+    "topic": "PtSLV Dasar",
+    "q": "Uang saku kurang dari 10.000. Modelnya...",
+    "options": ["\\( u < 10.000 \\)", "\\( u > 10.000 \\)", "\\( u = 10.000 \\)", "\\( u \\geq 10.000 \\)"],
+    "ans": 0,
+    "expl": "Kurang dari = <."
+  }
+];
+
+        let timerInterval;
+        let seconds = 0;
+
+        function startQuiz() {
+            document.getElementById('intro-screen').classList.add('hidden');
+            document.getElementById('quiz-screen').classList.remove('hidden');
+            renderQuestions();
+            startTimer();
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                seconds++;
+                const m = Math.floor(seconds / 60).toString().padStart(2, '0');
+                const s = (seconds % 60).toString().padStart(2, '0');
+                document.getElementById('timer').innerText = `${m}:${s}`;
+            }, 1000);
+        }
+
+        function renderQuestions() {
+            const container = document.getElementById('questions-container');
+            container.innerHTML = ''; // Clear previous if any
+            
+            questions.forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = 'bg-white p-6 rounded-xl shadow-sm border border-slate-200 question-card';
+                
+                let optionsHtml = '';
+                item.options.forEach((opt, i) => {
+                    optionsHtml += `
+                        <label class="option-label flex items-start p-4 border rounded-lg mb-3 group">
+                            <input type="radio" name="q${index}" value="${i}" class="option-input mt-1.5 w-4 h-4 text-indigo-600 border-gray-300 focus:ring-indigo-500 flex-shrink-0">
+                            <span class="option-content w-full ml-3 text-slate-700 group-hover:text-slate-900 text-lg">${opt}</span>
+                        </label>
+                    `;
+                });
+
+                card.innerHTML = `
+                    <div class="mb-4 flex justify-between items-center border-b pb-2 border-slate-100">
+                        <span class="bg-indigo-50 text-indigo-700 text-xs font-bold px-2.5 py-1 rounded border border-indigo-100">Soal ${item.no}</span>
+                        <span class="text-xs font-semibold text-slate-400 uppercase tracking-wide">${item.topic}</span>
+                    </div>
+                    <h3 class="font-medium text-xl text-slate-800 mb-6 leading-relaxed">${item.q}</h3>
+                    <div class="space-y-2">${optionsHtml}</div>
+                `;
+                container.appendChild(card);
+            });
+            
+            // Render Math in new elements
+            if (typeof renderMathInElement === 'function') {
+                renderMathInElement(container, {
+                    delimiters: [
+                        {left: "$$", right: "$$", display: true},
+                        {left: "\\(", right: "\\)", display: false}
+                    ]
+                });
+            }
+        }
+
+        function submitQuiz() {
+            clearInterval(timerInterval);
+            let score = 0;
+            let correct = 0;
+            const reviewContainer = document.getElementById('review-container');
+            reviewContainer.innerHTML = '';
+
+            questions.forEach((item, index) => {
+                const selected = document.querySelector(`input[name="q${index}"]:checked`);
+                const userAns = selected ? parseInt(selected.value) : -1;
+                const isCorrect = userAns === item.ans;
+
+                if (isCorrect) {
+                    score += 2.5;
+                    correct++;
+                }
+
+                const reviewCard = document.createElement('div');
+                reviewCard.className = `p-6 rounded-xl border-l-4 shadow-sm mb-6 ${isCorrect ? 'bg-emerald-50 border-emerald-500' : 'bg-rose-50 border-rose-500'}`;
+                
+                const userAnsText = userAns === -1 ? "<span class='italic text-slate-400'>Tidak dijawab</span>" : item.options[userAns];
+                const correctAnsText = item.options[item.ans];
+
+                reviewCard.innerHTML = `
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="font-bold text-slate-700 text-lg">Soal ${item.no}</span>
+                        ${isCorrect 
+                            ? '<span class="px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-sm font-bold flex items-center gap-1">✔ Benar</span>' 
+                            : '<span class="px-3 py-1 bg-rose-100 text-rose-700 rounded-full text-sm font-bold flex items-center gap-1">✘ Salah</span>'}
+                    </div>
+                    <p class="mb-4 text-slate-800 text-lg border-b border-slate-200 pb-4">${item.q}</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div class="p-3 bg-white rounded-lg border border-slate-200 shadow-sm">
+                            <span class="block text-xs uppercase tracking-wider text-slate-400 mb-1">Jawaban Kamu</span>
+                            <span class="text-lg ${isCorrect ? 'text-emerald-600 font-bold' : 'text-rose-600 font-bold'}">${userAnsText}</span>
+                        </div>
+                        <div class="p-3 bg-white rounded-lg border border-slate-200 shadow-sm">
+                            <span class="block text-xs uppercase tracking-wider text-slate-400 mb-1">Kunci Jawaban</span>
+                            <span class="text-lg text-emerald-600 font-bold">${correctAnsText}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white p-4 rounded-lg border border-indigo-100 text-slate-700">
+                        <strong class="block text-indigo-600 mb-2 flex items-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            Pembahasan:
+                        </strong>
+                        <span class="text-base leading-relaxed">${item.expl}</span>
+                    </div>
+                `;
+                reviewContainer.appendChild(reviewCard);
+            });
+
+            // Final Scores
+            document.getElementById('final-score').innerText = score;
+            document.getElementById('correct-total').innerText = correct;
+            document.getElementById('wrong-total').innerText = 40 - correct;
+
+            // Switch Screens
+            document.getElementById('quiz-screen').classList.add('hidden');
+            document.getElementById('result-screen').classList.remove('hidden');
+            window.scrollTo(0, 0);
+
+            // Re-render Math in review section
+            if (typeof renderMathInElement === 'function') {
+                renderMathInElement(reviewContainer, {
+                    delimiters: [
+                        {left: "$$", right: "$$", display: true},
+                        {left: "\\(", right: "\\)", display: false}
+                    ]
+                });
+            }
+        }
+    </script>
+</body>
+</html>

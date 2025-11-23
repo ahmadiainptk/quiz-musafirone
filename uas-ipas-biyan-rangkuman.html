@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rangkuman Materi PAS IPA Kelas 8</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- KaTeX for Math Formulas -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+    
+    <!-- Mermaid.js for Diagrams -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    
+    <!-- Chart.js for Graphs -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; scroll-behavior: smooth; }
+        .card { @apply bg-white rounded-xl shadow-md p-6 mb-6 border-l-4 border-blue-500; }
+        .card-header { @apply text-xl font-bold text-gray-800 mb-4 flex items-center gap-2; }
+        .highlight { @apply bg-yellow-100 px-1 rounded font-semibold text-gray-800; }
+        .video-btn { @apply inline-flex items-center gap-2 bg-red-600 text-white px-4 py-2 rounded-full hover:bg-red-700 transition text-sm font-medium no-underline; }
+        canvas { max-height: 300px; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-700">
+
+    <!-- Navigation -->
+    <nav class="bg-blue-700 text-white p-4 sticky top-0 z-50 shadow-lg">
+        <div class="max-w-5xl mx-auto flex justify-between items-center">
+            <h1 class="text-xl font-bold">Rangkuman PAS IPA Kls 8</h1>
+            <div class="hidden md:flex gap-4 text-sm">
+                <a href="#sel" class="hover:underline">Sel & Mikroskop</a>
+                <a href="#sistem" class="hover:underline">Sistem Tubuh</a>
+                <a href="#usaha" class="hover:underline">Usaha & Energi</a>
+                <a href="#pesawat" class="hover:underline">Pesawat Sederhana</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-5xl mx-auto p-4 md:p-8">
+
+        <!-- INTRO -->
+        <div class="bg-blue-100 border-l-4 border-blue-600 p-4 mb-8 rounded">
+            <p class="font-semibold">💡 Tips Belajar:</p>
+            <ul class="list-disc ml-5 text-sm">
+                <li>Pelajari konsep dasar (Pengertian).</li>
+                <li>Hafalkan rumus fisika dan latihan menghitung.</li>
+                <li>Perhatikan diagram alur untuk Biologi.</li>
+            </ul>
+        </div>
+
+        <!-- BAGIAN 1: SEL & MIKROSKOP -->
+        <section id="sel">
+            <h2 class="text-2xl font-bold text-blue-800 mb-4 border-b pb-2">1. Sel & Mikroskop</h2>
+            
+            <div class="card">
+                <h3 class="card-header">🔬 Konsep Dasar Sel</h3>
+                <p class="mb-2"><strong>Sel</strong> adalah unit terkecil penyusun makhluk hidup.</p>
+                <div class="grid md:grid-cols-2 gap-4 mt-4">
+                    <div class="bg-green-50 p-4 rounded-lg">
+                        <h4 class="font-bold text-green-700">Sel Tumbuhan</h4>
+                        <ul class="list-disc ml-4 text-sm">
+                            <li>Punya <strong>Dinding Sel</strong> (Kaku)</li>
+                            <li>Punya <strong>Kloroplas</strong> (Fotosintesis)</li>
+                            <li>Vakuola Besar</li>
+                        </ul>
+                    </div>
+                    <div class="bg-red-50 p-4 rounded-lg">
+                        <h4 class="font-bold text-red-700">Sel Hewan</h4>
+                        <ul class="list-disc ml-4 text-sm">
+                            <li>Tidak punya dinding sel</li>
+                            <li>Tidak punya kloroplas</li>
+                            <li>Punya <strong>Lisosom</strong> & <strong>Sentriol</strong></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mt-4 bg-gray-100 p-3 rounded text-sm">
+                    <strong>Organel Penting:</strong>
+                    <ul class="ml-4 list-disc">
+                        <li><strong>Mitokondria:</strong> Tempat respirasi sel (Penghasil Energi).</li>
+                        <li><strong>Nukleus:</strong> Pusat kendali sel.</li>
+                        <li><strong>Ribosom:</strong> Tempat sintesis protein.</li>
+                    </ul>
+                </div>
+                <div class="mt-4">
+                     <a href="https://www.youtube.com/results?search_query=sel+hewan+dan+tumbuhan+kelas+8" target="_blank" class="video-btn">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
+                        Tonton Video Materi Sel
+                    </a>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3 class="card-header">🔎 Perhitungan Mikroskop</h3>
+                <p>Perbesaran total mikroskop dihitung dengan mengalikan perbesaran lensa okuler dan objektif.</p>
+                <div class="my-4 text-center bg-gray-50 p-4 rounded border">
+                    $$ \text{Perbesaran Total} = \text{Perbesaran Okuler} \times \text{Perbesaran Objektif} $$
+                </div>
+                <p class="text-sm"><em>Contoh: Okuler 10x, Objektif 40x → Total = 10 x 40 = 400x.</em></p>
+            </div>
+        </section>
+
+        <!-- BAGIAN 2: SISTEM TUBUH -->
+        <section id="sistem">
+            <h2 class="text-2xl font-bold text-blue-800 mb-4 border-b pb-2">2. Zat Aditif & Sistem Tubuh</h2>
+
+            <!-- Zat Aditif & Nutrien -->
+            <div class="card">
+                <h3 class="card-header">🧪 Zat Aditif & Nutrien</h3>
+                <div class="grid md:grid-cols-2 gap-6 items-center">
+                    <div>
+                        <p class="mb-2"><strong>Zat Aditif:</strong> Bahan tambahan pada makanan.</p>
+                        <ul class="list-disc ml-5 text-sm mb-4">
+                            <li><strong>Pemanis Buatan:</strong> Aspartam, Sakarin, Siklamat (Rendah kalori, untuk diabetes).</li>
+                            <li><strong>Pengawet:</strong> Natrium Benzoat.</li>
+                            <li><strong>Penyedap:</strong> MSG (Monosodium Glutamat).</li>
+                        </ul>
+                        <p class="mb-2"><strong>Nutrien Utama:</strong></p>
+                        <ul class="list-disc ml-5 text-sm">
+                            <li><strong>Protein:</strong> Pembangun sel & perbaikan jaringan rusak.</li>
+                            <li><strong>Vitamin (Larut Lemak):</strong> A, D, E, K.</li>
+                        </ul>
+                    </div>
+                    <div>
+                         <!-- Chart.js Visualization for Blood Components (Moved here conceptually for layout) -->
+                         <div class="bg-white p-2 rounded shadow-sm border">
+                            <h4 class="text-center text-sm font-bold mb-2">Komponen Darah</h4>
+                            <canvas id="bloodChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sistem Tubuh (Pencernaan, Peredaran, Pernapasan) -->
+            <div class="card">
+                <h3 class="card-header">🫀 Sistem Peredaran Darah & Pernapasan</h3>
+                
+                <h4 class="font-bold text-blue-600 mt-4">Alur Peredaran Darah Kecil</h4>
+                <div class="mermaid my-4 text-center">
+                    graph LR
+                    A[Jantung <br/> Bilik Kanan] -->|Arteri Pulmonalis| B(Paru-Paru)
+                    B -->|Vena Pulmonalis| C[Jantung <br/> Serambi Kiri]
+                    style A fill:#ffcccc,stroke:#333
+                    style B fill:#ccffcc,stroke:#333
+                    style C fill:#ffcccc,stroke:#333
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-4 mt-6">
+                    <div>
+                        <h4 class="font-bold text-blue-600">Pencernaan</h4>
+                        <p class="text-sm"><strong>Pencernaan Mekanik:</strong> Terjadi di mulut (gigi) dan <span class="highlight">Lambung</span> (gerakan meremas otot dinding lambung).</p>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-blue-600">Pernapasan</h4>
+                        <ul class="list-disc ml-4 text-sm">
+                            <li><strong>Pernapasan Perut:</strong> Menggunakan otot <span class="highlight">Diafragma</span>.</li>
+                            <li><strong>Pertukaran Gas:</strong> Oksigen dan CO2 bertukar di <span class="highlight">Alveolus</span> secara difusi.</li>
+                        </ul>
+                    </div>
+                </div>
+                 <div class="mt-4">
+                     <a href="https://www.youtube.com/results?search_query=sistem+peredaran+darah+manusia+kelas+8" target="_blank" class="video-btn">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
+                        Video Peredaran Darah
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- BAGIAN 3: USAHA & ENERGI (FISIKA) -->
+        <section id="usaha">
+            <h2 class="text-2xl font-bold text-blue-800 mb-4 border-b pb-2">3. Usaha, Daya & Energi</h2>
+            
+            <div class="card">
+                <h3 class="card-header">⚙️ Rumus & Konsep Penting</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-left text-gray-500">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-100">
+                            <tr>
+                                <th class="px-6 py-3">Besaran</th>
+                                <th class="px-6 py-3">Rumus</th>
+                                <th class="px-6 py-3">Catatan</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="bg-white border-b">
+                                <td class="px-6 py-4 font-bold text-gray-900">Usaha (W)</td>
+                                <td class="px-6 py-4">$$ W = F \times s $$</td>
+                                <td class="px-6 py-4">Satuannya Joule. <br>Jika benda <strong>diam</strong> (s=0), maka <strong>W = 0</strong>.</td>
+                            </tr>
+                            <tr class="bg-gray-50 border-b">
+                                <td class="px-6 py-4 font-bold text-gray-900">Daya (P)</td>
+                                <td class="px-6 py-4">$$ P = \frac{W}{t} $$</td>
+                                <td class="px-6 py-4">Laju melakukan usaha per detik.</td>
+                            </tr>
+                            <tr class="bg-white border-b">
+                                <td class="px-6 py-4 font-bold text-gray-900">Energi Potensial (Ep)</td>
+                                <td class="px-6 py-4">$$ Ep = m \cdot g \cdot h $$</td>
+                                <td class="px-6 py-4">Dipengaruhi <strong>Ketinggian (h)</strong> dan Massa.</td>
+                            </tr>
+                            <tr class="bg-gray-50">
+                                <td class="px-6 py-4 font-bold text-gray-900">Energi Kinetik (Ek)</td>
+                                <td class="px-6 py-4">$$ Ek = \frac{1}{2} m v^2 $$</td>
+                                <td class="px-6 py-4">Dipengaruhi <strong>Kecepatan (v)</strong>.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="mt-4 p-4 bg-yellow-50 rounded border border-yellow-200">
+                    <strong>Hukum Kekekalan Energi Mekanik (EM):</strong>
+                    $$ EM = Ep + Ek $$
+                    <p class="text-sm mt-2">Energi tidak dapat diciptakan/dimusnahkan, hanya berubah bentuk. Saat benda jatuh bebas: Di Puncak (Ep Maksimum, Ek Nol). Di Tanah (Ep Nol, Ek Maksimum).</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- BAGIAN 4: PESAWAT SEDERHANA -->
+        <section id="pesawat">
+            <h2 class="text-2xl font-bold text-blue-800 mb-4 border-b pb-2">4. Pesawat Sederhana</h2>
+
+            <div class="card">
+                <h3 class="card-header">🏗️ Tuas (Pengungkit)</h3>
+                <p class="mb-4">Rumus Keseimbangan Tuas:</p>
+                <div class="text-center mb-6">
+                    $$ W \times L_b = F \times L_k $$
+                    <span class="text-sm block mt-1">(Beban x Lengan Beban = Kuasa x Lengan Kuasa)</span>
+                </div>
+
+                <!-- SVG Canvas untuk Visualisasi Tuas -->
+                <div class="grid md:grid-cols-3 gap-4">
+                    <!-- Tuas Jenis 1 -->
+                    <div class="border p-2 rounded text-center">
+                        <strong class="text-blue-600 block mb-2">Golongan I</strong>
+                        <svg width="200" height="100" class="mx-auto">
+                            <!-- Papan -->
+                            <line x1="20" y1="50" x2="180" y2="50" stroke="black" stroke-width="4" />
+                            <!-- Tumpu (Segitiga) di Tengah -->
+                            <polygon points="90,50 110,50 100,70" fill="red" />
+                            <!-- Beban -->
+                            <rect x="20" y="30" width="20" height="20" fill="gray" />
+                            <text x="25" y="25" font-size="12">Beban</text>
+                            <!-- Kuasa -->
+                            <line x1="180" y1="50" x2="180" y2="20" stroke="blue" stroke-width="2" marker-end="url(#arrow)" />
+                            <text x="170" y="15" font-size="12">Kuasa</text>
+                            <text x="85" y="90" font-size="12" fill="red">Tumpu Tengah</text>
+                        </svg>
+                        <p class="text-xs mt-2">Contoh: Gunting, Tang, Jungkat-jungkit.</p>
+                    </div>
+
+                    <!-- Tuas Jenis 2 -->
+                    <div class="border p-2 rounded text-center">
+                        <strong class="text-blue-600 block mb-2">Golongan II</strong>
+                        <svg width="200" height="100" class="mx-auto">
+                            <line x1="20" y1="50" x2="180" y2="50" stroke="black" stroke-width="4" />
+                            <!-- Tumpu di Ujung Kiri -->
+                            <polygon points="10,50 30,50 20,70" fill="red" />
+                            <!-- Beban di Tengah -->
+                            <rect x="90" y="30" width="20" height="20" fill="gray" />
+                            <text x="85" y="25" font-size="12">Beban</text>
+                            <!-- Kuasa di Ujung Kanan -->
+                            <line x1="180" y1="50" x2="180" y2="20" stroke="blue" stroke-width="2" />
+                            <text x="170" y="15" font-size="12">Kuasa</text>
+                            <text x="85" y="90" font-size="12" fill="red">Beban Tengah</text>
+                        </svg>
+                        <p class="text-xs mt-2">Contoh: Gerobak dorong, Pemotong kertas.</p>
+                    </div>
+
+                    <!-- Tuas Jenis 3 -->
+                    <div class="border p-2 rounded text-center">
+                        <strong class="text-blue-600 block mb-2">Golongan III</strong>
+                        <svg width="200" height="100" class="mx-auto">
+                            <line x1="20" y1="50" x2="180" y2="50" stroke="black" stroke-width="4" />
+                            <!-- Tumpu di Ujung Kiri -->
+                            <polygon points="10,50 30,50 20,70" fill="red" />
+                            <!-- Kuasa di Tengah -->
+                            <line x1="100" y1="50" x2="100" y2="20" stroke="blue" stroke-width="2" />
+                            <text x="90" y="15" font-size="12">Kuasa</text>
+                            <!-- Beban di Ujung Kanan -->
+                            <rect x="160" y="30" width="20" height="20" fill="gray" />
+                            <text x="155" y="25" font-size="12">Beban</text>
+                            <text x="85" y="90" font-size="12" fill="red">Kuasa Tengah</text>
+                        </svg>
+                        <p class="text-xs mt-2">Contoh: Pinset, Stapler, Sekop.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3 class="card-header">🔩 Katrol & Bidang Miring</h3>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div>
+                        <h4 class="font-bold text-gray-700">Katrol</h4>
+                        <ul class="list-disc ml-5 text-sm space-y-2">
+                            <li><strong>Katrol Tetap:</strong> KM = 1 (Hanya mengubah arah gaya). Gaya = Berat Beban.</li>
+                            <li><strong>Katrol Bergerak:</strong> KM = 2 (Menghemat gaya setengahnya). $$ F = \frac{1}{2} W $$</li>
+                            <li><strong>Katrol Majemuk:</strong> KM = Jumlah Tali penopang.</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-gray-700">Bidang Miring</h4>
+                        <p class="text-sm mb-2">Keuntungan Mekanik (KM) tergantung panjang lintasan (s) dan tinggi (h).</p>
+                        <div class="text-center bg-blue-50 p-2 rounded">
+                            $$ KM = \frac{s}{h} = \frac{W}{F} $$
+                        </div>
+                    </div>
+                </div>
+                 <div class="mt-4">
+                     <a href="https://www.youtube.com/results?search_query=pesawat+sederhana+kelas+8" target="_blank" class="video-btn">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
+                        Video Pesawat Sederhana
+                    </a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-800 text-white text-center p-4 mt-8">
+        <p>Selamat Belajar! Semoga Sukses PAS IPA.</p>
+    </footer>
+
+    <!-- Initializing Scripts -->
+    <script>
+        // Init Mermaid
+        mermaid.initialize({ startOnLoad: true });
+
+        // Init KaTeX
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body, {
+                delimiters: [
+                    {left: "$$", right: "$$", display: true},
+                    {left: "$", right: "$", display: false}
+                ]
+            });
+        });
+
+        // Init Chart.js for Blood Composition
+        const ctx = document.getElementById('bloodChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Plasma Darah (Cair)', 'Sel Darah (Padat)'],
+                datasets: [{
+                    data: [55, 45],
+                    backgroundColor: ['#fcd34d', '#ef4444'],
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom' },
+                    title: { display: false }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Latihan Soal IPA Kelas VIII - Persiapan PAS/SAS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+        body { font-family: 'Poppins', sans-serif; }
+        .option-label { cursor: pointer; transition: all 0.2s; }
+        .option-input:checked + .option-label {
+            background-color: #dbeafe; /* blue-100 */
+            border-color: #3b82f6; /* blue-500 */
+            color: #1e40af; /* blue-800 */
+        }
+        .correct-answer { background-color: #d1fae5 !important; border-color: #10b981 !important; color: #065f46 !important; }
+        .wrong-answer { background-color: #fee2e2 !important; border-color: #ef4444 !important; color: #991b1b !important; }
+        
+        .question-card {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <!-- Header -->
+    <header class="bg-blue-600 text-white p-6 shadow-md sticky top-0 z-50">
+        <div class="max-w-4xl mx-auto flex justify-between items-center">
+            <div>
+                <h1 class="text-2xl font-bold">Latihan Soal IPA</h1>
+                <p class="text-sm opacity-90">Kelas VIII - Berdasarkan Kisi-Kisi PAS 2025</p>
+            </div>
+            <div id="timer" class="text-xl font-mono font-bold hidden">00:00</div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-4xl mx-auto p-4 md:p-6 min-h-screen">
+        
+        <!-- Start Screen -->
+        <div id="start-screen" class="bg-white rounded-xl shadow-lg p-8 text-center mt-10">
+            <div class="mb-6">
+                <svg class="w-24 h-24 mx-auto text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
+            </div>
+            <h2 class="text-3xl font-bold mb-4">Siap Mengerjakan?</h2>
+            <p class="text-gray-600 mb-6">
+                Terdiri dari <b>40 Soal Pilihan Ganda</b>.<br>
+                Materi: Sel, Mikroskop, Zat Aditif, Sistem Pencernaan, Peredaran Darah, Pernapasan, Usaha, Energi, & Pesawat Sederhana.
+            </p>
+            <button onclick="startQuiz()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full text-lg shadow-lg transition transform hover:scale-105">
+                Mulai Mengerjakan
+            </button>
+        </div>
+
+        <!-- Quiz Container -->
+        <div id="quiz-container" class="hidden space-y-8 pb-20">
+            <!-- Questions will be injected here via JS -->
+        </div>
+
+        <!-- Result Container -->
+        <div id="result-container" class="hidden bg-white rounded-xl shadow-lg p-8 text-center mt-10 mb-10">
+            <h2 class="text-3xl font-bold mb-2">Hasil Latihan</h2>
+            <div class="text-6xl font-extrabold text-blue-600 mb-4" id="score-display">0</div>
+            <p class="text-gray-600 mb-6" id="score-text">Nilai kamu</p>
+            <div class="flex justify-center gap-4 text-sm font-semibold mb-6">
+                <div class="text-green-600 bg-green-100 px-4 py-2 rounded-lg">Benar: <span id="correct-count">0</span></div>
+                <div class="text-red-600 bg-red-100 px-4 py-2 rounded-lg">Salah: <span id="wrong-count">0</span></div>
+            </div>
+            <p class="text-sm text-gray-500 mb-6">Silakan scroll ke atas untuk melihat pembahasan soal.</p>
+            <button onclick="location.reload()" class="bg-gray-800 hover:bg-gray-900 text-white font-bold py-3 px-6 rounded-lg">
+                Ulangi Latihan
+            </button>
+        </div>
+
+    </main>
+
+    <!-- Floating Submit Button -->
+    <div id="submit-bar" class="fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 p-4 shadow-lg hidden z-40">
+        <div class="max-w-4xl mx-auto flex justify-between items-center">
+            <span class="text-sm text-gray-500 font-medium">Pastikan semua soal terjawab.</span>
+            <button onclick="submitQuiz()" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-8 rounded-lg shadow-md transition">
+                Kirim Jawaban
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Data Soal Berdasarkan Kisi-Kisi
+        const questions = [
+            // --- BIOLOGI: SEL & MIKROSKOP ---
+            {
+                no: 1,
+                text: "Unit terkecil penyusun makhluk hidup yang dapat melaksanakan kehidupan disebut...",
+                options: ["Jaringan", "Organ", "Sel", "Sistem Organ"],
+                correct: 2,
+                desc: "Sel didefinisikan sebagai unit struktural dan fungsional terkecil dari makhluk hidup."
+            },
+            {
+                no: 2,
+                text: "Perhatikan fungsi bagian mikroskop berikut! Bagian yang berfungsi untuk mengatur banyak sedikitnya cahaya yang masuk adalah...",
+                options: ["Lensa Okuler", "Diafragma", "Revolver", "Makrometer"],
+                correct: 1,
+                desc: "Diafragma berfungsi mengatur intensitas cahaya yang masuk ke lensa objektif."
+            },
+            {
+                no: 3,
+                text: "Jika lensa okuler memiliki perbesaran 10x dan lensa objektif memiliki perbesaran 40x, maka perbesaran total mikroskop adalah...",
+                options: ["50 kali", "400 kali", "40 kali", "10 kali"],
+                correct: 1,
+                desc: "Perbesaran total = Lensa Okuler x Lensa Objektif = 10 x 40 = 400 kali."
+            },
+            {
+                no: 4,
+                text: "Ciri khas yang dimiliki oleh sel tumbuhan tetapi tidak dimiliki oleh sel hewan adalah adanya...",
+                options: ["Membran sel dan sitoplasma", "Nukleus dan mitokondria", "Dinding sel dan kloroplas", "Retikulum endoplasma dan ribosom"],
+                correct: 2,
+                desc: "Dinding sel (memberi bentuk kaku) dan kloroplas (untuk fotosintesis) hanya dimiliki sel tumbuhan."
+            },
+            {
+                no: 5,
+                text: "Organel sel yang berfungsi sebagai tempat penghasil energi (respirasi sel) adalah...",
+                options: ["Mitokondria", "Ribosom", "Lisosom", "Badan Golgi"],
+                correct: 0,
+                desc: "Mitokondria dikenal sebagai 'The Power House of Cell' karena berfungsi sebagai tempat respirasi sel untuk menghasilkan energi."
+            },
+            // --- ZAT ADITIF & MAKANAN ---
+            {
+                no: 6,
+                text: "Pada kemasan minuman tertera komposisi: Gula pasir, Aspartam, Asam sitrat, Natrium benzoat. Bahan yang berfungsi sebagai pemanis buatan adalah...",
+                options: ["Gula pasir", "Aspartam", "Asam sitrat", "Natrium benzoat"],
+                correct: 1,
+                desc: "Aspartam adalah pemanis buatan rendah kalori. Gula pasir (pemanis alami), Natrium benzoat (pengawet), Asam sitrat (pengatur keasaman)."
+            },
+            {
+                no: 7,
+                text: "Zat makanan yang berfungsi utama sebagai zat pembangun tubuh dan pengganti sel-sel yang rusak adalah...",
+                options: ["Karbohidrat", "Lemak", "Protein", "Vitamin"],
+                correct: 2,
+                desc: "Fungsi utama protein adalah sebagai zat pembangun sel dan memperbaiki jaringan tubuh yang rusak."
+            },
+            // --- SISTEM PENCERNAAN ---
+            {
+                no: 8,
+                text: "Proses pencernaan mekanik yang melibatkan gerakan peristaltik (meremas-remas) terjadi paling kuat pada organ...",
+                options: ["Mulut", "Lambung", "Usus Halus", "Usus Besar"],
+                correct: 1,
+                desc: "Di lambung terjadi pencernaan mekanik oleh otot dinding lambung yang meremas dan mengaduk makanan dengan getah lambung."
+            },
+            // --- SISTEM PEREDARAN DARAH ---
+            {
+                no: 9,
+                text: "Komponen darah yang berfungsi untuk mengangkut oksigen ke seluruh tubuh adalah...",
+                options: ["Plasma darah", "Leukosit (Sel darah putih)", "Trombosit (Keping darah)", "Eritrosit (Sel darah merah)"],
+                correct: 3,
+                desc: "Eritrosit mengandung hemoglobin (Hb) yang berfungsi mengikat dan mengedarkan oksigen."
+            },
+            {
+                no: 10,
+                text: "Urutan peredaran darah kecil yang benar adalah...",
+                options: ["Jantung (Bilik Kiri) -> Seluruh Tubuh -> Jantung (Serambi Kanan)", "Jantung (Bilik Kanan) -> Paru-paru -> Jantung (Serambi Kiri)", "Jantung (Serambi Kanan) -> Paru-paru -> Jantung (Bilik Kiri)", "Jantung (Bilik Kiri) -> Paru-paru -> Jantung (Serambi Kanan)"],
+                correct: 1,
+                desc: "Peredaran darah kecil: Bilik Kanan -> Arteri Pulmonalis -> Paru-paru -> Vena Pulmonalis -> Serambi Kiri."
+            },
+            // --- SISTEM PERNAPASAN ---
+            {
+                no: 11,
+                text: "Perbedaan utama antara pernapasan dada dan pernapasan perut terletak pada...",
+                options: ["Organ yang terlibat pertukaran gas", "Otot yang bekerja", "Volume udara yang masuk", "Kecepatan pernapasan"],
+                correct: 1,
+                desc: "Pernapasan dada menggunakan otot antartulang rusuk, sedangkan pernapasan perut menggunakan otot diafragma."
+            },
+            {
+                no: 12,
+                text: "Bagian organ pernapasan yang menjadi tempat terjadinya pertukaran gas oksigen (O2) dan karbon dioksida (CO2) adalah...",
+                options: ["Bronkus", "Bronkiolus", "Alveolus", "Trakea"],
+                correct: 2,
+                desc: "Alveolus adalah gelembung udara di paru-paru tempat difusi gas O2 dan CO2 terjadi."
+            },
+            // --- FISIKA: USAHA & DAYA ---
+            {
+                no: 13,
+                text: "Seorang anak mendorong meja dengan gaya 50 N sehingga meja berpindah sejauh 4 meter. Besar usaha yang dilakukan anak tersebut adalah...",
+                options: ["12,5 Joule", "54 Joule", "200 Joule", "400 Joule"],
+                correct: 2,
+                desc: "Usaha (W) = Gaya (F) x Perpindahan (s) = 50 N x 4 m = 200 Joule."
+            },
+            {
+                no: 14,
+                text: "Perhatikan gambar seseorang mendorong tembok namun tembok tidak bergerak. Pernyataan yang tepat mengenai usaha adalah...",
+                options: ["Usaha bernilai positif karena gaya besar", "Usaha bernilai nol karena tidak ada perpindahan", "Usaha bernilai negatif karena arah gaya berlawanan", "Usaha tetap ada karena mengeluarkan keringat"],
+                correct: 1,
+                desc: "Syarat terjadinya usaha secara fisika adalah adanya gaya dan PERPINDAHAN. Jika benda diam (s=0), maka Usaha (W) = 0."
+            },
+            {
+                no: 15,
+                text: "Dua orang mendorong mobil mogok dengan gaya masing-masing 60 N dan 40 N searah. Jika mobil berpindah sejauh 10 meter, usaha totalnya adalah...",
+                options: ["200 Joule", "600 Joule", "1.000 Joule", "2.000 Joule"],
+                correct: 2,
+                desc: "Gaya total (searah) = 60 + 40 = 100 N. Usaha = F total x s = 100 N x 10 m = 1.000 Joule."
+            },
+            {
+                no: 16,
+                text: "Sebuah benda ditarik dengan usaha sebesar 500 Joule menggunakan gaya 100 N. Berapa jauh benda tersebut berpindah?",
+                options: ["5 meter", "50 meter", "400 meter", "5000 meter"],
+                correct: 0,
+                desc: "s = W / F = 500 / 100 = 5 meter."
+            },
+            {
+                no: 17,
+                text: "Mesin A melakukan usaha 1000 Joule dalam 10 detik. Mesin B melakukan usaha 2000 Joule dalam 20 detik. Pernyataan yang benar tentang daya kedua mesin adalah...",
+                options: ["Daya Mesin A lebih besar", "Daya Mesin B lebih besar", "Daya kedua mesin sama", "Tidak dapat ditentukan"],
+                correct: 2,
+                desc: "Daya (P) = W / t. Mesin A: 1000/10 = 100 Watt. Mesin B: 2000/20 = 100 Watt. Daya sama."
+            },
+            {
+                no: 18,
+                text: "Pernyataan yang paling tepat mengenai hubungan antara Usaha dan Daya adalah...",
+                options: ["Daya adalah usaha per satuan waktu", "Usaha adalah daya per satuan waktu", "Semakin lama waktu, daya semakin besar", "Daya tidak dipengaruhi oleh waktu"],
+                correct: 0,
+                desc: "Daya didefinisikan sebagai laju melakukan usaha atau besar usaha yang dilakukan per satuan waktu (P = W/t)."
+            },
+            // --- ENERGI ---
+            {
+                no: 19,
+                text: "Buah kelapa bermassa 2 kg berada pada ketinggian 10 meter dari tanah. Jika percepatan gravitasi 10 m/s², energi potensial kelapa tersebut adalah...",
+                options: ["20 Joule", "50 Joule", "100 Joule", "200 Joule"],
+                correct: 3,
+                desc: "Ep = m . g . h = 2 . 10 . 10 = 200 Joule."
+            },
+            {
+                no: 20,
+                text: "Benda A berada pada ketinggian h, Benda B berada pada ketinggian 2h. Jika massa kedua benda sama, perbandingan energi potensial A dan B adalah...",
+                options: ["1 : 1", "1 : 2", "2 : 1", "1 : 4"],
+                correct: 1,
+                desc: "Ep sebanding dengan h. Ep A : Ep B = h : 2h = 1 : 2."
+            },
+            {
+                no: 21,
+                text: "Energi potensial terbesar dimiliki oleh benda yang berada pada posisi...",
+                options: ["Paling rendah (di permukaan tanah)", "Sedang melayang", "Paling tinggi (puncak)", "Bergerak paling cepat"],
+                correct: 2,
+                desc: "Energi potensial dipengaruhi ketinggian (h). Semakin tinggi posisi benda, semakin besar energi potensialnya."
+            },
+            {
+                no: 22,
+                text: "Sebuah mobil bermassa 1000 kg bergerak dengan kecepatan 10 m/s. Energi kinetik mobil tersebut adalah...",
+                options: ["5.000 Joule", "10.000 Joule", "50.000 Joule", "100.000 Joule"],
+                correct: 2,
+                desc: "Ek = 1/2 . m . v² = 1/2 . 1000 . (10)² = 500 . 100 = 50.000 Joule."
+            },
+            {
+                no: 23,
+                text: "Jika kecepatan gerak suatu benda menjadi 2 kali lipat dari semula, maka energi kinetiknya menjadi...",
+                options: ["2 kali semula", "4 kali semula", "8 kali semula", "Tetap"],
+                correct: 1,
+                desc: "Energi kinetik sebanding dengan kuadrat kecepatan (v²). Jika v menjadi 2x, maka Ek menjadi (2)² = 4 kali lipat."
+            },
+            // --- PESAWAT SEDERHANA ---
+            {
+                no: 24,
+                text: "Keuntungan mekanik (KM) dari sebuah bidang miring yang memiliki panjang lintasan 10 meter dan tinggi 2 meter adalah...",
+                options: ["2", "5", "10", "20"],
+                correct: 1,
+                desc: "KM Bidang Miring = s / h = 10 / 2 = 5."
+            },
+            {
+                no: 25,
+                text: "Sebuah tuas memiliki lengan beban 1 meter dan lengan kuasa 2 meter. Jika beban yang diangkat 100 N, gaya kuasa yang diperlukan adalah...",
+                options: ["50 N", "100 N", "200 N", "500 N"],
+                correct: 0,
+                desc: "Prinsip Tuas: W x Lb = F x Lk. 100 x 1 = F x 2. F = 100 / 2 = 50 N."
+            },
+            {
+                no: 26,
+                text: "Alat berikut yang bekerja berdasarkan prinsip tuas jenis pertama (titik tumpu di tengah) adalah...",
+                options: ["Gerobak dorong", "Pembuka tutup botol", "Gunting", "Pinset"],
+                correct: 2,
+                desc: "Gunting memiliki titik tumpu di antara beban dan kuasa (Tuas Jenis I)."
+            },
+            {
+                no: 27,
+                text: "Peralatan berikut yang memiliki prinsip kerja yang sama dengan gerobak dorong satu roda (Tuas Jenis II: Beban di tengah) adalah...",
+                options: ["Gunting", "Pemotong kertas", "Sekop", "Jungkat-jungkit"],
+                correct: 1,
+                desc: "Pemotong kertas memiliki beban di tengah, tumpu di ujung, dan kuasa di ujung lainnya (Tuas Jenis II)."
+            },
+            {
+                no: 28,
+                text: "Seseorang mendorong benda seberat 600 N ke atas truk menggunakan papan miring sepanjang 3 meter. Tinggi bak truk 1 meter. Berapa gaya dorong minimal yang diperlukan?",
+                options: ["200 N", "300 N", "600 N", "1800 N"],
+                correct: 0,
+                desc: "F = (W x h) / s = (600 x 1) / 3 = 200 N."
+            },
+            {
+                no: 29,
+                text: "Untuk mengangkat beban 500 N, kita menggunakan katrol bergerak. Gaya kuasa yang diperlukan adalah...",
+                options: ["250 N", "500 N", "1000 N", "125 N"],
+                correct: 0,
+                desc: "Katrol bergerak memiliki Keuntungan Mekanik (KM) = 2. Maka F = W / KM = 500 / 2 = 250 N."
+            },
+            {
+                no: 30,
+                text: "Sebuah sistem katrol majemuk (takal) memiliki 4 tali yang menanggung beban. Keuntungan mekanik sistem tersebut adalah...",
+                options: ["1", "2", "3", "4"],
+                correct: 3,
+                desc: "Pada katrol majemuk, KM sama dengan jumlah tali yang menopang beban (tidak termasuk tali kuasa jika arahnya ke bawah)."
+            },
+            // --- SOAL KONVERSI (Menjodohkan & Isian menjadi PG) ---
+            {
+                no: 31,
+                text: "Pasangan nama organel sel dan fungsinya yang BENAR adalah...",
+                options: ["Ribosom - Sintesis Protein", "Mitokondria - Pencernaan Sel", "Lisosom - Penghasil Energi", "Nukleus - Pelindung Sel"],
+                correct: 0,
+                desc: "Ribosom berfungsi sintesis protein. Mitokondria = energi, Lisosom = pencernaan, Nukleus = pusat kontrol/genetik."
+            },
+            {
+                no: 32,
+                text: "Vitamin dibagi menjadi larut air dan larut lemak. Kelompok vitamin yang larut dalam lemak adalah...",
+                options: ["Vitamin B dan C", "Vitamin A, D, E, K", "Vitamin A dan B", "Vitamin C dan D"],
+                correct: 1,
+                desc: "Vitamin yang larut lemak adalah A, D, E, dan K. Vitamin larut air adalah B dan C."
+            },
+            {
+                no: 33,
+                text: "Besaran yang TIDAK mempengaruhi energi potensial gravitasi suatu benda adalah...",
+                options: ["Massa benda", "Percepatan gravitasi", "Ketinggian", "Kecepatan"],
+                correct: 3,
+                desc: "Ep = m.g.h (Massa, Gravitasi, Ketinggian). Kecepatan mempengaruhi Energi Kinetik."
+            },
+            {
+                no: 34,
+                text: "Di antara alat berikut, manakah yang merupakan contoh tuas golongan I (Tumpu di tengah)?",
+                options: ["Pinset", "Pembuka botol", "Tang", "Stapler"],
+                correct: 2,
+                desc: "Tang, Gunting, dan Jungkat-jungkit adalah Tuas Golongan I (Tumpu di tengah)."
+            },
+            {
+                no: 35,
+                text: "Katrol yang memiliki nilai Keuntungan Mekanik (KM) = 1 adalah...",
+                options: ["Katrol Tetap", "Katrol Bergerak", "Katrol Majemuk", "Katrol Ganda"],
+                correct: 0,
+                desc: "Katrol tetap hanya mengubah arah gaya, tidak melipatgandakan gaya. KM = 1."
+            },
+            {
+                no: 36,
+                text: "Sel darah yang memiliki ciri bentuk tidak tetap, memiliki inti, dan berfungsi memakan kuman penyakit adalah...",
+                options: ["Eritrosit", "Leukosit", "Trombosit", "Plasma"],
+                correct: 1,
+                desc: "Leukosit (Sel Darah Putih) berfungsi dalam sistem imun untuk melawan penyakit."
+            },
+            {
+                no: 37,
+                text: "Otot utama yang berperan dalam pernapasan perut, yang membatasi rongga dada dan rongga perut adalah...",
+                options: ["Otot interkostal", "Otot polos", "Diafragma", "Otot lurik"],
+                correct: 2,
+                desc: "Diafragma adalah otot utama pernapasan perut."
+            },
+            {
+                no: 38,
+                text: "Jika kamu mendorong tembok sekuat tenaga tetapi tembok tidak berpindah, maka usaha yang kamu lakukan bernilai...",
+                options: ["Positif", "Maksimal", "Negatif", "Nol (0)"],
+                correct: 3,
+                desc: "W = F x s. Jika perpindahan (s) = 0, maka Usaha (W) = 0."
+            },
+            {
+                no: 39,
+                text: "Jumlah dari energi potensial dan energi kinetik disebut...",
+                options: ["Energi Kalor", "Energi Listrik", "Energi Mekanik", "Energi Kimia"],
+                correct: 2,
+                desc: "Hukum Kekekalan Energi Mekanik menyatakan EM = Ep + Ek."
+            },
+            {
+                no: 40,
+                text: "Gaya yang diperlukan untuk mengangkat benda bermassa 20 kg dengan katrol tetap adalah... (g = 10 m/s²)",
+                options: ["100 N", "200 N", "10 N", "20 N"],
+                correct: 1,
+                desc: "Berat benda (W) = m.g = 20 x 10 = 200 N. Pada katrol tetap F = W, jadi F = 200 N."
+            }
+        ];
+
+        let userAnswers = new Array(questions.length).fill(null);
+        let quizStarted = false;
+
+        function startQuiz() {
+            quizStarted = true;
+            document.getElementById('start-screen').classList.add('hidden');
+            document.getElementById('quiz-container').classList.remove('hidden');
+            document.getElementById('submit-bar').classList.remove('hidden');
+            renderQuestions();
+            window.scrollTo(0, 0);
+        }
+
+        function renderQuestions() {
+            const container = document.getElementById('quiz-container');
+            container.innerHTML = questions.map((q, index) => `
+                <div class="bg-white rounded-xl shadow-md p-6 question-card border-l-4 border-blue-500" id="q-${index}">
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="bg-blue-100 text-blue-800 text-xs font-bold px-3 py-1 rounded-full">Soal No. ${q.no}</span>
+                    </div>
+                    <p class="text-lg font-medium mb-6 text-gray-800 leading-relaxed">${q.text}</p>
+                    <div class="space-y-3">
+                        ${q.options.map((opt, optIndex) => `
+                            <div class="relative">
+                                <input type="radio" name="q${index}" id="opt-${index}-${optIndex}" value="${optIndex}" class="hidden option-input" onchange="selectAnswer(${index}, ${optIndex})">
+                                <label for="opt-${index}-${optIndex}" class="option-label block w-full p-4 border border-gray-200 rounded-lg hover:bg-gray-50 text-left text-gray-700 select-none flex items-center">
+                                    <div class="w-6 h-6 border-2 border-gray-300 rounded-full mr-3 flex items-center justify-center text-xs font-bold dot-indicator text-transparent">✓</div>
+                                    ${opt}
+                                </label>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <!-- Feedback Section (Hidden initially) -->
+                    <div id="feedback-${index}" class="hidden mt-6 pt-4 border-t border-gray-100">
+                        <div class="p-4 rounded-lg bg-gray-50">
+                            <p class="font-bold text-gray-900 mb-1">Pembahasan:</p>
+                            <p class="text-gray-700 text-sm">${q.desc}</p>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function selectAnswer(qIndex, optIndex) {
+            if (!quizStarted) return;
+            userAnswers[qIndex] = optIndex;
+            
+            // Visual update for checked state logic is handled by CSS specific selector
+        }
+
+        function submitQuiz() {
+            // Check if all answered
+            const unanswered = userAnswers.filter(a => a === null).length;
+            if (unanswered > 0) {
+                if (!confirm(`Kamu belum menjawab ${unanswered} soal. Yakin ingin mengumpulkan?`)) return;
+            } else {
+                if (!confirm("Yakin ingin mengirim jawaban?")) return;
+            }
+
+            calculateResults();
+        }
+
+        function calculateResults() {
+            let score = 0;
+            let correctCount = 0;
+
+            questions.forEach((q, index) => {
+                const feedbackDiv = document.getElementById(`feedback-${index}`);
+                const inputs = document.getElementsByName(`q${index}`);
+                const labels = document.querySelectorAll(`label[for^="opt-${index}-"]`);
+                
+                // Disable inputs
+                inputs.forEach(input => input.disabled = true);
+                
+                // Show feedback
+                feedbackDiv.classList.remove('hidden');
+
+                const userAns = userAnswers[index];
+                
+                // Styling Logic
+                labels.forEach((label, optIndex) => {
+                    label.classList.remove('hover:bg-gray-50');
+                    
+                    // Highlight Correct Answer
+                    if (optIndex === q.correct) {
+                        label.classList.add('correct-answer');
+                    }
+                    
+                    // Highlight Wrong User Selection
+                    if (userAns !== null && userAns !== q.correct && userAns === optIndex) {
+                        label.classList.add('wrong-answer');
+                    }
+                });
+
+                if (userAns === q.correct) {
+                    score++;
+                    correctCount++;
+                }
+            });
+
+            // Show Score
+            const finalScore = (score / questions.length) * 100;
+            document.getElementById('score-display').innerText = finalScore.toFixed(1);
+            document.getElementById('correct-count').innerText = correctCount;
+            document.getElementById('wrong-count').innerText = questions.length - correctCount;
+
+            // UI Transitions
+            document.getElementById('quiz-container').classList.add('pointer-events-none'); // Prevent changing
+            document.getElementById('submit-bar').classList.add('hidden');
+            document.getElementById('result-container').classList.remove('hidden');
+            
+            // Scroll to top to see score
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            // Remove pointer events blocking after a moment to allow scrolling/accordion interaction if added later
+            setTimeout(() => {
+                document.getElementById('quiz-container').classList.remove('pointer-events-none');
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
+

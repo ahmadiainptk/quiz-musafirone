@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASAS Kimia Kelas X (Paket E)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f0fdfa; } /* Teal-50 theme */
+        
+        /* CARD JAWABAN */
+        .option-card {
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 2px solid #e2e8f0;
+            background-color: white;
+            position: relative;
+        }
+        
+        .option-card:hover {
+            border-color: #cbd5e1;
+            background-color: #f8fafc;
+        }
+
+        /* STATE: DIPILIH (SEBELUM SUBMIT) - WARNA BIRU */
+        .option-selected {
+            border-color: #0ea5e9 !important; /* Sky-500 */
+            background-color: #f0f9ff !important;
+            box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.2);
+        }
+        .option-selected .dot {
+            background-color: #0ea5e9;
+            border-color: #0ea5e9;
+            color: white;
+        }
+
+        /* STATE: HASIL (SETELAH SUBMIT) */
+        .correct-mode {
+            background-color: #dcfce7 !important;
+            border-color: #22c55e !important;
+            color: #14532d;
+        }
+        .correct-mode::after {
+            content: '✓ Benar'; position: absolute; top: 10px; right: 10px; font-size: 0.75rem; color: #166534; font-weight: bold;
+        }
+
+        .wrong-mode {
+            background-color: #fee2e2 !important;
+            border-color: #ef4444 !important;
+            color: #7f1d1d;
+            opacity: 0.75;
+        }
+        .wrong-mode::after {
+            content: '✕ Jawabanmu'; position: absolute; top: 10px; right: 10px; font-size: 0.75rem; color: #991b1b; font-weight: bold;
+        }
+
+        /* SVG Styles */
+        .atom-shell { fill: none; stroke: #94a3b8; stroke-width: 2; }
+        .atom-electron { fill: #0f172a; }
+        .atom-nucleus { fill: #3b82f6; }
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <div class="max-w-4xl mx-auto min-h-screen flex flex-col">
+        <!-- Header -->
+        <header class="bg-teal-700 text-white p-6 shadow-lg sticky top-0 z-30">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h1 class="text-xl md:text-2xl font-bold">Kimia Kelas X (Paket E)</h1>
+                    <p class="text-teal-200 text-sm">Struktur Atom, SPU, Ikatan & Reaksi</p>
+                </div>
+                <div class="bg-white/10 px-4 py-2 rounded-lg border border-white/20 text-center">
+                    <span class="text-xs uppercase tracking-wider opacity-70">Terjawab</span>
+                    <div class="text-xl font-bold"><span id="answered-badge">0</span>/40</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Quiz Area -->
+        <main class="flex-grow p-4 md:p-6 space-y-8 pb-32" id="quiz-container">
+            <!-- Questions injected via JavaScript -->
+        </main>
+
+        <!-- Start Screen -->
+        <div id="start-screen" class="fixed inset-0 bg-white z-50 flex flex-col items-center justify-center p-6 text-center">
+            <div class="w-24 h-24 bg-teal-100 text-teal-600 rounded-full flex items-center justify-center mb-6 text-5xl shadow-sm">🧪</div>
+            <h2 class="text-3xl font-bold text-slate-900 mb-3">Siap Ujian Kimia?</h2>
+            <p class="text-slate-500 mb-8 max-w-md leading-relaxed">
+                Soal ini mencakup materi Semester Ganjil.<br>
+                <b>Ingat:</b> Kerjakan sendiri, skor muncul di akhir.
+            </p>
+            <button onclick="startQuiz()" class="bg-teal-600 text-white px-10 py-3.5 rounded-full font-bold shadow-xl hover:bg-teal-700 transition transform hover:scale-105 active:scale-95">Mulai Mengerjakan</button>
+        </div>
+
+        <!-- Sticky Footer Control -->
+        <div id="controls" class="fixed bottom-0 left-0 w-full bg-white border-t border-slate-200 p-4 shadow-[0_-4px_20px_rgba(0,0,0,0.1)] hidden z-40">
+            <div class="max-w-4xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+                <div class="text-sm text-slate-500 font-medium flex items-center gap-2">
+                    <span id="warning-text">⚠️ Masih ada soal kosong!</span>
+                </div>
+                <button onclick="submitQuiz()" class="w-full md:w-auto bg-green-600 text-white px-8 py-3 rounded-lg font-bold hover:bg-green-700 transition shadow-md flex items-center justify-center gap-2">
+                    <span>Kirim Jawaban</span>
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Result Modal -->
+    <div id="result-modal" class="fixed inset-0 bg-black/70 z-50 hidden flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-2xl p-8 max-w-md w-full text-center shadow-2xl animate-[fadeIn_0.3s_ease-out]">
+            <h2 class="text-2xl font-bold mb-2 text-slate-800">Hasil Ujian</h2>
+            <p class="text-slate-500 mb-6 text-sm">Paket E - Kimia Kelas X</p>
+            
+            <div class="text-7xl font-black text-teal-600 mb-6 tracking-tight" id="final-score">0</div>
+            
+            <div class="grid grid-cols-2 gap-4 mb-8">
+                <div class="bg-green-50 text-green-700 p-3 rounded-xl border border-green-200 font-bold">
+                    <div class="text-xs uppercase opacity-70">Benar</div>
+                    <span id="final-correct" class="text-xl">0</span>
+                </div>
+                <div class="bg-red-50 text-red-700 p-3 rounded-xl border border-red-200 font-bold">
+                    <div class="text-xs uppercase opacity-70">Salah</div>
+                    <span id="final-wrong" class="text-xl">0</span>
+                </div>
+            </div>
+            <button onclick="closeResult()" class="w-full bg-slate-800 text-white py-3.5 rounded-xl font-bold hover:bg-slate-900 transition">Lihat Pembahasan</button>
+        </div>
+    </div>
+
+<script>
+// --- DATA SOAL KIMIA SESUAI KISI-KISI ---
+const questions = [
+    // 1. PARTIKEL DASAR
+    {
+        no: 1,
+        text: "Tiga partikel dasar penyusun atom adalah...",
+        options: ["Proton, Neutron, Elektron", "Proton, Elektron, Positron", "Inti, Kulit, Elektron", "Proton, Neutron, Nukleon"],
+        correct: 0,
+        desc: "Atom terdiri dari Proton (+), Neutron (0) di inti, dan Elektron (-) di kulit."
+    },
+    {
+        no: 2,
+        text: "Jumlah Proton (p), Elektron (e), dan Neutron (n) pada unsur \\( _{26}^{56}\\text{Fe} \\) adalah...",
+        options: ["p=26, e=26, n=30", "p=26, e=26, n=56", "p=26, e=30, n=26", "p=30, e=26, n=26"],
+        correct: 0,
+        desc: "Proton = Z = 26. Elektron = Proton (netral) = 26. Neutron = A - Z = 56 - 26 = 30."
+    },
+    {
+        no: 3,
+        text: "Suatu atom punya 3 kulit dan 7 elektron valensi. Intinya ada 18 neutron. Nomor massa atom tersebut adalah...",
+        options: ["35", "17", "18", "25"],
+        correct: 0,
+        desc: "3 kulit, valensi 7 -> Konfigurasi: 2, 8, 7. Maka elektron = 17. Proton = 17. Massa = Proton + Neutron = 17 + 18 = 35."
+    },
+
+    // 2. ISOTOP, ISOTON, ISOBAR
+    {
+        no: 4,
+        text: "Isotop adalah atom-atom yang memiliki...",
+        options: ["Nomor atom sama, nomor massa beda", "Nomor massa sama, nomor atom beda", "Jumlah neutron sama", "Konfigurasi elektron beda"],
+        correct: 0,
+        desc: "Isotop = Proton (nomor atom) sama."
+    },
+    {
+        no: 5,
+        text: "Pasangan unsur yang merupakan **Isobar** adalah...",
+        options: ["\\( _{6}^{14}\\text{C} \\) dan \\( _{7}^{14}\\text{N} \\)", "\\( _{6}^{12}\\text{C} \\) dan \\( _{6}^{14}\\text{C} \\)", "\\( _{11}^{23}\\text{Na} \\) dan \\( _{12}^{24}\\text{Mg} \\)", "\\( _{1}^{1}\\text{H} \\) dan \\( _{1}^{2}\\text{H} \\)"],
+        correct: 0,
+        desc: "Isobar = Nomor Massa (atas) sama. C-14 dan N-14 sama-sama 14."
+    },
+    {
+        no: 6,
+        text: "Pasangan unsur yang merupakan **Isoton** adalah... (Hitung neutron)",
+        options: ["\\( _{11}^{23}\\text{Na} \\) dan \\( _{12}^{24}\\text{Mg} \\)", "\\( _{6}^{14}\\text{C} \\) dan \\( _{7}^{14}\\text{N} \\)", "\\( _{8}^{16}\\text{O} \\) dan \\( _{8}^{15}\\text{O} \\)", "\\( _{3}^{7}\\text{Li} \\) dan \\( _{4}^{9}\\text{Be} \\)"],
+        correct: 0,
+        desc: "Neutron Na: 23-11=12. Neutron Mg: 24-12=12. Sama-sama 12."
+    },
+    {
+        no: 7,
+        text: "Unsur A (10 proton, 12 neutron) dan Unsur B (Massa 23, No.Atom 11). Hubungan keduanya adalah...",
+        options: ["Isoton", "Isotop", "Isobar", "Isoelektron"],
+        correct: 0,
+        desc: "Neutron A = 12. Neutron B = 23-11 = 12. Karena neutron sama, maka Isoton."
+    },
+
+    // 3. TEORI ATOM & KONFIGURASI
+    {
+        no: 8,
+        text: "Menurut Niels Bohr, elektron mengelilingi inti atom pada...",
+        options: ["Lintasan/kulit tertentu", "Sembarang tempat", "Awan elektron", "Dalam inti"],
+        correct: 0,
+        desc: "Bohr mencetuskan teori kulit atom (orbit stasioner)."
+    },
+    {
+        no: 9,
+        text: "Konfigurasi elektron Bohr untuk unsur \\( _{35}\\text{Br} \\) adalah...",
+        options: ["2, 8, 18, 7", "2, 8, 8, 17", "2, 18, 8, 7", "2, 8, 18, 18, 7"],
+        correct: 0,
+        desc: "Kulit K=2, L=8, M=18, Sisa=7. Total 35."
+    },
+    {
+        no: 10,
+        text: "Letak unsur \\( _{35}\\text{Br} \\) dalam Tabel Periodik adalah...",
+        options: ["Golongan VIIA, Periode 4", "Golongan VA, Periode 3", "Golongan VIIA, Periode 3", "Golongan IIA, Periode 4"],
+        correct: 0,
+        desc: "Valensi 7 (Gol VIIA), Jumlah kulit 4 (Periode 4)."
+    },
+
+    // 4. BILANGAN KUANTUM
+    {
+        no: 11,
+        text: "Bilangan kuantum Azimuth (l) berfungsi untuk menyatakan...",
+        options: ["Subkulit (bentuk orbital)", "Kulit utama", "Arah spin", "Orientasi orbital"],
+        correct: 0,
+        desc: "Azimuth (l) menentukan subkulit (s, p, d, f)."
+    },
+    {
+        no: 12,
+        text: "Subkulit **d** maksimal menampung ... elektron.",
+        options: ["10", "6", "2", "14"],
+        correct: 0,
+        desc: "s=2, p=6, d=10, f=14."
+    },
+    {
+        no: 13,
+        text: "Harga kuantum magnetik (m) untuk subkulit **f** berkisar antara...",
+        options: ["-3 sampai +3", "-2 sampai +2", "-1 sampai +1", "0"],
+        correct: 0,
+        desc: "Subkulit f (l=3), maka m = -3, -2, -1, 0, +1, +2, +3."
+    },
+    {
+        no: 14,
+        text: "Apakah 2 elektron dalam satu orbital boleh memiliki spin yang sama?",
+        options: ["Tidak, harus berlawanan (Larangan Pauli)", "Boleh, asal energinya sama", "Boleh, pada suhu tinggi", "Tidak tahu"],
+        correct: 0,
+        desc: "Azas Larangan Pauli: Tidak ada 2 elektron dengan 4 bil.kuantum sama. Spin harus beda (+1/2 dan -1/2)."
+    },
+    {
+        no: 15,
+        text: "Konfigurasi elektron unsur \\( _{26}\\text{Fe} \\) adalah...",
+        options: ["[Ar] 4s² 3d⁶", "[Ar] 4s² 3d⁴", "[Ar] 3d⁸", "[Ar] 4s¹ 3d⁵"],
+        correct: 0,
+        desc: "Fe (26) = [Ar] 18 + 2 (4s) + 6 (3d)."
+    },
+    {
+        no: 16,
+        text: "Konfigurasi ion \\( \\text{Fe}^{3+} \\) (No.Atom 26) adalah...",
+        options: ["[Ar] 3d⁵", "[Ar] 4s² 3d³", "[Ar] 4s¹ 3d⁴", "[Ar] 3d⁶"],
+        correct: 0,
+        desc: "Fe: [Ar] 4s² 3d⁶. Lepas 3 elektron (2 dari 4s, 1 dari 3d). Sisa [Ar] 3d⁵."
+    },
+    {
+        no: 17,
+        text: "Bilangan kuantum elektron terakhir dari \\( _{20}\\text{Ca} \\) adalah...",
+        options: ["n=4, l=0, m=0, s=-1/2", "n=4, l=1, m=0, s=+1/2", "n=3, l=2, m=+2, s=+1/2", "n=4, l=0, m=0, s=+1/2"],
+        correct: 0,
+        desc: "Ca (20) = ... 4s². Elektron terakhir di 4s (n=4, l=0, m=0). Karena isi 2 (penuh), spin -1/2."
+    },
+    {
+        no: 18,
+        text: "Jika elektron terakhir ion \\( X^{2+} \\) adalah 3d³ (n=3, l=2, m=0, s=+1/2... asumsi d3). Berapakah nomor atom X?",
+        options: ["23", "21", "25", "20"],
+        correct: 0,
+        desc: "Ion X2+ = [Ar] 3d3 (18+3=21 elektron). Atom netral X punya 21+2 = 23 elektron (Vanadium)."
+    },
+    {
+        no: 19,
+        text: "Pada atom \\( _{23}\\text{V} \\) ([Ar] 4s² 3d³), jumlah elektron tidak berpasangan adalah...",
+        options: ["3", "1", "2", "5"],
+        correct: 0,
+        desc: "Subkulit 3d³: ↑ ↑ ↑ _ _. Ada 3 elektron sendiri."
+    },
+    {
+        no: 20,
+        text: "Letak unsur \\( _{24}\\text{Cr} \\) dalam SPU adalah... (Ingat kestabilan 4s¹ 3d⁵)",
+        options: ["Golongan VIB, Periode 4", "Golongan IVB, Periode 4", "Golongan VIA, Periode 3", "Golongan IIB, Periode 4"],
+        correct: 0,
+        desc: "4s¹ 3d⁵. Elektron valensi 1+5=6. Golongan VIB. Periode 4."
+    },
+
+    // 5. SISTEM PERIODIK UNSUR (21-25)
+    {
+        no: 21,
+        text: "Hukum Triad Dobereiner mengelompokkan unsur berdasarkan...",
+        options: ["Kemiripan sifat (massa unsur tengah = rata-rata massa tepi)", "Kenaikan nomor atom", "Kenaikan massa atom (Oktaf)", "Sifat logam"],
+        correct: 0,
+        desc: "Triad = kelompok 3 unsur."
+    },
+    {
+        no: 22,
+        text: "Dasar pengelompokan unsur pada SPU Modern (Moseley) adalah...",
+        options: ["Kenaikan Nomor Atom", "Kenaikan Massa Atom", "Sifat Kimia", "Jumlah Kulit"],
+        correct: 0,
+        desc: "Modern = Nomor Atom (Proton)."
+    },
+    {
+        no: 23,
+        text: "Unsur yang segolongan dengan \\( _{3}\\text{Li} \\) adalah...",
+        options: ["\\( _{19}\\text{R} \\) (19K)", "\\( _{12}\\text{Q} \\)", "\\( _{33}\\text{S} \\)", "\\( _{53}\\text{T} \\)"],
+        correct: 0,
+        desc: "Li (2,1) Gol IA. Unsur 19 (2,8,8,1) juga Gol IA."
+    },
+    {
+        no: 24,
+        text: "Dalam satu periode dari kiri ke kanan, sifat keelektronegatifan umumnya...",
+        options: ["Semakin besar", "Semakin kecil", "Tetap", "Tidak tentu"],
+        correct: 0,
+        desc: "Jari-jari makin kecil, tarikan inti makin kuat, keelektronegatifan makin besar."
+    },
+    {
+        no: 25,
+        text: "Unsur \\( _{20}\\text{Ca} \\) termasuk golongan...",
+        options: ["Alkali Tanah (IIA)", "Alkali (IA)", "Halogen (VIIA)", "Gas Mulia (VIIIA)"],
+        correct: 0,
+        desc: "Ca (2,8,8,2) -> Gol IIA (Alkali Tanah)."
+    },
+
+    // 6. ION & SENYAWA (26-32)
+    {
+        no: 26,
+        text: "Konfigurasi P = [Ar] 4s² 3d⁶, Q = [Ne] 3s² 3p⁶. Yang merupakan unsur transisi adalah...",
+        options: ["P", "Q", "R", "S"],
+        correct: 0,
+        desc: "P berakhir di subkulit d, ciri khas unsur transisi."
+    },
+    {
+        no: 27,
+        text: "Berikut gambar konfigurasi elektron [Gambar Kulit: 2, 8, 8, 2]. Jika neutron=20, notasi unsurnya...",
+        visual: `<svg width="100" height="100" class="mx-auto"><circle cx="50" cy="50" r="40" stroke="black" fill="none"/><circle cx="50" cy="50" r="30" stroke="black" fill="none"/><circle cx="50" cy="50" r="20" stroke="black" fill="none"/><circle cx="50" cy="50" r="5" fill="black"/></svg>`,
+        options: ["\\( _{20}^{40}\\text{X} \\)", "\\( _{18}^{38}\\text{X} \\)", "\\( _{20}^{20}\\text{X} \\)", "\\( _{10}^{20}\\text{X} \\)"],
+        correct: 0,
+        desc: "Elektron=2+8+8+2=20 (Proton). Massa = P+N = 20+20=40."
+    },
+    {
+        no: 28,
+        text: "Golongan IIA diberi nama...",
+        options: ["Alkali Tanah", "Alkali", "Halogen", "Gas Mulia"],
+        correct: 0,
+        desc: "IA=Alkali, IIA=Alkali Tanah."
+    },
+    {
+        no: 29,
+        text: "Jika Ion \\( R^{2-} \\) konfigurasinya 2, 8, 8. Maka atom R (netral) punya elektron...",
+        options: ["16", "18", "20", "14"],
+        correct: 0,
+        desc: "Ion 2- (menangkap 2) jadi 18. Aslinya 18-2 = 16."
+    },
+    {
+        no: 30,
+        text: "Jika unsur R punya 16 elektron dan 16 neutron, notasinya...",
+        options: ["\\( _{16}^{32}\\text{R} \\)", "\\( _{16}^{16}\\text{R} \\)", "\\( _{32}^{16}\\text{R} \\)", "\\( _{16}^{48}\\text{R} \\)"],
+        correct: 0,
+        desc: "Nomor atom 16. Massa = 16+16=32."
+    },
+    {
+        no: 31,
+        text: "Senyawa dari ion \\( \\text{Mg}^{2+} \\) dan \\( \\text{PO}_4^{3-} \\) adalah...",
+        options: ["\\( \\text{Mg}_3(\\text{PO}_4)_2 \\)", "\\( \\text{Mg}_2(\\text{PO}_4)_3 \\)", "\\( \\text{MgPO}_4 \\)", "\\( \\text{Mg}_3\\text{PO}_4 \\)"],
+        correct: 0,
+        desc: "Silang muatan: Mg(3) dan PO4(2). Namanya Magnesium Fosfat."
+    },
+    {
+        no: 32,
+        text: "Nama senyawa \\( \\text{Cr}(\\text{OH})_3 \\) adalah...",
+        options: ["Kromium(III) hidroksida", "Kromium hidroksida", "Kromium(II) hidroksida", "Trikromium hidroksida"],
+        correct: 0,
+        desc: "Cr bermuatan +3 (dari 3 OH-). Maka Kromium(III)."
+    },
+
+    // 7. TATA NAMA & REAKSI (33-40)
+    {
+        no: 33,
+        text: "Nama senyawa \\( \\text{Fe}(\\text{NO}_3)_2 \\) adalah...",
+        options: ["Besi(II) nitrat", "Besi(III) nitrat", "Besi dinitrat", "Besi nitrit"],
+        correct: 0,
+        desc: "NO3 muatannya -1. Ada 2 NO3 (-2). Maka Fe harus +2."
+    },
+    {
+        no: 34,
+        text: "Nama IUPAC senyawa \\( \\text{C}_2\\text{H}_2 \\) (asetilena) adalah...",
+        options: ["Etuna", "Etana", "Etena", "Metana"],
+        correct: 0,
+        desc: "Aluna dengan 2 karbon = Etuna."
+    },
+    {
+        no: 35,
+        text: "Setarakan: \\( a\\text{C}_8\\text{H}_{18} + b\\text{O}_2 \\rightarrow c\\text{CO}_2 + d\\text{H}_2\\text{O} \\). Koefisien a,b,c,d adalah...",
+        options: ["2, 25, 16, 18", "1, 12, 8, 9", "2, 12, 16, 18", "1, 25, 8, 9"],
+        correct: 0,
+        desc: "C: 16, H: 36, O: 32+18=50 (kiri 25x2=50). Setara."
+    },
+    {
+        no: 36,
+        text: "Reaksi penguraian Amonia menjadi Nitrogen dan Hidrogen...",
+        options: ["\\( 2\\text{NH}_3(g) \\rightarrow \\text{N}_2(g) + 3\\text{H}_2(g) \\)", "\\( \\text{NH}_3 \\rightarrow \\text{N} + \\text{H} \\)", "\\( \\text{N}_2 + \\text{H}_2 \\rightarrow \\text{NH}_3 \\)", "\\( 2\\text{NH}_3 \\rightarrow 2\\text{N} + 3\\text{H}_2 \\)"],
+        correct: 0,
+        desc: "Amonia (NH3) terurai jadi gas diatomik N2 dan H2."
+    },
+    {
+        no: 37,
+        text: "Reaksi Besi dengan Klor membentuk Besi(III) klorida...",
+        options: ["\\( 2\\text{Fe} + 3\\text{Cl}_2 \\rightarrow 2\\text{FeCl}_3 \\)", "\\( \\text{Fe} + \\text{Cl}_2 \\rightarrow \\text{FeCl}_2 \\)", "\\( \\text{Fe} + \\text{Cl} \\rightarrow \\text{FeCl} \\)", "\\( \\text{Fe} + \\text{Cl}_2 \\rightarrow \\text{FeCl}_3 \\)"],
+        correct: 0,
+        desc: "Fe + Cl2 -> FeCl3. Setarakan Cl jadi 3 dan 2 -> KPK 6. 2Fe + 3Cl2 -> 2FeCl3."
+    },
+    {
+        no: 38,
+        text: "Reaksi Magnesium Oksida padat dengan Asam Sulfat cair...",
+        options: ["\\( \\text{MgO}(s) + \\text{H}_2\\text{SO}_4(aq) \\rightarrow \\text{MgSO}_4(aq) + \\text{H}_2\\text{O}(l) \\)", "\\( \\text{Mg} + \\text{H}_2\\text{SO}_4 \\rightarrow \\text{MgSO}_4 + \\text{H}_2 \\)", "\\( \\text{MgO} + \\text{H}_2\\text{SO}_4 \\rightarrow \\text{MgSO}_4 + \\text{H}_2 \\)", "\\( \\text{MgO} + \\text{SO}_4 \\rightarrow \\text{MgSO}_4 \\)"],
+        correct: 0,
+        desc: "Oksida Basa + Asam -> Garam + Air."
+    },
+    {
+        no: 39,
+        text: "Senyawa \\( \\text{CaC}_2 \\) disebut...",
+        options: ["Kalsium Karbida", "Kalsium Karbonat", "Karbon Kalsium", "Kalsium Dikarbon"],
+        correct: 0,
+        desc: "Nama dagangnya Karbit."
+    },
+    {
+        no: 40,
+        text: "Jumlah atom Oksigen pada \\( 3\\text{Al}_2(\\text{SO}_4)_3 \\) adalah...",
+        options: ["36", "12", "4", "24"],
+        correct: 0,
+        desc: "Dalam kurung: 4 x 3 = 12. Koefisien 3: 3 x 12 = 36 atom."
+    }
+];
+
+// --- LOGIC PAKET E ---
+let userAnswers = new Array(questions.length).fill(null);
+let isSubmitted = false;
+
+function startQuiz() {
+    document.getElementById('start-screen').classList.add('hidden');
+    document.getElementById('controls').classList.remove('hidden');
+    renderQuestions();
+    window.scrollTo(0,0);
+    renderMathInElement(document.body);
+}
+
+function renderQuestions() {
+    const container = document.getElementById('quiz-container');
+    container.innerHTML = questions.map((q, i) => `
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200" id="card-${i}">
+            <div class="flex items-start gap-4">
+                <div class="bg-teal-100 text-teal-700 font-bold w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 border border-teal-200 text-lg">
+                    ${q.no}
+                </div>
+                <div class="w-full">
+                    <p class="text-lg font-semibold mb-4 text-slate-800">${q.text}</p>
+                    ${q.visual ? `<div class="mb-6 flex justify-center">${q.visual}</div>` : ''}
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3" id="options-group-${i}">
+                        ${q.options.map((opt, j) => `
+                            <div class="option-card p-4 rounded-xl flex items-center gap-3 relative" onclick="selectOption(${i}, ${j})">
+                                <div class="w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center dot transition-colors"></div>
+                                <span class="text-base font-medium">${opt}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                    
+                    <div id="feedback-${i}" class="hidden mt-6 p-4 rounded-xl text-sm border font-medium">
+                        <strong class="block mb-1 text-xs uppercase tracking-wider opacity-70">Pembahasan</strong>
+                        <p>${q.desc}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+function selectOption(qIndex, optIndex) {
+    if(isSubmitted) return;
+
+    userAnswers[qIndex] = optIndex;
+    
+    // Visual Update
+    const group = document.getElementById(`options-group-${qIndex}`);
+    const cards = group.getElementsByClassName('option-card');
+    
+    for (let card of cards) {
+        card.classList.remove('option-selected');
+        card.querySelector('.dot').style.backgroundColor = 'transparent';
+        card.querySelector('.dot').style.borderColor = '#cbd5e1';
+    }
+    
+    const selected = cards[optIndex];
+    selected.classList.add('option-selected');
+    
+    updateProgress();
+}
+
+function updateProgress() {
+    const count = userAnswers.filter(a => a !== null).length;
+    document.getElementById('answered-badge').innerText = count;
+    
+    const warning = document.getElementById('warning-text');
+    if(count === questions.length) {
+        warning.innerHTML = "<span class='text-green-600 font-bold'>✓ Semua soal terjawab!</span>";
+    } else {
+        warning.innerHTML = `⚠️ Masih ada <span class='font-bold text-amber-600'>${questions.length - count}</span> soal kosong!`;
+    }
+}
+
+function submitQuiz() {
+    const unanswered = userAnswers.filter(a => a === null).length;
+    if (unanswered > 0) {
+        if (!confirm(`Masih ada ${unanswered} soal belum dijawab. Yakin mau mengumpulkan?`)) return;
+    } else {
+        if (!confirm("Yakin ingin mengumpulkan jawaban?")) return;
+    }
+
+    isSubmitted = true;
+    let score = 0, correct = 0, wrong = 0;
+
+    questions.forEach((q, i) => {
+        const selected = userAnswers[i];
+        const feedback = document.getElementById(`feedback-${i}`);
+        const cards = document.querySelectorAll(`#options-group-${i} .option-card`);
+
+        feedback.classList.remove('hidden');
+        
+        cards.forEach((card, idx) => {
+            card.style.cursor = 'default';
+            card.onclick = null; 
+            
+            if (idx === q.correct) {
+                card.classList.add('correct-mode');
+                card.querySelector('.dot').style.backgroundColor = '#22c55e';
+                card.querySelector('.dot').style.borderColor = '#22c55e';
+                card.querySelector('.dot').innerText = '✓';
+                card.querySelector('.dot').style.color = 'white';
+            } else if (idx === selected) {
+                card.classList.add('wrong-mode');
+                card.querySelector('.dot').style.backgroundColor = '#ef4444';
+                card.querySelector('.dot').style.borderColor = '#ef4444';
+                card.querySelector('.dot').innerText = '✕';
+                card.querySelector('.dot').style.color = 'white';
+            }
+        });
+
+        if (selected === q.correct) {
+            score++; correct++;
+            feedback.classList.add('bg-green-50', 'text-green-800', 'border-green-200');
+        } else {
+            wrong++;
+            feedback.classList.add('bg-red-50', 'text-red-800', 'border-red-200');
+        }
+    });
+
+    const finalScore = Math.round((score / questions.length) * 100);
+    document.getElementById('final-score').innerText = finalScore;
+    document.getElementById('final-correct').innerText = correct;
+    document.getElementById('final-wrong').innerText = wrong;
+    
+    document.getElementById('result-modal').classList.remove('hidden');
+    document.getElementById('controls').classList.add('hidden');
+}
+
+function closeResult() {
+    document.getElementById('result-modal').classList.add('hidden');
+    window.scrollTo({top:0, behavior:'smooth'});
+}
+</script>
+</body>
+</html>
+

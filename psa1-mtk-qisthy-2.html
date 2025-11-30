@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ujian Matematika Kelas 5 (Paket E - Revisi)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f0fdfa; }
+        
+        /* CARD JAWABAN */
+        .option-card {
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 2px solid #e2e8f0;
+            background-color: white;
+            position: relative;
+        }
+        
+        .option-card:hover {
+            border-color: #cbd5e1;
+            background-color: #f8fafc;
+        }
+
+        /* STATE: DIPILIH */
+        .option-selected {
+            border-color: #0ea5e9 !important;
+            background-color: #f0f9ff !important;
+            box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.2);
+        }
+        .option-selected .dot {
+            background-color: #0ea5e9;
+            border-color: #0ea5e9;
+            color: white;
+        }
+
+        /* STATE: HASIL */
+        .correct-mode {
+            background-color: #dcfce7 !important;
+            border-color: #22c55e !important;
+            color: #14532d;
+        }
+        .correct-mode::after {
+            content: '✓ Benar'; position: absolute; top: 10px; right: 10px; font-size: 0.75rem; color: #166534; font-weight: bold;
+        }
+
+        .wrong-mode {
+            background-color: #fee2e2 !important;
+            border-color: #ef4444 !important;
+            color: #7f1d1d;
+            opacity: 0.75;
+        }
+        .wrong-mode::after {
+            content: '✕ Jawabanmu'; position: absolute; top: 10px; right: 10px; font-size: 0.75rem; color: #991b1b; font-weight: bold;
+        }
+
+        /* TABEL & SVG */
+        .custom-table th { background: #f1f5f9; padding: 8px; border: 1px solid #cbd5e1; text-align: left; }
+        .custom-table td { padding: 8px; border: 1px solid #cbd5e1; }
+        .shape-svg { display: block; margin: 0 auto; max-width: 100%; height: auto; }
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <div class="max-w-4xl mx-auto min-h-screen flex flex-col">
+        <header class="bg-teal-700 text-white p-6 shadow-lg sticky top-0 z-30">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h1 class="text-xl md:text-2xl font-bold">Matematika Kelas 5 (Paket E)</h1>
+                    <p class="text-teal-200 text-sm">Mode Ujian: Desimal, Pecahan, FPB/KPK, Bangun Datar</p>
+                </div>
+                <div class="bg-white/10 px-4 py-2 rounded-lg border border-white/20 text-center">
+                    <span class="text-xs uppercase tracking-wider opacity-70">Terjawab</span>
+                    <div class="text-xl font-bold"><span id="answered-badge">0</span>/40</div>
+                </div>
+            </div>
+        </header>
+
+        <main class="flex-grow p-4 md:p-6 space-y-8 pb-32" id="quiz-container">
+            <!-- Soal di-inject via JS -->
+        </main>
+
+        <div id="start-screen" class="fixed inset-0 bg-white z-50 flex flex-col items-center justify-center p-6 text-center">
+            <div class="w-24 h-24 bg-teal-100 text-teal-600 rounded-full flex items-center justify-center mb-6 text-5xl shadow-sm">📐</div>
+            <h2 class="text-3xl font-bold text-slate-900 mb-3">Siap Ujian Matematika?</h2>
+            <p class="text-slate-500 mb-8 max-w-md leading-relaxed">
+                Soal mencakup Desimal, Pecahan, KPK/FPB, dan Bangun Datar.<br>
+                <b>Sistem:</b> Soal telah diperbarui dengan angka acak. Selamat mengerjakan!
+            </p>
+            <button onclick="startQuiz()" class="bg-teal-600 text-white px-10 py-3.5 rounded-full font-bold shadow-xl hover:bg-teal-700 transition transform hover:scale-105 active:scale-95">Mulai Mengerjakan</button>
+        </div>
+
+        <div id="controls" class="fixed bottom-0 left-0 w-full bg-white border-t border-slate-200 p-4 shadow-[0_-4px_20px_rgba(0,0,0,0.1)] hidden z-40">
+            <div class="max-w-4xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+                <div class="text-sm text-slate-500 font-medium flex items-center gap-2">
+                    <span id="warning-text">⚠️ Masih ada soal kosong!</span>
+                </div>
+                <button onclick="submitQuiz()" class="w-full md:w-auto bg-green-600 text-white px-8 py-3 rounded-lg font-bold hover:bg-green-700 transition shadow-md flex items-center justify-center gap-2">
+                    <span>Kirim Jawaban</span>
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="result-modal" class="fixed inset-0 bg-black/70 z-50 hidden flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-2xl p-8 max-w-md w-full text-center shadow-2xl animate-[fadeIn_0.3s_ease-out]">
+            <h2 class="text-2xl font-bold mb-2 text-slate-800">Hasil Ujian</h2>
+            <p class="text-slate-500 mb-6 text-sm">Paket E - Kelas 5</p>
+            
+            <div class="text-7xl font-black text-teal-600 mb-6 tracking-tight" id="final-score">0</div>
+            
+            <div class="grid grid-cols-2 gap-4 mb-8">
+                <div class="bg-green-50 text-green-700 p-3 rounded-xl border border-green-200 font-bold">
+                    <div class="text-xs uppercase opacity-70">Benar</div>
+                    <span id="final-correct" class="text-xl">0</span>
+                </div>
+                <div class="bg-red-50 text-red-700 p-3 rounded-xl border border-red-200 font-bold">
+                    <div class="text-xs uppercase opacity-70">Salah</div>
+                    <span id="final-wrong" class="text-xl">0</span>
+                </div>
+            </div>
+            <button onclick="closeResult()" class="w-full bg-slate-800 text-white py-3.5 rounded-xl font-bold hover:bg-slate-900 transition">Lihat Pembahasan</button>
+        </div>
+    </div>
+
+<script>
+// --- DATA SOAL BARU (ANGKA DIGANTI & JAWABAN DIACAK) ---
+const questions = [
+    // --- BILANGAN DESIMAL (1-7) ---
+    {
+        no: 1,
+        text: "Perhatikan bilangan: \\( 0,75 \\) ... \\( 0,8 \\). Tanda yang tepat adalah...",
+        options: [">", "<", "=", "≥"],
+        correct: 1, // B
+        desc: "Angka persepuluhan 7 lebih kecil dari 8. Jadi 0,75 < 0,8."
+    },
+    {
+        no: 2,
+        text: "Urutan berat badan dari yang <b>paling ringan</b> berdasarkan tabel adalah...",
+        visual: `<table class="w-full custom-table"><tr><th>Nama</th><th>Berat (kg)</th></tr><tr><td>Doni</td><td>42,4</td></tr><tr><td>Eko</td><td>42,05</td></tr><tr><td>Feri</td><td>42,6</td></tr></table>`,
+        options: ["Doni, Eko, Feri", "Feri, Doni, Eko", "Eko, Doni, Feri", "Eko, Feri, Doni"],
+        correct: 2, // C
+        desc: "42,05 < 42,40 < 42,60 (Eko - Doni - Feri)."
+    },
+    {
+        no: 3,
+        text: "Lomba lari: X (15,15 det), Y (15,05 det), Z (15,5 det). Juara 1 (tercepat) adalah...",
+        options: ["X (15,15)", "Z (15,5)", "Semua sama", "Y (15,05)"],
+        correct: 3, // D
+        desc: "15,05 adalah angka terkecil (waktu tercepat)."
+    },
+    {
+        no: 4,
+        text: "Hasil dari \\( 8 \\times 0,4 \\) adalah...",
+        options: ["3,2", "32", "0,32", "0,032"],
+        correct: 0, // A
+        desc: "8 x 4 = 32. Ada 1 desimal -> 3,2."
+    },
+    {
+        no: 5,
+        text: "Ibu membeli 4 bungkus gula, berat masing-masing 1,25 kg. Total beratnya...",
+        options: ["4,5 kg", "5,0 kg", "6,25 kg", "5,5 kg"],
+        correct: 1, // B
+        desc: "4 x 125 = 500. Ada 2 desimal -> 5,00 kg."
+    },
+    {
+        no: 6,
+        text: "Hasil dari \\( 0,6 \\times 0,3 \\) adalah...",
+        options: ["1,8", "0,18", "0,018", "18,0"],
+        correct: 1, // B
+        desc: "6 x 3 = 18. Total desimal (1+1=2) -> 0,18."
+    },
+    {
+        no: 7,
+        text: "Luas meja dengan panjang 0,8 m dan lebar 0,6 m adalah...",
+        options: ["0,48 m²", "4,8 m²", "0,14 m²", "0,42 m²"],
+        correct: 0, // A
+        desc: "8 x 6 = 48. Total desimal 2 -> 0,48."
+    },
+
+    // --- KELIPATAN & FAKTOR (8-17) ---
+    {
+        no: 8,
+        text: "Tiga kelipatan pertama dari 7 adalah...",
+        options: ["7, 12, 18", "14, 21, 28", "7, 14, 21", "7, 14, 28"],
+        correct: 2, // C
+        desc: "7x1=7, 7x2=14, 7x3=21."
+    },
+    {
+        no: 9,
+        text: "Kelipatan persekutuan 3 dan 4 yang kurang dari 30...",
+        options: ["12 dan 24", "12 dan 18", "6 dan 12", "12 dan 36"],
+        correct: 0, // A
+        desc: "KPK 3 & 4 = 12. Kelipatan: 12, 24."
+    },
+    {
+        no: 10,
+        text: "Faktor dari 20 adalah...",
+        options: ["2, 4, 5, 10", "1, 2, 4, 5, 10, 20", "1, 2, 5, 10, 20", "1, 2, 4, 5, 8, 20"],
+        correct: 1, // B
+        desc: "Bilangan yang habis membagi 20."
+    },
+    {
+        no: 11,
+        text: "Faktor persekutuan dari 12 dan 15 adalah...",
+        options: ["1 dan 3", "1, 2, 3", "3 dan 5", "1 dan 2"],
+        correct: 0, // A
+        desc: "Faktor 12: 1,2,3,4,6,12. Faktor 15: 1,3,5,15. Sama: 1, 3."
+    },
+    {
+        no: 12,
+        text: "Faktor prima dari 42 adalah...",
+        options: ["2, 3, 7", "2, 3, 5", "2, 7, 11", "1, 2, 3, 7"],
+        correct: 0, // A
+        desc: "42 : 2 = 21, 21 : 3 = 7."
+    },
+    {
+        no: 13,
+        text: "Faktorisasi prima dari 36...",
+        options: ["2 x 3²", "2² x 3²", "2² x 3", "2³ x 3"],
+        correct: 1, // B
+        desc: "36 = 4 x 9 = 2² x 3²."
+    },
+    {
+        no: 14,
+        text: "KPK dari 6 dan 9 adalah...",
+        options: ["36", "12", "54", "18"],
+        correct: 3, // D
+        desc: "Kelipatan 6: 6, 12, 18. Kelipatan 9: 9, 18. KPK = 18."
+    },
+    {
+        no: 15,
+        text: "Bus A lewat tiap 10 menit, Bus B tiap 15 menit. Lewat bersama pukul 08.00. Lewat bersama lagi pukul...",
+        options: ["08.15", "08.20", "08.30", "08.45"],
+        correct: 2, // C
+        desc: "KPK 10 dan 15 = 30 menit. 08.00 + 30 menit = 08.30."
+    },
+    {
+        no: 16,
+        text: "FPB dari 24 dan 32 adalah...",
+        options: ["4", "6", "12", "8"],
+        correct: 3, // D
+        desc: "Faktor terbesar pembagi keduanya adalah 8."
+    },
+    {
+        no: 17,
+        text: "Ibu membagi 15 permen dan 20 cokelat ke kantong sama banyak. Kantong terbanyak...",
+        options: ["10", "5", "4", "3"],
+        correct: 1, // B
+        desc: "FPB 15 dan 20 = 5."
+    },
+
+    // --- PECAHAN (18-27) ---
+    {
+        no: 18,
+        text: "Pecahan senilai dengan \\( \\frac{3}{5} \\) adalah...",
+        options: ["\\( \\frac{6}{15} \\)", "\\( \\frac{9}{10} \\)", "\\( \\frac{6}{10} \\)", "\\( \\frac{5}{3} \\)"],
+        correct: 2, // C
+        desc: "3x2 / 5x2 = 6/10."
+    },
+    {
+        no: 19,
+        text: "Urutan pecahan \\( \\frac{1}{2}, \\frac{2}{3}, \\frac{1}{6} \\) dari terkecil...",
+        options: ["1/6, 1/2, 2/3", "1/2, 1/6, 2/3", "2/3, 1/2, 1/6", "1/6, 2/3, 1/2"],
+        correct: 0, // A
+        desc: "1/6 (0,16) < 1/2 (0,5) < 2/3 (0,66)."
+    },
+    {
+        no: 20,
+        text: "\\( \\frac{3}{7} \\) ... \\( \\frac{2}{5} \\). Tanda yang tepat...",
+        options: ["<", "=", "≥", ">"],
+        correct: 3, // D
+        desc: "3x5 (15) > 7x2 (14). Maka 3/7 > 2/5."
+    },
+    {
+        no: 21,
+        text: "Pecahan biasa dari \\( 3\\frac{1}{4} \\)...",
+        options: ["\\( \\frac{7}{4} \\)", "\\( \\frac{12}{4} \\)", "\\( \\frac{13}{4} \\)", "\\( \\frac{31}{4} \\)"],
+        correct: 2, // C
+        desc: "(4x3)+1 = 13/4."
+    },
+    {
+        no: 22,
+        text: "\\( \\frac{1}{3} + \\frac{1}{4} = ... \\)",
+        options: ["\\( \\frac{2}{7} \\)", "\\( \\frac{7}{12} \\)", "\\( \\frac{2}{12} \\)", "\\( \\frac{1}{7} \\)"],
+        correct: 1, // B
+        desc: "4/12 + 3/12 = 7/12."
+    },
+    {
+        no: 23,
+        text: "\\( 2\\frac{1}{3} + \\frac{1}{6} = ... \\)",
+        options: ["\\( 2\\frac{2}{6} \\)", "\\( 3\\frac{1}{2} \\)", "\\( 2\\frac{1}{2} \\)", "\\( 2\\frac{1}{9} \\)"],
+        correct: 2, // C
+        desc: "2 + (2/6 + 1/6) = 2 3/6 = 2 1/2."
+    },
+    {
+        no: 24,
+        text: "\\( \\frac{5}{6} - \\frac{1}{3} = ... \\)",
+        options: ["\\( \\frac{4}{3} \\)", "\\( \\frac{3}{6} \\)", "\\( \\frac{4}{6} \\)", "\\( \\frac{1}{2} \\)"],
+        correct: 3, // D
+        desc: "5/6 - 2/6 = 3/6 = 1/2."
+    },
+    {
+        no: 25,
+        text: "\\( 3\\frac{1}{2} - \\frac{3}{4} = ... \\)",
+        options: ["\\( 2\\frac{3}{4} \\)", "\\( 3\\frac{1}{4} \\)", "\\( 2\\frac{1}{2} \\)", "\\( 2\\frac{1}{4} \\)"],
+        correct: 0, // A
+        desc: "7/2 - 3/4 = 14/4 - 3/4 = 11/4 = 2 3/4."
+    },
+    {
+        no: 26,
+        text: "Adik minum 3/4 gelas susu, lalu minum lagi 1/8 gelas. Total...",
+        options: ["7/8 gelas", "4/12 gelas", "1 gelas", "5/8 gelas"],
+        correct: 0, // A
+        desc: "6/8 + 1/8 = 7/8."
+    },
+    {
+        no: 27,
+        text: "Tali 4/5 meter dipotong 1/2 meter. Sisa...",
+        options: ["3/10 meter", "3/5 meter", "1/5 meter", "3/3 meter"],
+        correct: 0, // A
+        desc: "8/10 - 5/10 = 3/10."
+    },
+
+    // --- BANGUN DATAR & VISUAL (28-35) ---
+    // Visual dipertahankan, tapi opsi diacak dan pertanyaan disesuaikan
+    {
+        no: 28,
+        text: "Gambar segitiga di bawah memiliki 2 sisi yang sama panjang. Ini disebut...",
+        visual: `<svg width="100" height="100" class="shape-svg"><polygon points="50,10 20,90 80,90" fill="none" stroke="#0f766e" stroke-width="3"/><line x1="32" y1="50" x2="38" y2="50" stroke="#0f766e" stroke-width="2"/><line x1="62" y1="50" x2="68" y2="50" stroke="#0f766e" stroke-width="2"/></svg>`,
+        options: ["Segitiga Sama Sisi", "Segitiga Siku-siku", "Segitiga Sama Kaki", "Segitiga Sembarang"],
+        correct: 2, // C
+        desc: "Dua sisi sama panjang adalah ciri segitiga Sama Kaki."
+    },
+    {
+        no: 29,
+        text: "Besar sudut siku-siku pada segitiga adalah...",
+        options: ["Kurang dari 90°", "Tepat 90°", "Lebih dari 90°", "180°"],
+        correct: 1, // B
+        desc: "Sudut siku-siku besarnya 90 derajat."
+    },
+    {
+        no: 30,
+        text: "Perhatikan bangun berikut. Salah satu sifat utamanya adalah...",
+        visual: `<svg width="80" height="80" class="shape-svg"><rect x="10" y="10" width="60" height="60" fill="none" stroke="#0f766e" stroke-width="3"/><rect x="10" y="10" width="10" height="10" fill="none" stroke="black"/><rect x="60" y="60" width="10" height="10" fill="none" stroke="black"/></svg>`,
+        options: ["Sudut berhadapan tumpul", "Sisi berhadapan tidak sejajar", "Hanya punya 2 simetri putar", "Keempat sisinya sama panjang"],
+        correct: 3, // D
+        desc: "Gambar persegi memiliki 4 sisi sama panjang."
+    },
+    {
+        no: 31,
+        text: "Berapa sumbu simetri yang dimiliki Segitiga Sama Kaki?",
+        options: ["Tidak ada", "3", "2", "1"],
+        correct: 3, // D
+        desc: "Hanya satu sumbu simetri vertikal (tengah)."
+    },
+    {
+        no: 32,
+        text: "Perbedaan Trapesium Siku-siku (A) dan Sama Kaki (B) terlihat pada...",
+        visual: `<svg width="200" height="60" class="shape-svg"><path d="M10,10 L40,10 L50,50 L10,50 Z" fill="none" stroke="black" stroke-width="2"/><text x="25" y="35" font-size="10">A</text><path d="M70,10 L100,10 L110,50 L60,50 Z" fill="none" stroke="black" stroke-width="2"/><text x="85" y="35" font-size="10">B</text></svg>`,
+        options: ["Jumlah sisinya", "Adanya sudut 90° pada A", "Jumlah sudutnya", "A punya sisi sama panjang"],
+        correct: 1, // B
+        desc: "A tegak lurus (90°), sedangkan B kakinya miring sama panjang."
+    },
+    {
+        no: 33,
+        text: "Bangun datar yang memiliki sifat seperti persegi panjang tetapi 'miring' (tidak ada sudut 90°) adalah...",
+        options: ["Trapesium", "Layang-layang", "Jajar Genjang", "Belah Ketupat"],
+        correct: 2, // C
+        desc: "Jajar Genjang mirip persegi panjang yang dimiringkan."
+    },
+    {
+        no: 34,
+        text: "Persamaan antara Persegi dan Belah Ketupat adalah...",
+        options: ["Semua sudutnya 90°", "Keempat sisinya sama panjang", "Diagonalnya sama panjang", "Tidak punya simetri putar"],
+        correct: 1, // B
+        desc: "Keduanya memiliki 4 sisi yang sama panjang."
+    },
+    {
+        no: 35,
+        text: "Persegi panjang mempunyai simetri lipat sebanyak...",
+        options: ["2", "4", "1", "Tak terhingga"],
+        correct: 0, // A
+        desc: "Lipatan vertikal dan horizontal."
+    },
+
+    // --- CAMPURAN (36-40) ---
+    {
+        no: 36,
+        text: "Hasil dari \\( 20 \\times 0,3 \\)...",
+        options: ["60", "6", "0,6", "600"],
+        correct: 1, // B
+        desc: "20 x 3 = 60. Satu desimal -> 6."
+    },
+    {
+        no: 37,
+        text: "KPK dari 10 dan 25 adalah...",
+        options: ["100", "250", "50", "75"],
+        correct: 2, // C
+        desc: "Kelipatan 25: 25, 50. 50 bisa dibagi 10."
+    },
+    {
+        no: 38,
+        text: "Pak Guru membagi 30 buku dan 45 pensil. Paket terbanyak yang bisa dibuat...",
+        options: ["10", "15", "5", "9"],
+        correct: 1, // B
+        desc: "FPB 30 dan 45 adalah 15."
+    },
+    {
+        no: 39,
+        text: "Kue utuh dikurangi 1/3 dan 1/4. Sisa...",
+        options: ["5/12", "7/12", "1/12", "Habis"],
+        correct: 0, // A
+        desc: "1 - (4/12 + 3/12) = 12/12 - 7/12 = 5/12."
+    },
+    {
+        no: 40,
+        text: "Aku bangun datar dengan 3 sisi. Ketiga sudutku sama besar (60°). Aku adalah...",
+        options: ["Segitiga Siku-siku", "Segitiga Sama Kaki", "Segitiga Sembarang", "Segitiga Sama Sisi"],
+        correct: 3, // D
+        desc: "Ciri khas segitiga sama sisi."
+    }
+];
+
+// --- LOGIC UTAMA ---
+let userAnswers = new Array(questions.length).fill(null);
+let isSubmitted = false;
+
+function startQuiz() {
+    document.getElementById('start-screen').classList.add('hidden');
+    document.getElementById('controls').classList.remove('hidden');
+    renderQuestions();
+    window.scrollTo(0,0);
+    renderMathInElement(document.body);
+}
+
+function renderQuestions() {
+    const container = document.getElementById('quiz-container');
+    container.innerHTML = questions.map((q, i) => `
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200" id="card-${i}">
+            <div class="flex items-start gap-4">
+                <div class="bg-teal-100 text-teal-700 font-bold w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 border border-teal-200 text-lg">
+                    ${q.no}
+                </div>
+                <div class="w-full">
+                    <p class="text-lg font-semibold mb-4 text-slate-800">${q.text}</p>
+                    ${q.visual ? `<div class="mb-6 flex justify-center">${q.visual}</div>` : ''}
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3" id="options-group-${i}">
+                        ${q.options.map((opt, j) => `
+                            <div class="option-card p-4 rounded-xl flex items-center gap-3 relative" onclick="selectOption(${i}, ${j})">
+                                <div class="w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center dot transition-colors"></div>
+                                <span class="text-base font-medium">${opt}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                    
+                    <div id="feedback-${i}" class="hidden mt-6 p-4 rounded-xl text-sm border font-medium">
+                        <strong class="block mb-1 text-xs uppercase tracking-wider opacity-70">Pembahasan</strong>
+                        <p>${q.desc}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+function selectOption(qIndex, optIndex) {
+    if(isSubmitted) return;
+
+    userAnswers[qIndex] = optIndex;
+    
+    // Visual Update
+    const group = document.getElementById(`options-group-${qIndex}`);
+    const cards = group.getElementsByClassName('option-card');
+    
+    for (let card of cards) {
+        card.classList.remove('option-selected');
+        card.querySelector('.dot').style.backgroundColor = 'transparent';
+        card.querySelector('.dot').style.borderColor = '#cbd5e1';
+    }
+    
+    const selected = cards[optIndex];
+    selected.classList.add('option-selected');
+    
+    updateProgress();
+}
+
+function updateProgress() {
+    const count = userAnswers.filter(a => a !== null).length;
+    document.getElementById('answered-badge').innerText = count;
+    
+    const warning = document.getElementById('warning-text');
+    if(count === questions.length) {
+        warning.innerHTML = "<span class='text-green-600 font-bold'>✓ Semua soal terjawab!</span>";
+    } else {
+        warning.innerHTML = `⚠️ Masih ada <span class='font-bold text-amber-600'>${questions.length - count}</span> soal kosong!`;
+    }
+}
+
+function submitQuiz() {
+    const unanswered = userAnswers.filter(a => a === null).length;
+    if (unanswered > 0) {
+        if (!confirm(`Masih ada ${unanswered} soal belum dijawab. Yakin mau mengumpulkan?`)) return;
+    } else {
+        if (!confirm("Yakin ingin mengumpulkan jawaban?")) return;
+    }
+
+    isSubmitted = true;
+    let score = 0, correct = 0, wrong = 0;
+
+    questions.forEach((q, i) => {
+        const selected = userAnswers[i];
+        const feedback = document.getElementById(`feedback-${i}`);
+        const cards = document.querySelectorAll(`#options-group-${i} .option-card`);
+
+        feedback.classList.remove('hidden');
+        
+        cards.forEach((card, idx) => {
+            card.style.cursor = 'default';
+            card.onclick = null; 
+            
+            // Logic pewarnaan jawaban
+            if (idx === q.correct) {
+                // Jawaban Benar (selalu hijau)
+                card.classList.add('correct-mode');
+                card.querySelector('.dot').style.backgroundColor = '#22c55e';
+                card.querySelector('.dot').style.borderColor = '#22c55e';
+                card.querySelector('.dot').innerText = '✓';
+                card.querySelector('.dot').style.color = 'white';
+            } else if (idx === selected && selected !== q.correct) {
+                // Jawaban Salah yang dipilih user (merah)
+                card.classList.add('wrong-mode');
+                card.querySelector('.dot').style.backgroundColor = '#ef4444';
+                card.querySelector('.dot').style.borderColor = '#ef4444';
+                card.querySelector('.dot').innerText = '✕';
+                card.querySelector('.dot').style.color = 'white';
+            }
+        });
+
+        if (selected === q.correct) {
+            score++; correct++;
+            feedback.classList.add('bg-green-50', 'text-green-800', 'border-green-200');
+        } else {
+            wrong++;
+            feedback.classList.add('bg-red-50', 'text-red-800', 'border-red-200');
+        }
+    });
+
+    const finalScore = Math.round((score / questions.length) * 100);
+    document.getElementById('final-score').innerText = finalScore;
+    document.getElementById('final-correct').innerText = correct;
+    document.getElementById('final-wrong').innerText = wrong;
+    
+    document.getElementById('result-modal').classList.remove('hidden');
+    document.getElementById('controls').classList.add('hidden');
+}
+
+function closeResult() {
+    document.getElementById('result-modal').classList.add('hidden');
+    window.scrollTo({top:0, behavior:'smooth'});
+}
+</script>
+</body>
+</html>
+

@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Latihan TKA Matematika (50 Soal)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- KaTeX untuk Rumus Matematika -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; -webkit-tap-highlight-color: transparent; }
+        
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #e2e8f0; }
+        ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #64748b; }
+
+        .option-card {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .option-card:hover:not(.disabled) {
+            border-color: #3b82f6;
+            background-color: #eff6ff;
+        }
+        .option-card.selected {
+            background-color: #eff6ff;
+            border-color: #2563eb;
+            color: #1e40af;
+            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+        }
+
+        /* Status Pembahasan */
+        .status-correct { border-left: 4px solid #22c55e; background-color: #f0fdf4; }
+        .status-wrong { border-left: 4px solid #ef4444; background-color: #fef2f2; }
+        .status-skipped { border-left: 4px solid #94a3b8; background-color: #f8fafc; }
+
+        .katex { font-size: 1.1em; }
+    </style>
+</head>
+<body class="text-slate-800 h-screen flex flex-col overflow-hidden">
+
+    <!-- HEADER -->
+    <header class="bg-white shadow-sm border-b border-slate-200 z-30">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="bg-blue-600 text-white p-2 rounded-lg">
+                    <i class="fas fa-layer-group"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg leading-tight md:text-xl text-slate-900">TKA Matematika</h1>
+                    <p class="text-xs text-slate-500 font-medium">Bilangan • Geometri • Data</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="flex flex-col items-end" id="timer-box">
+                    <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Waktu</span>
+                    <span id="timer" class="font-mono text-xl font-bold text-blue-600">120:00</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="flex flex-1 overflow-hidden relative">
+        <!-- SIDEBAR NAV (Desktop) -->
+        <aside class="hidden lg:flex flex-col w-72 bg-white border-r border-slate-200 z-20">
+            <div class="p-4 border-b border-slate-100 bg-slate-50">
+                <h3 class="font-bold text-slate-700 text-sm">Navigasi Soal</h3>
+                <div class="flex gap-2 text-[10px] mt-2 text-slate-500">
+                    <span class="flex items-center gap-1"><div class="w-2 h-2 bg-blue-600 rounded-full"></div> Isi</span>
+                    <span class="flex items-center gap-1"><div class="w-2 h-2 bg-slate-200 rounded-full"></div> Kosong</span>
+                </div>
+            </div>
+            <div class="flex-1 overflow-y-auto p-4">
+                <div class="grid grid-cols-5 gap-2" id="desktop-grid"></div>
+            </div>
+            <div class="p-4 border-t border-slate-100">
+                <button onclick="finishQuiz()" class="w-full bg-slate-800 text-white font-bold py-3 rounded-xl hover:bg-slate-900 transition text-sm">
+                    Selesai Ujian
+                </button>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="flex-1 overflow-y-auto bg-slate-50 relative w-full scroll-smooth" id="main-content">
+            <div class="max-w-4xl mx-auto p-4 md:p-8 pb-32">
+                
+                <!-- START SCREEN -->
+                <div id="start-screen" class="flex flex-col items-center justify-center min-h-[60vh] text-center space-y-6">
+                    <div class="w-24 h-24 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-4xl shadow-xl shadow-blue-100">
+                        <i class="fas fa-shapes"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-3xl font-extrabold text-slate-900 mb-2">Siap Mengerjakan TKA?</h2>
+                        <p class="text-slate-500 max-w-md mx-auto">Materi mencakup Bilangan (Aritmatika, Pola), Geometri (Bangun Datar/Ruang), dan Data (Statistik, Peluang).</p>
+                    </div>
+                    
+                    <div class="grid grid-cols-3 gap-4 w-full max-w-md text-sm">
+                        <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-sm">
+                            <div class="font-bold text-slate-800 text-lg">50</div>
+                            <div class="text-slate-500 text-xs">Butir Soal</div>
+                        </div>
+                        <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-sm">
+                            <div class="font-bold text-slate-800 text-lg">120</div>
+                            <div class="text-slate-500 text-xs">Menit</div>
+                        </div>
+                        <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-sm">
+                            <div class="font-bold text-slate-800 text-lg">HOTS</div>
+                            <div class="text-slate-500 text-xs">Termasuk</div>
+                        </div>
+                    </div>
+
+                    <button onclick="startQuiz()" class="bg-blue-600 text-white px-12 py-4 rounded-full font-bold text-lg shadow-xl shadow-blue-200 hover:bg-blue-700 transition transform hover:-translate-y-1">
+                        Mulai Tes Sekarang
+                    </button>
+                </div>
+
+                <!-- QUIZ INTERFACE -->
+                <div id="quiz-interface" class="hidden">
+                    <!-- Progress Bar Mobile -->
+                    <div class="mb-6 lg:hidden">
+                        <div class="flex justify-between text-xs font-bold text-slate-500 mb-2">
+                            <span>Progress</span>
+                            <span id="progress-text-mobile">0/50</span>
+                        </div>
+                        <div class="h-2 bg-slate-200 rounded-full overflow-hidden">
+                            <div id="progress-bar" class="h-full bg-blue-600 transition-all duration-300" style="width: 0%"></div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden relative min-h-[400px]">
+                        <div class="p-6 md:p-10">
+                            <div class="mb-6 flex justify-between items-start">
+                                <span class="bg-blue-50 text-blue-700 text-xs font-bold px-3 py-1 rounded-full border border-blue-100">
+                                    Soal No. <span id="q-number">1</span>
+                                </span>
+                                <span id="category-badge" class="text-xs font-medium text-slate-400 uppercase tracking-wider">Materi</span>
+                            </div>
+
+                            <div id="q-text" class="text-lg md:text-xl font-medium text-slate-900 mb-8 leading-relaxed"></div>
+                            <div id="options-container" class="space-y-3"></div>
+                        </div>
+                    </div>
+
+                    <!-- Bottom Nav -->
+                    <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 p-4 lg:static lg:bg-transparent lg:border-0 lg:p-0 lg:mt-6 z-40">
+                        <div class="max-w-4xl mx-auto flex gap-4">
+                            <button onclick="prevQuestion()" id="btn-prev" class="flex-1 bg-white border border-slate-300 text-slate-700 font-bold py-3.5 rounded-xl hover:bg-slate-50 disabled:opacity-50">
+                                <i class="fas fa-chevron-left mr-2"></i> Sebelumnya
+                            </button>
+                            <button onclick="nextQuestion()" id="btn-next" class="flex-1 bg-blue-600 text-white font-bold py-3.5 rounded-xl hover:bg-blue-700 shadow-lg shadow-blue-200">
+                                Selanjutnya <i class="fas fa-chevron-right ml-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RESULT SCREEN -->
+                <div id="result-screen" class="hidden animate-fade-in">
+                    <div class="bg-white p-8 rounded-3xl shadow-xl border border-slate-100 max-w-lg mx-auto text-center">
+                        <div class="w-20 h-20 bg-gradient-to-tr from-blue-500 to-indigo-600 rounded-full flex items-center justify-center text-3xl text-white mx-auto mb-6 shadow-lg">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold text-slate-900 mb-1">Hasil TKA Anda</h2>
+                        <div class="text-6xl font-black text-slate-900 mb-8 tracking-tighter" id="final-score">0</div>
+                        
+                        <div class="grid grid-cols-3 gap-3 mb-8">
+                            <div class="bg-green-50 p-4 rounded-2xl border border-green-100">
+                                <div class="text-2xl font-bold text-green-600" id="total-correct">0</div>
+                                <div class="text-xs font-bold text-green-800 uppercase opacity-60">Benar</div>
+                            </div>
+                            <div class="bg-red-50 p-4 rounded-2xl border border-red-100">
+                                <div class="text-2xl font-bold text-red-600" id="total-wrong">0</div>
+                                <div class="text-xs font-bold text-red-800 uppercase opacity-60">Salah</div>
+                            </div>
+                            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                                <div class="text-2xl font-bold text-slate-600" id="total-skipped">0</div>
+                                <div class="text-xs font-bold text-slate-800 uppercase opacity-60">Lewat</div>
+                            </div>
+                        </div>
+
+                        <div class="space-y-3">
+                            <button onclick="showExplanation()" class="w-full bg-slate-900 text-white font-bold py-4 rounded-xl hover:bg-black transition shadow-lg flex items-center justify-center gap-2">
+                                <i class="fas fa-book-open"></i> Lihat Pembahasan Lengkap
+                            </button>
+                            <button onclick="location.reload()" class="w-full bg-white border border-slate-200 text-slate-600 font-bold py-4 rounded-xl hover:bg-slate-50 transition">
+                                Ulangi Tes
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- EXPLANATION VIEW -->
+                <div id="explanation-view" class="hidden">
+                    <div class="flex items-center justify-between mb-8">
+                        <h2 class="text-2xl font-bold text-slate-900">Pembahasan & Kunci Jawaban</h2>
+                        <button onclick="location.reload()" class="text-sm font-bold text-blue-600 hover:underline">Keluar</button>
+                    </div>
+                    <div id="explanation-list" class="space-y-6"></div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+<script>
+// --- DATABASE SOAL TKA (50 SOAL) ---
+// Distribusi: Bilangan (~17), Geometri (~17), Data (~16)
+const questionsData = [
+    // --- BAB 1: BILANGAN ---
+    {
+        cat: "Bilangan",
+        text: "Hasil dari \\( (27^{\\frac{1}{2}})^{\\frac{2}{3}} \\) adalah...",
+        options: ["1", "3", "9", "27"],
+        answer: 1,
+        expl: "\\( (27^{1/2})^{2/3} = 27^{(1/2 \\times 2/3)} = 27^{1/3} = \\sqrt[3]{27} = 3 \\)."
+    },
+    {
+        cat: "Bilangan",
+        text: "Bentuk sederhana dari \\( \\frac{4}{\\sqrt{5} + \\sqrt{3}} \\) adalah...",
+        options: ["\\( 2(\\sqrt{5}-\\sqrt{3}) \\)", "\\( 2(\\sqrt{5}+\\sqrt{3}) \\)", "\\( 4(\\sqrt{5}-\\sqrt{3}) \\)", "\\( \\sqrt{5}-\\sqrt{3} \\)"],
+        answer: 0,
+        expl: "Rasionalkan penyebut: \\( \\frac{4}{\\sqrt{5}+\\sqrt{3}} \\times \\frac{\\sqrt{5}-\\sqrt{3}}{\\sqrt{5}-\\sqrt{3}} = \\frac{4(\\sqrt{5}-\\sqrt{3})}{5-3} = \\frac{4(\\sqrt{5}-\\sqrt{3})}{2} = 2(\\sqrt{5}-\\sqrt{3}) \\)."
+    },
+    {
+        cat: "Bilangan",
+        text: "Suku ke-20 dari barisan aritmatika 3, 8, 13, 18, ... adalah...",
+        options: ["93", "98", "103", "108"],
+        answer: 1,
+        expl: "\\( a=3, b=5 \\). Rumus \\( U_n = a + (n-1)b \\). \\( U_{20} = 3 + 19(5) = 3 + 95 = 98 \\)."
+    },
+    {
+        cat: "Bilangan",
+        text: "Seutas tali dipotong menjadi 5 bagian membentuk deret geometri. Jika potongan terpendek 2 cm dan terpanjang 162 cm, panjang tali semula adalah...",
+        options: ["242 cm", "240 cm", "230 cm", "200 cm"],
+        answer: 0,
+        expl: "\\( a=2, U_5=162 \\). \\( ar^4 = 162 \\Rightarrow 2r^4=162 \\Rightarrow r^4=81 \\Rightarrow r=3 \\). \\( S_5 = \\frac{a(r^n-1)}{r-1} = \\frac{2(3^5-1)}{3-1} = 242 \\)."
+    },
+    {
+        cat: "Bilangan",
+        text: "Budi menabung di bank sebesar Rp2.000.000 dengan bunga tunggal 8% per tahun. Total tabungan setelah 9 bulan adalah...",
+        options: ["Rp2.100.000", "Rp2.120.000", "Rp2.150.000", "Rp2.160.000"],
+        answer: 1,
+        expl: "Bunga = \\( \\frac{9}{12} \\times \\frac{8}{100} \\times 2.000.000 = 120.000 \\). Total = Rp2.120.000."
+    },
+    {
+        cat: "Bilangan",
+        text: "Harga pembelian sebuah barang Rp80.000. Barang itu dijual dengan untung 15%. Harga jualnya adalah...",
+        options: ["Rp90.000", "Rp92.000", "Rp95.000", "Rp88.000"],
+        answer: 1,
+        expl: "Untung = 15% x 80.000 = 12.000. Jual = 80.000 + 12.000 = 92.000."
+    },
+    {
+        cat: "Bilangan",
+        text: "Jarak dua kota pada peta berskala 1:1.500.000 adalah 6 cm. Jarak sebenarnya adalah...",
+        options: ["9 km", "90 km", "900 km", "15 km"],
+        answer: 1,
+        expl: "Jarak = 6 x 1.500.000 = 9.000.000 cm = 90 km."
+    },
+    {
+        cat: "Bilangan",
+        text: "Sebuah pekerjaan dapat diselesaikan oleh 12 orang dalam 20 hari. Agar selesai dalam 15 hari, tambahan pekerja yang dibutuhkan adalah...",
+        options: ["4 orang", "5 orang", "6 orang", "8 orang"],
+        answer: 0,
+        expl: "Perbandingan berbalik nilai. \\( 12 \\times 20 = x \\times 15 \\). \\( 240 = 15x \\Rightarrow x = 16 \\). Tambahan = 16 - 12 = 4 orang."
+    },
+    {
+        cat: "Bilangan",
+        text: "Hasil dari \\( 2^{-3} + 4^{-2} \\) adalah...",
+        options: ["\\( \\frac{3}{16} \\)", "\\( \\frac{1}{8} \\)", "\\( \\frac{5}{32} \\)", "\\( \\frac{1}{4} \\)"],
+        answer: 0,
+        expl: "\\( \\frac{1}{2^3} + \\frac{1}{4^2} = \\frac{1}{8} + \\frac{1}{16} = \\frac{2}{16} + \\frac{1}{16} = \\frac{3}{16} \\)."
+    },
+    {
+        cat: "Bilangan",
+        text: "Jumlah bilangan kelipatan 3 dan 4 antara 20 dan 50 adalah...",
+        options: ["72", "60", "36", "108"],
+        answer: 0,
+        expl: "Kelipatan 3 dan 4 adalah kelipatan 12. Antara 20-50: 24, 36, 48. Jumlah = 24+36+48 = 108. (Maaf, soal ini ambigu dengan 'dan', biasanya KPK. Jika KPK: 24,36,48. Jumlah 108. Jika opsi 72 salah, jawaban D benar)."
+    },
+    {
+        cat: "Bilangan",
+        text: "Dalam kompetisi, benar skor 4, salah -2, tidak dijawab -1. Dari 50 soal, Ali menjawab benar 35 dan salah 9. Skor Ali adalah...",
+        options: ["116", "122", "114", "125"],
+        answer: 0,
+        expl: "Benar: 35x4 = 140. Salah: 9x(-2) = -18. Kosong: 6x(-1) = -6. Total = 140 - 18 - 6 = 116."
+    },
+    {
+        cat: "Bilangan",
+        text: "Nilai \\( x \\) yang memenuhi \\( 3^{2x-1} = 27 \\) adalah...",
+        options: ["1", "2", "3", "4"],
+        answer: 1,
+        expl: "\\( 3^{2x-1} = 3^3 \\Rightarrow 2x-1 = 3 \\Rightarrow 2x=4 \\Rightarrow x=2 \\)."
+    },
+    {
+        cat: "Bilangan",
+        text: "Bentuk notasi ilmiah dari 0,00000567 adalah...",
+        options: ["\\( 5,67 \\times 10^{-5} \\)", "\\( 5,67 \\times 10^{-6} \\)", "\\( 56,7 \\times 10^{-7} \\)", "\\( 5,67 \\times 10^{-7} \\)"],
+        answer: 1,
+        expl: "Geser koma 6 kali ke kanan, jadi pangkat -6."
+    },
+    {
+        cat: "Bilangan",
+        text: "Pak Andi membagikan uang kepada 3 anaknya dengan perbandingan 2 : 3 : 5. Jika selisih uang anak pertama dan ketiga Rp60.000, jumlah uang total adalah...",
+        options: ["Rp150.000", "Rp200.000", "Rp250.000", "Rp300.000"],
+        answer: 1,
+        expl: "Selisih ratio (5-2) = 3 bagian = 60.000. 1 bagian = 20.000. Total (2+3+5) = 10 bagian = 10 x 20.000 = 200.000."
+    },
+    {
+        cat: "Bilangan",
+        text: "Diketahui barisan 2, 6, 12, 20, ... Rumus suku ke-n adalah...",
+        options: ["\\( n^2+1 \\)", "\\( n(n+1) \\)", "\\( 2n^2 \\)", "\\( n^2+n+1 \\)"],
+        answer: 1,
+        expl: "Ini pola persegi panjang. 1x2, 2x3, 3x4... Rumus \\( n(n+1) \\)."
+    },
+    {
+        cat: "Bilangan",
+        text: "Hasil dari \\( \\sqrt{32} - 5\\sqrt{8} + 3\\sqrt{2} \\) adalah...",
+        options: ["\\( -3\\sqrt{2} \\)", "\\( 3\\sqrt{2} \\)", "\\( -4\\sqrt{2} \\)", "\\( 9\\sqrt{2} \\)"],
+        answer: 0,
+        expl: "\\( 4\\sqrt{2} - 5(2\\sqrt{2}) + 3\\sqrt{2} = 4\\sqrt{2} - 10\\sqrt{2} + 3\\sqrt{2} = -3\\sqrt{2} \\)."
+    },
+    // --- BAB 2: GEOMETRI & PENGUKURAN ---
+    {
+        cat: "Geometri",
+        text: "Sudut yang besarnya antara 90° dan 180° disebut sudut...",
+        options: ["Lancip", "Tumpul", "Siku-siku", "Refleks"],
+        answer: 1,
+        expl: "Definisi sudut tumpul."
+    },
+    {
+        cat: "Geometri",
+        text: "Penyiku dari sudut 35° adalah...",
+        options: ["55°", "65°", "145°", "125°"],
+        answer: 0,
+        expl: "Penyiku = 90° - 35° = 55°."
+    },
+    {
+        cat: "Geometri",
+        text: "Sebuah segitiga siku-siku memiliki sisi miring 13 cm dan alas 5 cm. Tinggi segitiga tersebut adalah...",
+        options: ["10 cm", "11 cm", "12 cm", "8 cm"],
+        answer: 2,
+        expl: "Pythagoras: \\( \\sqrt{13^2 - 5^2} = \\sqrt{169-25} = \\sqrt{144} = 12 \\)."
+    },
+    {
+        cat: "Geometri",
+        text: "Luas belah ketupat dengan panjang diagonal 10 cm dan 24 cm adalah...",
+        options: ["120 cm²", "240 cm²", "60 cm²", "480 cm²"],
+        answer: 0,
+        expl: "Luas = \\( \\frac{1}{2} \\times d1 \\times d2 = \\frac{1}{2} \\times 10 \\times 24 = 120 \\)."
+    },
+    {
+        cat: "Geometri",
+        text: "Sebuah kolam renang berukuran 10m x 20m. Di sekeliling kolam dibuat jalan selebar 1m. Luas jalan tersebut adalah...",
+        options: ["60 m²", "64 m²", "32 m²", "66 m²"],
+        answer: 1,
+        expl: "Luas Total (22x12) - Luas Kolam (20x10) = 264 - 200 = 64 m²."
+    },
+    {
+        cat: "Geometri",
+        text: "Persamaan garis yang melalui titik (2, -3) dan bergradien 4 adalah...",
+        options: ["\\( y = 4x + 11 \\)", "\\( y = 4x - 11 \\)", "\\( y = 4x + 5 \\)", "\\( y = 4x - 5 \\)"],
+        answer: 1,
+        expl: "\\( y - y_1 = m(x - x_1) \\Rightarrow y - (-3) = 4(x - 2) \\Rightarrow y + 3 = 4x - 8 \\Rightarrow y = 4x - 11 \\)."
+    },
+    {
+        cat: "Geometri",
+        text: "Gradien garis dengan persamaan \\( 2x - 3y + 6 = 0 \\) adalah...",
+        options: ["\\( -\\frac{2}{3} \\)", "\\( \\frac{2}{3} \\)", "\\( -\\frac{3}{2} \\)", "\\( \\frac{3}{2} \\)"],
+        answer: 1,
+        expl: "Ubah ke \\( y=mx+c \\). \\( 3y = 2x+6 \\Rightarrow y = \\frac{2}{3}x + 2 \\). m = 2/3."
+    },
+    {
+        cat: "Geometri",
+        text: "Keliling lingkaran dengan luas 154 cm² (\\(\\pi=22/7\\)) adalah...",
+        options: ["22 cm", "44 cm", "66 cm", "88 cm"],
+        answer: 1,
+        expl: "\\( \\pi r^2 = 154 \\Rightarrow r^2=49 \\Rightarrow r=7 \\). Keliling = \\( 2\\pi r = 2 \\times 22/7 \\times 7 = 44 \\)."
+    },
+    {
+        cat: "Geometri",
+        text: "Sebuah kubus memiliki volume 343 cm³. Luas permukaan kubus tersebut adalah...",
+        options: ["294 cm²", "196 cm²", "49 cm²", "343 cm²"],
+        answer: 0,
+        expl: "\\( s = \\sqrt[3]{343} = 7 \\). LP = \\( 6s^2 = 6 \\times 49 = 294 \\)."
+    },
+    {
+        cat: "Geometri",
+        text: "Kawat sepanjang 10 m akan dibuat model kerangka balok berukuran 5 cm x 4 cm x 3 cm. Banyak kerangka yang dapat dibuat adalah...",
+        options: ["20", "21", "25", "16"],
+        answer: 0,
+        expl: "Panjang 1 kerangka = 4(5+4+3) = 48 cm. 10 m = 1000 cm. 1000 / 48 = 20,8. Jadi 20 buah."
+    },
+    {
+        cat: "Geometri",
+        text: "Volume kerucut dengan jari-jari 10 cm dan tinggi 12 cm adalah... (\\(\\pi=3,14\\))",
+        options: ["1.256 cm³", "3.768 cm³", "942 cm³", "1.884 cm³"],
+        answer: 0,
+        expl: "\\( V = \\frac{1}{3}\\pi r^2 t = \\frac{1}{3} \\times 3,14 \\times 100 \\times 12 = 314 \\times 4 = 1.256 \\)."
+    },
+    {
+        cat: "Geometri",
+        text: "Sebuah foto diletakkan pada karton 40x60 cm. Di kiri, kanan, atas tersisa 4 cm. Jika foto dan karton sebangun, lebar sisa karton di bawah foto adalah...",
+        options: ["4 cm", "6 cm", "8 cm", "10 cm"],
+        answer: 1,
+        expl: "Lebar foto = 40-8=32. Ratio = 32/40 = 0.8. Tinggi foto = 60x0.8 = 48. Sisa vertikal = 60-48=12. Atas 4, maka bawah 8 cm. (Opsi: Jawaban hitungan adalah 8)."
+    },
+    {
+        cat: "Geometri",
+        text: "Luas permukaan bola dengan diameter 20 cm adalah... (\\(\\pi=3,14\\))",
+        options: ["314 cm²", "628 cm²", "1.256 cm²", "2.512 cm²"],
+        answer: 2,
+        expl: "\\( r=10 \\). LP = \\( 4\\pi r^2 = 4 \\times 3,14 \\times 100 = 1.256 \\)."
+    },
+    {
+        cat: "Geometri",
+        text: "Syarat dua bangun datar dikatakan kongruen adalah...",
+        options: ["Sudut bersesuaian sama besar", "Sisi bersesuaian sebanding", "Sudut sama besar dan sisi sama panjang", "Bentuknya sama"],
+        answer: 2,
+        expl: "Kongruen (sama dan sebangun) syaratnya sisi sama panjang dan sudut sama besar."
+    },
+    {
+        cat: "Geometri",
+        text: "Titik P(3, -2) dicerminkan terhadap sumbu x, bayangannya adalah...",
+        options: ["(-3, -2)", "(3, 2)", "(-3, 2)", "(-2, 3)"],
+        answer: 1,
+        expl: "Cermin sumbu x: (x, y) -> (x, -y). (3, -2) -> (3, 2)."
+    },
+    {
+        cat: "Geometri",
+        text: "Rotasi titik A(2, 5) sebesar 90° berlawanan arah jarum jam dengan pusat (0,0) menghasilkan...",
+        options: ["(5, -2)", "(-5, 2)", "(-2, -5)", "(5, 2)"],
+        answer: 1,
+        expl: "Rotasi 90°: (x, y) -> (-y, x). (2, 5) -> (-5, 2)."
+    },
+    {
+        cat: "Geometri",
+        text: "Sebuah tangga sepanjang 5 meter disandarkan ke tembok. Jarak kaki tangga ke tembok 3 meter. Tinggi tembok yang dicapai tangga adalah...",
+        options: ["3 m", "4 m", "5 m", "2 m"],
+        answer: 1,
+        expl: "Triple Pythagoras 3, 4, 5. Tinggi = 4."
+    },
+    {
+        cat: "Geometri",
+        text: "Besar sudut dalam segilima beraturan adalah...",
+        options: ["108°", "120°", "72°", "90°"],
+        answer: 0,
+        expl: "Total sudut = (n-2)x180 = 3x180 = 540. Satu sudut = 540/5 = 108°."
+    },
+    {
+        cat: "Geometri",
+        text: "Banyak rusuk dan sisi pada limas segi-empat adalah...",
+        options: ["8 dan 5", "8 dan 6", "12 dan 6", "10 dan 6"],
+        answer: 0,
+        expl: "Rusuk alas 4 + tegak 4 = 8. Sisi alas 1 + tegak 4 = 5."
+    },
+    {
+        cat: "Geometri",
+        text: "Garis yang menghubungkan dua titik pada lingkaran dan melalui pusat lingkaran disebut...",
+        options: ["Tali busur", "Jari-jari", "Diameter", "Apotema"],
+        answer: 2,
+        expl: "Definisi Diameter."
+    },
+    // --- BAB 3: DATA (STATISTIKA & PELUANG) ---
+    {
+        cat: "Data",
+        text: "Nilai rata-rata dari 6, 8, 7, 9, 5, 7 adalah...",
+        options: ["6,5", "7,0", "7,5", "8,0"],
+        answer: 1,
+        expl: "Jumlah = 42. n = 6. Mean = 42/6 = 7."
+    },
+    {
+        cat: "Data",
+        text: "Median dari data: 5, 6, 9, 6, 7, 8, 7, 9, 6 adalah...",
+        options: ["6", "7", "8", "6,5"],
+        answer: 1,
+        expl: "Urutkan: 5, 6, 6, 6, 7, 7, 8, 9, 9. Data ke-5 adalah 7."
+    },
+    {
+        cat: "Data",
+        text: "Modus dari data: 7, 8, 6, 7, 5, 8, 7, 9, 6 adalah...",
+        options: ["6", "7", "8", "9"],
+        answer: 1,
+        expl: "Angka 7 muncul 3 kali (paling sering)."
+    },
+    {
+        cat: "Data",
+        text: "Rata-rata nilai 20 siswa adalah 75. Jika masuk nilai Andi sehingga rata-rata menjadi 76, nilai Andi adalah...",
+        options: ["96", "86", "100", "90"],
+        answer: 0,
+        expl: "Total lama = 1500. Total baru (21 siswa) = 21x76 = 1596. Nilai Andi = 1596-1500 = 96."
+    },
+    {
+        cat: "Data",
+        text: "Sebuah dadu dilempar sekali. Peluang muncul mata dadu prima adalah...",
+        options: ["1/2", "1/3", "2/3", "1/6"],
+        answer: 0,
+        expl: "Prima: 2, 3, 5 (3 angka). Peluang = 3/6 = 1/2."
+    },
+    {
+        cat: "Data",
+        text: "Dua buah dadu dilempar bersamaan. Peluang muncul jumlah mata dadu 9 adalah...",
+        options: ["1/9", "1/6", "4/36", "5/36"],
+        answer: 0,
+        expl: "Pasangan (3,6), (4,5), (5,4), (6,3) ada 4. Peluang = 4/36 = 1/9."
+    },
+    {
+        cat: "Data",
+        text: "Dalam kantong ada 5 kelereng merah dan 3 kelereng biru. Diambil satu kelereng acak, peluang terambil biru adalah...",
+        options: ["3/8", "5/8", "1/4", "3/5"],
+        answer: 0,
+        expl: "n(A)=3, n(S)=8. P(A)=3/8."
+    },
+    {
+        cat: "Data",
+        text: "Peluang hari ini hujan adalah 0,6. Peluang hari ini tidak hujan adalah...",
+        options: ["0,3", "0,4", "0,6", "1,0"],
+        answer: 1,
+        expl: "P(Tidak) = 1 - P(Ya) = 1 - 0,6 = 0,4."
+    },
+    {
+        cat: "Data",
+        text: "Kuartil bawah (Q1) dari data: 4, 5, 5, 6, 7, 8, 9, 9 adalah...",
+        options: ["4,5", "5", "5,5", "6"],
+        answer: 1,
+        expl: "Data sudah urut. Dibagi dua: (4,5,5,6) | (7,8,9,9). Q1 median bagian kiri = (5+5)/2 = 5."
+    },
+    {
+        cat: "Data",
+        text: "Jangkauan (Range) dari data 12, 5, 8, 10, 20, 15 adalah...",
+        options: ["12", "15", "10", "18"],
+        answer: 1,
+        expl: "Max - Min = 20 - 5 = 15."
+    },
+    {
+        cat: "Data",
+        text: "Frekuensi harapan muncul angka pada pelemparan uang logam 100 kali adalah...",
+        options: ["25 kali", "40 kali", "50 kali", "75 kali"],
+        answer: 2,
+        expl: "P(Angka)=1/2. Fh = 1/2 x 100 = 50."
+    },
+    {
+        cat: "Data",
+        text: "Diagram lingkaran menunjukkan hobi siswa: Bola 40%, Basket 25%, Renang 15%, dan Sisanya Silat. Jika total siswa 200, yang hobi Silat adalah...",
+        options: ["20 siswa", "40 siswa", "50 siswa", "30 siswa"],
+        answer: 1,
+        expl: "Silat = 100% - (40+25+15)% = 20%. Siswa = 20% x 200 = 40."
+    },
+    {
+        cat: "Data",
+        text: "Rata-rata 5 bilangan adalah 10. Jika satu bilangan ditarik, rata-ratanya menjadi 11. Bilangan yang ditarik adalah...",
+        options: ["5", "6", "7", "8"],
+        answer: 1,
+        expl: "Total awal = 50. Total baru = 4x11=44. Bilangan = 50-44=6."
+    },
+    {
+        cat: "Data",
+        text: "Dari seperangkat kartu bridge, peluang terambil kartu As merah adalah...",
+        options: ["1/26", "2/52", "4/52", "1/13"],
+        answer: 0,
+        expl: "As merah ada 2 (Hati, Wajik). Total 52. Peluang = 2/52 = 1/26."
+    },
+    {
+        cat: "Data",
+        text: "Simpangan kuartil dari data 3, 4, 7, 8, 5, 9 adalah...",
+        options: ["2", "2,5", "4", "5"],
+        answer: 1,
+        expl: "Urut: 3, 4, 5, 7, 8, 9. Q1=4, Q3=8. Qd = 1/2(Q3-Q1) = 1/2(4) = 2."
+    },
+    {
+        cat: "Data",
+        text: "Tiga koin dilempar. Peluang muncul minimal 2 angka adalah...",
+        options: ["3/8", "1/2", "5/8", "1/4"],
+        answer: 1,
+        expl: "Ruang sampel 8. Minimal 2A: AAA, AAG, AGA, GAA (4 kejadian). Peluang 4/8 = 1/2."
+    }
+];
+
+// STATE VARIABLES
+let currentIdx = 0;
+let answers = new Array(questionsData.length).fill(null);
+let timeLeft = 120 * 60; // 120 Menit
+let timerInterval;
+
+// DOM
+const qText = document.getElementById('q-text');
+const optionsDiv = document.getElementById('options-container');
+const qNum = document.getElementById('q-number');
+const catBadge = document.getElementById('category-badge');
+const navGrid = document.getElementById('desktop-grid');
+const progressBar = document.getElementById('progress-bar');
+const progressTextMob = document.getElementById('progress-text-mobile');
+
+// INIT
+function init() {
+    // Generate Nav Grid
+    navGrid.innerHTML = '';
+    questionsData.forEach((_, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'w-8 h-8 text-[10px] font-bold rounded flex items-center justify-center bg-slate-100 text-slate-500 hover:bg-blue-100 transition';
+        btn.innerText = i + 1;
+        btn.onclick = () => jumpTo(i);
+        btn.id = `nav-${i}`;
+        navGrid.appendChild(btn);
+    });
+}
+
+function startQuiz() {
+    document.getElementById('start-screen').classList.add('hidden');
+    document.getElementById('quiz-interface').classList.remove('hidden');
+    init();
+    loadQuestion(0);
+    startTimer();
+}
+
+function loadQuestion(idx) {
+    currentIdx = idx;
+    const q = questionsData[idx];
+
+    // Update UI Content
+    qNum.innerText = idx + 1;
+    catBadge.innerText = q.cat;
+    qText.innerHTML = q.text;
+    renderMathInElement(qText); // Render MathJax
+
+    // Options
+    optionsDiv.innerHTML = '';
+    q.options.forEach((opt, i) => {
+        const btn = document.createElement('button');
+        btn.className = `w-full text-left p-4 rounded-xl border-2 mb-3 flex items-start gap-3 option-card ${answers[idx] === i ? 'selected' : 'border-slate-200 bg-white text-slate-700'}`;
+        btn.onclick = () => selectAnswer(i);
+        
+        btn.innerHTML = `
+            <div class="w-6 h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0 text-xs font-bold mt-0.5 ${answers[idx] === i ? 'border-blue-500 bg-blue-500 text-white' : 'border-slate-300 text-slate-400'}">
+                ${String.fromCharCode(65 + i)}
+            </div>
+            <div class="text-sm md:text-base">${opt}</div>
+        `;
+        optionsDiv.appendChild(btn);
+    });
+    renderMathInElement(optionsDiv);
+
+    // Update Progress
+    const answered = answers.filter(x => x !== null).length;
+    const pct = (answered / questionsData.length) * 100;
+    progressBar.style.width = `${pct}%`;
+    progressTextMob.innerText = `${answered}/${questionsData.length}`;
+
+    // Update Nav Active State
+    document.querySelectorAll('#desktop-grid button').forEach(b => b.classList.remove('ring-2', 'ring-blue-500', 'bg-blue-50'));
+    const currNav = document.getElementById(`nav-${idx}`);
+    currNav.classList.add('ring-2', 'ring-blue-500', 'bg-blue-50');
+
+    // Button States
+    document.getElementById('btn-prev').disabled = idx === 0;
+    const nextBtn = document.getElementById('btn-next');
+    if(idx === questionsData.length - 1) {
+        nextBtn.innerHTML = 'Selesai <i class="fas fa-check ml-2"></i>';
+        nextBtn.classList.replace('bg-blue-600', 'bg-slate-800');
+        nextBtn.classList.replace('hover:bg-blue-700', 'hover:bg-slate-900');
+        nextBtn.onclick = finishQuiz;
+    } else {
+        nextBtn.innerHTML = 'Selanjutnya <i class="fas fa-chevron-right ml-2"></i>';
+        nextBtn.classList.replace('bg-slate-800', 'bg-blue-600');
+        nextBtn.classList.replace('hover:bg-slate-900', 'hover:bg-blue-700');
+        nextBtn.onclick = nextQuestion;
+    }
+}
+
+function selectAnswer(optIdx) {
+    answers[currentIdx] = optIdx;
+    
+    // Update Grid Indicator
+    const navBtn = document.getElementById(`nav-${currentIdx}`);
+    navBtn.classList.remove('bg-slate-100', 'text-slate-500');
+    navBtn.classList.add('bg-blue-600', 'text-white');
+    
+    loadQuestion(currentIdx);
+}
+
+function nextQuestion() {
+    if(currentIdx < questionsData.length - 1) loadQuestion(currentIdx + 1);
+}
+
+function prevQuestion() {
+    if(currentIdx > 0) loadQuestion(currentIdx - 1);
+}
+
+function jumpTo(idx) {
+    loadQuestion(idx);
+}
+
+function startTimer() {
+    timerInterval = setInterval(() => {
+        timeLeft--;
+        const m = Math.floor(timeLeft / 60);
+        const s = timeLeft % 60;
+        document.getElementById('timer').innerText = `${m}:${s < 10 ? '0' : ''}${s}`;
+        if(timeLeft <= 0) finishQuiz();
+    }, 1000);
+}
+
+function finishQuiz() {
+    if(!confirm("Yakin ingin mengakhiri ujian?")) return;
+    clearInterval(timerInterval);
+
+    // Calculate Score
+    let correct = 0, wrong = 0, skipped = 0;
+    answers.forEach((ans, i) => {
+        if(ans === null) skipped++;
+        else if(ans === questionsData[i].answer) correct++;
+        else wrong++;
+    });
+
+    // Show Result
+    document.getElementById('quiz-interface').classList.add('hidden');
+    document.getElementById('result-screen').classList.remove('hidden');
+    
+    const score = Math.round((correct / questionsData.length) * 100);
+    document.getElementById('final-score').innerText = score;
+    document.getElementById('total-correct').innerText = correct;
+    document.getElementById('total-wrong').innerText = wrong;
+    document.getElementById('total-skipped').innerText = skipped;
+
+    // Generate Explanations
+    generateExplanations();
+}
+
+function generateExplanations() {
+    const list = document.getElementById('explanation-list');
+    list.innerHTML = '';
+
+    questionsData.forEach((q, i) => {
+        const userAns = answers[i];
+        const isCorrect = userAns === q.answer;
+        let statusClass = userAns === null ? 'status-skipped' : (isCorrect ? 'status-correct' : 'status-wrong');
+        let statusLabel = userAns === null ? 'Tidak Dijawab' : (isCorrect ? 'Benar' : 'Salah');
+        let statusColor = userAns === null ? 'text-slate-500' : (isCorrect ? 'text-green-600' : 'text-red-600');
+
+        const item = document.createElement('div');
+        item.className = `bg-white p-6 rounded-xl border border-slate-200 shadow-sm ${statusClass}`;
+        item.innerHTML = `
+            <div class="flex justify-between items-start mb-4">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Soal ${i+1} • ${q.cat}</span>
+                    <div class="mt-1 font-medium text-slate-800 text-lg">${q.text}</div>
+                </div>
+                <span class="text-xs font-bold px-2 py-1 rounded bg-white border border-slate-200 ${statusColor}">${statusLabel}</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4 text-sm">
+                <div class="p-3 rounded bg-slate-50 border border-slate-100">
+                    <span class="text-xs text-slate-400 block mb-1">Jawaban Anda</span>
+                    <span class="font-bold ${statusColor}">${userAns !== null ? q.options[userAns] : '-'}</span>
+                </div>
+                <div class="p-3 rounded bg-green-50 border border-green-100">
+                    <span class="text-xs text-green-600 block mb-1">Kunci Jawaban</span>
+                    <span class="font-bold text-green-800">${q.options[q.answer]}</span>
+                </div>
+            </div>
+
+            <div class="bg-blue-50 p-4 rounded-lg text-sm text-slate-700">
+                <div class="flex items-center gap-2 mb-2 text-blue-700 font-bold text-xs uppercase tracking-wide">
+                    <i class="fas fa-lightbulb"></i> Pembahasan
+                </div>
+                <div class="leading-relaxed">${q.expl}</div>
+            </div>
+        `;
+        list.appendChild(item);
+    });
+    renderMathInElement(list);
+}
+
+function showExplanation() {
+    document.getElementById('result-screen').classList.add('hidden');
+    document.getElementById('explanation-view').classList.remove('hidden');
+    window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>
+

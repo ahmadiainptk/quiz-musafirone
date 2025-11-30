@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rangkuman Visual Matematika Kelas 6</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=Nunito:wght@400;600;700&display=swap');
+        body { font-family: 'Nunito', sans-serif; background-color: #f3f4f6; }
+        h1, h2, h3, .comic { font-family: 'Comic Neue', cursive; }
+        .card { background: white; border-radius: 1rem; padding: 1.5rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); margin-bottom: 2rem; border-top: 5px solid; }
+        .table-custom th { background-color: #e5e7eb; padding: 8px; border: 1px solid #9ca3af; }
+        .table-custom td { padding: 8px; border: 1px solid #9ca3af; text-align: center; }
+        .grid-bg { background-image: radial-gradient(#cbd5e1 1px, transparent 1px); background-size: 20px 20px; }
+    </style>
+</head>
+<body class="text-gray-700">
+
+    <!-- Header -->
+    <header class="bg-blue-600 text-white p-6 sticky top-0 z-50 shadow-lg">
+        <div class="max-w-4xl mx-auto flex justify-between items-center">
+            <div>
+                <h1 class="text-2xl font-bold comic">Rangkuman Visual PAS Matematika</h1>
+                <p class="text-sm opacity-90">Kelas 6 SD - Kurikulum Merdeka</p>
+            </div>
+            <div class="hidden md:flex space-x-4 text-sm font-semibold">
+                <a href="#pecahan" class="hover:text-yellow-300">Pecahan</a>
+                <a href="#rasio" class="hover:text-yellow-300">Rasio & Data</a>
+                <a href="#bangun" class="hover:text-yellow-300">Bangun Ruang</a>
+                <a href="#koordinat" class="hover:text-yellow-300">Koordinat</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto p-4 md:p-8">
+
+        <!-- BAGIAN 1: PECAHAN & DENAH -->
+        <section id="pecahan" class="card border-green-500">
+            <h2 class="text-2xl font-bold text-green-700 mb-4 flex items-center gap-2">
+                1. Pecahan & Denah Tanah
+            </h2>
+            <p class="mb-4">Materi ini membahas soal nomor 1-10, terutama tentang perkalian pecahan dan representasi gambar.</p>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- Teori -->
+                <div class="bg-green-50 p-4 rounded-xl">
+                    <h3 class="font-bold text-green-800 mb-2">Rumus Kunci</h3>
+                    <ul class="list-disc ml-5 space-y-2 text-sm">
+                        <li><strong>Perkalian:</strong> $\frac{a}{b} \times n = \frac{a \times n}{b}$</li>
+                        <li><strong>Pembagian:</strong> $\frac{a}{b} : c = \frac{a}{b} \times \frac{1}{c}$</li>
+                        <li><strong>Soal Kue Aisyah:</strong><br>1 adonan = $\frac{2}{3}$ gula.<br>5 adonan = $5 \times \frac{2}{3} = \frac{10}{3}$.</li>
+                    </ul>
+                </div>
+
+                <!-- Visualisasi Soal 10 (Denah Tanah) -->
+                <div class="border-2 border-green-200 rounded-xl p-4 text-center">
+                    <h3 class="font-bold text-gray-600 mb-2">Visualisasi Soal No. 10</h3>
+                    <p class="text-xs mb-2">Tanah Ustad Yanto (Bagian Gelap untuk Masjid)</p>
+                    <svg width="200" height="100" class="mx-auto border border-gray-400">
+                        <!-- 5 Bagian Vertikal -->
+                        <rect x="0" y="0" width="40" height="100" fill="white" stroke="black"/>
+                        <rect x="40" y="0" width="40" height="100" fill="#374151" stroke="black"/> <!-- Gelap -->
+                        <rect x="80" y="0" width="40" height="100" fill="white" stroke="black"/>
+                        <rect x="120" y="0" width="40" height="100" fill="#374151" stroke="black"/> <!-- Gelap -->
+                        <rect x="160" y="0" width="40" height="100" fill="white" stroke="black"/>
+                    </svg>
+                    <p class="text-sm mt-2 font-semibold">
+                        Ada 2 bagian gelap dari total 5 bagian.<br>
+                        Pecahan: $\frac{2}{5}$ <br>
+                        Desimal: $\frac{2}{5} \times \frac{2}{2} = \frac{4}{10} = 0,4$
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- BAGIAN 2: RASIO & DATA TABEL -->
+        <section id="rasio" class="card border-yellow-500">
+            <h2 class="text-2xl font-bold text-yellow-700 mb-4 flex items-center gap-2">
+                2. Rasio, Tabel & Perbandingan
+            </h2>
+
+            <!-- Rekreasi Tabel Soal 15 -->
+            <div class="mb-6">
+                <h3 class="font-bold text-gray-700 mb-2">A. Analisis Tabel Inventaris (Soal No. 15-17)</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full table-custom text-sm">
+                        <thead>
+                            <tr>
+                                <th>Nama Barang</th>
+                                <th>Jumlah</th>
+                                <th>Rasio Sederhana</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="text-left font-semibold">Meja</td>
+                                <td>112</td>
+                                <td rowspan="2" class="align-middle bg-yellow-50">
+                                    Meja : Lemari<br>
+                                    $112 : 24$<br>
+                                    (Bagi 8) $\rightarrow$ <strong>14 : 3</strong>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-left font-semibold">Lemari</td>
+                                <td>24</td>
+                            </tr>
+                            <tr>
+                                <td class="text-left font-semibold">AC</td>
+                                <td>... (32)</td>
+                                <td class="bg-blue-50">
+                                    Meja : AC = 7 : 2<br>
+                                    Jika Meja 112, maka AC = $\frac{2}{7} \times 112 = 32$
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Visualisasi Menara Soal 19 -->
+            <div class="grid md:grid-cols-2 gap-6 mb-6">
+                <div class="bg-yellow-50 p-4 rounded-xl text-center">
+                    <h3 class="font-bold text-yellow-800 mb-2">B. Perbandingan Tinggi Menara (Soal 19)</h3>
+                    <div class="flex justify-center items-end gap-8 h-40 border-b-2 border-gray-400 pb-1">
+                        <!-- Menara A -->
+                        <div class="flex flex-col items-center">
+                            <span class="text-xs font-bold mb-1">60 m</span>
+                            <div class="w-12 bg-gray-700 flex flex-col justify-end" style="height: 120px;">
+                                <div class="w-full h-2 bg-white mt-1 opacity-50"></div>
+                                <div class="w-full h-2 bg-white mt-2 opacity-50"></div>
+                                <div class="w-full h-2 bg-white mt-2 opacity-50"></div>
+                            </div>
+                            <span class="font-bold mt-1">A</span>
+                        </div>
+                        <!-- Menara B -->
+                        <div class="flex flex-col items-center">
+                            <span class="text-xs font-bold mb-1">45 m</span>
+                            <div class="w-10 bg-gray-500 flex flex-col justify-end" style="height: 90px;">
+                                <div class="w-full h-2 bg-white mt-1 opacity-50"></div>
+                                <div class="w-full h-2 bg-white mt-2 opacity-50"></div>
+                            </div>
+                            <span class="font-bold mt-1">B</span>
+                        </div>
+                    </div>
+                    <p class="text-sm mt-3">
+                        Rasio A : B = $60 : 45$<br>
+                        (Sama-sama dibagi 15)<br>
+                        <strong>Hasil: 4 : 3</strong>
+                    </p>
+                </div>
+
+                <!-- Rekreasi Tabel Masa Panen Soal 22 -->
+                <div>
+                    <h3 class="font-bold text-gray-700 mb-2">C. Tabel Masa Panen (Soal 22)</h3>
+                    <table class="w-full table-custom text-xs">
+                        <thead>
+                            <tr class="bg-gray-100">
+                                <th>Tanaman</th>
+                                <th>Masa Panen</th>
+                                <th>Konversi (Bulan)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Kumis Kucing</td>
+                                <td>12 Minggu</td>
+                                <td>3 Bulan</td>
+                            </tr>
+                            <tr>
+                                <td>Lengkuas</td>
+                                <td>1,5 Tahun</td>
+                                <td>18 Bulan</td>
+                            </tr>
+                            <tr>
+                                <td>Jahe Merah</td>
+                                <td>3 Bulan</td>
+                                <td>3 Bulan</td>
+                            </tr>
+                            <tr>
+                                <td>Kencur</td>
+                                <td>6 Bulan</td>
+                                <td>6 Bulan</td>
+                            </tr>
+                            <tr>
+                                <td>Kemangi</td>
+                                <td>30 Hari</td>
+                                <td>1 Bulan</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p class="text-xs mt-2 text-gray-500 italic">*Paling cepat adalah Kemangi (1 bulan).</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- BAGIAN 3: BANGUN RUANG (KUBUS & DADU) -->
+        <section id="bangun" class="card border-blue-500">
+            <h2 class="text-2xl font-bold text-blue-700 mb-4 flex items-center gap-2">
+                3. Bangun Ruang & Visualisasi Kubus
+            </h2>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Soal 26: Susunan Kubus -->
+                <div class="text-center">
+                    <h3 class="font-bold text-gray-700 mb-2">Visualisasi Soal 26</h3>
+                    <p class="text-xs mb-2">Berapa kubus untuk bangun L ini?</p>
+                    <svg width="150" height="150" class="mx-auto">
+                        <!-- Bottom Layer -->
+                        <rect x="30" y="60" width="30" height="30" fill="#93c5fd" stroke="black"/>
+                        <rect x="60" y="60" width="30" height="30" fill="#60a5fa" stroke="black"/>
+                        <rect x="90" y="60" width="30" height="30" fill="#3b82f6" stroke="black"/>
+                        <!-- Top Layer (on the left) -->
+                        <rect x="30" y="30" width="30" height="30" fill="#bfdbfe" stroke="black"/>
+                        
+                        <!-- Side Perspective lines for 3D effect -->
+                        <path d="M60 60 L70 50 L70 80 L60 90" fill="#1e40af" opacity="0.3"/>
+                    </svg>
+                    <p class="text-sm mt-2">
+                        Hitung per tumpukan atau volume.<br>
+                        Jawaban di kunci soal ini biasanya <strong>7</strong> atau sesuai jumlah kubus satuan yang terlihat + yang tersembunyi sebagai penopang.
+                    </p>
+                </div>
+
+                <!-- Soal 27: Dadu -->
+                <div class="text-center bg-blue-50 p-4 rounded-xl">
+                    <h3 class="font-bold text-blue-800 mb-2">Logika Dadu (Soal 27)</h3>
+                    <div class="relative w-24 h-24 mx-auto border-4 border-black bg-white rounded-lg flex items-center justify-center shadow-lg transform rotate-12">
+                        <!-- Dots for 2 -->
+                        <div class="absolute top-4 left-4 w-4 h-4 bg-black rounded-full"></div>
+                        <div class="absolute bottom-4 right-4 w-4 h-4 bg-black rounded-full"></div>
+                    </div>
+                    <p class="text-sm mt-4 font-semibold">
+                        Sisi Atas = 2<br>
+                        Rumus: Atas + Bawah = 7<br>
+                        Maka Bawah = $7 - 2 = \mathbf{5}$
+                    </p>
+                </div>
+            </div>
+
+            <!-- Tumpukan Kardus -->
+            <div class="mt-6 border-t pt-4">
+                <h3 class="font-bold text-gray-700 mb-2">Kardus Windu (Soal 29-31)</h3>
+                <div class="flex items-center gap-4 bg-gray-100 p-4 rounded-lg">
+                    <div class="w-1/3">
+                        <svg width="100" height="120">
+                            <!-- Box 20x40x50 -->
+                            <rect x="20" y="20" width="60" height="80" fill="#d1d5db" stroke="black" stroke-width="2"/>
+                            <text x="50" y="115" text-anchor="middle" font-size="10">20x40 (Alas)</text>
+                            <text x="85" y="60" text-anchor="middle" font-size="10" transform="rotate(90, 85, 60)">Tinggi = 50</text>
+                        </svg>
+                    </div>
+                    <div class="w-2/3 text-sm">
+                        <p><strong>Soal 29:</strong> Rusuk terpanjang jadi tinggi $\rightarrow$ Tinggi = 50 cm.</p>
+                        <p><strong>Soal 31:</strong> Luas Alas = $20 \text{ cm} \times 40 \text{ cm} = \mathbf{800 \text{ cm}^2}$.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- BAGIAN 4: KOORDINAT & PETA -->
+        <section id="koordinat" class="card border-purple-500">
+            <h2 class="text-2xl font-bold text-purple-700 mb-4 flex items-center gap-2">
+                4. Sistem Koordinat & Peta
+            </h2>
+
+            <!-- Grid Movement Soal 40 & 33 -->
+            <div class="mb-8">
+                <h3 class="font-bold text-gray-700 mb-2">Pergerakan pada Grid (Soal 33, 34, 40)</h3>
+                <div class="bg-white p-4 border border-gray-300 rounded-xl grid-bg relative" style="height: 300px;">
+                    <!-- Grid Lines handled by CSS -->
+                    
+                    <!-- Point P (2,5) -->
+                    <div class="absolute w-4 h-4 bg-red-500 rounded-full flex items-center justify-center text-white text-xs font-bold" style="left: 20%; top: 20%;">P</div>
+                    <span class="absolute text-xs font-bold" style="left: 20%; top: 15%;">P(2,5)</span>
+
+                    <!-- Point Q (Target) -->
+                    <div class="absolute w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center text-white text-xs font-bold" style="left: 50%; top: 60%;">Q</div>
+                    <span class="absolute text-xs font-bold" style="left: 50%; top: 65%;">Q(5,1)</span>
+
+                    <!-- Arrows Path -->
+                    <!-- Kanan 3 -->
+                    <div class="absolute h-1 bg-green-500" style="left: 22%; top: 22%; width: 28%;"></div> 
+                    <div class="absolute text-xs text-green-700 font-bold bg-white px-1" style="left: 30%; top: 18%;">3 Kanan</div>
+                    
+                    <!-- Bawah 4 -->
+                    <div class="absolute w-1 bg-green-500" style="left: 50%; top: 22%; height: 38%;"></div>
+                    <div class="absolute text-xs text-green-700 font-bold bg-white px-1" style="left: 51%; top: 40%;">4 Bawah</div>
+
+                    <!-- Axis Labels -->
+                    <div class="absolute bottom-0 left-0 w-full h-px bg-black"></div>
+                    <div class="absolute left-0 top-0 h-full w-px bg-black"></div>
+                </div>
+                <div class="bg-purple-50 p-3 mt-2 rounded text-sm">
+                    <strong>Cara Hitung (Soal 40):</strong><br>
+                    Mulai di P(2, 5).<br>
+                    Gerak 3 ke kanan $\rightarrow x = 2 + 3 = 5$.<br>
+                    Gerak 4 ke bawah $\rightarrow y = 5 - 4 = 1$.<br>
+                    <strong>Lokasi Akhir Q(5, 1).</strong>
+                </div>
+            </div>
+
+            <!-- 3D Coordinate Soal 39 -->
+            <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                    <h3 class="font-bold text-gray-700 mb-2">Sistem Berpetak 3D (Soal 39)</h3>
+                    <svg width="250" height="200" class="border rounded bg-gray-50">
+                        <!-- Axes -->
+                        <line x1="30" y1="170" x2="230" y2="70" stroke="black" stroke-width="1" /> <!-- Axis miring -->
+                        <line x1="30" y1="170" x2="200" y2="170" stroke="black" stroke-width="1" /> <!-- Axis datar -->
+                        
+                        <!-- Labels -->
+                        <text x="40" y="160" font-size="10">1</text>
+                        <text x="60" y="150" font-size="10">2</text>
+                        <text x="80" y="140" font-size="10">3</text>
+                        
+                        <text x="30" y="185" font-size="12" font-weight="bold">A</text>
+                        <text x="60" y="185" font-size="12" font-weight="bold">B</text>
+                        
+                        <!-- Tabung di posisi awal -->
+                        <ellipse cx="30" cy="170" rx="10" ry="5" fill="#4b5563" />
+                        <rect x="20" y="150" width="20" height="20" fill="#4b5563" />
+                        <ellipse cx="30" cy="150" rx="10" ry="5" fill="#6b7280" />
+                    </svg>
+                    <p class="text-sm mt-2">
+                        Tabung terletak pada titik potong sumbu awal.<br>
+                        Biasanya dilabeli sebagai <strong>(A, 1)</strong> atau titik (0,0,0) dalam konteks SD.
+                    </p>
+                </div>
+
+                <!-- Tabel Jarak Soal 37 -->
+                <div>
+                    <h3 class="font-bold text-gray-700 mb-2">Mengurutkan Jarak (Soal 37)</h3>
+                    <table class="w-full table-custom text-xs">
+                        <thead>
+                            <tr>
+                                <th>Nama</th>
+                                <th>Jarak (km)</th>
+                                <th>Urutan</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="bg-green-100 font-bold">
+                                <td>Khadijah</td>
+                                <td>2,19</td>
+                                <td>1 (Terdekat)</td>
+                            </tr>
+                            <tr class="bg-green-50">
+                                <td>Abdur</td>
+                                <td>2,30</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td>Fatimah</td>
+                                <td>4,08</td>
+                                <td>3</td>
+                            </tr>
+                            <tr>
+                                <td>Ali</td>
+                                <td>4,70</td>
+                                <td>4</td>
+                            </tr>
+                            <tr class="bg-red-50">
+                                <td>Umar</td>
+                                <td>11,8</td>
+                                <td>5 (Terjauh)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer class="text-center p-6 text-gray-500 text-sm bg-gray-200 mt-8">
+        <p>Semoga Sukses Ujiannya! Belajar dengan visual lebih mudah.</p>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body, {
+                delimiters: [
+                    {left: "$", right: "$", display: false},
+                    {left: "$$", right: "$$", display: true}
+                ]
+            });
+        });
+    </script>
+</body>
+</html>
+

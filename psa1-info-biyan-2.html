@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ujian Informatika Kelas 8 (Paket B)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        
+        /* Opsi Jawaban Normal */
+        .option-card {
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 2px solid #e2e8f0;
+            background-color: white;
+        }
+        .option-card:hover {
+            border-color: #cbd5e1;
+            background-color: #f1f5f9;
+        }
+
+        /* Opsi Jawaban Terpilih (Active) */
+        .option-selected {
+            border-color: #6366f1 !important; /* Indigo */
+            background-color: #eef2ff !important;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+        .option-selected .dot {
+            background-color: #6366f1;
+            border-color: #6366f1;
+            color: white;
+        }
+
+        /* Mode Review (Setelah Submit) */
+        .correct-mode {
+            background-color: #dcfce7 !important;
+            border-color: #22c55e !important;
+            color: #14532d;
+        }
+        .wrong-mode {
+            background-color: #fee2e2 !important;
+            border-color: #ef4444 !important;
+            color: #7f1d1d;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <div class="max-w-4xl mx-auto min-h-screen flex flex-col">
+        <!-- Header -->
+        <header class="bg-indigo-700 text-white p-6 shadow-lg sticky top-0 z-30">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h1 class="text-xl md:text-2xl font-bold">Informatika Paket B</h1>
+                    <p class="text-indigo-200 text-sm">Mode Ujian (Sistem Komputer & Ms Word)</p>
+                </div>
+                <div class="bg-white/10 px-4 py-2 rounded-lg border border-white/20 text-center">
+                    <span class="text-xs uppercase tracking-wider opacity-70">Terjawab</span>
+                    <div class="text-xl font-bold"><span id="answered-badge">0</span>/40</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Quiz Area -->
+        <main class="flex-grow p-4 md:p-6 space-y-8 pb-32" id="quiz-container">
+            <!-- Questions will be injected here -->
+        </main>
+
+        <!-- Start Screen -->
+        <div id="start-screen" class="fixed inset-0 bg-white z-50 flex flex-col items-center justify-center p-6 text-center">
+            <div class="w-20 h-20 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center mb-6 text-4xl">💻</div>
+            <h2 class="text-3xl font-bold text-slate-900 mb-3">Siap Ujian Informatika?</h2>
+            <p class="text-slate-500 mb-8 max-w-md">
+                Paket soal ini mencakup Hardware, Software, Antarmuka, Ms Word, dan Bilangan Biner.<br>
+                <b>Skor baru akan muncul setelah kamu selesai.</b>
+            </p>
+            <button onclick="startQuiz()" class="bg-indigo-600 text-white px-10 py-3.5 rounded-full font-bold shadow-xl hover:bg-indigo-700 transition transform hover:scale-105">Mulai Mengerjakan</button>
+        </div>
+
+        <!-- Footer Control -->
+        <div id="controls" class="fixed bottom-0 left-0 w-full bg-white border-t border-slate-200 p-4 shadow-[0_-4px_20px_rgba(0,0,0,0.1)] hidden z-40">
+            <div class="max-w-4xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+                <div class="text-sm text-slate-500 font-medium">
+                    <span id="warning-text">⚠️ Masih ada soal kosong!</span>
+                </div>
+                <button onclick="submitQuiz()" class="w-full md:w-auto bg-green-600 text-white px-8 py-3 rounded-lg font-bold hover:bg-green-700 transition shadow-md flex items-center justify-center gap-2">
+                    Kirim Jawaban
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Result Modal -->
+    <div id="result-modal" class="fixed inset-0 bg-black/70 z-50 hidden flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-2xl p-8 max-w-md w-full text-center shadow-2xl animate-[fadeIn_0.3s_ease-out]">
+            <h2 class="text-2xl font-bold mb-2 text-slate-800">Hasil Ujian</h2>
+            <p class="text-slate-500 mb-6 text-sm">Informatika Kelas 8 - Paket B</p>
+            
+            <div class="text-7xl font-black text-indigo-600 mb-6 tracking-tight" id="final-score">0</div>
+            
+            <div class="grid grid-cols-2 gap-4 mb-8">
+                <div class="bg-green-50 text-green-700 p-3 rounded-xl border border-green-200 font-bold">
+                    <div class="text-xs uppercase opacity-70">Benar</div>
+                    <span id="final-correct" class="text-xl">0</span>
+                </div>
+                <div class="bg-red-50 text-red-700 p-3 rounded-xl border border-red-200 font-bold">
+                    <div class="text-xs uppercase opacity-70">Salah</div>
+                    <span id="final-wrong" class="text-xl">0</span>
+                </div>
+            </div>
+            <button onclick="closeResult()" class="w-full bg-slate-800 text-white py-3.5 rounded-xl font-bold hover:bg-slate-900 transition">Lihat Pembahasan</button>
+        </div>
+    </div>
+
+<script>
+// --- DATA SOAL PAKET B (BARU) ---
+const questions = [
+    // --- HARDWARE & SOFTWARE (1-6) ---
+    {
+        no: 1,
+        text: "Perangkat keras yang berfungsi untuk menyimpan data secara permanen meskipun komputer dimatikan adalah...",
+        options: ["RAM", "Harddisk / SSD", "CPU", "VGA Card"],
+        correct: 1,
+        desc: "Harddisk/SSD adalah media penyimpanan sekunder (permanen). RAM bersifat sementara (volatile)."
+    },
+    {
+        no: 2,
+        text: "Scanner dan Webcam termasuk ke dalam kelompok perangkat...",
+        options: ["Input (Masukan)", "Output (Keluaran)", "Proses", "Storage (Penyimpanan)"],
+        correct: 0,
+        desc: "Scanner dan Webcam digunakan untuk memasukkan data (gambar/video) ke komputer."
+    },
+    {
+        no: 3,
+        text: "Contoh perangkat lunak (software) yang bersifat 'Open Source' (kode sumber terbuka) adalah...",
+        options: ["Microsoft Windows", "Adobe Photoshop", "Linux Ubuntu", "Microsoft Office"],
+        correct: 2,
+        desc: "Linux adalah sistem operasi open source yang gratis dan bisa dimodifikasi."
+    },
+    {
+        no: 4,
+        text: "Otak dari komputer yang menjalankan instruksi program disebut...",
+        options: ["Monitor", "Processor (CPU)", "Keyboard", "Printer"],
+        correct: 1,
+        desc: "CPU (Central Processing Unit) adalah otak pemroses data."
+    },
+    {
+        no: 5,
+        text: "Program jahat yang dapat merusak sistem komputer atau mencuri data disebut...",
+        options: ["Hardware", "Malware", "Freeware", "Shareware"],
+        correct: 1,
+        desc: "Malware (Malicious Software) mencakup virus, worm, trojan, dll."
+    },
+    {
+        no: 6,
+        text: "Perangkat output yang berfungsi mengeluarkan suara adalah...",
+        options: ["Microphone", "Speaker", "Scanner", "Mouse"],
+        correct: 1,
+        desc: "Speaker mengubah sinyal listrik menjadi gelombang suara (Output)."
+    },
+
+    // --- ANTARMUKA (7-13, 19-23) ---
+    {
+        no: 7,
+        text: "Tampilan antarmuka DOS (Disk Operating System) yang layar hitam dengan tulisan putih termasuk jenis...",
+        options: ["GUI", "CLI (Command Line Interface)", "VUI", "Touchscreen"],
+        correct: 1,
+        desc: "DOS menggunakan baris perintah teks (CLI)."
+    },
+    {
+        no: 8,
+        text: "Teknologi 'Face ID' pada smartphone untuk membuka kunci layar termasuk jenis interaksi...",
+        options: ["Berbasis Teks", "Berbasis Menu", "Berbasis Biometrik/Video", "Berbasis Suara"],
+        correct: 2,
+        desc: "Face ID menggunakan pengenalan wajah (Biometrik/Video)."
+    },
+    {
+        no: 9,
+        text: "Kelebihan utama CLI (Command Line Interface) bagi programmer adalah...",
+        options: ["Tampilan lebih berwarna", "Lebih berat dijalankan", "Akses sistem lebih cepat dan ringan", "Mudah untuk pemula"],
+        correct: 2,
+        desc: "CLI sangat ringan (hemat memori) dan cepat untuk eksekusi perintah sistem."
+    },
+    {
+        no: 10,
+        text: "Contoh VUI (Voice User Interface) yang populer buatan Apple adalah...",
+        options: ["Cortana", "Alexa", "Siri", "Google Assistant"],
+        correct: 2,
+        desc: "Siri adalah asisten suara dari Apple."
+    },
+    {
+        no: 11,
+        text: "Interaksi 'Drag and Drop' (seret dan lepas) file paling sering ditemukan pada antarmuka...",
+        options: ["GUI (Graphical)", "CLI (Command Line)", "VUI (Voice)", "Bios"],
+        correct: 0,
+        desc: "Drag and drop adalah fitur khas antarmuka grafis (GUI) menggunakan mouse."
+    },
+    {
+        no: 12,
+        text: "Mesin kasir layar sentuh di restoran cepat saji menggunakan antarmuka...",
+        options: ["CLI", "Touchscreen GUI", "Command Prompt", "Audio Only"],
+        correct: 1,
+        desc: "Menggunakan GUI yang dioptimalkan untuk sentuhan."
+    },
+    {
+        no: 13,
+        text: "Di bawah ini yang BUKAN elemen dari GUI adalah...",
+        options: ["Icon", "Window", "Cursor", "Ketik Perintah Manual"],
+        correct: 3,
+        desc: "Mengetik perintah manual adalah ciri khas CLI."
+    },
+
+    // --- MS WORD & TEKNOLOGI (14-18, 26-37) ---
+    {
+        no: 14,
+        text: "Untuk mengatur orientasi kertas menjadi mendatar (lebar ke samping), kita pilih opsi...",
+        options: ["Portrait", "Landscape", "Vertical", "Square"],
+        correct: 1,
+        desc: "Landscape = Mendatar. Portrait = Tegak."
+    },
+    {
+        no: 15,
+        text: "Shortcut untuk memilih semua teks dalam dokumen (Select All) adalah...",
+        options: ["Ctrl + S", "Ctrl + A", "Ctrl + C", "Ctrl + B"],
+        correct: 1,
+        desc: "Ctrl + A (All) untuk memblok semua."
+    },
+    {
+        no: 16,
+        text: "Menu untuk membuat huruf menjadi miring adalah...",
+        options: ["Bold", "Underline", "Italic", "Strike"],
+        correct: 2,
+        desc: "Italic (I) untuk memiringkan teks."
+    },
+    {
+        no: 17,
+        text: "Fitur 'Page Number' di Ms Word berfungsi untuk...",
+        options: ["Menghitung jumlah kata", "Memberi nomor halaman otomatis", "Mengubah warna kertas", "Membuat tabel"],
+        correct: 1,
+        desc: "Page Number memberi nomor urut halaman secara otomatis."
+    },
+    {
+        no: 18,
+        text: "Ikon 'Disket' pada pojok kiri atas jendela Ms Word berfungsi untuk...",
+        options: ["Mencetak (Print)", "Menyimpan (Save)", "Membuka (Open)", "Keluar (Exit)"],
+        correct: 1,
+        desc: "Ikon disket adalah simbol universal untuk Save."
+    },
+    {
+        no: 19,
+        text: "Perintah CLI 'mkdir' biasanya digunakan untuk...",
+        options: ["Menghapus file", "Membuat folder (directory) baru", "Melihat isi folder", "Menyalin file"],
+        correct: 1,
+        desc: "mkdir = make directory (buat folder)."
+    },
+    {
+        no: 20,
+        text: "Antarmuka yang digunakan pilot di kokpit pesawat dengan banyak tombol fisik disebut...",
+        options: ["Touchscreen", "Hardware Interface (Panel Fisik)", "VUI", "CLI"],
+        correct: 1,
+        desc: "Tombol, tuas, dan saklar adalah antarmuka fisik (Hardware)."
+    },
+    {
+        no: 21,
+        text: "Layar monitor termasuk perangkat...",
+        options: ["Input", "Output", "Proses", "Storage"],
+        correct: 1,
+        desc: "Monitor menampilkan hasil pemrosesan (Output visual)."
+    },
+    {
+        no: 22,
+        text: "Flashdisk digunakan untuk...",
+        options: ["Memproses data", "Menyimpan data portabel", "Mencetak data", "Mereka suara"],
+        correct: 1,
+        desc: "Storage device yang mudah dibawa."
+    },
+    {
+        no: 23,
+        text: "Shortcut Ctrl + P digunakan untuk...",
+        options: ["Paste", "Print (Cetak)", "Paragraf", "Picture"],
+        correct: 1,
+        desc: "P = Print."
+    },
+
+    // --- BILANGAN BINER (24-25, 39-40) ---
+    {
+        no: 24,
+        text: "Sistem bilangan yang menggunakan basis 10 (angka 0-9) disebut...",
+        options: ["Biner", "Oktal", "Desimal", "Heksadesimal"],
+        correct: 2,
+        desc: "Desimal adalah sistem bilangan sehari-hari (basis 10)."
+    },
+    {
+        no: 25,
+        text: "Konversi bilangan biner 11 ke desimal adalah...",
+        options: ["2", "3", "4", "1"],
+        correct: 1,
+        desc: "11 = (1x2) + (1x1) = 2 + 1 = 3."
+    },
+
+    // --- MS WORD LANJUTAN ---
+    {
+        no: 26,
+        text: "Shortcut Ctrl + X berfungsi untuk...",
+        options: ["Copy (Salin)", "Paste (Tempel)", "Cut (Potong)", "Undo"],
+        correct: 2,
+        desc: "X (seperti gunting) = Cut."
+    },
+    {
+        no: 27,
+        text: "Untuk meratakan teks di tengah halaman (Center), kita tekan...",
+        options: ["Ctrl + L", "Ctrl + R", "Ctrl + E", "Ctrl + J"],
+        correct: 2,
+        desc: "Ctrl + E = Center (L=Left, R=Right, J=Justify)."
+    },
+    {
+        no: 28,
+        text: "Header biasanya berisi informasi yang terletak di...",
+        options: ["Bawah halaman", "Tengah halaman", "Atas halaman", "Samping halaman"],
+        correct: 2,
+        desc: "Header (Kepala) ada di margin atas."
+    },
+    {
+        no: 29,
+        text: "Footer terletak di...",
+        options: ["Margin Atas", "Margin Bawah", "Margin Kiri", "Tengah"],
+        correct: 1,
+        desc: "Footer (Kaki) ada di margin bawah."
+    },
+    {
+        no: 30,
+        text: "Tab 'Insert' digunakan untuk menambahkan objek berikut, KECUALI...",
+        options: ["Gambar (Picture)", "Tabel", "Bentuk (Shape)", "Mematikan komputer"],
+        correct: 3,
+        desc: "Insert untuk menyisipkan konten ke dokumen."
+    },
+    {
+        no: 31,
+        text: "Shortcut Ctrl + U berfungsi untuk...",
+        options: ["Underline (Garis Bawah)", "Undo", "Upload", "Update"],
+        correct: 0,
+        desc: "U = Underline."
+    },
+    {
+        no: 32,
+        text: "Ctrl + I digunakan untuk...",
+        options: ["Indent", "Italic (Miring)", "Insert", "Image"],
+        correct: 1,
+        desc: "I = Italic."
+    },
+    {
+        no: 33,
+        text: "Jika ingin membuat daftar poin-poin, kita menggunakan fitur...",
+        options: ["Numbering", "Bullets", "Spacing", "Shading"],
+        correct: 1,
+        desc: "Bullets untuk daftar simbol titik/bulat."
+    },
+    {
+        no: 34,
+        text: "Untuk membatalkan perintah terakhir (Undo), tekan...",
+        options: ["Ctrl + Y", "Ctrl + Z", "Ctrl + U", "Ctrl + B"],
+        correct: 1,
+        desc: "Ctrl + Z = Undo."
+    },
+    {
+        no: 35,
+        text: "Watermark digunakan untuk...",
+        options: ["Memberi nomor halaman", "Memberi tanda air/latar belakang transparan", "Membuat tabel", "Menghapus teks"],
+        correct: 1,
+        desc: "Watermark adalah teks/gambar samar di belakang dokumen."
+    },
+    {
+        no: 36,
+        text: "Menu 'Margins' terdapat pada Tab...",
+        options: ["Home", "Insert", "Layout", "View"],
+        correct: 2,
+        desc: "Margins (batas kertas) ada di Tab Layout."
+    },
+    {
+        no: 37,
+        text: "Untuk menutup aplikasi Ms Word secara cepat, bisa menggunakan tombol...",
+        options: ["Alt + F4", "Ctrl + C", "F5", "Esc"],
+        correct: 0,
+        desc: "Alt + F4 menutup jendela aktif."
+    },
+    {
+        no: 38,
+        text: "Keyboard dan Mouse termasuk perangkat...",
+        options: ["Output", "Input", "Proses", "Network"],
+        correct: 1,
+        desc: "Alat untuk memasukkan perintah."
+    },
+    
+    // --- BINER LANJUTAN ---
+    {
+        no: 39,
+        text: "Bilangan biner 1000 jika didesimalkan menjadi...",
+        options: ["4", "6", "8", "10"],
+        correct: 2,
+        desc: "1000 = 1x8 + 0 + 0 + 0 = 8."
+    },
+    {
+        no: 40,
+        text: "Bilangan desimal 5 jika diubah ke biner adalah...",
+        options: ["101", "110", "111", "100"],
+        correct: 0,
+        desc: "5 = 4 + 1 = (1x4) + (0x2) + (1x1) = 101."
+    }
+];
+
+// --- LOGIC ---
+let userAnswers = new Array(questions.length).fill(null);
+let shuffledQuestions = [];
+let isSubmitted = false;
+
+// Shuffle function for options
+function shuffle(array, correctIndex) {
+    const originalCorrect = array[correctIndex];
+    let currentIndex = array.length, randomIndex;
+    while (currentIndex != 0) {
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex--;
+        [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+    }
+    return array.indexOf(originalCorrect);
+}
+
+function startQuiz() {
+    // Clone and shuffle options only
+    shuffledQuestions = questions.map(q => {
+        const options = [...q.options];
+        const newCorrect = shuffle(options, q.correct);
+        return { ...q, options: options, correct: newCorrect };
+    });
+
+    document.getElementById('start-screen').classList.add('hidden');
+    document.getElementById('controls').classList.remove('hidden');
+    renderQuestions();
+    window.scrollTo(0,0);
+}
+
+function renderQuestions() {
+    const container = document.getElementById('quiz-container');
+    container.innerHTML = shuffledQuestions.map((q, i) => `
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200" id="card-${i}">
+            <div class="flex items-start gap-4">
+                <div class="bg-indigo-100 text-indigo-700 font-bold w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 border border-indigo-200">
+                    ${q.no}
+                </div>
+                <div class="w-full">
+                    <p class="text-lg font-semibold mb-4 text-slate-800">${q.text}</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3" id="options-group-${i}">
+                        ${q.options.map((opt, j) => `
+                            <div class="option-card p-4 rounded-xl flex items-center gap-3 relative" onclick="selectOption(${i}, ${j})">
+                                <div class="w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center dot transition-colors"></div>
+                                <span class="text-base font-medium">${opt}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <!-- Feedback (Hidden) -->
+                    <div id="feedback-${i}" class="hidden mt-6 p-4 rounded-xl text-sm border font-medium">
+                        <strong class="block mb-1 text-xs uppercase tracking-wider opacity-70">Pembahasan</strong>
+                        <p>${q.desc}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+function selectOption(qIndex, optIndex) {
+    if(isSubmitted) return;
+
+    userAnswers[qIndex] = optIndex;
+    
+    // UI Update
+    const group = document.getElementById(`options-group-${qIndex}`);
+    const cards = group.getElementsByClassName('option-card');
+    
+    for (let card of cards) {
+        card.classList.remove('option-selected');
+        card.querySelector('.dot').style.backgroundColor = 'transparent';
+        card.querySelector('.dot').style.borderColor = '#cbd5e1';
+    }
+    
+    const selected = cards[optIndex];
+    selected.classList.add('option-selected');
+    
+    updateProgress();
+}
+
+function updateProgress() {
+    const count = userAnswers.filter(a => a !== null).length;
+    document.getElementById('answered-badge').innerText = count;
+    
+    const warning = document.getElementById('warning-text');
+    if(count === questions.length) {
+        warning.innerHTML = "<span class='text-green-600'>✓ Semua soal terjawab!</span>";
+    } else {
+        warning.innerHTML = `⚠️ Masih ada <span class='font-bold'>${questions.length - count}</span> soal kosong!`;
+    }
+}
+
+function submitQuiz() {
+    const unanswered = userAnswers.filter(a => a === null).length;
+    if (unanswered > 0) {
+        if (!confirm(`Masih ada ${unanswered} soal belum dijawab. Yakin mau mengumpulkan?`)) return;
+    } else {
+        if (!confirm("Yakin ingin mengumpulkan jawaban?")) return;
+    }
+
+    isSubmitted = true;
+    let score = 0, correct = 0, wrong = 0;
+
+    shuffledQuestions.forEach((q, i) => {
+        const selected = userAnswers[i];
+        const feedback = document.getElementById(`feedback-${i}`);
+        const cards = document.querySelectorAll(`#options-group-${i} .option-card`);
+
+        feedback.classList.remove('hidden');
+        
+        cards.forEach((card, idx) => {
+            card.style.cursor = 'default';
+            // Logic Coloring
+            if (idx === q.correct) {
+                // Correct Answer
+                card.classList.add('correct-mode');
+                card.querySelector('.dot').style.backgroundColor = '#22c55e';
+                card.querySelector('.dot').style.borderColor = '#22c55e';
+            } else if (idx === selected) {
+                // User Selected Wrong
+                card.classList.add('wrong-mode');
+                card.querySelector('.dot').style.backgroundColor = '#ef4444';
+                card.querySelector('.dot').style.borderColor = '#ef4444';
+            }
+        });
+
+        if (selected === q.correct) {
+            score++; correct++;
+            feedback.classList.add('bg-green-50', 'text-green-800', 'border-green-200');
+        } else {
+            wrong++;
+            feedback.classList.add('bg-red-50', 'text-red-800', 'border-red-200');
+        }
+    });
+
+    const finalScore = Math.round((score / questions.length) * 100);
+    document.getElementById('final-score').innerText = finalScore;
+    document.getElementById('final-correct').innerText = correct;
+    document.getElementById('final-wrong').innerText = wrong;
+    
+    document.getElementById('result-modal').classList.remove('hidden');
+    document.getElementById('controls').classList.add('hidden');
+}
+
+function closeResult() {
+    document.getElementById('result-modal').classList.add('hidden');
+    window.scrollTo({top:0, behavior:'smooth'});
+}
+</script>
+</body>
+</html>
+
+

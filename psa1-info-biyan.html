@@ -3,305 +3,499 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rangkuman Informatika Kelas 8 - PAS Genap</title>
-    
-    <!-- Tailwind CSS -->
+    <title>Latihan Soal Informatika Kelas VIII - PAS Genap</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- KaTeX for Math Formulas -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
-    
-    <!-- Mermaid.js for Diagrams -->
-    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
-
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; scroll-behavior: smooth; }
-        .card { @apply bg-white rounded-xl shadow-md p-6 mb-6 border-l-4 border-indigo-500; }
-        .card-header { @apply text-xl font-bold text-gray-800 mb-4 flex items-center gap-2 border-b pb-2; }
-        .highlight { @apply bg-indigo-100 text-indigo-800 px-1 rounded font-semibold; }
-        .video-btn { @apply inline-flex items-center gap-2 bg-red-600 text-white px-4 py-2 rounded-full hover:bg-red-700 transition text-sm font-medium no-underline mt-4; }
-        .shortcut-key { @apply bg-gray-100 border border-gray-300 rounded px-2 py-0.5 font-mono text-sm text-gray-700 shadow-sm; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .option-label { cursor: pointer; transition: all 0.2s; }
+        .option-input:checked + .option-label {
+            background-color: #ede9fe; /* violet-100 */
+            border-color: #8b5cf6; /* violet-500 */
+            color: #5b21b6; /* violet-800 */
+        }
+        .correct-answer { background-color: #d1fae5 !important; border-color: #10b981 !important; color: #065f46 !important; }
+        .wrong-answer { background-color: #fee2e2 !important; border-color: #ef4444 !important; color: #991b1b !important; }
+        
+        .question-card {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-700">
+<body class="bg-slate-50 text-slate-800">
 
-    <!-- Navigation -->
-    <nav class="bg-indigo-700 text-white p-4 sticky top-0 z-50 shadow-lg">
-        <div class="max-w-5xl mx-auto flex justify-between items-center">
-            <h1 class="text-xl font-bold flex items-center gap-2">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.384-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
-                Informatika Kelas 8
-            </h1>
-            <div class="hidden md:flex gap-4 text-sm font-medium">
-                <a href="#sistem" class="hover:text-indigo-200 transition">Sistem Komputer</a>
-                <a href="#antarmuka" class="hover:text-indigo-200 transition">Antarmuka (GUI/CLI)</a>
-                <a href="#word" class="hover:text-indigo-200 transition">Ms. Word</a>
-                <a href="#bilangan" class="hover:text-indigo-200 transition">Sistem Bilangan</a>
-            </div>
-        </div>
-    </nav>
-
-    <main class="max-w-5xl mx-auto p-4 md:p-8">
-
-        <!-- INTRO -->
-        <div class="bg-indigo-50 border border-indigo-200 p-6 rounded-xl mb-8 flex gap-4 items-start">
-            <div class="text-3xl">💡</div>
+    <!-- Header -->
+    <header class="bg-violet-700 text-white p-6 shadow-md sticky top-0 z-50">
+        <div class="max-w-4xl mx-auto flex justify-between items-center">
             <div>
-                <h3 class="font-bold text-indigo-900 text-lg">Panduan Belajar PAS</h3>
-                <p class="text-indigo-800 text-sm mt-1">
-                    Materi ini disusun berdasarkan kisi-kisi: Sistem Komputer, Antarmuka, Microsoft Word, dan Konversi Bilangan Biner.
-                    Pelajari diagram dan hafalkan shortcut Ms Word!
-                </p>
+                <h1 class="text-2xl font-bold">Latihan Informatika</h1>
+                <p class="text-sm opacity-90">Kelas VIII - Berdasarkan Kisi-Kisi PAS</p>
             </div>
         </div>
+    </header>
 
-        <!-- BAGIAN 1: SISTEM KOMPUTER -->
-        <section id="sistem">
-            <h2 class="text-2xl font-bold text-indigo-800 mb-4 pl-2 border-l-4 border-indigo-600">1. Sistem Komputer</h2>
-            
-            <div class="card">
-                <h3 class="card-header">💻 Komponen Utama</h3>
-                <p class="mb-4">Sistem komputer terdiri dari 3 elemen utama yang saling bekerja sama:</p>
-                
-                <div class="mermaid text-center mb-6">
-                    graph TD
-                    A[Sistem Komputer] --> B(Hardware<br>Perangkat Keras)
-                    A --> C(Software<br>Perangkat Lunak)
-                    A --> D(Brainware<br>Pengguna)
-                    
-                    B --> B1[Input Device<br>Keyboard, Mouse]
-                    B --> B2[Process Device<br>CPU, RAM]
-                    B --> B3[Output Device<br>Monitor, Printer]
-                    B --> B4[Storage<br>Harddisk, Flashdisk]
-                    
-                    style A fill:#e0e7ff,stroke:#4338ca,stroke-width:2px
-                    style B fill:#fee2e2,stroke:#b91c1c
-                    style C fill:#dcfce7,stroke:#15803d
-                    style D fill:#fef3c7,stroke:#b45309
-                </div>
-
-                <div class="grid md:grid-cols-2 gap-4 mt-4">
-                    <div class="bg-gray-50 p-4 rounded border">
-                        <strong class="text-indigo-600 block mb-2">Perangkat Keras (Hardware)</strong>
-                        <ul class="list-disc ml-5 text-sm space-y-1">
-                            <li><strong>Input:</strong> Masukkan data (Keyboard, Mic, Scanner).</li>
-                            <li><strong>Output:</strong> Keluarkan hasil (Monitor, Speaker, Printer).</li>
-                            <li><strong>Proses:</strong> Otak komputer (CPU/Processor).</li>
-                        </ul>
-                    </div>
-                    <div class="bg-gray-50 p-4 rounded border">
-                        <strong class="text-indigo-600 block mb-2">Perangkat Lunak (Software)</strong>
-                        <ul class="list-disc ml-5 text-sm space-y-1">
-                            <li><strong>Sistem Operasi:</strong> Windows, Linux, macOS, Android.</li>
-                            <li><strong>Aplikasi:</strong> Ms Word (Ngetik), Chrome (Internet).</li>
-                        </ul>
-                    </div>
-                </div>
+    <!-- Main Content -->
+    <main class="max-w-4xl mx-auto p-4 md:p-6 min-h-screen">
+        
+        <!-- Start Screen -->
+        <div id="start-screen" class="bg-white rounded-xl shadow-lg p-8 text-center mt-10 border border-violet-100">
+            <div class="mb-6 bg-violet-100 w-24 h-24 mx-auto rounded-full flex items-center justify-center text-violet-600">
+                <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
             </div>
-        </section>
+            <h2 class="text-3xl font-bold mb-4 text-slate-800">Siap Ujian Informatika?</h2>
+            <p class="text-slate-600 mb-6 leading-relaxed">
+                Latihan ini terdiri dari <b>40 Soal Pilihan Ganda</b>.<br>
+                Materi: Hardware/Software, Antarmuka (GUI, CLI, VUI), Ms Word, dan Sistem Bilangan.
+            </p>
+            <button onclick="startQuiz()" class="bg-violet-600 hover:bg-violet-700 text-white font-bold py-3 px-8 rounded-full text-lg shadow-lg transition transform hover:scale-105 active:scale-95">
+                Mulai Mengerjakan
+            </button>
+        </div>
 
-        <!-- BAGIAN 2: APLIKASI ANTARMUKA -->
-        <section id="antarmuka">
-            <h2 class="text-2xl font-bold text-indigo-800 mb-4 pl-2 border-l-4 border-indigo-600">2. Antarmuka (User Interface)</h2>
+        <!-- Quiz Container -->
+        <div id="quiz-container" class="hidden space-y-8 pb-20">
+            <!-- Questions will be injected here via JS -->
+        </div>
 
-            <div class="card">
-                <h3 class="card-header">📱 Jenis-Jenis Antarmuka</h3>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-sm text-left border-collapse">
-                        <thead>
-                            <tr class="bg-indigo-50 text-indigo-900">
-                                <th class="p-3 border">Jenis</th>
-                                <th class="p-3 border">Kepanjangan</th>
-                                <th class="p-3 border">Ciri Utama</th>
-                                <th class="p-3 border">Contoh</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="p-3 border font-bold">GUI</td>
-                                <td class="p-3 border">Graphical User Interface</td>
-                                <td class="p-3 border">Grafis, Ikon, Menu, Jendela. Mudah digunakan (User Friendly).</td>
-                                <td class="p-3 border">Windows 10, Android, iOS.</td>
-                            </tr>
-                            <tr class="bg-gray-50">
-                                <td class="p-3 border font-bold">CLI</td>
-                                <td class="p-3 border">Command Line Interface</td>
-                                <td class="p-3 border">Berbasis Teks. User mengetik perintah (kode).</td>
-                                <td class="p-3 border">CMD, Terminal Linux, MS-DOS.</td>
-                            </tr>
-                            <tr>
-                                <td class="p-3 border font-bold">VUI</td>
-                                <td class="p-3 border">Voice User Interface</td>
-                                <td class="p-3 border">Berbasis Suara.</td>
-                                <td class="p-3 border">Google Assistant, Siri, Alexa.</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="mt-4 p-4 bg-yellow-50 rounded border border-yellow-200 text-sm">
-                    <strong>Penting:</strong> GUI lebih disukai pengguna umum karena visualnya, sedangkan CLI disukai teknisi jaringan/server karena cepat dan ringan.
-                </div>
-                <a href="https://www.youtube.com/results?search_query=jenis+user+interface+informatika+kelas+7" target="_blank" class="video-btn">
-                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
-                    Video Penjelasan UI
-                </a>
+        <!-- Result Container -->
+        <div id="result-container" class="hidden bg-white rounded-xl shadow-lg p-8 text-center mt-10 mb-10 border border-violet-100">
+            <h2 class="text-3xl font-bold mb-2">Hasil Latihan</h2>
+            <div class="text-6xl font-extrabold text-violet-600 mb-4" id="score-display">0</div>
+            <p class="text-slate-600 mb-6" id="score-text">Nilai Akhir Kamu</p>
+            <div class="flex justify-center gap-4 text-sm font-semibold mb-6">
+                <div class="text-green-700 bg-green-100 px-4 py-2 rounded-lg border border-green-200">Benar: <span id="correct-count">0</span></div>
+                <div class="text-red-700 bg-red-100 px-4 py-2 rounded-lg border border-red-200">Salah: <span id="wrong-count">0</span></div>
             </div>
-        </section>
-
-        <!-- BAGIAN 3: MICROSOFT WORD -->
-        <section id="word">
-            <h2 class="text-2xl font-bold text-indigo-800 mb-4 pl-2 border-l-4 border-indigo-600">3. Microsoft Word</h2>
-
-            <div class="card">
-                <h3 class="card-header">⌨️ Shortcut Penting</h3>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-center">
-                    <div class="bg-gray-50 p-3 rounded hover:bg-gray-100 transition">
-                        <span class="shortcut-key">Ctrl + C</span>
-                        <div class="text-xs mt-1 text-gray-500">Copy (Salin)</div>
-                    </div>
-                    <div class="bg-gray-50 p-3 rounded hover:bg-gray-100 transition">
-                        <span class="shortcut-key">Ctrl + V</span>
-                        <div class="text-xs mt-1 text-gray-500">Paste (Tempel)</div>
-                    </div>
-                    <div class="bg-gray-50 p-3 rounded hover:bg-gray-100 transition">
-                        <span class="shortcut-key">Ctrl + X</span>
-                        <div class="text-xs mt-1 text-gray-500">Cut (Potong)</div>
-                    </div>
-                    <div class="bg-gray-50 p-3 rounded hover:bg-gray-100 transition">
-                        <span class="shortcut-key">Ctrl + Z</span>
-                        <div class="text-xs mt-1 text-gray-500">Undo (Batal)</div>
-                    </div>
-                    <div class="bg-gray-50 p-3 rounded hover:bg-gray-100 transition">
-                        <span class="shortcut-key">Ctrl + S</span>
-                        <div class="text-xs mt-1 text-gray-500">Save (Simpan)</div>
-                    </div>
-                    <div class="bg-gray-50 p-3 rounded hover:bg-gray-100 transition">
-                        <span class="shortcut-key">Ctrl + P</span>
-                        <div class="text-xs mt-1 text-gray-500">Print (Cetak)</div>
-                    </div>
-                    <div class="bg-gray-50 p-3 rounded hover:bg-gray-100 transition">
-                        <span class="shortcut-key">Ctrl + B</span>
-                        <div class="text-xs mt-1 text-gray-500">Bold (Tebal)</div>
-                    </div>
-                    <div class="bg-gray-50 p-3 rounded hover:bg-gray-100 transition">
-                        <span class="shortcut-key">Ctrl + I</span>
-                        <div class="text-xs mt-1 text-gray-500">Italic (Miring)</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card">
-                <h3 class="card-header">📝 Fitur & Tata Letak</h3>
-                <ul class="list-none space-y-3">
-                    <li class="flex items-start gap-3">
-                        <span class="bg-blue-100 text-blue-800 p-1 rounded">📄</span>
-                        <div>
-                            <strong>Header & Footer:</strong>
-                            <p class="text-sm text-gray-600">Header (Atas) untuk kop surat. Footer (Bawah) untuk nomor halaman. Muncul berulang di tiap halaman.</p>
-                        </div>
-                    </li>
-                    <li class="flex items-start gap-3">
-                        <span class="bg-green-100 text-green-800 p-1 rounded">🖼️</span>
-                        <div>
-                            <strong>Insert Tab:</strong>
-                            <p class="text-sm text-gray-600">Tempat menyisipkan <strong>Table</strong>, <strong>Picture</strong> (Gambar), Shape, dan Page Number.</p>
-                        </div>
-                    </li>
-                    <li class="flex items-start gap-3">
-                        <span class="bg-orange-100 text-orange-800 p-1 rounded">📏</span>
-                        <div>
-                            <strong>Layout Tab:</strong>
-                            <p class="text-sm text-gray-600">Mengatur <strong>Margins</strong> (Batas kertas), <strong>Orientation</strong> (Portrait/Landscape), dan <strong>Size</strong> (Ukuran Kertas A4/F4).</p>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </section>
-
-        <!-- BAGIAN 4: SISTEM BILANGAN -->
-        <section id="bilangan">
-            <h2 class="text-2xl font-bold text-indigo-800 mb-4 pl-2 border-l-4 border-indigo-600">4. Sistem Bilangan</h2>
-            
-            <div class="card">
-                <h3 class="card-header">🔢 Konversi Biner ke Desimal</h3>
-                <p class="mb-4">Biner (Basis 2) hanya angka <strong>0 dan 1</strong>. Desimal (Basis 10) adalah angka sehari-hari.</p>
-                
-                <div class="bg-gray-800 text-white p-4 rounded-lg font-mono text-sm mb-4">
-                    Rumus: (Digit x 2 pangkat posisi)<br>
-                    Posisi dihitung dari kanan mulai dari 0.
-                </div>
-
-                <div class="grid md:grid-cols-2 gap-6">
-                    <div>
-                        <h4 class="font-bold text-indigo-600 mb-2">Contoh 1: Biner 101</h4>
-                        <div class="bg-gray-50 p-3 rounded border text-sm">
-                            $$ 101_2 = ..._{10} $$
-                            <br>
-                            $1 \times 2^2 = 1 \times 4 = 4$ <br>
-                            $0 \times 2^1 = 0 \times 2 = 0$ <br>
-                            $1 \times 2^0 = 1 \times 1 = 1$ <br>
-                            ---------------------- + <br>
-                            <strong>Hasil = 5</strong>
-                        </div>
-                    </div>
-                    <div>
-                        <h4 class="font-bold text-indigo-600 mb-2">Contoh 2: Biner 1100</h4>
-                        <div class="bg-gray-50 p-3 rounded border text-sm">
-                            $$ 1100_2 = ..._{10} $$
-                            <br>
-                            $1 \times 2^3 = 8$ <br>
-                            $1 \times 2^2 = 4$ <br>
-                            $0 \times 2^1 = 0$ <br>
-                            $0 \times 2^0 = 0$ <br>
-                            ---------------------- + <br>
-                            <strong>Hasil = 12</strong>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mt-6 border-t pt-4">
-                    <h3 class="font-bold text-gray-800 mb-2">Konversi Desimal ke Biner</h3>
-                    <p class="text-sm mb-2">Caranya: Bagi bilangan dengan 2, tulis sisa baginya (0 atau 1), baca dari bawah ke atas.</p>
-                    <div class="bg-yellow-50 p-3 rounded border text-sm">
-                        <strong>Contoh: Desimal 9</strong>
-                        <ul class="list-none ml-2 mt-1 space-y-1 font-mono">
-                            <li>9 : 2 = 4 (sisa <strong>1</strong>)</li>
-                            <li>4 : 2 = 2 (sisa <strong>0</strong>)</li>
-                            <li>2 : 2 = 1 (sisa <strong>0</strong>)</li>
-                            <li>1 : 2 = 0 (sisa <strong>1</strong>)</li>
-                        </ul>
-                        <p class="mt-2 font-bold">Hasil (baca dari bawah): 1001</p>
-                    </div>
-                </div>
-                 <a href="https://www.youtube.com/results?search_query=cara+konversi+bilangan+biner+ke+desimal" target="_blank" class="video-btn">
-                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
-                    Tonton Tutorial Konversi
-                </a>
-            </div>
-        </section>
+            <p class="text-sm text-slate-500 mb-6">Scroll ke atas untuk melihat kunci jawaban dan pembahasan.</p>
+            <button onclick="location.reload()" class="bg-slate-800 hover:bg-slate-900 text-white font-bold py-3 px-6 rounded-lg transition">
+                Ulangi Latihan
+            </button>
+        </div>
 
     </main>
 
-    <footer class="bg-gray-800 text-white text-center p-6 mt-12">
-        <p class="opacity-75">Dibuat untuk persiapan PAS Genap Informatika Kelas 8.</p>
-    </footer>
+    <!-- Floating Submit Button -->
+    <div id="submit-bar" class="fixed bottom-0 left-0 w-full bg-white border-t border-slate-200 p-4 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] hidden z-40">
+        <div class="max-w-4xl mx-auto flex justify-between items-center">
+            <span class="text-sm text-slate-500 font-medium hidden md:inline">Periksa kembali jawabanmu sebelum mengirim.</span>
+            <button onclick="submitQuiz()" class="w-full md:w-auto bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-lg shadow-md transition transform hover:-translate-y-0.5">
+                Kirim Jawaban
+            </button>
+        </div>
+    </div>
 
-    <!-- Initializing Scripts -->
     <script>
-        // Init Mermaid
-        mermaid.initialize({ startOnLoad: true });
+        // Data Soal Berdasarkan Kisi-Kisi Informatika Kelas 8
+        const questions = [
+            // --- SISTEM DAN JARINGAN KOMPUTER (1-6) ---
+            {
+                no: 1,
+                text: "Komponen fisik komputer yang dapat dilihat dan disentuh disebut...",
+                options: ["Software", "Brainware", "Hardware", "Malware"],
+                correct: 2,
+                desc: "Hardware (perangkat keras) adalah komponen fisik komputer seperti monitor, CPU, keyboard, dll."
+            },
+            {
+                no: 2,
+                text: "Perangkat keras yang berfungsi untuk memasukkan data ke dalam komputer disebut...",
+                options: ["Output Device", "Input Device", "Storage Device", "Processing Device"],
+                correct: 1,
+                desc: "Input Device (perangkat masukan) contohnya keyboard, mouse, scanner, microphone."
+            },
+            {
+                no: 3,
+                text: "Berikut ini yang termasuk perangkat lunak sistem operasi adalah...",
+                options: ["Microsoft Word", "Google Chrome", "Windows 10", "Adobe Photoshop"],
+                correct: 2,
+                desc: "Windows 10 adalah sistem operasi. Ms Word (Aplikasi pengolah kata), Chrome (Browser), Photoshop (Editor gambar)."
+            },
+            {
+                no: 4,
+                text: "Perangkat yang berfungsi sebagai 'otak' komputer untuk memproses data adalah...",
+                options: ["Harddisk", "RAM", "CPU (Processor)", "Monitor"],
+                correct: 2,
+                desc: "CPU (Central Processing Unit) bertugas memproses instruksi dan data dalam komputer."
+            },
+            {
+                no: 5,
+                text: "Fungsi utama dari perangkat lunak aplikasi adalah...",
+                options: ["Mengelola sumber daya hardware", "Membantu pengguna menyelesaikan tugas tertentu", "Menghubungkan komputer dengan listrik", "Menyimpan data secara permanen"],
+                correct: 1,
+                desc: "Software aplikasi dibuat untuk membantu user mengerjakan tugas spesifik (mengetik, desain, browsing)."
+            },
+            {
+                no: 6,
+                text: "Contoh perangkat output (keluaran) yang menghasilkan cetakan pada kertas adalah...",
+                options: ["Scanner", "Printer", "Monitor", "Speaker"],
+                correct: 1,
+                desc: "Printer adalah perangkat output yang mencetak dokumen digital ke media kertas."
+            },
 
-        // Init KaTeX
-        document.addEventListener("DOMContentLoaded", function() {
-            renderMathInElement(document.body, {
-                delimiters: [
-                    {left: "$$", right: "$$", display: true},
-                    {left: "$", right: "$", display: false}
-                ]
+            // --- APLIKASI ANTARMUKA (7-13, 19-23) ---
+            {
+                no: 7,
+                text: "Antarmuka pengguna yang memungkinkan interaksi melalui ikon, menu, dan grafik disebut...",
+                options: ["CLI (Command Line Interface)", "GUI (Graphical User Interface)", "VUI (Voice User Interface)", "TUI (Text User Interface)"],
+                correct: 1,
+                desc: "GUI menggunakan elemen grafis seperti ikon dan jendela agar mudah digunakan (contoh: Windows, Android)."
+            },
+            {
+                no: 8,
+                text: "Siri, Google Assistant, dan Alexa adalah contoh penerapan antarmuka berbasis...",
+                options: ["Gambar (GUI)", "Teks (CLI)", "Suara (VUI)", "Sentuhan (Touchscreen)"],
+                correct: 2,
+                desc: "VUI (Voice User Interface) memungkinkan interaksi menggunakan perintah suara."
+            },
+            {
+                no: 9,
+                text: "Antarmuka yang mengharuskan pengguna mengetikkan perintah teks (kode) untuk berinteraksi dengan komputer adalah...",
+                options: ["GUI", "VUI", "CLI", "Touchscreen"],
+                correct: 2,
+                desc: "CLI (Command Line Interface) berbasis teks, seperti pada Command Prompt atau Terminal Linux."
+            },
+            {
+                no: 10,
+                text: "Kelebihan utama dari GUI (Graphical User Interface) dibandingkan CLI adalah...",
+                options: ["Lebih cepat untuk ahli komputer", "Menggunakan memori lebih sedikit", "Lebih mudah digunakan oleh pemula (user friendly)", "Hanya bisa digunakan di komputer lama"],
+                correct: 2,
+                desc: "GUI dirancang agar intuitif dan mudah dipahami pengguna awam karena visualnya."
+            },
+            {
+                no: 11,
+                text: "Contoh perangkat yang menggunakan antarmuka berbasis sentuhan (Touchscreen) adalah...",
+                options: ["PC Desktop jadul", "Smartphone", "Mouse", "Keyboard mekanik"],
+                correct: 1,
+                desc: "Smartphone dan Tablet menggunakan antarmuka layar sentuh sebagai input utama."
+            },
+            {
+                no: 12,
+                text: "Aplikasi kalkulator pada HP yang tombol angkanya bisa ditekan di layar termasuk jenis antarmuka...",
+                options: ["GUI (Graphical)", "CLI (Command Line)", "VUI (Voice)", "Hardware"],
+                correct: 0,
+                desc: "Kalkulator di layar HP adalah bentuk GUI yang dioperasikan lewat sentuhan."
+            },
+            {
+                no: 13,
+                text: "Manakah di bawah ini yang BUKAN merupakan contoh sistem operasi berbasis GUI?",
+                options: ["MS-DOS", "Windows 11", "macOS", "Ubuntu Desktop"],
+                correct: 0,
+                desc: "MS-DOS adalah sistem operasi berbasis teks (CLI), sedangkan yang lain berbasis GUI."
+            },
+
+            // --- TEKNOLOGI INFORMASI & MS WORD (14-18) ---
+            {
+                no: 14,
+                text: "Aplikasi Microsoft Word termasuk dalam kategori perangkat lunak...",
+                options: ["Spreadsheet (Pengolah Angka)", "Word Processing (Pengolah Kata)", "Presentation (Presentasi)", "Database"],
+                correct: 1,
+                desc: "Microsoft Word adalah aplikasi pengolah kata untuk membuat dokumen teks."
+            },
+            {
+                no: 15,
+                text: "Fitur di Ms Word yang digunakan untuk menyimpan dokumen yang sudah pernah disimpan dengan nama baru adalah...",
+                options: ["Save", "Save As", "Open", "Print"],
+                correct: 1,
+                desc: "'Save As' digunakan untuk menyimpan ulang dokumen dengan nama atau lokasi yang berbeda."
+            },
+            {
+                no: 16,
+                text: "Ikon 'B' (Bold) pada menu Home berfungsi untuk...",
+                options: ["Memiringkan huruf", "Memberi garis bawah", "Menebalkan huruf", "Mewarnai huruf"],
+                correct: 2,
+                desc: "Bold (Tebal) untuk menebalkan teks. Italic (Miring), Underline (Garis Bawah)."
+            },
+            {
+                no: 17,
+                text: "Untuk mengatur jenis kertas menjadi A4, menu yang dipilih adalah...",
+                options: ["Home -> Font", "Insert -> Table", "Layout -> Size", "View -> Zoom"],
+                correct: 2,
+                desc: "Pengaturan ukuran kertas (Size) terdapat pada tab Layout (atau Page Layout)."
+            },
+            {
+                no: 18,
+                text: "Fungsi dari fitur 'Justify' pada pengaturan paragraf adalah...",
+                options: ["Rata kiri", "Rata kanan", "Rata tengah", "Rata kiri dan kanan"],
+                correct: 3,
+                desc: "Justify membuat teks rata di sisi kiri dan kanan (blok teks rapi)."
+            },
+
+            // --- LANJUTAN ANTARMUKA (19-23) ---
+            {
+                no: 19,
+                text: "Pada antarmuka CLI, perintah 'dir' (di Windows) atau 'ls' (di Linux) biasanya digunakan untuk...",
+                options: ["Menghapus file", "Melihat daftar file dalam folder", "Membuat folder baru", "Mematikan komputer"],
+                correct: 1,
+                desc: "Perintah 'dir' (directory) atau 'ls' (list) berfungsi menampilkan isi direktori/folder."
+            },
+            {
+                no: 20,
+                text: "Penggunaan perintah ketikan (command line) sering disukai oleh administrator jaringan karena...",
+                options: ["Tampilannya lebih indah", "Lebih boros memori", "Bisa melakukan otomatisasi (scripting) dengan cepat", "Lebih lambat prosesnya"],
+                correct: 2,
+                desc: "CLI memungkinkan eksekusi perintah kompleks secara cepat dan otomatisasi script."
+            },
+            {
+                no: 21,
+                text: "Saat kita menggunakan mesin ATM dan menekan tombol di samping layar untuk memilih menu, kita sedang berinteraksi dengan antarmuka...",
+                options: ["Berbasis Menu", "Berbasis Suara", "Berbasis Bahasa Alami", "Berbasis Command"],
+                correct: 0,
+                desc: "ATM menggunakan antarmuka berbasis menu untuk membatasi pilihan agar mudah digunakan."
+            },
+            {
+                no: 22,
+                text: "Interaksi komputer menggunakan gerakan tubuh (gesture) seperti pada permainan Kinect Xbox disebut...",
+                options: ["Natural User Interface (NUI)", "CLI", "Text Interface", "Form Interface"],
+                correct: 0,
+                desc: "NUI adalah antarmuka yang terasa alami, seperti sentuhan atau gerakan tubuh."
+            },
+            {
+                no: 23,
+                text: "Simbol gambar kecil yang mewakili program atau file pada desktop disebut...",
+                options: ["Menu", "Icon", "Window", "Pointer"],
+                correct: 1,
+                desc: "Icon adalah representasi grafis kecil dari sebuah program atau file."
+            },
+
+            // --- SISTEM BILANGAN (24-25) ---
+            {
+                no: 24,
+                text: "Bilangan biner adalah sistem bilangan yang hanya terdiri dari angka...",
+                options: ["0 sampai 9", "0 dan 1", "1 sampai 10", "0 sampai 7"],
+                correct: 1,
+                desc: "Sistem biner (basis 2) hanya menggunakan dua simbol angka: 0 dan 1."
+            },
+            {
+                no: 25,
+                text: "Konversi bilangan biner 101 ke desimal adalah...",
+                options: ["3", "4", "5", "6"],
+                correct: 2,
+                desc: "101 = (1x4) + (0x2) + (1x1) = 4 + 0 + 1 = 5."
+            },
+
+            // --- MS WORD SHORTCUT & HEADER FOOTER (26-35) ---
+            {
+                no: 26,
+                text: "Shortcut keyboard untuk menyalin teks (Copy) adalah...",
+                options: ["Ctrl + C", "Ctrl + V", "Ctrl + X", "Ctrl + P"],
+                correct: 0,
+                desc: "Ctrl+C (Copy), Ctrl+V (Paste), Ctrl+X (Cut), Ctrl+P (Print)."
+            },
+            {
+                no: 27,
+                text: "Untuk menempelkan teks yang sudah disalin (Paste), kita menekan tombol...",
+                options: ["Ctrl + S", "Ctrl + V", "Ctrl + A", "Ctrl + Z"],
+                correct: 1,
+                desc: "Ctrl + V digunakan untuk Paste."
+            },
+            {
+                no: 28,
+                text: "Fungsi shortcut Ctrl + Z adalah...",
+                options: ["Redo", "Save", "Undo (Membatalkan perintah)", "Cut"],
+                correct: 2,
+                desc: "Undo (membatalkan aksi terakhir) menggunakan Ctrl + Z."
+            },
+            {
+                no: 29,
+                text: "Bagian dokumen yang terletak di margin atas dan muncul di setiap halaman disebut...",
+                options: ["Footer", "Header", "Footnote", "Endnote"],
+                correct: 1,
+                desc: "Header adalah area di margin atas yang konsisten di tiap halaman (misal: kop surat)."
+            },
+            {
+                no: 30,
+                text: "Kebalikan dari Header, bagian yang terletak di margin bawah setiap halaman disebut...",
+                options: ["Header", "Title", "Footer", "Body"],
+                correct: 2,
+                desc: "Footer terletak di bagian bawah halaman (misal: nomor halaman)."
+            },
+            {
+                no: 31,
+                text: "Shortcut Ctrl + B berfungsi untuk...",
+                options: ["Menebalkan teks (Bold)", "Memiringkan teks (Italic)", "Garis bawah (Underline)", "Menyimpan (Save)"],
+                correct: 0,
+                desc: "B untuk Bold (Tebal)."
+            },
+            {
+                no: 32,
+                text: "Shortcut Ctrl + S digunakan untuk...",
+                options: ["Mencetak dokumen", "Menutup aplikasi", "Menyimpan dokumen", "Membuka dokumen baru"],
+                correct: 2,
+                desc: "S untuk Save (Simpan)."
+            },
+            {
+                no: 33,
+                text: "Nomor halaman biasanya diletakkan pada fitur...",
+                options: ["SmartArt", "Header atau Footer", "Chart", "Text Box"],
+                correct: 1,
+                desc: "Page Number biasanya disisipkan di dalam area Header atau Footer."
+            },
+            {
+                no: 34,
+                text: "Jika kita ingin membuat kop surat resmi yang otomatis muncul di semua halaman, kita menggunakan fitur...",
+                options: ["Watermark", "Header", "Footer", "Cover Page"],
+                correct: 1,
+                desc: "Kop surat dibuat di Header agar otomatis terulang di setiap halaman."
+            },
+            {
+                no: 35,
+                text: "Untuk keluar dari mode edit Header/Footer, kita bisa melakukan...",
+                options: ["Klik menu File -> Close", "Tekan tombol Esc atau klik ganda di area isi dokumen", "Tekan Ctrl + Alt + Del", "Matikan komputer"],
+                correct: 1,
+                desc: "Double click di area konten atau tekan Esc akan menutup mode Header/Footer."
+            },
+
+            // --- ESSAY TO PG (36-40) ---
+            {
+                no: 36,
+                text: "Menu untuk menyisipkan Tabel dan Gambar pada Ms Word terdapat pada Tab...",
+                options: ["Home", "Layout", "Insert", "References"],
+                correct: 2,
+                desc: "Tab Insert berisi fitur menyisipkan objek seperti Table, Picture, Shape, dll."
+            },
+            {
+                no: 37,
+                text: "Langkah pertama yang benar dalam membuat dokumen baru di Ms Word adalah...",
+                options: ["Klik File -> Print", "Klik File -> New -> Blank Document", "Klik Insert -> Page Break", "Langsung mengetik tanpa membuka aplikasi"],
+                correct: 1,
+                desc: "Membuat dokumen baru dimulai dari menu File -> New -> Blank Document."
+            },
+            {
+                no: 38,
+                text: "Manakah pasangan perangkat Input dan Output yang benar?",
+                options: ["Input: Monitor, Output: Mouse", "Input: Keyboard, Output: Printer", "Input: Speaker, Output: Mic", "Input: Printer, Output: Scanner"],
+                correct: 1,
+                desc: "Keyboard memasukkan data (Input), Printer mengeluarkan data cetak (Output)."
+            },
+            {
+                no: 39,
+                text: "Bilangan biner 110 jika diubah ke desimal menjadi...",
+                options: ["4", "5", "6", "7"],
+                correct: 2,
+                desc: "110 = (1x4) + (1x2) + (0x1) = 4 + 2 + 0 = 6."
+            },
+            {
+                no: 40,
+                text: "Bilangan desimal 9 jika diubah ke biner menjadi...",
+                options: ["1000", "1001", "1010", "1100"],
+                correct: 1,
+                desc: "9 = 8 + 1 = (1x8) + (0x4) + (0x2) + (1x1) = 1001."
+            }
+        ];
+
+        let userAnswers = new Array(questions.length).fill(null);
+        let quizStarted = false;
+
+        function startQuiz() {
+            quizStarted = true;
+            document.getElementById('start-screen').classList.add('hidden');
+            document.getElementById('quiz-container').classList.remove('hidden');
+            document.getElementById('submit-bar').classList.remove('hidden');
+            renderQuestions();
+            window.scrollTo(0, 0);
+        }
+
+        function renderQuestions() {
+            const container = document.getElementById('quiz-container');
+            container.innerHTML = questions.map((q, index) => `
+                <div class="bg-white rounded-xl shadow-md p-6 question-card border-l-4 border-violet-500 relative" id="q-${index}">
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="bg-violet-100 text-violet-800 text-xs font-bold px-3 py-1 rounded-full">Soal No. ${q.no}</span>
+                    </div>
+                    <p class="text-lg font-medium mb-6 text-slate-800 leading-relaxed">${q.text}</p>
+                    <div class="space-y-3">
+                        ${q.options.map((opt, optIndex) => `
+                            <div class="relative">
+                                <input type="radio" name="q${index}" id="opt-${index}-${optIndex}" value="${optIndex}" class="hidden option-input" onchange="selectAnswer(${index}, ${optIndex})">
+                                <label for="opt-${index}-${optIndex}" class="option-label block w-full p-4 border border-slate-200 rounded-lg hover:bg-slate-50 text-left text-slate-700 select-none flex items-center">
+                                    <div class="w-6 h-6 border-2 border-slate-300 rounded-full mr-3 flex items-center justify-center text-xs font-bold dot-indicator text-transparent transition-colors">✓</div>
+                                    ${opt}
+                                </label>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <!-- Feedback Section -->
+                    <div id="feedback-${index}" class="hidden mt-6 pt-4 border-t border-slate-100">
+                        <div class="p-4 rounded-lg bg-slate-50 border border-slate-200">
+                            <p class="font-bold text-slate-900 mb-1 flex items-center gap-2">
+                                <svg class="w-5 h-5 text-violet-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                Pembahasan:
+                            </p>
+                            <p class="text-slate-700 text-sm ml-7">${q.desc}</p>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function selectAnswer(qIndex, optIndex) {
+            if (!quizStarted) return;
+            userAnswers[qIndex] = optIndex;
+        }
+
+        function submitQuiz() {
+            const unanswered = userAnswers.filter(a => a === null).length;
+            if (unanswered > 0) {
+                if (!confirm(`Kamu belum menjawab ${unanswered} soal. Yakin ingin mengumpulkan?`)) return;
+            } else {
+                if (!confirm("Yakin ingin mengirim jawaban?")) return;
+            }
+            calculateResults();
+        }
+
+        function calculateResults() {
+            let score = 0;
+            let correctCount = 0;
+
+            questions.forEach((q, index) => {
+                const feedbackDiv = document.getElementById(`feedback-${index}`);
+                const inputs = document.getElementsByName(`q${index}`);
+                const labels = document.querySelectorAll(`label[for^="opt-${index}-"]`);
+                
+                inputs.forEach(input => input.disabled = true);
+                feedbackDiv.classList.remove('hidden');
+
+                const userAns = userAnswers[index];
+                
+                labels.forEach((label, optIndex) => {
+                    label.classList.remove('hover:bg-slate-50');
+                    if (optIndex === q.correct) {
+                        label.classList.add('correct-answer');
+                        label.querySelector('.dot-indicator').classList.remove('text-transparent', 'border-slate-300');
+                        label.querySelector('.dot-indicator').classList.add('bg-green-600', 'border-green-600', 'text-white');
+                    }
+                    if (userAns !== null && userAns !== q.correct && userAns === optIndex) {
+                        label.classList.add('wrong-answer');
+                        label.querySelector('.dot-indicator').classList.remove('text-transparent', 'border-slate-300');
+                        label.querySelector('.dot-indicator').classList.add('bg-red-500', 'border-red-500', 'text-white');
+                        label.querySelector('.dot-indicator').innerHTML = '✕';
+                    }
+                });
+
+                if (userAns === q.correct) {
+                    score++;
+                    correctCount++;
+                }
             });
-        });
+
+            const finalScore = (score / questions.length) * 100;
+            document.getElementById('score-display').innerText = finalScore.toFixed(0);
+            document.getElementById('correct-count').innerText = correctCount;
+            document.getElementById('wrong-count').innerText = questions.length - correctCount;
+
+            document.getElementById('quiz-container').classList.add('pointer-events-none');
+            document.getElementById('submit-bar').classList.add('hidden');
+            document.getElementById('result-container').classList.remove('hidden');
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            setTimeout(() => {
+                document.getElementById('quiz-container').classList.remove('pointer-events-none');
+            }, 1000);
+        }
     </script>
 </body>
 </html>

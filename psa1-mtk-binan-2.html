@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Latihan Matematika Kelas 6 (Paket B - Soal Baru)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;600&family=Nunito:wght@400;700&display=swap');
+        body { font-family: 'Nunito', sans-serif; background-color: #f0f9ff; } /* Light Blue bg */
+        .fun-font { font-family: 'Fredoka', sans-serif; }
+        
+        .question-card { transition: all 0.3s ease; }
+        .option-label { cursor: pointer; transition: all 0.2s; border: 2px solid #e2e8f0; }
+        .option-input:checked + .option-label {
+            background-color: #e0f2fe; border-color: #0ea5e9; color: #0369a1; font-weight: bold;
+        }
+        .correct-answer { background-color: #dcfce7 !important; border-color: #22c55e !important; color: #14532d !important; }
+        .wrong-answer { background-color: #fee2e2 !important; border-color: #ef4444 !important; color: #7f1d1d !important; }
+
+        /* TABLE STYLES */
+        .data-table { width: 100%; border-collapse: collapse; font-size: 0.9em; margin: 10px 0; }
+        .data-table th { background-color: #f1f5f9; padding: 10px; border: 1px solid #cbd5e1; text-align: left; }
+        .data-table td { padding: 8px; border: 1px solid #cbd5e1; }
+        .data-table tr:nth-child(even) { background-color: #f8fafc; }
+
+        /* MAP GRID STYLES */
+        .map-container { position: relative; width: 100%; max-width: 500px; margin: 0 auto; overflow: hidden; border: 2px solid #64748b; border-radius: 8px; }
+        .map-image { width: 100%; display: block; }
+        .grid-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr); /* A, B, C, D, E */
+            grid-template-rows: repeat(4, 1fr);    /* 1, 2, 3, 4 */
+        }
+        .grid-cell { border: 1px solid rgba(0,0,0,0.25); position: relative; }
+        .grid-label-x { position: absolute; top: -20px; width: 100%; text-align: center; font-weight: bold; font-size: 12px; }
+        .grid-label-y { position: absolute; left: -20px; top: 50%; transform: translateY(-50%); font-weight: bold; font-size: 12px; }
+
+        /* GRAPH PAPER STYLES */
+        .graph-paper {
+            background-color: #fff;
+            background-image: 
+                linear-gradient(#e2e8f0 1px, transparent 1px),
+                linear-gradient(90deg, #e2e8f0 1px, transparent 1px);
+            background-size: 40px 40px; 
+            border: 2px solid #64748b;
+            position: relative;
+            height: 250px;
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        .point {
+            width: 12px; height: 12px; background-color: #ef4444; border-radius: 50%;
+            position: absolute; transform: translate(-50%, 50%);
+            z-index: 10;
+        }
+        .point-label {
+            position: absolute; top: -22px; left: 8px; background: white; padding: 0 4px; font-weight: bold; font-size: 12px; border-radius: 4px; border: 1px solid #ccc; white-space: nowrap;
+        }
+        .axis-x { position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background: black; }
+        .axis-y { position: absolute; bottom: 0; left: 0; width: 2px; height: 100%; background: black; }
+        
+        .path-arrow { position: absolute; background: rgba(14, 165, 233, 0.3); border: 2px dashed #0284c7; z-index: 5; }
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <div class="max-w-3xl mx-auto min-h-screen flex flex-col">
+        <!-- Header -->
+        <header class="bg-sky-600 text-white p-6 rounded-b-3xl shadow-xl z-20 sticky top-0">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h1 class="text-2xl font-bold fun-font">PAS Matematika (Paket B)</h1>
+                    <p class="text-sky-100 text-sm">Soal Baru & Angka Berbeda</p>
+                </div>
+                <div class="bg-white/20 px-4 py-2 rounded-xl backdrop-blur-md">
+                    <div class="text-xs opacity-80">Skor</div>
+                    <div class="font-bold text-xl"><span id="score-counter">0</span></div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Quiz Container -->
+        <main class="flex-grow p-4 space-y-8 pb-32" id="quiz-container">
+            <!-- Questions injected via JS -->
+        </main>
+
+        <!-- Start Overlay -->
+        <div id="start-screen" class="fixed inset-0 bg-white z-50 flex flex-col items-center justify-center p-6 text-center">
+            <div class="w-24 h-24 bg-sky-100 rounded-full flex items-center justify-center mb-6 text-5xl shadow-inner">🚀</div>
+            <h2 class="text-3xl font-bold text-slate-800 mb-2 fun-font">Siap Tantangan Baru?</h2>
+            <p class="text-slate-500 mb-8 max-w-sm">Soal-soal ini memiliki <b>Angka dan Cerita Berbeda</b> dari latihan sebelumnya. Kerjakan dengan teliti!</p>
+            <button onclick="startQuiz()" class="bg-sky-600 text-white px-10 py-4 rounded-full font-bold text-lg shadow-xl hover:bg-sky-700 transition transform hover:scale-105">Mulai Paket B</button>
+        </div>
+
+        <!-- Bottom Bar -->
+        <div id="controls" class="fixed bottom-0 left-0 w-full bg-white/90 backdrop-blur border-t p-4 shadow-lg hidden z-40">
+            <div class="max-w-3xl mx-auto flex justify-between items-center">
+                <span class="text-sm font-bold text-slate-500">Soal <span id="current-answered">0</span> / <span id="total-q">40</span></span>
+                <button onclick="submitQuiz()" class="bg-indigo-600 text-white px-6 py-2 rounded-lg font-bold hover:bg-indigo-700 transition shadow-md">Kumpul Jawaban</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Result Modal -->
+    <div id="result-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-3xl p-8 max-w-sm w-full text-center shadow-2xl transform scale-100 transition-transform">
+            <h2 class="text-2xl font-bold mb-1 fun-font text-slate-800">Hasil Paket B</h2>
+            <div class="text-sm text-slate-500 mb-6">Matematika Kelas 6</div>
+            
+            <div class="text-6xl font-black text-sky-600 mb-6" id="final-score">0</div>
+
+            <div class="flex justify-center gap-4 text-sm font-bold mb-8">
+                <div class="flex items-center gap-2 text-green-700 bg-green-50 px-4 py-2 rounded-lg border border-green-100">
+                    <span>✓</span> <span id="final-correct">0</span> Benar
+                </div>
+                <div class="flex items-center gap-2 text-red-600 bg-red-50 px-4 py-2 rounded-lg border border-red-100">
+                    <span>✕</span> <span id="final-wrong">0</span> Salah
+                </div>
+            </div>
+            <button onclick="closeResult()" class="w-full bg-slate-800 text-white py-4 rounded-xl font-bold hover:bg-slate-900 transition">Lihat Pembahasan</button>
+        </div>
+    </div>
+
+<script>
+// --- DATA SOAL BARU (ANGKA & SKENARIO BEDA) ---
+const questions = [
+    // --- PECAHAN (1-9) ---
+    { no: 1, text: "Nilai dari \\( \\frac{3}{4} \\times 9 \\) adalah...", options: ["\\( \\frac{27}{4} \\)", "\\( \\frac{12}{9} \\)", "\\( \\frac{4}{27} \\)", "\\( \\frac{27}{9} \\)"], correct: 0, desc: "3 x 9 = 27. Penyebut tetap 4." },
+    { no: 2, text: "Budi membuat kue. 1 adonan butuh \\( \\frac{3}{5} \\) kg tepung. Untuk 4 adonan butuh...", options: ["\\( \\frac{12}{5} \\)", "\\( \\frac{7}{5} \\)", "\\( \\frac{5}{12} \\)", "\\( \\frac{15}{4} \\)"], correct: 0, desc: "4 x 3/5 = 12/5." },
+    { no: 3, text: "Bentuk sederhana \\( 12 \\times \\frac{2}{3} \\) adalah...", options: ["6", "8", "9", "24"], correct: 1, desc: "24 dibagi 3 = 8." },
+    { no: 4, text: "Andi membawa 4 ember. Tiap ember berisi \\( \\frac{1}{2} \\) liter air. Total air...", options: ["1 Liter", "2 Liter", "3 Liter", "4 Liter"], correct: 1, desc: "4 x 1/2 = 2 liter." },
+    { no: 5, text: "\\( \\frac{1}{3} : 5 \\) sama dengan...", options: ["\\( \\frac{1}{15} \\)", "\\( \\frac{15}{1} \\)", "\\( \\frac{3}{5} \\)", "\\( \\frac{5}{3} \\)"], correct: 0, desc: "1/3 x 1/5 = 1/15." },
+    { no: 6, text: "\\( 12 : \\frac{6}{2} \\) sama dengan...", options: ["3", "4", "6", "12"], correct: 1, desc: "12 : 3 = 4." },
+    { no: 7, text: "Tali \\( \\frac{4}{5} \\) m dipotong 4 bagian sama panjang. Tiap potong...", options: ["\\( \\frac{1}{5} \\)", "\\( \\frac{4}{5} \\)", "\\( \\frac{1}{4} \\)", "\\( \\frac{16}{5} \\)"], correct: 0, desc: "4/5 : 4 = 1/5." },
+    { no: 8, text: "Desimal dari \\( \\frac{4}{5} \\)...", options: ["0,80", "0,45", "0,54", "0,25"], correct: 0, desc: "4 dibagi 5 = 0,8." },
+    { no: 9, text: "Desimal dari 7/10...", options: ["0,7", "0,07", "7,0", "0,17"], correct: 0, desc: "7 dibagi 10 = 0,7." },
+
+    // --- VISUAL NO 10 (TANAH WAKAF BEDA ARSIRAN) ---
+    {
+        no: 10,
+        text: "Perhatikan denah tanah Pak Haji berikut! Bagian berwarna <b>ORANGE</b> diwakafkan. Pecahannya adalah...",
+        visual: `
+            <div class="flex w-full h-24 border-2 border-slate-400 rounded overflow-hidden max-w-sm mx-auto shadow-md">
+                <div class="flex-1 bg-orange-400 border-r border-slate-200 flex items-center justify-center text-white font-bold">WAKAF</div>
+                <div class="flex-1 bg-white border-r border-slate-200 flex items-center justify-center text-xs text-slate-400">2</div>
+                <div class="flex-1 bg-orange-400 border-r border-slate-200 flex items-center justify-center text-white font-bold">WAKAF</div>
+                <div class="flex-1 bg-orange-400 border-r border-slate-200 flex items-center justify-center text-white font-bold">WAKAF</div>
+            </div>
+        `,
+        options: ["\\( \\frac{1}{4} \\)", "\\( \\frac{2}{4} \\)", "\\( \\frac{3}{4} \\)", "\\( \\frac{4}{4} \\)"],
+        correct: 2,
+        desc: "Ada 3 kotak orange dari total 4 kotak. Jadi pecahannya \\( \\frac{3}{4} \\)."
+    },
+
+    // --- NILAI TEMPAT & RASIO ---
+    { no: 11, text: "Nilai tempat angka 6 pada 4,169...", options: ["Perseratusan", "Persepuluhan", "Satuan", "Perseribu"], correct: 0, desc: "Dua angka di belakang koma." },
+    { no: 12, text: "Angka satuan pada 93,42...", options: ["3", "9", "4", "2"], correct: 0, desc: "Angka sebelum koma." },
+    { no: 13, text: "Angka persepuluhan dari 0,739...", options: ["7", "0", "3", "9"], correct: 0, desc: "Angka pertama setelah koma." },
+    { no: 14, text: "Rasio sederhana 36 : 48...", options: ["3 : 4", "2 : 3", "4 : 5", "6 : 8"], correct: 0, desc: "Bagi 12. 36/12 = 3, 48/12 = 4." },
+
+    // --- TABEL NO 15 (BARANG BEDA) ---
+    {
+        no: 15,
+        text: "Perhatikan data koperasi sekolah. Rasio <b>Buku</b> terhadap <b>Pensil</b> adalah...",
+        visual: `
+            <table class="data-table">
+                <tr><th>Barang</th><th>Jumlah</th></tr>
+                <tr><td>Buku</td><td>50</td></tr>
+                <tr><td>Pulpen</td><td>100</td></tr>
+                <tr><td>Pensil</td><td>75</td></tr>
+            </table>
+        `,
+        options: ["2 : 3", "3 : 2", "50 : 75", "1 : 2"],
+        correct: 0,
+        desc: "50 : 75. Bagi 25. 50/25 = 2, 75/25 = 3."
+    },
+    { no: 16, text: "Rasio Bola : Raket = 5 : 3. Jika Raket = 9, Bola = ...", options: ["15", "12", "18", "20"], correct: 0, desc: "Raket (3 bagian) = 9. 1 bagian = 3. Bola = 5 x 3 = 15." },
+    { no: 17, text: "Rasio Ayam : Bebek = 4 : 12. Artinya...", options: ["Bebek 3x lipat Ayam", "Ayam lebih banyak", "Sama banyak", "Ayam 3x lipat Bebek"], correct: 0, desc: "4:12 = 1:3. Bebek tiga kali lipat." },
+    { no: 18, text: "45 Mawar dan 75 Tulip. Rasio Mawar:Tulip...", options: ["3 : 5", "5 : 3", "9 : 15", "45 : 70"], correct: 0, desc: "Bagi 15. 45/15=3. 75/15=5." },
+
+    // --- VISUAL NO 19 (MENARA BARU) ---
+    {
+        no: 19,
+        text: "Perhatikan tinggi Gedung X dan Y. Rasio tinggi Gedung X terhadap Y adalah...",
+        visual: `
+            <div class="flex items-end justify-center gap-10 h-40 bg-gray-50 p-4 border-b-4 border-gray-400 rounded-t-xl">
+                <div class="flex flex-col items-center">
+                    <span class="mb-1 font-bold text-slate-600">80m</span>
+                    <div class="w-14 bg-indigo-700 h-32 relative flex flex-col justify-center items-center text-white text-xs">X</div>
+                </div>
+                <div class="flex flex-col items-center">
+                    <span class="mb-1 font-bold text-slate-600">60m</span>
+                    <div class="w-14 bg-indigo-500 h-24 relative flex flex-col justify-center items-center text-white text-xs">Y</div>
+                </div>
+            </div>
+        `,
+        options: ["4 : 3", "3 : 4", "8 : 5", "5 : 4"],
+        correct: 0,
+        desc: "80 : 60. Bagi 20 = 4 : 3."
+    },
+    { no: 20, text: "Sirup:Air = 1:4. Untuk 6 gelas rasionya...", options: ["Tetap 1:4 (Total 6:24)", "Berubah 6:6", "4:1", "1:24"], correct: 0, desc: "Perbandingan senilai." },
+
+    // --- TABEL NO 21 (TANAMAN BEDA) ---
+    {
+        no: 21,
+        text: "Rasio bibit <b>Tomat</b> terhadap <b>Cabai</b> adalah...",
+        visual: `
+            <table class="data-table">
+                <tr><th>Bibit</th><th>Jumlah</th></tr>
+                <tr><td>Tomat</td><td>20</td></tr>
+                <tr><td>Cabai</td><td>30</td></tr>
+                <tr><td>Terong</td><td>15</td></tr>
+            </table>
+        `,
+        options: ["2 : 3", "3 : 2", "1 : 2", "20 : 15"],
+        correct: 0,
+        desc: "20 : 30. Bagi 10 = 2 : 3."
+    },
+    { no: 22, text: "Panen paling cepat: Padi (4 bulan), Jagung (3 bulan), Singkong (8 bulan).", options: ["Jagung", "Padi", "Singkong", "Sama"], correct: 0, desc: "3 bulan paling cepat." },
+    { no: 23, text: "Rasio Padi (4 bulan) : Singkong (8 bulan).", options: ["1 : 2", "2 : 1", "1 : 4", "4 : 1"], correct: 0, desc: "4 : 8 = 1 : 2." },
+    { no: 24, text: "Membaca 20 halaman = 30 menit. 10 halaman = ...", options: ["15 menit", "10 menit", "20 menit", "5 menit"], correct: 0, desc: "Setengahnya." },
+    { no: 25, text: "Motor 60 km dalam 1 jam. Dalam 30 menit...", options: ["30 km", "20 km", "40 km", "50 km"], correct: 0, desc: "Setengah dari 60." },
+
+    // --- VISUAL NO 26 (KUBUS T) ---
+    {
+        no: 26,
+        text: "Berapa banyak kubus satuan pada bangun berbentuk huruf T ini?",
+        visual: `
+            <div class="flex justify-center p-4">
+                <div class="relative w-32 h-32">
+                    <!-- Tiang -->
+                    <div class="absolute bottom-0 left-10 w-10 h-10 bg-emerald-500 border border-white"></div>
+                    <div class="absolute bottom-10 left-10 w-10 h-10 bg-emerald-400 border border-white"></div>
+                    <!-- Palang Atas -->
+                    <div class="absolute bottom-20 left-0 w-10 h-10 bg-emerald-300 border border-white"></div>
+                    <div class="absolute bottom-20 left-10 w-10 h-10 bg-emerald-300 border border-white"></div>
+                    <div class="absolute bottom-20 left-20 w-10 h-10 bg-emerald-300 border border-white"></div>
+                </div>
+            </div>
+        `,
+        options: ["5", "6", "4", "7"],
+        correct: 0,
+        desc: "2 di tengah vertikal + 3 di atas horizontal = 5 kubus."
+    },
+
+    // --- VISUAL NO 27 (DADU BARU) ---
+    {
+        no: 27,
+        text: "Jika sisi ATAS dadu adalah 4, berapakah sisi BAWAH? (Ingat: Jumlah sisi lawan = 7).",
+        visual: `
+            <div class="flex justify-center my-4">
+                <div class="w-20 h-20 bg-white border-2 border-slate-800 rounded-xl shadow-lg flex flex-wrap content-between p-3 transform rotate-3">
+                    <div class="w-full flex justify-between">
+                        <div class="w-3 h-3 bg-black rounded-full"></div><div class="w-3 h-3 bg-black rounded-full"></div>
+                    </div>
+                    <div class="w-full flex justify-between">
+                        <div class="w-3 h-3 bg-black rounded-full"></div><div class="w-3 h-3 bg-black rounded-full"></div>
+                    </div>
+                </div>
+            </div>
+        `,
+        options: ["3", "4", "2", "5"],
+        correct: 0,
+        desc: "7 - 4 = 3."
+    },
+    { no: 28, text: "Doni punya 4 kubus, ditumpuk 1 menara lurus. Berapa cara?", options: ["1", "4", "2", "16"], correct: 0, desc: "Hanya 1 cara lurus." },
+    { no: 29, text: "Balok 10x20x30 cm. Rusuk terpanjang jadi tinggi. Tinggi = ...", options: ["30 cm", "20 cm", "10 cm", "60 cm"], correct: 0, desc: "Terpanjang = 30." },
+    
+    // --- VISUAL NO 30 (KARDUS TINGGI BARU) ---
+    {
+        no: 30,
+        text: "Tinggi tumpukan 3 kotak adalah 45 cm. Tinggi 1 kotak adalah...",
+        visual: `
+            <div class="flex justify-center items-end gap-2 p-4">
+                <div class="flex flex-col">
+                    <div class="w-16 h-8 bg-purple-200 border border-purple-600 mb-px"></div>
+                    <div class="w-16 h-8 bg-purple-200 border border-purple-600 mb-px"></div>
+                    <div class="w-16 h-8 bg-purple-200 border border-purple-600"></div>
+                </div>
+                <div class="h-24 border-l-2 border-dashed border-black flex items-center">
+                    <span class="ml-2 text-sm font-bold">45cm</span>
+                </div>
+            </div>
+        `,
+        options: ["15 cm", "10 cm", "20 cm", "30 cm"],
+        correct: 0,
+        desc: "45 dibagi 3 = 15 cm."
+    },
+    { no: 31, text: "Luas alas 10x30.", options: ["300", "200", "100", "40"], correct: 0, desc: "10 x 30 = 300." },
+
+    // --- MAP GRID (NO 32 - PULAU BEDA) ---
+    {
+        no: 32,
+        text: "Perhatikan Peta. Pulau <b>Sulawesi</b> (bentuk huruf K) terletak di sekitar kotak...",
+        visual: `
+            <div class="map-container">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Indonesia_blank_map.svg/800px-Indonesia_blank_map.svg.png" class="map-image" alt="Peta Indonesia">
+                <div class="grid-overlay">
+                    <div class="grid-cell"><span class="grid-label-x">A</span><span class="grid-label-y">1</span></div>
+                    <div class="grid-cell"><span class="grid-label-x">B</span></div>
+                    <div class="grid-cell"><span class="grid-label-x">C</span></div>
+                    <div class="grid-cell"><span class="grid-label-x">D</span></div>
+                    <div class="grid-cell"><span class="grid-label-x">E</span></div>
+                    
+                    <div class="grid-cell"><span class="grid-label-y">2</span></div>
+                    <div class="grid-cell"></div>
+                    <!-- Sulawesi Highlight (D2/D3 area) -->
+                    <div class="grid-cell"></div>
+                    <div class="grid-cell relative">
+                        <div class="absolute inset-0 border-2 border-red-500 animate-pulse bg-red-500/20"></div>
+                        <span class="absolute top-1 right-1 bg-white text-[10px] px-1 font-bold">SULAWESI</span>
+                    </div>
+                    <div class="grid-cell"></div>
+                    
+                    <div class="grid-cell"><span class="grid-label-y">3</span></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
+                    <div class="grid-cell"><span class="grid-label-y">4</span></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
+                </div>
+            </div>
+        `,
+        options: ["D2", "A1", "B4", "E4"],
+        correct: 0,
+        desc: "Sulawesi terletak di tengah agak kanan atas, sekitar D2."
+    },
+
+    // --- GRID MOVEMENT (NO 33, 34, 40) ---
+    {
+        no: 33,
+        text: "Berapa langkah dari titik M(1,2) ke N(5,2)?",
+        visual: `
+            <div class="graph-paper">
+                <div class="point" style="left: 40px; bottom: 80px;"></div><div class="point-label" style="left: 40px; bottom: 80px;">M(1,2)</div>
+                <div class="point" style="left: 200px; bottom: 80px;"></div><div class="point-label" style="left: 200px; bottom: 80px;">N(5,2)</div>
+                <div class="path-arrow" style="left: 40px; bottom: 80px; width: 160px; height: 2px;"></div>
+                <div class="axis-x"></div><div class="axis-y"></div>
+            </div>
+        `,
+        options: ["4 langkah kanan", "3 langkah kanan", "4 langkah atas", "5 langkah kanan"],
+        correct: 0,
+        desc: "X: 1 ke 5 (4 langkah). Y tetap."
+    },
+    {
+        no: 34,
+        text: "Tentukan jarak titik A ke B pada grid berikut.",
+        visual: `
+            <div class="graph-paper">
+                <div class="point" style="left: 80px; bottom: 200px; background:purple;"></div><div class="point-label" style="left: 80px; bottom: 200px;">A</div>
+                <div class="point" style="left: 160px; bottom: 200px; background:purple;"></div><div class="point-label" style="left: 160px; bottom: 200px;">B</div>
+                <div style="position:absolute; left:80px; bottom:200px; width:80px; border-bottom: 2px dashed purple;"></div>
+            </div>
+        `,
+        options: ["2 petak kanan", "3 petak kanan", "2 petak kiri", "4 petak kanan"],
+        correct: 0,
+        desc: "Jarak horizontal 2 kotak besar (80px ke 160px pada skala 40px/kotak)."
+    },
+    { no: 35, text: "Siti (B,3). Rina 1 kanan, 2 baris di belakang Siti. Rina?", options: ["(C,5)", "(C,4)", "(A,5)", "(B,5)"], correct: 0, desc: "Kanan 1 (B->C), Belakang 2 (3->5)." },
+    { no: 36, text: "12 liter minyak dibagi ke botol 3/4 liter. Banyak botol...", options: ["16", "12", "9", "20"], correct: 0, desc: "12 dibagi 0,75 = 16." },
+    
+    // --- TABEL NO 37 (JARAK BARU) ---
+    {
+        no: 37,
+        text: "Siapa yang rumahnya <b>Paling Jauh</b> dari sekolah?",
+        visual: `
+            <table class="data-table">
+                <tr><th>Nama</th><th>Jarak (km)</th></tr>
+                <tr><td>Eko</td><td>1,5</td></tr>
+                <tr><td>Dwi</td><td>3,2</td></tr>
+                <tr><td>Tri</td><td>0,8</td></tr>
+                <tr><td>Catur</td><td>5,1</td></tr>
+            </table>
+        `,
+        options: ["Catur", "Dwi", "Eko", "Tri"],
+        correct: 0,
+        desc: "5,1 km adalah angka terbesar."
+    },
+    
+    // --- TABEL NO 38 (HARI BARU) ---
+    {
+        no: 38,
+        text: "Lengkapi tabel: 3 Hari = ... Jam?",
+        visual: `
+            <table class="data-table text-center">
+                <tr><th>No</th><th>Hari</th><th>Jam</th></tr>
+                <tr><td>1</td><td>3</td><td>...</td></tr>
+                <tr><td>2</td><td>5</td><td>120</td></tr>
+            </table>
+        `,
+        options: ["72", "48", "60", "24"],
+        correct: 0,
+        desc: "3 x 24 = 72."
+    },
+
+    // --- VISUAL NO 39 (POSISI BEDA) ---
+    {
+        no: 39,
+        text: "Tabung ini digeser ke kanan. Posisi koordinat alasnya adalah...",
+        visual: `
+            <div class="relative w-40 h-32 mx-auto border-l-2 border-b-2 border-black">
+                <div class="absolute bottom-0 left-0 w-20 h-0.5 bg-black transform -rotate-45 origin-bottom-left"></div>
+                <!-- Cylinder moved to right -->
+                <div class="absolute bottom-0 left-16 w-8 h-12 bg-slate-400 rounded-t-full rounded-b-full border border-slate-600 transform -translate-x-1/2 translate-y-2"></div>
+                <div class="absolute bottom-2 left-2 font-bold text-xs text-gray-400">A</div>
+                <div class="absolute bottom-2 left-14 font-bold text-sm">B</div>
+            </div>
+        `,
+        options: ["B, 1", "A, 1", "C, 1", "B, 2"],
+        correct: 0,
+        desc: "Bergeser ke titik B pada sumbu mendatar."
+    },
+
+    // --- GRID NO 40 (PATH BARU) ---
+    {
+        no: 40,
+        text: "Titik P(1,6), gerak 4 kanan & 3 bawah. Posisi akhir?",
+        visual: `
+            <div class="graph-paper">
+                <div class="point" style="left: 40px; bottom: 240px;"></div>
+                <div class="point-label" style="left: 40px; bottom: 240px;">P(1,6)</div>
+                
+                <div style="position:absolute; left:40px; bottom:240px; width:160px; border-bottom:2px solid orange;"></div>
+                <div style="position:absolute; left:200px; bottom:120px; height:120px; border-left:2px solid orange;"></div>
+                
+                <div class="point" style="left: 200px; bottom: 120px; background:transparent; border:2px solid blue;"></div>
+                <div class="grid-number-x" style="left: 200px;">5</div>
+                <div class="grid-number-y" style="bottom: 120px;">3</div>
+            </div>
+        `,
+        options: ["(5,3)", "(3,5)", "(4,3)", "(5,2)"],
+        correct: 0,
+        desc: "x: 1+4=5. y: 6-3=3."
+    }
+];
+
+let userAnswers = new Array(questions.length).fill(null);
+
+function startQuiz() {
+    document.getElementById('start-screen').classList.add('hidden');
+    document.getElementById('controls').classList.remove('hidden');
+    renderQuestions();
+    window.scrollTo(0,0);
+    renderMathInElement(document.body, {delimiters: [{left: "\\(", right: "\\)", display: false}]});
+}
+
+function renderQuestions() {
+    const container = document.getElementById('quiz-container');
+    container.innerHTML = questions.map((q, i) => `
+        <div class="question-card bg-white p-6 rounded-2xl shadow-sm border border-sky-100" id="card-${i}">
+            <div class="flex items-start gap-4">
+                <div class="bg-sky-100 text-sky-700 font-bold w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0">
+                    ${q.no}
+                </div>
+                <div class="w-full">
+                    <p class="text-lg font-semibold mb-4 text-slate-800">${q.text}</p>
+                    ${q.visual ? `<div class="mb-6 p-2 md:p-6 bg-slate-50 rounded-xl border border-slate-200 overflow-hidden flex justify-center w-full">${q.visual}</div>` : ''}
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        ${q.options.map((opt, j) => `
+                            <label class="option-label p-4 rounded-xl flex items-center gap-3 bg-white hover:bg-sky-50">
+                                <input type="radio" name="q-${i}" value="${j}" class="option-input hidden" onchange="selectAnswer(${i}, ${j})">
+                                <span class="w-5 h-5 rounded-full border-2 border-slate-300 flex items-center justify-center dot text-xs text-white"></span>
+                                <span class="text-sm font-medium">${opt}</span>
+                            </label>
+                        `).join('')}
+                    </div>
+                    <div id="feedback-${i}" class="hidden mt-4 bg-indigo-50 text-indigo-900 p-4 rounded-xl text-sm border border-indigo-200">
+                        <strong>Pembahasan:</strong> ${q.desc}
+                    </div>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+function selectAnswer(qIndex, optIndex) {
+    userAnswers[qIndex] = optIndex;
+    document.getElementById('current-answered').innerText = userAnswers.filter(a => a !== null).length;
+    const score = userAnswers.filter((a, i) => a === questions[i].correct).length;
+    document.getElementById('score-counter').innerText = Math.round((score / questions.length) * 100);
+}
+
+function submitQuiz() {
+    const unanswered = userAnswers.filter(a => a === null).length;
+    if (unanswered > 0 && !confirm(`Masih ada ${unanswered} soal kosong. Yakin kumpul?`)) return;
+    
+    let score = 0, correct = 0, wrong = 0;
+    questions.forEach((q, i) => {
+        const selected = userAnswers[i];
+        const feedback = document.getElementById(`feedback-${i}`);
+        const inputs = document.getElementsByName(`q-${i}`);
+        const labels = document.querySelectorAll(`#card-${i} label`);
+
+        feedback.classList.remove('hidden');
+        inputs.forEach(inp => inp.disabled = true);
+
+        if (selected === q.correct) {
+            score++; correct++;
+            labels[selected].classList.add('correct-answer');
+            labels[selected].querySelector('.dot').innerText = '✓';
+            labels[selected].querySelector('.dot').style.borderColor = '#22c55e';
+            labels[selected].querySelector('.dot').style.backgroundColor = '#22c55e';
+        } else {
+            wrong++;
+            if (selected !== null) {
+                labels[selected].classList.add('wrong-answer');
+                labels[selected].querySelector('.dot').innerText = '✕';
+                labels[selected].querySelector('.dot').style.borderColor = '#ef4444';
+                labels[selected].querySelector('.dot').style.backgroundColor = '#ef4444';
+            }
+            labels[q.correct].classList.add('correct-answer');
+        }
+    });
+
+    document.getElementById('final-score').innerText = Math.round((score / questions.length) * 100);
+    document.getElementById('final-correct').innerText = correct;
+    document.getElementById('final-wrong').innerText = wrong;
+    document.getElementById('result-modal').classList.remove('hidden');
+    document.getElementById('controls').classList.add('hidden');
+}
+
+function closeResult() {
+    document.getElementById('result-modal').classList.add('hidden');
+    window.scrollTo({top:0, behavior:'smooth'});
+}
+</script>
+</body>
+</html>
+
+

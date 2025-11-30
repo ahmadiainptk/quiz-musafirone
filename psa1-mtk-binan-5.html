@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ujian Matematika Kelas 6 (Paket E)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f1f5f9; }
+        
+        /* STYLE PILIHAN JAWABAN */
+        .option-card {
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 2px solid #e2e8f0;
+            background-color: white;
+        }
+        
+        .option-card:hover {
+            border-color: #cbd5e1;
+            background-color: #f8fafc;
+        }
+
+        /* KELAS AKTIF (SAAT DIPILIH) - DITAMBAHKAN VIA JS */
+        .option-selected {
+            border-color: #3b82f6 !important; /* Biru */
+            background-color: #eff6ff !important; /* Biru Muda */
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+        }
+        .option-selected .dot-indicator {
+            background-color: #3b82f6;
+            border-color: #3b82f6;
+            color: white;
+        }
+
+        /* HASIL AKHIR (SETELAH SUBMIT) */
+        .correct-mode {
+            background-color: #dcfce7 !important; /* Hijau */
+            border-color: #22c55e !important;
+            color: #14532d;
+        }
+        .wrong-mode {
+            background-color: #fee2e2 !important; /* Merah */
+            border-color: #ef4444 !important;
+            color: #7f1d1d;
+            opacity: 0.8;
+        }
+
+        /* SVG & TABLE UTILS */
+        .grid-line { stroke: #e2e8f0; stroke-width: 1; }
+        .axis-line { stroke: #1e293b; stroke-width: 2; }
+        .point-dot { r: 5; stroke: white; stroke-width: 2; }
+        .custom-table th { background: #f1f5f9; padding: 8px; border: 1px solid #cbd5e1; text-align: left; }
+        .custom-table td { padding: 8px; border: 1px solid #cbd5e1; }
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <div class="max-w-4xl mx-auto min-h-screen flex flex-col">
+        <!-- Header -->
+        <header class="bg-slate-800 text-white p-6 shadow-lg sticky top-0 z-30">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h1 class="text-xl md:text-2xl font-bold">Matematika Paket E</h1>
+                    <p class="text-slate-300 text-sm">Mode Ujian (Bisa Koreksi Jawaban)</p>
+                </div>
+                <div class="bg-white/10 px-4 py-2 rounded-lg border border-white/20 text-center">
+                    <span class="text-xs uppercase tracking-wider opacity-70">Terjawab</span>
+                    <div class="text-xl font-bold"><span id="answered-badge">0</span>/40</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Quiz Area -->
+        <main class="flex-grow p-4 md:p-6 space-y-8 pb-32" id="quiz-container">
+            <!-- Questions injected via JavaScript -->
+        </main>
+
+        <!-- Start Screen Overlay -->
+        <div id="start-screen" class="fixed inset-0 bg-white z-50 flex flex-col items-center justify-center p-6 text-center">
+            <div class="w-20 h-20 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mb-6 text-4xl shadow-sm">✏️</div>
+            <h2 class="text-3xl font-bold text-slate-900 mb-3">Selamat Datang di Paket E</h2>
+            <p class="text-slate-500 mb-8 max-w-md leading-relaxed">
+                Di paket ini, kamu bisa <b>memilih dan mengganti jawaban</b> sebebasnya sebelum dikumpulkan.<br>
+                Pastikan kotak pilihanmu berubah warna jadi <b>BIRU</b> saat diklik.
+            </p>
+            <button onclick="startQuiz()" class="bg-blue-600 text-white px-10 py-3.5 rounded-full font-bold shadow-xl hover:bg-blue-700 transition transform hover:scale-105 active:scale-95">Mulai Mengerjakan</button>
+        </div>
+
+        <!-- Sticky Footer Control -->
+        <div id="controls" class="fixed bottom-0 left-0 w-full bg-white border-t border-slate-200 p-4 shadow-[0_-4px_20px_rgba(0,0,0,0.1)] hidden z-40">
+            <div class="max-w-4xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+                <div class="text-sm text-slate-500 font-medium">
+                    <span id="warning-text">⚠️ Masih ada soal kosong!</span>
+                </div>
+                <button onclick="submitQuiz()" class="w-full md:w-auto bg-green-600 text-white px-8 py-3 rounded-lg font-bold hover:bg-green-700 transition shadow-md flex items-center justify-center gap-2">
+                    <span>Kirim Jawaban</span>
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Result Modal -->
+    <div id="result-modal" class="fixed inset-0 bg-black/70 z-50 hidden flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-2xl p-8 max-w-md w-full text-center shadow-2xl animate-[fadeIn_0.3s_ease-out]">
+            <h2 class="text-2xl font-bold mb-2 text-slate-800">Hasil Akhir</h2>
+            <p class="text-slate-500 mb-6 text-sm">Paket E - Soal Baru</p>
+            
+            <div class="text-7xl font-black text-blue-600 mb-6 tracking-tight" id="final-score">0</div>
+            
+            <div class="grid grid-cols-2 gap-4 mb-8">
+                <div class="bg-green-50 text-green-700 p-3 rounded-xl border border-green-200 font-bold">
+                    <div class="text-xs uppercase opacity-70">Benar</div>
+                    <span id="final-correct" class="text-xl">0</span>
+                </div>
+                <div class="bg-red-50 text-red-700 p-3 rounded-xl border border-red-200 font-bold">
+                    <div class="text-xs uppercase opacity-70">Salah</div>
+                    <span id="final-wrong" class="text-xl">0</span>
+                </div>
+            </div>
+            <button onclick="closeResult()" class="w-full bg-slate-800 text-white py-3.5 rounded-xl font-bold hover:bg-slate-900 transition">Lihat Pembahasan Lengkap</button>
+        </div>
+    </div>
+
+<script>
+// --- ENGINE GENERATOR VISUAL ---
+function createGrid(points, pathPoints) {
+    const size = 300; const unit = 40; const offset = 30;
+    let svg = `<svg viewBox="0 0 ${size} ${size}" class="w-full h-auto bg-white border border-slate-300 rounded shadow-sm">`;
+    
+    // Grid Lines
+    for(let i=0; i<=6; i++) {
+        let p = offset + i*unit;
+        svg += `<line x1="${p}" y1="${offset}" x2="${p}" y2="${offset+6*unit}" class="grid-line" />`; // Vert
+        svg += `<line x1="${offset}" y1="${p}" x2="${offset+6*unit}" y2="${p}" class="grid-line" />`; // Horz
+        // Labels
+        svg += `<text x="${p}" y="${offset+6*unit+15}" font-size="10" text-anchor="middle" fill="#64748b">${i}</text>`; // X
+        svg += `<text x="${offset-15}" y="${p+3}" font-size="10" text-anchor="middle" fill="#64748b">${6-i}</text>`; // Y inverted
+    }
+
+    // Path
+    if(pathPoints) {
+        let d = `M ${offset + pathPoints[0].x*unit} ${offset + (6-pathPoints[0].y)*unit}`;
+        for(let i=1; i<pathPoints.length; i++) {
+            d += ` L ${offset + pathPoints[i].x*unit} ${offset + (6-pathPoints[i].y)*unit}`;
+        }
+        svg += `<path d="${d}" fill="none" stroke="#f59e0b" stroke-width="3" stroke-dasharray="5,5" />`;
+    }
+
+    // Points
+    points.forEach(pt => {
+        let cx = offset + pt.x*unit;
+        let cy = offset + (6-pt.y)*unit;
+        svg += `<circle cx="${cx}" cy="${cy}" r="5" fill="${pt.color}" stroke="white" stroke-width="2" />`;
+        svg += `<text x="${cx+8}" y="${cy-8}" font-size="12" font-weight="bold">${pt.label}</text>`;
+    });
+
+    svg += `</svg>`;
+    return svg;
+}
+
+// --- DATA SOAL PAKET E (BARU) ---
+const questions = [
+    // PECAHAN
+    { no: 1, text: "Hasil dari \\( \\frac{2}{3} \\times 18 \\) adalah...", options: ["12", "6", "9", "15"], correct: 0, desc: "2 x 18 = 36. 36 / 3 = 12." },
+    { no: 2, text: "Ibu membeli \\( \\frac{4}{5} \\) kg beras. Dimasak \\( \\frac{1}{2} \\) kg. Sisa beras...", options: ["\\( \\frac{3}{10} \\)", "\\( \\frac{3}{5} \\)", "\\( \\frac{1}{3} \\)", "\\( \\frac{2}{3} \\)"], correct: 0, desc: "4/5 = 8/10. 1/2 = 5/10. Sisa 3/10." },
+    { no: 3, text: "Bentuk desimal dari \\( \\frac{3}{25} \\) adalah...", options: ["0,12", "0,25", "0,30", "0,03"], correct: 0, desc: "3 x 4 = 12. Perseratus -> 0,12." },
+    { no: 4, text: "\\( 4 : \\frac{2}{3} \\) sama dengan...", options: ["6", "8", "2", "12"], correct: 0, desc: "4 x 3/2 = 12/2 = 6." },
+    { no: 5, text: "Tali 9 meter dipotong \\( \\frac{3}{4} \\) meteran. Dapat berapa potong?", options: ["12", "9", "6", "15"], correct: 0, desc: "9 : 3/4 = 9 x 4/3 = 36/3 = 12." },
+    { no: 6, text: "Sederhanakan 18/24...", options: ["3/4", "2/3", "4/5", "1/2"], correct: 0, desc: "Bagi 6." },
+    { no: 7, text: "2,5 + 0,35 = ...", options: ["2,85", "2,80", "2,35", "5,55"], correct: 0, desc: "2,50 + 0,35." },
+    { no: 8, text: "20% dari 500 adalah...", options: ["100", "50", "200", "20"], correct: 0, desc: "Seperlima dari 500." },
+    { no: 9, text: "0,6 x 0,5 = ...", options: ["0,3", "3,0", "0,03", "30"], correct: 0, desc: "6x5=30. Dua desimal -> 0,30." },
+
+    // VISUAL TANAH (POLA BEDA)
+    {
+        no: 10,
+        text: "Kebun Pak Tani dibagi 6 petak. Petak <b>HITAM</b> ditanami Jagung. Berapa bagian?",
+        visual: `<svg width="300" height="50" class="mx-auto border border-black"><rect x="0" y="0" width="50" height="50" fill="white" stroke="black"/><rect x="50" y="0" width="50" height="50" fill="#1e293b" stroke="black"/><rect x="100" y="0" width="50" height="50" fill="#1e293b" stroke="black"/><rect x="150" y="0" width="50" height="50" fill="white" stroke="black"/><rect x="200" y="0" width="50" height="50" fill="#1e293b" stroke="black"/><rect x="250" y="0" width="50" height="50" fill="white" stroke="black"/></svg>`,
+        options: ["\\( \\frac{3}{6} \\)", "\\( \\frac{2}{6} \\)", "\\( \\frac{4}{6} \\)", "\\( \\frac{1}{6} \\)"],
+        correct: 0,
+        desc: "3 kotak hitam dari 6 total."
+    },
+
+    // RASIO & SKALA
+    { no: 11, text: "Rasio 20 : 50 disederhanakan...", options: ["2 : 5", "5 : 2", "1 : 2", "4 : 10"], correct: 0, desc: "Bagi 10." },
+    { no: 12, text: "Siswa suka Bakso 15, suka Mie 25. Rasio Bakso:Mie...", options: ["3 : 5", "5 : 3", "2 : 3", "3 : 4"], correct: 0, desc: "15:25 bagi 5." },
+    { no: 13, text: "Rasio Sirup:Air = 1:5. Jika Sirup 2 gelas, Air...", options: ["10 gelas", "5 gelas", "12 gelas", "8 gelas"], correct: 0, desc: "1 -> 2 (x2). Maka 5 -> 10." },
+    { no: 14, text: "Jarak Peta 2cm. Jarak Asli 10km. Skala?", options: ["1 : 500.000", "1 : 100.000", "1 : 50.000", "1 : 200.000"], correct: 0, desc: "2cm : 1.000.000cm = 1 : 500.000." },
+
+    // TABEL ALAT TULIS
+    {
+        no: 15,
+        text: "Rasio <b>Penggaris</b> terhadap <b>Penghapus</b>...",
+        visual: `<table class="w-full custom-table"><tr><th>Barang</th><th>Stok</th></tr><tr><td>Buku</td><td>100</td></tr><tr><td>Penggaris</td><td>30</td></tr><tr><td>Penghapus</td><td>40</td></tr></table>`,
+        options: ["3 : 4", "4 : 3", "3 : 10", "1 : 2"],
+        correct: 0,
+        desc: "30 : 40 = 3 : 4."
+    },
+    { no: 16, text: "Selisih Buku dan Penghapus...", options: ["60", "40", "50", "70"], correct: 0, desc: "100 - 40." },
+    { no: 17, text: "Rasio Penghapus : Buku...", options: ["2 : 5", "5 : 2", "4 : 10", "1 : 3"], correct: 0, desc: "40 : 100 bagi 20 = 2 : 5." },
+    { no: 18, text: "Total semua barang...", options: ["170", "160", "180", "150"], correct: 0, desc: "100+30+40." },
+
+    // VISUAL MENARA
+    {
+        no: 19,
+        text: "Rasio Tinggi Gedung A (20m) terhadap B (15m)...",
+        visual: `<div class="flex items-end justify-center gap-4 h-32 border-b bg-gray-50"><div class="w-8 bg-blue-600 h-24"></div><div class="w-8 bg-blue-400 h-16"></div></div>`,
+        options: ["4 : 3", "3 : 4", "2 : 1", "5 : 3"],
+        correct: 0,
+        desc: "20 : 15 bagi 5."
+    },
+    { no: 20, text: "Motor butuh 2 liter untuk 80 km. Jika 3 liter...", options: ["120 km", "100 km", "160 km", "90 km"], correct: 0, desc: "1 liter = 40km. 3 liter = 120." },
+
+    // TABEL PANEN
+    {
+        no: 21,
+        text: "Rasio <b>Semangka</b> terhadap <b>Melon</b>...",
+        visual: `<table class="w-full custom-table"><tr><th>Buah</th><th>Kg</th></tr><tr><td>Semangka</td><td>50</td></tr><tr><td>Melon</td><td>75</td></tr></table>`,
+        options: ["2 : 3", "3 : 2", "1 : 2", "2 : 5"],
+        correct: 0,
+        desc: "50 : 75 bagi 25."
+    },
+    { no: 22, text: "Durasi Film: A (90 menit), B (2 jam). Mana lebih lama?", options: ["B", "A", "Sama", "Tidak tahu"], correct: 0, desc: "2 jam = 120 menit." },
+    { no: 23, text: "Rasio 1 jam : 100 menit...", options: ["3 : 5", "5 : 3", "1 : 100", "6 : 10"], correct: 0, desc: "60 : 100 = 3 : 5." },
+    { no: 24, text: "Membaca 10 hal = 15 menit. 20 hal = ...", options: ["30 menit", "20 menit", "45 menit", "25 menit"], correct: 0, desc: "Dua kali lipat." },
+    { no: 25, text: "Jalan 1 km = 10 menit. 5 km = ...", options: ["50 menit", "40 menit", "60 menit", "30 menit"], correct: 0, desc: "5 x 10." },
+
+    // GEOMETRI
+    {
+        no: 26,
+        text: "Bangun ini tersusun dari kubus satuan. Berapa volumenya?",
+        visual: `<svg width="100" height="100" class="mx-auto"><rect x="30" y="60" width="20" height="20" fill="#f43f5e" stroke="black"/><rect x="50" y="60" width="20" height="20" fill="#f43f5e" stroke="black"/><rect x="30" y="40" width="20" height="20" fill="#fb7185" stroke="black"/></svg>`,
+        options: ["3 kubus", "4 kubus", "2 kubus", "5 kubus"],
+        correct: 0,
+        desc: "2 bawah, 1 atas."
+    },
+    { no: 27, text: "Dadu: Atas 3. Bawah berapa? (Total 7)", options: ["4", "5", "2", "6"], correct: 0, desc: "7 - 3." },
+    { no: 28, text: "Tinggi 4 balok = 12 cm. Tinggi 1 balok...", options: ["3 cm", "4 cm", "2 cm", "6 cm"], correct: 0, desc: "12 : 4." },
+    { no: 29, text: "Balok 2x3x5 cm. Rusuk terpendek...", options: ["2 cm", "3 cm", "5 cm", "1 cm"], correct: 0, desc: "2 cm." },
+    { no: 30, text: "Luas alas kubus rusuk 4 cm...", options: ["16", "12", "8", "24"], correct: 0, desc: "4 x 4." },
+    { no: 31, text: "Volume kubus rusuk 2 cm...", options: ["8", "4", "6", "12"], correct: 0, desc: "2 x 2 x 2." },
+
+    // PETA KALIMANTAN
+    {
+        no: 32,
+        text: "Pulau <b>Kalimantan</b> terletak di tengah peta. Grid mana yang paling mungkin?",
+        visual: `<div class="w-full h-40 bg-blue-100 border border-blue-300 flex items-center justify-center text-blue-400 font-bold relative"><span class="absolute top-2 left-2 text-xs">PETA INDONESIA</span><div class="w-16 h-16 bg-green-200 border border-green-500 rounded flex items-center justify-center text-[10px] text-green-800">Kalimantan</div></div>`,
+        options: ["C2", "A1", "E4", "A4"],
+        correct: 0,
+        desc: "Kalimantan di tengah atas (C2)."
+    },
+
+    // GRID PRESISI (BARU)
+    {
+        no: 33,
+        text: "Titik A(1,1) ke B(3,1). Gerakannya...",
+        visual: createGrid([{x:1, y:1, label:'A', color:'red'}, {x:3, y:1, label:'B', color:'blue'}], [{x:1, y:1}, {x:3, y:1}]),
+        options: ["2 Kanan", "2 Atas", "3 Kanan", "1 Kanan"],
+        correct: 0,
+        desc: "Y tetap. X nambah 2."
+    },
+    {
+        no: 34,
+        text: "Jarak vertikal dari P(2,5) ke Q(2,2)...",
+        visual: createGrid([{x:2, y:5, label:'P', color:'green'}, {x:2, y:2, label:'Q', color:'orange'}], [{x:2, y:5}, {x:2, y:2}]),
+        options: ["3 Bawah", "3 Kanan", "2 Bawah", "4 Bawah"],
+        correct: 0,
+        desc: "5 ke 2 = turun 3."
+    },
+    { no: 35, text: "Posisi (3,3). Geser 1 kiri. Jadi...", options: ["(2,3)", "(4,3)", "(3,2)", "(3,4)"], correct: 0, desc: "X kurang 1." },
+    { no: 36, text: "Susu 20 liter ke botol 4 liter...", options: ["5 botol", "4 botol", "6 botol", "10 botol"], correct: 0, desc: "20 : 4." },
+    { no: 37, text: "Urutkan dari terpendek: 3m, 100cm, 2m.", options: ["100cm, 2m, 3m", "2m, 3m, 100cm", "3m, 2m, 100cm", "100cm, 3m, 2m"], correct: 0, desc: "100cm=1m. Jadi 1m < 2m < 3m." },
+    { no: 38, text: "Setengah hari = ... jam", options: ["12", "6", "24", "10"], correct: 0, desc: "24 / 2." },
+    { no: 39, text: "Sumbu mendatar disebut...", options: ["Sumbu X", "Sumbu Y", "Sumbu Z", "Titik Asal"], correct: 0, desc: "X." },
+    
+    // PATH COMPLEX (L-SHAPE)
+    {
+        no: 40,
+        text: "Start <b>S(1,4)</b>. Gerak <b>3 Kanan</b> lalu <b>2 Bawah</b>. Finish...",
+        visual: createGrid([{x:1, y:4, label:'S', color:'purple'}], [{x:1, y:4}, {x:4, y:4}, {x:4, y:2}]),
+        options: ["(4,2)", "(4,3)", "(3,2)", "(2,4)"],
+        correct: 0,
+        desc: "X: 1+3=4. Y: 4-2=2. (4,2)."
+    }
+];
+
+// --- LOGIC: SHUFFLE & SELECTION STATE ---
+function shuffle(array, correctIndex) {
+    const originalCorrect = array[correctIndex];
+    let currentIndex = array.length, randomIndex;
+    while (currentIndex != 0) {
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex--;
+        [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+    }
+    return array.indexOf(originalCorrect);
+}
+
+let userAnswers = new Array(questions.length).fill(null);
+let shuffledQuestions = [];
+let isSubmitted = false;
+
+function startQuiz() {
+    // Shuffle Options Only
+    shuffledQuestions = questions.map(q => {
+        const options = [...q.options];
+        const newCorrect = shuffle(options, q.correct);
+        return { ...q, options: options, correct: newCorrect };
+    });
+
+    document.getElementById('start-screen').classList.add('hidden');
+    document.getElementById('controls').classList.remove('hidden');
+    renderQuestions();
+    window.scrollTo(0,0);
+    renderMathInElement(document.body);
+}
+
+function renderQuestions() {
+    const container = document.getElementById('quiz-container');
+    container.innerHTML = shuffledQuestions.map((q, i) => `
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200" id="card-${i}">
+            <div class="flex items-start gap-4">
+                <div class="bg-blue-100 text-blue-700 font-bold w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 border border-blue-200 text-lg">
+                    ${q.no}
+                </div>
+                <div class="w-full">
+                    <p class="text-lg font-semibold mb-4 text-slate-800">${q.text}</p>
+                    ${q.visual ? `<div class="mb-6">${q.visual}</div>` : ''}
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3" id="options-group-${i}">
+                        ${q.options.map((opt, j) => `
+                            <div class="option-card p-4 rounded-xl flex items-center gap-3 relative" onclick="selectOption(${i}, ${j})">
+                                <div class="w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center dot-indicator transition-colors"></div>
+                                <span class="text-base font-medium">${opt}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                    
+                    <!-- Feedback Panel (Hidden initially) -->
+                    <div id="feedback-${i}" class="hidden mt-6 p-4 rounded-xl text-sm border font-medium">
+                        <strong class="block mb-1 opacity-70 uppercase tracking-wider text-xs">Pembahasan</strong>
+                        <p>${q.desc}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+// --- NEW SELECTION LOGIC (CLICK BASED) ---
+function selectOption(qIndex, optIndex) {
+    if(isSubmitted) return; // Lock quiz
+
+    // Update Data
+    userAnswers[qIndex] = optIndex;
+    
+    // Update UI
+    const group = document.getElementById(`options-group-${qIndex}`);
+    const cards = group.getElementsByClassName('option-card');
+    
+    // Reset all siblings
+    for (let card of cards) {
+        card.classList.remove('option-selected');
+        card.querySelector('.dot-indicator').style.backgroundColor = 'transparent';
+        card.querySelector('.dot-indicator').style.borderColor = '#cbd5e1';
+        card.querySelector('.dot-indicator').innerHTML = '';
+    }
+    
+    // Activate clicked
+    const selected = cards[optIndex];
+    selected.classList.add('option-selected');
+    
+    // Add checkmark visual to dot (optional but nice)
+    // We handle strict color in CSS .option-selected .dot-indicator
+    
+    updateProgress();
+}
+
+function updateProgress() {
+    const count = userAnswers.filter(a => a !== null).length;
+    document.getElementById('answered-badge').innerText = count;
+    
+    const warning = document.getElementById('warning-text');
+    if(count === questions.length) {
+        warning.innerHTML = "<span class='text-green-600'>✓ Semua soal terjawab!</span>";
+    } else {
+        warning.innerText = `⚠️ Masih ada ${questions.length - count} soal kosong!`;
+    }
+}
+
+function submitQuiz() {
+    const unanswered = userAnswers.filter(a => a === null).length;
+    if (unanswered > 0) {
+        if(!confirm(`Kamu belum menjawab ${unanswered} soal. Yakin mau mengumpulkan?`)) return;
+    } else {
+        if(!confirm("Yakin ingin mengumpulkan jawaban?")) return;
+    }
+
+    isSubmitted = true;
+    let score = 0, correct = 0, wrong = 0;
+
+    shuffledQuestions.forEach((q, i) => {
+        const selected = userAnswers[i];
+        const feedback = document.getElementById(`feedback-${i}`);
+        const cards = document.querySelectorAll(`#options-group-${i} .option-card`);
+
+        // Reveal Feedback
+        feedback.classList.remove('hidden');
+        
+        // Disable clicks
+        cards.forEach(c => c.style.cursor = 'default');
+
+        // Check Answer
+        if (selected === q.correct) {
+            score++; correct++;
+            // Style Selected as Correct
+            cards[selected].classList.add('correct-mode');
+            cards[selected].querySelector('.dot-indicator').innerHTML = '✓';
+            feedback.classList.add('bg-green-50', 'text-green-800', 'border-green-200');
+        } else {
+            wrong++;
+            // Style Selected as Wrong (if any)
+            if (selected !== null) {
+                cards[selected].classList.add('wrong-mode');
+                cards[selected].querySelector('.dot-indicator').innerHTML = '✕';
+            }
+            // Highlight True Answer
+            cards[q.correct].classList.add('correct-mode');
+            feedback.classList.add('bg-yellow-50', 'text-yellow-800', 'border-yellow-200');
+        }
+    });
+
+    const finalScore = Math.round((score / shuffledQuestions.length) * 100);
+    document.getElementById('final-score').innerText = finalScore;
+    document.getElementById('final-correct').innerText = correct;
+    document.getElementById('final-wrong').innerText = wrong;
+    
+    document.getElementById('result-modal').classList.remove('hidden');
+    document.getElementById('controls').classList.add('hidden');
+}
+
+function closeResult() {
+    document.getElementById('result-modal').classList.add('hidden');
+    window.scrollTo({top:0, behavior:'smooth'});
+}
+</script>
+</body>
+</html>
+
+

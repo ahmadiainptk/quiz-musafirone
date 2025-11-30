@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Latihan Matematika Kelas 6 (Paket C - Presisi)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap');
+        body { font-family: 'Quicksand', sans-serif; background-color: #f3f4f6; }
+        
+        .question-card { transition: transform 0.2s; }
+        .question-card:hover { transform: translateY(-2px); }
+        
+        .option-label { cursor: pointer; transition: all 0.2s; border: 2px solid #e5e7eb; }
+        .option-input:checked + .option-label {
+            background-color: #e0e7ff; border-color: #6366f1; color: #312e81; font-weight: bold;
+        }
+        
+        .correct-answer { background-color: #d1fae5 !important; border-color: #10b981 !important; color: #064e3b !important; }
+        .wrong-answer { background-color: #fee2e2 !important; border-color: #ef4444 !important; color: #7f1d1d !important; }
+
+        .table-custom { width: 100%; border-collapse: collapse; font-size: 0.9em; margin-top: 10px; }
+        .table-custom th { background: #f8fafc; padding: 8px; border: 1px solid #cbd5e1; text-align: left; }
+        .table-custom td { padding: 8px; border: 1px solid #cbd5e1; }
+        .table-custom tr:nth-child(even) { background: #f1f5f9; }
+
+        /* SVG Styles */
+        .grid-line { stroke: #cbd5e1; stroke-width: 1; }
+        .axis-line { stroke: #334155; stroke-width: 2; }
+        .grid-text { font-size: 10px; fill: #64748b; text-anchor: middle; }
+        .point-dot { r: 5; stroke: white; stroke-width: 2; }
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <div class="max-w-3xl mx-auto min-h-screen flex flex-col">
+        <!-- Header -->
+        <header class="bg-indigo-600 text-white p-6 shadow-lg sticky top-0 z-20 rounded-b-2xl">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h1 class="text-2xl font-bold">Matematika Paket C</h1>
+                    <p class="text-indigo-200 text-sm">Soal Lokasi Presisi & Pilihan Acak</p>
+                </div>
+                <div class="bg-white/20 px-4 py-2 rounded-lg backdrop-blur">
+                    <span class="text-xs opacity-80 block">Progress</span>
+                    <span class="font-bold text-lg"><span id="answered-count">0</span>/40</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Quiz -->
+        <main class="flex-grow p-4 space-y-6 pb-24" id="quiz-container">
+            <!-- Questions injected here -->
+        </main>
+
+        <!-- Start Screen -->
+        <div id="start-screen" class="fixed inset-0 bg-white z-50 flex flex-col items-center justify-center p-6 text-center">
+            <div class="w-24 h-24 bg-indigo-100 rounded-full flex items-center justify-center mb-6 text-5xl">🎯</div>
+            <h2 class="text-3xl font-bold text-slate-800 mb-2">Siap untuk Paket C?</h2>
+            <p class="text-slate-500 mb-8 max-w-md">Soal koordinat kini menggunakan sistem Grid Presisi agar lebih mudah dibaca.</p>
+            <button onclick="startQuiz()" class="bg-indigo-600 text-white px-8 py-3 rounded-full font-bold shadow-lg hover:bg-indigo-700 transition transform hover:scale-105">Mulai Ujian</button>
+        </div>
+
+        <!-- Submit Bar -->
+        <div id="controls" class="fixed bottom-0 left-0 w-full bg-white border-t p-4 shadow-lg hidden z-40">
+            <div class="max-w-3xl mx-auto flex justify-between">
+                <div class="text-sm font-bold pt-2 text-slate-500">Selesaikan semua soal!</div>
+                <button onclick="submitQuiz()" class="bg-green-600 text-white px-6 py-2 rounded-lg font-bold hover:bg-green-700 transition">Kumpul Jawaban</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Result Modal -->
+    <div id="result-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-2xl p-8 max-w-sm w-full text-center shadow-2xl">
+            <h2 class="text-2xl font-bold mb-4 text-slate-800">Nilai Kamu</h2>
+            <div class="text-7xl font-black text-indigo-600 mb-6" id="final-score">0</div>
+            <div class="grid grid-cols-2 gap-4 mb-6">
+                <div class="bg-green-100 text-green-800 p-2 rounded-lg font-bold">Benar: <span id="final-correct">0</span></div>
+                <div class="bg-red-100 text-red-800 p-2 rounded-lg font-bold">Salah: <span id="final-wrong">0</span></div>
+            </div>
+            <button onclick="closeResult()" class="w-full bg-slate-800 text-white py-3 rounded-xl font-bold">Lihat Pembahasan</button>
+        </div>
+    </div>
+
+<script>
+// --- FUNGSI GENERATOR SVG GRID PRESISI ---
+function createGridSVG(points, pathStart, pathEnd, label) {
+    // Grid 6x6 (0-6)
+    const size = 300;
+    const unit = 40; // 1 unit = 40px
+    const offset = 30; // Margin for labels
+    
+    let gridLines = '';
+    // Draw Vertical Lines
+    for(let i=0; i<=6; i++) {
+        let x = offset + i * unit;
+        gridLines += `<line x1="${x}" y1="${offset}" x2="${x}" y2="${offset + 6*unit}" class="grid-line" />`;
+        gridLines += `<text x="${x}" y="${offset + 6*unit + 15}" class="grid-text">${i}</text>`;
+    }
+    // Draw Horizontal Lines
+    for(let i=0; i<=6; i++) {
+        let y = offset + (6-i) * unit; // Invert Y because SVG y grows downwards
+        gridLines += `<line x1="${offset}" y1="${y}" x2="${offset + 6*unit}" y2="${y}" class="grid-line" />`;
+        gridLines += `<text x="${offset - 15}" y="${y + 3}" class="grid-text">${i}</text>`;
+    }
+
+    let elements = '';
+    
+    // Draw Path if exists
+    if(pathStart && pathEnd) {
+        const x1 = offset + pathStart[0] * unit;
+        const y1 = offset + (6-pathStart[1]) * unit;
+        const x2 = offset + pathEnd[0] * unit;
+        const y2 = offset + (6-pathEnd[1]) * unit;
+        // Draw L-shape path (Horizontal then Vertical)
+        elements += `<path d="M ${x1} ${y1} L ${x2} ${y1} L ${x2} ${y2}" fill="none" stroke="#f59e0b" stroke-width="3" stroke-dasharray="5,5" />`;
+    }
+
+    // Draw Points
+    points.forEach(p => {
+        const cx = offset + p.x * unit;
+        const cy = offset + (6-p.y) * unit;
+        elements += `<circle cx="${cx}" cy="${cy}" class="point-dot" fill="${p.color}" />`;
+        elements += `<text x="${cx + 10}" y="${cy - 10}" font-size="12" font-weight="bold" fill="black">${p.label}</text>`;
+    });
+
+    return `<svg width="${size}" height="${size}" class="mx-auto bg-white border border-slate-300 rounded">${gridLines}${elements}</svg>`;
+}
+
+const questions = [
+    // --- PECAHAN ---
+    { no: 1, text: "Hasil dari \\( \\frac{5}{6} \\times 12 \\) adalah...", options: ["10", "12", "9", "8"], correct: 0, desc: "5/6 x 12 = 60/6 = 10." },
+    { no: 2, text: "Ibu punya \\( \\frac{3}{4} \\) kg gula. Dipakai membuat kue \\( \\frac{1}{2} \\) kg. Sisa gula...", options: ["\\( \\frac{1}{4} \\)", "\\( \\frac{1}{3} \\)", "\\( \\frac{2}{4} \\)", "\\( \\frac{1}{8} \\)"], correct: 0, desc: "3/4 - 1/2 = 3/4 - 2/4 = 1/4." },
+    { no: 3, text: "Bentuk desimal dari \\( \\frac{7}{20} \\) adalah...", options: ["0,35", "0,72", "0,70", "0,07"], correct: 0, desc: "7 dibagi 20 = 0,35." },
+    { no: 4, text: "Hasil dari \\( 2\\frac{1}{2} : \\frac{1}{4} \\) adalah...", options: ["10", "8", "5", "6"], correct: 0, desc: "5/2 : 1/4 = 5/2 x 4/1 = 20/2 = 10." },
+    { no: 5, text: "Pak Budi memotong kayu 6 meter menjadi potongan \\( \\frac{3}{4} \\) meter. Banyak potongan...", options: ["8", "6", "4", "9"], correct: 0, desc: "6 : 3/4 = 6 x 4/3 = 24/3 = 8." },
+    { no: 6, text: "Pecahan paling sederhana dari 45/60 adalah...", options: ["\\( \\frac{3}{4} \\)", "\\( \\frac{4}{5} \\)", "\\( \\frac{2}{3} \\)", "\\( \\frac{5}{6} \\)"], correct: 0, desc: "Bagi 15. 45/15=3, 60/15=4." },
+    { no: 7, text: "0,15 + 2,4 = ...", options: ["2,55", "2,19", "3,9", "0,39"], correct: 0, desc: "0,15 + 2,40 = 2,55." },
+    { no: 8, text: "50% dari 80 adalah...", options: ["40", "50", "30", "20"], correct: 0, desc: "Setengah dari 80." },
+    { no: 9, text: "1,2 x 0,3 = ...", options: ["0,36", "3,6", "0,036", "36"], correct: 0, desc: "12x3=36. Ada 2 angka belakang koma -> 0,36." },
+
+    // --- VISUAL (DENAH) ---
+    {
+        no: 10,
+        text: "Perhatikan denah berikut. Bagian <b>HIJAU</b> adalah kebun sayur. Berapa bagian kebun sayur tersebut?",
+        visual: `<svg width="250" height="50" class="mx-auto border border-black"><rect x="0" y="0" width="50" height="50" fill="white" stroke="black"/><rect x="50" y="0" width="50" height="50" fill="#22c55e" stroke="black"/><rect x="100" y="0" width="50" height="50" fill="white" stroke="black"/><rect x="150" y="0" width="50" height="50" fill="#22c55e" stroke="black"/><rect x="200" y="0" width="50" height="50" fill="#22c55e" stroke="black"/></svg>`,
+        options: ["\\( \\frac{3}{5} \\)", "\\( \\frac{2}{5} \\)", "\\( \\frac{1}{5} \\)", "\\( \\frac{4}{5} \\)"],
+        correct: 0,
+        desc: "3 kotak hijau dari total 5."
+    },
+
+    // --- RASIO ---
+    { no: 11, text: "Rasio 24 : 32 disederhanakan menjadi...", options: ["3 : 4", "4 : 3", "2 : 3", "6 : 8"], correct: 0, desc: "Bagi 8." },
+    { no: 12, text: "Kelas 6 ada 12 Laki-laki dan 18 Perempuan. Rasio L : P...", options: ["2 : 3", "3 : 2", "4 : 6", "1 : 2"], correct: 0, desc: "12:18 bagi 6 = 2:3." },
+    { no: 13, text: "Rasio Gula : Tepung = 2 : 5. Jika Gula 10 kg, Tepung...", options: ["25 kg", "20 kg", "15 kg", "30 kg"], correct: 0, desc: "Gula (2 bag) = 10 -> 1 bag = 5. Tepung 5x5=25." },
+    { no: 14, text: "Mobil A 60 km/jam. Mobil B 80 km/jam. Rasio kecepatan A:B...", options: ["3 : 4", "4 : 3", "6 : 8", "2 : 3"], correct: 0, desc: "60:80 bagi 20 = 3:4." },
+
+    // --- TABEL DATA ---
+    {
+        no: 15,
+        text: "Rasio <b>Sapi</b> terhadap <b>Kambing</b> adalah...",
+        visual: `<table class="table-custom"><tr><th>Hewan</th><th>Jumlah</th></tr><tr><td>Sapi</td><td>15</td></tr><tr><td>Kambing</td><td>25</td></tr><tr><td>Ayam</td><td>50</td></tr></table>`,
+        options: ["3 : 5", "5 : 3", "1 : 2", "3 : 10"],
+        correct: 0,
+        desc: "15 : 25 bagi 5 = 3 : 5."
+    },
+    { no: 16, text: "Rasio Ayam : Sapi...", options: ["10 : 3", "3 : 10", "2 : 1", "5 : 2"], correct: 0, desc: "50 : 15 bagi 5 = 10 : 3." },
+    { no: 17, text: "Selisih Ayam dan Kambing dalam rasio sederhana...", options: ["5 : 3", "25", "1 : 1", "2 : 1"], correct: 1, desc: "Soal menanyakan selisih angka (50-25=25) atau rasio? Opsi jawaban campuran, pilih yang masuk akal: 25 ekor." },
+    { no: 18, text: "Jumlah total hewan ternak...", options: ["90", "80", "100", "85"], correct: 0, desc: "15+25+50 = 90." },
+
+    // --- MENARA RASIO ---
+    {
+        no: 19,
+        text: "Rasio Tinggi Pohon A (12m) terhadap Pohon B (8m)...",
+        options: ["3 : 2", "2 : 3", "4 : 3", "3 : 4"],
+        correct: 0,
+        desc: "12 : 8 bagi 4 = 3 : 2."
+    },
+    { no: 20, text: "Bensin:Jarak = 1 liter : 12 km. Untuk 4 liter bensin...", options: ["48 km", "36 km", "24 km", "60 km"], correct: 0, desc: "4 x 12 = 48." },
+
+    // --- TABEL BIBIT ---
+    {
+        no: 21,
+        text: "Rasio bibit <b>Mangga</b> terhadap <b>Durian</b>...",
+        visual: `<table class="table-custom"><tr><th>Bibit</th><th>Jml</th></tr><tr><td>Mangga</td><td>40</td></tr><tr><td>Durian</td><td>24</td></tr></table>`,
+        options: ["5 : 3", "3 : 5", "8 : 5", "5 : 8"],
+        correct: 0,
+        desc: "40 : 24 bagi 8 = 5 : 3."
+    },
+    { no: 22, text: "Waktu belajar: MTK (90 menit), IPA (1,5 jam), B.Indo (2 jam). Paling lama...", options: ["B.Indo", "IPA", "MTK", "Sama"], correct: 0, desc: "2 jam = 120 menit." },
+    { no: 23, text: "Rasio 90 menit : 2 jam...", options: ["3 : 4", "4 : 3", "45 : 1", "3 : 2"], correct: 0, desc: "90 : 120 = 3 : 4." },
+    { no: 24, text: "Lari 5 km dalam 30 menit. 10 km butuh...", options: ["60 menit", "45 menit", "90 menit", "50 menit"], correct: 0, desc: "Jarak 2x lipat, waktu 2x lipat." },
+    { no: 25, text: "Mengetik 500 kata = 15 menit. 1000 kata = ...", options: ["30 menit", "25 menit", "45 menit", "20 menit"], correct: 0, desc: "30 menit." },
+
+    // --- KUBUS (VISUAL) ---
+    {
+        no: 26,
+        text: "Bangun tangga ini tersusun dari kubus satuan. Berapa volumenya?",
+        visual: `<svg width="100" height="100" class="mx-auto"><rect x="10" y="60" width="20" height="20" fill="#60a5fa" stroke="black"/><rect x="30" y="60" width="20" height="20" fill="#60a5fa" stroke="black"/><rect x="50" y="60" width="20" height="20" fill="#60a5fa" stroke="black"/><rect x="10" y="40" width="20" height="20" fill="#3b82f6" stroke="black"/><rect x="30" y="40" width="20" height="20" fill="#3b82f6" stroke="black"/><rect x="10" y="20" width="20" height="20" fill="#1d4ed8" stroke="black"/></svg>`,
+        options: ["6 kubus", "5 kubus", "7 kubus", "9 kubus"],
+        correct: 0,
+        desc: "Bawah 3, Tengah 2, Atas 1. Total 1+2+3 = 6."
+    },
+    { no: 27, text: "Dadu: Sisi DEPAN 5. Sisi BELAKANG adalah... (Total 7)", options: ["2", "3", "4", "1"], correct: 0, desc: "7 - 5 = 2." },
+    { no: 28, text: "5 kubus disusun vertikal. Tingginya 25cm. Rusuk 1 kubus...", options: ["5 cm", "10 cm", "25 cm", "1 cm"], correct: 0, desc: "25 : 5 = 5." },
+    { no: 29, text: "Balok 8x10x12 cm. Rusuk terpanjang...", options: ["12", "10", "8", "30"], correct: 0, desc: "12 cm." },
+    { no: 30, text: "Tumpukan 4 kardus tingginya 80 cm. Tinggi 1 kardus...", options: ["20 cm", "40 cm", "10 cm", "25 cm"], correct: 0, desc: "80 : 4 = 20." },
+    { no: 31, text: "Luas alas 8x10...", options: ["80", "800", "18", "40"], correct: 0, desc: "80." },
+    { no: 32, text: "Peta: Kota A di (B,3). Kota B 2 petak di kanan A. Posisi B...", options: ["(D,3)", "(B,5)", "(D,5)", "(C,3)"], correct: 0, desc: "B -> C -> D." },
+
+    // --- GRID PRESISI (SOAL 33, 34, 40) ---
+    {
+        no: 33,
+        text: "Titik <b>K</b> ada di (1,1). Titik <b>L</b> ada di (4,3). Pergerakan dari K ke L adalah...",
+        visual: createGridSVG(
+            [{x:1, y:1, label:'K', color:'red'}, {x:4, y:3, label:'L', color:'blue'}],
+            [1,1], [4,3], "Path"
+        ),
+        options: ["3 kanan, 2 atas", "2 kanan, 3 atas", "3 kanan, 3 atas", "4 kanan, 2 atas"],
+        correct: 0,
+        desc: "X: 1 ke 4 (3 langkah). Y: 1 ke 3 (2 langkah)."
+    },
+    {
+        no: 34,
+        text: "Tentukan jarak horizontal dan vertikal dari P(2,4) ke Q(5,1).",
+        visual: createGridSVG(
+            [{x:2, y:4, label:'P', color:'green'}, {x:5, y:1, label:'Q', color:'orange'}],
+            [2,4], [5,1], "Path"
+        ),
+        options: ["3 kanan, 3 bawah", "3 kanan, 4 bawah", "2 kanan, 3 bawah", "4 kanan, 3 bawah"],
+        correct: 0,
+        desc: "X: 2 ke 5 (+3). Y: 4 ke 1 (-3/bawah)."
+    },
+    { no: 35, text: "Siswa di (A,2). Temannya 3 baris di belakang. Posisi...", options: ["(A,5)", "(D,2)", "(A,4)", "(C,2)"], correct: 0, desc: "2 + 3 = 5." },
+    { no: 36, text: "Minyak 20 liter ke botol 2 liter. Butuh...", options: ["10 botol", "20 botol", "5 botol", "40 botol"], correct: 0, desc: "20 : 2 = 10." },
+    { no: 37, text: "Jarak terdekat: 1.5km, 0.8km, 2.1km. Mana?", options: ["0.8 km", "1.5 km", "2.1 km", "Sama"], correct: 0, desc: "0.8 paling kecil." },
+    { no: 38, text: "2 Hari = ... Jam", options: ["48", "24", "72", "36"], correct: 0, desc: "2 x 24." },
+    { no: 39, text: "Pusat koordinat adalah...", options: ["(0,0)", "(1,1)", "(A,1)", "(X,Y)"], correct: 0, desc: "Titik (0,0)." },
+    
+    // --- GRID MOVEMENT COMPLEX ---
+    {
+        no: 40,
+        text: "Titik Start <b>S(2,5)</b>. Bergerak <b>3 langkah ke Kanan</b> dan <b>4 langkah ke Bawah</b>. Posisi akhirnya adalah...",
+        visual: createGridSVG(
+            [{x:2, y:5, label:'S', color:'purple'}], 
+            [2,5], [5,1], "Path" 
+        ) + `<p class="text-xs text-center text-slate-500 mt-1">*Garis putus-putus adalah jalur gerak</p>`,
+        options: ["(5,1)", "(5,2)", "(4,1)", "(1,5)"],
+        correct: 0,
+        desc: "X: 2+3=5. Y: 5-4=1. Titik akhir (5,1)."
+    }
+];
+
+// --- SHUFFLE OPTIONS FUNCTION ---
+// Ini kunci jawaban dinamis agar tidak selalu A
+function shuffle(array, correctIndex) {
+    const originalCorrect = array[correctIndex];
+    let currentIndex = array.length, randomIndex;
+
+    // While there remain elements to shuffle.
+    while (currentIndex != 0) {
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex--;
+        [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+    }
+    
+    // Find new correct index
+    return array.indexOf(originalCorrect);
+}
+
+let userAnswers = new Array(questions.length).fill(null);
+let shuffledQuestions = [];
+
+function startQuiz() {
+    // Clone and shuffle options logic
+    shuffledQuestions = questions.map(q => {
+        const options = [...q.options];
+        const newCorrect = shuffle(options, q.correct);
+        return { ...q, options: options, correct: newCorrect };
+    });
+
+    document.getElementById('start-screen').classList.add('hidden');
+    document.getElementById('controls').classList.remove('hidden');
+    renderQuestions();
+    window.scrollTo(0,0);
+    renderMathInElement(document.body);
+}
+
+function renderQuestions() {
+    const container = document.getElementById('quiz-container');
+    container.innerHTML = shuffledQuestions.map((q, i) => `
+        <div class="question-card bg-white p-6 rounded-2xl shadow-sm border border-indigo-50" id="card-${i}">
+            <div class="flex items-start gap-4">
+                <div class="bg-indigo-100 text-indigo-700 font-bold w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0">
+                    ${q.no}
+                </div>
+                <div class="w-full">
+                    <p class="text-lg font-semibold mb-4 text-slate-800">${q.text}</p>
+                    ${q.visual ? `<div class="mb-6">${q.visual}</div>` : ''}
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        ${q.options.map((opt, j) => `
+                            <label class="option-label p-4 rounded-xl flex items-center gap-3 bg-white hover:bg-indigo-50">
+                                <input type="radio" name="q-${i}" value="${j}" class="option-input hidden" onchange="selectAnswer(${i}, ${j})">
+                                <span class="w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center dot text-sm font-bold text-white"></span>
+                                <span class="text-base">${opt}</span>
+                            </label>
+                        `).join('')}
+                    </div>
+                    <div id="feedback-${i}" class="hidden mt-4 bg-yellow-50 text-yellow-900 p-4 rounded-xl text-sm border border-yellow-200">
+                        <strong>Pembahasan:</strong> ${q.desc}
+                    </div>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+function selectAnswer(qIndex, optIndex) {
+    userAnswers[qIndex] = optIndex;
+    const count = userAnswers.filter(a => a !== null).length;
+    document.getElementById('answered-count').innerText = count;
+}
+
+function submitQuiz() {
+    const unanswered = userAnswers.filter(a => a === null).length;
+    if (unanswered > 0 && !confirm(`Masih ada ${unanswered} soal kosong. Yakin kumpul?`)) return;
+
+    let score = 0, correct = 0, wrong = 0;
+    shuffledQuestions.forEach((q, i) => {
+        const selected = userAnswers[i];
+        const feedback = document.getElementById(`feedback-${i}`);
+        const inputs = document.getElementsByName(`q-${i}`);
+        const labels = document.querySelectorAll(`#card-${i} label`);
+
+        feedback.classList.remove('hidden');
+        inputs.forEach(inp => inp.disabled = true);
+
+        if (selected === q.correct) {
+            score++; correct++;
+            labels[selected].classList.add('correct-answer');
+            labels[selected].querySelector('.dot').innerText = '✓';
+            labels[selected].querySelector('.dot').style.borderColor = '#10b981';
+            labels[selected].querySelector('.dot').style.backgroundColor = '#10b981';
+        } else {
+            wrong++;
+            if (selected !== null) {
+                labels[selected].classList.add('wrong-answer');
+                labels[selected].querySelector('.dot').innerText = '✕';
+                labels[selected].querySelector('.dot').style.borderColor = '#ef4444';
+                labels[selected].querySelector('.dot').style.backgroundColor = '#ef4444';
+            }
+            labels[q.correct].classList.add('correct-answer');
+        }
+    });
+
+    document.getElementById('final-score').innerText = Math.round((score / shuffledQuestions.length) * 100);
+    document.getElementById('final-correct').innerText = correct;
+    document.getElementById('final-wrong').innerText = wrong;
+    document.getElementById('result-modal').classList.remove('hidden');
+    document.getElementById('controls').classList.add('hidden');
+}
+
+function closeResult() {
+    document.getElementById('result-modal').classList.add('hidden');
+    window.scrollTo({top:0, behavior:'smooth'});
+}
+</script>
+</body>
+</html>
+

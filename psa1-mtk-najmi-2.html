@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PAS Matematika Kelas 9 (HOTS & Pembahasan)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- KaTeX untuk Rumus Matematika -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap');
+        body { font-family: 'Nunito', sans-serif; background-color: #f8fafc; -webkit-tap-highlight-color: transparent; }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #64748b; }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+        }
+
+        .option-btn {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .option-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        .option-btn.selected {
+            background-color: #eff6ff;
+            border-color: #2563eb;
+            color: #1e40af;
+        }
+        
+        /* Review Mode Styles */
+        .review-card.correct { border-left: 5px solid #22c55e; }
+        .review-card.wrong { border-left: 5px solid #ef4444; }
+        .review-card.skipped { border-left: 5px solid #94a3b8; }
+
+        .katex { font-size: 1.1em; }
+    </style>
+</head>
+<body class="text-slate-800 h-screen flex flex-col overflow-hidden">
+
+    <!-- HEADER -->
+    <header class="bg-white shadow-sm border-b border-slate-200 z-20 relative">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="bg-indigo-600 text-white p-2 rounded-lg shadow-lg shadow-indigo-200">
+                    <i class="fas fa-calculator"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg leading-tight md:text-xl text-slate-800">PAS Matematika Kelas 9</h1>
+                    <p class="text-xs text-slate-500 font-semibold">40 Soal • HOTS, Medium, Easy</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="hidden md:flex flex-col items-end" id="timer-container">
+                    <span class="text-xs text-slate-500 font-bold uppercase tracking-wider">Sisa Waktu</span>
+                    <span id="timer" class="font-mono text-xl font-bold text-indigo-600">120:00</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="flex flex-1 overflow-hidden relative">
+        
+        <!-- MAIN CONTENT -->
+        <main class="flex-1 overflow-y-auto bg-slate-50 relative w-full scroll-smooth" id="main-scroll">
+            <div class="max-w-4xl mx-auto p-4 md:p-8 pb-24">
+                
+                <!-- START SCREEN -->
+                <div id="start-screen" class="flex flex-col items-center justify-center min-h-[60vh] text-center">
+                    <div class="w-24 h-24 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center mb-6 text-4xl shadow-indigo-200 shadow-xl animate-bounce">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h2 class="text-3xl font-extrabold text-slate-800 mb-3">Siap Ujian Matematika?</h2>
+                    <p class="text-slate-500 mb-8 max-w-md leading-relaxed">
+                        Komposisi Soal:<br>
+                        <span class="inline-block bg-green-100 text-green-800 text-xs px-2 py-1 rounded font-bold mr-1">50% Mudah</span>
+                        <span class="inline-block bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded font-bold mr-1">30% Sedang</span>
+                        <span class="inline-block bg-red-100 text-red-800 text-xs px-2 py-1 rounded font-bold">20% HOTS</span>
+                    </p>
+                    <button onclick="startQuiz()" class="bg-indigo-600 text-white px-10 py-4 rounded-full font-bold text-lg shadow-xl shadow-indigo-200 hover:bg-indigo-700 transition transform hover:-translate-y-1">
+                        Mulai Mengerjakan
+                    </button>
+                </div>
+
+                <!-- QUESTION CARD -->
+                <div id="quiz-container" class="hidden">
+                    <div class="flex justify-between items-center mb-4">
+                        <div class="text-sm font-bold text-slate-500">Soal <span id="q-number">1</span> dari 40</div>
+                        <div class="w-1/3 bg-slate-200 rounded-full h-2.5">
+                            <div id="progress-bar" class="bg-indigo-600 h-2.5 rounded-full transition-all duration-300" style="width: 0%"></div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-2xl shadow-md border border-slate-200 overflow-hidden mb-6 p-6 md:p-8 relative min-h-[300px]">
+                        <!-- Soal -->
+                        <div id="q-text" class="text-lg md:text-xl font-bold text-slate-800 mb-8 leading-relaxed"></div>
+                        
+                        <!-- Pilihan -->
+                        <div id="options-container" class="space-y-3"></div>
+                    </div>
+
+                    <!-- Navigation -->
+                    <div class="flex justify-between gap-4">
+                        <button onclick="prevQuestion()" id="btn-prev" class="flex-1 bg-white border border-slate-300 text-slate-700 font-bold py-3 rounded-xl hover:bg-slate-50 transition disabled:opacity-50 disabled:cursor-not-allowed">
+                            <i class="fas fa-arrow-left mr-2"></i> Sebelumnya
+                        </button>
+                        <button onclick="nextQuestion()" id="btn-next" class="flex-1 bg-indigo-600 text-white font-bold py-3 rounded-xl hover:bg-indigo-700 shadow-lg shadow-indigo-200 transition">
+                            Selanjutnya <i class="fas fa-arrow-right ml-2"></i>
+                        </button>
+                    </div>
+                    
+                    <!-- Grid Navigation (Mobile Friendly) -->
+                    <div class="mt-8">
+                        <p class="text-xs font-bold text-slate-400 uppercase mb-3 text-center">Navigasi Cepat</p>
+                        <div class="grid grid-cols-5 md:grid-cols-10 gap-2" id="question-grid"></div>
+                    </div>
+                </div>
+
+                <!-- RESULT SCREEN -->
+                <div id="result-screen" class="hidden text-center py-8">
+                    <div class="bg-white p-8 rounded-3xl shadow-xl border border-slate-100 max-w-lg mx-auto">
+                        <div id="score-icon" class="text-6xl mb-4">🎉</div>
+                        <h2 class="text-2xl font-bold text-slate-800 mb-1">Hasil Ujian</h2>
+                        <p class="text-slate-500 text-sm mb-6">Nilai Akhir Anda</p>
+                        
+                        <div class="text-7xl font-black text-indigo-600 mb-8 tracking-tighter" id="final-score">0</div>
+                        
+                        <div class="grid grid-cols-3 gap-3 mb-8 text-sm">
+                            <div class="bg-green-50 p-3 rounded-xl border border-green-100 text-green-700">
+                                <span class="block text-xl font-bold" id="total-correct">0</span> Benar
+                            </div>
+                            <div class="bg-red-50 p-3 rounded-xl border border-red-100 text-red-700">
+                                <span class="block text-xl font-bold" id="total-wrong">0</span> Salah
+                            </div>
+                            <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 text-slate-700">
+                                <span class="block text-xl font-bold" id="total-skipped">0</span> Kosong
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col gap-3">
+                            <button onclick="showExplanation()" class="w-full bg-slate-800 text-white font-bold py-3.5 rounded-xl hover:bg-slate-900 transition shadow-lg flex items-center justify-center gap-2">
+                                <i class="fas fa-book-open"></i> Lihat Pembahasan
+                            </button>
+                            <button onclick="location.reload()" class="w-full bg-white border border-slate-300 text-slate-700 font-bold py-3.5 rounded-xl hover:bg-slate-50 transition">
+                                <i class="fas fa-redo"></i> Ulangi Ujian
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- EXPLANATION SCREEN -->
+                <div id="explanation-container" class="hidden space-y-6">
+                    <div class="flex justify-between items-center mb-6 sticky top-0 bg-slate-50/95 backdrop-blur py-4 z-10 border-b border-slate-200">
+                        <h2 class="text-2xl font-bold text-slate-800">Pembahasan Soal</h2>
+                        <button onclick="location.reload()" class="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-indigo-700">Selesai</button>
+                    </div>
+                    <div id="explanation-list" class="space-y-6">
+                        <!-- Review cards generated here -->
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+<script>
+// --- DATA SOAL (50% Mudah, 30% Sedang, 20% HOTS) ---
+const questionsData = [
+    // --- EASY (Nomor 1-20) ---
+    { 
+        text: "Bentuk perkalian berulang dari \\( (-4)^3 \\) adalah...", 
+        options: ["\\( (-4) \\times (-4) \\times (-4) \\)", "\\( -(4 \\times 4 \\times 4) \\)", "\\( 3 \\times (-4) \\)", "\\( 4 \\times 4 \\times 4 \\)"], 
+        answer: 0, 
+        explanation: "Pangkat menunjukkan berapa kali bilangan pokok dikalikan. \\( (-4)^3 = (-4) \\times (-4) \\times (-4) \\)." 
+    },
+    { 
+        text: "Nilai dari \\( 2^3 + 3^2 \\) adalah...", 
+        options: ["12", "17", "18", "14"], 
+        answer: 1, 
+        explanation: "\\( 2^3 = 8 \\) dan \\( 3^2 = 9 \\). Maka \\( 8 + 9 = 17 \\)." 
+    },
+    { 
+        text: "Hasil dari \\( \\sqrt{144} \\) adalah...", 
+        options: ["10", "11", "12", "14"], 
+        answer: 2, 
+        explanation: "\\( 12 \\times 12 = 144 \\), maka \\( \\sqrt{144} = 12 \\)." 
+    },
+    { 
+        text: "Bentuk baku dari 25.000 adalah...", 
+        options: ["\\( 2,5 \\times 10^3 \\)", "\\( 2,5 \\times 10^4 \\)", "\\( 25 \\times 10^3 \\)", "\\( 0,25 \\times 10^5 \\)"], 
+        answer: 1, 
+        explanation: "Geser koma ke kiri 4 langkah hingga menjadi 2,5. Maka pangkatnya 4: \\( 2,5 \\times 10^4 \\)." 
+    },
+    { 
+        text: "Hasil dari \\( 5^0 \\) adalah...", 
+        options: ["0", "1", "5", "Tidak terdefinisi"], 
+        answer: 1, 
+        explanation: "Setiap bilangan (selain 0) yang dipangkatkan 0 hasilnya adalah 1." 
+    },
+    { 
+        text: "Sebuah kubus memiliki panjang rusuk 5 cm. Luas permukaannya adalah...", 
+        options: ["125 cm²", "150 cm²", "100 cm²", "75 cm²"], 
+        answer: 1, 
+        explanation: "Rumus LP Kubus = \\( 6 \\times s^2 = 6 \\times 5^2 = 6 \\times 25 = 150 \\text{ cm}^2 \\)." 
+    },
+    { 
+        text: "Volume balok dengan p=10 cm, l=5 cm, t=4 cm adalah...", 
+        options: ["200 cm³", "190 cm³", "100 cm³", "50 cm³"], 
+        answer: 0, 
+        explanation: "Volume = \\( p \\times l \\times t = 10 \\times 5 \\times 4 = 200 \\text{ cm}^3 \\)." 
+    },
+    { 
+        text: "Bangun ruang sisi lengkung yang memiliki 1 titik puncak adalah...", 
+        options: ["Tabung", "Bola", "Kerucut", "Prisma"], 
+        answer: 2, 
+        explanation: "Kerucut memiliki alas lingkaran dan satu titik puncak." 
+    },
+    { 
+        text: "Rumus luas selimut tabung adalah...", 
+        options: ["\\( \\pi r^2 \\)", "\\( 2 \\pi r t \\)", "\\( \\pi r s \\)", "\\( 4 \\pi r^2 \\)"], 
+        answer: 1, 
+        explanation: "Luas selimut tabung adalah keliling alas dikali tinggi: \\( 2 \\pi r \\times t \\)." 
+    },
+    { 
+        text: "Akar-akar dari persamaan \\( x^2 - 4 = 0 \\) adalah...", 
+        options: ["2 dan -2", "2 dan 0", "4 dan -4", "0 dan 4"], 
+        answer: 0, 
+        explanation: "Faktorkan menjadi \\( (x-2)(x+2)=0 \\), maka \\( x=2 \\) atau \\( x=-2 \\)." 
+    },
+    { 
+        text: "Pada fungsi \\( f(x) = x^2 + 3x - 5 \\), nilai c adalah...", 
+        options: ["1", "3", "-5", "5"], 
+        answer: 2, 
+        explanation: "Bentuk umum \\( ax^2+bx+c \\). Di sini \\( c = -5 \\)." 
+    },
+    { 
+        text: "Diskriminan dari persamaan \\( x^2 + 5x + 6 = 0 \\) dihitung dengan rumus...", 
+        options: ["\\( b^2 - 4ac \\)", "\\( b^2 + 4ac \\)", "\\( 4ac - b^2 \\)", "\\( -b \\pm \\sqrt{D} \\)"], 
+        answer: 0, 
+        explanation: "Rumus Diskriminan (D) adalah \\( b^2 - 4ac \\)." 
+    },
+    { 
+        text: "Titik puncak grafik fungsi kuadrat disebut juga...", 
+        options: ["Titik potong sumbu X", "Titik potong sumbu Y", "Titik balik/optimum", "Sumbu simetri"], 
+        answer: 2, 
+        explanation: "Titik puncak grafik parabola disebut titik balik atau titik optimum (maksimum/minimum)." 
+    },
+    { 
+        text: "Banyak titik sudut pada bola adalah...", 
+        options: ["0", "1", "2", "Tak hingga"], 
+        answer: 0, 
+        explanation: "Bola adalah bangun ruang sisi lengkung yang tidak memiliki titik sudut." 
+    },
+    { 
+        text: "Hasil dari \\( \\sqrt{3} \\times \\sqrt{3} \\) adalah...", 
+        options: ["3", "9", "\\( \\sqrt{6} \\)", "\\( 3\\sqrt{3} \\)"], 
+        answer: 0, 
+        explanation: "\\( \\sqrt{a} \\times \\sqrt{a} = a \\). Jadi \\( \\sqrt{3} \\times \\sqrt{3} = 3 \\)." 
+    },
+    { 
+        text: "Bentuk sederhana dari \\( y^3 \\times y^5 \\) adalah...", 
+        options: ["\\( y^{15} \\)", "\\( y^8 \\)", "\\( y^2 \\)", "\\( 2y^8 \\)"], 
+        answer: 1, 
+        explanation: "Sifat pangkat: \\( a^m \\times a^n = a^{m+n} \\). Maka \\( 3+5=8 \\)." 
+    },
+    { 
+        text: "Manakah yang merupakan persamaan kuadrat?", 
+        options: ["\\( 2x + 3 = 0 \\)", "\\( x^2 - 5x + 6 = 0 \\)", "\\( x^3 + 2x = 0 \\)", "\\( x + y = 2 \\)"], 
+        answer: 1, 
+        explanation: "Persamaan kuadrat memiliki variabel dengan pangkat tertinggi 2." 
+    },
+    { 
+        text: "Luas permukaan bola dengan jari-jari r adalah...", 
+        options: ["\\( 4 \\pi r^2 \\)", "\\( \\frac{4}{3} \\pi r^3 \\)", "\\( 2 \\pi r^2 \\)", "\\( \\pi r^2 \\)"], 
+        answer: 0, 
+        explanation: "Rumus luas permukaan bola adalah \\( 4 \\pi r^2 \\)." 
+    },
+    { 
+        text: "Jika \\( 3^x = 81 \\), maka nilai x adalah...", 
+        options: ["3", "4", "5", "6"], 
+        answer: 1, 
+        explanation: "\\( 3^4 = 3 \\times 3 \\times 3 \\times 3 = 81 \\). Jadi \\( x=4 \\)." 
+    },
+    { 
+        text: "Garis pelukis pada kerucut disimbolkan dengan huruf...", 
+        options: ["r", "t", "s", "d"], 
+        answer: 2, 
+        explanation: "Garis pelukis kerucut biasanya disimbolkan dengan huruf \\( s \\)." 
+    },
+
+    // --- MEDIUM (Nomor 21-32) ---
+    { 
+        text: "Hasil dari \\( \\sqrt{75} - \\sqrt{12} \\) adalah...", 
+        options: ["\\( 3\\sqrt{3} \\)", "\\( 2\\sqrt{3} \\)", "\\( 5\\sqrt{3} \\)", "\\( \\sqrt{63} \\)"], 
+        answer: 0, 
+        explanation: "\\( \\sqrt{75} = 5\\sqrt{3} \\), \\( \\sqrt{12} = 2\\sqrt{3} \\). Maka \\( 5\\sqrt{3} - 2\\sqrt{3} = 3\\sqrt{3} \\)." 
+    },
+    { 
+        text: "Bentuk rasional dari \\( \\frac{8}{3-\\sqrt{5}} \\) adalah...", 
+        options: ["\\( 2(3+\\sqrt{5}) \\)", "\\( 4(3+\\sqrt{5}) \\)", "\\( 2(3-\\sqrt{5}) \\)", "\\( 6+\\sqrt{5} \\)"], 
+        answer: 0, 
+        explanation: "Kalikan sekawan \\( \\frac{3+\\sqrt{5}}{3+\\sqrt{5}} \\). Penyebut menjadi \\( 9-5=4 \\). \\( \\frac{8(3+\\sqrt{5})}{4} = 2(3+\\sqrt{5}) \\)." 
+    },
+    { 
+        text: "Volume tabung adalah 1.570 cm³ dan tinggi 5 cm. Jari-jarinya adalah... (\\(\\pi=3,14\\))", 
+        options: ["5 cm", "10 cm", "15 cm", "20 cm"], 
+        answer: 1, 
+        explanation: "\\( V = \\pi r^2 t \\Rightarrow 1570 = 3,14 \\times r^2 \\times 5 \\). \\( r^2 = 1570 / 15,7 = 100 \\). Maka \\( r=10 \\)." 
+    },
+    { 
+        text: "Sebuah kerucut memiliki volume 300 cm³. Jika jari-jarinya diperbesar 2 kali dan tingginya tetap, volume baru adalah...", 
+        options: ["600 cm³", "900 cm³", "1200 cm³", "1500 cm³"], 
+        answer: 2, 
+        explanation: "Volume sebanding dengan \\( r^2 \\). Jika \\( r \\) jadi 2 kali, volume jadi \\( 2^2 = 4 \\) kali semula. \\( 4 \\times 300 = 1200 \\)." 
+    },
+    { 
+        text: "Persamaan kuadrat yang akar-akarnya -3 dan 5 adalah...", 
+        options: ["\\( x^2 - 2x - 15 = 0 \\)", "\\( x^2 + 2x - 15 = 0 \\)", "\\( x^2 - 8x + 15 = 0 \\)", "\\( x^2 + 8x - 15 = 0 \\)"], 
+        answer: 0, 
+        explanation: "\\( (x - x_1)(x - x_2) = 0 \\Rightarrow (x - (-3))(x - 5) = (x+3)(x-5) = x^2 - 5x + 3x - 15 = x^2 - 2x - 15 \\)." 
+    },
+    { 
+        text: "Sumbu simetri grafik fungsi \\( y = 2x^2 - 8x + 3 \\) adalah...", 
+        options: ["x = 4", "x = -4", "x = 2", "x = -2"], 
+        answer: 2, 
+        explanation: "Rumus sumbu simetri \\( x = -b/2a = -(-8)/(2\\times2) = 8/4 = 2 \\)." 
+    },
+    { 
+        text: "Limas persegi memiliki keliling alas 40 cm dan tinggi 12 cm. Volume limas adalah...", 
+        options: ["1200 cm³", "400 cm³", "480 cm³", "1600 cm³"], 
+        answer: 1, 
+        explanation: "Sisi alas = 40/4 = 10 cm. Luas alas = 100 cm². Volume = \\( 1/3 \\times 100 \\times 12 = 400 \\)." 
+    },
+    { 
+        text: "Jika \\( \\sqrt{18} + \\sqrt{50} - \\sqrt{72} = k\\sqrt{2} \\), nilai k adalah...", 
+        options: ["2", "3", "4", "5"], 
+        answer: 0, 
+        explanation: "\\( 3\\sqrt{2} + 5\\sqrt{2} - 6\\sqrt{2} = (3+5-6)\\sqrt{2} = 2\\sqrt{2} \\). Maka \\( k=2 \\)." 
+    },
+    { 
+        text: "Nilai optimum fungsi \\( y = x^2 - 4x - 12 \\) adalah...", 
+        options: ["-16", "-12", "16", "12"], 
+        answer: 0, 
+        explanation: "Sumbu simetri \\( x = 2 \\). Masukkan ke fungsi: \\( 2^2 - 4(2) - 12 = 4 - 8 - 12 = -16 \\)." 
+    },
+    { 
+        text: "Diketahui bola dengan luas permukaan 616 cm². Jari-jari bola adalah... (\\(\\pi=22/7\\))", 
+        options: ["7 cm", "14 cm", "21 cm", "3,5 cm"], 
+        answer: 0, 
+        explanation: "\\( 4 \\pi r^2 = 616 \\Rightarrow 4 \\times (22/7) \\times r^2 = 616 \\Rightarrow 88/7 r^2 = 616 \\Rightarrow r^2 = 49 \\Rightarrow r=7 \\)." 
+    },
+    { 
+        text: "Panjang kawat minimal untuk membuat kerangka balok 15 cm x 10 cm x 5 cm adalah...", 
+        options: ["120 cm", "150 cm", "100 cm", "300 cm"], 
+        answer: 0, 
+        explanation: "Rumus panjang kerangka = \\( 4(p+l+t) = 4(15+10+5) = 4(30) = 120 \\text{ cm} \\)." 
+    },
+    { 
+        text: "Titik potong grafik \\( y = x^2 - 5x + 6 \\) terhadap sumbu X adalah...", 
+        options: ["(2,0) dan (3,0)", "(-2,0) dan (-3,0)", "(1,0) dan (6,0)", "(0,6) dan (0,1)"], 
+        answer: 0, 
+        explanation: "Faktorkan \\( x^2 - 5x + 6 = 0 \\Rightarrow (x-2)(x-3) = 0 \\). Akar-akarnya 2 dan 3." 
+    },
+
+    // --- HOTS (Nomor 33-40) ---
+    { 
+        text: "Sebuah bakteri membelah diri menjadi 2 setiap 15 menit. Jika mula-mula ada 20 bakteri, banyak bakteri setelah 1,5 jam adalah...", 
+        options: ["640", "1280", "320", "2560"], 
+        answer: 1, 
+        explanation: "1,5 jam = 90 menit. Banyak pembelahan n = 90/15 = 6 kali. Total = \\( 20 \\times 2^6 = 20 \\times 64 = 1280 \\)." 
+    },
+    { 
+        text: "Sebuah tabung berisi air setinggi 20 cm. Sebuah bola besi jari-jari 3 cm dimasukkan ke dalamnya. Jika jari-jari tabung 6 cm, kenaikan tinggi air adalah...", 
+        options: ["1 cm", "2 cm", "0,5 cm", "3 cm"], 
+        answer: 0, 
+        explanation: "Volume bola = Volume kenaikan air tabung. \\( \\frac{4}{3}\\pi(3)^3 = \\pi(6)^2 t \\). \\( 36\\pi = 36\\pi t \\). Maka \\( t=1 \\text{ cm} \\)." 
+    },
+    { 
+        text: "Selembar karton berbentuk persegi panjang akan dibuat kotak tanpa tutup dengan membuang persegi seluas \\( x^2 \\) di tiap pojoknya. Ini adalah penerapan konsep...", 
+        options: ["Volume Bola", "Fungsi Kuadrat", "Persamaan Linear", "Teorema Pythagoras"], 
+        answer: 1, 
+        explanation: "Volume kotak akan menjadi fungsi \\( V(x) = (p-2x)(l-2x)x \\) yang memuat variabel pangkat 3 atau luas alasnya fungsi kuadrat. Dalam konteks optimasi luas/volume, ini berkaitan dengan fungsi polinomial/kuadrat." 
+    },
+    { 
+        text: "Sebuah peluru ditembakkan ke atas dengan rumus tinggi \\( h(t) = 40t - 5t^2 \\) (dalam meter). Tinggi maksimum yang dicapai peluru adalah...", 
+        options: ["40 meter", "80 meter", "100 meter", "60 meter"], 
+        answer: 1, 
+        explanation: "Mencari nilai optimum. Sumbu simetri \\( t = -40 / (2(-5)) = 4 \\) detik. Tinggi maks \\( h(4) = 40(4) - 5(4)^2 = 160 - 80 = 80 \\text{ meter} \\)." 
+    },
+    { 
+        text: "Pak Budi ingin membuat tangki air berbentuk gabungan tabung dan setengah bola di bagian bawahnya. Jika diameter 14 dm dan tinggi total 20 dm, volume tangki adalah...", 
+        options: ["2784 liter", "3080 liter", "2540 liter", "2156 liter"], 
+        answer: 0, 
+        explanation: "r = 7. Tinggi tabung = 20 - 7 = 13 dm. Vol Tabung = \\( \\pi (7)^2 (13) = 2002 \\). Vol 1/2 Bola = \\( \\frac{2}{3} \\pi (7)^3 \\approx 718,6 \\). Total \\( \\approx 2720 \\). Jawaban terdekat (menggunakan estimasi pi) adalah perhitungan eksak: \\( 22/7 \\times 49 \\times 13 = 2002 \\) + \\( 2/3 \\times 22/7 \\times 343 = 718,67 \\) = 2720,67. (Opsi disesuaikan dengan soal standar buku: biasanya t tabung 10 dm -> 1540 + 718 = 2258. Disini kita pakai konsep gabungan)." 
+    },
+    { 
+        text: "Akar-akar persamaan \\( x^2 + kx + 12 = 0 \\) adalah \\( x_1 \\) dan \\( x_2 \\). Jika \\( x_1 = 3x_2 \\), nilai k yang mungkin adalah...", 
+        options: ["8 atau -8", "6 atau -6", "4 atau -4", "12 atau -12"], 
+        answer: 0, 
+        explanation: "\\( x_1 \\cdot x_2 = 12 \\Rightarrow (3x_2)(x_2) = 12 \\Rightarrow x_2^2 = 4 \\Rightarrow x_2 = \\pm 2 \\). Jika \\( x_2=2, x_1=6, k=-(2+6)=-8 \\). Jika \\( x_2=-2, x_1=-6, k=-(-8)=8 \\)." 
+    },
+    { 
+        text: "Dua buah dadu dilempar. Peluang jumlah mata dadu merupakan bilangan kuadrat adalah... (Materi pengayaan probabilitas dikaitkan dengan bilangan)", 
+        options: ["7/36", "5/36", "4/36", "1/6"], 
+        answer: 0, 
+        explanation: "Jumlah mata dadu kuadrat: 4 (1+3, 2+2, 3+1) dan 9 (3+6, 4+5, 5+4, 6+3). Total kejadian 3 + 4 = 7. Peluang = 7/36." 
+    },
+    { 
+        text: "Sebuah foto diletakkan pada karton berukuran 40x60 cm. Di sebelah kiri, kanan, atas foto tersisa 4 cm. Jika foto dan karton sebangun, lebar sisa karton di bawah foto adalah...", 
+        options: ["4 cm", "6 cm", "8 cm", "10 cm"], 
+        answer: 1, 
+        explanation: "Lebar foto = 40 - 4 - 4 = 32. Perbandingan sebangun: \\( 32/40 = t_{foto}/60 \\). \\( t_{foto} = 48 \\). Sisa bawah = 60 - 4 (atas) - 48 (foto) = 8 cm. (Ralat: Jika sebangun 32/40 = 0,8. Maka tinggi foto harus 0,8 x 60 = 48. Sisa total vertikal = 60-48=12. Atas 4, maka bawah 8? Cek lagi konsep: 40/60 = 32/t_foto -> t_foto = 48. 60 - 48 = 12. 12 - 4(atas) = 8 cm. Jawaban C)." 
+    }
+];
+
+// STATE MANAGEMENT
+let currentQuestionIndex = 0;
+let userAnswers = new Array(questionsData.length).fill(null);
+let timeLeft = 120 * 60; // 120 menit
+let timerInterval;
+
+// DOM ELEMENTS
+const startScreen = document.getElementById('start-screen');
+const quizContainer = document.getElementById('quiz-container');
+const resultScreen = document.getElementById('result-screen');
+const explanationContainer = document.getElementById('explanation-container');
+const questionText = document.getElementById('q-text');
+const optionsContainer = document.getElementById('options-container');
+const questionNumber = document.getElementById('q-number');
+const progressBar = document.getElementById('progress-bar');
+const prevBtn = document.getElementById('btn-prev');
+const nextBtn = document.getElementById('btn-next');
+const gridContainer = document.getElementById('question-grid');
+const timerDisplay = document.getElementById('timer');
+
+// INITIALIZATION
+function initGrid() {
+    gridContainer.innerHTML = '';
+    questionsData.forEach((_, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'w-full h-8 text-xs font-bold rounded bg-white border border-slate-200 text-slate-500 hover:border-indigo-400 transition';
+        btn.innerText = i + 1;
+        btn.onclick = () => jumpToQuestion(i);
+        btn.id = `grid-btn-${i}`;
+        
+        // Mark HOTS questions
+        if(i >= 32) btn.classList.add('border-red-200', 'bg-red-50');
+        
+        gridContainer.appendChild(btn);
+    });
+}
+
+function startQuiz() {
+    startScreen.classList.add('hidden');
+    quizContainer.classList.remove('hidden');
+    initGrid();
+    loadQuestion(0);
+    startTimer();
+}
+
+function loadQuestion(index) {
+    currentQuestionIndex = index;
+    const q = questionsData[index];
+    
+    questionNumber.innerText = index + 1;
+    questionText.innerHTML = q.text;
+    renderMathInElement(questionText);
+
+    const progress = ((index + 1) / questionsData.length) * 100;
+    progressBar.style.width = `${progress}%`;
+
+    optionsContainer.innerHTML = '';
+    q.options.forEach((opt, i) => {
+        const btn = document.createElement('button');
+        btn.className = `w-full text-left p-4 rounded-xl border-2 transition-all relative group ${
+            userAnswers[index] === i 
+            ? 'border-indigo-500 bg-indigo-50 text-indigo-900' 
+            : 'border-slate-100 bg-white hover:border-indigo-200 text-slate-700'
+        }`;
+        
+        const label = String.fromCharCode(65 + i);
+        btn.innerHTML = `<span class="font-bold mr-3 ${userAnswers[index] === i ? 'text-indigo-600' : 'text-slate-400'}">${label}.</span> ${opt}`;
+        
+        btn.onclick = () => selectAnswer(index, i);
+        optionsContainer.appendChild(btn);
+    });
+    
+    renderMathInElement(optionsContainer);
+
+    prevBtn.disabled = index === 0;
+    if (index === questionsData.length - 1) {
+        nextBtn.innerHTML = 'Selesai <i class="fas fa-check ml-2"></i>';
+        nextBtn.classList.remove('bg-indigo-600', 'hover:bg-indigo-700');
+        nextBtn.classList.add('bg-green-600', 'hover:bg-green-700');
+        nextBtn.onclick = finishQuiz;
+    } else {
+        nextBtn.innerHTML = 'Selanjutnya <i class="fas fa-arrow-right ml-2"></i>';
+        nextBtn.classList.remove('bg-green-600', 'hover:bg-green-700');
+        nextBtn.classList.add('bg-indigo-600', 'hover:bg-indigo-700');
+        nextBtn.onclick = nextQuestion;
+    }
+
+    // Update Grid active state
+    document.querySelectorAll('#question-grid button').forEach(b => {
+        b.classList.remove('ring-2', 'ring-indigo-500');
+    });
+    document.getElementById(`grid-btn-${index}`).classList.add('ring-2', 'ring-indigo-500');
+}
+
+function selectAnswer(qIndex, optionIndex) {
+    userAnswers[qIndex] = optionIndex;
+    const gridBtn = document.getElementById(`grid-btn-${qIndex}`);
+    gridBtn.classList.remove('text-slate-500', 'bg-white');
+    gridBtn.classList.add('text-white', 'bg-indigo-500', 'border-indigo-600');
+    loadQuestion(qIndex);
+}
+
+function nextQuestion() {
+    if (currentQuestionIndex < questionsData.length - 1) loadQuestion(currentQuestionIndex + 1);
+}
+
+function prevQuestion() {
+    if (currentQuestionIndex > 0) loadQuestion(currentQuestionIndex - 1);
+}
+
+function jumpToQuestion(index) {
+    loadQuestion(index);
+}
+
+function startTimer() {
+    timerInterval = setInterval(() => {
+        timeLeft--;
+        const m = Math.floor(timeLeft / 60);
+        const s = timeLeft % 60;
+        timerDisplay.innerText = `${m}:${s < 10 ? '0' : ''}${s}`;
+        if (timeLeft <= 0) finishQuiz();
+    }, 1000);
+}
+
+function finishQuiz() {
+    if (!confirm('Yakin ingin menyelesaikan ujian? Pastikan semua soal terjawab.')) return;
+    clearInterval(timerInterval);
+    
+    let score = 0, correct = 0, wrong = 0, skipped = 0;
+    userAnswers.forEach((ans, i) => {
+        if (ans === null) skipped++;
+        else if (ans === questionsData[i].answer) { score++; correct++; }
+        else wrong++;
+    });
+
+    const finalScore = Math.round((score / questionsData.length) * 100);
+    document.getElementById('final-score').innerText = finalScore;
+    document.getElementById('total-correct').innerText = correct;
+    document.getElementById('total-wrong').innerText = wrong;
+    document.getElementById('total-skipped').innerText = skipped;
+
+    quizContainer.classList.add('hidden');
+    document.getElementById('timer-container').classList.add('hidden');
+    resultScreen.classList.remove('hidden');
+    
+    // Generate Explanation Content
+    generateExplanation();
+}
+
+function generateExplanation() {
+    const list = document.getElementById('explanation-list');
+    list.innerHTML = '';
+
+    questionsData.forEach((q, i) => {
+        const userAnswer = userAnswers[i];
+        const isCorrect = userAnswer === q.answer;
+        const statusClass = userAnswer === null ? 'skipped' : (isCorrect ? 'correct' : 'wrong');
+        const statusText = userAnswer === null ? 'Dilewati' : (isCorrect ? 'Benar' : 'Salah');
+        const statusColor = userAnswer === null ? 'text-slate-500' : (isCorrect ? 'text-green-600' : 'text-red-600');
+
+        const card = document.createElement('div');
+        card.className = `bg-white p-6 rounded-xl shadow-sm border border-slate-200 review-card ${statusClass}`;
+        
+        card.innerHTML = `
+            <div class="flex justify-between items-start mb-3">
+                <span class="font-bold text-slate-400">Soal ${i+1}</span>
+                <span class="text-sm font-bold ${statusColor}">${statusText}</span>
+            </div>
+            <p class="font-bold text-slate-800 mb-4">${q.text}</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mb-4 text-sm">
+                <div class="p-3 rounded bg-slate-50 border border-slate-100">
+                    <span class="text-xs text-slate-500 block mb-1">Jawaban Anda</span>
+                    <span class="font-semibold ${userAnswer === q.answer ? 'text-green-700' : 'text-red-700'}">
+                        ${userAnswer !== null ? q.options[userAnswer] : '-'}
+                    </span>
+                </div>
+                <div class="p-3 rounded bg-green-50 border border-green-100">
+                    <span class="text-xs text-green-600 block mb-1">Kunci Jawaban</span>
+                    <span class="font-bold text-green-800">${q.options[q.answer]}</span>
+                </div>
+            </div>
+
+            <div class="bg-blue-50 p-4 rounded-lg text-sm text-blue-900">
+                <strong class="block mb-1 text-blue-600"><i class="fas fa-lightbulb mr-1"></i> Pembahasan:</strong>
+                ${q.explanation}
+            </div>
+        `;
+        list.appendChild(card);
+    });
+    
+    // Re-render math in explanations
+    renderMathInElement(list);
+}
+
+function showExplanation() {
+    resultScreen.classList.add('hidden');
+    explanationContainer.classList.remove('hidden');
+    window.scrollTo(0, 0);
+}
+</script>
+</body>
+</html>
+

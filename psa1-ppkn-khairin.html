@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PAS PPKN Kelas 7 - Semester Ganjil</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fdf2f2; -webkit-tap-highlight-color: transparent; }
+        
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #fee2e2; }
+        ::-webkit-scrollbar-thumb { background: #ef4444; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #dc2626; }
+
+        .option-card {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .option-card:hover:not(.disabled) {
+            border-color: #ef4444;
+            background-color: #fef2f2;
+            transform: translateX(4px);
+        }
+        .option-card.selected {
+            background-color: #fef2f2;
+            border-color: #dc2626;
+            color: #991b1b;
+            box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.2);
+        }
+
+        /* Status Pembahasan */
+        .status-correct { border-left: 4px solid #22c55e; background-color: #f0fdf4; }
+        .status-wrong { border-left: 4px solid #ef4444; background-color: #fef2f2; }
+        .status-skipped { border-left: 4px solid #94a3b8; background-color: #f8fafc; }
+
+        .animate-fade-in { animation: fadeIn 0.5s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="text-slate-800 h-screen flex flex-col overflow-hidden">
+
+    <!-- HEADER -->
+    <header class="bg-white shadow-sm border-b border-red-100 z-30">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="bg-red-600 text-white p-2 rounded-lg shadow-md shadow-red-200">
+                    <i class="fas fa-landmark"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg leading-tight md:text-xl text-slate-900">PAS PPKN Kelas 7</h1>
+                    <p class="text-xs text-slate-500 font-medium">Pancasila • Norma • UUD 1945 • NKRI</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="flex flex-col items-end" id="timer-box">
+                    <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Sisa Waktu</span>
+                    <span id="timer" class="font-mono text-xl font-bold text-red-600">90:00</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="flex flex-1 overflow-hidden relative">
+        <!-- SIDEBAR NAV (Desktop) -->
+        <aside class="hidden lg:flex flex-col w-72 bg-white border-r border-red-100 z-20">
+            <div class="p-4 border-b border-red-50 bg-red-50/30">
+                <h3 class="font-bold text-slate-700 text-sm">Navigasi Soal</h3>
+                <div class="flex gap-2 text-[10px] mt-2 text-slate-500">
+                    <span class="flex items-center gap-1"><div class="w-2 h-2 bg-red-600 rounded-full"></div> Isi</span>
+                    <span class="flex items-center gap-1"><div class="w-2 h-2 bg-slate-200 rounded-full"></div> Kosong</span>
+                </div>
+            </div>
+            <div class="flex-1 overflow-y-auto p-4">
+                <div class="grid grid-cols-5 gap-2" id="desktop-grid"></div>
+            </div>
+            <div class="p-4 border-t border-red-50">
+                <button onclick="finishQuiz()" class="w-full bg-slate-800 text-white font-bold py-3 rounded-xl hover:bg-slate-900 transition text-sm shadow-lg">
+                    Selesai Ujian
+                </button>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="flex-1 overflow-y-auto bg-[#fffbfb] relative w-full scroll-smooth" id="main-content">
+            <div class="max-w-3xl mx-auto p-4 md:p-8 pb-32">
+                
+                <!-- START SCREEN -->
+                <div id="start-screen" class="flex flex-col items-center justify-center min-h-[60vh] text-center space-y-6 animate-fade-in">
+                    <div class="w-28 h-28 bg-red-50 text-red-600 rounded-full flex items-center justify-center text-5xl shadow-xl shadow-red-100 border-4 border-white">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Garuda_Pancasila_Coat_of_Arms_of_Indonesia.svg/1200px-Garuda_Pancasila_Coat_of_Arms_of_Indonesia.svg.png" class="w-20 h-20 object-contain" alt="Garuda">
+                    </div>
+                    <div>
+                        <h2 class="text-3xl font-extrabold text-slate-900 mb-2">Siap Ujian PPKN?</h2>
+                        <p class="text-slate-500 max-w-md mx-auto">Materi mencakup Sejarah Pancasila, Norma, UUD NRI 1945, dan Keberagaman Daerah.</p>
+                    </div>
+                    
+                    <div class="grid grid-cols-3 gap-4 w-full max-w-md text-sm">
+                        <div class="bg-white p-4 rounded-xl border border-red-100 shadow-sm">
+                            <div class="font-bold text-slate-800 text-lg">50</div>
+                            <div class="text-slate-500 text-xs">Soal</div>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl border border-red-100 shadow-sm">
+                            <div class="font-bold text-slate-800 text-lg">90</div>
+                            <div class="text-slate-500 text-xs">Menit</div>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl border border-red-100 shadow-sm">
+                            <div class="font-bold text-slate-800 text-lg">HOTS</div>
+                            <div class="text-slate-500 text-xs">Tipe Soal</div>
+                        </div>
+                    </div>
+
+                    <button onclick="startQuiz()" class="bg-red-600 text-white px-12 py-4 rounded-full font-bold text-lg shadow-xl shadow-red-200 hover:bg-red-700 transition transform hover:-translate-y-1">
+                        Mulai Mengerjakan
+                    </button>
+                </div>
+
+                <!-- QUIZ INTERFACE -->
+                <div id="quiz-interface" class="hidden animate-fade-in">
+                    <!-- Progress Bar Mobile -->
+                    <div class="mb-6 lg:hidden">
+                        <div class="flex justify-between text-xs font-bold text-slate-500 mb-2">
+                            <span>Progress</span>
+                            <span id="progress-text-mobile">0/50</span>
+                        </div>
+                        <div class="h-2 bg-red-100 rounded-full overflow-hidden">
+                            <div id="progress-bar" class="h-full bg-red-600 transition-all duration-300" style="width: 0%"></div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-2xl shadow-sm border border-red-100 overflow-hidden relative min-h-[400px]">
+                        <div class="p-6 md:p-10">
+                            <div class="mb-6 flex justify-between items-start">
+                                <span class="bg-red-50 text-red-700 text-xs font-bold px-3 py-1 rounded-full border border-red-100">
+                                    Soal No. <span id="q-number">1</span>
+                                </span>
+                                <span id="category-badge" class="text-xs font-medium text-slate-400 uppercase tracking-wider">Materi</span>
+                            </div>
+
+                            <div id="q-text" class="text-lg md:text-xl font-semibold text-slate-900 mb-8 leading-relaxed"></div>
+                            <div id="options-container" class="space-y-3"></div>
+                        </div>
+                    </div>
+
+                    <!-- Bottom Nav -->
+                    <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 p-4 lg:static lg:bg-transparent lg:border-0 lg:p-0 lg:mt-6 z-40">
+                        <div class="max-w-4xl mx-auto flex gap-4">
+                            <button onclick="prevQuestion()" id="btn-prev" class="flex-1 bg-white border border-slate-300 text-slate-700 font-bold py-3.5 rounded-xl hover:bg-slate-50 disabled:opacity-50 transition">
+                                <i class="fas fa-chevron-left mr-2"></i> Sebelumnya
+                            </button>
+                            <button onclick="nextQuestion()" id="btn-next" class="flex-1 bg-red-600 text-white font-bold py-3.5 rounded-xl hover:bg-red-700 shadow-lg shadow-red-200 transition">
+                                Selanjutnya <i class="fas fa-chevron-right ml-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RESULT SCREEN -->
+                <div id="result-screen" class="hidden animate-fade-in">
+                    <div class="bg-white p-8 rounded-3xl shadow-xl border border-red-100 max-w-lg mx-auto text-center">
+                        <div class="w-24 h-24 bg-red-50 text-red-600 rounded-full flex items-center justify-center text-4xl mx-auto mb-6 shadow-inner">
+                            <i class="fas fa-award"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold text-slate-900 mb-1">Hasil Ujian</h2>
+                        <p class="text-slate-500 text-sm mb-6">Berikut adalah perolehan nilai Anda</p>
+                        
+                        <div class="text-7xl font-black text-slate-900 mb-8 tracking-tighter" id="final-score">0</div>
+                        
+                        <div class="grid grid-cols-3 gap-3 mb-8">
+                            <div class="bg-green-50 p-4 rounded-2xl border border-green-100">
+                                <div class="text-2xl font-bold text-green-600" id="total-correct">0</div>
+                                <div class="text-xs font-bold text-green-800 uppercase opacity-60">Benar</div>
+                            </div>
+                            <div class="bg-red-50 p-4 rounded-2xl border border-red-100">
+                                <div class="text-2xl font-bold text-red-600" id="total-wrong">0</div>
+                                <div class="text-xs font-bold text-red-800 uppercase opacity-60">Salah</div>
+                            </div>
+                            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                                <div class="text-2xl font-bold text-slate-600" id="total-skipped">0</div>
+                                <div class="text-xs font-bold text-slate-800 uppercase opacity-60">Lewat</div>
+                            </div>
+                        </div>
+
+                        <div class="space-y-3">
+                            <button onclick="showExplanation()" class="w-full bg-slate-900 text-white font-bold py-4 rounded-xl hover:bg-black transition shadow-lg flex items-center justify-center gap-2">
+                                <i class="fas fa-book-open"></i> Lihat Pembahasan
+                            </button>
+                            <button onclick="location.reload()" class="w-full bg-white border border-slate-200 text-slate-600 font-bold py-4 rounded-xl hover:bg-slate-50 transition">
+                                Ulangi Tes
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- EXPLANATION VIEW -->
+                <div id="explanation-view" class="hidden animate-fade-in">
+                    <div class="flex items-center justify-between mb-8 sticky top-0 bg-[#fffbfb] py-4 z-10">
+                        <h2 class="text-2xl font-bold text-slate-900">Pembahasan Soal</h2>
+                        <button onclick="location.reload()" class="text-sm font-bold text-red-600 hover:text-red-800 flex items-center gap-1">
+                            <i class="fas fa-times"></i> Keluar
+                        </button>
+                    </div>
+                    <div id="explanation-list" class="space-y-6"></div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+<script>
+// --- DATABASE SOAL PPKN KELAS 7 (SESUAI KISI-KISI GAMBAR) ---
+const questionsData = [
+    // --- BAB 1: SEJARAH KELAHIRAN PANCASILA ---
+    {
+        cat: "Sejarah Pancasila",
+        text: "Istilah 'The Founding Fathers' merujuk kepada...",
+        options: ["Pahlawan revolusi", "Tokoh pendiri bangsa", "Para penjajah Belanda", "Generasi penerus bangsa"],
+        answer: 1,
+        expl: "The Founding Fathers adalah julukan bagi 68 tokoh pendiri bangsa yang tergabung dalam BPUPKI dan PPKI yang merumuskan dasar negara."
+    },
+    {
+        cat: "Lambang Negara",
+        text: "Bagian lambang negara yang melambangkan tanggal kemerdekaan Indonesia (17-8-1945) terdapat pada...",
+        options: ["Jumlah bulu pada Garuda Pancasila", "Warna emas pada burung Garuda", "Perisai di dada Garuda", "Pita Bhinneka Tunggal Ika"],
+        answer: 0,
+        expl: "Jumlah bulu melambangkan 17-8-1945: 17 helai (sayap), 8 helai (ekor), 19 helai (pangkal ekor), 45 helai (leher)."
+    },
+    {
+        cat: "Sejarah",
+        text: "Tujuan awal kedatangan bangsa asing (Eropa) ke Nusantara pada mulanya adalah untuk...",
+        options: ["Menjajah secara militer", "Menyebarkan agama", "Mencari rempah-rempah", "Membangun sekolah"],
+        answer: 2,
+        expl: "Awalnya bangsa Eropa datang untuk berdagang dan mencari rempah-rempah yang harganya mahal di Eropa, namun lama-kelamaan berubah menjadi penjajahan."
+    },
+    {
+        cat: "Sejarah",
+        text: "Organisasi pergerakan nasional yang pertama kali berdiri pada tahun 1908 dan menjadi tonggak Kebangkitan Nasional adalah...",
+        options: ["Sarekat Islam", "Indische Partij", "Boedi Oetomo", "Muhammadiyah"],
+        answer: 2,
+        expl: "Boedi Oetomo didirikan pada 20 Mei 1908 oleh dr. Soetomo dan para mahasiswa STOVIA, menandai lahirnya pergerakan nasional modern."
+    },
+    {
+        cat: "Sejarah",
+        text: "Janji kemerdekaan kepada bangsa Indonesia di kemudian hari diberikan oleh Perdana Menteri Jepang yang bernama...",
+        options: ["Laksamana Maeda", "Kuniaki Koiso", "Hitoshi Imamura", "Kumakichi Harada"],
+        answer: 1,
+        expl: "Perdana Menteri Kuniaki Koiso memberikan janji kemerdekaan pada 7 September 1944 agar rakyat Indonesia mau membantu Jepang dalam perang."
+    },
+    {
+        cat: "BPUPKI",
+        text: "Tokoh yang ditunjuk sebagai ketua BPUPKI (Badan Penyelidik Usaha-Usaha Persiapan Kemerdekaan Indonesia) adalah...",
+        options: ["Ir. Soekarno", "Drs. Moh. Hatta", "Dr. K.R.T Radjiman Wedyodiningrat", "Mr. Moh. Yamin"],
+        answer: 2,
+        expl: "Ketua BPUPKI adalah Dr. K.R.T Radjiman Wedyodiningrat, sedangkan ketua muda adalah Ichibangase Yosio (Jepang) dan R.P. Soeroso."
+    },
+    {
+        cat: "BPUPKI",
+        text: "Tokoh yang menyampaikan gagasan dasar negara pada sidang pertama BPUPKI tanggal 29 Mei 1945 adalah...",
+        options: ["Ir. Soekarno", "Mr. Soepomo", "Mr. Moh. Yamin", "Drs. Moh. Hatta"],
+        answer: 2,
+        expl: "Mr. Moh. Yamin menyampaikan gagasan dasar negara pada hari pertama sidang, yakni 29 Mei 1945. Soepomo pada 31 Mei, dan Soekarno pada 1 Juni."
+    },
+    {
+        cat: "Sejarah Pancasila",
+        text: "Tanggal 1 Juni diperingati sebagai Hari Lahir Pancasila karena...",
+        options: ["Pancasila disahkan menjadi dasar negara", "Istilah Pancasila pertama kali dikemukakan oleh Ir. Soekarno", "BPUPKI dibentuk pada tanggal tersebut", "PPKI mengesahkan UUD 1945"],
+        answer: 1,
+        expl: "Pada 1 Juni 1945, Ir. Soekarno menyampaikan pidatonya tentang dasar negara dan memperkenalkan istilah 'Pancasila'."
+    },
+    {
+        cat: "BPUPKI",
+        text: "Sidang pertama BPUPKI yang berlangsung pada 29 Mei - 1 Juni 1945 membahas tentang...",
+        options: ["Rancangan UUD", "Bentuk Negara", "Dasar Negara", "Pemilihan Presiden"],
+        answer: 2,
+        expl: "Agenda utama sidang pertama BPUPKI adalah merumuskan Dasar Negara Indonesia Merdeka."
+    },
+    {
+        cat: "Panitia Sembilan",
+        text: "Hasil kesepakatan Panitia Sembilan yang memuat rumusan dasar negara disebut...",
+        options: ["Piagam Jakarta (Jakarta Charter)", "Perjanjian Linggarjati", "Dekrit Presiden", "UUD 1945"],
+        answer: 0,
+        expl: "Panitia Sembilan menghasilkan Piagam Jakarta pada 22 Juni 1945 yang menjadi cikal bakal Pembukaan UUD 1945."
+    },
+    {
+        cat: "PPKI",
+        text: "Panitia Persiapan Kemerdekaan Indonesia (PPKI) dibentuk pada tanggal...",
+        options: ["1 Maret 1945", "1 Juni 1945", "7 Agustus 1945", "17 Agustus 1945"],
+        answer: 2,
+        expl: "PPKI dibentuk pada 7 Agustus 1945 setelah BPUPKI dibubarkan karena tugasnya dianggap selesai."
+    },
+    {
+        cat: "Sejarah Pancasila",
+        text: "Rumusan Pancasila yang sah dan resmi sebagai dasar negara tercantum dalam...",
+        options: ["Piagam Jakarta", "Pembukaan UUD NRI 1945 alinea ke-4", "Pidato Ir. Soekarno", "Dokumen BPUPKI"],
+        answer: 1,
+        expl: "Rumusan resmi Pancasila terdapat dalam Pembukaan UUD NRI 1945 alinea ke-4 yang disahkan oleh PPKI pada 18 Agustus 1945."
+    },
+    {
+        cat: "Norma",
+        text: "Aturan atau ketentuan yang mengikat warga kelompok dalam masyarakat, dipakai sebagai panduan, tatanan, dan pengendali tingkah laku disebut...",
+        options: ["Hukum", "Adat", "Norma", "Kebiasaan"],
+        answer: 2,
+        expl: "Ini adalah definisi dari Norma."
+    },
+    {
+        cat: "Norma",
+        text: "Peraturan hidup yang bersumber dari hati nurani manusia disebut norma...",
+        options: ["Agama", "Kesopanan", "Kesusilaan", "Hukum"],
+        answer: 2,
+        expl: "Norma kesusilaan bersumber dari hati nurani (suara hati) manusia. Sanksinya berupa rasa bersalah atau penyesalan."
+    },
+    {
+        cat: "Norma",
+        text: "Mengucapkan permisi ketika berjalan di depan orang tua adalah contoh pelaksanaan norma...",
+        options: ["Agama", "Hukum", "Kesusilaan", "Kesopanan"],
+        answer: 3,
+        expl: "Norma kesopanan bersumber dari pergaulan atau adat istiadat masyarakat setempat."
+    },
+    {
+        cat: "Norma",
+        text: "Norma yang memiliki sanksi paling tegas dan bersifat memaksa adalah norma...",
+        options: ["Agama", "Kesusilaan", "Kesopanan", "Hukum"],
+        answer: 3,
+        expl: "Norma hukum dibuat oleh badan resmi negara dan memiliki sanksi yang nyata, tegas, dan memaksa (penjara/denda)."
+    },
+    {
+        cat: "Norma",
+        text: "Tujuan utama diberlakukannya hukum dalam masyarakat adalah...",
+        options: ["Menciptakan ketertiban dan keadilan", "Menakut-nakuti masyarakat", "Membatasi kebebasan individu", "Memberikan kekuasaan pada polisi"],
+        answer: 0,
+        expl: "Hukum bertujuan menjamin kepastian hukum, ketertiban, dan keadilan dalam masyarakat."
+    },
+    {
+        cat: "Hak & Kewajiban",
+        text: "Segala sesuatu yang harus dilaksanakan dengan penuh tanggung jawab disebut...",
+        options: ["Hak", "Kewajiban", "Wewenang", "Tugas"],
+        answer: 1,
+        expl: "Kewajiban adalah sesuatu yang harus dilakukan. Hak adalah sesuatu yang diterima setelah melakukan kewajiban."
+    },
+    {
+        cat: "Hak & Kewajiban",
+        text: "Menjaga kebersihan lingkungan sekolah merupakan bentuk... siswa.",
+        options: ["Hak", "Kewajiban", "Hadiah", "Pelanggaran"],
+        answer: 1,
+        expl: "Menjaga kebersihan adalah kewajiban siswa, sedangkan mendapatkan lingkungan bersih adalah hak siswa."
+    },
+    {
+        cat: "UUD 1945",
+        text: "UUD NRI Tahun 1945 berkedudukan sebagai...",
+        options: ["Hukum dasar tidak tertulis", "Hukum dasar tertulis tertinggi", "Peraturan daerah", "Pedoman moral semata"],
+        answer: 1,
+        expl: "UUD 1945 adalah hukum dasar tertulis (konstitusi) dan menempati urutan tertinggi dalam hierarki peraturan perundang-undangan di Indonesia."
+    },
+    {
+        cat: "UUD 1945",
+        text: "UUD NRI Tahun 1945 disahkan oleh PPKI pada tanggal...",
+        options: ["17 Agustus 1945", "18 Agustus 1945", "29 Mei 1945", "1 Juni 1945"],
+        answer: 1,
+        expl: "Sidang PPKI pada 18 Agustus 1945 mengesahkan UUD 1945, memilih Presiden/Wapres, dan membentuk KNIP."
+    },
+    {
+        cat: "UUD 1945",
+        text: "Sistematika UUD 1945 sebelum amandemen terdiri atas...",
+        options: ["Pembukaan, Batang Tubuh, Penjelasan", "Pembukaan dan Pasal-pasal", "Pasal-pasal dan Penjelasan", "Pembukaan dan Penutup"],
+        answer: 0,
+        expl: "Sebelum amandemen (naskah asli), UUD 1945 terdiri dari Pembukaan, Batang Tubuh, dan Penjelasan."
+    },
+    {
+        cat: "UUD 1945",
+        text: "Perubahan atau amandemen UUD NRI 1945 dilakukan oleh MPR sebanyak... kali.",
+        options: ["1", "2", "3", "4"],
+        answer: 3,
+        expl: "Amandemen dilakukan 4 kali berturut-turut pada tahun 1999, 2000, 2001, dan 2002."
+    },
+    {
+        cat: "UUD 1945",
+        text: "Amandemen pertama UUD NRI 1945 dilakukan pada tahun...",
+        options: ["1998", "1999", "2000", "2002"],
+        answer: 1,
+        expl: "Amandemen pertama dilakukan pada Sidang Umum MPR tahun 1999."
+    },
+    {
+        cat: "NKRI",
+        text: "Bentuk negara Indonesia adalah Kesatuan, hal ini tercantum dalam UUD 1945 Pasal...",
+        options: ["Pasal 1 Ayat 1", "Pasal 1 Ayat 2", "Pasal 1 Ayat 3", "Pasal 2 Ayat 1"],
+        answer: 0,
+        expl: "Pasal 1 Ayat (1): Negara Indonesia ialah Negara Kesatuan, yang berbentuk Republik."
+    },
+    {
+        cat: "Wilayah NKRI",
+        text: "Sumpah Pemuda tahun 1928 memiliki makna penting dalam menyatukan...",
+        options: ["Wilayah jajahan Jepang", "Seluruh tumpah darah Indonesia menjadi satu kesatuan", "Para raja di Nusantara", "Pedagang asing di Indonesia"],
+        answer: 1,
+        expl: "Sumpah Pemuda mengikrarkan 'Satu Nusa, Satu Bangsa, Satu Bahasa', menyatukan wilayah Nusantara secara psikologis dan politis."
+    },
+    // --- BAB 3: KESATUAN INDONESIA & KARAKTERISTIK DAERAH ---
+    {
+        cat: "Karakteristik Daerah",
+        text: "Perbedaan karakteristik wilayah di Indonesia (pegunungan, pesisir, dataran rendah) menyebabkan keberagaman...",
+        options: ["Agama", "Mata pencaharian", "Ideologi", "Dasar negara"],
+        answer: 1,
+        expl: "Kondisi geografis mempengaruhi cara orang memenuhi kebutuhan hidup (mata pencaharian), misal nelayan di pesisir, petani di dataran."
+    },
+    {
+        cat: "Suku Bangsa",
+        text: "Suku bangsa yang mendiami Pulau Bali adalah suku...",
+        options: ["Sunda", "Baduy", "Bali Aga dan Bali Majapahit", "Sasak"],
+        answer: 2,
+        expl: "Di Bali terdapat penduduk asli (Bali Aga) dan penduduk keturunan Majapahit (Bali Majapahit)."
+    },
+    {
+        cat: "Persatuan",
+        text: "Semboyan 'Bhinneka Tunggal Ika' diambil dari kitab Sutasoma karangan...",
+        options: ["Mpu Prapanca", "Mpu Tantular", "Mpu Gandring", "Mpu Sindok"],
+        answer: 1,
+        expl: "Mpu Tantular menulis Kitab Sutasoma pada masa Kerajaan Majapahit yang memuat istilah Bhinneka Tunggal Ika."
+    },
+    {
+        cat: "Persatuan",
+        text: "Sikap yang harus dikembangkan dalam menghadapi keberagaman suku dan budaya adalah...",
+        options: ["Etnosentrisme", "Chauvinisme", "Toleransi", "Individualisme"],
+        answer: 2,
+        expl: "Toleransi adalah sikap saling menghargai dan menghormati perbedaan."
+    },
+    {
+        cat: "Karakteristik Daerah",
+        text: "Rumah adat Honai berasal dari daerah...",
+        options: ["Sumatera Barat", "Kalimantan Timur", "Papua", "Sulawesi Selatan"],
+        answer: 2,
+        expl: "Honai adalah rumah adat khas Papua yang berbentuk kerucut dan terbuat dari jerami."
+    },
+    {
+        cat: "Persatuan",
+        text: "Salah satu contoh wujud cinta tanah air bagi seorang pelajar adalah...",
+        options: ["Ikut berperang di perbatasan", "Belajar dengan sungguh-sungguh", "Bekerja mencari nafkah", "Mengkritik pemerintah di media sosial"],
+        answer: 1,
+        expl: "Tugas utama pelajar dalam mengisi kemerdekaan adalah belajar dengan tekun untuk memajukan bangsa."
+    },
+    {
+        cat: "Wilayah",
+        text: "Wilayah perairan Indonesia yang diukur sejauh 12 mil laut dari garis pangkal kepulauan disebut...",
+        options: ["Zona Ekonomi Eksklusif (ZEE)", "Landas Kontinen", "Laut Teritorial", "Laut Bebas"],
+        answer: 2,
+        expl: "Laut Teritorial adalah wilayah kedaulatan penuh sejauh 12 mil. ZEE adalah hak berdaulat sejauh 200 mil."
+    },
+    {
+        cat: "Tokoh Bangsa",
+        text: "Tokoh yang menjahit bendera Sang Saka Merah Putih adalah...",
+        options: ["Ibu Kartini", "Ibu Fatmawati", "Cut Nyak Dien", "Ibu Megawati"],
+        answer: 1,
+        expl: "Ibu Fatmawati, istri Ir. Soekarno, adalah sosok yang menjahit bendera pusaka Merah Putih."
+    },
+    {
+        cat: "Perjuangan",
+        text: "Nilai juang para pahlawan yang harus kita teladani adalah...",
+        options: ["Rela berkorban dan pantang menyerah", "Mementingkan golongan sendiri", "Berharap imbalan jasa", "Mudah putus asa"],
+        answer: 0,
+        expl: "Sikap rela berkorban (tanpa pamrih) dan pantang menyerah adalah kunci keberhasilan perjuangan kemerdekaan."
+    },
+    {
+        cat: "Kerjasama",
+        text: "Gotong royong merupakan ciri khas bangsa Indonesia. Istilah gotong royong di Sumatera Barat dikenal dengan...",
+        options: ["Gugur Gunung", "Mapalus", "Manunggal Sakato", "Subak"],
+        answer: 2,
+        expl: "Manunggal Sakato (atau bentuk kerja sama serupa) ada di Minangkabau. Mapalus (Minahasa), Gugur Gunung (Jawa), Subak (Bali)."
+    },
+    {
+        cat: "UUD 1945",
+        text: "Lembaga yang berwenang mengamandemen UUD 1945 adalah...",
+        options: ["DPR", "Presiden", "MPR", "Mahkamah Konstitusi"],
+        answer: 2,
+        expl: "Sesuai Pasal 3 UUD 1945, MPR berwenang mengubah dan menetapkan UUD."
+    },
+    {
+        cat: "Norma Hukum",
+        text: "Contoh ketaatan terhadap norma hukum di lingkungan sekolah adalah...",
+        options: ["Memakai seragam sesuai aturan", "Mengerjakan PR di sekolah", "Membantu teman saat ujian", "Datang terlambat"],
+        answer: 0,
+        expl: "Memakai seragam sesuai aturan adalah bentuk kepatuhan terhadap tata tertib (hukum) sekolah."
+    },
+    {
+        cat: "Pancasila",
+        text: "Pancasila sebagai pandangan hidup bangsa artinya...",
+        options: ["Pancasila sebagai sumber hukum", "Pancasila sebagai petunjuk arah semua kegiatan kehidupan", "Pancasila sebagai lambang negara", "Pancasila sebagai dasar negara"],
+        answer: 1,
+        expl: "Sebagai pandangan hidup, Pancasila menjadi pedoman, pegangan, dan petunjuk arah dalam kehidupan sehari-hari."
+    },
+    {
+        cat: "Pancasila",
+        text: "Sila keempat Pancasila dilambangkan dengan...",
+        options: ["Bintang", "Rantai", "Pohon Beringin", "Kepala Banteng"],
+        answer: 3,
+        expl: "Sila 1: Bintang, Sila 2: Rantai, Sila 3: Pohon Beringin, Sila 4: Kepala Banteng, Sila 5: Padi dan Kapas."
+    },
+    {
+        cat: "Persatuan",
+        text: "Makanan khas dari daerah Sumatera Selatan (Palembang) adalah...",
+        options: ["Gudeg", "Rendang", "Pempek", "Papeda"],
+        answer: 2,
+        expl: "Pempek adalah makanan khas Palembang. Gudeg (Yogya), Rendang (Padang), Papeda (Papua/Maluku)."
+    },
+    {
+        cat: "Sejarah",
+        text: "Naskah proklamasi diketik oleh...",
+        options: ["Ir. Soekarno", "Sayuti Melik", "Sukarni", "B.M. Diah"],
+        answer: 1,
+        expl: "Sayuti Melik mengetik naskah proklamasi yang ditulis tangan oleh Soekarno."
+    },
+    {
+        cat: "Kewajiban",
+        text: "Setiap warga negara wajib membela negara. Hal ini tercantum dalam UUD 1945 Pasal...",
+        options: ["Pasal 27 Ayat 3", "Pasal 28", "Pasal 29", "Pasal 31"],
+        answer: 0,
+        expl: "Pasal 27 Ayat (3): Setiap warga negara berhak dan wajib ikut serta dalam upaya pembelaan negara."
+    },
+    {
+        cat: "Norma",
+        text: "Sanksi bagi pelanggar norma sosial (kesopanan) berupa...",
+        options: ["Denda uang", "Penjara", "Pengucilan/Cemoohan", "Dosa"],
+        answer: 2,
+        expl: "Sanksi sosial biasanya berupa teguran, cemoohan, atau dikucilkan dari pergaulan."
+    },
+    {
+        cat: "BPUPKI",
+        text: "Dalam bahasa Jepang, BPUPKI disebut...",
+        options: ["Dokuritsu Junbi Inkai", "Dokuritsu Junbi Cosakai", "Kaigun", "Rikugun"],
+        answer: 1,
+        expl: "BPUPKI = Dokuritsu Junbi Cosakai. PPKI = Dokuritsu Junbi Inkai."
+    },
+    {
+        cat: "Sejarah Pancasila",
+        text: "Jumlah anggota Panitia Sembilan adalah...",
+        options: ["7 orang", "8 orang", "9 orang", "10 orang"],
+        answer: 2,
+        expl: "Sesuai namanya, Panitia Sembilan beranggotakan 9 orang tokoh."
+    },
+    {
+        cat: "UUD 1945",
+        text: "Pembukaan UUD 1945 terdiri atas ... alinea.",
+        options: ["3", "4", "5", "6"],
+        answer: 1,
+        expl: "Pembukaan UUD 1945 memiliki 4 alinea yang memuat tujuan negara dan dasar negara."
+    },
+    {
+        cat: "Wilayah NKRI",
+        text: "Batas wilayah Indonesia sebelah utara berbatasan dengan negara...",
+        options: ["Australia", "Samudera Hindia", "Malaysia, Singapura, Filipina", "Papua Nugini"],
+        answer: 2,
+        expl: "Sebelah utara berbatasan dengan Malaysia (darat/laut), Singapura, Filipina, dan Laut Cina Selatan."
+    },
+    {
+        cat: "Karakteristik Daerah",
+        text: "Alat musik tradisional Sasando berasal dari...",
+        options: ["Jawa Barat", "Nusa Tenggara Timur", "Kalimantan Tengah", "Sulawesi Utara"],
+        answer: 1,
+        expl: "Sasando adalah alat musik petik khas dari Pulau Rote, NTT."
+    },
+    {
+        cat: "Persatuan",
+        text: "Menghormati orang yang sedang beribadah merupakan pengamalan Pancasila sila ke...",
+        options: ["Pertama", "Kedua", "Ketiga", "Keempat"],
+        answer: 0,
+        expl: "Sila pertama (Ketuhanan Yang Maha Esa) mengajarkan toleransi beragama."
+    }
+];
+
+// --- LOGIC UTAMA ---
+let currentIdx = 0;
+let answers = new Array(questionsData.length).fill(null);
+let timeLeft = 90 * 60; // 90 Menit
+let timerInterval;
+
+// DOM ELEMENTS
+const qText = document.getElementById('q-text');
+const optionsDiv = document.getElementById('options-container');
+const qNum = document.getElementById('q-number');
+const catBadge = document.getElementById('category-badge');
+const navGrid = document.getElementById('desktop-grid');
+const progressBar = document.getElementById('progress-bar');
+const progressTextMob = document.getElementById('progress-text-mobile');
+
+// INIT
+function init() {
+    navGrid.innerHTML = '';
+    questionsData.forEach((_, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'w-8 h-8 text-[10px] font-bold rounded flex items-center justify-center bg-red-50 text-red-400 border border-red-100 hover:bg-red-100 transition';
+        btn.innerText = i + 1;
+        btn.onclick = () => jumpTo(i);
+        btn.id = `nav-${i}`;
+        navGrid.appendChild(btn);
+    });
+}
+
+function startQuiz() {
+    document.getElementById('start-screen').classList.add('hidden');
+    document.getElementById('quiz-interface').classList.remove('hidden');
+    init();
+    loadQuestion(0);
+    startTimer();
+}
+
+function loadQuestion(idx) {
+    currentIdx = idx;
+    const q = questionsData[idx];
+
+    // Update Content
+    qNum.innerText = idx + 1;
+    catBadge.innerText = q.cat;
+    qText.innerHTML = q.text;
+
+    // Render Options
+    optionsDiv.innerHTML = '';
+    q.options.forEach((opt, i) => {
+        const btn = document.createElement('button');
+        btn.className = `w-full text-left p-4 rounded-xl border-2 mb-3 flex items-start gap-3 option-card ${answers[idx] === i ? 'selected' : 'border-slate-100 bg-white text-slate-700'}`;
+        btn.onclick = () => selectAnswer(i);
+        
+        btn.innerHTML = `
+            <div class="w-6 h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0 text-xs font-bold mt-0.5 ${answers[idx] === i ? 'border-red-600 bg-red-600 text-white' : 'border-slate-300 text-slate-400'}">
+                ${String.fromCharCode(65 + i)}
+            </div>
+            <div class="text-sm md:text-base font-medium">${opt}</div>
+        `;
+        optionsDiv.appendChild(btn);
+    });
+
+    // Update Progress UI
+    const answeredCount = answers.filter(x => x !== null).length;
+    const percentage = (answeredCount / questionsData.length) * 100;
+    progressBar.style.width = `${percentage}%`;
+    progressTextMob.innerText = `${answeredCount}/${questionsData.length}`;
+
+    // Update Nav Grid
+    document.querySelectorAll('#desktop-grid button').forEach(b => {
+        b.classList.remove('ring-2', 'ring-red-500', 'bg-red-600', 'text-white');
+        b.classList.add('bg-red-50', 'text-red-400');
+    });
+    
+    // Mark answered questions
+    answers.forEach((ans, i) => {
+        if(ans !== null) {
+            const btn = document.getElementById(`nav-${i}`);
+            btn.classList.remove('bg-red-50', 'text-red-400');
+            btn.classList.add('bg-red-600', 'text-white', 'border-red-600');
+        }
+    });
+
+    // Highlight current question
+    const currNav = document.getElementById(`nav-${idx}`);
+    currNav.classList.add('ring-2', 'ring-red-400');
+
+    // Button States
+    document.getElementById('btn-prev').disabled = idx === 0;
+    const nextBtn = document.getElementById('btn-next');
+    if(idx === questionsData.length - 1) {
+        nextBtn.innerHTML = 'Selesai <i class="fas fa-check ml-2"></i>';
+        nextBtn.classList.replace('bg-red-600', 'bg-slate-800');
+        nextBtn.classList.replace('hover:bg-red-700', 'hover:bg-slate-900');
+        nextBtn.onclick = finishQuiz;
+    } else {
+        nextBtn.innerHTML = 'Selanjutnya <i class="fas fa-chevron-right ml-2"></i>';
+        nextBtn.classList.replace('bg-slate-800', 'bg-red-600');
+        nextBtn.classList.replace('hover:bg-slate-900', 'hover:bg-red-700');
+        nextBtn.onclick = nextQuestion;
+    }
+}
+
+function selectAnswer(optIdx) {
+    answers[currentIdx] = optIdx;
+    loadQuestion(currentIdx);
+}
+
+function nextQuestion() {
+    if(currentIdx < questionsData.length - 1) loadQuestion(currentIdx + 1);
+}
+
+function prevQuestion() {
+    if(currentIdx > 0) loadQuestion(currentIdx - 1);
+}
+
+function jumpTo(idx) {
+    loadQuestion(idx);
+}
+
+function startTimer() {
+    timerInterval = setInterval(() => {
+        timeLeft--;
+        const m = Math.floor(timeLeft / 60);
+        const s = timeLeft % 60;
+        document.getElementById('timer').innerText = `${m}:${s < 10 ? '0' : ''}${s}`;
+        if(timeLeft <= 0) finishQuiz();
+    }, 1000);
+}
+
+function finishQuiz() {
+    if(!confirm("Yakin ingin mengakhiri ujian? Pastikan semua soal terjawab.")) return;
+    clearInterval(timerInterval);
+
+    let correct = 0, wrong = 0, skipped = 0;
+    answers.forEach((ans, i) => {
+        if(ans === null) skipped++;
+        else if(ans === questionsData[i].answer) correct++;
+        else wrong++;
+    });
+
+    document.getElementById('quiz-interface').classList.add('hidden');
+    document.getElementById('result-screen').classList.remove('hidden');
+    
+    const score = Math.round((correct / questionsData.length) * 100);
+    document.getElementById('final-score').innerText = score;
+    document.getElementById('total-correct').innerText = correct;
+    document.getElementById('total-wrong').innerText = wrong;
+    document.getElementById('total-skipped').innerText = skipped;
+
+    generateExplanations();
+}
+
+function generateExplanations() {
+    const list = document.getElementById('explanation-list');
+    list.innerHTML = '';
+
+    questionsData.forEach((q, i) => {
+        const userAns = answers[i];
+        const isCorrect = userAns === q.answer;
+        let statusClass = userAns === null ? 'status-skipped' : (isCorrect ? 'status-correct' : 'status-wrong');
+        let statusLabel = userAns === null ? 'Tidak Dijawab' : (isCorrect ? 'Benar' : 'Salah');
+        let statusColor = userAns === null ? 'text-slate-500' : (isCorrect ? 'text-green-600' : 'text-red-600');
+
+        const item = document.createElement('div');
+        item.className = `bg-white p-6 rounded-xl border border-slate-200 shadow-sm ${statusClass} transition hover:shadow-md`;
+        item.innerHTML = `
+            <div class="flex justify-between items-start mb-4">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Soal ${i+1} • ${q.cat}</span>
+                    <div class="mt-1 font-bold text-slate-800 text-lg leading-snug">${q.text}</div>
+                </div>
+                <span class="text-xs font-bold px-3 py-1 rounded-full bg-white border border-slate-200 ${statusColor} shadow-sm whitespace-nowrap ml-2">${statusLabel}</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4 text-sm">
+                <div class="p-3 rounded-lg bg-slate-50 border border-slate-100">
+                    <span class="text-xs text-slate-400 block mb-1 font-semibold uppercase">Jawaban Anda</span>
+                    <span class="font-bold ${statusColor}">${userAns !== null ? q.options[userAns] : '-'}</span>
+                </div>
+                <div class="p-3 rounded-lg bg-green-50 border border-green-100">
+                    <span class="text-xs text-green-600 block mb-1 font-semibold uppercase">Kunci Jawaban</span>
+                    <span class="font-bold text-green-700">${q.options[q.answer]}</span>
+                </div>
+            </div>
+
+            <div class="bg-blue-50 p-4 rounded-lg text-sm text-slate-700 border border-blue-100">
+                <div class="flex items-center gap-2 mb-2 text-blue-700 font-bold text-xs uppercase tracking-wide">
+                    <i class="fas fa-lightbulb text-yellow-500"></i> Pembahasan
+                </div>
+                <div class="leading-relaxed text-blue-900">${q.expl}</div>
+            </div>
+        `;
+        list.appendChild(item);
+    });
+}
+
+function showExplanation() {
+    document.getElementById('result-screen').classList.add('hidden');
+    document.getElementById('explanation-view').classList.remove('hidden');
+    window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>
+

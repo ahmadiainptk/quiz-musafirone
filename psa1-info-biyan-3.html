@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ujian Informatika Kelas 8 (Paket C)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap');
+        body { font-family: 'Outfit', sans-serif; background-color: #f8fafc; }
+        
+        /* CARD JAWABAN */
+        .option-card {
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid #e2e8f0;
+            background-color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .option-card:hover {
+            border-color: #cbd5e1;
+            background-color: #f8fafc;
+        }
+
+        /* STATE: DIPILIH (SEBELUM SUBMIT) */
+        .option-selected {
+            border-color: #4f46e5 !important; /* Indigo-600 */
+            background-color: #eef2ff !important; /* Indigo-50 */
+            box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2);
+        }
+        .option-selected .indicator-dot {
+            background-color: #4f46e5;
+            border-color: #4f46e5;
+            color: white;
+        }
+
+        /* STATE: HASIL (SETELAH SUBMIT) */
+        .correct-mode {
+            background-color: #dcfce7 !important;
+            border-color: #22c55e !important;
+            color: #14532d;
+        }
+        .wrong-mode {
+            background-color: #fee2e2 !important;
+            border-color: #ef4444 !important;
+            color: #7f1d1d;
+            opacity: 0.7;
+        }
+
+        /* UTILS */
+        .key-cap {
+            background: #f1f5f9; border: 1px solid #cbd5e1; border-bottom: 3px solid #94a3b8;
+            border-radius: 4px; padding: 2px 6px; font-family: monospace; font-weight: bold; font-size: 0.9em;
+        }
+        .code-box {
+            background: #1e293b; color: #10b981; padding: 10px; border-radius: 6px; font-family: monospace; font-size: 0.9em;
+        }
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <div class="max-w-4xl mx-auto min-h-screen flex flex-col">
+        <!-- Header -->
+        <header class="bg-indigo-600 text-white p-6 shadow-lg sticky top-0 z-30">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h1 class="text-xl md:text-2xl font-bold">Informatika Paket C</h1>
+                    <p class="text-indigo-200 text-sm">Hardware, CLI/GUI, Word & Biner</p>
+                </div>
+                <div class="bg-white/10 px-4 py-2 rounded-lg border border-white/20 text-center backdrop-blur-sm">
+                    <span class="text-xs uppercase tracking-wider opacity-80">Terjawab</span>
+                    <div class="text-xl font-bold"><span id="answered-badge">0</span>/40</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Quiz Area -->
+        <main class="flex-grow p-4 md:p-6 space-y-8 pb-32" id="quiz-container">
+            <!-- Questions injected via JavaScript -->
+        </main>
+
+        <!-- Start Screen -->
+        <div id="start-screen" class="fixed inset-0 bg-white z-50 flex flex-col items-center justify-center p-6 text-center">
+            <div class="w-24 h-24 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center mb-6 text-5xl shadow-sm">🖥️</div>
+            <h2 class="text-3xl font-bold text-slate-900 mb-3">Siap Ujian?</h2>
+            <p class="text-slate-500 mb-8 max-w-md leading-relaxed">
+                Paket C ini berisi soal-soal baru.<br>
+                Kamu bisa mengganti jawaban sebelum mengumpulkan.<br>
+                <b>Skor hanya muncul di akhir.</b>
+            </p>
+            <button onclick="startQuiz()" class="bg-indigo-600 text-white px-10 py-3.5 rounded-full font-bold shadow-xl hover:bg-indigo-700 transition transform hover:scale-105 active:scale-95">Mulai Paket C</button>
+        </div>
+
+        <!-- Sticky Footer Control -->
+        <div id="controls" class="fixed bottom-0 left-0 w-full bg-white border-t border-slate-200 p-4 shadow-[0_-4px_20px_rgba(0,0,0,0.1)] hidden z-40">
+            <div class="max-w-4xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+                <div class="text-sm text-slate-500 font-medium flex items-center gap-2">
+                    <span id="warning-text">⚠️ Masih ada soal kosong!</span>
+                </div>
+                <button onclick="submitQuiz()" class="w-full md:w-auto bg-green-600 text-white px-8 py-3 rounded-lg font-bold hover:bg-green-700 transition shadow-md flex items-center justify-center gap-2">
+                    <span>Kirim Jawaban</span>
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Result Modal -->
+    <div id="result-modal" class="fixed inset-0 bg-black/70 z-50 hidden flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-2xl p-8 max-w-md w-full text-center shadow-2xl animate-[fadeIn_0.3s_ease-out]">
+            <h2 class="text-2xl font-bold mb-2 text-slate-800">Hasil Akhir</h2>
+            <p class="text-slate-500 mb-6 text-sm">Paket C - Informatika</p>
+            
+            <div class="text-7xl font-black text-indigo-600 mb-6 tracking-tight" id="final-score">0</div>
+            
+            <div class="grid grid-cols-2 gap-4 mb-8">
+                <div class="bg-green-50 text-green-700 p-3 rounded-xl border border-green-200 font-bold">
+                    <div class="text-xs uppercase opacity-70">Benar</div>
+                    <span id="final-correct" class="text-xl">0</span>
+                </div>
+                <div class="bg-red-50 text-red-700 p-3 rounded-xl border border-red-200 font-bold">
+                    <div class="text-xs uppercase opacity-70">Salah</div>
+                    <span id="final-wrong" class="text-xl">0</span>
+                </div>
+            </div>
+            <button onclick="closeResult()" class="w-full bg-slate-800 text-white py-3.5 rounded-xl font-bold hover:bg-slate-900 transition">Lihat Pembahasan</button>
+        </div>
+    </div>
+
+<script>
+// --- DATA SOAL PAKET C (BARU & SESUAI KISI-KISI) ---
+const questions = [
+    // --- 1. HARDWARE & SOFTWARE (1-6) ---
+    {
+        no: 1,
+        text: "Perangkat keras yang berfungsi untuk mencetak dokumen digital ke dalam kertas adalah...",
+        options: ["Scanner", "Printer", "Monitor", "Speaker"],
+        correct: 1,
+        desc: "Printer adalah perangkat Output untuk mencetak."
+    },
+    {
+        no: 2,
+        text: "Microsoft Excel dan Google Sheets termasuk dalam kategori perangkat lunak...",
+        options: ["Pengolah Kata", "Sistem Operasi", "Spreadsheet (Pengolah Angka)", "Database"],
+        correct: 2,
+        desc: "Excel digunakan untuk mengolah angka dan tabel (Spreadsheet)."
+    },
+    {
+        no: 3,
+        text: "Komponen komputer yang berfungsi sebagai penyimpanan sementara saat program dijalankan adalah...",
+        options: ["Harddisk", "RAM (Random Access Memory)", "ROM", "Flashdisk"],
+        correct: 1,
+        desc: "RAM bersifat volatile (sementara) dan cepat."
+    },
+    {
+        no: 4,
+        text: "Manakah yang BUKAN merupakan Sistem Operasi?",
+        options: ["Windows 11", "macOS", "Linux", "Microsoft PowerPoint"],
+        correct: 3,
+        desc: "PowerPoint adalah Aplikasi presentasi, bukan Sistem Operasi."
+    },
+    {
+        no: 5,
+        text: "Perangkat input yang digunakan untuk menggerakkan kursor di layar adalah...",
+        options: ["Keyboard", "Mouse", "Printer", "Speaker"],
+        correct: 1,
+        desc: "Mouse adalah pointing device untuk kursor."
+    },
+    {
+        no: 6,
+        text: "Istilah untuk 'Pengguna' atau manusia yang mengoperasikan komputer adalah...",
+        options: ["Hardware", "Software", "Brainware", "Spyware"],
+        correct: 2,
+        desc: "Brainware adalah user/manusia."
+    },
+
+    // --- 2. ANTARMUKA (7-13, 19-23) ---
+    {
+        no: 7,
+        text: "Tujuan utama perancangan antarmuka pengguna (User Interface) adalah...",
+        options: ["Membuat komputer mahal", "Memudahkan pengguna (User Friendly)", "Menghabiskan memori", "Membuat sistem rumit"],
+        correct: 1,
+        desc: "UI dibuat agar interaksi manusia dan komputer menjadi mudah."
+    },
+    {
+        no: 8,
+        text: "Alexa dan Google Assistant yang menerima perintah suara adalah contoh...",
+        options: ["GUI", "CLI", "VUI (Voice User Interface)", "Menu Driven"],
+        correct: 2,
+        desc: "VUI berbasis suara (Voice)."
+    },
+    {
+        no: 9,
+        text: "Tampilan layar hitam dengan teks putih tempat kita mengetikkan kode perintah disebut...",
+        options: ["Desktop", "Command Prompt / Terminal", "Control Panel", "Taskbar"],
+        correct: 1,
+        desc: "Ciri khas antarmuka CLI (Command Line Interface)."
+    },
+    {
+        no: 10,
+        text: "Mesin ATM yang menggunakan tombol fisik di samping layar termasuk jenis antarmuka...",
+        options: ["Berbasis Menu", "Berbasis Bahasa Alami", "CLI", "Mobile UI"],
+        correct: 0,
+        desc: "ATM menggunakan menu pilihan yang terbatas."
+    },
+    {
+        no: 11,
+        text: "Kelebihan utama GUI (Graphical User Interface) dibandingkan CLI adalah...",
+        options: ["Lebih cepat untuk hacker", "Hanya berbasis teks", "Memiliki ikon dan gambar yang intuitif", "Tidak butuh mouse"],
+        correct: 2,
+        desc: "GUI menggunakan grafis (ikon, jendela) sehingga mudah dipahami."
+    },
+    {
+        no: 12,
+        text: "Perintah CLI untuk berpindah folder (directory) di Windows/Linux adalah...",
+        options: ["mkdir", "cd (change directory)", "ls", "copy"],
+        correct: 1,
+        desc: "cd = Change Directory."
+    },
+    {
+        no: 13,
+        text: "Layar sentuh (Touchscreen) pada HP memungkinkan interaksi tipe...",
+        options: ["Direct Manipulation (Sentuhan Langsung)", "Command Line", "Indirect", "Form Fill"],
+        correct: 0,
+        desc: "Kita menyentuh objek langsung di layar."
+    },
+
+    // --- 3. MS WORD & TEKNOLOGI (14-18, 26-37) ---
+    {
+        no: 14,
+        text: "File dokumen Microsoft Word biasanya memiliki ekstensi...",
+        options: [".mp3", ".jpg", ".docx", ".exe"],
+        correct: 2,
+        desc: ".docx adalah format standar Ms Word modern."
+    },
+    {
+        no: 15,
+        text: "Bagian atas jendela Word yang berisi deretan menu (Home, Insert, Layout) disebut...",
+        options: ["Ribbon", "Footer", "Ruler", "Status Bar"],
+        correct: 0,
+        desc: "Ribbon berisi tab dan toolbars."
+    },
+    {
+        no: 16,
+        text: "Perbedaan 'Save' dan 'Save As' adalah...",
+        options: ["Save As untuk menyimpan dengan nama baru/lokasi beda", "Save As untuk menghapus", "Save untuk mencetak", "Tidak ada bedanya"],
+        correct: 0,
+        desc: "Save As membuat salinan file baru."
+    },
+    {
+        no: 17,
+        text: "Untuk mengubah ukuran huruf menjadi lebih besar atau kecil, kita menggunakan fitur...",
+        options: ["Font Style", "Font Size", "Font Color", "Bold"],
+        correct: 1,
+        desc: "Font Size (ukuran font)."
+    },
+    {
+        no: 18,
+        text: "Ikon 'Align Right' berfungsi untuk...",
+        options: ["Rata Kiri", "Rata Tengah", "Rata Kanan", "Rata Kiri-Kanan"],
+        correct: 2,
+        desc: "Align Right membuat teks rata di margin kanan."
+    },
+    {
+        no: 19,
+        text: "Perintah CLI 'mkdir' (Make Directory) berfungsi untuk...",
+        options: ["Membuat file baru", "Membuat folder baru", "Menghapus folder", "Mengganti nama"],
+        correct: 1,
+        desc: "mkdir = make directory (buat folder)."
+    },
+    {
+        no: 20,
+        text: "User Interface berupa formulir yang harus diisi (seperti saat mendaftar akun) disebut...",
+        options: ["Form-based Interface", "VUI", "Natural Language", "CLI"],
+        correct: 0,
+        desc: "Antarmuka berbasis formulir isian."
+    },
+    {
+        no: 21,
+        text: "Batang geser di samping kanan jendela untuk melihat halaman bawah disebut...",
+        options: ["Title Bar", "Scrollbar", "Menu Bar", "Taskbar"],
+        correct: 1,
+        desc: "Scrollbar digunakan untuk menggulung layar."
+    },
+    {
+        no: 22,
+        text: "Tombol jendela yang berupa tanda strip (-) berfungsi untuk...",
+        options: ["Close (Tutup)", "Maximize (Perbesar)", "Minimize (Kecilkan ke taskbar)", "Restore"],
+        correct: 2,
+        desc: "Minimize menyembunyikan jendela ke taskbar."
+    },
+    {
+        no: 23,
+        text: "Tempat sampah sementara untuk file yang dihapus di Windows adalah...",
+        options: ["My Documents", "Recycle Bin", "Control Panel", "Desktop"],
+        correct: 1,
+        desc: "Recycle Bin menampung file terhapus sebelum dimusnahkan permanen."
+    },
+
+    // --- 4. BILANGAN BINER (24-25, 39-40) ---
+    {
+        no: 24,
+        text: "Bilangan biner 1101 setara dengan bilangan desimal...",
+        options: ["10", "11", "12", "13"],
+        correct: 3,
+        desc: "1101 = 8 + 4 + 0 + 1 = 13."
+    },
+    {
+        no: 25,
+        text: "Bilangan desimal 10 jika diubah ke biner adalah...",
+        options: ["1010", "1100", "1001", "1110"],
+        correct: 0,
+        desc: "10 = 8 + 2 = (1x8) + (0x4) + (1x2) + (0x1) = 1010."
+    },
+
+    // --- 5. SHORTCUT & FITUR WORD (26-38) ---
+    {
+        no: 26,
+        text: "Shortcut <span class='key-cap'>Ctrl</span> + <span class='key-cap'>J</span> berfungsi untuk...",
+        options: ["Justify (Rata Kiri Kanan)", "Jump", "Italic", "Center"],
+        correct: 0,
+        desc: "J = Justify (meratakan paragraf kiri dan kanan)."
+    },
+    {
+        no: 27,
+        text: "Untuk membuat dokumen baru (New Document), tekan...",
+        options: ["Ctrl + O", "Ctrl + N", "Ctrl + S", "Ctrl + D"],
+        correct: 1,
+        desc: "N = New."
+    },
+    {
+        no: 28,
+        text: "Teks yang muncul berulang di bagian PALING ATAS setiap halaman disebut...",
+        options: ["Footer", "Footnote", "Header", "Title"],
+        correct: 2,
+        desc: "Header ada di margin atas."
+    },
+    {
+        no: 29,
+        text: "Nomor halaman (Page Number) biasanya diletakkan di...",
+        options: ["Header atau Footer", "Tengah paragraf", "Dalam gambar", "Menu File"],
+        correct: 0,
+        desc: "Nomor halaman umumnya di area Header atau Footer."
+    },
+    {
+        no: 30,
+        text: "Footer adalah area yang terletak di...",
+        options: ["Margin Kanan", "Margin Bawah", "Margin Atas", "Tengah Halaman"],
+        correct: 1,
+        desc: "Footer (kaki) ada di bawah."
+    },
+    {
+        no: 31,
+        text: "Shortcut <span class='key-cap'>Ctrl</span> + <span class='key-cap'>O</span> digunakan untuk...",
+        options: ["Open (Membuka file)", "Out (Keluar)", "Over", "Option"],
+        correct: 0,
+        desc: "O = Open."
+    },
+    {
+        no: 32,
+        text: "Untuk membuat teks rata kanan, shortcutnya adalah...",
+        options: ["Ctrl + L", "Ctrl + E", "Ctrl + R", "Ctrl + J"],
+        correct: 2,
+        desc: "R = Right."
+    },
+    {
+        no: 33,
+        text: "Cara cepat masuk ke mode edit Header adalah...",
+        options: ["Klik kanan desktop", "Klik ganda (double click) di margin atas", "Tekan tombol power", "Klik menu View"],
+        correct: 1,
+        desc: "Double click di area atas kertas akan membuka Header."
+    },
+    {
+        no: 34,
+        text: "Informasi yang cocok diletakkan di Footer adalah...",
+        options: ["Judul Utama", "Nama Bab", "Nomor Halaman & Copyright", "Gambar Besar"],
+        correct: 2,
+        desc: "Info kecil seperti hal/copyright cocok di footer."
+    },
+    {
+        no: 35,
+        text: "Untuk keluar dari Header/Footer dan kembali mengetik isi, kita bisa menekan tombol...",
+        options: ["Enter", "Esc (Escape)", "Shift", "Tab"],
+        correct: 1,
+        desc: "Esc menutup mode Header/Footer."
+    },
+    {
+        no: 36,
+        text: "Posisi kertas tegak lurus disebut...",
+        options: ["Landscape", "Portrait", "Horizontal", "A4"],
+        correct: 1,
+        desc: "Portrait = Tegak. Landscape = Mendatar."
+    },
+    {
+        no: 37,
+        text: "Langkah untuk mencetak dokumen adalah...",
+        options: ["File > Save", "File > Print", "Insert > Picture", "Home > Copy"],
+        correct: 1,
+        desc: "Menu Print ada di Tab File."
+    },
+    {
+        no: 38,
+        text: "Microphone termasuk perangkat...",
+        options: ["Output", "Input", "Storage", "Processing"],
+        correct: 1,
+        desc: "Memasukkan suara ke komputer."
+    },
+
+    // --- 6. HITUNGAN BINER (39-40) ---
+    {
+        no: 39,
+        text: "Konversi Biner 1110 ke desimal...",
+        options: ["12", "14", "15", "10"],
+        correct: 1,
+        desc: "8 + 4 + 2 + 0 = 14."
+    },
+    {
+        no: 40,
+        text: "Konversi Desimal 15 ke biner...",
+        options: ["1111", "1010", "1100", "1001"],
+        correct: 0,
+        desc: "8 + 4 + 2 + 1 = 15. Jadi 1111."
+    }
+];
+
+// --- LOGIC ENGINE ---
+let userAnswers = new Array(questions.length).fill(null);
+let isSubmitted = false;
+
+function startQuiz() {
+    document.getElementById('start-screen').classList.add('hidden');
+    document.getElementById('controls').classList.remove('hidden');
+    renderQuestions();
+    window.scrollTo(0,0);
+}
+
+function renderQuestions() {
+    const container = document.getElementById('quiz-container');
+    container.innerHTML = questions.map((q, i) => `
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200" id="card-${i}">
+            <div class="flex items-start gap-4">
+                <div class="bg-indigo-100 text-indigo-700 font-bold w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 border border-indigo-200 text-lg">
+                    ${q.no}
+                </div>
+                <div class="w-full">
+                    <p class="text-lg font-semibold mb-4 text-slate-800">${q.text}</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3" id="options-group-${i}">
+                        ${q.options.map((opt, j) => `
+                            <div class="option-card p-4 rounded-xl flex items-center gap-3" onclick="selectOption(${i}, ${j})">
+                                <div class="w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center indicator-dot transition-colors"></div>
+                                <span class="text-base font-medium">${opt}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <!-- Feedback (Hidden) -->
+                    <div id="feedback-${i}" class="hidden mt-6 p-4 rounded-xl text-sm border font-medium">
+                        <strong class="block mb-1 text-xs uppercase tracking-wider opacity-70">Pembahasan</strong>
+                        <p>${q.desc}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+function selectOption(qIndex, optIndex) {
+    if(isSubmitted) return; // Kunci jika sudah submit
+
+    userAnswers[qIndex] = optIndex;
+    
+    // Update Visual
+    const group = document.getElementById(`options-group-${qIndex}`);
+    const cards = group.getElementsByClassName('option-card');
+    
+    for (let card of cards) {
+        card.classList.remove('option-selected');
+        card.querySelector('.indicator-dot').innerHTML = '';
+        card.querySelector('.indicator-dot').style.backgroundColor = 'transparent';
+        card.querySelector('.indicator-dot').style.borderColor = '#cbd5e1';
+    }
+    
+    const selected = cards[optIndex];
+    selected.classList.add('option-selected');
+    
+    // Update Progress
+    const count = userAnswers.filter(a => a !== null).length;
+    document.getElementById('answered-badge').innerText = count;
+    
+    const warning = document.getElementById('warning-text');
+    if(count === questions.length) {
+        warning.innerHTML = "<span class='text-green-600 font-bold'>✓ Semua soal terjawab!</span>";
+    } else {
+        warning.innerHTML = `⚠️ Masih ada <span class='font-bold text-red-500'>${questions.length - count}</span> soal kosong!`;
+    }
+}
+
+function submitQuiz() {
+    const unanswered = userAnswers.filter(a => a === null).length;
+    if (unanswered > 0) {
+        if (!confirm(`Masih ada ${unanswered} soal belum dijawab. Yakin mau mengumpulkan?`)) return;
+    } else {
+        if (!confirm("Yakin ingin mengumpulkan jawaban?")) return;
+    }
+
+    isSubmitted = true;
+    let score = 0, correct = 0, wrong = 0;
+
+    questions.forEach((q, i) => {
+        const selected = userAnswers[i];
+        const feedback = document.getElementById(`feedback-${i}`);
+        const cards = document.querySelectorAll(`#options-group-${i} .option-card`);
+
+        feedback.classList.remove('hidden');
+        
+        cards.forEach((card, idx) => {
+            card.style.cursor = 'default';
+            card.onclick = null; // Disable clicks
+            
+            if (idx === q.correct) {
+                // Jawaban Benar (Hijau)
+                card.classList.add('correct-mode');
+                card.querySelector('.indicator-dot').style.backgroundColor = '#22c55e';
+                card.querySelector('.indicator-dot').style.borderColor = '#22c55e';
+                card.querySelector('.indicator-dot').innerHTML = '✓';
+                card.querySelector('.indicator-dot').style.color = 'white';
+            } else if (idx === selected) {
+                // Jawaban Salah User (Merah)
+                card.classList.add('wrong-mode');
+                card.querySelector('.indicator-dot').style.backgroundColor = '#ef4444';
+                card.querySelector('.indicator-dot').style.borderColor = '#ef4444';
+                card.querySelector('.indicator-dot').innerHTML = '✕';
+                card.querySelector('.indicator-dot').style.color = 'white';
+            }
+        });
+
+        if (selected === q.correct) {
+            score++; correct++;
+            feedback.classList.add('bg-green-50', 'text-green-800', 'border-green-200');
+        } else {
+            wrong++;
+            feedback.classList.add('bg-red-50', 'text-red-800', 'border-red-200');
+        }
+    });
+
+    const finalScore = Math.round((score / questions.length) * 100);
+    document.getElementById('final-score').innerText = finalScore;
+    document.getElementById('final-correct').innerText = correct;
+    document.getElementById('final-wrong').innerText = wrong;
+    
+    document.getElementById('result-modal').classList.remove('hidden');
+    document.getElementById('controls').classList.add('hidden');
+}
+
+function closeResult() {
+    document.getElementById('result-modal').classList.add('hidden');
+    window.scrollTo({top:0, behavior:'smooth'});
+}
+</script>
+</body>
+</html>
+
+

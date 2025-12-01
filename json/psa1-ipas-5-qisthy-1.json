@@ -1,0 +1,128 @@
+{
+  "subject": "IPAS",
+  "grade": "5 SD",
+  "title": "Latihan Soal SAS Ganjil IPAS Kelas 5",
+  "subtitle": "Latihan soal mencakup materi Cahaya, Bunyi, Ekosistem, Geografi Indonesia, Budaya, dan Ekonomi sesuai kisi-kisi SAS 2025/2026.",
+  "questions": [
+    {
+      "no": 1,
+      "text": "Kita dapat melihat ikan di dalam akuarium dari balik kaca yang bening. Hal ini membuktikan salah satu sifat cahaya, yaitu...",
+      "options": [
+        "Cahaya dapat dipantulkan",
+        "Cahaya menembus benda bening",
+        "Cahaya dapat dibiaskan",
+        "Cahaya merambat lurus"
+      ],
+      "correct": 1,
+      "desc": "Sifat cahaya yang dapat menembus benda bening (transparan) memungkinkan kita melihat objek di balik benda tersebut, seperti kaca akuarium."
+    },
+    {
+      "no": 2,
+      "text": "Bagian mata yang berfungsi untuk menangkap bayangan benda yang masuk ke mata adalah...",
+      "options": [
+        "Kornea",
+        "Pupil",
+        "Retina",
+        "Lensa mata"
+      ],
+      "correct": 2,
+      "desc": "Retina berfungsi sebagai layar penangkap bayangan. Bayangan yang jatuh tepat di retina akan dikirimkan ke otak melalui saraf optik agar kita dapat melihat."
+    },
+    {
+      "no": 3,
+      "text": "Bunyi tidak dapat terdengar di ruang hampa udara (seperti di luar angkasa) karena...",
+      "options": [
+        "Tidak ada udara sebagai media perambatan",
+        "Jarak sumber bunyi terlalu jauh",
+        "Frekuensi bunyi terlalu rendah",
+        "Tidak ada benda yang memantulkan bunyi"
+      ],
+      "correct": 0,
+      "desc": "Bunyi adalah gelombang mekanik yang membutuhkan media (zat padat, cair, atau gas) untuk merambat. Di ruang hampa tidak ada partikel udara, sehingga bunyi tidak dapat merambat."
+    },
+    {
+      "no": 4,
+      "text": "Perhatikan rantai makanan berikut: Padi \\(\\rightarrow\\) Tikus \\(\\rightarrow\\) Ular \\(\\rightarrow\\) Elang. Peran ular dalam rantai makanan tersebut adalah sebagai...",
+      "options": [
+        "Produsen",
+        "Konsumen I",
+        "Konsumen II",
+        "Konsumen III"
+      ],
+      "correct": 2,
+      "desc": "Padi adalah produsen. Tikus (pemakan tumbuhan) adalah Konsumen I. Ular (pemakan tikus) adalah Konsumen II. Elang adalah Konsumen III/Puncak."
+    },
+    {
+      "no": 5,
+      "text": "Dalam sebuah ekosistem sawah, jika populasi ular diburu secara liar hingga habis, maka dampak yang akan terjadi adalah...",
+      "options": [
+        "Populasi tikus akan meningkat pesat",
+        "Panen padi akan melimpah",
+        "Populasi elang akan bertambah banyak",
+        "Ekosistem menjadi lebih seimbang"
+      ],
+      "correct": 0,
+      "desc": "Ular adalah predator tikus. Jika ular habis, tidak ada yang memangsa tikus, sehingga populasi tikus akan meledak dan dapat merusak tanaman padi."
+    },
+    {
+      "no": 6,
+      "text": "Secara geografis, wilayah Indonesia terletak di antara dua benua, yaitu...",
+      "options": [
+        "Benua Asia dan Benua Afrika",
+        "Benua Asia dan Benua Australia",
+        "Benua Australia dan Benua Amerika",
+        "Benua Eropa dan Benua Australia"
+      ],
+      "correct": 1,
+      "desc": "Letak geografis Indonesia sangat strategis karena berada di posisi silang antara dua benua (Asia dan Australia) dan dua samudra (Hindia dan Pasifik)."
+    },
+    {
+      "no": 7,
+      "text": "Batik, Angklung, dan Wayang Kulit merupakan contoh warisan budaya Indonesia yang telah diakui dunia. Jenis warisan budaya tersebut termasuk dalam kategori...",
+      "options": [
+        "Warisan budaya benda (Tangible)",
+        "Warisan budaya tak benda (Intangible)",
+        "Warisan budaya alam",
+        "Warisan budaya campuran"
+      ],
+      "correct": 1,
+      "desc": "Warisan budaya tak benda (Intangible Cultural Heritage) meliputi tradisi, seni pertunjukan, dan keterampilan. Meskipun ada wujud bendanya (kain, alat musik), nilai utamanya ada pada keterampilan dan tradisinya."
+    },
+    {
+      "no": 8,
+      "text": "Manusia melakukan kegiatan ekonomi untuk memenuhi kebutuhan hidupnya. Kegiatan yang bertujuan untuk menghasilkan barang atau jasa disebut...",
+      "options": [
+        "Konsumsi",
+        "Distribusi",
+        "Produksi",
+        "Retribusi"
+      ],
+      "correct": 2,
+      "desc": "Produksi adalah kegiatan menciptakan atau menambah nilai guna suatu barang/jasa. Pelakunya disebut produsen."
+    },
+    {
+      "no": 9,
+      "text": "Sumber daya alam yang jumlahnya terbatas dan tidak dapat diperbarui dalam waktu singkat, seperti minyak bumi dan batu bara, disebut...",
+      "options": [
+        "Sumber daya alam hayati",
+        "Sumber daya alam non-hayati",
+        "Sumber daya alam yang dapat diperbarui",
+        "Sumber daya alam yang tidak dapat diperbarui"
+      ],
+      "correct": 3,
+      "desc": "SDA yang tidak dapat diperbarui membutuhkan waktu jutaan tahun untuk terbentuk kembali, sehingga jika habis dipakai akan sulit tergantikan dalam waktu singkat."
+    },
+    {
+      "no": 10,
+      "text": "Pencampuran dua budaya atau lebih yang saling bertemu dan memengaruhi disebut...",
+      "options": [
+        "Akulturasi",
+        "Isolasi",
+        "Migrasi",
+        "Konservasi"
+      ],
+      "correct": 0,
+      "desc": "Akulturasi adalah proses sosial yang timbul bila suatu kelompok manusia dengan kebudayaan tertentu dihadapkan dengan unsur dari suatu kebudayaan asing sehingga unsur asing itu lambat laun diterima dan diolah ke dalam kebudayaannya sendiri."
+    }
+  ]
+}

@@ -25,10 +25,18 @@
   },
   {
     "id": "psa1-ipas-7-khairin-1",
-    "title": "Latihan PSA IPAS Kelas 7 Semester Ganjil",
+    "title": "Latihan PSA IPAS Kelas 7 Semester Ganjil # 1",
     "subject": "IPAS",
     "grade": "7 SMP",
     "file": "psa1-ipas-7-khairin-1.json",
+    "icon": "🪐"
+  },
+  {
+    "id": "psa1-ipas-7-khairin-2",
+    "title": "Latihan PSA IPAS Kelas 7 Semester Ganjil # 2",
+    "subject": "IPAS",
+    "grade": "7 SMP",
+    "file": "psa1-ipas-7-khairin-2.json",
     "icon": "🪐"
   },
   {

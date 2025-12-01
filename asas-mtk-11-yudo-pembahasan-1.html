@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pembahasan Soal ASAS MTK TL Kelas XI</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- KaTeX CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" xintegrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+
+    <!-- KaTeX JS -->
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" xintegrity="sha384-XjKyFAMyFwxDDclqDNZR8hdCF1h2jv4SU8Gccq5x1XhQTE9q8x7/QT3+c8nPw1D+" crossorigin="anonymous"></script>
+    
+    <!-- KaTeX Auto-render Extension -->
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" xintegrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
+
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f3f4f6; }
+        .math-display { overflow-x: auto; overflow-y: hidden; margin: 1rem 0; } 
+        .card { transition: transform 0.2s; }
+        .card:hover { transform: translateY(-2px); }
+        .step-label { color: #2563eb; font-weight: 600; margin-top: 0.5rem; display: block; }
+        .graph-container { width: 100%; height: 250px; background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; margin-top: 10px; position: relative; overflow: hidden; }
+        
+        /* Tambahan CSS khusus agar tabel/matriks rapi */
+        .katex-display { margin: 1em 0; overflow-x: auto; overflow-y: hidden; }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <!-- Header -->
+    <header class="bg-blue-600 text-white p-6 shadow-lg sticky top-0 z-50">
+        <div class="max-w-4xl mx-auto">
+            <h1 class="text-2xl md:text-3xl font-bold">Pembahasan Soal Latihan ASAS</h1>
+            <p class="text-blue-100 mt-2 text-sm md:text-base">Matematika Tingkat Lanjut - Kelas XI (Polinomial & Transformasi)</p>
+        </div>
+    </header>
+
+    <!-- Content -->
+    <main class="max-w-4xl mx-auto p-4 space-y-6 pb-20">
+
+        <!-- Soal 1 -->
+        <div class="bg-white p-6 rounded-lg shadow-md card">
+            <div class="border-b pb-2 mb-4">
+                <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded">Soal 1: Polinomial</span>
+                <p class="mt-2 text-lg">Diketahui $f(x)=-2x^{5}+4x^{4}-x^{2}+8x-9$. Tentukan derajat, suku utama, suku konstan, dan perilaku ujung grafiknya.</p>
+            </div>
+            <div class="space-y-3 text-gray-700">
+                <span class="step-label">Analisis:</span>
+                <ul class="list-disc pl-5 space-y-1">
+                    <li><strong>Derajat:</strong> Pangkat tertinggi dari variabel $x$. Di sini pangkat tertingginya adalah $5$.</li>
+                    <li><strong>Suku Utama:</strong> Suku yang memiliki pangkat tertinggi, yaitu $-2x^5$. (Koefisien utama adalah $-2$).</li>
+                    <li><strong>Suku Konstan:</strong> Suku yang tidak memuat variabel $x$, yaitu $-9$.</li>
+                    <li><strong>Perilaku Ujung (End Behavior):</strong>
+                        <br>Karena derajat ganjil ($5$) dan koefisien utama negatif ($-2$):
+                        <br> $\bullet$ Saat $x \to \infty$, $y \to -\infty$ (Kanan bawah).
+                        <br> $\bullet$ Saat $x \to -\infty$, $y \to \infty$ (Kiri atas).
+                    </li>
+                </ul>
+                <div class="graph-container flex justify-center items-center">
+                    <svg viewBox="-10 -10 20 20" class="w-full h-full" preserveAspectRatio="none">
+                        <line x1="-10" y1="0" x2="10" y2="0" stroke="#374151" stroke-width="0.1"/>
+                        <line x1="0" y1="-10" x2="0" y2="10" stroke="#374151" stroke-width="0.1"/>
+                        <!-- Kurva ilustrasi x^5 negatif -->
+                        <path d="M -8 -9 Q -2 8 0 0 T 8 9" stroke="#ef4444" stroke-width="0.3" fill="none" transform="scale(-1, 1)"/> 
+                        <text x="2" y="-5" font-size="1.5" fill="#ef4444">Ilustrasi Perilaku Ujung</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Soal 2 -->
+        <div class="bg-white p-6 rounded-lg shadow-md card">
+            <div class="border-b pb-2 mb-4">
+                <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded">Soal 2: Operasi Polinomial</span>
+                <p class="mt-2">Diketahui $A(x)=6x^{3}-3x^{2}-7x-4$ dan $B(x)=-4x^{3}+2x^{2}+5x-8$. Nilai $A(x)+B(x)$ adalah...</p>
+            </div>
+            <div class="space-y-3">
+                <span class="step-label">Penyelesaian:</span>
+                <p>Jumlahkan suku-suku yang sejenis (pangkat $x$ yang sama):</p>
+                $$ 
+                \begin{aligned}
+                A(x) + B(x) &= (6x^3 - 3x^2 - 7x - 4) + (-4x^3 + 2x^2 + 5x - 8) \\
+                &= (6-4)x^3 + (-3+2)x^2 + (-7+5)x + (-4-8) \\
+                &= 2x^3 - x^2 - 2x - 12
+                \end{aligned}
+                $$
+            </div>
+        </div>
+
+        <!-- Soal 3 -->
+        <div class="bg-white p-6 rounded-lg shadow-md card">
+            <div class="border-b pb-2 mb-4">
+                <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded">Soal 3: Teorema Sisa</span>
+                <p class="mt-2">Jika nilai suku banyak $f(x) = x^{4}+mx^{3}-8x+3$ untuk $x=2$ adalah 10, maka nilai $m$ adalah...</p>
+            </div>
+            <div class="space-y-3">
+                <span class="step-label">Langkah-langkah:</span>
+                <p>Substitusikan $x=2$ ke dalam fungsi dan samakan dengan 10.</p>
+                $$
+                \begin{aligned}
+                f(2) &= 10 \\
+                (2)^4 + m(2)^3 - 8(2) + 3 &= 10 \\
+                16 + 8m - 16 + 3 &= 10 \\
+                8m + 3 &= 10 \\
+                8m &= 7 \\
+                m &= \frac{7}{8}
+                \end{aligned}
+                $$
+            </div>
+        </div>
+
+        <!-- Soal 4 -->
+        <div class="bg-white p-6 rounded-lg shadow-md card">
+            <div class="border-b pb-2 mb-4">
+                <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded">Soal 4: Aplikasi Polinomial</span>
+                <p class="mt-2">Volume kardus dengan panjang $(3x-1)$, lebar $(2x-5)$, dan tinggi $(x+4)$.</p>
+            </div>
+            <div class="space-y-3">
+                <span class="step-label">Perhitungan:</span>
+                <p>Volume balok $V = p \times l \times t$.</p>
+                $$
+                \begin{aligned}
+                V(x) &= (3x-1)(2x-5)(x+4) \\
+                &= (6x^2 - 15x - 2x + 5)(x+4) \\
+                &= (6x^2 - 17x + 5)(x+4) \\
+                &= 6x^3 + 24x^2 - 17x^2 - 68x + 5x + 20 \\
+                &= 6x^3 + 7x^2 - 63x + 20
+                \end{aligned}
+                $$
+            </div>
+        </div>
+
+        <!-- Soal 5 & 6 -->
+        <div class="bg-white p-6 rounded-lg shadow-md card">
+            <div class="border-b pb-2 mb-4">
+                <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded">Soal 5 & 6: Sisa Pembagian</span>
+                <p class="mt-2"><strong>Soal 5:</strong> $f(x)=x^{3}+5x^{2}-3x+9$ dibagi $(x-3)$.</p>
+                <p class="mt-1"><strong>Soal 6:</strong> $f(x)=6x^{4}-2x^{3}-7x^{2}+x-2$ dibagi $(x^{2}+x-2)$.</p>
+            </div>
+            <div class="space-y-3">
+                <span class="step-label">Pembahasan Soal 5 (Teorema Sisa):</span>
+                <p>Sisa pembagian oleh $(x-k)$ adalah $f(k)$. Maka sisa adalah $f(3)$.</p>
+                $$ f(3) = 3^3 + 5(3)^2 - 3(3) + 9 = 27 + 45 - 9 + 9 = 72 $$
+                
+                <hr class="border-gray-200">
+                
+                <span class="step-label">Pembahasan Soal 6:</span>
+                <p>Pembagi: $x^2+x-2 = (x+2)(x-1)$. Karena pembagi berderajat 2, sisa maksimum berderajat 1, misal $S(x) = ax+b$.</p>
+                <p>1. Untuk $x=1 \to f(1) = 6-2-7+1-2 = -4$. Maka $a(1)+b = -4$.</p>
+                <p>2. Untuk $x=-2 \to f(-2) = 6(16)-2(-8)-7(4)-2-2 = 96+16-28-4 = 80$. Maka $a(-2)+b=80$.</p>
+                <p>Eliminasi:</p>
+                $$
+                \begin{aligned}
+                (a+b) - (-2a+b) &= -4 - 80 \\
+                3a &= -84 \implies a = -28 \\
+                b &= -4 - a = -4 - (-28) = 24
+                \end{aligned}
+                $$
+                <p class="font-bold">Jadi, sisanya adalah $S(x) = -28x + 24$.</p>
+            </div>
+        </div>
+
+        <!-- Soal 9 & 10 -->
+        <div class="bg-white p-6 rounded-lg shadow-md card">
+            <div class="border-b pb-2 mb-4">
+                <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded">Soal 9 & 10: Nilai Mutlak & Rasional</span>
+                <p class="mt-2"><strong>Soal 9:</strong> $f(x)=|3x-1|, g(x)=|5-2x|$. Hitung $f(5)-g(8)$.</p>
+                <p class="mt-1"><strong>Soal 10:</strong> Asimtot $f(x)=\frac{x^{2}-7x+10}{x^{2}-4}$.</p>
+            </div>
+            <div class="space-y-3">
+                <span class="step-label">Pembahasan Soal 9:</span>
+                $$ 
+                \begin{aligned}
+                f(5) &= |3(5)-1| = |14| = 14 \\
+                g(8) &= |5-2(8)| = |5-16| = |-11| = 11 \\
+                f(5)-g(8) &= 14 - 11 = 3 
+                \end{aligned}
+                $$
+
+                <span class="step-label">Pembahasan Soal 10:</span>
+                <p>Faktorkan pembilang dan penyebut:</p>
+                $$ f(x) = \frac{(x-5)(x-2)}{(x+2)(x-2)} = \frac{x-5}{x+2}, \quad x \neq 2 $$
+                <ul class="list-disc pl-5">
+                    <li><strong>Asimtot Tegak:</strong> Pembuat nol penyebut (setelah penyederhanaan). $x+2=0 \to x=-2$.</li>
+                    <li><strong>Asimtot Datar:</strong> Karena pangkat pembilang = pangkat penyebut, $y = \frac{\text{koef } x}{\text{koef } x} = \frac{1}{1} = 1$.</li>
+                    <li><em>Catatan:</em> Di $x=2$ terdapat lubang (hole) pada grafik, bukan asimtot.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Soal 12-16 -->
+        <div class="bg-white p-6 rounded-lg shadow-md card">
+            <div class="border-b pb-2 mb-4">
+                <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded">Soal 12-16: Transformasi Geometri Dasar</span>
+            </div>
+            <div class="space-y-4 divide-y divide-gray-200">
+                <div class="pt-2">
+                    <strong>Soal 12 (Translasi + Refleksi):</strong> Titik $A(2,5)$, Translasi $T(4,-1)$, Refleksi sb-X.
+                    <br>Translasi: $A' = (2+4, 5+(-1)) = (6,4)$.
+                    <br>Refleksi sb-X ($y$ menjadi negatif): $A'' = (6, -4)$.
+                </div>
+                <div class="pt-2">
+                    <strong>Soal 14 (Rotasi -90&deg;):</strong>
+                    <br>Rumus Rotasi $-90^\circ$ (pusat 0,0): $(x,y) \to (y, -x)$.
+                    <br>Diketahui bayangan $D'(-8, -4)$. 
+                    <br>Maka $y = -8$ dan $-x = -4 \to x=4$.
+                    <br>Titik asal $D(4, -8)$, maka $a=4, b=-8$.
+                    <br>Nilai $a+b = 4 + (-8) = -4$.
+                </div>
+                <div class="pt-2">
+                    <strong>Soal 15 (Translasi Garis):</strong> $5x-2y+6=0$ oleh $T(3, -1)$.
+                    <br>Substitusi: $x = x'-3$ dan $y = y'-(-1) = y'+1$.
+                    $$ 
+                    \begin{aligned}
+                    5(x'-3) - 2(y'+1) + 6 &= 0 \\
+                    5x - 15 - 2y - 2 + 6 &= 0 \\
+                    5x - 2y - 11 &= 0 
+                    \end{aligned}
+                    $$
+                </div>
+            </div>
+        </div>
+
+        <!-- Soal 18 & 19 -->
+        <div class="bg-white p-6 rounded-lg shadow-md card">
+            <div class="border-b pb-2 mb-4">
+                <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded">Soal 18 & 19: Komposisi Transformasi</span>
+            </div>
+            <div class="space-y-3">
+                <span class="step-label">Soal 18 (Mencari Titik Asal):</span>
+                <p>Diketahui bayangan akhir $F''(-2, -10)$. Matriks transformasi gabungan $M_{total} = M_2 \cdot M_1$.</p>
+                $$ M_{total} = \begin{pmatrix}0&1\\-1&2\end{pmatrix} \begin{pmatrix}3&5\\1&3\end{pmatrix} = \begin{pmatrix} 0(3)+1(1) & 0(5)+1(3) \\ -1(3)+2(1) & -1(5)+2(3) \end{pmatrix} = \begin{pmatrix} 1 & 3 \\ -1 & 1 \end{pmatrix} $$
+                <p>Kita mencari $F$ awal, maka gunakan invers matriks:</p>
+                $$ \begin{pmatrix} x \\ y \end{pmatrix} = M_{total}^{-1} \begin{pmatrix} -2 \\ -10 \end{pmatrix} $$
+                $$ Det = (1)(1) - (3)(-1) = 4. \quad M^{-1} = \frac{1}{4}\begin{pmatrix} 1 & -3 \\ 1 & 1 \end{pmatrix} $$
+                $$ \begin{pmatrix} x \\ y \end{pmatrix} = \frac{1}{4} \begin{pmatrix} 1 & -3 \\ 1 & 1 \end{pmatrix} \begin{pmatrix} -2 \\ -10 \end{pmatrix} = \frac{1}{4} \begin{pmatrix} -2+30 \\ -2-10 \end{pmatrix} = \frac{1}{4} \begin{pmatrix} 28 \\ -12 \end{pmatrix} = \begin{pmatrix} 7 \\ -3 \end{pmatrix} $$
+                <p class="font-bold">Jadi, titik $F(7, -3)$.</p>
+
+                <hr class="border-gray-200">
+
+                <span class="step-label">Soal 19 (Transformasi Garis):</span>
+                <p>Transformasi: Matriks $M=\begin{pmatrix}-2&-5\\1&3\end{pmatrix}$ dilanjutkan Refleksi Y ($M_y=\begin{pmatrix}-1&0\\0&1\end{pmatrix}$).</p>
+                $$ T_{gabungan} = \begin{pmatrix}-1&0\\0&1\end{pmatrix} \begin{pmatrix}-2&-5\\1&3\end{pmatrix} = \begin{pmatrix}2&5\\1&3\end{pmatrix} $$
+                <p>Gunakan invers untuk substitusi ke persamaan garis:</p>
+                $$ Det = 6-5=1. \quad T^{-1} = \frac{1}{1}\begin{pmatrix}3&-5\\-1&2\end{pmatrix} = \begin{pmatrix}3&-5\\-1&2\end{pmatrix} $$
+                <p>Maka $\begin{pmatrix}x\\y\end{pmatrix} = \begin{pmatrix}3&-5\\-1&2\end{pmatrix}\begin{pmatrix}x'\\y'\end{pmatrix} \implies x = 3x' - 5y'$ dan $y = -x' + 2y'$.</p>
+                <p>Substitusi ke garis $5x-2y+3=0$:</p>
+                $$ 
+                \begin{aligned}
+                5(3x-5y) - 2(-x+2y) + 3 &= 0 \\
+                15x - 25y + 2x - 4y + 3 &= 0 \\
+                17x - 29y + 3 &= 0 
+                \end{aligned}
+                $$
+            </div>
+        </div>
+
+        <!-- Soal 21, 24, 25 -->
+        <div class="bg-white p-6 rounded-lg shadow-md card">
+            <div class="border-b pb-2 mb-4">
+                <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded">Soal Matriks Lainnya</span>
+            </div>
+            <div class="space-y-4 divide-y divide-gray-200">
+                <div class="pt-2">
+                    <strong>Soal 21:</strong> $A=\begin{pmatrix}5&-2&3\\8&1&4\\6&6&-4\end{pmatrix}$. Nilai $a_{12}+a_{22}-a_{32}$.
+                    <br>$a_{12}$ (baris 1, kolom 2) = -2
+                    <br>$a_{22}$ (baris 2, kolom 2) = 1
+                    <br>$a_{32}$ (baris 3, kolom 2) = 6
+                    <br>Hasil: $-2 + 1 - 6 = -7$.
+                </div>
+                <div class="pt-2">
+                    <strong>Soal 24 (SPLDV ke Matriks):</strong>
+                    <br>2 pensil + 5 spidol = 12.000
+                    <br>4 pensil + 3 spidol = 10.000
+                    <br>Persamaan Matriks:
+                    $$ \begin{pmatrix} 2 & 5 \\ 4 & 3 \end{pmatrix} \begin{pmatrix} x \\ y \end{pmatrix} = \begin{pmatrix} 12.000 \\ 10.000 \end{pmatrix} $$
+                </div>
+                <div class="pt-2">
+                    <strong>Soal 25 (Kesamaan Matriks):</strong>
+                    <br>Diketahui: $\begin{pmatrix}a&2\\-2&c\end{pmatrix}+\begin{pmatrix}3&b\\d&-1\end{pmatrix} = \begin{pmatrix}1&-3\\3&4\end{pmatrix}\begin{pmatrix}0&1\\1&0\end{pmatrix}$.
+                    <br>Ruas Kanan (Perkalian): $\begin{pmatrix}1(0)+(-3)(1) & 1(1)+(-3)(0) \\ 3(0)+4(1) & 3(1)+4(0)\end{pmatrix} = \begin{pmatrix}-3&1\\4&3\end{pmatrix}$.
+                    <br>Ruas Kiri (Penjumlahan): $\begin{pmatrix}a+3 & 2+b \\ -2+d & c-1\end{pmatrix}$.
+                    <br>Persamaan:
+                    <ul class="list-disc pl-5 mt-2">
+                        <li>$a+3=-3 \to a=-6$</li>
+                        <li>$2+b=1 \to b=-1$</li>
+                        <li>$-2+d=4 \to d=6$</li>
+                        <li>$c-1=3 \to c=4$</li>
+                    </ul>
+                    <br>Nilai yang dicari: $2a-3b+4c-5d$
+                    $$ 2(-6) - 3(-1) + 4(4) - 5(6) = -12 + 3 + 16 - 30 = -23 $$
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Script Konfigurasi KaTeX -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body, {
+                // Konfigurasi Delimiter agar $...$ bisa dibaca sebagai inline math
+                delimiters: [
+                    {left: '$$', right: '$$', display: true},
+                    {left: '$', right: '$', display: false},
+                    {left: '\\(', right: '\\)', display: false},
+                    {left: '\\[', right: '\\]', display: true}
+                ],
+                throwOnError : false
+            });
+        });
+    </script>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white text-center p-6 text-sm">
+        <p>Generated for Math Study Aid</p>
+    </footer>
+
+</body>
+</html>
+

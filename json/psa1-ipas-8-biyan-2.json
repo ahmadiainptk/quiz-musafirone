@@ -1,0 +1,488 @@
+{
+  "subject": "IPA",
+  "grade": "8 SMP",
+  "title": "Latihan Soal SAS Ganjil IPA Kelas 8 (Sesuai Kisi-Kisi)",
+  "subtitle": "Paket soal 40 nomor presisi sesuai indikator kisi-kisi SAS 2025 (Sel, Sistem Tubuh, Usaha, Energi, Pesawat Sederhana).",
+  "questions": [
+    {
+      "no": 1,
+      "text": "Unit terkecil penyusun tubuh makhluk hidup yang fungsional dan struktural disebut...",
+      "options": [
+        "Jaringan",
+        "Organ",
+        "Sel",
+        "Sistem Organ"
+      ],
+      "correct": 2,
+      "desc": "Indikator 1: Mendeskripsikan sel dalam konteks biologi."
+    },
+    {
+      "no": 2,
+      "text": "Perhatikan bagian-bagian mikroskop! Bagian yang berfungsi untuk mengatur banyak sedikitnya cahaya yang masuk adalah...",
+      "options": [
+        "Lensa Okuler",
+        "Revolver",
+        "Diafragma",
+        "Makrometer"
+      ],
+      "correct": 2,
+      "desc": "Indikator 2: Menentukan fungsi bagian dari mikroskop (Diafragma mengatur intensitas cahaya)."
+    },
+    {
+      "no": 3,
+      "text": "Seorang siswa mengamati sel menggunakan mikroskop dengan lensa okuler 10x dan lensa objektif 40x. Perbesaran total bayangan yang dihasilkan adalah...",
+      "options": [
+        "40 kali",
+        "50 kali",
+        "400 kali",
+        "4000 kali"
+      ],
+      "correct": 2,
+      "desc": "Indikator 3: Menentukan perbesaran mikroskop (10 x 40 = 400)."
+    },
+    {
+      "no": 4,
+      "text": "Perhatikan tabel ciri sel berikut!\n(1) Memiliki dinding sel\n(2) Memiliki kloroplas\n(3) Vakuola besar\n(4) Tidak memiliki sentriol\nCiri-ciri tersebut dimiliki oleh...",
+      "options": [
+        "Sel Hewan",
+        "Sel Tumbuhan",
+        "Sel Bakteri",
+        "Sel Jamur"
+      ],
+      "correct": 1,
+      "desc": "Indikator 4: Menentukan ciri sel hewan/tumbuhan. Dinding sel dan kloroplas adalah ciri khas tumbuhan."
+    },
+    {
+      "no": 5,
+      "text": "Pada gambar sel hewan, organel yang ditunjuk berfungsi sebagai tempat respirasi sel untuk menghasilkan energi adalah...",
+      "options": [
+        "Ribosom",
+        "Lisosom",
+        "Mitokondria",
+        "Badan Golgi"
+      ],
+      "correct": 2,
+      "desc": "Indikator 5: Menentukan bagian berdasarkan fungsi. Mitokondria adalah tempat produksi energi."
+    },
+    {
+      "no": 6,
+      "text": "Pada kemasan minuman tertulis komposisi: Air, Gula Pasir, Perisa Jeruk, Aspartam, Pengawet Natrium Benzoat, Pewarna Tartrazin. Zat yang berperan sebagai pemanis buatan adalah...",
+      "options": [
+        "Gula Pasir",
+        "Aspartam",
+        "Natrium Benzoat",
+        "Tartrazin"
+      ],
+      "correct": 1,
+      "desc": "Indikator 6: Menunjukkan zat pemanis dari komposisi. Aspartam adalah pemanis buatan."
+    },
+    {
+      "no": 7,
+      "text": "Zat makanan yang berfungsi utama untuk pertumbuhan, mengganti sel-sel tubuh yang rusak, dan pembentuk enzim adalah...",
+      "options": [
+        "Karbohidrat",
+        "Lemak",
+        "Protein",
+        "Vitamin"
+      ],
+      "correct": 2,
+      "desc": "Indikator 7: Menentukan fungsi protein (zat pembangun)."
+    },
+    {
+      "no": 8,
+      "text": "Perhatikan gambar sistem pencernaan! Proses pencernaan mekanik yang paling dominan terjadi pada bagian yang ditunjuk nomor... (Gambar Mulut)",
+      "options": [
+        "1 (Mulut)",
+        "2 (Kerongkongan)",
+        "3 (Lambung)",
+        "4 (Usus Halus)"
+      ],
+      "correct": 0,
+      "desc": "Indikator 8: Menunjukkan bagian yang mengalami pencernaan mekanik (Gigi di Mulut)."
+    },
+    {
+      "no": 9,
+      "text": "Pernyataan berikut yang merupakan fungsi dari keping darah (trombosit) adalah...",
+      "options": [
+        "Mengikat oksigen dan karbon dioksida",
+        "Membunuh kuman yang masuk ke tubuh",
+        "Membantu proses pembekuan darah saat luka",
+        "Menjaga suhu tubuh agar tetap stabil"
+      ],
+      "correct": 2,
+      "desc": "Indikator 9: Menentukan fungsi darah. Trombosit berfungsi untuk pembekuan darah."
+    },
+    {
+      "no": 10,
+      "text": "Urutan peredaran darah kecil pada manusia adalah...",
+      "options": [
+        "Bilik Kanan -> Seluruh Tubuh -> Serambi Kiri",
+        "Bilik Kiri -> Seluruh Tubuh -> Serambi Kanan",
+        "Bilik Kanan -> Paru-paru -> Serambi Kiri",
+        "Bilik Kiri -> Paru-paru -> Serambi Kanan"
+      ],
+      "correct": 2,
+      "desc": "Indikator 10: Proses alur peredaran darah kecil (Jantung ke Paru-paru)."
+    },
+    {
+      "no": 11,
+      "text": "Pada pernapasan dada, otot yang berperan aktif mengangkat tulang rusuk saat inspirasi adalah...",
+      "options": [
+        "Otot Diafragma",
+        "Otot Antar Tulang Rusuk",
+        "Otot Perut",
+        "Otot Punggung"
+      ],
+      "correct": 1,
+      "desc": "Indikator 11: Perbedaan pernapasan dada (otot rusuk) dan perut (diafragma)."
+    },
+    {
+      "no": 12,
+      "text": "Perhatikan gambar organ pernapasan! Bagian yang merupakan tempat terjadinya pertukaran gas oksigen dan karbon dioksida secara difusi adalah...",
+      "options": [
+        "Hidung",
+        "Trakea",
+        "Bronkus",
+        "Alveolus"
+      ],
+      "correct": 3,
+      "desc": "Indikator 12: Menyebutkan tempat pertukaran gas (Alveolus)."
+    },
+    {
+      "no": 13,
+      "text": "Budi mendorong gerobak dengan gaya 150 Newton sehingga gerobak berpindah sejauh 10 meter. Besar usaha yang dilakukan Budi adalah...",
+      "options": [
+        "15 Joule",
+        "140 Joule",
+        "160 Joule",
+        "1.500 Joule"
+      ],
+      "correct": 3,
+      "desc": "Indikator 13: Menentukan besar usaha (W=F.s = 150x10 = 1500)."
+    },
+    {
+      "no": 14,
+      "text": "Perhatikan ilustrasi! Seseorang mendorong tembok yang sangat kokoh dengan gaya besar sampai berkeringat, namun tembok tidak bergeser sedikitpun. Pernyataan yang tepat adalah...",
+      "options": [
+        "Orang tersebut melakukan usaha maksimal",
+        "Usaha yang dilakukan nol karena perpindahan nol",
+        "Usaha bernilai positif karena mengeluarkan energi",
+        "Tembok melakukan usaha terhadap orang"
+      ],
+      "correct": 1,
+      "desc": "Indikator 14: Menentukan pernyataan tepat dari ilustrasi (s=0, maka W=0)."
+    },
+    {
+      "no": 15,
+      "text": "Dua orang siswa, Andi dan Budi, mendorong meja ke arah kanan. Andi mengeluarkan gaya 40 N dan Budi 60 N. Usaha total jika meja berpindah 2 meter adalah...",
+      "options": [
+        "40 Joule",
+        "120 Joule",
+        "200 Joule",
+        "100 Joule"
+      ],
+      "correct": 2,
+      "desc": "Indikator 15: Besar usaha dua gaya searah. W = (40+60) x 2 = 100 x 2 = 200 J."
+    },
+    {
+      "no": 16,
+      "text": "Sebuah benda ditarik dengan gaya 20 N dan melakukan usaha sebesar 100 Joule. Berapa jauh perpindahan benda tersebut?",
+      "options": [
+        "2 meter",
+        "5 meter",
+        "20 meter",
+        "2000 meter"
+      ],
+      "correct": 1,
+      "desc": "Indikator 16: Menentukan perpindahan. s = W/F = 100/20 = 5 m."
+    },
+    {
+      "no": 17,
+      "text": "Perhatikan data berikut!\n(1) Usaha=100J, Waktu=10s\n(2) Usaha=200J, Waktu=20s\n(3) Usaha=300J, Waktu=10s\n(4) Usaha=400J, Waktu=50s\nBerdasarkan tabel, kegiatan yang menghasilkan Daya (Power) yang SAMA besarnya adalah...",
+      "options": [
+        "(1) dan (2)",
+        "(1) dan (3)",
+        "(2) dan (3)",
+        "(3) dan (4)"
+      ],
+      "correct": 0,
+      "desc": "Indikator 17: Menentukan daya yang sama. P1=100/10=10W. P2=200/20=10W. P3=30W. P4=8W. Jadi (1) dan (2) sama."
+    },
+    {
+      "no": 18,
+      "text": "Pernyataan yang benar terkait dengan usaha adalah...",
+      "options": [
+        "Usaha berbanding terbalik dengan gaya",
+        "Usaha bernilai nol jika gaya tegak lurus dengan perpindahan",
+        "Semakin lama waktu bekerja, usaha semakin besar",
+        "Usaha hanya dipengaruhi oleh massa benda"
+      ],
+      "correct": 1,
+      "desc": "Indikator 18: Pernyataan terkait usaha."
+    },
+    {
+      "no": 19,
+      "text": "Sebuah mangga bermassa 0,5 kg menggantung pada dahan setinggi 4 meter. Jika gravitasi bumi 10 m/s², energi potensial mangga tersebut adalah...",
+      "options": [
+        "2 Joule",
+        "5 Joule",
+        "20 Joule",
+        "40 Joule"
+      ],
+      "correct": 2,
+      "desc": "Indikator 19: Menghitung Energi Potensial. Ep = m.g.h = 0,5 x 10 x 4 = 20 J."
+    },
+    {
+      "no": 20,
+      "text": "Benda A berada pada ketinggian h, dan Benda B berada pada ketinggian 3h. Jika massa kedua benda sama, maka perbandingan Energi Potensial A dan B adalah...",
+      "options": [
+        "1 : 1",
+        "1 : 3",
+        "3 : 1",
+        "1 : 9"
+      ],
+      "correct": 1,
+      "desc": "Indikator 20: Perbandingan EP. Ep sebanding dengan h. h : 3h = 1 : 3."
+    },
+    {
+      "no": 21,
+      "text": "Bola dilempar vertikal ke atas. Pernyataan yang benar mengenai Energi Potensial (Ep) bola tersebut adalah...",
+      "options": [
+        "Ep terbesar saat bola baru dilempar",
+        "Ep terbesar saat bola di titik tertinggi",
+        "Ep selalu sama di setiap titik",
+        "Ep terkecil saat bola di titik tertinggi"
+      ],
+      "correct": 1,
+      "desc": "Indikator 21: EP pada berbagai kedudukan. Makin tinggi, EP makin besar."
+    },
+    {
+      "no": 22,
+      "text": "Sebuah mobil bermassa 1000 kg melaju dengan kecepatan 20 m/s. Energi kinetik yang dimiliki mobil tersebut adalah...",
+      "options": [
+        "20.000 J",
+        "200.000 J",
+        "400.000 J",
+        "10.000 J"
+      ],
+      "correct": 1,
+      "desc": "Indikator 22: Menghitung Energi Kinetik. Ek = 0,5 . m . v^2 = 0,5 . 1000 . 400 = 200.000 J."
+    },
+    {
+      "no": 23,
+      "text": "Jika kecepatan sebuah sepeda menjadi 2 kali lebih cepat dari semula, maka energi kinetiknya akan menjadi...",
+      "options": [
+        "2 kali semula",
+        "4 kali semula",
+        "8 kali semula",
+        "Tetap"
+      ],
+      "correct": 1,
+      "desc": "Indikator 23: Perbandingan EK. Ek sebanding kuadrat v. Jika v 2x, Ek = 2^2 = 4x."
+    },
+    {
+      "no": 24,
+      "text": "Perhatikan data tuas berikut:\nTuas A: Lengan Kuasa 2m, Lengan Beban 1m\nTuas B: Lengan Kuasa 4m, Lengan Beban 2m\nTuas C: Lengan Kuasa 3m, Lengan Beban 1m\nTuas yang memiliki Keuntungan Mekanis (KM) sama adalah...",
+      "options": [
+        "A dan B",
+        "A dan C",
+        "B dan C",
+        "Semua berbeda"
+      ],
+      "correct": 0,
+      "desc": "Indikator 24: Menentukan keuntungan mekanik yang sama. KM = Lk/Lb. Tuas A = 2/1 = 2. Tuas B = 4/2 = 2. Maka A dan B sama."
+    },
+    {
+      "no": 25,
+      "text": "Sebuah batu seberat 800 N akan dipindahkan menggunakan tuas. Jika jarak beban ke titik tumpu 1 meter dan jarak kuasa ke titik tumpu 4 meter, gaya tekan yang diperlukan adalah...",
+      "options": [
+        "200 N",
+        "400 N",
+        "800 N",
+        "3200 N"
+      ],
+      "correct": 0,
+      "desc": "Indikator 25: Menghitung gaya tuas. F = (w x Lb) / Lk = (800 x 1) / 4 = 200 N."
+    },
+    {
+      "no": 26,
+      "text": "Alat berikut yang prinsip kerjanya sama dengan Tuas Golongan I (Titik tumpu di antara beban dan kuasa) adalah...",
+      "options": [
+        "Gerobak sorong",
+        "Pembuka botol",
+        "Gunting",
+        "Pinset"
+      ],
+      "correct": 2,
+      "desc": "Indikator 26: Menentukan alat prinsip tuas. Gunting = Tuas I."
+    },
+    {
+      "no": 27,
+      "text": "Perhatikan kelompok alat berikut: (1) Pembuka tutup botol, (2) Pemecah kemiri, (3) Gerobak dorong roda satu. Ketiga alat tersebut menggunakan prinsip kerja pesawat sederhana jenis...",
+      "options": [
+        "Tuas Golongan I",
+        "Tuas Golongan II",
+        "Tuas Golongan III",
+        "Bidang Miring"
+      ],
+      "correct": 1,
+      "desc": "Indikator 27: Menentukan peralatan prinsip kerja sama. Semua contoh Tuas II (Beban di tengah)."
+    },
+    {
+      "no": 28,
+      "text": "Papan miring sepanjang 4 meter digunakan untuk menaikkan benda seberat 1000 N ke bak truk setinggi 1 meter. Gaya dorong minimal yang diperlukan adalah...",
+      "options": [
+        "250 N",
+        "500 N",
+        "1000 N",
+        "4000 N"
+      ],
+      "correct": 0,
+      "desc": "Indikator 28: Gaya bidang miring. F = (w x h) / s = (1000 x 1) / 4 = 250 N."
+    },
+    {
+      "no": 29,
+      "text": "Untuk mengangkat beban 600 N menggunakan satu buah katrol bergerak, gaya kuasa yang dibutuhkan adalah...",
+      "options": [
+        "300 N",
+        "600 N",
+        "1200 N",
+        "150 N"
+      ],
+      "correct": 0,
+      "desc": "Indikator 29: Kuasa katrol bergerak. KM=2, maka F = w/2 = 600/2 = 300 N."
+    },
+    {
+      "no": 30,
+      "text": "Sebuah sistem katrol majemuk (takal) memiliki 4 tali yang menopang beban. Keuntungan mekanis (KM) dan gaya untuk mengangkat beban 400 N berturut-turut adalah...",
+      "options": [
+        "KM = 4 dan F = 100 N",
+        "KM = 2 dan F = 200 N",
+        "KM = 4 dan F = 400 N",
+        "KM = 1 dan F = 400 N"
+      ],
+      "correct": 0,
+      "desc": "Indikator 30: Menentukan KM dan gaya kuasa. KM = jumlah tali = 4. F = 400/4 = 100 N."
+    },
+    {
+      "no": 31,
+      "text": "Pasangan nama organel sel dan fungsinya yang BENAR adalah...",
+      "options": [
+        "Nukleus - Penghasil energi",
+        "Kloroplas - Tempat fotosintesis",
+        "Dinding sel - Mengatur transportasi zat",
+        "Vakuola - Mencerna sel yang rusak"
+      ],
+      "correct": 1,
+      "desc": "Indikator 31 (Menjodohkan): Menjodohkan organel dan fungsi. Kloroplas = fotosintesis."
+    },
+    {
+      "no": 32,
+      "text": "Perhatikan vitamin berikut: A, B, C, D, E, K. Kelompok vitamin yang larut dalam lemak adalah...",
+      "options": [
+        "B dan C",
+        "A, D, E, K",
+        "C dan D",
+        "A dan B"
+      ],
+      "correct": 1,
+      "desc": "Indikator 32 (Menjodohkan): Vitamin larut lemak = ADEK."
+    },
+    {
+      "no": 33,
+      "text": "Besaran yang mempengaruhi Energi Potensial (Ep) adalah...",
+      "options": [
+        "Massa, Gravitasi, Ketinggian",
+        "Massa dan Kecepatan",
+        "Gaya dan Perpindahan",
+        "Massa dan Waktu"
+      ],
+      "correct": 0,
+      "desc": "Indikator 33 (Menjodohkan): Besaran pengaruh EP."
+    },
+    {
+      "no": 34,
+      "text": "Alat yang bekerja dengan prinsip Tuas Golongan I (seperti Gunting) adalah...",
+      "options": [
+        "Tang",
+        "Gerobak Dorong",
+        "Pinset",
+        "Stapler"
+      ],
+      "correct": 0,
+      "desc": "Indikator 34 (Menjodohkan): Alat tuas gol 1 (Tumpu di tengah)."
+    },
+    {
+      "no": 35,
+      "text": "Katrol yang memiliki Keuntungan Mekanis (KM) = 2 adalah...",
+      "options": [
+        "Katrol Tetap",
+        "Katrol Bergerak",
+        "Katrol Majemuk",
+        "Katrol Rantai"
+      ],
+      "correct": 1,
+      "desc": "Indikator 35 (Menjodohkan): Katrol bergerak KM=2."
+    },
+    {
+      "no": 36,
+      "text": "Sel darah yang memiliki ciri-ciri: bentuk tidak tetap (ameboid), memiliki inti sel, dan berfungsi memakan kuman penyakit adalah...",
+      "options": [
+        "Leukosit (Sel Darah Putih)",
+        "Eritrosit (Sel Darah Merah)",
+        "Trombosit",
+        "Plasma Darah"
+      ],
+      "correct": 0,
+      "desc": "Indikator 36 (Isian): Ciri leukosit."
+    },
+    {
+      "no": 37,
+      "text": "Otot utama yang berkontraksi (mendatar) saat kita melakukan pernapasan perut adalah...",
+      "options": [
+        "Otot Diafragma",
+        "Otot Antar Tulang Rusuk",
+        "Otot Dada",
+        "Otot Leher"
+      ],
+      "correct": 0,
+      "desc": "Indikator 37 (Isian): Otot pernapasan perut = Diafragma."
+    },
+    {
+      "no": 38,
+      "text": "Besar usaha yang dilakukan gaya 50 N untuk memindahkan benda sejauh 4 meter adalah...",
+      "options": [
+        "200 Joule",
+        "54 Joule",
+        "46 Joule",
+        "12,5 Joule"
+      ],
+      "correct": 0,
+      "desc": "Indikator 38 (Isian): W = 50 x 4 = 200 J."
+    },
+    {
+      "no": 39,
+      "text": "Energi Mekanik (EM) suatu benda adalah hasil penjumlahan dari...",
+      "options": [
+        "Energi Potensial + Energi Kinetik",
+        "Usaha + Daya",
+        "Gaya + Jarak",
+        "Energi Listrik + Energi Panas"
+      ],
+      "correct": 0,
+      "desc": "Indikator 39 (Isian): EM = Ep + Ek."
+    },
+    {
+      "no": 40,
+      "text": "Jika kita menimba air menggunakan katrol tetap, gaya kuasa yang kita keluarkan untuk mengangkat beban 100 N adalah...",
+      "options": [
+        "100 N",
+        "50 N",
+        "200 N",
+        "25 N"
+      ],
+      "correct": 0,
+      "desc": "Indikator 40 (Isian): Katrol tetap KM=1, maka F=w=100N."
+    }
+  ]
+}

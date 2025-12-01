@@ -1,128 +1,608 @@
 {
   "subject": "IPAS",
   "grade": "5 SD",
-  "title": "Latihan Soal SAS Ganjil IPAS Kelas 5",
-  "subtitle": "Latihan soal mencakup materi Cahaya, Bunyi, Ekosistem, Geografi Indonesia, Budaya, dan Ekonomi sesuai kisi-kisi SAS 2025/2026.",
+  "title": "Latihan Soal SAS Ganjil IPAS Kelas 5 (Full Kisi-Kisi)",
+  "subtitle": "Paket 50 soal lengkap mencakup Cahaya, Bunyi, Ekosistem, Geografi, dan Warisan Budaya sesuai kisi-kisi 2025/2026.",
   "questions": [
     {
       "no": 1,
-      "text": "Kita dapat melihat ikan di dalam akuarium dari balik kaca yang bening. Hal ini membuktikan salah satu sifat cahaya, yaitu...",
+      "text": "Cahaya matahari dapat masuk ke dalam ruangan melalui celah-celah ventilasi atau jendela kaca yang bening. Hal ini membuktikan sifat cahaya yaitu...",
       "options": [
-        "Cahaya dapat dipantulkan",
-        "Cahaya menembus benda bening",
         "Cahaya dapat dibiaskan",
-        "Cahaya merambat lurus"
+        "Cahaya dapat diuraikan",
+        "Cahaya merambat lurus dan menembus benda bening",
+        "Cahaya dapat memantul"
       ],
-      "correct": 1,
-      "desc": "Sifat cahaya yang dapat menembus benda bening (transparan) memungkinkan kita melihat objek di balik benda tersebut, seperti kaca akuarium."
+      "correct": 2,
+      "desc": "Indikator 1: Menentukan sifat cahaya (merambat lurus/menembus benda bening)."
     },
     {
       "no": 2,
-      "text": "Bagian mata yang berfungsi untuk menangkap bayangan benda yang masuk ke mata adalah...",
+      "text": "Saat kita bercermin di depan cermin datar, sifat bayangan yang terbentuk adalah...",
       "options": [
-        "Kornea",
-        "Pupil",
-        "Retina",
-        "Lensa mata"
+        "Maya, tegak, dan diperbesar",
+        "Nyata, terbalik, dan diperkecil",
+        "Maya, tegak, dan sama besar dengan bendanya",
+        "Nyata, tegak, dan lebih besar"
       ],
       "correct": 2,
-      "desc": "Retina berfungsi sebagai layar penangkap bayangan. Bayangan yang jatuh tepat di retina akan dikirimkan ke otak melalui saraf optik agar kita dapat melihat."
+      "desc": "Indikator 2: Sifat bayangan cermin datar adalah maya, tegak, dan sama besar."
     },
     {
       "no": 3,
-      "text": "Bunyi tidak dapat terdengar di ruang hampa udara (seperti di luar angkasa) karena...",
+      "text": "Pensil yang dimasukkan ke dalam gelas berisi air akan terlihat patah. Peristiwa ini menunjukkan sifat cahaya...",
       "options": [
-        "Tidak ada udara sebagai media perambatan",
-        "Jarak sumber bunyi terlalu jauh",
-        "Frekuensi bunyi terlalu rendah",
-        "Tidak ada benda yang memantulkan bunyi"
+        "Dapat dipantulkan (Refleksi)",
+        "Dapat dibiaskan (Refraksi)",
+        "Dapat diuraikan (Dispersi)",
+        "Merambat lurus"
       ],
-      "correct": 0,
-      "desc": "Bunyi adalah gelombang mekanik yang membutuhkan media (zat padat, cair, atau gas) untuk merambat. Di ruang hampa tidak ada partikel udara, sehingga bunyi tidak dapat merambat."
+      "correct": 1,
+      "desc": "Indikator 3: Pembiasan cahaya menyebabkan benda di air terlihat patah/bengkok."
     },
     {
       "no": 4,
-      "text": "Perhatikan rantai makanan berikut: Padi \\(\\rightarrow\\) Tikus \\(\\rightarrow\\) Ular \\(\\rightarrow\\) Elang. Peran ular dalam rantai makanan tersebut adalah sebagai...",
+      "text": "Bagian mata yang berfungsi mengatur jumlah cahaya yang masuk ke mata (membesar saat gelap dan mengecil saat terang) adalah...",
       "options": [
-        "Produsen",
-        "Konsumen I",
-        "Konsumen II",
-        "Konsumen III"
+        "Kornea",
+        "Pupil",
+        "Lensa Mata",
+        "Retina"
       ],
-      "correct": 2,
-      "desc": "Padi adalah produsen. Tikus (pemakan tumbuhan) adalah Konsumen I. Ular (pemakan tikus) adalah Konsumen II. Elang adalah Konsumen III/Puncak."
+      "correct": 1,
+      "desc": "Indikator 4: Fungsi pupil adalah mengatur intensitas cahaya."
     },
     {
       "no": 5,
-      "text": "Dalam sebuah ekosistem sawah, jika populasi ular diburu secara liar hingga habis, maka dampak yang akan terjadi adalah...",
+      "text": "Bagian mata yang terlihat berwarna (cokelat, hitam, atau biru) dan berfungsi memberi warna pada mata adalah...",
       "options": [
-        "Populasi tikus akan meningkat pesat",
-        "Panen padi akan melimpah",
-        "Populasi elang akan bertambah banyak",
-        "Ekosistem menjadi lebih seimbang"
+        "Sklera",
+        "Iris",
+        "Pupil",
+        "Kornea"
       ],
-      "correct": 0,
-      "desc": "Ular adalah predator tikus. Jika ular habis, tidak ada yang memangsa tikus, sehingga populasi tikus akan meledak dan dapat merusak tanaman padi."
+      "correct": 1,
+      "desc": "Indikator 5: Menentukan bagian mata yang terlihat (Iris)."
     },
     {
       "no": 6,
-      "text": "Secara geografis, wilayah Indonesia terletak di antara dua benua, yaitu...",
+      "text": "Ketika kita berpindah dari tempat yang sangat terang ke tempat yang agak gelap, pupil mata akan...",
       "options": [
-        "Benua Asia dan Benua Afrika",
-        "Benua Asia dan Benua Australia",
-        "Benua Australia dan Benua Amerika",
-        "Benua Eropa dan Benua Australia"
+        "Mengecil untuk mengurangi cahaya",
+        "Melebar untuk menangkap lebih banyak cahaya",
+        "Tetap ukurannya",
+        "Menutup sepenuhnya"
       ],
       "correct": 1,
-      "desc": "Letak geografis Indonesia sangat strategis karena berada di posisi silang antara dua benua (Asia dan Australia) dan dua samudra (Hindia dan Pasifik)."
+      "desc": "Indikator 6: Hubungan kondisi cahaya dengan pupil (Gelap = Pupil melebar)."
     },
     {
       "no": 7,
-      "text": "Batik, Angklung, dan Wayang Kulit merupakan contoh warisan budaya Indonesia yang telah diakui dunia. Jenis warisan budaya tersebut termasuk dalam kategori...",
+      "text": "Gangguan mata yang menyebabkan penderitanya tidak dapat melihat benda yang jaraknya jauh dengan jelas disebut...",
       "options": [
-        "Warisan budaya benda (Tangible)",
-        "Warisan budaya tak benda (Intangible)",
-        "Warisan budaya alam",
-        "Warisan budaya campuran"
+        "Miopi (Rabun Jauh)",
+        "Hipermetropi (Rabun Dekat)",
+        "Presbiopi (Mata Tua)",
+        "Katarak"
       ],
-      "correct": 1,
-      "desc": "Warisan budaya tak benda (Intangible Cultural Heritage) meliputi tradisi, seni pertunjukan, dan keterampilan. Meskipun ada wujud bendanya (kain, alat musik), nilai utamanya ada pada keterampilan dan tradisinya."
+      "correct": 0,
+      "desc": "Indikator 7: Jenis gangguan mata (Miopi)."
     },
     {
       "no": 8,
-      "text": "Manusia melakukan kegiatan ekonomi untuk memenuhi kebutuhan hidupnya. Kegiatan yang bertujuan untuk menghasilkan barang atau jasa disebut...",
+      "text": "Penderita hipermetropi (rabun dekat) dapat dibantu penglihatannya dengan menggunakan kacamata berlensa...",
       "options": [
-        "Konsumsi",
-        "Distribusi",
-        "Produksi",
-        "Retribusi"
+        "Cekung (Minus)",
+        "Cembung (Plus)",
+        "Silindris",
+        "Rangkap"
       ],
-      "correct": 2,
-      "desc": "Produksi adalah kegiatan menciptakan atau menambah nilai guna suatu barang/jasa. Pelakunya disebut produsen."
+      "correct": 1,
+      "desc": "Indikator 8: Lensa untuk rabun dekat adalah lensa cembung (positif)."
     },
     {
       "no": 9,
-      "text": "Sumber daya alam yang jumlahnya terbatas dan tidak dapat diperbarui dalam waktu singkat, seperti minyak bumi dan batu bara, disebut...",
+      "text": "Salah satu cara bersyukur kepada Allah atas karunia indera penglihatan adalah dengan...",
       "options": [
-        "Sumber daya alam hayati",
-        "Sumber daya alam non-hayati",
-        "Sumber daya alam yang dapat diperbarui",
-        "Sumber daya alam yang tidak dapat diperbarui"
+        "Membaca buku di tempat yang redup",
+        "Menatap layar HP terlalu lama",
+        "Menggunakan mata untuk melihat hal-hal yang baik dan bermanfaat",
+        "Mengucek mata saat gatal dengan keras"
       ],
-      "correct": 3,
-      "desc": "SDA yang tidak dapat diperbarui membutuhkan waktu jutaan tahun untuk terbentuk kembali, sehingga jika habis dipakai akan sulit tergantikan dalam waktu singkat."
+      "correct": 2,
+      "desc": "Indikator 9: Sikap bersyukur menjaga kesehatan mata."
     },
     {
       "no": 10,
-      "text": "Pencampuran dua budaya atau lebih yang saling bertemu dan memengaruhi disebut...",
+      "text": "Bunyi dapat terdengar jika ada sumber bunyi, media perambatan, dan pendengar. Bunyi merambat paling cepat melalui media...",
       "options": [
-        "Akulturasi",
-        "Isolasi",
-        "Migrasi",
-        "Konservasi"
+        "Gas (Udara)",
+        "Cair (Air)",
+        "Padat (Besi/Tanah)",
+        "Ruang hampa"
+      ],
+      "correct": 2,
+      "desc": "Indikator 10: Sifat bunyi (Merambat paling cepat di benda padat)."
+    },
+    {
+      "no": 11,
+      "text": "Bagian telinga yang berfungsi menangkap gelombang bunyi dari luar adalah...",
+      "options": [
+        "Daun Telinga",
+        "Gendang Telinga",
+        "Saluran Eustachius",
+        "Rumah Siput (Koklea)"
       ],
       "correct": 0,
-      "desc": "Akulturasi adalah proses sosial yang timbul bila suatu kelompok manusia dengan kebudayaan tertentu dihadapkan dengan unsur dari suatu kebudayaan asing sehingga unsur asing itu lambat laun diterima dan diolah ke dalam kebudayaannya sendiri."
+      "desc": "Indikator 11: Bagian telinga luar (Daun telinga)."
+    },
+    {
+      "no": 12,
+      "text": "Fungsi dari tiga tulang pendengaran (martil, landasan, sanggurdi) adalah...",
+      "options": [
+        "Menangkap suara",
+        "Memperkuat dan meneruskan getaran ke telinga dalam",
+        "Menjaga keseimbangan tubuh",
+        "Menghubungkan telinga dengan rongga mulut"
+      ],
+      "correct": 1,
+      "desc": "Indikator 12: Fungsi tulang pendengaran."
+    },
+    {
+      "no": 13,
+      "text": "Urutan perjalanan bunyi yang benar adalah...",
+      "options": [
+        "Daun telinga -> Gendang telinga -> Tulang pendengaran -> Koklea -> Saraf",
+        "Daun telinga -> Koklea -> Gendang telinga -> Saraf",
+        "Gendang telinga -> Daun telinga -> Saraf -> Otak",
+        "Tulang pendengaran -> Gendang telinga -> Koklea"
+      ],
+      "correct": 0,
+      "desc": "Indikator 13: Proses perjalanan bunyi."
+    },
+    {
+      "no": 14,
+      "text": "Mendengarkan musik menggunakan earphone dengan volume terlalu keras dalam waktu lama dapat menyebabkan...",
+      "options": [
+        "Telinga menjadi lebih bersih",
+        "Gendang telinga menjadi lebih kuat",
+        "Kerusakan pada gendang telinga dan penurunan pendengaran",
+        "Keseimbangan tubuh meningkat"
+      ],
+      "correct": 2,
+      "desc": "Indikator 14: Dampak kebiasaan buruk pada telinga."
+    },
+    {
+      "no": 15,
+      "text": "Sikap yang tepat untuk menjaga kesehatan telinga sebagai wujud syukur adalah...",
+      "options": [
+        "Membersihkan telinga dengan benda tajam",
+        "Mendengarkan suara bising setiap hari",
+        "Membersihkan telinga bagian luar secara teratur dengan kain lembut",
+        "Memasukkan air ke dalam telinga"
+      ],
+      "correct": 2,
+      "desc": "Indikator 15: Cara menjaga kesehatan telinga."
+    },
+    {
+      "no": 16,
+      "text": "Dalam ekosistem sawah, hewan yang berperan sebagai Konsumen Tingkat I (Herbivora) adalah...",
+      "options": [
+        "Ular",
+        "Elang",
+        "Belalang",
+        "Katak"
+      ],
+      "correct": 2,
+      "desc": "Indikator 16: Menentukan peran hewan (Belalang memakan padi)."
+    },
+    {
+      "no": 17,
+      "text": "Perhatikan rantai makanan: Jagung -> Burung -> Ular -> Elang. Pernyataan yang benar adalah...",
+      "options": [
+        "Jagung berperan sebagai konsumen",
+        "Ular mendapatkan energi langsung dari jagung",
+        "Elang adalah konsumen puncak",
+        "Burung adalah hewan karnivora"
+      ],
+      "correct": 2,
+      "desc": "Indikator 17: Menganalisis rantai makanan."
+    },
+    {
+      "no": 18,
+      "text": "Organisme yang bertugas menguraikan sisa-sisa makhluk hidup yang telah mati menjadi zat hara di tanah adalah...",
+      "options": [
+        "Produsen",
+        "Konsumen",
+        "Dekomposer (Pengurai)",
+        "Predator"
+      ],
+      "correct": 2,
+      "desc": "Indikator 18: Komponen pengurai (Jamur/Bakteri)."
+    },
+    {
+      "no": 19,
+      "text": "Jaring-jaring makanan adalah gabungan dari...",
+      "options": [
+        "Beberapa produsen yang sama",
+        "Beberapa rantai makanan yang saling berhubungan",
+        "Satu rantai makanan yang panjang",
+        "Kumpulan hewan karnivora saja"
+      ],
+      "correct": 1,
+      "desc": "Indikator 19: Definisi jaring-jaring makanan."
+    },
+    {
+      "no": 20,
+      "text": "Dalam jaring-jaring makanan, hewan yang memakan tumbuhan dan juga memakan hewan lain (Omnivora) contohnya adalah...",
+      "options": [
+        "Sapi",
+        "Ayam",
+        "Harimau",
+        "Kelinci"
+      ],
+      "correct": 1,
+      "desc": "Indikator 20: Menentukan komponen omnivora."
+    },
+    {
+      "no": 21,
+      "text": "Pada piramida makanan, posisi paling bawah dengan jumlah populasi terbanyak ditempati oleh...",
+      "options": [
+        "Konsumen I",
+        "Konsumen II",
+        "Produsen",
+        "Pengurai"
+      ],
+      "correct": 2,
+      "desc": "Indikator 21: Piramida makanan (Produsen sebagai dasar)."
+    },
+    {
+      "no": 22,
+      "text": "Jika populasi hama tikus di sawah meningkat pesat, dampak langsung yang terjadi adalah...",
+      "options": [
+        "Hasil panen padi meningkat",
+        "Hasil panen padi menurun drastis",
+        "Populasi ular menurun",
+        "Populasi elang punah"
+      ],
+      "correct": 1,
+      "desc": "Indikator 22: Dampak pertumbuhan organisme."
+    },
+    {
+      "no": 23,
+      "text": "Energi yang berpindah dari satu makhluk hidup ke makhluk hidup lain dalam rantai makanan berasal dari sumber utama yaitu...",
+      "options": [
+        "Air",
+        "Tanah",
+        "Matahari",
+        "Angin"
+      ],
+      "correct": 2,
+      "desc": "Indikator 23: Matahari adalah sumber energi utama."
+    },
+    {
+      "no": 24,
+      "text": "Jika populasi katak di sawah punah diburu manusia, maka yang akan terjadi adalah...",
+      "options": [
+        "Populasi belalang meningkat",
+        "Populasi ular meningkat",
+        "Padi tumbuh subur",
+        "Elang akan memangsa padi"
+      ],
+      "correct": 0,
+      "desc": "Indikator 24: Akibat putusnya rantai makanan."
+    },
+    {
+      "no": 25,
+      "text": "Peran manusia dalam menjaga keseimbangan ekosistem adalah...",
+      "options": [
+        "Menebang hutan secara liar",
+        "Menggunakan pestisida berlebihan",
+        "Melakukan reboisasi dan tebang pilih",
+        "Memburu hewan langka"
+      ],
+      "correct": 2,
+      "desc": "Indikator 25: Peran positif manusia."
+    },
+    {
+      "no": 26,
+      "text": "Pada peta, simbol warna hijau biasanya digunakan untuk menggambarkan bentang alam berupa...",
+      "options": [
+        "Pegunungan tinggi",
+        "Dataran rendah",
+        "Perairan dalam",
+        "Perairan dangkal"
+      ],
+      "correct": 1,
+      "desc": "Indikator 26: Makna simbol warna peta (Hijau = Dataran rendah)."
+    },
+    {
+      "no": 27,
+      "text": "Letak suatu wilayah yang dilihat berdasarkan kenyataannya di permukaan bumi dan batas-batas lingkungan sekitarnya disebut...",
+      "options": [
+        "Letak Astronomis",
+        "Letak Geografis",
+        "Letak Geologis",
+        "Letak Maritim"
+      ],
+      "correct": 1,
+      "desc": "Indikator 27: Definisi letak geografis."
+    },
+    {
+      "no": 28,
+      "text": "Indonesia memiliki ribuan pulau dan laut yang luas. Kondisi ini menyebabkan Indonesia memiliki keragaman...",
+      "options": [
+        "Musim (Salju dan Panas)",
+        "Suku, Budaya, dan Hayati",
+        "Mata uang",
+        "Sistem pemerintahan"
+      ],
+      "correct": 1,
+      "desc": "Indikator 28: Keanekaragaman akibat kondisi geografis."
+    },
+    {
+      "no": 29,
+      "text": "Secara geografis, Indonesia diapit oleh dua samudra, yaitu...",
+      "options": [
+        "Hindia dan Atlantik",
+        "Pasifik dan Atlantik",
+        "Hindia dan Pasifik",
+        "Arktik dan Hindia"
+      ],
+      "correct": 2,
+      "desc": "Indikator 29: Letak geografis Indonesia (Samudra)."
+    },
+    {
+      "no": 30,
+      "text": "Masyarakat yang tinggal di daerah pesisir pantai umumnya memiliki budaya dan mata pencaharian sebagai...",
+      "options": [
+        "Petani Padi",
+        "Nelayan",
+        "Pekerja Pabrik",
+        "Peternak Sapi"
+      ],
+      "correct": 1,
+      "desc": "Indikator 30: Budaya masyarakat sesuai lingkungan."
+    },
+    {
+      "no": 31,
+      "text": "Garis khayal yang memisahkan persebaran fauna Indonesia bagian barat (Asiatis) dan bagian tengah (Peralihan) disebut...",
+      "options": [
+        "Garis Wallace",
+        "Garis Weber",
+        "Garis Khatulistiwa",
+        "Garis Lintang"
+      ],
+      "correct": 0,
+      "desc": "Indikator 31: Pembagian wilayah fauna (Wallace)."
+    },
+    {
+      "no": 32,
+      "text": "Sumber daya alam seperti Kelapa Sawit banyak dimanfaatkan untuk bahan baku...",
+      "options": [
+        "Kertas",
+        "Minyak Goreng",
+        "Ban Kendaraan",
+        "Pakaian"
+      ],
+      "correct": 1,
+      "desc": "Indikator 32: Manfaat SDA (Kelapa Sawit)."
+    },
+    {
+      "no": 33,
+      "text": "Fauna tipe Australis yang terdapat di wilayah Papua memiliki karakteristik...",
+      "options": [
+        "Mamalia berukuran besar (Gajah)",
+        "Banyak jenis kera",
+        "Burung dengan bulu warna-warni (Cendrawasih)",
+        "Hewan berkantung sedikit"
+      ],
+      "correct": 2,
+      "desc": "Indikator 33: Karakteristik fauna Australis/Timur."
+    },
+    {
+      "no": 34,
+      "text": "Contoh sumber daya alam yang tidak dapat diperbarui adalah...",
+      "options": [
+        "Sinar Matahari",
+        "Air",
+        "Batu Bara",
+        "Tumbuhan"
+      ],
+      "correct": 2,
+      "desc": "Indikator 34: SDA tidak dapat diperbarui (Tambang)."
+    },
+    {
+      "no": 35,
+      "text": "Perilaku yang bijak dalam memanfaatkan sumber daya air adalah...",
+      "options": [
+        "Membiarkan keran menyala penuh",
+        "Menggunakan air secukupnya dan mematikan keran setelah pakai",
+        "Mencuci kendaraan setiap hari",
+        "Membuang limbah ke sungai"
+      ],
+      "correct": 1,
+      "desc": "Indikator 35: Perilaku hemat SDA."
+    },
+    {
+      "no": 36,
+      "text": "Candi Borobudur dan Candi Prambanan adalah contoh warisan budaya dalam bentuk...",
+      "options": [
+        "Benda (Tangible)",
+        "Tak Benda (Intangible)",
+        "Adat Istiadat",
+        "Seni Pertunjukan"
+      ],
+      "correct": 0,
+      "desc": "Indikator 36: Warisan budaya benda (Bangunan)."
+    },
+    {
+      "no": 37,
+      "text": "Wayang Kulit, Batik, dan Angklung dikelompokkan sebagai warisan budaya...",
+      "options": [
+        "Benda Bergerak",
+        "Tak Benda (Intangible)",
+        "Alam",
+        "Buatan Asing"
+      ],
+      "correct": 1,
+      "desc": "Indikator 37: Warisan budaya tak benda (Nilai seninya)."
+    },
+    {
+      "no": 38,
+      "text": "Upacara adat pembakaran mayat yang terkenal dari daerah Bali disebut...",
+      "options": [
+        "Ngaben",
+        "Kasada",
+        "Sekaten",
+        "Rambu Solo"
+      ],
+      "correct": 0,
+      "desc": "Indikator 38: Nama upacara adat."
+    },
+    {
+      "no": 39,
+      "text": "Rumah adat Gadang dengan atap berbentuk runcing seperti tanduk kerbau berasal dari daerah...",
+      "options": [
+        "Sumatera Utara",
+        "Sumatera Barat",
+        "Sulawesi Selatan",
+        "Kalimantan Timur"
+      ],
+      "correct": 1,
+      "desc": "Indikator 39: Asal daerah warisan budaya."
+    },
+    {
+      "no": 40,
+      "text": "Dampak positif dari percampuran budaya (akulturasi) adalah...",
+      "options": [
+        "Hilangnya budaya asli daerah",
+        "Memperkaya keragaman budaya bangsa",
+        "Menimbulkan perpecahan antar suku",
+        "Budaya asing menguasai budaya lokal"
+      ],
+      "correct": 1,
+      "desc": "Indikator 40: Dampak akulturasi."
+    },
+    {
+      "no": 41,
+      "text": "Masyarakat di daerah dataran tinggi seperti Dieng atau Puncak, sebagian besar melakukan aktivitas ekonomi di bidang...",
+      "options": [
+        "Perikanan laut",
+        "Perkebunan Teh dan Sayuran",
+        "Industri Garam",
+        "Pertambangan Minyak"
+      ],
+      "correct": 1,
+      "desc": "Indikator 41: Aktivitas ekonomi sesuai wilayah."
+    },
+    {
+      "no": 42,
+      "text": "Contoh aktivitas ekonomi di bidang jasa adalah...",
+      "options": [
+        "Petani menanam padi",
+        "Nelayan menangkap ikan",
+        "Dokter mengobati pasien",
+        "Pengrajin membuat kursi"
+      ],
+      "correct": 2,
+      "desc": "Indikator 42: Aktivitas ekonomi bidang jasa."
+    },
+    {
+      "no": 43,
+      "text": "Pembangunan jalan tol dan pelabuhan sangat berpengaruh terhadap aktivitas ekonomi, terutama dalam hal...",
+      "options": [
+        "Memperlambat pengiriman barang",
+        "Mempermudah distribusi barang antar daerah",
+        "Mengurangi jumlah produksi",
+        "Meningkatkan harga barang secara drastis"
+      ],
+      "correct": 1,
+      "desc": "Indikator 43: Pengaruh infrastruktur (Distribusi)."
+    },
+    {
+      "no": 44,
+      "text": "Faktor geografis yang menyebabkan masyarakat di Nusa Tenggara banyak beternak kuda dan sapi adalah...",
+      "options": [
+        "Banyak terdapat hutan hujan tropis",
+        "Memiliki padang rumput (sabana) yang luas",
+        "Dikelilingi lautan yang dalam",
+        "Tanahnya sangat subur untuk padi"
+      ],
+      "correct": 1,
+      "desc": "Indikator 44: Faktor lingkungan terhadap ekonomi."
+    },
+    {
+      "no": 45,
+      "text": "Tanaman yang menjadi komoditas utama aktivitas ekonomi perkebunan di daerah dataran rendah yang panas adalah...",
+      "options": [
+        "Teh dan Kopi",
+        "Wortel dan Kol",
+        "Tebu dan Kelapa",
+        "Apel dan Stroberi"
+      ],
+      "correct": 2,
+      "desc": "Indikator 45: Tumbuhan ekonomi dataran rendah."
+    },
+    {
+      "no": 46,
+      "text": "Urutan proses mendengar yang benar pada manusia adalah...",
+      "options": [
+        "Daun telinga > Gendang telinga > Tulang pendengaran > Koklea > Saraf",
+        "Gendang telinga > Daun telinga > Koklea > Saraf",
+        "Koklea > Tulang pendengaran > Gendang telinga > Saraf",
+        "Saraf > Otak > Daun telinga > Gendang telinga"
+      ],
+      "correct": 0,
+      "desc": "Indikator 46 (Adaptasi Essay): Menjelaskan proses pendengaran."
+    },
+    {
+      "no": 47,
+      "text": "Perhatikan rantai makanan yang belum lengkap ini: Rumput -> ... -> Katak -> Ular. Hewan yang tepat untuk mengisi titik-titik tersebut adalah...",
+      "options": [
+        "Elang",
+        "Belalang",
+        "Ayam",
+        "Kucing"
+      ],
+      "correct": 1,
+      "desc": "Indikator 47 (Adaptasi Essay): Melengkapi rantai makanan."
+    },
+    {
+      "no": 48,
+      "text": "Proses transformasi energi dalam ekosistem dimulai dari...",
+      "options": [
+        "Energi kimia dari konsumen ke produsen",
+        "Energi cahaya matahari diubah menjadi energi kimia oleh produsen",
+        "Energi panas bumi diubah menjadi energi gerak oleh hewan",
+        "Energi dari pengurai kembali ke matahari"
+      ],
+      "correct": 1,
+      "desc": "Indikator 48 (Adaptasi Essay): Menjelaskan transformasi energi (Fotosintesis)."
+    },
+    {
+      "no": 49,
+      "text": "Dampak negatif dari pengambilan ikan menggunakan bahan peledak (bom ikan) adalah...",
+      "options": [
+        "Ikan menjadi lebih banyak",
+        "Terumbu karang rusak dan ikan kecil ikut mati",
+        "Nelayan mendapatkan keuntungan jangka panjang",
+        "Air laut menjadi lebih jernih"
+      ],
+      "correct": 1,
+      "desc": "Indikator 49 (Adaptasi Essay): Dampak pemanfaatan SDA yang salah."
+    },
+    {
+      "no": 50,
+      "text": "Salah satu contoh budaya daerah berupa seni pertunjukan yang ada di lingkungan sekitar (misalnya Jawa/Sunda) adalah...",
+      "options": [
+        "Barongsai",
+        "Wayang Kulit/Golek",
+        "Tari Samba",
+        "Opera"
+      ],
+      "correct": 1,
+      "desc": "Indikator 50 (Adaptasi Essay): Menyebutkan budaya daerah sekitar."
     }
   ]
 }

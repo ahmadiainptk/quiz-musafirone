@@ -1,0 +1,609 @@
+{
+  "subject": "SBK",
+  "grade": "7 SMP",
+  "title": "Latihan Soal SAS Ganjil SBK Kelas 7 (Full Kisi-Kisi)",
+  "subtitle": "Paket 50 soal lengkap mencakup Menggambar Flora, Fauna, Alam Benda, dan Ragam Hias sesuai kisi-kisi.",
+  "questions": [
+    {
+      "no": 1,
+      "text": "Seni rupa sudah dikenal sejak zaman prasejarah, di mana manusia purba menggambar pada dinding-dinding gua. Objek yang sering digambar pada masa itu adalah...",
+      "options": [
+        "Gedung dan kendaraan",
+        "Binatang buruan dan cap tangan",
+        "Pemandangan kota",
+        "Tokoh pahlawan"
+      ],
+      "correct": 1,
+      "desc": "Indikator 1: Memahami unsur rupa dikaitkan dengan sejarah (Seni prasejarah)."
+    },
+    {
+      "no": 2,
+      "text": "Dalam sejarah seni rupa, penggunaan garis dan warna sederhana pada lukisan gua bertujuan untuk...",
+      "options": [
+        "Keindahan semata",
+        "Ritual kepercayaan dan komunikasi",
+        "Dijual kepada suku lain",
+        "Menghias rumah tinggal"
+      ],
+      "correct": 1,
+      "desc": "Indikator 2: Memahami unsur rupa dan sejarah (Fungsi magis/ritual)."
+    },
+    {
+      "no": 3,
+      "text": "Prinsip menggambar yang mengatur tata letak objek agar tampak seimbang, menyatu, dan enak dipandang disebut...",
+      "options": [
+        "Proporsi",
+        "Komposisi",
+        "Perspektif",
+        "Gelap Terang"
+      ],
+      "correct": 1,
+      "desc": "Indikator 3: Menyusun benda dengan prinsip komposisi."
+    },
+    {
+      "no": 4,
+      "text": "Penyusunan benda dalam menggambar yang memperhatikan arah datangnya cahaya sehingga menghasilkan bayangan disebut prinsip...",
+      "options": [
+        "Keselarasan",
+        "Gelap Terang (Pencahayaan)",
+        "Keseimbangan",
+        "Irama"
+      ],
+      "correct": 1,
+      "desc": "Indikator 4: Menyusun benda dengan prinsip Terang Gelap."
+    },
+    {
+      "no": 5,
+      "text": "Makna dari komposisi dalam seni rupa adalah...",
+      "options": [
+        "Cara menyusun dan mengatur objek gambar",
+        "Cara memberi warna pada gambar",
+        "Cara memilih alat gambar",
+        "Cara menentukan ukuran kertas"
+      ],
+      "correct": 0,
+      "desc": "Indikator 5: Memahami makna komposisi."
+    },
+    {
+      "no": 6,
+      "text": "Benda yang memiliki bentuk dasar tabung atau silinder, seperti gelas dan botol, disebut benda bentuk...",
+      "options": [
+        "Kubistis",
+        "Silindris",
+        "Bebas",
+        "Piramida"
+      ],
+      "correct": 1,
+      "desc": "Indikator 6: Menggambar bentuk tiga dimensi (Silindris)."
+    },
+    {
+      "no": 7,
+      "text": "Contoh benda yang memiliki bentuk dasar sisi melengkung (bebas) namun tidak beraturan adalah...",
+      "options": [
+        "Batu kali dan buah-buahan",
+        "Meja dan kursi",
+        "Lemari dan kulkas",
+        "Kotak pensil"
+      ],
+      "correct": 0,
+      "desc": "Indikator 7: Menggambar bentuk tiga dimensi (Sisi melengkung/bebas)."
+    },
+    {
+      "no": 8,
+      "text": "Prinsip 'Kesatuan' (Unity) dalam menggambar bentuk kubistis berarti...",
+      "options": [
+        "Objek gambar saling berjauhan dan terpisah",
+        "Objek gambar saling mendukung dan membentuk satu kesatuan utuh",
+        "Objek gambar memiliki warna yang sama semua",
+        "Objek gambar berukuran sama besar"
+      ],
+      "correct": 1,
+      "desc": "Indikator 8: Menyusun benda dengan prinsip Kesatuan."
+    },
+    {
+      "no": 9,
+      "text": "Benda bentuk sisi datar (kubistis) yang disusun dengan prinsip keselarasan akan terlihat...",
+      "options": [
+        "Berantakan dan tidak rapi",
+        "Harmonis dan serasi antar bagiannya",
+        "Membosankan dan monoton",
+        "Sangat kontras dan bertabrakan"
+      ],
+      "correct": 1,
+      "desc": "Indikator 9: Menyusun benda dengan prinsip Keselarasan."
+    },
+    {
+      "no": 10,
+      "text": "Teknik menggambar dengan menggunakan garis-garis menyilang atau sejajar untuk menentukan gelap terang disebut teknik...",
+      "options": [
+        "Dusel",
+        "Pointilis",
+        "Arsir",
+        "Blok"
+      ],
+      "correct": 2,
+      "desc": "Indikator 10: Menggambar alam benda dengan teknik arsir."
+    },
+    {
+      "no": 11,
+      "text": "Saat menggambar alam benda dengan teknik arsir, bagian benda yang terkena cahaya harus diarsir...",
+      "options": [
+        "Sangat tebal dan hitam",
+        "Lebih tipis atau dibiarkan putih",
+        "Dengan garis yang tebal",
+        "Menggunakan spidol hitam"
+      ],
+      "correct": 1,
+      "desc": "Indikator 11: Penerapan teknik arsir (Cahaya)."
+    },
+    {
+      "no": 12,
+      "text": "Alat yang paling utama digunakan untuk teknik arsir adalah...",
+      "options": [
+        "Kuas dan cat air",
+        "Pensil (HB, 2B, dst)",
+        "Krayon",
+        "Spidol warna"
+      ],
+      "correct": 1,
+      "desc": "Indikator 12: Alat teknik arsir."
+    },
+    {
+      "no": 13,
+      "text": "Dalam menggambar komposisi alam benda, fungsi teknik arsir selain memberi kesan gelap terang adalah...",
+      "options": [
+        "Memberi kesan volume (tiga dimensi)",
+        "Membuat gambar menjadi gepeng",
+        "Menghilangkan garis tepi",
+        "Membuat gambar terlihat abstrak"
+      ],
+      "correct": 0,
+      "desc": "Indikator 13: Fungsi teknik arsir."
+    },
+    {
+      "no": 14,
+      "text": "Karakteristik arsir silang (cross-hatching) adalah...",
+      "options": [
+        "Garis-garis searah",
+        "Garis-garis yang saling memotong/menyilang",
+        "Titik-titik kecil",
+        "Gosokan halus"
+      ],
+      "correct": 1,
+      "desc": "Indikator 14: Teknik arsir silang (Variasi indikator 13-15)."
+    },
+    {
+      "no": 15,
+      "text": "Langkah awal sebelum mengarsir alam benda adalah...",
+      "options": [
+        "Menebalkan garis tepi",
+        "Membuat sketsa bentuk global",
+        "Mewarnai background",
+        "Menandatangani gambar"
+      ],
+      "correct": 1,
+      "desc": "Indikator 15: Proses menggambar (Sketsa)."
+    },
+    {
+      "no": 16,
+      "text": "Benda tiga dimensi memiliki ukuran...",
+      "options": [
+        "Panjang dan Lebar saja",
+        "Panjang, Lebar, dan Tinggi (Volume)",
+        "Tinggi dan Berat",
+        "Luas dan Keliling"
+      ],
+      "correct": 1,
+      "desc": "Indikator 16: Membedakan gambar bentuk tiga dimensi."
+    },
+    {
+      "no": 17,
+      "text": "Penyusunan benda yang dilakukan dengan pengulangan bentuk secara teratur disebut komposisi...",
+      "options": [
+        "Simetris",
+        "Asimetris",
+        "Irama (Rhythm)",
+        "Sentral"
+      ],
+      "correct": 2,
+      "desc": "Indikator 17: Menyusun benda dengan prinsip Irama."
+    },
+    {
+      "no": 18,
+      "text": "Komposisi keseimbangan simetris adalah...",
+      "options": [
+        "Objek di kanan dan kiri tidak sama tapi seimbang",
+        "Objek di kanan dan kiri sama persis bentuk dan ukurannya",
+        "Objek terpusat di tengah",
+        "Objek disusun secara acak"
+      ],
+      "correct": 1,
+      "desc": "Indikator 18: Prinsip Keseimbangan (Simetris)."
+    },
+    {
+      "no": 19,
+      "text": "Motif hias yang bentuk dasarnya diambil dari alam seperti tumbuhan (daun, bunga, akar) disebut motif...",
+      "options": [
+        "Geometris",
+        "Organis (Flora)",
+        "Figuratif",
+        "Abstrak"
+      ],
+      "correct": 1,
+      "desc": "Indikator 19: Menceritakan bentuk organis dalam kehidupan (Motif Tumbuhan)."
+    },
+    {
+      "no": 20,
+      "text": "Motif hias yang menggunakan unsur-unsur garis lurus, lengkung, lingkaran, segitiga, dan segiempat disebut motif...",
+      "options": [
+        "Naturalis",
+        "Geometris",
+        "Realistis",
+        "Dekoratif"
+      ],
+      "correct": 1,
+      "desc": "Indikator 20: Menceritakan bentuk geometris."
+    },
+    {
+      "no": 21,
+      "text": "Pengembangan motif organis (tumbuhan/hewan) dalam kehidupan sehari-hari sering kita jumpai pada...",
+      "options": [
+        "Mesin pabrik",
+        "Kain Batik dan Ukiran",
+        "Rangka bangunan",
+        "Jalan raya"
+      ],
+      "correct": 1,
+      "desc": "Indikator 21: Mengembangkan motif organis sehari-hari."
+    },
+    {
+      "no": 22,
+      "text": "Mendesain benda dengan motif organis berarti...",
+      "options": [
+        "Meniru bentuk bangunan",
+        "Menggayakan bentuk makhluk hidup (stilasi) menjadi hiasan",
+        "Mengukur benda dengan penggaris",
+        "Membuat gambar teknik"
+      ],
+      "correct": 1,
+      "desc": "Indikator 22: Mendesain benda motif organis."
+    },
+    {
+      "no": 23,
+      "text": "Pola suatu benda yang dibuat sebagai rancangan sebelum benda itu dibuat disebut...",
+      "options": [
+        "Desain / Pola",
+        "Finishing",
+        "Pewarnaan",
+        "Pengemasan"
+      ],
+      "correct": 0,
+      "desc": "Indikator 23: Membuat pola suatu benda."
+    },
+    {
+      "no": 24,
+      "text": "Motif Batik 'Ceplok' atau 'Kawung' dari Yogyakarta merupakan contoh motif yang memiliki ciri khas...",
+      "options": [
+        "Bebas tidak beraturan",
+        "Geometris yang berulang teratur",
+        "Menggambarkan manusia secara nyata",
+        "Hanya berupa garis lurus"
+      ],
+      "correct": 1,
+      "desc": "Indikator 24: Desain pola khas daerah Yogyakarta."
+    },
+    {
+      "no": 25,
+      "text": "Dalam kehidupan sehari-hari, motif organis sering diterapkan pada benda kerajinan seperti...",
+      "options": [
+        "Vas bunga dan Taplak meja",
+        "Batu bata",
+        "Kabel listrik",
+        "Ban mobil"
+      ],
+      "correct": 0,
+      "desc": "Indikator 25: Menceritakan bentuk organis sehari-hari."
+    },
+    {
+      "no": 26,
+      "text": "Penerapan motif geometris dalam kehidupan sehari-hari dapat ditemukan pada...",
+      "options": [
+        "Lukisan pemandangan",
+        "Lantai keramik atau Tegel",
+        "Bentuk awan",
+        "Aliran sungai"
+      ],
+      "correct": 1,
+      "desc": "Indikator 26: Menerapkan motif geometris sehari-hari."
+    },
+    {
+      "no": 27,
+      "text": "Menentukan pola pada motif geometris biasanya menggunakan grid atau...",
+      "options": [
+        "Garis bantu kotak-kotak",
+        "Garis lengkung bebas",
+        "Titik-titik acak",
+        "Warna-warni"
+      ],
+      "correct": 0,
+      "desc": "Indikator 27: Menentukan pola motif geometris."
+    },
+    {
+      "no": 28,
+      "text": "Ciri-ciri utama motif geometris adalah...",
+      "options": [
+        "Bentuknya selalu meniru hewan",
+        "Terikat pada pola, ukuran, dan keteraturan",
+        "Bebas tanpa aturan",
+        "Selalu berwarna hitam putih"
+      ],
+      "correct": 1,
+      "desc": "Indikator 28: Menentukan ciri-ciri motif geometris."
+    },
+    {
+      "no": 29,
+      "text": "Teknik menggambar dengan cara mengubah bentuk asli objek menjadi bentuk dekoratif tanpa meninggalkan karakter aslinya disebut...",
+      "options": [
+        "Stilasi",
+        "Realis",
+        "Naturalis",
+        "Abstrak"
+      ],
+      "correct": 0,
+      "desc": "Indikator 29: Menceritakan teknik menggambar motif geometris (Stilasi)."
+    },
+    {
+      "no": 30,
+      "text": "Bentuk organis yang diterapkan dalam kehidupan sehari-hari biasanya mengambil inspirasi dari...",
+      "options": [
+        "Gedung bertingkat",
+        "Flora, Fauna, dan Manusia",
+        "Kendaraan bermotor",
+        "Alat elektronik"
+      ],
+      "correct": 1,
+      "desc": "Indikator 30: Menentukan bentuk organis sehari-hari."
+    },
+    {
+      "no": 31,
+      "text": "Langkah pertama dalam menyusun motif organis adalah...",
+      "options": [
+        "Langsung mewarnai",
+        "Menentukan ide atau objek alam yang akan digambar",
+        "Membeli bingkai",
+        "Memotong kertas"
+      ],
+      "correct": 1,
+      "desc": "Indikator 31: Langkah-langkah menyusun motif."
+    },
+    {
+      "no": 32,
+      "text": "Tujuan utama pengembangan motif geometris pada kain batik adalah untuk...",
+      "options": [
+        "Menambah nilai keindahan (estetika) dan makna simbolis",
+        "Membuat kain menjadi berat",
+        "Menutupi cacat pada kain",
+        "Agar kain sulit dijahit"
+      ],
+      "correct": 0,
+      "desc": "Indikator 32: Tujuan pengembangan motif geometris."
+    },
+    {
+      "no": 33,
+      "text": "Pola benda pada motif geometris yang disusun berulang-ulang disebut pola...",
+      "options": [
+        "Repetisi (Pengulangan)",
+        "Acak",
+        "Tunggal",
+        "Gradasi"
+      ],
+      "correct": 0,
+      "desc": "Indikator 33: Menganalisis pola benda motif geometris."
+    },
+    {
+      "no": 34,
+      "text": "Pola benda sehari-hari pada motif organis seringkali bersifat...",
+      "options": [
+        "Kaku dan keras",
+        "Luwes, dinamis, dan mengalir",
+        "Tajam dan menyudut",
+        "Kotak-kotak"
+      ],
+      "correct": 1,
+      "desc": "Indikator 34: Mengetahui pola benda motif organis."
+    },
+    {
+      "no": 35,
+      "text": "Perbedaan pola motif organis dan geometris adalah...",
+      "options": [
+        "Organis bersumber dari alam, Geometris bersumber dari bentuk ilmu ukur",
+        "Organis menggunakan penggaris, Geometris bebas",
+        "Organis tidak berwarna, Geometris berwarna",
+        "Organis kotak-kotak, Geometris bunga-bunga"
+      ],
+      "correct": 0,
+      "desc": "Indikator 35: Membedakan pola motif organis."
+    },
+    {
+      "no": 36,
+      "text": "Perhatikan gambar ornamen berbentuk segitiga tumpal pada kain sarung. Motif tersebut termasuk jenis motif...",
+      "options": [
+        "Organis",
+        "Geometris",
+        "Figuratif",
+        "Benda Alam"
+      ],
+      "correct": 1,
+      "desc": "Indikator 36: Menentukan motif geometris pada gambar."
+    },
+    {
+      "no": 37,
+      "text": "Teknik deformasi dalam pengembangan motif pada suatu benda artinya...",
+      "options": [
+        "Menjiplak sama persis",
+        "Mengubah bentuk asli dengan menyederhanakan atau melebihkan tanpa menghilangkan ciri aslinya",
+        "Menghapus gambar",
+        "Mewarnai dengan satu warna"
+      ],
+      "correct": 1,
+      "desc": "Indikator 37: Teknik pengembangan motif (Deformasi)."
+    },
+    {
+      "no": 38,
+      "text": "Urutan teknik pengembangan motif yang benar adalah...",
+      "options": [
+        "Pewarnaan - Sketsa - Detail",
+        "Pengamatan Objek - Sketsa/Stilasi - Detail & Pewarnaan",
+        "Detail - Sketsa - Pengamatan",
+        "Langsung menggambar tanpa melihat objek"
+      ],
+      "correct": 1,
+      "desc": "Indikator 38: Urutan teknik pengembangan motif."
+    },
+    {
+      "no": 39,
+      "text": "Analisis yang tepat mengenai perpaduan bentuk organis dan geometris adalah...",
+      "options": [
+        "Keduanya tidak bisa digabungkan",
+        "Dapat digabungkan untuk menciptakan variasi keindahan yang unik",
+        "Geometris akan merusak bentuk organis",
+        "Organis akan menutupi geometris"
+      ],
+      "correct": 1,
+      "desc": "Indikator 39: Menganalisis bentuk organis dan geometris."
+    },
+    {
+      "no": 40,
+      "text": "Penerapan pola dalam motif geometris kehidupan sehari-hari terlihat pada susunan...",
+      "options": [
+        "Tumpukan sampah",
+        "Paving block di jalanan",
+        "Ranting pohon",
+        "Awan di langit"
+      ],
+      "correct": 1,
+      "desc": "Indikator 40: Menerapkan pola motif geometris sehari-hari."
+    },
+    {
+      "no": 41,
+      "text": "Tiga jenis bentuk dasar benda tiga dimensi adalah...",
+      "options": [
+        "Merah, Kuning, Biru",
+        "Kubistis, Silindris, dan Bebas",
+        "Titik, Garis, Bidang",
+        "Arsir, Dusel, Blok"
+      ],
+      "correct": 1,
+      "desc": "Indikator 41: Menganalisis macam bentuk tiga dimensi."
+    },
+    {
+      "no": 42,
+      "text": "Menyusun benda dengan menerapkan prinsip komposisi bertujuan agar...",
+      "options": [
+        "Gambar terlihat penuh",
+        "Gambar memiliki susunan yang indah dan enak dipandang",
+        "Gambar cepat selesai",
+        "Gambar menjadi sangat besar"
+      ],
+      "correct": 1,
+      "desc": "Indikator 42: Menyusun benda dengan prinsip komposisi."
+    },
+    {
+      "no": 43,
+      "text": "Pasangan benda dan jenis bentuknya yang benar di bawah ini adalah...",
+      "options": [
+        "Bola - Kubistis",
+        "Kulkas - Silindris",
+        "Kaleng Susu - Silindris",
+        "Batu - Kubistis"
+      ],
+      "correct": 2,
+      "desc": "Indikator 43 (Menjodohkan): Memahami macam bentuk tiga dimensi (Kaleng = Tabung/Silindris)."
+    },
+    {
+      "no": 44,
+      "text": "Motif 'Kawung' (bentuk buah aren) dan 'Parang' (bentuk huruf S) adalah contoh dari motif...",
+      "options": [
+        "Geometris yang distilasi dari alam",
+        "Organis murni",
+        "Figuratif manusia",
+        "Kaligrafi"
+      ],
+      "correct": 0,
+      "desc": "Indikator 44 (Menjodohkan): Memahami motif organis yang ada (Batik)."
+    },
+    {
+      "no": 45,
+      "text": "Ciri khas motif geometris pada suatu benda adalah...",
+      "options": [
+        "Bentuknya selalu berubah-ubah",
+        "Memiliki keteraturan dan bentuk yang terukur (segitiga, kotak, dll)",
+        "Selalu berbentuk manusia",
+        "Hanya menggunakan garis lengkung"
+      ],
+      "correct": 1,
+      "desc": "Indikator 45 (Menjodohkan): Memahami motif geometris."
+    },
+    {
+      "no": 46,
+      "text": "Dalam komposisi keseimbangan 'Asimetris', penyusunan benda dilakukan dengan cara...",
+      "options": [
+        "Meletakkan benda yang sama persis di kiri dan kanan",
+        "Mengatur benda dengan ukuran/bentuk beda tapi bobot visualnya terasa seimbang",
+        "Menumpuk semua benda di tengah",
+        "Menyebar benda tanpa aturan"
+      ],
+      "correct": 1,
+      "desc": "Indikator 46 (Essay): Memahami penyusunan benda komposisi keseimbangan."
+    },
+    {
+      "no": 47,
+      "text": "Prinsip 'Kesatuan' (Unity) dalam menggambar alam benda berarti...",
+      "options": [
+        "Objek-objek gambar saling menyatu dan tidak terkesan terpisah-pisah",
+        "Semua objek digambar menjadi satu garis",
+        "Hanya menggambar satu benda saja",
+        "Menggunakan satu warna saja"
+      ],
+      "correct": 0,
+      "desc": "Indikator 47 (Essay): Menjelaskan benda dengan komposisi kesatuan."
+    },
+    {
+      "no": 48,
+      "text": "Contoh benda tiga dimensi yang memiliki bentuk 'Bebas' (tidak beraturan) adalah...",
+      "options": [
+        "Lemari dan Meja",
+        "Bola dan Pipa",
+        "Batu-batuan, Buah-buahan, dan Sayuran",
+        "Televisi dan Kulkas"
+      ],
+      "correct": 2,
+      "desc": "Indikator 48 (Essay): Menjelaskan macam bentuk benda tiga dimensi."
+    },
+    {
+      "no": 49,
+      "text": "Karya seni rupa tiga dimensi yang ada di lingkungan sekitar sekolah contohnya adalah...",
+      "options": [
+        "Lukisan dinding",
+        "Patung halaman sekolah atau Vas bunga",
+        "Poster di mading",
+        "Foto presiden"
+      ],
+      "correct": 1,
+      "desc": "Indikator 49 (Essay): Memberikan contoh karya seni rupa tiga dimensi."
+    },
+    {
+      "no": 50,
+      "text": "Analisis yang benar tentang perbandingan motif organis dan geometris adalah...",
+      "options": [
+        "Motif organis lebih kaku, motif geometris lebih luwes",
+        "Motif organis terinspirasi makhluk hidup, motif geometris terinspirasi bentuk ilmu ukur",
+        "Motif organis tidak boleh berwarna, motif geometris harus berwarna",
+        "Keduanya tidak memiliki perbedaan"
+      ],
+      "correct": 1,
+      "desc": "Indikator 50 (Essay): Menganalisis motif organis dan geometris."
+    }
+  ]
+}
+

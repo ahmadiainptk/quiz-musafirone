@@ -1,0 +1,608 @@
+{
+  "subject": "Bahasa Arab",
+  "grade": "5 SD",
+  "title": "Latihan Soal SAS Ganjil Bahasa Arab Kelas 5 (Full Arab)",
+  "subtitle": "Paket 50 soal lengkap mencakup Isim Tafdhil, Topik Manusia, Bentuk, Warna, dan Kalender Hijriyah menggunakan aksara Arab.",
+  "questions": [
+    {
+      "no": 1,
+      "text": "Isim Tafdhil adalah kata yang digunakan untuk menyatakan 'Lebih' atau 'Paling'. Pola (Wazan) dari Isim Tafdhil adalah...",
+      "options": [
+        "فَاعِلٌ",
+        "أَفْعَلُ",
+        "مَفْعُولٌ",
+        "فِعْلٌ"
+      ],
+      "correct": 1,
+      "desc": "Indikator 1: Mengetahui tentang isim tafdhil (Pola Af'alu/أَفْعَلُ)."
+    },
+    {
+      "no": 2,
+      "text": "Perhatikan kalimat: 'أَحْمَدُ ... مِنْ زَيْدٍ' (Ahmad lebih besar dari Zaid). Kata yang tepat untuk melengkapi adalah...",
+      "options": [
+        "كَبِيْرٌ",
+        "أَكْبَرُ",
+        "صَغِيْرٌ",
+        "أَصْغَرُ"
+      ],
+      "correct": 1,
+      "desc": "Indikator 2: Menentukan isim tafdhil yang benar (Kabir/كَبِيْرٌ -> Akbar/أَكْبَرُ)."
+    },
+    {
+      "no": 3,
+      "text": "Isim Tafdhil dari kata 'جَمِيْلٌ' (Indah/Ganteng) adalah...",
+      "options": [
+        "أَجْمَلُ",
+        "جَمَالٌ",
+        "جَمِيْلَةٌ",
+        "أَجْمِلُ"
+      ],
+      "correct": 0,
+      "desc": "Indikator 3: Menentukan pasangan isim tafdhil (Jamilun/جَمِيْلٌ -> Ajmalu/أَجْمَلُ)."
+    },
+    {
+      "no": 4,
+      "text": "Terjemahan bahasa Arab yang benar untuk kalimat 'Rambut itu pendek' adalah...",
+      "options": [
+        "الشَّعْرُ طَوِيْلٌ",
+        "الشَّعْرُ قَصِيْرٌ",
+        "الأَنْفُ كَبِيْرٌ",
+        "العَيْنُ جَمِيْلَةٌ"
+      ],
+      "correct": 1,
+      "desc": "Indikator 4: Menerjemahkan kalimat Indonesia ke Arab (Rambut = الشَّعْرُ, Pendek = قَصِيْرٌ)."
+    },
+    {
+      "no": 5,
+      "text": "Lengkapi kalimat berikut: 'حَسَنٌ نَشِيْطٌ، وَ عَلِيٌّ ...' (Hasan rajin, dan Ali ...).",
+      "options": [
+        "مَاهِرٌ",
+        "نَشِيْطٌ",
+        "كَسْلَانُ",
+        "جَمِيْلٌ"
+      ],
+      "correct": 2,
+      "desc": "Indikator 5: Melengkapi kalimat rumpang tentang sifat manusia (Lawan rajin = Malas/Kuslanu)."
+    },
+    {
+      "no": 6,
+      "text": "Arti dari kata 'جِسْمٌ' adalah...",
+      "options": [
+        "Kepala",
+        "Wajah",
+        "Tubuh/Badan",
+        "Tangan"
+      ],
+      "correct": 2,
+      "desc": "Indikator 6: Menentukan arti kosakata (Jismun/جِسْمٌ = Tubuh)."
+    },
+    {
+      "no": 7,
+      "text": "Perhatikan gambar (Gambar Pisang). Kalimat yang tepat sesuai gambar adalah...",
+      "options": [
+        "هَذَا مَوْزٌ",
+        "هَذَا تُفَّاحٌ",
+        "هَذَا عِنَبٌ",
+        "هَذَا بُرْتُقَالٌ"
+      ],
+      "correct": 0,
+      "desc": "Indikator 7: Menentukan kalimat sesuai gambar buah (Pisang = Mauzun/مَوْزٌ)."
+    },
+    {
+      "no": 8,
+      "text": "Lengkapi kalimat: 'ذَلِكَ ... ، هُوَ يُبْطِئُ المَرِيْضَ' (Itu dokter, dia mengobati orang sakit).",
+      "options": [
+        "مُدَرِّسٌ",
+        "طَبِيْبٌ",
+        "فَلَّاحٌ",
+        "شُرْطِيٌّ"
+      ],
+      "correct": 1,
+      "desc": "Indikator 8: Melengkapi kalimat rumpang (Dokter = Tabibun/طَبِيْبٌ)."
+    },
+    {
+      "no": 9,
+      "text": "Susunlah kata-kata berikut menjadi kalimat sempurna: \n ( جَمِيْلَةٌ - فَاطِمَةُ - تِلْمِيْذَةٌ - نَشِيْطَةٌ )",
+      "options": [
+        "فَاطِمَةُ جَمِيْلَةٌ تِلْمِيْذَةٌ نَشِيْطَةٌ",
+        "فَاطِمَةُ تِلْمِيْذَةٌ نَشِيْطَةٌ جَمِيْلَةٌ",
+        "تِلْمِيْذَةٌ فَاطِمَةُ نَشِيْطَةٌ جَمِيْلَةٌ",
+        "جَمِيْلَةٌ فَاطِمَةُ نَشِيْطَةٌ تِلْمِيْذَةٌ"
+      ],
+      "correct": 1,
+      "desc": "Indikator 9: Menyusun kalimat acak (Fatimah murid yang rajin dan cantik/indah)."
+    },
+    {
+      "no": 10,
+      "text": "Bahasa Arab dari kata 'Wajah' adalah...",
+      "options": [
+        "رَأْسٌ",
+        "وَجْهٌ",
+        "يَدٌ",
+        "رِجْلٌ"
+      ],
+      "correct": 1,
+      "desc": "Indikator 10: Bahasa Arab dari kosakata Indonesia (Wajah = Wajhun/وَجْهٌ)."
+    },
+    {
+      "no": 11,
+      "text": "Bahasa Arab dari benda 'Buku Tulis' adalah...",
+      "options": [
+        "كِتَابٌ",
+        "قَلَمٌ",
+        "كُرَّاسَةٌ",
+        "مَكْتَبٌ"
+      ],
+      "correct": 2,
+      "desc": "Indikator 11: Menentukan bahasa Arab benda (Buku tulis = Kurrasatun/كُرَّاسَةٌ)."
+    },
+    {
+      "no": 12,
+      "text": "Arti dari kata 'مُسْتَطِيْلٌ' adalah...",
+      "options": [
+        "Persegi",
+        "Persegi Panjang",
+        "Segitiga",
+        "Lingkaran"
+      ],
+      "correct": 1,
+      "desc": "Indikator 12: Arti kosakata bentuk (Mustathilun/مُسْتَطِيْلٌ = Persegi Panjang)."
+    },
+    {
+      "no": 13,
+      "text": "Lengkapi kalimat: 'السَّبُّوْرَةُ شَكْلُهَا ...' (Papan tulis itu bentuknya ...)",
+      "options": [
+        "مُسْتَدِيْرٌ",
+        "مُثَلَّثٌ",
+        "مُسْتَطِيْلٌ",
+        "مَخْرُوْطٌ"
+      ],
+      "correct": 2,
+      "desc": "Indikator 13: Melengkapi kalimat bentuk (Papan tulis biasanya Persegi Panjang)."
+    },
+    {
+      "no": 14,
+      "text": "Perhatikan gambar bola. 'مَا شَكْلُهُ؟' (Apa bentuknya?)",
+      "options": [
+        "شَكْلُهُ مُرَبَّعٌ",
+        "شَكْلُهُ كُرَوِيٌّ",
+        "شَكْلُهُ مُثَلَّثٌ",
+        "شَكْلُهُ أُسْطُوَانِيٌّ"
+      ],
+      "correct": 1,
+      "desc": "Indikator 14: Menentukan jawaban tanya jawab gambar (Bola = Kurawiyyun/كُرَوِيٌّ)."
+    },
+    {
+      "no": 15,
+      "text": "Benda yang memiliki bentuk 'مُثَلَّثٌ' (Segitiga) adalah...",
+      "options": [
+        "Roda",
+        "Potongan Pizza / Penggaris Segitiga",
+        "Buku",
+        "Lemari"
+      ],
+      "correct": 1,
+      "desc": "Indikator 15: Benda berbentuk segitiga."
+    },
+    {
+      "no": 16,
+      "text": "Bahasa Arab dari kalimat 'Ini Kubus' adalah...",
+      "options": [
+        "هَذَا مُكَعَّبٌ",
+        "هَذَا مَخْرُوْطٌ",
+        "هَذَا أُسْطُوَانِيٌّ",
+        "هَذَا هَرَمِي"
+      ],
+      "correct": 0,
+      "desc": "Indikator 16: Menerjemahkan kalimat bentuk (Kubus = Muka'abun/مُكَعَّبٌ)."
+    },
+    {
+      "no": 17,
+      "text": "Arti dari 'أُسْطُوَانِيٌّ' adalah...",
+      "options": [
+        "Tabung / Silinder",
+        "Kerucut",
+        "Limas",
+        "Bola"
+      ],
+      "correct": 0,
+      "desc": "Indikator 17: Arti kosakata (Ustuwaniyyun/أُسْطُوَانِيٌّ = Tabung)."
+    },
+    {
+      "no": 18,
+      "text": "Perhatikan gambar Topi Ulang Tahun (Kerucut). 'هَلْ شَكْلُهُ مَخْرُوْطٌ؟' (Apakah bentuknya kerucut?)",
+      "options": [
+        "نَعَمْ، شَكْلُهُ مَخْرُوْطٌ",
+        "لَا، شَكْلُهُ كُرَوِيٌّ",
+        "نَعَمْ، شَكْلُهُ مُكَعَّبٌ",
+        "لَا، شَكْلُهُ مُسْتَطِيْلٌ"
+      ],
+      "correct": 0,
+      "desc": "Indikator 18: Tanya jawab gambar (Kerucut = Makhrutun/مَخْرُوْطٌ)."
+    },
+    {
+      "no": 19,
+      "text": "Terjemahkan ke Indonesia: 'البَيْضَةُ شَكْلُهَا بَيْضَاوِيٌّ'.",
+      "options": [
+        "Bola itu bentuknya bulat",
+        "Telur itu bentuknya oval/lonjong",
+        "Buku itu bentuknya persegi",
+        "Gelas itu bentuknya tabung"
+      ],
+      "correct": 1,
+      "desc": "Indikator 19: Menerjemahkan kalimat Arab ke Indonesia."
+    },
+    {
+      "no": 20,
+      "text": "Perhatikan gambar 'Roda Ban'. Kalimat yang tepat adalah...",
+      "options": [
+        "العَجَلَةُ شَكْلُهَا مُسْتَدِيْرٌ",
+        "العَجَلَةُ شَكْلُهَا مُرَبَّعٌ",
+        "العَجَلَةُ شَكْلُهَا مُثَلَّثٌ",
+        "العَجَلَةُ شَكْلُهَا مَخْرُوْطٌ"
+      ],
+      "correct": 0,
+      "desc": "Indikator 20: Kalimat sesuai gambar benda (Roda = Lingkaran)."
+    },
+    {
+      "no": 21,
+      "text": "Arti dari kata 'لَوْنٌ' jamaknya 'أَلْوَانٌ' adalah...",
+      "options": [
+        "Bentuk",
+        "Warna",
+        "Rasa",
+        "Ukuran"
+      ],
+      "correct": 1,
+      "desc": "Indikator 21: Arti kosakata (Warna)."
+    },
+    {
+      "no": 22,
+      "text": "Warna dari 'لَبَنٌ' (Susu) adalah...",
+      "options": [
+        "أَسْوَدُ",
+        "أَبْيَضُ",
+        "أَحْمَرُ",
+        "أَزْرَقُ"
+      ],
+      "correct": 1,
+      "desc": "Indikator 22: Mengelompokkan warna makanan/minuman (Susu = Putih)."
+    },
+    {
+      "no": 23,
+      "text": "Lanjutan lirik lagu tentang warna: 'أَحْمَرُ merah, ... putih'. Bahasa Arab putih adalah...",
+      "options": [
+        "أَسْوَدُ",
+        "أَخْضَرُ",
+        "أَبْيَضُ",
+        "أَصْفَرُ"
+      ],
+      "correct": 2,
+      "desc": "Indikator 23: Lirik lagu warna (Putih = Abyadhu/أَبْيَضُ)."
+    },
+    {
+      "no": 24,
+      "text": "Dalam hadist disebutkan 'البَيْضُ وَالنِّسَاءُ'. Warna putih (الأَبْيَضُ) sering melambangkan...",
+      "options": [
+        "Kesucian / Kebersihan",
+        "Keberanian",
+        "Kesedihan",
+        "Kekayaan"
+      ],
+      "correct": 0,
+      "desc": "Indikator 24: Arti/makna warna dalam konteks hadist/budaya (Putih = Suci)."
+    },
+    {
+      "no": 25,
+      "text": "Lengkapi kalimat: 'لَوْنُ السَّمَاءِ ...' (Warna langit itu ...)",
+      "options": [
+        "أَحْمَرُ",
+        "أَزْرَقُ",
+        "أَخْضَرُ",
+        "بُرْتُقَالِيٌّ"
+      ],
+      "correct": 1,
+      "desc": "Indikator 25: Kalimat rumpang warna (Langit = Biru/Azraqu)."
+    },
+    {
+      "no": 26,
+      "text": "Warna seragam sekolah tingkat SD (Merah Putih) dalam bahasa Arab adalah...",
+      "options": [
+        "أَحْمَرُ وَ أَبْيَضُ",
+        "أَزْرَقُ وَ أَبْيَضُ",
+        "رَمَادِيٌّ وَ أَبْيَضُ",
+        "أَسْوَدُ وَ أَبْيَضُ"
+      ],
+      "correct": 0,
+      "desc": "Indikator 26: Warna seragam (Merah Putih)."
+    },
+    {
+      "no": 27,
+      "text": "Susun kata: ( المَوْزِ - لَوْنُ - أَصْفَرُ ).",
+      "options": [
+        "لَوْنُ المَوْزِ أَصْفَرُ",
+        "المَوْزِ لَوْنُ أَصْفَرُ",
+        "أَصْفَرُ لَوْنُ المَوْزِ",
+        "لَوْنُ أَصْفَرُ المَوْزِ"
+      ],
+      "correct": 0,
+      "desc": "Indikator 27: Menyusun kalimat (Warna Pisang itu Kuning)."
+    },
+    {
+      "no": 28,
+      "text": "'لَوْنُ الدَّمِ ...' (Warna darah itu ...)",
+      "options": [
+        "أَحْمَرُ",
+        "أَبْيَضُ",
+        "أَزْرَقُ",
+        "أَسْوَدُ"
+      ],
+      "correct": 0,
+      "desc": "Indikator 28: Melengkapi kalimat rumpang (Darah = Merah)."
+    },
+    {
+      "no": 29,
+      "text": "Perhatikan gambar Daun. Kalimat yang sesuai adalah...",
+      "options": [
+        "لَوْنُ الوَرَقِ أَخْضَرُ",
+        "لَوْنُ الوَرَقِ أَحْمَرُ",
+        "لَوْنُ الوَرَقِ أَسْوَدُ",
+        "لَوْنُ الوَرَقِ أَزْرَقُ"
+      ],
+      "correct": 0,
+      "desc": "Indikator 29: Kalimat sesuai gambar (Daun = Hijau/Akhdharu)."
+    },
+    {
+      "no": 30,
+      "text": "Terjemahan kalimat: 'عِنْدِي قَلَمٌ أَسْوَدُ' adalah...",
+      "options": [
+        "Saya punya pulpen merah",
+        "Saya punya pulpen hitam",
+        "Saya punya tas hitam",
+        "Saya punya buku biru"
+      ],
+      "correct": 1,
+      "desc": "Indikator 30: Menerjemahkan kalimat warna (Aswad/أَسْوَدُ = Hitam)."
+    },
+    {
+      "no": 31,
+      "text": "Baca teks singkat: 'هَذَا بُسْتَانٌ. فِيْهِ أَشْجَارٌ. لَوْنُ الأَشْجَارِ أَخْضَرُ.' Apa warna pohon di kebun?",
+      "options": [
+        "Merah",
+        "Kuning",
+        "Hijau",
+        "Putih"
+      ],
+      "correct": 2,
+      "desc": "Indikator 31: Menjawab pertanyaan berdasarkan teks (Akhdhar/أَخْضَرُ = Hijau)."
+    },
+    {
+      "no": 32,
+      "text": "Baca teks: 'هَذِهِ الوَرْدَةُ حَمْرَاءُ' (Mawar ini merah). Pertanyaan: 'مَا لَوْنُ الوَرْدَةِ؟'",
+      "options": [
+        "لَوْنُهَا حَمْرَاءُ",
+        "لَوْنُهَا صَفْرَاءُ",
+        "لَوْنُهَا زَرْقَاءُ",
+        "لَوْنُهَا بَيْضَاءُ"
+      ],
+      "correct": 0,
+      "desc": "Indikator 32: Menjawab pertanyaan teks (Hamra/حَمْرَاءُ = Merah pr)."
+    },
+    {
+      "no": 33,
+      "text": "Dari teks tentang pelangi (قَوْسُ قُزَحٍ), warna 'Nila' dalam bahasa Arab disebut...",
+      "options": [
+        "بَنَفْسَجِيٌّ",
+        "نِيْلِيٌّ",
+        "بُرْتُقَالِيٌّ",
+        "أَسْمَرُ"
+      ],
+      "correct": 1,
+      "desc": "Indikator 33: Kosakata warna pelangi (Niliyyun/نِيْلِيٌّ = Nila)."
+    },
+    {
+      "no": 34,
+      "text": "Arti kata 'رَمَادِيٌّ' dalam teks bacaan adalah...",
+      "options": [
+        "Abu-abu",
+        "Cokelat",
+        "Merah muda",
+        "Krem"
+      ],
+      "correct": 0,
+      "desc": "Indikator 34: Arti kosakata (Ramadiyun/رَمَادِيٌّ = Abu-abu)."
+    },
+    {
+      "no": 35,
+      "text": "Bahasa Arab dari 'Langit itu Biru' adalah...",
+      "options": [
+        "السَّمَاءُ زَرْقَاءُ",
+        "السَّمَاءُ حَمْرَاءُ",
+        "السَّمَاءُ خَضْرَاءُ",
+        "السَّمَاءُ سَوْدَاءُ"
+      ],
+      "correct": 0,
+      "desc": "Indikator 35: Bahasa Arab dari kalimat Indonesia (Langit Biru)."
+    },
+    {
+      "no": 36,
+      "text": "Urutan bulan Hijriyah yang benar setelah Muharram (مُحَرَّم) adalah...",
+      "options": [
+        "رَمَضَان",
+        "رَبِيْعُ الأَوَّل",
+        "صَفَر",
+        "رَجَب"
+      ],
+      "correct": 2,
+      "desc": "Indikator 36: Urutan bulan Hijriyah (Muharram, Safar, Rabiul Awal...)."
+    },
+    {
+      "no": 37,
+      "text": "Lengkapi kalimat: 'نَحْنُ نَصُوْمُ فِي شَهْرِ ...' (Kita berpuasa di bulan ...)",
+      "options": [
+        "شَوَّال",
+        "رَمَضَان",
+        "شَعْبَان",
+        "مُحَرَّم"
+      ],
+      "correct": 1,
+      "desc": "Indikator 37: Kalimat rumpang Hijriyah (Puasa = Ramadhan/رَمَضَان)."
+    },
+    {
+      "no": 38,
+      "text": "'بَعْدَ شَهْرِ رَمَضَان، شَهْرُ ...' (Setelah bulan Ramadhan, bulan ...)",
+      "options": [
+        "شَعْبَان",
+        "شَوَّال",
+        "ذُو القَعْدَة",
+        "رَجَب"
+      ],
+      "correct": 1,
+      "desc": "Indikator 38: Menentukan bulan 'setelah' (Ba'da). Habis Ramadhan terbitlah Syawal."
+    },
+    {
+      "no": 39,
+      "text": "Bulan ke-12 (terakhir) dalam kalender Hijriyah adalah...",
+      "options": [
+        "ذُو الحِجَّة",
+        "ذُو القَعْدَة",
+        "مُحَرَّم",
+        "صَفَر"
+      ],
+      "correct": 0,
+      "desc": "Indikator 39: Bulan terakhir (Dzulhijjah/ذُو الحِجَّة)."
+    },
+    {
+      "no": 40,
+      "text": "'قَبْلَ شَهْرِ رَجَب، شَهْرُ ...' (Sebelum bulan Rajab, bulan ...)",
+      "options": [
+        "جُمَادَى الآخِرَة",
+        "شَعْبَان",
+        "رَمَضَان",
+        "مُحَرَّم"
+      ],
+      "correct": 0,
+      "desc": "Indikator 40: Menentukan bulan 'sebelum' (Qabla). Urutan: Jumadil Awal, Jumadil Akhir, Rajab."
+    },
+    {
+      "no": 41,
+      "text": "Terjemahkan: 'Hari Raya Idul Adha di bulan Dzulhijjah'.",
+      "options": [
+        "عِيْدُ الأَضْحَى فِي شَهْرِ ذِي الحِجَّة",
+        "عِيْدُ الفِطْرِ فِي شَهْرِ شَوَّال",
+        "مَوْلِدُ النَّبِي فِي شَهْرِ رَبِيْعِ الأَوَّل",
+        "إِسْرَاء وَ مِعْرَاج فِي شَهْرِ رَجَب"
+      ],
+      "correct": 0,
+      "desc": "Indikator 41: Menerjemahkan kalimat hari besar."
+    },
+    {
+      "no": 42,
+      "text": "'مَتَى وُلِدَ النَّبِي مُحَمَّد؟' (Kapan Nabi Muhammad lahir?). Jawabannya adalah...",
+      "options": [
+        "فِي شَهْرِ رَبِيْعِ الأَوَّل",
+        "فِي شَهْرِ رَمَضَان",
+        "فِي شَهْرِ مُحَرَّم",
+        "فِي شَهْرِ صَفَر"
+      ],
+      "correct": 0,
+      "desc": "Indikator 42: Menjawab pertanyaan (Maulid Nabi = Rabiul Awal)."
+    },
+    {
+      "no": 43,
+      "text": "Susun kata: ( الهِجْرِيَّة - الأَوَّلُ - مُحَرَّم - شَهْرُ ).",
+      "options": [
+        "مُحَرَّم أَوَّلُ شَهْرٍ هِجْرِيَّة",
+        "أَوَّلُ شَهْرٍ هِجْرِيَّة مُحَرَّم",
+        "شَهْرُ هِجْرِيَّة أَوَّلُ مُحَرَّم",
+        "هِجْرِيَّة مُحَرَّم أَوَّلُ شَهْرٍ"
+      ],
+      "correct": 1,
+      "desc": "Indikator 43: Menyusun kalimat (Bulan pertama hijriyah adalah Muharram)."
+    },
+    {
+      "no": 44,
+      "text": "Isra' Mi'raj diperingati pada tanggal 27 di bulan...",
+      "options": [
+        "رَجَب",
+        "شَعْبَان",
+        "رَمَضَان",
+        "شَوَّال"
+      ],
+      "correct": 0,
+      "desc": "Indikator 44: Menentukan bulan perayaan (Isra Mi'raj = Rajab)."
+    },
+    {
+      "no": 45,
+      "text": "Nuzulul Qur'an (Turunnya Al-Qur'an) terjadi pada bulan...",
+      "options": [
+        "رَمَضَان",
+        "صَفَر",
+        "رَبِيْعُ الآخِر",
+        "جُمَادَى الأُولَى"
+      ],
+      "correct": 0,
+      "desc": "Indikator 45: Melengkapi kalimat peristiwa (Nuzulul Quran = Ramadhan)."
+    },
+    {
+      "no": 46,
+      "text": "Terjemahan kalimat: 'فَاطِمَةُ لَهَا عَيْنٌ جَمِيْلَةٌ' adalah...",
+      "options": [
+        "Fatimah mempunyai mata yang indah",
+        "Fatimah mempunyai hidung yang mancung",
+        "Fatimah mempunyai rambut yang panjang",
+        "Fatimah mempunyai wajah yang bersih"
+      ],
+      "correct": 0,
+      "desc": "Indikator 46 (Adaptasi Esai): Menerjemahkan kalimat topik manusia."
+    },
+    {
+      "no": 47,
+      "text": "Pernyataan Benar atau Salah: 'الكُرَّةُ شَكْلُهَا مُكَعَّبٌ' (Bola bentuknya Kubus).",
+      "options": [
+        "صَحِيْحٌ (Benar)",
+        "خَطَأٌ (Salah)",
+        "Ragu-ragu",
+        "Tidak tahu"
+      ],
+      "correct": 1,
+      "desc": "Indikator 47 (Adaptasi Esai): Menentukan Benar/Salah tabel kosakata (Bola harusnya Bulat, bukan Kubus)."
+    },
+    {
+      "no": 48,
+      "text": "Arti dari lirik lagu: 'لَوْنُ المَوْزِ أَصْفَرٌ' adalah...",
+      "options": [
+        "Warna pisang itu kuning",
+        "Warna apel itu merah",
+        "Warna anggur itu ungu",
+        "Warna jeruk itu oranye"
+      ],
+      "correct": 0,
+      "desc": "Indikator 48 (Adaptasi Esai): Menerjemahkan lirik lagu warna."
+    },
+    {
+      "no": 49,
+      "text": "Hari Raya Idul Fitri dirayakan oleh umat Islam pada tanggal 1 bulan...",
+      "options": [
+        "شَوَّال",
+        "ذُو الحِجَّة",
+        "مُحَرَّم",
+        "رَمَضَان"
+      ],
+      "correct": 0,
+      "desc": "Indikator 49 (Adaptasi Esai): Menentukan nama bulan hari besar."
+    },
+    {
+      "no": 50,
+      "text": "Kalender Hijriyah dihitung berdasarkan peredaran...",
+      "options": [
+        "القَمَرِيَّة (Bulan)",
+        "الشَّمْسِيَّة (Matahari)",
+        "Bintang",
+        "Bumi"
+      ],
+      "correct": 0,
+      "desc": "Indikator 50 (Tambahan pelengkap): Pengetahuan umum kalender Hijriyah."
+    }
+  ]
+}

@@ -1,0 +1,128 @@
+{
+  "subject": "IPA",
+  "grade": "7 SMP",
+  "title": "Latihan Soal SAS Ganjil IPA",
+  "subtitle": "Latihan soal mencakup materi Metode Ilmiah, Besaran & Pengukuran, Zat & Perubahannya, serta Suhu & Kalor sesuai kisi-kisi.",
+  "questions": [
+    {
+      "no": 1,
+      "text": "Seorang siswa ingin memindahkan larutan kimia dari wadah besar ke wadah kecil dengan volume tertentu. Alat laboratorium yang paling tepat dan teliti untuk mengukur volume cairan adalah...",
+      "options": [
+        "Gelas Kimia (Beaker Glass)",
+        "Gelas Ukur",
+        "Tabung Reaksi",
+        "Labu Erlenmeyer"
+      ],
+      "correct": 1,
+      "desc": "Gelas ukur memiliki skala yang lebih presisi untuk mengukur volume cairan dibandingkan gelas kimia atau erlenmeyer yang lebih berfungsi sebagai wadah penampung atau pencampur."
+    },
+    {
+      "no": 2,
+      "text": "Urutan langkah-langkah metode ilmiah yang benar adalah...",
+      "options": [
+        "Observasi - Hipotesis - Eksperimen - Kesimpulan",
+        "Hipotesis - Eksperimen - Observasi - Kesimpulan",
+        "Eksperimen - Observasi - Hipotesis - Kesimpulan",
+        "Kesimpulan - Eksperimen - Observasi - Hipotesis"
+      ],
+      "correct": 0,
+      "desc": "Metode ilmiah dimulai dari pengamatan (observasi) masalah, menyusun dugaan sementara (hipotesis), melakukan percobaan (eksperimen), dan menarik kesimpulan."
+    },
+    {
+      "no": 3,
+      "text": "Perhatikan kelompok besaran berikut!\n1) Panjang\n2) Luas\n3) Massa\n4) Volume\n5) Waktu\nYang termasuk kelompok besaran pokok ditunjukkan oleh nomor...",
+      "options": [
+        "1, 2, dan 3",
+        "1, 3, dan 5",
+        "2, 3, dan 4",
+        "3, 4, dan 5"
+      ],
+      "correct": 1,
+      "desc": "Besaran pokok terdiri dari 7 besaran utama: Panjang, Massa, Waktu, Suhu, Kuat Arus, Intensitas Cahaya, dan Jumlah Zat. Luas dan Volume adalah besaran turunan."
+    },
+    {
+      "no": 4,
+      "text": "Doni mengukur panjang meja menggunakan mistar dan mendapatkan hasil 150 cm. Jika dinyatakan dalam Satuan Internasional (SI), panjang meja tersebut adalah...",
+      "options": [
+        "1,5 meter",
+        "15 meter",
+        "0,15 meter",
+        "1500 meter"
+      ],
+      "correct": 0,
+      "desc": "Satuan Internasional (SI) untuk panjang adalah meter. 150 cm = 150 / 100 = 1,5 meter."
+    },
+    {
+      "no": 5,
+      "text": "Sifat zat padat yang paling tepat adalah...",
+      "options": [
+        "Bentuk berubah, volume berubah",
+        "Bentuk tetap, volume berubah",
+        "Bentuk berubah, volume tetap",
+        "Bentuk tetap, volume tetap"
+      ],
+      "correct": 3,
+      "desc": "Zat padat memiliki gaya tarik antar partikel yang sangat kuat dan susunan partikel yang rapat, sehingga bentuk dan volumenya selalu tetap."
+    },
+    {
+      "no": 6,
+      "text": "Peristiwa kapur barus (kamper) yang diletakkan di lemari lama-kelamaan akan habis merupakan contoh perubahan wujud...",
+      "options": [
+        "Mencair",
+        "Menguap",
+        "Menyublim",
+        "Mengkristal"
+      ],
+      "correct": 2,
+      "desc": "Menyublim adalah perubahan wujud dari zat padat menjadi gas tanpa melalui fase cair. Kapur barus yang habis menjadi gas adalah contoh menyublim."
+    },
+    {
+      "no": 7,
+      "text": "Berikut ini yang termasuk ciri-ciri perubahan kimia adalah...",
+      "options": [
+        "Terjadi perubahan bentuk dan ukuran saja",
+        "Terbentuk zat jenis baru",
+        "Dapat kembali ke bentuk semula dengan mudah",
+        "Tidak terjadi perubahan warna atau suhu"
+      ],
+      "correct": 1,
+      "desc": "Perubahan kimia menghasilkan zat baru yang sifatnya berbeda dari zat asalnya (irreversible), sering disertai perubahan warna, suhu, pembentukan gas, atau endapan."
+    },
+    {
+      "no": 8,
+      "text": "Sebuah benda memiliki massa 200 gram dan volume 50 \\( cm^3 \\). Massa jenis benda tersebut adalah...",
+      "options": [
+        "0,25 \\( g/cm^3 \\)",
+        "4 \\( g/cm^3 \\)",
+        "40 \\( g/cm^3 \\)",
+        "250 \\( g/cm^3 \\)"
+      ],
+      "correct": 1,
+      "desc": "Rumus massa jenis (\\( \\rho \\)) adalah massa (m) dibagi volume (v). \\( \\rho = \\frac{200}{50} = 4 \\, g/cm^3 \\)."
+    },
+    {
+      "no": 9,
+      "text": "Suhu suatu ruangan adalah 25\\(^\\circ\\)C. Jika diukur menggunakan termometer Kelvin, suhunya adalah...",
+      "options": [
+        "248 K",
+        "273 K",
+        "298 K",
+        "300 K"
+      ],
+      "correct": 2,
+      "desc": "Konversi Celcius ke Kelvin: \\( K = C + 273 \\). Maka, \\( 25 + 273 = 298 \\, K \\)."
+    },
+    {
+      "no": 10,
+      "text": "Banyaknya kalor yang diperlukan untuk meleburkan 2 kg es pada suhu 0\\(^\\circ\\)C (jika kalor lebur es = 336.000 J/kg) adalah...",
+      "options": [
+        "168.000 Joule",
+        "336.000 Joule",
+        "672.000 Joule",
+        "6.720.000 Joule"
+      ],
+      "correct": 2,
+      "desc": "Rumus kalor lebur: \\( Q = m \\times L \\). Maka \\( Q = 2 \\, kg \\times 336.000 \\, J/kg = 672.000 \\, Joule \\)."
+    }
+  ]
+}

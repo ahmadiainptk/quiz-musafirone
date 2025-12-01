@@ -1,128 +1,488 @@
 {
   "subject": "IPA",
   "grade": "7 SMP",
-  "title": "Latihan Soal SAS Ganjil IPA",
-  "subtitle": "Latihan soal mencakup materi Metode Ilmiah, Besaran & Pengukuran, Zat & Perubahannya, serta Suhu & Kalor sesuai kisi-kisi.",
+  "title": "Latihan Soal SAS Ganjil IPA Kelas 7 (Full Kisi-Kisi)",
+  "subtitle": "Paket 40 soal lengkap mencakup Metode Ilmiah, Besaran & Pengukuran, Zat & Wujudnya, serta Suhu & Kalor.",
   "questions": [
     {
       "no": 1,
-      "text": "Seorang siswa ingin memindahkan larutan kimia dari wadah besar ke wadah kecil dengan volume tertentu. Alat laboratorium yang paling tepat dan teliti untuk mengukur volume cairan adalah...",
+      "text": "Perhatikan alat laboratorium berikut (gambar Gelas Ukur). Fungsi utama alat tersebut adalah...",
       "options": [
-        "Gelas Kimia (Beaker Glass)",
-        "Gelas Ukur",
-        "Tabung Reaksi",
-        "Labu Erlenmeyer"
+        "Mengukur massa zat padat",
+        "Mengukur suhu larutan",
+        "Mengukur volume zat cair dengan teliti",
+        "Mencampur bahan kimia"
       ],
-      "correct": 1,
-      "desc": "Gelas ukur memiliki skala yang lebih presisi untuk mengukur volume cairan dibandingkan gelas kimia atau erlenmeyer yang lebih berfungsi sebagai wadah penampung atau pencampur."
+      "correct": 2,
+      "desc": "Indikator 1: Menentukan fungsi alat laboratorium (Gelas Ukur untuk mengukur volume)."
     },
     {
       "no": 2,
-      "text": "Urutan langkah-langkah metode ilmiah yang benar adalah...",
+      "text": "Alat laboratorium yang digunakan untuk mengamati benda-benda mikroskopis yang tidak terlihat oleh mata telanjang adalah...",
       "options": [
-        "Observasi - Hipotesis - Eksperimen - Kesimpulan",
-        "Hipotesis - Eksperimen - Observasi - Kesimpulan",
-        "Eksperimen - Observasi - Hipotesis - Kesimpulan",
-        "Kesimpulan - Eksperimen - Observasi - Hipotesis"
+        "Teleskop",
+        "Mikroskop",
+        "Stetoskop",
+        "Kamera"
       ],
-      "correct": 0,
-      "desc": "Metode ilmiah dimulai dari pengamatan (observasi) masalah, menyusun dugaan sementara (hipotesis), melakukan percobaan (eksperimen), dan menarik kesimpulan."
+      "correct": 1,
+      "desc": "Indikator 2: Menentukan nama dan fungsi alat (Mikroskop)."
     },
     {
       "no": 3,
-      "text": "Perhatikan kelompok besaran berikut!\n1) Panjang\n2) Luas\n3) Massa\n4) Volume\n5) Waktu\nYang termasuk kelompok besaran pokok ditunjukkan oleh nomor...",
+      "text": "Urutan langkah-langkah metode ilmiah yang benar dalam melakukan penelitian adalah...",
       "options": [
-        "1, 2, dan 3",
-        "1, 3, dan 5",
-        "2, 3, dan 4",
-        "3, 4, dan 5"
+        "Observasi - Hipotesis - Eksperimen - Kesimpulan",
+        "Hipotesis - Eksperimen - Observasi - Kesimpulan",
+        "Eksperimen - Hipotesis - Kesimpulan - Observasi",
+        "Kesimpulan - Eksperimen - Hipotesis - Observasi"
       ],
-      "correct": 1,
-      "desc": "Besaran pokok terdiri dari 7 besaran utama: Panjang, Massa, Waktu, Suhu, Kuat Arus, Intensitas Cahaya, dan Jumlah Zat. Luas dan Volume adalah besaran turunan."
+      "correct": 0,
+      "desc": "Indikator 3: Menentukan langkah metode ilmiah secara urut."
     },
     {
       "no": 4,
-      "text": "Doni mengukur panjang meja menggunakan mistar dan mendapatkan hasil 150 cm. Jika dinyatakan dalam Satuan Internasional (SI), panjang meja tersebut adalah...",
+      "text": "Dalam metode ilmiah, dugaan sementara terhadap suatu masalah yang masih perlu dibuktikan kebenarannya melalui eksperimen disebut...",
       "options": [
-        "1,5 meter",
-        "15 meter",
-        "0,15 meter",
-        "1500 meter"
+        "Observasi",
+        "Variabel",
+        "Hipotesis",
+        "Kesimpulan"
       ],
-      "correct": 0,
-      "desc": "Satuan Internasional (SI) untuk panjang adalah meter. 150 cm = 150 / 100 = 1,5 meter."
+      "correct": 2,
+      "desc": "Indikator 4: Menentukan hipotesis (dugaan sementara)."
     },
     {
       "no": 5,
-      "text": "Sifat zat padat yang paling tepat adalah...",
+      "text": "Besaran yang satuannya telah didefinisikan terlebih dahulu dan tidak diturunkan dari besaran lain disebut...",
       "options": [
-        "Bentuk berubah, volume berubah",
-        "Bentuk tetap, volume berubah",
-        "Bentuk berubah, volume tetap",
-        "Bentuk tetap, volume tetap"
+        "Besaran Turunan",
+        "Besaran Pokok",
+        "Besaran Vektor",
+        "Besaran Skalar"
       ],
-      "correct": 3,
-      "desc": "Zat padat memiliki gaya tarik antar partikel yang sangat kuat dan susunan partikel yang rapat, sehingga bentuk dan volumenya selalu tetap."
+      "correct": 1,
+      "desc": "Indikator 5: Menjelaskan pengertian besaran pokok."
     },
     {
       "no": 6,
-      "text": "Peristiwa kapur barus (kamper) yang diletakkan di lemari lama-kelamaan akan habis merupakan contoh perubahan wujud...",
+      "text": "Pasangan besaran pokok dan satuannya dalam Sistem Internasional (SI) yang benar adalah...",
       "options": [
-        "Mencair",
-        "Menguap",
-        "Menyublim",
-        "Mengkristal"
+        "Panjang - Centimeter",
+        "Massa - Gram",
+        "Waktu - Sekon (Detik)",
+        "Suhu - Celcius"
       ],
       "correct": 2,
-      "desc": "Menyublim adalah perubahan wujud dari zat padat menjadi gas tanpa melalui fase cair. Kapur barus yang habis menjadi gas adalah contoh menyublim."
+      "desc": "Indikator 6: Menentukan nama besaran dan satuannya (Waktu satuannya Sekon)."
     },
     {
       "no": 7,
-      "text": "Berikut ini yang termasuk ciri-ciri perubahan kimia adalah...",
+      "text": "Kelompok besaran di bawah ini yang semuanya termasuk besaran pokok adalah...",
       "options": [
-        "Terjadi perubahan bentuk dan ukuran saja",
-        "Terbentuk zat jenis baru",
-        "Dapat kembali ke bentuk semula dengan mudah",
-        "Tidak terjadi perubahan warna atau suhu"
+        "Panjang, Massa, Waktu",
+        "Panjang, Luas, Volume",
+        "Massa, Berat, Gaya",
+        "Kecepatan, Suhu, Jumlah Zat"
       ],
-      "correct": 1,
-      "desc": "Perubahan kimia menghasilkan zat baru yang sifatnya berbeda dari zat asalnya (irreversible), sering disertai perubahan warna, suhu, pembentukan gas, atau endapan."
+      "correct": 0,
+      "desc": "Indikator 7: Mengelompokkan besaran pokok (Panjang, Massa, Waktu, Suhu, Kuat Arus, Intensitas Cahaya, Jumlah Zat)."
     },
     {
       "no": 8,
-      "text": "Sebuah benda memiliki massa 200 gram dan volume 50 \\( cm^3 \\). Massa jenis benda tersebut adalah...",
+      "text": "Besaran turunan adalah besaran yang...",
       "options": [
-        "0,25 \\( g/cm^3 \\)",
-        "4 \\( g/cm^3 \\)",
-        "40 \\( g/cm^3 \\)",
-        "250 \\( g/cm^3 \\)"
+        "Satuannya ditentukan secara sembarang",
+        "Diturunkan dari satu atau lebih besaran pokok",
+        "Tidak memiliki satuan",
+        "Hanya memiliki nilai tanpa arah"
       ],
       "correct": 1,
-      "desc": "Rumus massa jenis (\\( \\rho \\)) adalah massa (m) dibagi volume (v). \\( \\rho = \\frac{200}{50} = 4 \\, g/cm^3 \\)."
+      "desc": "Indikator 8: Konsep besaran turunan."
     },
     {
       "no": 9,
-      "text": "Suhu suatu ruangan adalah 25\\(^\\circ\\)C. Jika diukur menggunakan termometer Kelvin, suhunya adalah...",
+      "text": "Di bawah ini yang termasuk kelompok besaran turunan adalah...",
       "options": [
-        "248 K",
-        "273 K",
-        "298 K",
-        "300 K"
+        "Luas, Volume, Kecepatan",
+        "Panjang, Massa, Suhu",
+        "Waktu, Kuat Arus, Gaya",
+        "Massa, Berat, Panjang"
       ],
-      "correct": 2,
-      "desc": "Konversi Celcius ke Kelvin: \\( K = C + 273 \\). Maka, \\( 25 + 273 = 298 \\, K \\)."
+      "correct": 0,
+      "desc": "Indikator 9: Mengelompokkan besaran turunan (Luas, Volume, Kecepatan, Gaya, dll)."
     },
     {
       "no": 10,
-      "text": "Banyaknya kalor yang diperlukan untuk meleburkan 2 kg es pada suhu 0\\(^\\circ\\)C (jika kalor lebur es = 336.000 J/kg) adalah...",
+      "text": "Luas disebut sebagai besaran turunan karena...",
       "options": [
-        "168.000 Joule",
-        "336.000 Joule",
-        "672.000 Joule",
-        "6.720.000 Joule"
+        "Diturunkan dari besaran pokok Massa",
+        "Diturunkan dari besaran pokok Panjang (Panjang x Lebar)",
+        "Diturunkan dari besaran pokok Waktu",
+        "Tidak memiliki satuan yang baku"
+      ],
+      "correct": 1,
+      "desc": "Indikator 10: Alasan suatu besaran termasuk turunan."
+    },
+    {
+      "no": 11,
+      "text": "Andi menimbang benda menggunakan neraca dan jarum menunjukkan angka 500 gram. Jika dinyatakan dalam satuan Kilogram (kg), hasilnya adalah...",
+      "options": [
+        "50 kg",
+        "5 kg",
+        "0,5 kg",
+        "0,05 kg"
       ],
       "correct": 2,
-      "desc": "Rumus kalor lebur: \\( Q = m \\times L \\). Maka \\( Q = 2 \\, kg \\times 336.000 \\, J/kg = 672.000 \\, Joule \\)."
+      "desc": "Indikator 11: Membaca hasil ukur massa dan konversi ke kg (500/1000 = 0,5)."
+    },
+    {
+      "no": 12,
+      "text": "Hasil pengukuran panjang pensil menunjukkan 12 cm. Jika dikonversi ke dalam satuan meter (m), maka panjangnya adalah...",
+      "options": [
+        "1,2 m",
+        "0,12 m",
+        "0,012 m",
+        "120 m"
+      ],
+      "correct": 1,
+      "desc": "Indikator 12: Membaca alat ukur panjang dan konversi (12 cm / 100 = 0,12 m)."
+    },
+    {
+      "no": 13,
+      "text": "Sebuah stopwatch menunjukkan jarum menit di angka 2 dan jarum detik di angka 15. Waktu yang terukur adalah...",
+      "options": [
+        "17 detik",
+        "75 detik",
+        "135 detik",
+        "215 detik"
+      ],
+      "correct": 2,
+      "desc": "Indikator 13: Membaca stopwatch. 2 menit 15 detik = (2 x 60) + 15 = 120 + 15 = 135 detik."
+    },
+    {
+      "no": 14,
+      "text": "Sifat zat padat yang membedakannya dari zat cair dan gas adalah...",
+      "options": [
+        "Bentuk berubah, volume tetap",
+        "Bentuk dan volume selalu tetap",
+        "Bentuk tetap, volume berubah",
+        "Bentuk dan volume berubah-ubah"
+      ],
+      "correct": 1,
+      "desc": "Indikator 14: Sifat zat padat (Bentuk dan Volume Tetap)."
+    },
+    {
+      "no": 15,
+      "text": "Penyebab utama terjadinya perubahan wujud zat adalah adanya...",
+      "options": [
+        "Perubahan massa benda",
+        "Perubahan volume benda",
+        "Pelepasan atau penyerapan kalor (panas)",
+        "Perubahan bentuk wadah"
+      ],
+      "correct": 2,
+      "desc": "Indikator 15: Penyebab perubahan zat (Energi Kalor)."
+    },
+    {
+      "no": 16,
+      "text": "Perbedaan karakteristik partikel zat cair dibandingkan zat padat adalah...",
+      "options": [
+        "Partikel zat cair tersusun sangat rapat dan teratur",
+        "Partikel zat cair letaknya agak renggang dan dapat bergerak bebas",
+        "Partikel zat cair sangat berjauhan dan bergerak sangat cepat",
+        "Partikel zat cair tidak dapat bergerak sama sekali"
+      ],
+      "correct": 1,
+      "desc": "Indikator 16: Karakteristik partikel zat cair (Agak renggang, gerak bebas tapi terbatas)."
+    },
+    {
+      "no": 17,
+      "text": "Peristiwa perubahan wujud dari cair menjadi padat, seperti air yang dimasukkan ke dalam freezer, disebut...",
+      "options": [
+        "Mencair",
+        "Membeku",
+        "Menguap",
+        "Menyublim"
+      ],
+      "correct": 1,
+      "desc": "Indikator 17: Perubahan wujud (Membeku)."
+    },
+    {
+      "no": 18,
+      "text": "Saat kita merebus air, lama-kelamaan air akan habis karena berubah menjadi uap. Peristiwa ini disebut...",
+      "options": [
+        "Mengembun",
+        "Menguap",
+        "Mengkristal",
+        "Melebur"
+      ],
+      "correct": 1,
+      "desc": "Indikator 18: Perubahan wujud (Menguap)."
+    },
+    {
+      "no": 19,
+      "text": "Kapur barus (kamper) di lemari pakaian lama-kelamaan habis tanpa meninggalkan bekas basah. Peristiwa ini disebut...",
+      "options": [
+        "Mencair",
+        "Menyublim",
+        "Mengembun",
+        "Membeku"
+      ],
+      "correct": 1,
+      "desc": "Indikator 19: Perubahan wujud padat ke gas (Menyublim)."
+    },
+    {
+      "no": 20,
+      "text": "Pembakaran kayu dianggap sebagai perubahan kimia karena...",
+      "options": [
+        "Terjadi perubahan wujud dari padat ke cair",
+        "Hanya terjadi perubahan bentuk fisik",
+        "Terbentuk zat baru (arang/abu) yang sifatnya berbeda",
+        "Zat asalnya dapat kembali lagi"
+      ],
+      "correct": 2,
+      "desc": "Indikator 20: Alasan perubahan kimia (Terbentuk zat baru/Irreversible)."
+    },
+    {
+      "no": 21,
+      "text": "Peristiwa es krim yang meleleh termasuk perubahan fisika karena...",
+      "options": [
+        "Menghasilkan zat baru",
+        "Tidak menghasilkan zat baru dan hanya berubah wujud",
+        "Terjadi reaksi pembakaran",
+        "Terjadi perubahan warna secara permanen"
+      ],
+      "correct": 1,
+      "desc": "Indikator 21: Alasan perubahan fisika (Tidak ada zat baru)."
+    },
+    {
+      "no": 22,
+      "text": "Berikut ini yang merupakan contoh perubahan kimia adalah...",
+      "options": [
+        "Beras ditumbuk menjadi tepung",
+        "Air dipanaskan menjadi uap",
+        "Lilin meleleh",
+        "Besi berkarat"
+      ],
+      "correct": 3,
+      "desc": "Indikator 22: Menentukan contoh perubahan kimia (Besi berkarat)."
+    },
+    {
+      "no": 23,
+      "text": "Benda A memiliki massa 100g dan volume 20cm³. Benda B memiliki massa 100g dan volume 50cm³. Pernyataan yang benar adalah...",
+      "options": [
+        "Massa jenis A lebih besar daripada B",
+        "Massa jenis B lebih besar daripada A",
+        "Massa jenis A dan B sama",
+        "Volume tidak mempengaruhi massa jenis"
+      ],
+      "correct": 0,
+      "desc": "Indikator 23: Membandingkan massa jenis. A=100/20=5. B=100/50=2. Jadi A > B."
+    },
+    {
+      "no": 24,
+      "text": "Sebuah balok kayu bermassa 200 gram memiliki volume 400 cm³. Berapa massa jenis kayu tersebut?",
+      "options": [
+        "0,5 g/cm³",
+        "2 g/cm³",
+        "200 g/cm³",
+        "0,2 g/cm³"
+      ],
+      "correct": 0,
+      "desc": "Indikator 24: Hitung massa jenis. Rho = m/v = 200/400 = 0,5."
+    },
+    {
+      "no": 25,
+      "text": "Jika massa jenis air adalah 1 g/cm³ dan massa jenis minyak adalah 0,8 g/cm³, maka posisi minyak saat dicampur dengan air adalah...",
+      "options": [
+        "Tenggelam di dasar air",
+        "Melayang di tengah air",
+        "Terapung di atas permukaan air",
+        "Bercampur menyatu dengan air"
+      ],
+      "correct": 2,
+      "desc": "Indikator 25: Perilaku benda berdasarkan massa jenis. Rho minyak < Rho air, maka terapung."
+    },
+    {
+      "no": 26,
+      "text": "Suhu adalah besaran yang menyatakan...",
+      "options": [
+        "Jumlah energi potensial benda",
+        "Derajat panas atau dinginnya suatu benda",
+        "Jumlah kalor yang dikandung benda",
+        "Massa benda"
+      ],
+      "correct": 1,
+      "desc": "Indikator 26: Karakteristik/definisi suhu."
+    },
+    {
+      "no": 27,
+      "text": "Ketika logam dipanaskan, suhunya naik dan logam tersebut memuai (bertambah panjang). Hal ini terjadi karena...",
+      "options": [
+        "Partikel logam ukurannya membesar",
+        "Partikel logam bergerak lebih cepat dan saling menjauh",
+        "Jumlah partikel logam bertambah",
+        "Massa logam bertambah"
+      ],
+      "correct": 1,
+      "desc": "Indikator 27: Alasan kenaikan suhu dan pemuaian (Gerakan partikel)."
+    },
+    {
+      "no": 28,
+      "text": "Mengukur suhu air hangat menggunakan tangan tidak disarankan karena...",
+      "options": [
+        "Tangan alat ukur yang presisi",
+        "Tangan bukan alat ukur standar dan persepsi panas tiap orang berbeda",
+        "Tangan bisa menyerap panas",
+        "Tangan tidak memiliki skala Kelvin"
+      ],
+      "correct": 1,
+      "desc": "Indikator 28: Perbedaan pengukuran baku dan tidak baku."
+    },
+    {
+      "no": 29,
+      "text": "Suhu badan normal manusia adalah 37°C. Jika dikonversi ke skala Reamur (4/5 x C), suhunya adalah...",
+      "options": [
+        "29,6 °R",
+        "40 °R",
+        "32 °R",
+        "45 °R"
+      ],
+      "correct": 0,
+      "desc": "Indikator 29: Konversi suhu. R = 4/5 * 37 = 29,6."
+    },
+    {
+      "no": 30,
+      "text": "Berapa jumlah kalor yang diperlukan untuk meleburkan 2 kg es (Kalor lebur es = 336.000 J/kg)?",
+      "options": [
+        "168.000 J",
+        "336.000 J",
+        "672.000 J",
+        "6.720 J"
+      ],
+      "correct": 2,
+      "desc": "Indikator 30: Hitung kalor lebur. Q = m.L = 2 x 336.000 = 672.000."
+    },
+    {
+      "no": 31,
+      "text": "Ciri khas partikel zat gas adalah...",
+      "options": [
+        "Letaknya sangat berdekatan dan teratur",
+        "Letaknya sangat berjauhan dan bergerak bebas acak",
+        "Letaknya berdekatan tapi bisa bergeser",
+        "Tidak bergerak sama sekali"
+      ],
+      "correct": 1,
+      "desc": "Indikator 31: Karakteristik partikel (Gas)."
+    },
+    {
+      "no": 32,
+      "text": "Perubahan zat yang ditandai dengan terbentuknya endapan, perubahan warna, atau timbulnya gas adalah ciri dari...",
+      "options": [
+        "Perubahan Fisika",
+        "Perubahan Kimia",
+        "Perubahan Wujud",
+        "Perubahan Bentuk"
+      ],
+      "correct": 1,
+      "desc": "Indikator 32: Ciri perubahan kimia."
+    },
+    {
+      "no": 33,
+      "text": "Contoh perubahan zat dari gas menjadi cair (Mengembun) terjadi pada peristiwa...",
+      "options": [
+        "Es batu yang mencair",
+        "Titik-titik air di daun pada pagi hari",
+        "Kapur barus yang habis",
+        "Air mendidih menjadi uap"
+      ],
+      "correct": 1,
+      "desc": "Indikator 33: Contoh perubahan zat (Mengembun)."
+    },
+    {
+      "no": 34,
+      "text": "Minyak selalu berada di atas air ketika dicampur. Hal ini menunjukkan perbandingan massa jenisnya adalah...",
+      "options": [
+        "Massa jenis minyak > Massa jenis air",
+        "Massa jenis minyak < Massa jenis air",
+        "Massa jenis minyak = Massa jenis air",
+        "Massa jenis minyak berubah-ubah"
+      ],
+      "correct": 1,
+      "desc": "Indikator 34: Perbandingan massa jenis zat."
+    },
+    {
+      "no": 35,
+      "text": "Perpindahan kalor yang terjadi melalui aliran zat perantaranya (seperti saat merebus air atau terjadinya angin darat) disebut...",
+      "options": [
+        "Konduksi",
+        "Konveksi",
+        "Radiasi",
+        "Isolasi"
+      ],
+      "correct": 1,
+      "desc": "Indikator 35: Jenis perpindahan kalor (Konveksi)."
+    },
+    {
+      "no": 36,
+      "text": "Perbedaan utama antara zat padat, cair, dan gas terletak pada...",
+      "options": [
+        "Warna zat",
+        "Bau zat",
+        "Jarak dan gerak antar partikel penyusunnya",
+        "Massa zat"
+      ],
+      "correct": 2,
+      "desc": "Indikator 36: (Essay -> PG) Perbedaan keadaan partikel zat."
+    },
+    {
+      "no": 37,
+      "text": "Kenaikan suhu pada suatu benda terjadi karena benda tersebut...",
+      "options": [
+        "Menerima energi kalor (panas)",
+        "Melepaskan energi kalor",
+        "Berada di tempat gelap",
+        "Memiliki massa yang besar"
+      ],
+      "correct": 0,
+      "desc": "Indikator 37: (Essay -> PG) Penyebab kenaikan suhu."
+    },
+    {
+      "no": 38,
+      "text": "Sebuah benda bermassa 300 gram memiliki volume 100 cm³. Massa jenis benda tersebut adalah...",
+      "options": [
+        "0,33 g/cm³",
+        "3 g/cm³",
+        "30 g/cm³",
+        "3000 g/cm³"
+      ],
+      "correct": 1,
+      "desc": "Indikator 38: (Essay -> PG) Hitung massa jenis (300/100 = 3)."
+    },
+    {
+      "no": 39,
+      "text": "Jika air panas dicampur dengan air dingin, maka suhu campurannya akan...",
+      "options": [
+        "Lebih panas dari air panas",
+        "Lebih dingin dari air dingin",
+        "Berada di antara suhu air panas dan air dingin",
+        "Sama dengan suhu udara ruangan"
+      ],
+      "correct": 2,
+      "desc": "Indikator 39: (Essay -> PG) Suhu campuran (Asas Black)."
+    },
+    {
+      "no": 40,
+      "text": "Panas matahari dapat sampai ke bumi melewati ruang hampa udara. Peristiwa perpindahan kalor ini disebut...",
+      "options": [
+        "Konduksi",
+        "Konveksi",
+        "Radiasi",
+        "Konjugasi"
+      ],
+      "correct": 2,
+      "desc": "Indikator 40: (Essay -> PG) Perpindahan kalor (Radiasi)."
     }
   ]
 }

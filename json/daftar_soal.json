@@ -16,11 +16,19 @@
     "icon": "🪐"
   },
   {
-    "id": "psa1-barab-5",
+    "id": "psa1-barab-5-qisthy",
     "title": "Latihan PSA Bahasa Arab Kelas 5 Semester Ganjil",
     "subject": "B. Arab",
     "grade": "5 SD",
     "file": "psa1-barab-5-qisthy-1.json",
     "icon": "📝"
+  },
+  {
+    "id": "psa1-ipas-7-khairin-1",
+    "title": "Latihan PSA IPAS Kelas 7 Semester Ganjil",
+    "subject": "IPAS",
+    "grade": "7 SMP",
+    "file": "psa1-ipas-7-khairin-1.json",
+    "icon": "🪐"
   }
 ]

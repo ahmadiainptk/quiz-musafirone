@@ -1,5 +1,5 @@
 [
-  {
+  { 
     "id": "psa1-mtk-6-binan-6",
     "title": "Latihan PSA MTK Kelas 6 Semester Ganjil",
     "subject": "Matematika",
@@ -70,5 +70,13 @@
     "grade": "8 SMP",
     "file": "psa1-ipas-8-biyan-2.json",
     "icon": "🪐"
+  }, 
+ {
+    "id": "asas1-mtk-11-yudo-1",
+    "title": Latihan ASAS MTK Kelas 11 Semester Ganjil",
+    "subject": "MTK",
+    "grade": "11 SMA",
+    "file": "asas1-mtk-11-yudo-1.json",
+    "icon": "📐"
   }
 ]

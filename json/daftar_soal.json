@@ -1,0 +1,26 @@
+[
+  {
+    "id": "psa1-mtk-6-binan-6",
+    "title": "Latihan PSA MTK Kelas 6 Semester Ganjil",
+    "subject": "Matematika",
+    "grade": "6 SD",
+    "file": "psa1-mtk-6-binan-6.json",
+    "icon": "📐"
+  },
+  {
+    "id": "psa1-ipas-5-qisthy-1",
+    "title": "Latihan PSA IPAS Kelas 5 Semester Ganjil",
+    "subject": "IPAS",
+    "grade": "5 SD",
+    "file": "psa1-ipas-5-qisthy-1.json",
+    "icon": "🪐"
+  },
+  {
+    "id": "psa1-barab-5",
+    "title": "Latihan PSA Bahasa Arab Kelas 5 Semester Ganjil",
+    "subject": "B. Arab",
+    "grade": "5 SD",
+    "file": "psa1-barab-5-qisthy-1.json",
+    "icon": "📝"
+  }
+]

@@ -1,0 +1,128 @@
+{
+  "subject": "Bahasa Arab",
+  "grade": "5 SD",
+  "title": "Latihan Soal SAS Ganjil Bahasa Arab Kelas 5",
+  "subtitle": "Latihan soal mencakup materi Isim Tafdhil, Manusia (An-Nas), Bentuk (Al-Asykal), Warna (Al-Alwan), dan Kalender Hijriyah sesuai kisi-kisi 2025/2026.",
+  "questions": [
+    {
+      "no": 1,
+      "text": "Isim Tafdhil adalah kata yang digunakan untuk menyatakan 'lebih' atau 'paling'. Bentuk Isim Tafdhil dari kata 'Kabirun' (كَبِيْرٌ - Besar) adalah...",
+      "options": [
+        "Akbaru (أَكْبَرُ)",
+        "Asgharu (أَصْغَرُ)",
+        "Ahsanu (أَحْسَنُ)",
+        "Atwalu (أَطْوَلُ)"
+      ],
+      "correct": 0,
+      "desc": "Isim Tafdhil mengikuti pola (wazan) 'Af'alu'. Jadi, 'Kabirun' (Besar) berubah menjadi 'Akbaru' (Lebih Besar)."
+    },
+    {
+      "no": 2,
+      "text": "Perhatikan kalimat berikut: 'Ahmad ... min Zaidin' (Ahmad lebih tinggi dari Zaid). Kata yang tepat untuk melengkapi titik-titik tersebut adalah...",
+      "options": [
+        "Jamilun (جَمِيْلٌ)",
+        "Thawilun (طَوِيْلٌ)",
+        "Athwalu (أَطْوَلُ)",
+        "Qashirun (قَصِيْرٌ)"
+      ],
+      "correct": 2,
+      "desc": "Kalimat perbandingan membutuhkan Isim Tafdhil. 'Athwalu' artinya 'Lebih tinggi', sedangkan kata lainnya adalah kata sifat biasa."
+    },
+    {
+      "no": 3,
+      "text": "Bahasa Arab dari anggota tubuh 'Hidung' adalah...",
+      "options": [
+        "Ainun (عَيْنٌ)",
+        "Anfun (أَنْفٌ)",
+        "Udzunun (أُذُنٌ)",
+        "Famun (فَمٌ)"
+      ],
+      "correct": 1,
+      "desc": "'Anfun' artinya Hidung. 'Ainun' = Mata, 'Udzunun' = Telinga, 'Famun' = Mulut."
+    },
+    {
+      "no": 4,
+      "text": "Dalam materi 'Al-Asykal' (Bentuk), bahasa Arab dari bentuk 'Segitiga' adalah...",
+      "options": [
+        "Mutsallatsun (مُثَلَّثٌ)",
+        "Murabba'un (مُرَبَّعٌ)",
+        "Mustathilun (مُسْتَطِيْلٌ)",
+        "Dairatun (دَائِرَةٌ)"
+      ],
+      "correct": 0,
+      "desc": "'Mutsallatsun' berasal dari kata 'tsalatsah' (tiga), yang berarti Segitiga. 'Murabba'un' = Persegi, 'Mustathilun' = Persegi Panjang, 'Dairatun' = Lingkaran."
+    },
+    {
+      "no": 5,
+      "text": "Benda yang memiliki bentuk 'Dairatun' (دَائِرَةٌ) atau 'Mustadirun' adalah...",
+      "options": [
+        "Buku tulis",
+        "Papan tulis",
+        "Bola",
+        "Pintu"
+      ],
+      "correct": 2,
+      "desc": "'Dairatun' atau 'Mustadirun' artinya Bulat/Lingkaran. Benda yang berbentuk bulat adalah Bola."
+    },
+    {
+      "no": 6,
+      "text": "Warna 'Merah' dalam bahasa Arab disebut...",
+      "options": [
+        "Ahmaru (أَحْمَرُ)",
+        "Akhdharu (أَخْضَرُ)",
+        "Azraqu (أَزْرَقُ)",
+        "Aswadu (أَسْوَدُ)"
+      ],
+      "correct": 0,
+      "desc": "'Ahmaru' adalah Merah. 'Akhdharu' = Hijau, 'Azraqu' = Biru, 'Aswadu' = Hitam."
+    },
+    {
+      "no": 7,
+      "text": "Warna yang identik dengan 'Daun' (Warqah) yang masih segar adalah...",
+      "options": [
+        "Abyadhu (أَبْيَضُ)",
+        "Akhdharu (أَخْضَرُ)",
+        "Ashfaru (أَصْفَرُ)",
+        "Asmaru (أَسْمَرُ)"
+      ],
+      "correct": 1,
+      "desc": "Daun segar umumnya berwarna Hijau, yang dalam bahasa Arab adalah 'Akhdharu'."
+    },
+    {
+      "no": 8,
+      "text": "Bulan pertama dalam kalender Hijriyah adalah...",
+      "options": [
+        "Safar",
+        "Rabiul Awal",
+        "Ramadhan",
+        "Muharram"
+      ],
+      "correct": 3,
+      "desc": "Urutan bulan Hijriyah dimulai dari Muharram, Safar, Rabiul Awal, dan seterusnya."
+    },
+    {
+      "no": 9,
+      "text": "Umat Islam merayakan Hari Raya Idul Fitri pada tanggal 1 di bulan...",
+      "options": [
+        "Syawal",
+        "Sya'ban",
+        "Rajab",
+        "Dzulhijjah"
+      ],
+      "correct": 0,
+      "desc": "Idul Fitri dirayakan pada tanggal 1 Syawal setelah selesai berpuasa di bulan Ramadhan."
+    },
+    {
+      "no": 10,
+      "text": "Susunan kalimat yang benar untuk 'Ini bulan Ramadhan' adalah...",
+      "options": [
+        "Hadza syahru Ramadhan",
+        "Hadzihi syahru Ramadhan",
+        "Dzalika yaumu Ramadhan",
+        "Tilka sanatun Ramadhan"
+      ],
+      "correct": 0,
+      "desc": "'Syahru' (Bulan) adalah kata benda mudzakkar (laki-laki), maka menggunakan kata tunjuk 'Hadza'. Jadi 'Hadza syahru Ramadhan'."
+    }
+  ]
+}

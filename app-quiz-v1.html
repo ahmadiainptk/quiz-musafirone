@@ -60,26 +60,36 @@
 </head>
 <body class="text-slate-800 flex flex-col min-h-screen">
 
-    <!-- NAVBAR -->
+    <!-- NAVBAR TOP (Tinggi h-16 = 64px) -->
     <nav class="bg-white border-b border-slate-200 sticky top-0 z-50 h-16">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
             <div class="flex justify-between items-center h-full">
+                <!-- Kiri: Logo & Nama Aplikasi -->
                 <div class="flex items-center gap-3 cursor-pointer" onclick="window.location.reload()">
                     <div class="flex-shrink-0 flex items-center justify-center w-10 h-10 bg-blue-600 rounded-lg text-white">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                        <!-- Simple Shield Logo -->
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                        </svg>
                     </div>
                     <span class="font-bold text-xl text-slate-800 tracking-tight">Bimbel MusafirONE</span>
                 </div>
+
+                <!-- Kanan: User Dropdown -->
                 <div class="flex items-center">
                     <div class="relative ml-3">
-                        <button type="button" onclick="toggleDropdown()" class="flex items-center max-w-xs text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 bg-slate-100 hover:bg-slate-200 px-3 py-2 transition" id="user-menu-button">
-                            <div class="h-8 w-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold mr-2">B</div>
-                            <span class="font-medium text-slate-700 mr-1">Binan</span>
-                            <svg class="h-4 w-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                        </button>
-                        <div id="user-dropdown" class="hidden origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu">
-                            <a href="#" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Profil</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50">Logout</a>
+                        <div>
+                            <button type="button" onclick="toggleDropdown()" class="flex items-center max-w-xs text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 bg-slate-100 hover:bg-slate-200 px-3 py-2 transition" id="user-menu-button">
+                                <span class="sr-only">Open user menu</span>
+                                <div class="h-8 w-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold mr-2">B</div>
+                                <span class="font-medium text-slate-700 mr-1">Binan</span>
+                                <svg class="h-4 w-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            </button>
+                        </div>
+                        <!-- Dropdown menu -->
+                        <div id="user-dropdown" class="hidden origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none transform transition-all duration-200" role="menu">
+                            <a href="#" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50" role="menuitem">Profil</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50" role="menuitem">Logout</a>
                         </div>
                     </div>
                 </div>
@@ -87,19 +97,25 @@
         </div>
     </nav>
 
-    <!-- HEADER UJIAN (Hidden on Library Screen) -->
+    <!-- HEADER UJIAN (Full Width & Sticky below Navbar) -->
+    <!-- top-16 menyesuaikan dengan tinggi Navbar (h-16/64px) -->
     <header id="exam-header" class="bg-gradient-to-r from-blue-700 to-blue-800 text-white shadow-md sticky top-16 z-40 w-full hidden">
+        <!-- Container Inner Header agar lurus dengan konten Navbar (max-w-7xl) -->
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
             <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <div class="flex-1">
                     <h1 class="text-xl md:text-2xl font-bold leading-tight" id="exam-title">...</h1>
                     <p class="text-blue-200 text-sm mt-1 leading-relaxed" id="exam-subtitle">...</p>
                 </div>
+                
                 <div class="flex items-center gap-3 self-end md:self-center">
+                    <!-- Stopwatch Widget -->
                     <div class="bg-white/10 px-4 py-2 rounded-lg border border-white/20 text-center min-w-[90px] backdrop-blur-sm">
                         <span class="text-xs uppercase tracking-wider opacity-70">Waktu</span>
                         <div class="text-xl font-bold font-mono" id="timer-display">00:00</div>
                     </div>
+                    
+                    <!-- Answered Widget -->
                     <div class="bg-white/10 px-4 py-2 rounded-lg border border-white/20 text-center backdrop-blur-sm">
                         <span class="text-xs uppercase tracking-wider opacity-70">Terjawab</span>
                         <div class="text-xl font-bold"><span id="answered-badge">0</span>/<span id="total-badge">0</span></div>
@@ -148,7 +164,7 @@
 
         <!-- FOOTER CONTROLS -->
         <div id="controls" class="fixed bottom-0 left-0 w-full bg-white border-t border-slate-200 p-4 shadow-[0_-4px_20px_rgba(0,0,0,0.1)] hidden z-40">
-            <div class="max-w-4xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+            <div id="controls-content" class="max-w-4xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
                 <div class="text-sm text-slate-500 font-medium flex items-center gap-2">
                     <span id="warning-text">⚠️ Masih ada soal kosong!</span>
                 </div>
@@ -165,18 +181,27 @@
         <div class="bg-white rounded-2xl p-8 max-w-md w-full text-center shadow-2xl animate-[fadeIn_0.3s_ease-out]">
             <h2 class="text-2xl font-bold mb-2 text-slate-800">Hasil Ujian</h2>
             <div class="text-7xl font-black text-blue-600 mb-6 tracking-tight" id="final-score">0</div>
+            
             <div class="mb-6 p-2 bg-slate-100 rounded-lg inline-block">
                 <span class="text-slate-500 text-xs font-bold uppercase tracking-wide">Waktu Pengerjaan</span>
                 <div class="text-lg font-mono font-bold text-slate-700" id="final-time">00:00</div>
             </div>
+
             <div class="grid grid-cols-2 gap-4 mb-8">
-                <div class="bg-green-50 text-green-700 p-3 rounded-xl border border-green-200 font-bold"><div class="text-xs uppercase opacity-70">Benar</div><span id="final-correct" class="text-xl">0</span></div>
-                <div class="bg-red-50 text-red-700 p-3 rounded-xl border border-red-200 font-bold"><div class="text-xs uppercase opacity-70">Salah</div><span id="final-wrong" class="text-xl">0</span></div>
+                <div class="bg-green-50 text-green-700 p-3 rounded-xl border border-green-200 font-bold">
+                    <div class="text-xs uppercase opacity-70">Benar</div>
+                    <span id="final-correct" class="text-xl">0</span>
+                </div>
+                <div class="bg-red-50 text-red-700 p-3 rounded-xl border border-red-200 font-bold">
+                    <div class="text-xs uppercase opacity-70">Salah</div>
+                    <span id="final-wrong" class="text-xl">0</span>
+                </div>
             </div>
             <button onclick="closeResult()" class="w-full bg-slate-800 text-white py-3.5 rounded-xl font-bold hover:bg-slate-900 transition">Lihat Pembahasan</button>
         </div>
     </div>
 
+    <!-- Confirmation Modal -->
     <div id="confirm-modal" class="fixed inset-0 bg-black/50 z-[70] hidden flex items-center justify-center p-4 backdrop-blur-sm">
         <div class="bg-white rounded-xl p-6 max-w-sm w-full shadow-2xl">
             <h3 class="text-lg font-bold text-slate-900 mb-2">Kumpulkan Jawaban?</h3>
@@ -203,9 +228,14 @@
 function toggleDropdown() {
     document.getElementById('user-dropdown').classList.toggle('hidden');
 }
+
+// Close dropdown when clicking outside
 window.onclick = function(event) {
     if (!event.target.closest('#user-menu-button')) {
-        document.getElementById('user-dropdown').classList.add('hidden');
+        const dropdown = document.getElementById('user-dropdown');
+        if (!dropdown.classList.contains('hidden')) {
+            dropdown.classList.add('hidden');
+        }
     }
 }
 
@@ -259,7 +289,7 @@ window.onload = async function() {
     } catch (error) {
         loader.classList.add('hidden');
         console.error(error);
-        // Fallback jika fetch gagal (misal dibuka langsung tanpa server)
+        // Fallback jika fetch gagal
         grid.innerHTML = `
             <div class="col-span-1 md:col-span-2 bg-yellow-50 border border-yellow-200 p-4 rounded-xl text-yellow-800 text-sm text-center">
                 <p class="font-bold">⚠️ Mode Offline / Lokal</p>
@@ -291,6 +321,7 @@ async function loadExamFromLibrary(filename) {
 function loadLocalFile(input) {
     const file = input.files[0];
     if (!file) return;
+
     const reader = new FileReader();
     reader.onload = function(e) {
         try {
@@ -304,14 +335,17 @@ function loadLocalFile(input) {
 }
 
 function initGame(data) {
+    // --- UPDATED LOGIC FOR NEW JSON STRUCTURE ---
     if (data.questions && Array.isArray(data.questions)) {
+        // Struktur Baru (Object dengan metadata)
         questions = data.questions;
         document.getElementById('exam-title').innerText = data.title || "Ujian Tanpa Judul";
         document.getElementById('exam-subtitle').innerText = data.subtitle || "Silakan kerjakan dengan teliti.";
     } else if (Array.isArray(data)) {
+        // Struktur Lama (Array langsung) - Backward Compatibility
         questions = data;
         document.getElementById('exam-title').innerText = "Aplikasi Ujian";
-        document.getElementById('exam-subtitle').innerText = "Mode: Legacy Array";
+        document.getElementById('exam-subtitle').innerText = "Mode: Legacy Array Loader";
     } else {
         alert("Struktur data tidak dikenali!");
         return;
@@ -328,6 +362,7 @@ function initGame(data) {
     shuffledQuestions = [];
     isSubmitted = false;
     
+    // Update total soal di header
     document.getElementById('total-badge').innerText = questions.length;
     
     startQuiz();
@@ -338,6 +373,7 @@ function startTimer() {
     startTime = Date.now();
     timerInterval = setInterval(updateTimer, 1000);
 }
+
 function updateTimer() {
     const now = Date.now();
     const elapsed = Math.floor((now - startTime) / 1000);
@@ -348,9 +384,11 @@ function updateTimer() {
     document.getElementById('timer-display').innerText = timeString;
     document.getElementById('final-time').innerText = timeString;
 }
+
 function stopTimer() { clearInterval(timerInterval); }
 
 // --- ENGINE ---
+
 function shuffle(array, correctIndex) {
     const originalCorrect = array[correctIndex];
     let currentIndex = array.length, randomIndex;
@@ -364,11 +402,13 @@ function shuffle(array, correctIndex) {
 
 function startQuiz() {
     if(questions.length === 0) return;
+
     shuffledQuestions = questions.map(q => {
         const options = [...q.options];
         const newCorrect = shuffle(options, q.correct);
         return { ...q, options: options, correct: newCorrect };
     });
+    
     startTimer();
     renderQuestions();
     window.scrollTo(0,0);
@@ -380,7 +420,9 @@ function renderQuestions() {
     container.innerHTML = shuffledQuestions.map((q, i) => `
         <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200" id="card-${i}">
             <div class="flex items-start gap-4">
-                <div class="bg-blue-100 text-blue-700 font-bold w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 border border-blue-200 text-lg">${q.no}</div>
+                <div class="bg-blue-100 text-blue-700 font-bold w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 border border-blue-200 text-lg">
+                    ${q.no}
+                </div>
                 <div class="w-full">
                     <p class="text-lg font-semibold mb-4 text-slate-800">${q.text}</p>
                     ${q.visual ? `<div class="mb-6 flex justify-center w-full overflow-hidden">${q.visual}</div>` : ''}
@@ -406,65 +448,101 @@ function selectOption(qIndex, optIndex) {
     userAnswers[qIndex] = optIndex;
     const group = document.getElementById(`options-group-${qIndex}`);
     const cards = group.getElementsByClassName('option-card');
+    
     for (let card of cards) {
         card.classList.remove('option-selected');
         const dot = card.querySelector('.dot');
-        dot.style.backgroundColor = ''; dot.style.borderColor = ''; dot.style.color = ''; dot.innerText = '';
+        dot.style.backgroundColor = '';
+        dot.style.borderColor = '';
+        dot.style.color = '';
+        dot.innerText = '';
     }
+    
     const selected = cards[optIndex];
     selected.classList.add('option-selected');
     const selectedDot = selected.querySelector('.dot');
-    selectedDot.style.backgroundColor = '#0ea5e9'; selectedDot.style.borderColor = '#0ea5e9'; selectedDot.style.color = 'white';
+    selectedDot.style.backgroundColor = '#0ea5e9';
+    selectedDot.style.borderColor = '#0ea5e9';
+    selectedDot.style.color = 'white';
+    
     updateProgress();
 }
 
 function updateProgress() {
     const count = userAnswers.filter(a => a !== null).length;
     document.getElementById('answered-badge').innerText = count;
-    if(count === questions.length) document.getElementById('warning-text').innerHTML = "<span class='text-green-600 font-bold'>✓ Siap Kirim!</span>";
+    const warning = document.getElementById('warning-text');
+    if(count === questions.length) warning.innerHTML = "<span class='text-green-600 font-bold'>✓ Siap Kirim!</span>";
 }
 
-function submitQuiz() { document.getElementById('confirm-modal').classList.remove('hidden'); }
+function submitQuiz() {
+    document.getElementById('confirm-modal').classList.remove('hidden');
+}
 
 function processSubmission() {
     document.getElementById('confirm-modal').classList.add('hidden');
     stopTimer();
     isSubmitted = true;
     let score = 0, correct = 0, wrong = 0;
+    
     shuffledQuestions.forEach((q, i) => {
         const selected = userAnswers[i];
         const feedback = document.getElementById(`feedback-${i}`);
         const cards = document.querySelectorAll(`#options-group-${i} .option-card`);
         feedback.classList.remove('hidden');
+        
         cards.forEach((card, idx) => {
-            card.style.cursor = 'default'; card.onclick = null;
+            card.style.cursor = 'default';
+            card.onclick = null;
             if (idx === q.correct) {
                 card.classList.add('correct-mode');
                 const dot = card.querySelector('.dot');
-                dot.style.backgroundColor = '#22c55e'; dot.style.borderColor = '#22c55e'; dot.style.color = 'white'; dot.innerText = '✓';
+                dot.style.backgroundColor = '#22c55e';
+                dot.style.borderColor = '#22c55e';
+                dot.style.color = 'white';
+                dot.innerText = '✓';
             } else if (idx === selected) {
                 card.classList.add('wrong-mode');
                 const dot = card.querySelector('.dot');
-                dot.style.backgroundColor = '#ef4444'; dot.style.borderColor = '#ef4444'; dot.style.color = 'white'; dot.innerText = '✕';
+                dot.style.backgroundColor = '#ef4444';
+                dot.style.borderColor = '#ef4444';
+                dot.style.color = 'white';
+                dot.innerText = '✕';
             }
         });
         if (selected === q.correct) { score++; correct++; feedback.classList.add('bg-green-50'); } else { wrong++; feedback.classList.add('bg-red-50'); }
     });
+    
     document.getElementById('final-score').innerText = Math.round((score / questions.length) * 100);
     document.getElementById('final-correct').innerText = correct;
     document.getElementById('final-wrong').innerText = wrong;
     document.getElementById('result-modal').classList.remove('hidden');
-    document.getElementById('controls').classList.add('hidden');
+    
+    // --- UPDATED LOGIC: CHANGE CONTROLS TO "BACK BUTTON" ---
+    const controls = document.getElementById('controls-content');
+    controls.innerHTML = `
+        <div class="flex items-center gap-2 text-slate-500 font-medium">
+            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <span>Mode Pembahasan</span>
+        </div>
+        <button onclick="window.location.reload()" class="bg-slate-800 text-white px-6 py-3 rounded-lg font-bold hover:bg-slate-900 transition shadow-md flex items-center gap-2">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+            <span>Kembali ke Menu</span>
+        </button>
+    `;
 }
 
+// --- FIX: UPDATED closeResult function ---
 function closeResult() {
     document.getElementById('result-modal').classList.add('hidden');
-    // Kembali ke library mode jika diinginkan, atau scroll top
-    window.location.reload(); // Reload untuk memilih soal baru
+    window.scrollTo({top:0, behavior:'smooth'});
+    // DO NOT RELOAD HERE. The controls bar is already updated by processSubmission to show "Kembali ke Menu"
 }
 
-// Render KaTeX
-document.addEventListener("DOMContentLoaded", () => {});
+// Render KaTeX (Logic for rendering math after questions are loaded)
+document.addEventListener("DOMContentLoaded", () => {
+    // Math rendering is handled inside renderQuestions() now
+});
 </script>
 </body>
 </html>

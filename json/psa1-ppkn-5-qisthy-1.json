@@ -1,0 +1,608 @@
+{
+  "subject": "Pendidikan Pancasila",
+  "grade": "5 SD",
+  "title": "Latihan Soal SAS Ganjil Pendidikan Pancasila Kelas 5",
+  "subtitle": "Paket 50 soal lengkap mencakup Sejarah Pancasila, Norma, Hak, dan Kewajiban sesuai kisi-kisi SDIT Al-Mumtaz.",
+  "questions": [
+    {
+      "no": 1,
+      "text": "Pada tanggal 29 Mei 1945, seorang tokoh mengusulkan rumusan dasar negara yang berisi: (1) Peri Kebangsaan, (2) Peri Kemanusiaan, (3) Peri Ketuhanan, (4) Peri Kerakyatan, dan (5) Kesejahteraan Rakyat. Tokoh tersebut adalah...",
+      "options": [
+        "Ir. Soekarno",
+        "Moh. Yamin",
+        "Mr. Soepomo",
+        "Drs. Moh. Hatta"
+      ],
+      "correct": 1,
+      "desc": "Moh. Yamin menyampaikan usulan dasar negara secara lisan pada sidang BPUPKI tanggal 29 Mei 1945."
+    },
+    {
+      "no": 2,
+      "text": "Peran utama Ir. Soekarno dalam sidang BPUPKI tanggal 1 Juni 1945 adalah...",
+      "options": [
+        "Menjadi ketua sidang BPUPKI",
+        "Mengusulkan nama 'Pancasila' sebagai dasar negara",
+        "Menulis naskah Proklamasi",
+        "Membubarkan BPUPKI"
+      ],
+      "correct": 1,
+      "desc": "Ir. Soekarno menyampaikan pidato tentang lima dasar negara dan mengusulkan nama 'Pancasila' (lima dasar) atas saran ahli bahasa."
+    },
+    {
+      "no": 3,
+      "text": "Tokoh perumus Pancasila yang dikenal sebagai 'Bapak Konstitusi' dan menyampaikan usulan tentang persatuan, kekeluargaan, dan keseimbangan lahir batin pada tanggal 31 Mei 1945 adalah...",
+      "options": [
+        "Mr. Soepomo",
+        "Moh. Yamin",
+        "H. Agus Salim",
+        "Abikoesno Tjokrosoejoso"
+      ],
+      "correct": 0,
+      "desc": "Mr. Soepomo menyampaikan gagasan negara integralistik (persatuan) dan kekeluargaan dalam pidatonya."
+    },
+    {
+      "no": 4,
+      "text": "Urutan peristiwa sejarah kelahiran Pancasila yang benar adalah...",
+      "options": [
+        "Sidang BPUPKI I - Piagam Jakarta - Sidang PPKI - Proklamasi",
+        "Sidang BPUPKI I - Panitia Sembilan (Piagam Jakarta) - Proklamasi - Penetapan Pancasila (Sidang PPKI)",
+        "Proklamasi - Sidang BPUPKI - Sidang PPKI",
+        "Piagam Jakarta - Sidang BPUPKI - Sidang PPKI"
+      ],
+      "correct": 1,
+      "desc": "Urutannya: Rumusan awal di Sidang BPUPKI (Mei-Juni), Pematangan di Panitia Sembilan/Piagam Jakarta (22 Juni), Kemerdekaan (17 Agt), Pengesahan Pancasila di Sidang PPKI (18 Agt)."
+    },
+    {
+      "no": 5,
+      "text": "Pengaruh lahirnya Pancasila bagi bangsa Indonesia adalah...",
+      "options": [
+        "Indonesia menjadi negara yang ditakuti dunia",
+        "Indonesia memiliki pedoman hidup dan pemersatu bangsa",
+        "Rakyat Indonesia menjadi terpecah belah",
+        "Indonesia dapat menjajah negara lain"
+      ],
+      "correct": 1,
+      "desc": "Pancasila berfungsi sebagai dasar negara, pandangan hidup, dan alat pemersatu bangsa yang majemuk."
+    },
+    {
+      "no": 6,
+      "text": "Hikmah yang dapat kita ambil dari mempelajari sejarah kelahiran Pancasila adalah...",
+      "options": [
+        "Mengetahui cara berperang",
+        "Memahami semangat persatuan dan rela berkorban para pahlawan",
+        "Menghafal nama-nama tokoh saja",
+        "Mengetahui keburukan masa lalu"
+      ],
+      "correct": 1,
+      "desc": "Sejarah perumusan Pancasila mengajarkan nilai juang, musyawarah, toleransi, dan menempatkan kepentingan bangsa di atas golongan."
+    },
+    {
+      "no": 7,
+      "text": "Nilai luhur yang tercermin dari perubahan sila pertama Piagam Jakarta ('...dengan kewajiban menjalankan syariat Islam...') menjadi 'Ketuhanan Yang Maha Esa' adalah...",
+      "options": [
+        "Nilai Keadilan",
+        "Nilai Toleransi dan Kebersamaan demi keutuhan bangsa",
+        "Nilai Kemanusiaan",
+        "Nilai Demokrasi"
+      ],
+      "correct": 1,
+      "desc": "Para tokoh Islam berjiwa besar menerima perubahan tersebut demi menjaga persatuan bangsa Indonesia yang beragam agamanya."
+    },
+    {
+      "no": 8,
+      "text": "Dokumen sejarah yang memuat rumusan dasar negara hasil kerja Panitia Sembilan pada tanggal 22 Juni 1945 disebut...",
+      "options": [
+        "Piagam Jakarta (Jakarta Charter)",
+        "Teks Proklamasi",
+        "Dekrit Presiden",
+        "Supersemar"
+      ],
+      "correct": 0,
+      "desc": "Piagam Jakarta adalah naskah awal Pembukaan UUD 1945 yang memuat rumusan Pancasila sebelum disempurnakan."
+    },
+    {
+      "no": 9,
+      "text": "Saat bermain, kamu melihat temanmu yang berbeda suku diejek oleh teman lain. Sikap yang benar adalah...",
+      "options": [
+        "Ikut mengejek agar terlihat kompak",
+        "Mendiamkan saja karena bukan urusan kita",
+        "Menasihati teman yang mengejek dan menghibur teman yang diejek",
+        "Melaporkan ke polisi"
+      ],
+      "correct": 2,
+      "desc": "Sikap ini mencerminkan nilai kemanusiaan dan persatuan, serta berani membela kebenaran."
+    },
+    {
+      "no": 10,
+      "text": "Manusia disebut sebagai makhluk sosial, yang artinya...",
+      "options": [
+        "Manusia bisa hidup sendiri tanpa bantuan orang lain",
+        "Manusia selalu membutuhkan bantuan dan berinteraksi dengan orang lain",
+        "Manusia hanya memikirkan dirinya sendiri",
+        "Manusia tidak perlu aturan"
+      ],
+      "correct": 1,
+      "desc": "Sebagai makhluk sosial (zoon politicon), manusia secara kodrati harus hidup bermasyarakat dan saling tolong-menolong."
+    },
+    {
+      "no": 11,
+      "text": "Di kelasmu ada teman yang sedang berpuasa, sedangkan kamu tidak. Sikapmu yang tepat adalah...",
+      "options": [
+        "Makan dan minum di depannya dengan sengaja",
+        "Memaksanya untuk membatalkan puasa",
+        "Menghormatinya dengan tidak makan/minum secara mencolok di depannya",
+        "Ikut berpuasa meskipun tidak kuat"
+      ],
+      "correct": 2,
+      "desc": "Ini adalah bentuk toleransi beragama dalam kehidupan sehari-hari."
+    },
+    {
+      "no": 12,
+      "text": "Tindakan berikut yang mencerminkan sikap gotong royong di lingkungan masyarakat adalah...",
+      "options": [
+        "Mengerjakan PR teman di sekolah",
+        "Kerja bakti membersihkan selokan kampung",
+        "Membantu teman menyontek saat ujian",
+        "Memberi uang kepada pengemis"
+      ],
+      "correct": 1,
+      "desc": "Kerja bakti adalah kegiatan bersama untuk kepentingan umum yang menjadi ciri khas gotong royong."
+    },
+    {
+      "no": 13,
+      "text": "Memberikan sumbangan kepada korban bencana alam merupakan pengamalan Pancasila sila ke-...",
+      "options": [
+        "Satu (Ketuhanan)",
+        "Dua (Kemanusiaan)",
+        "Tiga (Persatuan)",
+        "Empat (Kerakyatan)"
+      ],
+      "correct": 1,
+      "desc": "Sila ke-2 (Kemanusiaan yang adil dan beradab) mengandung nilai gemar melakukan kegiatan kemanusiaan."
+    },
+    {
+      "no": 14,
+      "text": "Contoh penerapan nilai sila ke-4 'Kerakyatan yang dipimpin oleh hikmat kebijaksanaan...' di lingkungan keluarga adalah...",
+      "options": [
+        "Memaksakan kehendak kepada adik",
+        "Beribadah tepat waktu",
+        "Bermusyawarah menentukan tujuan liburan keluarga",
+        "Membantu ibu memasak"
+      ],
+      "correct": 2,
+      "desc": "Musyawarah untuk mufakat adalah inti dari pengamalan sila ke-4."
+    },
+    {
+      "no": 15,
+      "text": "Teks: 'Setiap hari Senin, siswa SDIT Al-Mumtaz mengikuti upacara bendera dengan khidmat.' Kegiatan tersebut bertujuan untuk...",
+      "options": [
+        "Menghindari hukuman guru",
+        "Menumbuhkan rasa cinta tanah air dan nasionalisme",
+        "Mencari perhatian kepala sekolah",
+        "Berjemur di bawah matahari"
+      ],
+      "correct": 1,
+      "desc": "Upacara bendera adalah wujud pengamalan nilai Persatuan Indonesia (Sila ke-3) dan cinta tanah air."
+    },
+    {
+      "no": 16,
+      "text": "Teks: 'Rani selalu menyisihkan uang jajannya untuk ditabung. Ia tidak suka membeli barang-barang mahal yang tidak perlu.' Perilaku Rani mencerminkan pengamalan sila ke-...",
+      "options": [
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "correct": 3,
+      "desc": "Hidup hemat dan tidak boros adalah butir pengamalan sila ke-5 (Keadilan Sosial)."
+    },
+    {
+      "no": 17,
+      "text": "Gambar yang TIDAK sesuai dengan pengamalan sila pertama Pancasila adalah...",
+      "options": [
+        "Gambar orang sedang sholat berjamaah",
+        "Gambar keluarga sedang berdoa sebelum makan",
+        "Gambar siswa sedang menyontek saat ujian",
+        "Gambar kerukunan antar umat beragama"
+      ],
+      "correct": 2,
+      "desc": "Menyontek adalah perbuatan tidak jujur yang bertentangan dengan nilai agama (Sila 1) dan integritas."
+    },
+    {
+      "no": 18,
+      "text": "Jika disajikan gambar pemilihan ketua kelas dengan cara pemungutan suara (voting), kegiatan tersebut merupakan pengamalan sila berlambang...",
+      "options": [
+        "Bintang",
+        "Pohon Beringin",
+        "Kepala Banteng",
+        "Padi dan Kapas"
+      ],
+      "correct": 2,
+      "desc": "Pemilihan ketua kelas adalah bentuk demokrasi (Sila ke-4), lambangnya Kepala Banteng."
+    },
+    {
+      "no": 19,
+      "text": "Istilah 'Bhinneka Tunggal Ika' memiliki makna yang berkaitan erat dengan sila ke-...",
+      "options": [
+        "Satu",
+        "Dua",
+        "Tiga",
+        "Lima"
+      ],
+      "correct": 2,
+      "desc": "Bhinneka Tunggal Ika (Berbeda-beda tetapi tetap satu) adalah semboyan persatuan (Sila ke-3)."
+    },
+    {
+      "no": 20,
+      "text": "Daftar kegiatan:\n1. Berdoa sebelum belajar\n2. Melaksanakan piket kelas\n3. Menghormati guru\nKegiatan tersebut adalah contoh pengamalan nilai Pancasila di lingkungan...",
+      "options": [
+        "Rumah",
+        "Sekolah",
+        "Masyarakat",
+        "Negara"
+      ],
+      "correct": 1,
+      "desc": "Semua kegiatan tersebut terjadi dalam konteks kegiatan belajar mengajar di sekolah."
+    },
+    {
+      "no": 21,
+      "text": "Cara mengekspresikan rasa cinta tanah air sebagai seorang pelajar adalah...",
+      "options": [
+        "Menggunakan produk luar negeri agar terlihat keren",
+        "Belajar dengan sungguh-sungguh dan berprestasi",
+        "Mencoret-coret fasilitas umum",
+        "Sering membolos sekolah"
+      ],
+      "correct": 1,
+      "desc": "Belajar sungguh-sungguh adalah cara pelajar mengisi kemerdekaan dan mencintai negaranya."
+    },
+    {
+      "no": 22,
+      "text": "Contoh kegiatan gotong royong di lingkungan rumah adalah...",
+      "options": [
+        "Ibu memasak, ayah mencuci mobil, dan anak menyapu halaman bersama-sama",
+        "Ayah bekerja di kantor seharian",
+        "Anak bermain game saat ibu sibuk",
+        "Tetangga sedang membangun rumah"
+      ],
+      "correct": 0,
+      "desc": "Kerja sama seluruh anggota keluarga membersihkan/mengurus rumah adalah gotong royong lingkup keluarga."
+    },
+    {
+      "no": 23,
+      "text": "Melaksanakan karakter 'Jujur' sangat penting karena...",
+      "options": [
+        "Agar ditakuti teman",
+        "Agar mendapatkan hadiah uang",
+        "Agar dipercaya orang lain dan hati menjadi tenang",
+        "Agar bisa membohongi orang lain di kemudian hari"
+      ],
+      "correct": 2,
+      "desc": "Kejujuran adalah pondasi kepercayaan (trust) dalam hubungan sosial."
+    },
+    {
+      "no": 24,
+      "text": "Adab berkomunikasi yang baik sesuai pengamalan sila ke-2 (Kemanusiaan yang adil dan beradab) adalah...",
+      "options": [
+        "Berbicara kasar dan membentak",
+        "Memotong pembicaraan orang lain",
+        "Berbicara sopan, santun, dan tidak menyakiti hati orang lain",
+        "Hanya mau berbicara dengan orang kaya"
+      ],
+      "correct": 2,
+      "desc": "Beradab berarti memiliki etika dan sopan santun dalam berinteraksi."
+    },
+    {
+      "no": 25,
+      "text": "Kita harus menjaga persatuan dan kesatuan bangsa agar...",
+      "options": [
+        "Bangsa Indonesia mudah diadu domba",
+        "Tercipta kehidupan yang damai, aman, dan tidak terpecah belah",
+        "Hanya satu suku yang berkuasa",
+        "Wilayah Indonesia semakin sempit"
+      ],
+      "correct": 1,
+      "desc": "Tujuan persatuan adalah menciptakan stabilitas, kedamaian, dan keutuhan negara."
+    },
+    {
+      "no": 26,
+      "text": "Alasan utama kita harus mematuhi peraturan di jalan raya adalah...",
+      "options": [
+        "Takut ditilang polisi",
+        "Agar jalanan menjadi sepi",
+        "Menjaga keselamatan diri sendiri dan orang lain",
+        "Agar bisa kebut-kebutan"
+      ],
+      "correct": 2,
+      "desc": "Tujuan utama aturan lalu lintas adalah keselamatan (safety) dan ketertiban."
+    },
+    {
+      "no": 27,
+      "text": "Contoh kegiatan yang mencerminkan kerja sama dalam tim olahraga adalah...",
+      "options": [
+        "Ingin mencetak gol sendiri dan tidak mau mengoper bola",
+        "Saling mengoper bola dan membagi tugas sesuai posisi",
+        "Marah-marah saat teman melakukan kesalahan",
+        "Diam saja di lapangan"
+      ],
+      "correct": 1,
+      "desc": "Kerja sama tim (teamwork) membutuhkan koordinasi dan saling dukung."
+    },
+    {
+      "no": 28,
+      "text": "Perbedaan utama antara norma hukum dan norma kesopanan terletak pada...",
+      "options": [
+        "Tujuannya",
+        "Sumber dan sanksinya",
+        "Orang yang membuatnya",
+        "Waktu berlakunya"
+      ],
+      "correct": 1,
+      "desc": "Norma hukum bersumber dari negara dengan sanksi tegas (penjara/denda), norma kesopanan dari kebiasaan masyarakat dengan sanksi sosial (cemoohan)."
+    },
+    {
+      "no": 29,
+      "text": "Jika seseorang melanggar norma agama (misalnya tidak beribadah), sanksi yang akan diterima berasal dari...",
+      "options": [
+        "Polisi",
+        "Tuhan YME (Dosa)",
+        "Ketua RT",
+        "Guru"
+      ],
+      "correct": 1,
+      "desc": "Norma agama mengatur hubungan manusia dengan Tuhan, sanksinya berupa dosa/pembalasan di akhirat."
+    },
+    {
+      "no": 30,
+      "text": "Dampak jika seorang siswa sering melanggar norma/aturan sekolah (misalnya sering terlambat) adalah...",
+      "options": [
+        "Prestasi belajarnya meningkat",
+        "Disenangi oleh guru",
+        "Mendapat sanksi poin/hukuman dan tertinggal pelajaran",
+        "Menjadi ketua kelas"
+      ],
+      "correct": 2,
+      "desc": "Pelanggaran aturan sekolah membawa konsekuensi sanksi disiplin dan kerugian akademis."
+    },
+    {
+      "no": 31,
+      "text": "Contoh penerapan norma kesopanan di masyarakat adalah...",
+      "options": [
+        "Memakai helm saat naik motor",
+        "Mengucapkan 'permisi' saat berjalan melewati orang tua",
+        "Membayar pajak tepat waktu",
+        "Melaksanakan sholat lima waktu"
+      ],
+      "correct": 1,
+      "desc": "Mengucapkan permisi adalah tata krama/sopan santun."
+    },
+    {
+      "no": 32,
+      "text": "Bentuk pelanggaran norma di sekolah yang tidak boleh ditiru adalah...",
+      "options": [
+        "Datang tepat waktu",
+        "Memakai seragam lengkap",
+        "Membuang sampah sembarangan di laci meja",
+        "Mengerjakan piket kelas"
+      ],
+      "correct": 2,
+      "desc": "Membuang sampah sembarangan melanggar aturan kebersihan dan ketertiban sekolah."
+    },
+    {
+      "no": 33,
+      "text": "Seorang pengendara motor menerobos lampu merah. Ia melanggar norma...",
+      "options": [
+        "Agama",
+        "Kesusilaan",
+        "Kesopanan",
+        "Hukum"
+      ],
+      "correct": 3,
+      "desc": "Aturan lalu lintas termasuk dalam hukum tertulis negara (UU Lalu Lintas)."
+    },
+    {
+      "no": 34,
+      "text": "Jenis norma yang sanksinya berupa perasaan bersalah, malu, atau penyesalan dari dalam hati nurani sendiri adalah norma...",
+      "options": [
+        "Agama",
+        "Kesusilaan",
+        "Hukum",
+        "Adat"
+      ],
+      "correct": 1,
+      "desc": "Norma kesusilaan bersumber dari hati nurani manusia tentang baik/buruk."
+    },
+    {
+      "no": 35,
+      "text": "Pengaruh norma terhadap perilaku individu adalah...",
+      "options": [
+        "Membuat orang merasa tertekan",
+        "Mengatur tingkah laku agar tertib dan teratur",
+        "Membatasi kebebasan berekspresi secara total",
+        "Membuat orang menjadi takut beraktivitas"
+      ],
+      "correct": 1,
+      "desc": "Fungsi norma adalah sebagai pedoman tingkah laku untuk menciptakan ketertiban sosial."
+    },
+    {
+      "no": 36,
+      "text": "Hak yang dimiliki setiap anggota keluarga di rumah adalah...",
+      "options": [
+        "Mencari nafkah",
+        "Mendapatkan kasih sayang dan perlindungan",
+        "Membayar tagihan listrik",
+        "Memperbaiki genteng bocor"
+      ],
+      "correct": 1,
+      "desc": "Setiap anggota keluarga (terutama anak) berhak mendapat kasih sayang. Mencari nafkah kewajiban orang tua."
+    },
+    {
+      "no": 37,
+      "text": "Kewajiban utama seorang anak di rumah adalah...",
+      "options": [
+        "Bekerja mencari uang",
+        "Bermain sepanjang hari",
+        "Berbakti kepada orang tua dan belajar",
+        "Mengatur keuangan keluarga"
+      ],
+      "correct": 2,
+      "desc": "Birrul walidain (berbakti) adalah kewajiban utama anak."
+    },
+    {
+      "no": 38,
+      "text": "Contoh kewajiban di lingkungan sekolah adalah...",
+      "options": [
+        "Mendapatkan nilai bagus",
+        "Menggunakan fasilitas perpustakaan",
+        "Mematuhi tata tertib sekolah dan menghormati guru",
+        "Mendapat bimbingan dari guru"
+      ],
+      "correct": 2,
+      "desc": "Opsi A, B, D adalah hak. Mematuhi tata tertib adalah kewajiban."
+    },
+    {
+      "no": 39,
+      "text": "Pernyataan yang benar tentang 'Hak' adalah...",
+      "options": [
+        "Sesuatu yang harus kita kerjakan",
+        "Sesuatu yang harus kita hindari",
+        "Sesuatu yang mutlak menjadi milik kita dan penggunaannya tergantung kita",
+        "Beban yang memberatkan"
+      ],
+      "correct": 2,
+      "desc": "Definisi Hak adalah kuasa untuk menerima atau melakukan sesuatu yang semestinya diterima."
+    },
+    {
+      "no": 40,
+      "text": "Saat melihat nenek kesulitan menyeberang jalan, sikap yang sesuai nilai Pancasila (Sila ke-2) adalah...",
+      "options": [
+        "Pura-pura tidak melihat",
+        "Menertawakan nenek tersebut",
+        "Segera membantu menyeberangkan nenek tersebut",
+        "Memarahi pengendara yang lewat"
+      ],
+      "correct": 2,
+      "desc": "Membantu orang lemah adalah wujud kemanusiaan yang beradab."
+    },
+    {
+      "no": 41,
+      "text": "Hal penting yang harus diingat tentang pelaksanaan hak adalah...",
+      "options": [
+        "Hak kita dibatasi oleh hak orang lain",
+        "Kita boleh menggunakan hak semaunya tanpa peduli orang lain",
+        "Hak lebih penting daripada kewajiban",
+        "Hak hanya milik orang kaya"
+      ],
+      "correct": 0,
+      "desc": "Kebebasan penggunaan hak dibatasi oleh hak orang lain agar tidak terjadi pelanggaran."
+    },
+    {
+      "no": 42,
+      "text": "Sebagai sesama muslim, jika ada saudara kita yang meninggal dunia, kewajiban kita adalah...",
+      "options": [
+        "Menggunjingkan penyebab kematiannya",
+        "Merawat jenazah (memandikan, mengafani, mensholatkan, menguburkan)",
+        "Membiarkannya karena bukan keluarga",
+        "Meminta warisan"
+      ],
+      "correct": 1,
+      "desc": "Fardhu Kifayah pengurusan jenazah adalah kewajiban sesama muslim."
+    },
+    {
+      "no": 43,
+      "text": "Contoh pelanggaran hak orang lain di tempat umum adalah...",
+      "options": [
+        "Mengantre dengan tertib",
+        "Merokok di area bebas rokok sehingga mengganggu orang lain",
+        "Membuang sampah pada tempatnya",
+        "Berjalan di trotoar"
+      ],
+      "correct": 1,
+      "desc": "Merokok sembarangan melanggar hak orang lain untuk menghirup udara bersih."
+    },
+    {
+      "no": 44,
+      "text": "Berikut adalah hak sesama muslim, KECUALI...",
+      "options": [
+        "Menjawab salam jika diberi salam",
+        "Menjenguk jika sakit",
+        "Mendoakan jika bersin",
+        "Memusuhi jika berbeda pendapat"
+      ],
+      "correct": 3,
+      "desc": "Memusuhi dilarang dalam Islam. Hak muslim: jawab salam, jenguk sakit, antar jenazah, penuhi undangan, doakan bersin, nasihati."
+    },
+    {
+      "no": 45,
+      "text": "Hak mendapatkan pendidikan dan pengajaran yang layak dimiliki oleh...",
+      "options": [
+        "Orang dewasa saja",
+        "Semua anak/warga negara tanpa memandang umur",
+        "Pejabat negara saja",
+        "Orang yang punya uang saja"
+      ],
+      "correct": 1,
+      "desc": "Pendidikan adalah hak segala bangsa/warga negara."
+    },
+    {
+      "no": 46,
+      "text": "Nilai yang terkandung dalam perubahan sila pertama menjadi 'Ketuhanan Yang Maha Esa' adalah nilai...",
+      "options": [
+        "Materialisme",
+        "Egoisme",
+        "Toleransi beragama",
+        "Individualisme"
+      ],
+      "correct": 2,
+      "desc": "Perubahan tersebut menunjukkan toleransi tinggi demi persatuan pemeluk agama yang berbeda."
+    },
+    {
+      "no": 47,
+      "text": "Contoh perbuatan yang sesuai dengan Sila ke-5 (Keadilan Sosial) adalah...",
+      "options": [
+        "Bersikap boros",
+        "Pilih kasih dalam berteman",
+        "Menghargai hasil karya orang lain",
+        "Melanggar hak orang lain"
+      ],
+      "correct": 2,
+      "desc": "Menghargai karya orang lain adalah butir pengamalan sila ke-5."
+    },
+    {
+      "no": 48,
+      "text": "Jika terdapat gambar perpustakaan yang tenang, aturan yang sesuai adalah...",
+      "options": [
+        "Dilarang makan dan minum",
+        "Dilarang membuat gaduh/berisik",
+        "Dilarang membaca buku",
+        "Harus berlari-lari"
+      ],
+      "correct": 1,
+      "desc": "Aturan utama perpustakaan adalah menjaga ketenangan."
+    },
+    {
+      "no": 49,
+      "text": "Perilaku yang menghormati hak orang lain saat mendengarkan musik adalah...",
+      "options": [
+        "Menyetel musik dengan volume sangat keras di malam hari",
+        "Menggunakan earphone/headset agar tidak mengganggu tetangga",
+        "Memaksa orang lain mendengarkan musik kita",
+        "Berteriak-teriak mengikuti lagu"
+      ],
+      "correct": 1,
+      "desc": "Menggunakan headset mencegah suara bising mengganggu hak ketenangan orang lain."
+    },
+    {
+      "no": 50,
+      "text": "Salah satu kewajiban utama umat muslim dalam rukun Islam adalah...",
+      "options": [
+        "Membayar pajak bumi bangunan",
+        "Menunaikan Zakat",
+        "Menabung di bank",
+        "Berwisata ke luar negeri"
+      ],
+      "correct": 1,
+      "desc": "Zakat adalah salah satu dari 5 Rukun Islam yang wajib dilaksanakan."
+    }
+  ]
+}

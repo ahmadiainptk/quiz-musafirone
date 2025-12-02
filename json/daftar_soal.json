@@ -135,6 +135,22 @@
               }
             ]
           },
+{
+"type": "folder",
+            "title": "PAI",
+            "icon": "💻",
+            "children": [
+{
+                "type": "file",
+                "id": "pai-7-psas-2025-1",
+                "title": "Latihan PSA PAI Ganjil #1",
+                "subject": "PAI",
+                "grade": "7 SMP",
+                "file": "psa1-pai-7-khairin-1.json",
+                "icon": "💻"
+              }
+]
+}, 
           {
             "type": "folder",
             "title": "Informatika",

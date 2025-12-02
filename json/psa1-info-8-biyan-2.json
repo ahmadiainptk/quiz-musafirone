@@ -1,0 +1,288 @@
+{
+  "subject": "Informatika",
+  "grade": "8 SMP",
+  "title": "PSAS Informatika Kelas 8 (Paket B)",
+  "subtitle": "Latihan Soal Variasi - Persiapan Ujian Semester",
+  "questions": [
+    {
+      "no": 1,
+      "text": "Komponen komputer yang bersifat abstrak, berupa program atau instruksi disebut...",
+      "options": ["Hardware", "Software", "Brainware", "Tupperware"],
+      "correct": 1,
+      "desc": "Software adalah perangkat lunak/program."
+    },
+    {
+      "no": 2,
+      "text": "Orang yang menggunakan atau mengoperasikan komputer disebut...",
+      "options": ["Software", "Spyware", "Brainware", "Hardware"],
+      "correct": 2,
+      "desc": "Brainware adalah pengguna (manusia)."
+    },
+    {
+      "no": 3,
+      "text": "Perangkat yang berfungsi memindai dokumen fisik menjadi file digital (gambar/pdf) adalah...",
+      "options": ["Printer", "Scanner", "Speaker", "Monitor"],
+      "correct": 1,
+      "desc": "Scanner adalah alat input untuk memindai."
+    },
+    {
+      "no": 4,
+      "text": "Manakah yang merupakan fungsi utama dari Sistem Operasi (OS)?",
+      "options": ["Membuat presentasi", "Mengelola memori dan manajemen file", "Mengedit foto", "Menjelajah internet"],
+      "correct": 1,
+      "desc": "Fungsi OS adalah manajemen sumber daya sistem."
+    },
+    {
+      "no": 5,
+      "text": "Jaringan komputer lokal yang hanya mencakup satu gedung sekolah atau rumah disebut...",
+      "options": ["LAN", "MAN", "WAN", "Internet"],
+      "correct": 0,
+      "desc": "LAN = Local Area Network."
+    },
+    {
+      "no": 6,
+      "text": "Media penyimpanan data yang bersifat sementara dan datanya hilang saat komputer mati adalah...",
+      "options": ["Harddisk", "Flashdisk", "RAM", "DVD"],
+      "correct": 2,
+      "desc": "RAM (Random Access Memory) bersifat volatile (sementara)."
+    },
+    {
+      "no": 7,
+      "text": "GUI adalah singkatan dari...",
+      "options": ["General User Interface", "Graphical User Interface", "Global User Internet", "Graphics Unit Input"],
+      "correct": 1,
+      "desc": "Graphical User Interface."
+    },
+    {
+      "no": 8,
+      "text": "Salah satu kelemahan antarmuka VUI (Suara) adalah...",
+      "options": ["Sangat cepat", "Tidak perlu menyentuh alat", "Bisa terganggu oleh suara bising di sekitar", "Menggunakan grafik yang berat"],
+      "correct": 2,
+      "desc": "VUI sulit bekerja di lingkungan berisik (noise)."
+    },
+    {
+      "no": 9,
+      "text": "Sistem operasi modern seperti Windows 10, MacOS, dan Android menggunakan antarmuka jenis...",
+      "options": ["CLI", "GUI", "Text Based", "Punch Card"],
+      "correct": 1,
+      "desc": "OS modern menggunakan grafis (GUI)."
+    },
+    {
+      "no": 10,
+      "text": "Aplikasi Calculator di HP yang tombol angkanya ditekan di layar adalah contoh...",
+      "options": ["GUI", "CLI", "Command Prompt", "Terminal"],
+      "correct": 0,
+      "desc": "Aplikasi dengan tombol visual adalah GUI."
+    },
+    {
+      "no": 11,
+      "text": "Perintah 'dir' (directory) pada CLI Windows berfungsi untuk...",
+      "options": ["Menghapus file", "Menampilkan daftar isi folder", "Membuat folder", "Menyalin file"],
+      "correct": 1,
+      "desc": "dir menampilkan list file/folder."
+    },
+    {
+      "no": 12,
+      "text": "Penggunaan keyboard shortcut Ctrl+S lebih cepat daripada klik File > Save. Ini membuktikan antarmuka harus...",
+      "options": ["Efisien", "Mahal", "Berwarna", "Rumit"],
+      "correct": 0,
+      "desc": "Efisien artinya cepat dan hemat langkah."
+    },
+    {
+      "no": 13,
+      "text": "Teknologi 'Smart Home' dimana kita bisa menyalakan lampu dengan perintah suara adalah contoh...",
+      "options": ["GUI", "CLI", "VUI", "TUI"],
+      "correct": 2,
+      "desc": "Perintah suara = VUI."
+    },
+    {
+      "no": 14,
+      "text": "Untuk membuat teks menjadi miring di MS Word digunakan fitur...",
+      "options": ["Bold", "Italic", "Underline", "Superscript"],
+      "correct": 1,
+      "desc": "Italic (Ctrl+I) untuk miring."
+    },
+    {
+      "no": 15,
+      "text": "Menu untuk menambahkan gambar ke dalam dokumen adalah...",
+      "options": ["Insert > Picture", "Home > Paste", "Layout > Size", "View > Zoom"],
+      "correct": 0,
+      "desc": "Menambah gambar pakai Insert Picture."
+    },
+    {
+      "no": 16,
+      "text": "Shortcut Ctrl + Z berfungsi untuk...",
+      "options": ["Redo", "Undo (Membatalkan perintah)", "Save", "Print"],
+      "correct": 1,
+      "desc": "Undo membatalkan aksi terakhir."
+    },
+    {
+      "no": 17,
+      "text": "Untuk meratakan teks menjadi rata kiri dan kanan (seimbang) digunakan alignment...",
+      "options": ["Align Left", "Align Right", "Center", "Justify"],
+      "correct": 3,
+      "desc": "Justify meratakan kiri dan kanan."
+    },
+    {
+      "no": 18,
+      "text": "Ikon 'Disket' pada pojok kiri atas jendela MS Word berfungsi untuk...",
+      "options": ["Open", "Save", "Print", "Close"],
+      "correct": 1,
+      "desc": "Ikon disket adalah simbol Save."
+    },
+    {
+      "no": 19,
+      "text": "Pada Command Prompt, perintah 'cls' digunakan untuk...",
+      "options": ["Menutup program", "Membersihkan layar (Clear Screen)", "Menghapus file", "Mengganti warna"],
+      "correct": 1,
+      "desc": "cls = clear screen."
+    },
+    {
+      "no": 20,
+      "text": "Ekstensi file standar untuk dokumen MS Word adalah...",
+      "options": [".xlsx", ".pptx", ".docx", ".txt"],
+      "correct": 2,
+      "desc": ".docx adalah file Word."
+    },
+    {
+      "no": 21,
+      "text": "Klik kanan pada mouse biasanya digunakan untuk...",
+      "options": ["Membuka program", "Memunculkan menu konteks / opsi tambahan", "Menutup program", "Menggulung layar"],
+      "correct": 1,
+      "desc": "Klik kanan memunculkan menu opsi (context menu)."
+    },
+    {
+      "no": 22,
+      "text": "Tombol 'Scroll Wheel' (roda) di tengah mouse berfungsi untuk...",
+      "options": ["Klik ganda", "Menggulung halaman ke atas/bawah", "Klik kanan", "Mematikan mouse"],
+      "correct": 1,
+      "desc": "Scroll wheel untuk navigasi naik turun halaman."
+    },
+    {
+      "no": 23,
+      "text": "Tanda strip (-) di pojok kanan atas jendela aplikasi berfungsi untuk...",
+      "options": ["Minimize (Menyembunyikan ke taskbar)", "Close", "Maximize", "Delete"],
+      "correct": 0,
+      "desc": "Tanda strip adalah Minimize."
+    },
+    {
+      "no": 24,
+      "text": "Nilai desimal dari biner \\( 1001 \\) adalah...",
+      "options": ["8", "9", "10", "11"],
+      "correct": 1,
+      "desc": "8 + 0 + 0 + 1 = 9."
+    },
+    {
+      "no": 25,
+      "text": "Konversi desimal 12 ke biner adalah...",
+      "options": ["1010", "1011", "1100", "1101"],
+      "correct": 2,
+      "desc": "8 + 4 = 12. Binernya 1100."
+    },
+    {
+      "no": 26,
+      "text": "Salah satu kegunaan Footer adalah untuk menyisipkan...",
+      "options": ["Judul Besar", "Nomor Halaman di bawah", "Gambar Utama", "Tabel Data"],
+      "correct": 1,
+      "desc": "Footer (kaki) tempat umum nomor halaman bawah."
+    },
+    {
+      "no": 27,
+      "text": "Jika kita ingin membuat kop surat (Logo dan Alamat Instansi) agar muncul otomatis di tiap halaman, kita membuatnya di...",
+      "options": ["Body Text", "Header", "Footer", "Footnote"],
+      "correct": 1,
+      "desc": "Kop surat dibuat di Header."
+    },
+    {
+      "no": 28,
+      "text": "Shortcut Ctrl + P digunakan untuk...",
+      "options": ["Paste", "Print (Mencetak)", "Paragraf", "Page Setup"],
+      "correct": 1,
+      "desc": "Ctrl + P = Print."
+    },
+    {
+      "no": 29,
+      "text": "Tombol 'Page Number' terdapat pada Tab menu...",
+      "options": ["Home", "Insert", "Design", "View"],
+      "correct": 1,
+      "desc": "Insert > Page Number."
+    },
+    {
+      "no": 30,
+      "text": "Untuk keluar dari mode edit Header/Footer, kita juga bisa melakukan...",
+      "options": ["Klik kanan", "Double click di area tengah halaman (dokumen)", "Tekan Ctrl+Alt+Del", "Restart komputer"],
+      "correct": 1,
+      "desc": "Double click di area dokumen akan menutup header."
+    },
+    {
+      "no": 31,
+      "text": "Pasangan Shortcut: Ctrl + X berfungsi untuk...",
+      "options": ["Copy", "Cut (Potong)", "Close", "Cancel"],
+      "correct": 1,
+      "desc": "Ctrl + X = Cut."
+    },
+    {
+      "no": 32,
+      "text": "Pasangan Shortcut: Ctrl + B berfungsi untuk...",
+      "options": ["Bold (Tebal)", "Back", "Bottom", "Border"],
+      "correct": 0,
+      "desc": "Ctrl + B = Bold."
+    },
+    {
+      "no": 33,
+      "text": "Bagian Header yang disetting 'Odd & Even Pages' akan mengakibatkan...",
+      "options": ["Header hilang semua", "Header halaman ganjil dan genap bisa dibuat berbeda", "Header menjadi berwarna", "Halaman menjadi dua kolom"],
+      "correct": 1,
+      "desc": "Odd (Ganjil) & Even (Genap) pages berbeda (seperti di buku cetak)."
+    },
+    {
+      "no": 34,
+      "text": "Fungsi 'Date & Time' di menu Insert Header berguna untuk...",
+      "options": ["Memasang alarm", "Menyisipkan tanggal/waktu otomatis", "Mengubah zona waktu komputer", "Menghitung mundur"],
+      "correct": 1,
+      "desc": "Menyisipkan tanggal dokumen dibuat."
+    },
+    {
+      "no": 35,
+      "text": "Untuk menyisipkan gambar logo sekolah ke dalam Header, kita menggunakan menu...",
+      "options": ["Insert > Picture", "Insert > Chart", "Insert > Table", "Insert > Link"],
+      "correct": 0,
+      "desc": "Insert Picture untuk gambar/logo."
+    },
+    {
+      "no": 36,
+      "text": "Pengaturan 'Line Spacing' (Jarak antar baris) 1.5 atau Double terdapat di Tab Home pada grup...",
+      "options": ["Font", "Paragraph", "Styles", "Editing"],
+      "correct": 1,
+      "desc": "Line Spacing ada di grup Paragraph."
+    },
+    {
+      "no": 37,
+      "text": "Setelah tabel dibuat, untuk menggabungkan dua sel menjadi satu, kita menggunakan fitur...",
+      "options": ["Split Cells", "Merge Cells", "Delete Cells", "Insert Cells"],
+      "correct": 1,
+      "desc": "Merge Cells = Menggabungkan sel."
+    },
+    {
+      "no": 38,
+      "text": "Manakah yang BUKAN perangkat input?",
+      "options": ["Keyboard", "Mouse", "Monitor", "Microphone"],
+      "correct": 2,
+      "desc": "Monitor adalah Output (menampilkan), bukan Input."
+    },
+    {
+      "no": 39,
+      "text": "Konversi biner: \\( 111 \\) = ... (desimal)",
+      "options": ["6", "7", "8", "9"],
+      "correct": 1,
+      "desc": "4 + 2 + 1 = 7."
+    },
+    {
+      "no": 40,
+      "text": "Konversi desimal: \\( 5 \\) = ... (biner)",
+      "options": ["100", "101", "110", "111"],
+      "correct": 1,
+      "desc": "4 + 1 = 5. Binernya 101."
+    }
+  ]
+}

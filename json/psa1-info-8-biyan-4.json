@@ -1,0 +1,288 @@
+{
+  "subject": "Informatika",
+  "grade": "8 SMP",
+  "title": "PSAS Informatika Kelas 8 (Paket D)",
+  "subtitle": "Latihan Soal Pengayaan & Logika - Paket 4",
+  "questions": [
+    {
+      "no": 1,
+      "text": "Apa yang terjadi jika komputer tidak memiliki Sistem Operasi?",
+      "options": ["Komputer tetap bisa dipakai mengetik", "Komputer tidak bisa booting dan tidak bisa digunakan", "Hanya bisa untuk main game", "Internet menjadi lambat"],
+      "correct": 1,
+      "desc": "Tanpa OS, hardware tidak bisa berkomunikasi dengan pengguna."
+    },
+    {
+      "no": 2,
+      "text": "Contoh perangkat lunak aplikasi jenis 'Browser' adalah...",
+      "options": ["Microsoft Edge", "Microsoft Word", "Windows 10", "Corel Draw"],
+      "correct": 0,
+      "desc": "Edge adalah browser buatan Microsoft."
+    },
+    {
+      "no": 3,
+      "text": "Perangkat output yang mengeluarkan hasil pemrosesan berupa suara adalah...",
+      "options": ["Monitor", "Speaker", "Scanner", "Microphone"],
+      "correct": 1,
+      "desc": "Speaker adalah output audio."
+    },
+    {
+      "no": 4,
+      "text": "Satuan ukuran penyimpanan data terkecil dalam komputer (0 atau 1) disebut...",
+      "options": ["Bit", "Byte", "Kilobyte", "Megabyte"],
+      "correct": 0,
+      "desc": "Bit (Binary Digit) adalah satuan terkecil."
+    },
+    {
+      "no": 5,
+      "text": "Kepanjangan dari Wi-Fi adalah...",
+      "options": ["Wireless Fidelity", "Wireless Find", "Wire Fire", "Wide Fiber"],
+      "correct": 0,
+      "desc": "Wi-Fi = Wireless Fidelity."
+    },
+    {
+      "no": 6,
+      "text": "Salah satu etika digital saat mengirim email adalah...",
+      "options": ["Menggunakan huruf kapital semua (Capslock Jebol)", "Mengisi subjek email dengan jelas", "Mengirim spam", "Tidak menyapa penerima"],
+      "correct": 1,
+      "desc": "Subjek jelas membantu penerima mengerti isi email."
+    },
+    {
+      "no": 7,
+      "text": "Antarmuka CLI lebih sering digunakan oleh...",
+      "options": ["Desainer Grafis", "Administrator Sistem / Programmer", "Anak-anak", "Pengguna awam"],
+      "correct": 1,
+      "desc": "CLI efisien untuk konfigurasi sistem oleh ahli."
+    },
+    {
+      "no": 8,
+      "text": "Pada sistem GUI, gambar kecil yang mewakili file, folder, atau program disebut...",
+      "options": ["Menu", "Icon", "Window", "Pointer"],
+      "correct": 1,
+      "desc": "Icon adalah representasi visual objek."
+    },
+    {
+      "no": 9,
+      "text": "Untuk menutup paksa aplikasi yang 'Hang' atau 'Not Responding' di Windows, kita menggunakan...",
+      "options": ["Task Manager", "File Explorer", "Control Panel", "Paint"],
+      "correct": 0,
+      "desc": "Task Manager (Ctrl+Shift+Esc) bisa 'End Task' aplikasi macet."
+    },
+    {
+      "no": 10,
+      "text": "Format file kompresi yang menyatukan dan mengecilkan ukuran beberapa file adalah...",
+      "options": [".docx", ".zip / .rar", ".pdf", ".jpg"],
+      "correct": 1,
+      "desc": "ZIP dan RAR adalah format arsip/kompresi."
+    },
+    {
+      "no": 11,
+      "text": "Di CLI, perintah 'ping google.com' digunakan untuk...",
+      "options": ["Membuka website google", "Mengecek koneksi internet ke google", "Menghapus google", "Mengirim email"],
+      "correct": 1,
+      "desc": "Ping mengecek latensi dan konektivitas jaringan."
+    },
+    {
+      "no": 12,
+      "text": "Tombol keyboard 'Print Screen' (PrtSc) berfungsi untuk...",
+      "options": ["Mencetak ke printer", "Mengambil tangkapan layar (Screenshot)", "Mematikan layar", "Mencerahkan layar"],
+      "correct": 1,
+      "desc": "Print Screen menyalin tampilan layar ke clipboard."
+    },
+    {
+      "no": 13,
+      "text": "Jika kita ingin tulisan 'H2O', angka 2-nya kecil di bawah. Fitur yang dipakai adalah...",
+      "options": ["Superscript", "Subscript", "Strike", "Bold"],
+      "correct": 1,
+      "desc": "Subscript (Sub=Bawah) membuat huruf kecil di bawah garis."
+    },
+    {
+      "no": 14,
+      "text": "Jika kita ingin tulisan 'X kuadrat' (angka 2 kecil di atas). Fitur yang dipakai adalah...",
+      "options": ["Superscript", "Subscript", "Italic", "Underline"],
+      "correct": 0,
+      "desc": "Superscript (Super=Atas) membuat pangkat."
+    },
+    {
+      "no": 15,
+      "text": "Jenis perataan teks 'Align Right' sering digunakan untuk menulis...",
+      "options": ["Judul Puisi", "Tanggal surat di pojok kanan", "Isi paragraf", "Daftar isi"],
+      "correct": 1,
+      "desc": "Rata kanan (Align Right) memosisikan teks di kanan."
+    },
+    {
+      "no": 16,
+      "text": "Menu 'Find' (Ctrl+F) di MS Word berguna untuk...",
+      "options": ["Mencari kata tertentu dalam dokumen", "Mencari file di harddisk", "Mencari gambar di internet", "Mencari printer"],
+      "correct": 0,
+      "desc": "Find mencari teks spesifik di dalam dokumen aktif."
+    },
+    {
+      "no": 17,
+      "text": "Orientasi kertas 'Portrait' artinya...",
+      "options": ["Tegak (Vertikal)", "Mendatar (Horizontal)", "Miring", "Terbalik"],
+      "correct": 0,
+      "desc": "Portrait adalah posisi tegak lurus."
+    },
+    {
+      "no": 18,
+      "text": "Perbedaan Save dan Save As adalah...",
+      "options": ["Save As menghapus file lama", "Save As selalu membuat file duplikat/baru", "Save untuk menutup file", "Tidak ada bedanya"],
+      "correct": 1,
+      "desc": "Save As memungkinkan menyimpan dengan nama baru."
+    },
+    {
+      "no": 19,
+      "text": "Apa fungsi dari 'Bullet' pada menu Home?",
+      "options": ["Membuat daftar bernomor (1, 2, 3)", "Membuat daftar dengan simbol (titik/kotak)", "Menembak musuh", "Menebalkan huruf"],
+      "correct": 1,
+      "desc": "Bullets menggunakan simbol, Numbering menggunakan angka."
+    },
+    {
+      "no": 20,
+      "text": "Jarak kosong di tepi atas, bawah, kiri, dan kanan kertas disebut...",
+      "options": ["Padding", "Margin", "Border", "Spacing"],
+      "correct": 1,
+      "desc": "Margin adalah batas tepi kosong kertas."
+    },
+    {
+      "no": 21,
+      "text": "Kabel jaringan yang umum digunakan untuk menghubungkan komputer ke LAN disebut kabel...",
+      "options": ["Kabel Listrik", "Kabel UTP / LAN", "Kabel HDMI", "Kabel VGA"],
+      "correct": 1,
+      "desc": "Kabel UTP (Unshielded Twisted Pair) adalah kabel LAN standar."
+    },
+    {
+      "no": 22,
+      "text": "Alat yang memancarkan sinyal WiFi dari kabel internet disebut...",
+      "options": ["Wireless Router / Access Point", "Flashdisk", "Sound Card", "Monitor"],
+      "correct": 0,
+      "desc": "Router WiFi menyebarkan sinyal nirkabel."
+    },
+    {
+      "no": 23,
+      "text": "Konversi biner \\( 1101 \\) ke desimal adalah...",
+      "options": ["11", "12", "13", "14"],
+      "correct": 2,
+      "desc": "8 + 4 + 0 + 1 = 13."
+    },
+    {
+      "no": 24,
+      "text": "Konversi desimal 6 ke biner adalah...",
+      "options": ["100", "101", "110", "111"],
+      "correct": 2,
+      "desc": "4 + 2 = 6. Binernya 110."
+    },
+    {
+      "no": 25,
+      "text": "Sistem bilangan berbasis 8 disebut...",
+      "options": ["Biner", "Oktal", "Desimal", "Heksadesimal"],
+      "correct": 1,
+      "desc": "Oktal basis 8 (0-7)."
+    },
+    {
+      "no": 26,
+      "text": "Untuk membuat header halaman pertama berbeda dari halaman lain, opsi yang dicentang adalah...",
+      "options": ["Different First Page", "Different Odd & Even", "Show Text", "Scale to Fit"],
+      "correct": 0,
+      "desc": "Different First Page untuk kop/halaman judul."
+    },
+    {
+      "no": 27,
+      "text": "Jika kita menghapus nomor halaman di Footer, maka...",
+      "options": ["Hanya halaman itu yang terhapus", "Seluruh nomor halaman di dokumen itu terhapus", "Teks menjadi hilang", "Komputer restart"],
+      "correct": 1,
+      "desc": "Menghapus di satu footer akan menghapus di semua halaman (karena terhubung)."
+    },
+    {
+      "no": 28,
+      "text": "Tindakan mencuri data orang lain dengan memalsukan halaman login disebut...",
+      "options": ["Phishing", "Fishing", "Hacking", "Coding"],
+      "correct": 0,
+      "desc": "Phishing adalah penipuan untuk mencuri data."
+    },
+    {
+      "no": 29,
+      "text": "Caesar Cipher geser 3 kiri (Mundur 3). Huruf 'D' menjadi...",
+      "options": ["A", "G", "F", "E"],
+      "correct": 0,
+      "desc": "D (-1) -> C (-2) -> B (-3) -> A."
+    },
+    {
+      "no": 30,
+      "text": "Pesan asli sebelum dienkripsi disebut...",
+      "options": ["Ciphertext", "Plaintext", "Codetext", "Hiddentext"],
+      "correct": 1,
+      "desc": "Plaintext adalah teks asli yang bisa dibaca."
+    },
+    {
+      "no": 31,
+      "text": "Pasangan Shortcut: Ctrl + J berfungsi untuk...",
+      "options": ["Justify (Rata Kanan Kiri)", "Jump", "Join", "Jogging"],
+      "correct": 0,
+      "desc": "Ctrl + J = Justify."
+    },
+    {
+      "no": 32,
+      "text": "Pasangan Shortcut: Ctrl + I berfungsi untuk...",
+      "options": ["Indent", "Italic (Miring)", "Insert", "Ignore"],
+      "correct": 1,
+      "desc": "Ctrl + I = Italic."
+    },
+    {
+      "no": 33,
+      "text": "Ukuran font standar untuk penulisan karya ilmiah biasanya adalah...",
+      "options": ["10 pt", "12 pt", "16 pt", "20 pt"],
+      "correct": 1,
+      "desc": "12 pt (Times New Roman/Arial) adalah standar umum."
+    },
+    {
+      "no": 34,
+      "text": "Tombol 'Caps Lock' berfungsi untuk...",
+      "options": ["Mengunci layar", "Mengetik huruf kapital terus menerus", "Menghapus huruf", "Membuat spasi"],
+      "correct": 1,
+      "desc": "Caps Lock mengunci mode huruf besar."
+    },
+    {
+      "no": 35,
+      "text": "Untuk berpindah ke baris baru (paragraf baru) saat mengetik, kita menekan tombol...",
+      "options": ["Shift", "Ctrl", "Alt", "Enter"],
+      "correct": 3,
+      "desc": "Enter membuat baris/paragraf baru."
+    },
+    {
+      "no": 36,
+      "text": "Menu 'Columns' di tab Layout berfungsi untuk...",
+      "options": ["Membuat tabel", "Membagi teks menjadi beberapa kolom (seperti koran)", "Memberi warna", "Menghapus kolom"],
+      "correct": 1,
+      "desc": "Columns membagi layout teks vertikal."
+    },
+    {
+      "no": 37,
+      "text": "Saat menyisipkan gambar, agar gambar bisa digeser bebas di antara teks, kita atur 'Wrap Text' menjadi...",
+      "options": ["In Line with Text", "Square / In Front of Text", "No Wrap", "Fixed"],
+      "correct": 1,
+      "desc": "Square atau In Front of Text membuat gambar fleksibel digeser."
+    },
+    {
+      "no": 38,
+      "text": "Joystick adalah perangkat input yang biasanya digunakan untuk...",
+      "options": ["Mengetik", "Bermain Game", "Menggambar", "Mencetak"],
+      "correct": 1,
+      "desc": "Joystick adalah kontroler game."
+    },
+    {
+      "no": 39,
+      "text": "Konversi biner: \\( 1110 \\) = ... (desimal)",
+      "options": ["12", "13", "14", "15"],
+      "correct": 2,
+      "desc": "8 + 4 + 2 + 0 = 14."
+    },
+    {
+      "no": 40,
+      "text": "Konversi desimal: \\( 8 \\) = ... (biner)",
+      "options": ["1000", "1001", "0111", "1111"],
+      "correct": 0,
+      "desc": "8 = 1000 dalam biner."
+    }
+  ]
+}

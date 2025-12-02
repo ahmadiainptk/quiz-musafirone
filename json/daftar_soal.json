@@ -214,6 +214,24 @@
                 "grade": "8 SMP",
                 "file": "psa1-info-8-biyan-2.json",
                 "icon": "💻"
+              },
+              {
+                "type": "file",
+                "id": "inf-8-psas-2025-3",
+                "title": "Latihan PSAS Informatika Semester Ganjil # 3",
+                "subject": "Informatika",
+                "grade": "8 SMP",
+                "file": "psa1-info-8-biyan-3.json",
+                "icon": "💻"
+              },
+              {
+                "type": "file",
+                "id": "inf-8-psas-2025-4",
+                "title": "Latihan PSAS Informatika Semester Ganjil # 4",
+                "subject": "Informatika",
+                "grade": "8 SMP",
+                "file": "psa1-info-8-biyan-4.json",
+                "icon": "💻"
               }
             ]
           },

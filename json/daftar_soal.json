@@ -31,6 +31,14 @@
     "file": "psa1-barab-5-qisthy-2.json",
     "icon": "📝"
   },
+  {
+    "id": "psa1-ppkn-5-qisthy-1",
+    "title": "Latihan PSA PPKN Kelas 5 Semester Ganjil",
+    "subject": "PPKN",
+    "grade": "5 SD",
+    "file": "psa1-ppkn-5-qisthy-1.json",
+    "icon": "📝"
+  },
  {
     "id": "psa1-sbk-7-khairin-1",
     "title": "Latihan PSA SBK Kelas 7 Semester Ganjil",

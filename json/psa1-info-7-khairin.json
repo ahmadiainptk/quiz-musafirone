@@ -1,0 +1,368 @@
+{
+  "subject": "Informatika",
+  "grade": "7 SMP",
+  "title": "Latihan PSAS Informatika Kelas 7",
+  "subtitle": "Latihan soal berdasarkan Kisi-Kisi PSAS Ganjil 2025 (Berpikir Komputasional, TIK, Sistem Komputer, JKI)",
+  "questions": [
+    {
+      "no": 1,
+      "text": "Apa yang dimaksud dengan Berpikir Komputasional (Computational Thinking)?",
+      "options": [
+        "Berpikir seperti komputer yang kaku",
+        "Metode menyelesaikan masalah (problem solving) dengan menerapkan teknik ilmu komputer",
+        "Kemampuan merakit komponen komputer",
+        "Cara menghitung bilangan biner dengan cepat"
+      ],
+      "correct": 1,
+      "desc": "Berpikir komputasional adalah metode pemecahan masalah yang efektif dan efisien mendekati cara kerja komputer."
+    },
+    {
+      "no": 2,
+      "text": "Dalam Berpikir Komputasional, apa tujuan utama dari 'Dekomposisi'?",
+      "options": [
+        "Mencari kesamaan pola masalah",
+        "Menulis langkah-langkah penyelesaian",
+        "Memecah masalah besar menjadi bagian-bagian yang lebih kecil",
+        "Mengabaikan detail yang tidak penting"
+      ],
+      "correct": 2,
+      "desc": "Dekomposisi adalah proses memecah masalah kompleks menjadi bagian-bagian kecil agar lebih mudah dikelola."
+    },
+    {
+      "no": 3,
+      "text": "Manakah di bawah ini yang MERUPAKAN 4 fondasi utama Berpikir Komputasional?",
+      "options": [
+        "Dekomposisi, Pengenalan Pola, Abstraksi, Algoritma",
+        "Hardware, Software, Brainware, Internet",
+        "Input, Proses, Output, Storage",
+        "Microsoft Word, Excel, Powerpoint, Access"
+      ],
+      "correct": 0,
+      "desc": "4 Fondasi BK adalah: Dekomposisi, Pengenalan Pola, Abstraksi, dan Algoritma."
+    },
+    {
+      "no": 4,
+      "text": "Saat kamu mengabaikan detail warna mobil ketika menghitung kecepatan mobil, kamu sedang melakukan proses...",
+      "options": [
+        "Dekomposisi",
+        "Abstraksi",
+        "Algoritma",
+        "Apersepsi"
+      ],
+      "correct": 1,
+      "desc": "Abstraksi adalah fokus pada informasi penting dan mengabaikan detail yang tidak relevan."
+    },
+    {
+      "no": 5,
+      "text": "Langkah-langkah urut untuk membuat mie instan agar matang sempurna disebut dengan...",
+      "options": [
+        "Abstraksi",
+        "Pola",
+        "Algoritma",
+        "Struktur Data"
+      ],
+      "correct": 2,
+      "desc": "Algoritma adalah urutan langkah-langkah logis untuk menyelesaikan masalah."
+    },
+    {
+      "no": 6,
+      "text": "Mengenali bahwa semua kucing memiliki kumis, cakar, dan mengeong adalah contoh dari...",
+      "options": [
+        "Pengenalan Pola",
+        "Algoritma",
+        "Dekomposisi",
+        "Abstraksi"
+      ],
+      "correct": 0,
+      "desc": "Pengenalan pola adalah kemampuan melihat kesamaan atau tren dalam data."
+    },
+    {
+      "no": 7,
+      "text": "Seorang siswa membagi tugas kelompok: Ani mencari materi, Budi membuat slide, dan Cici presentasi. Ini adalah penerapan...",
+      "options": [
+        "Algoritma",
+        "Pengenalan Pola",
+        "Dekomposisi",
+        "Abstraksi"
+      ],
+      "correct": 2,
+      "desc": "Memecah tugas besar (tugas kelompok) menjadi tugas kecil per individu adalah Dekomposisi."
+    },
+    {
+      "no": 8,
+      "text": "Antarmuka pengguna yang menggunakan menu grafis, ikon, dan pointer mouse disebut...",
+      "options": [
+        "CLI (Command Line Interface)",
+        "VUI (Voice User Interface)",
+        "GUI (Graphical User Interface)",
+        "API (Application Programming Interface)"
+      ],
+      "correct": 2,
+      "desc": "GUI (Graphical User Interface) menggunakan elemen visual seperti ikon dan jendela."
+    },
+    {
+      "no": 9,
+      "text": "Contoh penggunaan VUI (Voice User Interface) dalam kehidupan sehari-hari adalah...",
+      "options": [
+        "Mengklik ikon WhatsApp",
+        "Mengetik perintah di CMD",
+        "Menggunakan Siri atau Google Assistant dengan suara",
+        "Menekan tombol keyboard"
+      ],
+      "correct": 2,
+      "desc": "VUI adalah antarmuka berbasis suara."
+    },
+    {
+      "no": 10,
+      "text": "Ekstensi file yang digunakan untuk menyimpan dokumen Microsoft Word adalah...",
+      "options": [
+        ".xlsx",
+        ".pptx",
+        ".docx",
+        ".jpg"
+      ],
+      "correct": 2,
+      "desc": ".docx adalah ekstensi standar untuk MS Word. .xlsx untuk Excel, .pptx untuk PowerPoint."
+    },
+    {
+      "no": 11,
+      "text": "File dengan ekstensi .jpg, .png, dan .bmp adalah jenis file...",
+      "options": [
+        "Suara / Audio",
+        "Gambar / Image",
+        "Video",
+        "Aplikasi"
+      ],
+      "correct": 1,
+      "desc": "JPG, PNG, dan BMP adalah format penyimpanan gambar."
+    },
+    {
+      "no": 12,
+      "text": "Fungsi utama dari mesin pencari (Search Engine) adalah...",
+      "options": [
+        "Membuat dokumen surat",
+        "Mengedit foto",
+        "Mencari informasi di internet berdasarkan kata kunci",
+        "Menghubungkan komputer ke listrik"
+      ],
+      "correct": 2,
+      "desc": "Search engine (seperti Google) digunakan untuk mencari informasi di web."
+    },
+    {
+      "no": 13,
+      "text": "Di bawah ini yang termasuk contoh Search Engine adalah...",
+      "options": [
+        "Microsoft Word",
+        "Google, Bing, Yahoo",
+        "Windows, Linux, MacOS",
+        "Android, iOS"
+      ],
+      "correct": 1,
+      "desc": "Google, Bing, dan Yahoo adalah mesin pencari. Sisanya adalah aplikasi kantor atau sistem operasi."
+    },
+    {
+      "no": 14,
+      "text": "Aplikasi yang digunakan untuk MENJELAJAH (browsing) internet disebut...",
+      "options": [
+        "File Explorer",
+        "Web Browser",
+        "Search Engine",
+        "Antivirus"
+      ],
+      "correct": 1,
+      "desc": "Web Browser (Chrome, Edge, Firefox) adalah aplikasi untuk membuka website."
+    },
+    {
+      "no": 15,
+      "text": "Ikon aplikasi Microsoft Excel biasanya identik dengan warna...",
+      "options": [
+        "Biru (W)",
+        "Hijau (X)",
+        "Merah (P)",
+        "Oranye (O)"
+      ],
+      "correct": 1,
+      "desc": "Excel identik dengan warna hijau dan logo X. Word biru, PowerPoint merah."
+    },
+    {
+      "no": 16,
+      "text": "Aplikasi perkantoran yang paling tepat digunakan untuk mengolah DATA ANGKA dan membuat GRAFIK adalah...",
+      "options": [
+        "Microsoft Word",
+        "Microsoft PowerPoint",
+        "Microsoft Excel",
+        "Notepad"
+      ],
+      "correct": 2,
+      "desc": "Excel adalah aplikasi Spreadsheet (pengolah angka)."
+    },
+    {
+      "no": 17,
+      "text": "Aplikasi yang berfungsi untuk mengolah KATA (Word Processing) adalah...",
+      "options": [
+        "Microsoft Excel",
+        "Microsoft Word",
+        "Adobe Photoshop",
+        "Google Chrome"
+      ],
+      "correct": 1,
+      "desc": "Word adalah aplikasi pengolah kata."
+    },
+    {
+      "no": 18,
+      "text": "Apa kepanjangan dari 'Surel'?",
+      "options": [
+        "Surat Elektrik",
+        "Surat Elektronik",
+        "Suara Elektro",
+        "Saluran Rel"
+      ],
+      "correct": 1,
+      "desc": "Surel adalah singkatan bahasa Indonesia dari Surat Elektronik (Email)."
+    },
+    {
+      "no": 19,
+      "text": "Komputer menyimpan data dalam bentuk digital yang hanya terdiri dari dua kondisi (hidup/mati). Sistem bilangan ini disebut...",
+      "options": [
+        "Desimal",
+        "Oktal",
+        "Biner",
+        "Heksadesimal"
+      ],
+      "correct": 2,
+      "desc": "Biner (Binary) adalah sistem bilangan basis 2 yang digunakan komputer."
+    },
+    {
+      "no": 20,
+      "text": "Angka yang digunakan dalam sistem bilangan Biner adalah...",
+      "options": [
+        "0 sampai 9",
+        "1 sampai 10",
+        "0 dan 1",
+        "1 dan 2"
+      ],
+      "correct": 2,
+      "desc": "Biner hanya menggunakan dua simbol: 0 dan 1."
+    },
+    {
+      "no": 21,
+      "text": "Dalam sistem komputer, angka 1 biasanya mewakili kondisi...",
+      "options": [
+        "Off / Mati / Salah",
+        "On / Hidup / Benar",
+        "Netral",
+        "Error"
+      ],
+      "correct": 1,
+      "desc": "1 mewakili ON (True/High Voltage), 0 mewakili OFF (False/Low Voltage)."
+    },
+    {
+      "no": 22,
+      "text": "Konversi bilangan biner \\( 101 \\) ke bilangan desimal adalah...",
+      "options": [
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
+      "correct": 2,
+      "desc": "101 = (1x4) + (0x2) + (1x1) = 4 + 0 + 1 = 5."
+    },
+    {
+      "no": 23,
+      "text": "Basis dari bilangan biner adalah...",
+      "options": [
+        "Basis 2",
+        "Basis 8",
+        "Basis 10",
+        "Basis 16"
+      ],
+      "correct": 0,
+      "desc": "Biner adalah basis 2. Desimal basis 10."
+    },
+    {
+      "no": 24,
+      "text": "Konversi bilangan desimal 10 ke biner adalah...",
+      "options": [
+        "1001",
+        "1010",
+        "1100",
+        "1110"
+      ],
+      "correct": 1,
+      "desc": "10 = 8 + 2 = (1x8) + (0x4) + (1x2) + (0x1) = 1010."
+    },
+    {
+      "no": 25,
+      "text": "Jaringan komputer yang mencakup wilayah kecil seperti satu ruangan, rumah, atau gedung sekolah disebut...",
+      "options": [
+        "LAN (Local Area Network)",
+        "MAN (Metropolitan Area Network)",
+        "WAN (Wide Area Network)",
+        "Internet"
+      ],
+      "correct": 0,
+      "desc": "LAN (Local) untuk area sempit. MAN untuk kota. WAN untuk negara/benua."
+    },
+    {
+      "no": 26,
+      "text": "Jaringan yang menghubungkan komputer antar kota atau wilayah yang luas disebut...",
+      "options": [
+        "LAN",
+        "MAN",
+        "PAN",
+        "Bluetooth"
+      ],
+      "correct": 1,
+      "desc": "MAN (Metropolitan Area Network) mencakup area kota."
+    },
+    {
+      "no": 27,
+      "text": "Kepanjangan dari Internet adalah...",
+      "options": [
+        "International Network",
+        "Interconnected Network",
+        "Internal Network",
+        "Interlokal Net"
+      ],
+      "correct": 1,
+      "desc": "Internet berasal dari kata Interconnected Network (Jaringan yang saling terhubung)."
+    },
+    {
+      "no": 28,
+      "text": "Berbagi koneksi internet dari HP ke perangkat lain menggunakan fitur...",
+      "options": [
+        "Downloading",
+        "Tethering / Hotspot",
+        "Browsing",
+        "Chatting"
+      ],
+      "correct": 1,
+      "desc": "Tethering (atau Hotspot pribadi) digunakan untuk membagi koneksi."
+    },
+    {
+      "no": 29,
+      "text": "Alamat unik berupa deretan angka yang dimiliki setiap perangkat yang terhubung ke jaringan disebut...",
+      "options": [
+        "Email Address",
+        "Home Address",
+        "IP Address",
+        "Web Address"
+      ],
+      "correct": 2,
+      "desc": "IP Address (Internet Protocol Address) adalah identitas unik perangkat di jaringan."
+    },
+    {
+      "no": 30,
+      "text": "Fungsi dari Firewall pada jaringan komputer adalah...",
+      "options": [
+        "Mempercepat internet",
+        "Mendinginkan komputer",
+        "Melindungi jaringan dari akses yang tidak sah/berbahaya",
+        "Mematikan virus secara otomatis"
+      ],
+      "correct": 2,
+      "desc": "Firewall berfungsi sebagai tembok api/keamanan untuk menyaring lalu lintas data."
+    }
+  ]
+}

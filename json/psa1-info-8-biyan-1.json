@@ -1,0 +1,288 @@
+{
+  "subject": "Informatika",
+  "grade": "8 SMP",
+  "title": "PSAS Informatika Kelas 8 (Paket A)",
+  "subtitle": "Latihan Soal Sesuai Kisi-Kisi PSAS Ganjil 2025/2026",
+  "questions": [
+    {
+      "no": 1,
+      "text": "Bagian fisik dari komputer yang dapat disentuh dan dilihat disebut...",
+      "options": ["Software", "Hardware", "Brainware", "Malware"],
+      "correct": 1,
+      "desc": "Hardware adalah perangkat keras komputer."
+    },
+    {
+      "no": 2,
+      "text": "Perangkat lunak yang berfungsi sebagai jembatan antara pengguna dan perangkat keras adalah...",
+      "options": ["Sistem Operasi", "Aplikasi Pengolah Kata", "Antivirus", "Game"],
+      "correct": 0,
+      "desc": "Sistem Operasi (OS) mengelola sumber daya hardware dan software."
+    },
+    {
+      "no": 3,
+      "text": "Manakah di bawah ini yang merupakan contoh perangkat input?",
+      "options": ["Monitor", "Speaker", "Printer", "Mouse"],
+      "correct": 3,
+      "desc": "Mouse digunakan untuk memasukkan perintah (Input)."
+    },
+    {
+      "no": 4,
+      "text": "Microsoft Word, Google Chrome, dan Adobe Photoshop termasuk dalam kategori...",
+      "options": ["Sistem Operasi", "Application Software (Aplikasi)", "Utility", "Programming Language"],
+      "correct": 1,
+      "desc": "Mereka adalah perangkat lunak aplikasi untuk tugas tertentu."
+    },
+    {
+      "no": 5,
+      "text": "Jaringan komputer yang mencakup area geografis yang sangat luas, seperti antar negara atau benua disebut...",
+      "options": ["LAN", "MAN", "WAN", "PAN"],
+      "correct": 2,
+      "desc": "WAN (Wide Area Network) mencakup area terluas."
+    },
+    {
+      "no": 6,
+      "text": "Otak dari komputer yang memproses instruksi program adalah...",
+      "options": ["Harddisk", "RAM", "CPU (Processor)", "VGA"],
+      "correct": 2,
+      "desc": "CPU (Central Processing Unit) adalah otak komputer."
+    },
+    {
+      "no": 7,
+      "text": "Antarmuka yang menggunakan gambar/ikon (grafis) untuk berinteraksi dengan pengguna disebut...",
+      "options": ["CLI (Command Line Interface)", "GUI (Graphical User Interface)", "VUI (Voice User Interface)", "TUI (Touch User Interface)"],
+      "correct": 1,
+      "desc": "GUI menggunakan elemen grafis seperti ikon dan jendela."
+    },
+    {
+      "no": 8,
+      "text": "Contoh penggunaan VUI (Voice User Interface) adalah...",
+      "options": ["Mengetik perintah di terminal", "Mengklik ikon folder", "Menggunakan perintah suara 'Ok Google'", "Menggunakan layar sentuh ATM"],
+      "correct": 2,
+      "desc": "VUI berbasis suara (Voice)."
+    },
+    {
+      "no": 9,
+      "text": "Antarmuka yang mengharuskan pengguna mengetikkan baris perintah teks (seperti pada MS-DOS atau Terminal Linux) disebut...",
+      "options": ["GUI", "VUI", "CLI", "Monitor"],
+      "correct": 2,
+      "desc": "CLI adalah Command Line Interface (berbasis teks)."
+    },
+    {
+      "no": 10,
+      "text": "Layar sentuh pada smartphone yang merespon sentuhan jari termasuk jenis antarmuka...",
+      "options": ["CLI", "Touchscreen / NUI", "VUI", "DOS"],
+      "correct": 1,
+      "desc": "Touchscreen sering dikategorikan sebagai NUI (Natural User Interface) atau antarmuka sentuh."
+    },
+    {
+      "no": 11,
+      "text": "Keuntungan utama menggunakan GUI dibandingkan CLI adalah...",
+      "options": ["Lebih sulit dipelajari", "Hanya menampilkan teks hitam putih", "Lebih mudah digunakan (User Friendly) oleh pemula", "Membutuhkan memori lebih sedikit"],
+      "correct": 2,
+      "desc": "GUI lebih visual dan intuitif bagi pengguna awam."
+    },
+    {
+      "no": 12,
+      "text": "Mesin kasir yang tombol-tombolnya berupa menu makanan langsung adalah contoh penerapan antarmuka...",
+      "options": ["Berbasis Menu/Grafis", "Berbasis Suara", "Berbasis Baris Perintah", "Berbasis Pikiran"],
+      "correct": 0,
+      "desc": "Mesin kasir modern menggunakan GUI berbasis menu."
+    },
+    {
+      "no": 13,
+      "text": "Siri, Alexa, dan Google Assistant adalah contoh teknologi...",
+      "options": ["GUI", "VUI", "CLI", "Hardware"],
+      "correct": 1,
+      "desc": "VUI = Voice User Interface."
+    },
+    {
+      "no": 14,
+      "text": "Fitur di MS Word untuk membuat tulisan menjadi TEBAL adalah...",
+      "options": ["Italic", "Underline", "Bold", "Strike"],
+      "correct": 2,
+      "desc": "Bold (Ctrl+B) untuk menebalkan huruf."
+    },
+    {
+      "no": 15,
+      "text": "Untuk mengubah orientasi kertas menjadi mendatar (lebar ke samping) di MS Word, kita memilih opsi...",
+      "options": ["Portrait", "Landscape", "A4", "Margin"],
+      "correct": 1,
+      "desc": "Landscape adalah orientasi mendatar."
+    },
+    {
+      "no": 16,
+      "text": "Menu 'Save As' digunakan untuk...",
+      "options": ["Menyimpan dokumen dengan nama atau lokasi baru", "Menyimpan perubahan pada file yang sama", "Membuka dokumen baru", "Mencetak dokumen"],
+      "correct": 0,
+      "desc": "Save As membuat salinan file baru/nama baru."
+    },
+    {
+      "no": 17,
+      "text": "Ikon 'Gunting' (Cut) pada MS Word berfungsi untuk...",
+      "options": ["Menyalin teks", "Memotong/memindahkan teks", "Menempelkan teks", "Menghapus teks permanen"],
+      "correct": 1,
+      "desc": "Cut memindahkan objek/teks."
+    },
+    {
+      "no": 18,
+      "text": "Grup menu yang berisi pengaturan jenis huruf (Font), ukuran, dan warna ada di tab...",
+      "options": ["Insert", "Home", "Layout", "View"],
+      "correct": 1,
+      "desc": "Pengaturan Font ada di Tab Home."
+    },
+    {
+      "no": 19,
+      "text": "Dalam perintah CLI (Command Line), perintah 'mkdir' biasanya digunakan untuk...",
+      "options": ["Menghapus file", "Membuat folder/direktori baru", "Melihat isi folder", "Keluar dari program"],
+      "correct": 1,
+      "desc": "mkdir = make directory (buat folder)."
+    },
+    {
+      "no": 20,
+      "text": "Perintah CLI untuk berpindah dari satu folder ke folder lain adalah...",
+      "options": ["cd (change directory)", "md (make directory)", "rd (remove directory)", "copy"],
+      "correct": 0,
+      "desc": "cd = change directory."
+    },
+    {
+      "no": 21,
+      "text": "Tindakan menekan tombol kiri mouse dua kali dengan cepat disebut...",
+      "options": ["Click", "Double Click", "Drag and Drop", "Right Click"],
+      "correct": 1,
+      "desc": "Double Click biasanya untuk membuka file/program."
+    },
+    {
+      "no": 22,
+      "text": "Untuk memindahkan ikon dari satu posisi ke posisi lain dengan menahan tombol mouse disebut...",
+      "options": ["Copy Paste", "Cut Paste", "Drag and Drop", "Scroll"],
+      "correct": 2,
+      "desc": "Drag and Drop (Seret dan Lepas)."
+    },
+    {
+      "no": 23,
+      "text": "Simbol 'X' di pojok kanan atas jendela aplikasi berfungsi untuk...",
+      "options": ["Minimize (Mengecilkan)", "Maximize (Memperbesar)", "Close (Menutup)", "Restore"],
+      "correct": 2,
+      "desc": "Tombol X adalah Close."
+    },
+    {
+      "no": 24,
+      "text": "Konversi bilangan biner \\( 1010 \\) ke desimal adalah...",
+      "options": ["8", "9", "10", "11"],
+      "correct": 2,
+      "desc": "8(1) + 4(0) + 2(1) + 1(0) = 8 + 2 = 10."
+    },
+    {
+      "no": 25,
+      "text": "Konversi bilangan desimal 7 ke biner adalah...",
+      "options": ["110", "111", "101", "100"],
+      "correct": 1,
+      "desc": "4 + 2 + 1 = 7. Binernya 111."
+    },
+    {
+      "no": 26,
+      "text": "Bagian dokumen MS Word yang terletak di margin ATAS dan muncul di setiap halaman disebut...",
+      "options": ["Footer", "Header", "Page Number", "Footnote"],
+      "correct": 1,
+      "desc": "Header ada di bagian atas (Head)."
+    },
+    {
+      "no": 27,
+      "text": "Bagian dokumen yang terletak di margin BAWAH disebut...",
+      "options": ["Header", "Footer", "Heading", "Title"],
+      "correct": 1,
+      "desc": "Footer ada di bagian bawah (Foot/Kaki)."
+    },
+    {
+      "no": 28,
+      "text": "Cara cepat (shortcut) untuk masuk ke area Header/Footer adalah...",
+      "options": ["Klik menu File > Print", "Double click di area atas/bawah halaman", "Tekan Ctrl + H", "Tekan Alt + F4"],
+      "correct": 1,
+      "desc": "Double click di margin atas/bawah akan membuka mode Header/Footer."
+    },
+    {
+      "no": 29,
+      "text": "Untuk menutup tampilan Header & Footer dan kembali ke teks utama, kita bisa menekan tombol...",
+      "options": ["Close Header and Footer", "Exit Word", "Save", "Insert Page"],
+      "correct": 0,
+      "desc": "Ada tombol khusus 'Close Header and Footer' di ribbon."
+    },
+    {
+      "no": 30,
+      "text": "Nomor halaman (Page Number) biasanya diletakkan di...",
+      "options": ["Hanya Header", "Hanya Footer", "Header atau Footer", "Tengah paragraf"],
+      "correct": 2,
+      "desc": "Page number bisa diletakkan di atas (Header) atau bawah (Footer)."
+    },
+    {
+      "no": 31,
+      "text": "Pasangan Shortcut: Ctrl + C berfungsi untuk...",
+      "options": ["Cut", "Copy", "Paste", "Print"],
+      "correct": 1,
+      "desc": "Ctrl + C = Copy."
+    },
+    {
+      "no": 32,
+      "text": "Pasangan Shortcut: Ctrl + V berfungsi untuk...",
+      "options": ["Paste (Tempel)", "View", "Verify", "Cut"],
+      "correct": 0,
+      "desc": "Ctrl + V = Paste."
+    },
+    {
+      "no": 33,
+      "text": "Fungsi utama Header biasanya digunakan untuk menulis...",
+      "options": ["Isi surat utama", "Daftar pustaka", "Kop surat atau Judul Bab", "Tanda tangan"],
+      "correct": 2,
+      "desc": "Header sering dipakai untuk Kop Surat."
+    },
+    {
+      "no": 34,
+      "text": "Jika kita mengubah isi Header di halaman 1, maka Header di halaman 2 akan...",
+      "options": ["Tetap kosong", "Berubah mengikuti halaman 1", "Menghilang", "Menjadi Error"],
+      "correct": 1,
+      "desc": "Header bersifat konsisten/berulang di setiap halaman."
+    },
+    {
+      "no": 35,
+      "text": "Fitur 'Different First Page' pada pengaturan Header/Footer berfungsi untuk...",
+      "options": ["Membuat semua halaman sama", "Membuat halaman ganjil genap berbeda", "Membuat Header halaman pertama berbeda dari halaman lainnya", "Menghapus header"],
+      "correct": 2,
+      "desc": "Different First Page membuat halaman 1 beda (biasanya untuk cover tanpa nomor)."
+    },
+    {
+      "no": 36,
+      "text": "Menu untuk mengatur ukuran kertas (Size) dan batas tepi kertas (Margins) terdapat pada Tab...",
+      "options": ["Home", "Insert", "Layout / Page Layout", "References"],
+      "correct": 2,
+      "desc": "Tab Layout mengatur tata letak halaman."
+    },
+    {
+      "no": 37,
+      "text": "Langkah pertama yang benar untuk membuat tabel di MS Word adalah...",
+      "options": ["Klik Tab Insert > Table", "Klik Tab Home > Bold", "Klik Tab Layout > Margins", "Klik Tab View > Zoom"],
+      "correct": 0,
+      "desc": "Menu Tabel ada di Insert."
+    },
+    {
+      "no": 38,
+      "text": "Manakah kelompok yang semuanya adalah Output Device (Perangkat Keluaran)?",
+      "options": ["Keyboard, Mouse, Scanner", "Monitor, Printer, Speaker", "Joystick, Microphone, Webcam", "Flashdisk, Harddisk, CD"],
+      "correct": 1,
+      "desc": "Monitor, Printer, Speaker mengeluarkan hasil proses (Gambar, Cetakan, Suara)."
+    },
+    {
+      "no": 39,
+      "text": "Konversi biner: \\( 1100_2 \\) = ... (desimal)",
+      "options": ["10", "11", "12", "13"],
+      "correct": 2,
+      "desc": "8 + 4 + 0 + 0 = 12."
+    },
+    {
+      "no": 40,
+      "text": "Konversi desimal: \\( 15_{10} \\) = ... (biner)",
+      "options": ["1110", "1111", "1010", "1001"],
+      "correct": 1,
+      "desc": "8 + 4 + 2 + 1 = 15. Jadi binernya 1111."
+    }
+  ]
+}

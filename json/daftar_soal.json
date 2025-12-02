@@ -137,6 +137,31 @@
           },
           {
             "type": "folder",
+            "title": "Informatika",
+            "icon": "🔬",
+            "children": [
+              {
+                "type": "file",
+                "id": "inf-7-psas-2025-1",
+                "title": "Latihan PSAS Informatika Semester Ganjil # 1",
+                "subject": "Informatika",
+                "grade": "7 SMP",
+                "file": "psa1-info-7-khairin-1.json",
+                "icon": "💻"
+              },
+              {
+                "type": "file",
+                "id": "inf-7-psas-2025-2",
+                "title": "Latihan PSAS Informatika Semester Ganjil # 2",
+                "subject": "Informatika",
+                "grade": "7 SMP",
+                "file": "psa1-info-7-khairin-2.json",
+                "icon": "💻"
+              }
+            ]
+          },
+          {
+            "type": "folder",
             "title": "IPAS",
             "icon": "🔬",
             "children": [

@@ -1,0 +1,288 @@
+{
+  "subject": "Informatika",
+  "grade": "8 SMP",
+  "title": "PSAS Informatika Kelas 8 (Paket C)",
+  "subtitle": "Latihan Soal Pendalaman Materi - Paket 3",
+  "questions": [
+    {
+      "no": 1,
+      "text": "Perangkat keras yang berfungsi sebagai media penyimpanan data utama dan berkapasitas besar di dalam komputer adalah...",
+      "options": ["RAM", "Harddisk / SSD", "VGA Card", "Processor"],
+      "correct": 1,
+      "desc": "Harddisk/SSD adalah penyimpanan permanen (storage) berkapasitas besar."
+    },
+    {
+      "no": 2,
+      "text": "Software yang kodenya boleh dimodifikasi dan disebarluaskan secara gratis disebut...",
+      "options": ["Open Source", "Closed Source", "Shareware", "Commercial"],
+      "correct": 0,
+      "desc": "Open Source (sumber terbuka) gratis dan bisa dimodifikasi (contoh: Linux)."
+    },
+    {
+      "no": 3,
+      "text": "Tombol pada keyboard yang berfungsi untuk menghapus karakter di SEBELAH KIRI kursor adalah...",
+      "options": ["Delete", "Backspace", "Spacebar", "Enter"],
+      "correct": 1,
+      "desc": "Backspace hapus kiri, Delete hapus kanan."
+    },
+    {
+      "no": 4,
+      "text": "Sistem Operasi 'Android' dikembangkan oleh perusahaan...",
+      "options": ["Apple", "Microsoft", "Google", "Samsung"],
+      "correct": 2,
+      "desc": "Android adalah OS mobile buatan Google."
+    },
+    {
+      "no": 5,
+      "text": "Jaringan komputer yang menghubungkan perangkat dalam jarak sangat dekat (misalnya HP ke Headset Bluetooth) disebut...",
+      "options": ["LAN", "WAN", "PAN (Personal Area Network)", "MAN"],
+      "correct": 2,
+      "desc": "PAN mencakup area pribadi pengguna (jarak meter)."
+    },
+    {
+      "no": 6,
+      "text": "Manakah di bawah ini yang merupakan ekstensi file gambar?",
+      "options": [".mp3", ".avi", ".png", ".exe"],
+      "correct": 2,
+      "desc": ".png (Portable Network Graphics) adalah format gambar."
+    },
+    {
+      "no": 7,
+      "text": "Tampilan antarmuka yang menggunakan menu baris perintah teks hitam putih disebut...",
+      "options": ["GUI", "VUI", "CLI", "WIMP"],
+      "correct": 2,
+      "desc": "CLI (Command Line Interface) berbasis teks."
+    },
+    {
+      "no": 8,
+      "text": "Kelebihan utama GUI adalah...",
+      "options": ["Membutuhkan spesifikasi komputer tinggi", "Tampilan menarik dan mudah dipahami (intuitif)", "Hanya bisa digunakan ahli IT", "Lebih sulit daripada CLI"],
+      "correct": 1,
+      "desc": "GUI dirancang agar mudah dipakai (user-friendly) dengan visual."
+    },
+    {
+      "no": 9,
+      "text": "Fitur 'drag and drop' adalah ciri khas dari antarmuka jenis...",
+      "options": ["CLI", "VUI", "GUI", "Audio"],
+      "correct": 2,
+      "desc": "Geser dan lepas (drag & drop) adalah interaksi visual GUI."
+    },
+    {
+      "no": 10,
+      "text": "Untuk mengubah nama folder (Rename) pada Windows Explorer, kita bisa menekan tombol fungsi...",
+      "options": ["F1", "F2", "F5", "F12"],
+      "correct": 1,
+      "desc": "F2 adalah shortcut umum untuk Rename."
+    },
+    {
+      "no": 11,
+      "text": "Perintah 'cd ..' pada CLI berfungsi untuk...",
+      "options": ["Masuk ke folder anak", "Keluar ke folder induk (naik satu level)", "Menghapus folder", "Membuat folder"],
+      "correct": 1,
+      "desc": "Titik dua (..) melambangkan direktori induk (parent)."
+    },
+    {
+      "no": 12,
+      "text": "Di MS Word, untuk membuat teks menjadi rata tengah digunakan shortcut...",
+      "options": ["Ctrl + L", "Ctrl + R", "Ctrl + E", "Ctrl + J"],
+      "correct": 2,
+      "desc": "Ctrl + E = Center (Tengah)."
+    },
+    {
+      "no": 13,
+      "text": "Grup menu 'Illustrations' (Gambar, Bentuk, SmartArt) terdapat pada Tab...",
+      "options": ["Home", "Insert", "Design", "Layout"],
+      "correct": 1,
+      "desc": "Semua objek visual ada di Tab Insert."
+    },
+    {
+      "no": 14,
+      "text": "Untuk menyimpan dokumen dengan nama yang sama (Save) cukup menekan...",
+      "options": ["Ctrl + S", "Ctrl + P", "Ctrl + O", "Ctrl + N"],
+      "correct": 0,
+      "desc": "Ctrl + S = Save."
+    },
+    {
+      "no": 15,
+      "text": "Ikon 'Sapu Cat' (Format Painter) berfungsi untuk...",
+      "options": ["Mewarnai teks", "Menyalin format/gaya teks ke teks lain", "Menghapus teks", "Menggambar bebas"],
+      "correct": 1,
+      "desc": "Format Painter menyalin gaya (font, warna, ukuran) tanpa menyalin isi teks."
+    },
+    {
+      "no": 16,
+      "text": "Ukuran kertas standar yang sering digunakan untuk surat resmi adalah A4. Ukurannya adalah...",
+      "options": ["21 x 29.7 cm", "21.5 x 33 cm", "10 x 15 cm", "42 x 59 cm"],
+      "correct": 0,
+      "desc": "A4 = 210 x 297 mm."
+    },
+    {
+      "no": 17,
+      "text": "Fitur untuk membuat huruf besar di awal paragraf yang mencakup beberapa baris (seperti di koran) adalah...",
+      "options": ["WordArt", "Drop Cap", "Text Box", "Clip Art"],
+      "correct": 1,
+      "desc": "Drop Cap membuat huruf pertama besar (Dropped Capital)."
+    },
+    {
+      "no": 18,
+      "text": "Jaringan komputer global yang menghubungkan jutaan komputer di seluruh dunia disebut...",
+      "options": ["Intranet", "Internet", "Ekstranet", "Ethernet"],
+      "correct": 1,
+      "desc": "Internet = Interconnected Network (Global)."
+    },
+    {
+      "no": 19,
+      "text": "Perangkat yang mengubah sinyal digital menjadi analog dan sebaliknya agar bisa dikirim lewat kabel telepon adalah...",
+      "options": ["Router", "Switch", "Modem", "Hub"],
+      "correct": 2,
+      "desc": "Modem = Modulator Demodulator."
+    },
+    {
+      "no": 20,
+      "text": "Domain '.go.id' menunjukkan bahwa website tersebut milik...",
+      "options": ["Sekolah", "Perusahaan Komersial", "Pemerintah Indonesia", "Organisasi Nirlaba"],
+      "correct": 2,
+      "desc": "go.id = Government Indonesia."
+    },
+    {
+      "no": 21,
+      "text": "Aktivitas mengambil data dari internet ke komputer kita disebut...",
+      "options": ["Upload", "Download", "Browsing", "Chatting"],
+      "correct": 1,
+      "desc": "Download = Unduh (Masuk ke komputer)."
+    },
+    {
+      "no": 22,
+      "text": "Aktivitas mengirim data dari komputer kita ke internet disebut...",
+      "options": ["Upload", "Download", "Streaming", "Login"],
+      "correct": 0,
+      "desc": "Upload = Unggah (Naik ke internet)."
+    },
+    {
+      "no": 23,
+      "text": "Konversi biner \\( 100 \\) ke desimal adalah...",
+      "options": ["2", "3", "4", "5"],
+      "correct": 2,
+      "desc": "4 + 0 + 0 = 4."
+    },
+    {
+      "no": 24,
+      "text": "Konversi desimal 3 ke biner adalah...",
+      "options": ["01", "10", "11", "100"],
+      "correct": 2,
+      "desc": "2 + 1 = 3. Binernya 11."
+    },
+    {
+      "no": 25,
+      "text": "Basis bilangan heksadesimal adalah...",
+      "options": ["10", "2", "8", "16"],
+      "correct": 3,
+      "desc": "Heksadesimal basis 16 (0-9, A-F)."
+    },
+    {
+      "no": 26,
+      "text": "Untuk memberikan nomor halaman secara otomatis di bagian bawah tengah, kita memilih menu...",
+      "options": ["Header > Top of Page", "Footer > Bottom of Page", "Page Layout > Margins", "View > Zoom"],
+      "correct": 1,
+      "desc": "Bottom of Page ada di menu Footer/Page Number."
+    },
+    {
+      "no": 27,
+      "text": "Jika kita ingin halaman pertama (Cover) tidak memiliki nomor halaman, kita mencentang opsi...",
+      "options": ["Different Odd & Even Pages", "Different First Page", "Show Document Text", "Link to Previous"],
+      "correct": 1,
+      "desc": "Different First Page membuat halaman 1 berbeda."
+    },
+    {
+      "no": 28,
+      "text": "Fungsi utama dari 'Firewall' adalah...",
+      "options": ["Mendinginkan CPU", "Mencegah akses yang tidak diinginkan dari/ke jaringan", "Mempercepat koneksi WiFi", "Menghapus virus di flashdisk"],
+      "correct": 1,
+      "desc": "Firewall adalah tembok keamanan jaringan."
+    },
+    {
+      "no": 29,
+      "text": "Enkripsi yang menggunakan pergeseran huruf (misal A jadi C) disebut...",
+      "options": ["Caesar Cipher", "Vigenere Cipher", "RSA", "AES"],
+      "correct": 0,
+      "desc": "Caesar Cipher adalah teknik substitusi geser."
+    },
+    {
+      "no": 30,
+      "text": "Jika menggunakan Caesar Cipher geser 2 ke kanan, huruf 'B' menjadi...",
+      "options": ["C", "D", "E", "A"],
+      "correct": 1,
+      "desc": "B (+1) -> C (+2) -> D."
+    },
+    {
+      "no": 31,
+      "text": "Pasangan Shortcut: Ctrl + A berfungsi untuk...",
+      "options": ["Select All (Pilih Semua)", "Align Left", "Add New", "Apply"],
+      "correct": 0,
+      "desc": "Ctrl + A menyeleksi seluruh isi dokumen."
+    },
+    {
+      "no": 32,
+      "text": "Pasangan Shortcut: Ctrl + U berfungsi untuk...",
+      "options": ["Undo", "Underline (Garis Bawah)", "Upload", "Update"],
+      "correct": 1,
+      "desc": "Ctrl + U = Underline."
+    },
+    {
+      "no": 33,
+      "text": "Footer biasanya berisi informasi seperti...",
+      "options": ["Judul Bab Utama", "Nomor Halaman", "Foto Penulis", "Daftar Isi"],
+      "correct": 1,
+      "desc": "Posisi standar nomor halaman ada di footer."
+    },
+    {
+      "no": 34,
+      "text": "Untuk membatalkan perintah Undo (mengembalikan yang sudah dibatalkan), kita gunakan...",
+      "options": ["Redo (Ctrl + Y)", "Delete", "Backspace", "Esc"],
+      "correct": 0,
+      "desc": "Redo adalah kebalikan Undo."
+    },
+    {
+      "no": 35,
+      "text": "Tombol keyboard 'Esc' biasanya digunakan untuk...",
+      "options": ["Membatalkan perintah / Keluar dari mode layar penuh", "Menghapus teks", "Menyimpan data", "Mencetak"],
+      "correct": 0,
+      "desc": "Escape (Esc) untuk membatalkan/keluar."
+    },
+    {
+      "no": 36,
+      "text": "Pengaturan Margin 'Narrow' berarti...",
+      "options": ["Tepi kertas lebar", "Tepi kertas sempit", "Tepi kertas normal", "Tanpa tepi"],
+      "correct": 1,
+      "desc": "Narrow = Sempit."
+    },
+    {
+      "no": 37,
+      "text": "Langkah menyisipkan tabel adalah...",
+      "options": ["Insert > Table", "Layout > Table", "Home > Table", "Data > Table"],
+      "correct": 0,
+      "desc": "Menu Table ada di Tab Insert."
+    },
+    {
+      "no": 38,
+      "text": "Manakah yang merupakan Brainware?",
+      "options": ["Programmer", "Windows 10", "Mouse", "Google Chrome"],
+      "correct": 0,
+      "desc": "Programmer adalah manusia (Brainware)."
+    },
+    {
+      "no": 39,
+      "text": "Konversi biner: \\( 1011 \\) = ... (desimal)",
+      "options": ["10", "11", "12", "13"],
+      "correct": 1,
+      "desc": "8 + 0 + 2 + 1 = 11."
+    },
+    {
+      "no": 40,
+      "text": "Konversi desimal: \\( 9 \\) = ... (biner)",
+      "options": ["1000", "1001", "1010", "1100"],
+      "correct": 1,
+      "desc": "8 + 1 = 9. Binernya 1001."
+    }
+  ]
+}

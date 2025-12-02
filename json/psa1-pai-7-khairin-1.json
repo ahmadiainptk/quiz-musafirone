@@ -1,0 +1,548 @@
+{
+  "subject": "Pendidikan Agama Islam",
+  "grade": "7 SMP",
+  "title": "Latihan Soal SAS Ganjil PAI Kelas 7 (Full Kisi-Kisi)",
+  "subtitle": "Paket 45 soal lengkap mencakup Al-Qur'an Hadis, Asmaul Husna, Fiqih Shalat & Sujud, serta Sejarah Bani Umayyah.",
+  "questions": [
+    {
+      "no": 1,
+      "text": "Perhatikan potongan ayat Q.S. An-Nahl ayat 64 berikut: 'Likuomi' (لِقَوْمٍ). Arti kata tersebut adalah...",
+      "options": [
+        "Bagi orang-orang yang berserah diri",
+        "Bagi kaum yang beriman",
+        "Sebagai petunjuk",
+        "Dan rahmat"
+      ],
+      "correct": 1,
+      "desc": "Indikator 1-5: Arti kata per kata Q.S. An-Nahl: 64. 'Liqaumin' artinya bagi kaum/orang-orang."
+    },
+    {
+      "no": 2,
+      "text": "Dalam Q.S. An-Nahl ayat 64, Al-Qur'an diturunkan berfungsi sebagai...",
+      "options": [
+        "Hiasan dinding rumah",
+        "Petunjuk (Hudan) dan Rahmat bagi orang yang beriman",
+        "Bacaan pengantar tidur semata",
+        "Syarat menjadi pemimpin"
+      ],
+      "correct": 1,
+      "desc": "Indikator 1-5: Kandungan ayat, Al-Qur'an sebagai 'Hudan wa Rahmat'."
+    },
+    {
+      "no": 3,
+      "text": "Potongan ayat 'Wama anzalna' (وَمَا أَنْزَلْنَا) memiliki arti...",
+      "options": [
+        "Dan Kami tidak menurunkan",
+        "Dan Kami menciptakan",
+        "Dan Kami melihat",
+        "Dan Kami memerintahkan"
+      ],
+      "correct": 0,
+      "desc": "Indikator 1-5: Terjemahan mufradat."
+    },
+    {
+      "no": 4,
+      "text": "Perhatikan Q.S. An-Nisa ayat 59. Perintah utama yang terkandung di dalamnya adalah taat kepada...",
+      "options": [
+        "Allah, Rasul, dan Teman",
+        "Allah, Malaikat, dan Kitab",
+        "Allah, Rasul, dan Ulil Amri",
+        "Orang tua dan Guru saja"
+      ],
+      "correct": 2,
+      "desc": "Indikator 6-8: Ayat tentang ketaatan (Allah, Rasul, Ulil Amri)."
+    },
+    {
+      "no": 5,
+      "text": "Yang dimaksud dengan 'Ulil Amri' dalam ajaran Islam adalah...",
+      "options": [
+        "Orang kaya",
+        "Pemegang kekuasaan/pemimpin pemerintah",
+        "Pedagang sukses",
+        "Orang yang paling tua"
+      ],
+      "correct": 1,
+      "desc": "Indikator 15: Pengertian Ulil Amri (Pemimpin/Pemerintah)."
+    },
+    {
+      "no": 6,
+      "text": "Apabila terjadi perbedaan pendapat (perselisihan), maka kita diperintahkan untuk kembali kepada...",
+      "options": [
+        "Al-Qur'an dan Sunnah",
+        "Pendapat sendiri",
+        "Adat istiadat nenek moyang",
+        "Hukum rimba"
+      ],
+      "correct": 0,
+      "desc": "Indikator 8: Kandungan An-Nisa 59 (Kembali ke Allah/Al-Quran dan Rasul/Sunnah)."
+    },
+    {
+      "no": 7,
+      "text": "Hukum bacaan Alif Lam (Al) pada kata 'Ar-Rahman' (الرَّحْمٰن) adalah...",
+      "options": [
+        "Alif Lam Qamariyah",
+        "Alif Lam Syamsiyah",
+        "Izhar Halqi",
+        "Iqlab"
+      ],
+      "correct": 1,
+      "desc": "Indikator 9-10: Alif Lam Syamsiyah karena Al bertemu huruf Ra (huruf Syamsiyah), lam tidak dibaca jelas."
+    },
+    {
+      "no": 8,
+      "text": "Ciri utama hukum bacaan Alif Lam Qamariyah adalah...",
+      "options": [
+        "Huruf Lam lebur ke huruf depannya",
+        "Huruf Lam dibaca jelas (Izhar)",
+        "Terdapat tanda tasydid",
+        "Bunyi Lam hilang"
+      ],
+      "correct": 1,
+      "desc": "Indikator 9: Ciri Alif Lam Qamariyah (Lam sukun dibaca jelas)."
+    },
+    {
+      "no": 9,
+      "text": "Segala perkataan, perbuatan, dan ketetapan Nabi Muhammad SAW disebut...",
+      "options": [
+        "Al-Qur'an",
+        "Hadis/Sunnah",
+        "Ijtihad",
+        "Qiyas"
+      ],
+      "correct": 1,
+      "desc": "Indikator 11: Pengertian Hadis/Sunnah."
+    },
+    {
+      "no": 10,
+      "text": "Nama lain dari Hadis adalah 'Khabar' yang artinya...",
+      "options": [
+        "Jalan",
+        "Berita/Warta",
+        "Jejak",
+        "Aturan"
+      ],
+      "correct": 1,
+      "desc": "Indikator 11-12: Arti nama lain Hadis (Khabar = Berita)."
+    },
+    {
+      "no": 11,
+      "text": "Fungsi Hadis terhadap Al-Qur'an salah satunya adalah 'Bayan at-Tafsir', yang artinya...",
+      "options": [
+        "Memperkuat isi Al-Qur'an",
+        "Menjelaskan/merinci ayat Al-Qur'an yang masih umum",
+        "Menetapkan hukum baru yang tidak ada di Al-Qur'an",
+        "Menghapus hukum Al-Qur'an"
+      ],
+      "correct": 1,
+      "desc": "Indikator 13-14: Fungsi Hadis (Bayan Tafsir = Menjelaskan)."
+    },
+    {
+      "no": 12,
+      "text": "Allah SWT memiliki Asmaul Husna 'Al-Alim', yang artinya...",
+      "options": [
+        "Maha Mendengar",
+        "Maha Melihat",
+        "Maha Mengetahui",
+        "Maha Teliti"
+      ],
+      "correct": 2,
+      "desc": "Indikator 16-17: Arti Al-Alim."
+    },
+    {
+      "no": 13,
+      "text": "Sikap teliti dan waspada dalam mengerjakan soal ujian merupakan pengamalan dari Asmaul Husna...",
+      "options": [
+        "Al-Khabir",
+        "Al-Basir",
+        "Al-Sami'",
+        "Al-Alim"
+      ],
+      "correct": 0,
+      "desc": "Indikator 17-20: Al-Khabir artinya Maha Teliti/Waspada."
+    },
+    {
+      "no": 14,
+      "text": "Allah Maha Mendengar segala sesuatu, bahkan bisikan hati manusia. Hal ini sesuai dengan Asmaul Husna...",
+      "options": [
+        "Al-Basir",
+        "Al-Sami'",
+        "Al-Alim",
+        "Al-Khabir"
+      ],
+      "correct": 1,
+      "desc": "Indikator 16: Al-Sami' = Maha Mendengar."
+    },
+    {
+      "no": 15,
+      "text": "Secara bahasa, 'Shalat' berarti...",
+      "options": [
+        "Mengingat",
+        "Doa",
+        "Gerakan",
+        "Suci"
+      ],
+      "correct": 1,
+      "desc": "Indikator Menjodohkan 1: Pengertian shalat secara bahasa adalah Doa."
+    },
+    {
+      "no": 16,
+      "text": "Secara bahasa, 'Dzikir' berarti...",
+      "options": [
+        "Memohon",
+        "Mengingat/Menyebut",
+        "Bersujud",
+        "Berdiri"
+      ],
+      "correct": 1,
+      "desc": "Indikator Menjodohkan 2: Pengertian dzikir secara bahasa adalah Mengingat."
+    },
+    {
+      "no": 17,
+      "text": "Ayat yang menjelaskan bahwa shalat dapat mencegah perbuatan keji dan mungkar adalah...",
+      "options": [
+        "Q.S. Al-Baqarah: 183",
+        "Q.S. Al-Ankabut: 45",
+        "Q.S. An-Nisa: 59",
+        "Q.S. Al-Fatihah: 1"
+      ],
+      "correct": 1,
+      "desc": "Indikator 21: Ayat tentang makna shalat (Innas salata tanha 'anil fahsya...)."
+    },
+    {
+      "no": 18,
+      "text": "Arti dari bacaan dzikir 'Subhanallah' (Tasbih) adalah...",
+      "options": [
+        "Segala puji bagi Allah",
+        "Maha Suci Allah",
+        "Allah Maha Besar",
+        "Tiada Tuhan selain Allah"
+      ],
+      "correct": 1,
+      "desc": "Indikator Essay 2 (Adaptasi): Bacaan Tasbih."
+    },
+    {
+      "no": 19,
+      "text": "Bacaan 'Laa ilaaha illallah' disebut bacaan...",
+      "options": [
+        "Tahmid",
+        "Takbir",
+        "Tahlil",
+        "Tasbih"
+      ],
+      "correct": 2,
+      "desc": "Indikator Essay 2 (Adaptasi): Bacaan Tahlil."
+    },
+    {
+      "no": 20,
+      "text": "Salah satu waktu yang sangat baik (mustajab) untuk berdzikir dan berdoa adalah...",
+      "options": [
+        "Saat sedang makan",
+        "Sepertiga malam terakhir",
+        "Saat matahari tepat di atas kepala",
+        "Saat bermain game"
+      ],
+      "correct": 1,
+      "desc": "Indikator 24: Waktu utama berdzikir."
+    },
+    {
+      "no": 21,
+      "text": "Berdzikir dengan hati (Bil Qalbi) dilakukan dengan cara...",
+      "options": [
+        "Mengucapkan kalimat thayyibah dengan lisan",
+        "Merenungkan ciptaan Allah dan meyakini keesaan-Nya",
+        "Menjalankan perintah dan menjauhi larangan-Nya",
+        "Membaca Al-Qur'an dengan suara keras"
+      ],
+      "correct": 1,
+      "desc": "Indikator 25-27: Cara berdzikir (Hati)."
+    },
+    {
+      "no": 22,
+      "text": "Anggota tubuh yang wajib menempel di lantai ketika sujud berjumlah...",
+      "options": [
+        "5 anggota tubuh",
+        "6 anggota tubuh",
+        "7 anggota tubuh",
+        "8 anggota tubuh"
+      ],
+      "correct": 2,
+      "desc": "Indikator 28: 7 Anggota sujud (Jidat, 2 telapak tangan, 2 lutut, 2 ujung kaki)."
+    },
+    {
+      "no": 23,
+      "text": "Jumlah sujud yang dilakukan dalam satu rakaat shalat fardhu adalah...",
+      "options": [
+        "1 kali",
+        "2 kali",
+        "3 kali",
+        "4 kali"
+      ],
+      "correct": 1,
+      "desc": "Indikator 29: Jumlah sujud shalat."
+    },
+    {
+      "no": 24,
+      "text": "Sujud yang dilakukan ketika seseorang mendapatkan nikmat yang luar biasa atau terhindar dari musibah disebut...",
+      "options": [
+        "Sujud Sahwi",
+        "Sujud Tilawah",
+        "Sujud Syukur",
+        "Sujud Rukun"
+      ],
+      "correct": 2,
+      "desc": "Indikator 30 & 34: Sebab sujud syukur."
+    },
+    {
+      "no": 25,
+      "text": "Sujud Sahwi dilakukan karena...",
+      "options": [
+        "Mendengar ayat sajadah",
+        "Lupa atau ragu dalam jumlah rakaat shalat",
+        "Mendapat hadiah",
+        "Selesai membaca Al-Qur'an"
+      ],
+      "correct": 1,
+      "desc": "Indikator 31 & 35: Sebab sujud sahwi (Lupa/ragu)."
+    },
+    {
+      "no": 26,
+      "text": "Sujud Tilawah dilakukan apabila...",
+      "options": [
+        "Membaca atau mendengar ayat-ayat Sajadah",
+        "Lupa tasyahud awal",
+        "Mendapat kabar gembira",
+        "Shalat sunnah"
+      ],
+      "correct": 0,
+      "desc": "Indikator 32: Syarat sujud tilawah."
+    },
+    {
+      "no": 27,
+      "text": "Jumlah sujud sahwi yang dilakukan sebelum salam adalah...",
+      "options": [
+        "1 kali",
+        "2 kali",
+        "3 kali",
+        "4 kali"
+      ],
+      "correct": 1,
+      "desc": "Indikator 33: Jumlah sujud sahwi (2 kali)."
+    },
+    {
+      "no": 28,
+      "text": "Bacaan doa Sujud Sahwi yang benar adalah...",
+      "options": [
+        "Subhana rabbiyal a'la wa bihamdih",
+        "Sajada wajhiya lilladzi khalaqahu...",
+        "Subhana man la yanamu wa la yashu",
+        "Subhanallah walhamdulillah..."
+      ],
+      "correct": 2,
+      "desc": "Indikator Menjodohkan 4 & Essay 3: Doa Sujud Sahwi."
+    },
+    {
+      "no": 29,
+      "text": "Arti dari doa Sujud Sahwi 'Subhana man la yanamu wa la yashu' adalah...",
+      "options": [
+        "Maha Suci Allah yang tidak tidur dan tidak lupa",
+        "Maha Suci Allah yang menciptakan wajahku",
+        "Segala puji bagi Allah Tuhan semesta alam",
+        "Maha Suci Allah Yang Maha Tinggi"
+      ],
+      "correct": 0,
+      "desc": "Indikator Essay 3: Arti doa sujud sahwi."
+    },
+    {
+      "no": 30,
+      "text": "Dinasti Bani Umayyah didirikan pada tahun...",
+      "options": [
+        "41 H / 661 M",
+        "61 H / 680 M",
+        "11 H / 632 M",
+        "132 H / 750 M"
+      ],
+      "correct": 0,
+      "desc": "Indikator 36: Tahun berdiri Bani Umayyah (41 H)."
+    },
+    {
+      "no": 31,
+      "text": "Pendiri Daulah Bani Umayyah adalah...",
+      "options": [
+        "Yazid bin Muawiyah",
+        "Muawiyah bin Abu Sufyan",
+        "Marwan bin Hakam",
+        "Umar bin Abdul Aziz"
+      ],
+      "correct": 1,
+      "desc": "Indikator Menjodohkan 5: Pendiri (Muawiyah)."
+    },
+    {
+      "no": 32,
+      "text": "Pusat pemerintahan (Ibukota) Dinasti Bani Umayyah berada di kota...",
+      "options": [
+        "Madinah",
+        "Mekkah",
+        "Kufah",
+        "Damaskus"
+      ],
+      "correct": 3,
+      "desc": "Indikator 37: Ibukota Umayyah (Damaskus/Syam)."
+    },
+    {
+      "no": 33,
+      "text": "Panglima Islam yang terkenal menaklukkan Andalusia (Spanyol) dan namanya diabadikan menjadi nama selat adalah...",
+      "options": [
+        "Khalid bin Walid",
+        "Salahuddin Al-Ayyubi",
+        "Tariq bin Ziyad",
+        "Musa bin Nushair"
+      ],
+      "correct": 2,
+      "desc": "Indikator 38: Tariq bin Ziyad (Selat Gibraltar/Jabal Tariq)."
+    },
+    {
+      "no": 34,
+      "text": "Departemen yang mengurusi surat-menyurat dan pos pada masa Bani Umayyah disebut...",
+      "options": [
+        "Diwanul Kharaj",
+        "Diwanul Barid",
+        "Diwanul Khatam",
+        "Diwanul Jund"
+      ],
+      "correct": 1,
+      "desc": "Indikator 39-40: Nama departemen (Barid = Pos)."
+    },
+    {
+      "no": 35,
+      "text": "Departemen yang bertugas menyalin dan meregistrasi keputusan khalifah (Sekretaris Negara/Stempel) adalah...",
+      "options": [
+        "Diwanul Rasail",
+        "Diwanul Khatam",
+        "Diwanul Barid",
+        "Diwanul Kharaj"
+      ],
+      "correct": 1,
+      "desc": "Indikator 39-40: Diwanul Khatam (Pencatatan/Stempel)."
+    },
+    {
+      "no": 36,
+      "text": "Salah satu kemajuan peradaban Islam masa Bani Umayyah dalam bidang arsitektur adalah pembangunan...",
+      "options": [
+        "Masjid Nabawi",
+        "Masjidil Haram",
+        "Masjid Damaskus (Umayyah) dan Kubah As-Sakhra",
+        "Taj Mahal"
+      ],
+      "correct": 2,
+      "desc": "Indikator Essay 5 (Adaptasi): Kemajuan bidang fisik/arsitektur."
+    },
+    {
+      "no": 37,
+      "text": "Peristiwa 'Amul Jama'ah' adalah peristiwa...",
+      "options": [
+        "Perang Saudara",
+        "Tahun Persatuan umat Islam (penyerahan kekuasaan Hasan bin Ali ke Muawiyah)",
+        "Tahun Kesedihan",
+        "Tahun Gajah"
+      ],
+      "correct": 1,
+      "desc": "Indikator Essay 4 (Adaptasi): Sejarah berdirinya Umayyah (Amul Jamaah)."
+    },
+    {
+      "no": 38,
+      "text": "Bacaan Sujud Syukur dan Sujud Tilawah adalah...",
+      "options": [
+        "Sajada wajhiya lilladzi khalaqahu wasyaqqa sam'ahu...",
+        "Subhana rabbiyal a'la",
+        "Rabbighfirli warhamni",
+        "Atahiyyatul mubarakatu..."
+      ],
+      "correct": 0,
+      "desc": "Indikator Menjodohkan 3: Bacaan doa sujud syukur/tilawah."
+    },
+    {
+      "no": 39,
+      "text": "Hukum melaksanakan Sujud Syukur adalah...",
+      "options": [
+        "Wajib",
+        "Sunnah",
+        "Mubah",
+        "Makruh"
+      ],
+      "correct": 1,
+      "desc": "Indikator tambahan pemahaman sujud."
+    },
+    {
+      "no": 40,
+      "text": "Pada masa Walid bin Abdul Malik, dibangun panti-panti untuk orang cacat dan rumah sakit. Ini adalah kemajuan di bidang...",
+      "options": [
+        "Militer",
+        "Sosial",
+        "Politik",
+        "Bahasa"
+      ],
+      "correct": 1,
+      "desc": "Indikator Essay 5 (Adaptasi): Bidang sosial."
+    },
+    {
+      "no": 41,
+      "text": "Khalifah Bani Umayyah yang terkenal sangat adil dan disebut sebagai Khulafaur Rasyidin ke-5 adalah...",
+      "options": [
+        "Yazid bin Muawiyah",
+        "Abdul Malik bin Marwan",
+        "Umar bin Abdul Aziz",
+        "Walid bin Abdul Malik"
+      ],
+      "correct": 2,
+      "desc": "Tokoh penting Bani Umayyah."
+    },
+    {
+      "no": 42,
+      "text": "Syarat utama melakukan Sujud Syukur adalah...",
+      "options": [
+        "Harus dalam keadaan shalat",
+        "Suci dari hadas dan najis serta menutup aurat (di luar shalat)",
+        "Harus dilakukan di masjid",
+        "Harus berjamaah"
+      ],
+      "correct": 1,
+      "desc": "Ketentuan sujud syukur."
+    },
+    {
+      "no": 43,
+      "text": "Asmaul Husna 'Al-Khabir' mengajarkan kita untuk...",
+      "options": [
+        "Bersikap sombong",
+        "Mengerjakan sesuatu dengan teliti, cermat, dan waspada",
+        "Mendengarkan pembicaraan orang lain",
+        "Melihat aib orang lain"
+      ],
+      "correct": 1,
+      "desc": "Hikmah Asmaul Husna Al-Khabir."
+    },
+    {
+      "no": 44,
+      "text": "Lafadz 'Alhamdulillah' disebut bacaan...",
+      "options": [
+        "Tasbih",
+        "Tahmid",
+        "Takbir",
+        "Tahlil"
+      ],
+      "correct": 1,
+      "desc": "Indikator Essay 2: Bacaan Tahmid."
+    },
+    {
+      "no": 45,
+      "text": "Di bawah ini yang BUKAN termasuk kemajuan peradaban masa Bani Umayyah adalah...",
+      "options": [
+        "Perluasan wilayah ke Afrika Utara dan Andalusia",
+        "Kodifikasi (pembukuan) Hadis",
+        "Penemuan pesawat terbang",
+        "Arabisasi administrasi negara (Diwan)"
+      ],
+      "correct": 2,
+      "desc": "Indikator Essay 5: Bidang kemajuan (kecuali pesawat)."
+    }
+  ]
+}

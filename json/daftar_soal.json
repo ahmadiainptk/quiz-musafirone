@@ -296,6 +296,15 @@
                     "grade": "10 SMA",
                     "file": "asas1-fisika-10-lubna-2.json",
                     "icon": "⚛️"
+                 },
+               {
+                    "type": "file",
+                    "id": "fisika-10-asas-3",
+                    "title": "Persiapan ASAS Fisika Semester Ganjil # 3",
+                    "subject": "Fisika",
+                    "grade": "10 SMA",
+                    "file": "asas1-fisika-10-lubna-3.json",
+                    "icon": "⚛️"
                  }
              ]
           }

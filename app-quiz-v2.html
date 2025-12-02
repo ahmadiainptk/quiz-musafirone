@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bimbel MusafirONE - Aplikasi Ujian</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; }
+
+        /* Card Styles */
+        .option-card {
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 2px solid #e2e8f0;
+            background-color: white;
+            position: relative;
+        }
+        .option-card:hover { border-color: #cbd5e1; background-color: #f1f5f9; }
+        .option-selected { border-color: #0ea5e9 !important; background-color: #f0f9ff !important; box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.2); }
+        .correct-mode { background-color: #dcfce7 !important; border-color: #22c55e !important; color: #14532d; }
+        .wrong-mode { background-color: #fee2e2 !important; border-color: #ef4444 !important; color: #7f1d1d; opacity: 0.75; }
+
+        /* Folder & Exam Card Styles */
+        .library-card {
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+        }
+        .library-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 12px -3px rgba(0, 0, 0, 0.1);
+            border-color: #3b82f6;
+        }
+        .folder-card { background-color: #fffbeb; border-color: #fcd34d; } /* Yellow tint for folders */
+        .folder-card:hover { background-color: #fef3c7; border-color: #f59e0b; }
+
+        /* Utilities */
+        .custom-table th { background: #f1f5f9; padding: 8px; border: 1px solid #cbd5e1; text-align: left; font-size: 0.9em; }
+        .custom-table td { padding: 8px; border: 1px solid #cbd5e1; font-size: 0.9em; }
+        
+        .map-container { position: relative; width: 100%; max-width: 200px; margin: 0 auto; height: 200px; overflow: hidden; border: 2px solid #94a3b8; border-radius: 8px; }
+        .grid-overlay { display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 1fr); width: 100%; height: 100%; }
+        .grid-cell { position: relative; border: 1px solid rgba(0,0,0,0.15); display: flex; align-items: center; justify-content: center; }
+        .grid-label-x { position: absolute; top: -16px; font-weight: bold; font-size: 12px; text-align: center; width: 100%; }
+        .grid-label-y { position: absolute; left: -16px; top: 50%; transform: translateY(-50%); font-weight: bold; font-size: 12px; }
+        
+        .graph-paper { background-color: #fff; background-image: linear-gradient(#e2e8f0 1px, transparent 1px), linear-gradient(90deg, #e2e8f0 1px, transparent 1px); background-size: 40px 40px; border: 2px solid #94a3b8; position: relative; height: 250px; width: 100%; max-width: 400px; margin: 0 auto; }
+        .point { width: 10px; height: 10px; background-color: red; border-radius: 50%; position: absolute; transform: translate(-50%, 50%); z-index: 10; }
+        .point-label { position: absolute; top: -20px; left: 10px; background: white; padding: 0 4px; font-weight: bold; font-size: 12px; border: 1px solid #ccc; }
+        .dot { transition: all 0.2s ease; font-size: 12px; color: white; }
+    </style>
+</head>
+<body class="text-slate-800 flex flex-col min-h-screen">
+
+    <!-- NAVBAR TOP (Tinggi h-16 = 64px) -->
+    <nav class="bg-white border-b border-slate-200 sticky top-0 z-50 h-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
+            <div class="flex justify-between items-center h-full">
+                <!-- Kiri: Logo & Nama Aplikasi -->
+                <div class="flex items-center gap-3 cursor-pointer" onclick="window.location.reload()">
+                    <div class="flex-shrink-0 flex items-center justify-center w-10 h-10 bg-blue-600 rounded-lg text-white">
+                        <!-- Simple Shield Logo -->
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                        </svg>
+                    </div>
+                    <span class="font-bold text-xl text-slate-800 tracking-tight">Bimbel MusafirONE</span>
+                </div>
+
+                <!-- Kanan: User Dropdown -->
+                <div class="flex items-center">
+                    <div class="relative ml-3">
+                        <div>
+                            <button type="button" onclick="toggleDropdown()" class="flex items-center max-w-xs text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 bg-slate-100 hover:bg-slate-200 px-3 py-2 transition" id="user-menu-button">
+                                <span class="sr-only">Open user menu</span>
+                                <div class="h-8 w-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold mr-2">B</div>
+                                <span class="font-medium text-slate-700 mr-1">Binan</span>
+                                <svg class="h-4 w-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            </button>
+                        </div>
+                        <div id="user-dropdown" class="hidden origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none transform transition-all duration-200" role="menu">
+                            <a href="#" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50" role="menuitem">Profil</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50" role="menuitem">Logout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HEADER UJIAN (Full Width & Sticky below Navbar) -->
+    <header id="exam-header" class="bg-gradient-to-r from-blue-700 to-blue-800 text-white shadow-md sticky top-16 z-40 w-full hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div class="flex-1">
+                    <h1 class="text-xl md:text-2xl font-bold leading-tight" id="exam-title">...</h1>
+                    <p class="text-blue-200 text-sm mt-1 leading-relaxed" id="exam-subtitle">...</p>
+                </div>
+                
+                <div class="flex items-center gap-3 self-end md:self-center">
+                    <div class="bg-white/10 px-4 py-2 rounded-lg border border-white/20 text-center min-w-[90px] backdrop-blur-sm">
+                        <span class="text-xs uppercase tracking-wider opacity-70">Waktu</span>
+                        <div class="text-xl font-bold font-mono" id="timer-display">00:00</div>
+                    </div>
+                    <div class="bg-white/10 px-4 py-2 rounded-lg border border-white/20 text-center backdrop-blur-sm">
+                        <span class="text-xs uppercase tracking-wider opacity-70">Terjawab</span>
+                        <div class="text-xl font-bold"><span id="answered-badge">0</span>/<span id="total-badge">0</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- CONTENT WRAPPER -->
+    <div class="max-w-4xl mx-auto w-full flex-grow flex flex-col mt-6 px-4">
+        
+        <!-- LIBRARY SCREEN (Daftar Soal) -->
+        <div id="library-screen" class="pb-10">
+            
+            <div class="mb-6 pt-6">
+                <!-- Breadcrumb Navigation -->
+                <nav class="flex mb-4" aria-label="Breadcrumb">
+                    <ol class="inline-flex items-center space-x-1 md:space-x-3" id="breadcrumb-container">
+                        <!-- Breadcrumbs injected by JS -->
+                    </ol>
+                </nav>
+                
+                <h2 class="text-3xl font-bold text-slate-900" id="folder-title">Beranda</h2>
+                <p class="text-slate-500 mt-2">Pilih folder atau paket soal untuk melanjutkan.</p>
+            </div>
+
+            <!-- Loader for Library -->
+            <div id="library-loader" class="flex justify-center py-10">
+                <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600"></div>
+            </div>
+
+            <!-- Grid Container -->
+            <div id="exam-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4 animate-[fadeIn_0.3s_ease-out]">
+                <!-- Exam/Folder cards injected here -->
+            </div>
+
+            <!-- Manual Upload Option -->
+            <div class="mt-12 border-t border-slate-200 pt-8 flex flex-col items-center">
+                <p class="text-sm text-slate-400 mb-4">Atau gunakan file soal lokal:</p>
+                <div class="relative group w-full max-w-xs">
+                    <input type="file" id="jsonFile" accept=".json" class="hidden" onchange="loadLocalFile(this)">
+                    <label for="jsonFile" class="block w-full cursor-pointer bg-slate-50 border border-dashed border-slate-300 rounded-lg p-3 text-center text-sm group-hover:border-blue-500 group-hover:bg-blue-50 transition text-slate-500 font-medium">
+                        📂 Upload File .JSON Manual
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- QUIZ CONTAINER -->
+        <main class="flex-grow space-y-8 pb-32 hidden" id="quiz-container">
+            <!-- Questions injected here -->
+        </main>
+
+        <!-- FOOTER CONTROLS -->
+        <div id="controls" class="fixed bottom-0 left-0 w-full bg-white border-t border-slate-200 p-4 shadow-[0_-4px_20px_rgba(0,0,0,0.1)] hidden z-40">
+            <div id="controls-content" class="max-w-4xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+                <div class="text-sm text-slate-500 font-medium flex items-center gap-2">
+                    <span id="warning-text">⚠️ Masih ada soal kosong!</span>
+                </div>
+                <button id="btn-submit" onclick="submitQuiz()" class="w-full md:w-auto bg-green-600 text-white px-8 py-3 rounded-lg font-bold hover:bg-green-700 transition shadow-md flex items-center justify-center gap-2">
+                    <span>Kirim Jawaban</span>
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- RESULT & CONFIRM MODALS -->
+    <div id="result-modal" class="fixed inset-0 bg-black/70 z-[70] hidden flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-2xl p-8 max-w-md w-full text-center shadow-2xl animate-[fadeIn_0.3s_ease-out]">
+            <h2 class="text-2xl font-bold mb-2 text-slate-800">Hasil Ujian</h2>
+            <div class="text-7xl font-black text-blue-600 mb-6 tracking-tight" id="final-score">0</div>
+            
+            <div class="mb-6 p-2 bg-slate-100 rounded-lg inline-block">
+                <span class="text-slate-500 text-xs font-bold uppercase tracking-wide">Waktu Pengerjaan</span>
+                <div class="text-lg font-mono font-bold text-slate-700" id="final-time">00:00</div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4 mb-8">
+                <div class="bg-green-50 text-green-700 p-3 rounded-xl border border-green-200 font-bold">
+                    <div class="text-xs uppercase opacity-70">Benar</div>
+                    <span id="final-correct" class="text-xl">0</span>
+                </div>
+                <div class="bg-red-50 text-red-700 p-3 rounded-xl border border-red-200 font-bold">
+                    <div class="text-xs uppercase opacity-70">Salah</div>
+                    <span id="final-wrong" class="text-xl">0</span>
+                </div>
+            </div>
+            <button onclick="closeResult()" class="w-full bg-slate-800 text-white py-3.5 rounded-xl font-bold hover:bg-slate-900 transition">Lihat Pembahasan</button>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirm-modal" class="fixed inset-0 bg-black/50 z-[70] hidden flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-xl p-6 max-w-sm w-full shadow-2xl">
+            <h3 class="text-lg font-bold text-slate-900 mb-2">Kumpulkan Jawaban?</h3>
+            <p class="text-slate-600 mb-6">Jawaban tidak bisa diubah setelah dikirim.</p>
+            <div class="flex gap-3 justify-end">
+                <button onclick="document.getElementById('confirm-modal').classList.add('hidden')" class="px-4 py-2 rounded-lg text-slate-600 font-bold hover:bg-slate-100">Batal</button>
+                <button onclick="processSubmission()" class="px-4 py-2 rounded-lg bg-green-600 text-white font-bold hover:bg-green-700">Ya, Kumpulkan</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Error Modal -->
+    <div id="error-modal" class="fixed inset-0 bg-black/50 z-[80] hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl p-6 max-w-sm w-full shadow-2xl text-center">
+            <div class="w-12 h-12 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto mb-4 text-xl">⚠️</div>
+            <h3 class="text-lg font-bold text-slate-900 mb-2">Gagal Memuat Soal</h3>
+            <p class="text-slate-600 mb-6 text-sm" id="error-message">Terjadi kesalahan.</p>
+            <button onclick="document.getElementById('error-modal').classList.add('hidden')" class="px-4 py-2 rounded-lg bg-slate-800 text-white font-bold w-full">Tutup</button>
+        </div>
+    </div>
+
+<script>
+// --- UI INTERACTIONS ---
+function toggleDropdown() {
+    document.getElementById('user-dropdown').classList.toggle('hidden');
+}
+window.onclick = function(event) {
+    if (!event.target.closest('#user-menu-button')) {
+        document.getElementById('user-dropdown').classList.add('hidden');
+    }
+}
+
+// --- GLOBAL VARIABLES ---
+let questions = []; 
+let userAnswers = [];
+let shuffledQuestions = [];
+let isSubmitted = false;
+let timerInterval;
+let startTime;
+
+// --- FOLDER NAVIGATION STATE ---
+let rootLibrary = []; // Menyimpan semua data dari JSON
+let currentPath = []; // Stack untuk breadcrumb navigation
+
+// --- LOAD LIBRARY LOGIC ---
+
+window.onload = async function() {
+    const loader = document.getElementById('library-loader');
+    const grid = document.getElementById('exam-grid');
+    
+    try {
+        const response = await fetch('json/daftar_soal.json');
+        if (!response.ok) throw new Error("Gagal mengambil daftar soal");
+        
+        rootLibrary = await response.json(); // Simpan data root
+        loader.classList.add('hidden');
+        
+        // Render folder root pertama kali
+        renderLibraryView(rootLibrary);
+
+    } catch (error) {
+        loader.classList.add('hidden');
+        console.error(error);
+        grid.innerHTML = `
+            <div class="col-span-1 md:col-span-2 bg-yellow-50 border border-yellow-200 p-4 rounded-xl text-yellow-800 text-sm text-center">
+                <p class="font-bold">⚠️ Mode Offline / Lokal</p>
+                <p>Gunakan tombol <b>Upload Manual</b> atau jalankan server lokal.</p>
+            </div>
+        `;
+    }
+};
+
+// Fungsi Render Utama untuk Library (Mendukung Folder)
+function renderLibraryView(items) {
+    const grid = document.getElementById('exam-grid');
+    
+    // Update Title & Breadcrumbs
+    updateBreadcrumbs();
+    
+    // Judul Folder Saat Ini
+    const currentFolderTitle = currentPath.length > 0 ? currentPath[currentPath.length - 1].title : "Beranda";
+    document.getElementById('folder-title').innerText = currentFolderTitle;
+
+    // Kosongkan Grid
+    grid.innerHTML = '';
+
+    // Tombol "Kembali" (Folder Up) jika tidak di root
+    if (currentPath.length > 0) {
+        grid.innerHTML += `
+            <div class="library-card bg-slate-100 p-5 rounded-xl border border-slate-300 cursor-pointer flex items-center gap-4 hover:bg-slate-200" onclick="navigateUp()">
+                <div class="w-16 h-16 bg-slate-200 text-2xl flex items-center justify-center rounded-lg shadow-sm border border-slate-300 text-slate-500">
+                    ⬅️
+                </div>
+                <div class="flex-1">
+                    <h3 class="font-bold text-slate-700 text-lg leading-tight">Kembali</h3>
+                    <p class="text-slate-500 text-sm mt-1">Ke folder sebelumnya</p>
+                </div>
+            </div>
+        `;
+    }
+
+    if (items.length === 0) {
+        grid.innerHTML += `<p class="col-span-2 text-center text-slate-500 italic mt-4">Folder ini kosong.</p>`;
+        return;
+    }
+
+    // Render Items (Folder atau File)
+    items.forEach((item, index) => {
+        if (item.type === 'folder') {
+            // Render Folder
+            grid.innerHTML += `
+                <div class="library-card folder-card p-5 rounded-xl border-2 cursor-pointer flex items-center gap-4" onclick="navigateToFolder(${index})">
+                    <div class="w-16 h-16 bg-yellow-100 text-3xl flex items-center justify-center rounded-lg shadow-sm border border-yellow-200">
+                        ${item.icon || '📂'}
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="bg-yellow-100 text-yellow-800 text-xs font-bold px-2 py-0.5 rounded">FOLDER</span>
+                        </div>
+                        <h3 class="font-bold text-slate-800 text-lg leading-tight">${item.title}</h3>
+                        <p class="text-slate-500 text-sm mt-1">${item.children ? item.children.length : 0} Item</p>
+                    </div>
+                    <div class="text-yellow-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    </div>
+                </div>
+            `;
+        } else {
+            // Render File Soal
+            grid.innerHTML += `
+                <div class="library-card bg-white p-5 rounded-xl border border-slate-200 cursor-pointer flex items-center gap-4" onclick="loadExamFromLibrary('${item.file}')">
+                    <div class="w-16 h-16 bg-blue-50 text-3xl flex items-center justify-center rounded-lg shadow-sm border border-blue-100">
+                        ${item.icon || '📝'}
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="bg-blue-100 text-blue-700 text-xs font-bold px-2 py-0.5 rounded">${item.subject}</span>
+                            <span class="bg-slate-100 text-slate-600 text-xs font-bold px-2 py-0.5 rounded">${item.grade}</span>
+                        </div>
+                        <h3 class="font-bold text-slate-800 text-lg leading-tight">${item.title}</h3>
+                        <p class="text-slate-400 text-sm mt-1">Klik untuk mulai</p>
+                    </div>
+                    <div class="text-slate-300">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    </div>
+                </div>
+            `;
+        }
+    });
+}
+
+// Navigasi Masuk Folder
+function navigateToFolder(index) {
+    // Cari item berdasarkan index di view saat ini
+    const currentItems = currentPath.length === 0 ? rootLibrary : currentPath[currentPath.length - 1].children;
+    const selectedFolder = currentItems[index];
+    
+    if (selectedFolder && selectedFolder.type === 'folder') {
+        currentPath.push(selectedFolder); // Tambahkan ke stack history
+        renderLibraryView(selectedFolder.children);
+    }
+}
+
+// Navigasi Kembali (Up)
+function navigateUp() {
+    if (currentPath.length > 0) {
+        currentPath.pop(); // Hapus folder terakhir dari history
+        
+        const parentItems = currentPath.length === 0 ? rootLibrary : currentPath[currentPath.length - 1].children;
+        renderLibraryView(parentItems);
+    }
+}
+
+// Update UI Breadcrumb (Home > SD > Kelas 6 ...)
+function updateBreadcrumbs() {
+    const container = document.getElementById('breadcrumb-container');
+    let html = `
+        <li class="inline-flex items-center">
+            <a href="#" onclick="resetNavigation()" class="inline-flex items-center text-sm font-medium text-slate-700 hover:text-blue-600">
+                <svg class="w-3 h-3 mr-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z"/>
+                </svg>
+                Home
+            </a>
+        </li>
+    `;
+
+    currentPath.forEach((folder, index) => {
+        // Jangan link kan item terakhir (karena sedang aktif)
+        const isLast = index === currentPath.length - 1;
+        html += `
+            <li>
+                <div class="flex items-center">
+                    <svg class="w-3 h-3 text-slate-400 mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+                    </svg>
+                    ${isLast 
+                        ? `<span class="ml-1 text-sm font-medium text-slate-500 md:ml-2">${folder.title}</span>` 
+                        : `<a href="#" onclick="jumpToBreadcrumb(${index})" class="ml-1 text-sm font-medium text-slate-700 hover:text-blue-600 md:ml-2">${folder.title}</a>`
+                    }
+                </div>
+            </li>
+        `;
+    });
+    
+    container.innerHTML = html;
+}
+
+function resetNavigation() {
+    currentPath = [];
+    renderLibraryView(rootLibrary);
+}
+
+// Lompat ke breadcrumb tertentu (misal klik "SD" saat di dalam "Matematika")
+function jumpToBreadcrumb(index) {
+    // Potong array currentPath sampai index tersebut (inclusive)
+    currentPath = currentPath.slice(0, index + 1);
+    const folder = currentPath[currentPath.length - 1];
+    renderLibraryView(folder.children);
+}
+
+// --- EXAM LOADING LOGIC ---
+
+async function loadExamFromLibrary(filename) {
+    // Show Loading
+    document.getElementById('library-screen').classList.add('opacity-50', 'pointer-events-none');
+    
+    try {
+        const response = await fetch(`json/${filename}`);
+        if (!response.ok) throw new Error(`File ${filename} tidak ditemukan.`);
+        const data = await response.json();
+        
+        initGame(data);
+        
+    } catch (error) {
+        document.getElementById('library-screen').classList.remove('opacity-50', 'pointer-events-none');
+        document.getElementById('error-message').innerText = error.message;
+        document.getElementById('error-modal').classList.remove('hidden');
+    }
+}
+
+// 2. Load manual via Upload
+function loadLocalFile(input) {
+    const file = input.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        try {
+            const json = JSON.parse(e.target.result);
+            initGame(json);
+        } catch (error) {
+            alert("Format JSON tidak valid!");
+        }
+    };
+    reader.readAsText(file);
+}
+
+function initGame(data) {
+    if (data.questions && Array.isArray(data.questions)) {
+        questions = data.questions;
+        document.getElementById('exam-title').innerText = data.title || "Ujian Tanpa Judul";
+        document.getElementById('exam-subtitle').innerText = data.subtitle || "Silakan kerjakan dengan teliti.";
+    } else if (Array.isArray(data)) {
+        questions = data;
+        document.getElementById('exam-title').innerText = "Aplikasi Ujian";
+        document.getElementById('exam-subtitle').innerText = "Mode: Legacy Array";
+    } else {
+        alert("Struktur data tidak dikenali!");
+        return;
+    }
+
+    // Switch Screens
+    document.getElementById('library-screen').classList.add('hidden');
+    document.getElementById('exam-header').classList.remove('hidden');
+    document.getElementById('quiz-container').classList.remove('hidden');
+    document.getElementById('controls').classList.remove('hidden');
+
+    // Reset state
+    userAnswers = new Array(questions.length).fill(null);
+    shuffledQuestions = [];
+    isSubmitted = false;
+    
+    document.getElementById('total-badge').innerText = questions.length;
+    
+    startQuiz();
+}
+
+// --- STOPWATCH ---
+function startTimer() {
+    startTime = Date.now();
+    timerInterval = setInterval(updateTimer, 1000);
+}
+function updateTimer() {
+    const now = Date.now();
+    const elapsed = Math.floor((now - startTime) / 1000);
+    const h = Math.floor(elapsed / 3600);
+    const m = Math.floor((elapsed % 3600) / 60);
+    const s = elapsed % 60;
+    const timeString = `${h > 0 ? h + ':' : ''}${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+    document.getElementById('timer-display').innerText = timeString;
+    document.getElementById('final-time').innerText = timeString;
+}
+function stopTimer() { clearInterval(timerInterval); }
+
+// --- ENGINE ---
+function shuffle(array, correctIndex) {
+    const originalCorrect = array[correctIndex];
+    let currentIndex = array.length, randomIndex;
+    while (currentIndex != 0) {
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex--;
+        [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+    }
+    return array.indexOf(originalCorrect);
+}
+
+function startQuiz() {
+    if(questions.length === 0) return;
+    shuffledQuestions = questions.map(q => {
+        const options = [...q.options];
+        const newCorrect = shuffle(options, q.correct);
+        return { ...q, options: options, correct: newCorrect };
+    });
+    startTimer();
+    renderQuestions();
+    window.scrollTo(0,0);
+    renderMathInElement(document.body);
+}
+
+function renderQuestions() {
+    const container = document.getElementById('quiz-container');
+    container.innerHTML = shuffledQuestions.map((q, i) => `
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200" id="card-${i}">
+            <div class="flex items-start gap-4">
+                <div class="bg-blue-100 text-blue-700 font-bold w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 border border-blue-200 text-lg">${q.no}</div>
+                <div class="w-full">
+                    <p class="text-lg font-semibold mb-4 text-slate-800">${q.text}</p>
+                    ${q.visual ? `<div class="mb-6 flex justify-center w-full overflow-hidden">${q.visual}</div>` : ''}
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3" id="options-group-${i}">
+                        ${q.options.map((opt, j) => `
+                            <div class="option-card p-4 rounded-xl flex items-center gap-3 relative" onclick="selectOption(${i}, ${j})">
+                                <div class="w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center dot transition-colors"></div>
+                                <span class="text-base font-medium">${opt}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div id="feedback-${i}" class="hidden mt-6 p-4 rounded-xl text-sm border font-medium bg-yellow-50 text-yellow-900 border-yellow-200">
+                        <strong>Pembahasan:</strong> ${q.desc}
+                    </div>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+function selectOption(qIndex, optIndex) {
+    if(isSubmitted) return;
+    userAnswers[qIndex] = optIndex;
+    const group = document.getElementById(`options-group-${qIndex}`);
+    const cards = group.getElementsByClassName('option-card');
+    for (let card of cards) {
+        card.classList.remove('option-selected');
+        const dot = card.querySelector('.dot');
+        dot.style.backgroundColor = ''; dot.style.borderColor = ''; dot.style.color = ''; dot.innerText = '';
+    }
+    const selected = cards[optIndex];
+    selected.classList.add('option-selected');
+    const selectedDot = selected.querySelector('.dot');
+    selectedDot.style.backgroundColor = '#0ea5e9'; selectedDot.style.borderColor = '#0ea5e9'; selectedDot.style.color = 'white';
+    updateProgress();
+}
+
+function updateProgress() {
+    const count = userAnswers.filter(a => a !== null).length;
+    document.getElementById('answered-badge').innerText = count;
+    if(count === questions.length) document.getElementById('warning-text').innerHTML = "<span class='text-green-600 font-bold'>✓ Siap Kirim!</span>";
+}
+
+function submitQuiz() { document.getElementById('confirm-modal').classList.remove('hidden'); }
+
+function processSubmission() {
+    document.getElementById('confirm-modal').classList.add('hidden');
+    stopTimer();
+    isSubmitted = true;
+    let score = 0, correct = 0, wrong = 0;
+    shuffledQuestions.forEach((q, i) => {
+        const selected = userAnswers[i];
+        const feedback = document.getElementById(`feedback-${i}`);
+        const cards = document.querySelectorAll(`#options-group-${i} .option-card`);
+        feedback.classList.remove('hidden');
+        cards.forEach((card, idx) => {
+            card.style.cursor = 'default'; card.onclick = null;
+            if (idx === q.correct) {
+                card.classList.add('correct-mode');
+                const dot = card.querySelector('.dot');
+                dot.style.backgroundColor = '#22c55e'; dot.style.borderColor = '#22c55e'; dot.style.color = 'white'; dot.innerText = '✓';
+            } else if (idx === selected) {
+                card.classList.add('wrong-mode');
+                const dot = card.querySelector('.dot');
+                dot.style.backgroundColor = '#ef4444'; dot.style.borderColor = '#ef4444'; dot.style.color = 'white'; dot.innerText = '✕';
+            }
+        });
+        if (selected === q.correct) { score++; correct++; feedback.classList.add('bg-green-50'); } else { wrong++; feedback.classList.add('bg-red-50'); }
+    });
+    document.getElementById('final-score').innerText = Math.round((score / questions.length) * 100);
+    document.getElementById('final-correct').innerText = correct;
+    document.getElementById('final-wrong').innerText = wrong;
+    document.getElementById('result-modal').classList.remove('hidden');
+    
+    // --- UPDATED LOGIC: CHANGE CONTROLS TO "BACK BUTTON" ---
+    const controls = document.getElementById('controls-content');
+    controls.innerHTML = `
+        <div class="flex items-center gap-2 text-slate-500 font-medium">
+            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <span>Mode Pembahasan</span>
+        </div>
+        <button onclick="window.location.reload()" class="bg-slate-800 text-white px-6 py-3 rounded-lg font-bold hover:bg-slate-900 transition shadow-md flex items-center gap-2">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+            <span>Kembali ke Menu</span>
+        </button>
+    `;
+}
+
+function closeResult() {
+    document.getElementById('result-modal').classList.add('hidden');
+    window.scrollTo({top:0, behavior:'smooth'});
+}
+
+// Render KaTeX
+document.addEventListener("DOMContentLoaded", () => {});
+</script>
+</body>
+</html>

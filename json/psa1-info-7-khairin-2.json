@@ -1,0 +1,488 @@
+{
+  "subject": "Informatika",
+  "grade": "7 SMP",
+  "title": "Latihan PSAS Informatika Kelas 7 (Paket 2)",
+  "subtitle": "Variasi soal berbeda dengan kisi-kisi yang sama (Paket B)",
+  "questions": [
+    {
+      "no": 1,
+      "text": "Manakah pernyataan yang PALING TEPAT menggambarkan tujuan dari Berpikir Komputasional?",
+      "options": [
+        "Agar manusia bisa berubah menjadi robot",
+        "Untuk menyelesaikan masalah rumit dengan cara yang terstruktur dan logis",
+        "Supaya bisa merakit komputer gaming sendiri",
+        "Hanya untuk programmer yang membuat aplikasi"
+      ],
+      "correct": 1,
+      "desc": "Tujuan utama BK adalah problem solving (pemecahan masalah) yang efektif, efisien, dan optimal."
+    },
+    {
+      "no": 2,
+      "text": "Ibu ingin membuat Nasi Goreng Spesial. Ia memulainya dengan menyiapkan bumbu, memotong ayam, dan menanak nasi secara terpisah sebelum menggorengnya. Proses memilah pekerjaan masak ini disebut...",
+      "options": [
+        "Abstraksi",
+        "Algoritma",
+        "Dekomposisi",
+        "Pengenalan Pola"
+      ],
+      "correct": 2,
+      "desc": "Memecah pekerjaan besar (memasak) menjadi langkah-langkah persiapan kecil adalah Dekomposisi."
+    },
+    {
+      "no": 3,
+      "text": "Di bawah ini adalah fondasi Berpikir Komputasional, KECUALI...",
+      "options": [
+        "Apersepsi",
+        "Abstraksi",
+        "Algoritma",
+        "Pengenalan Pola"
+      ],
+      "correct": 0,
+      "desc": "4 Fondasi BK: Dekomposisi, Pola, Abstraksi, Algoritma. Apersepsi bukan termasuk fondasi BK."
+    },
+    {
+      "no": 4,
+      "text": "Ketika melihat peta Google Maps untuk mencari jalan ke sekolah, kamu hanya melihat garis jalan dan lokasi penting, tanpa melihat detail jumlah pohon atau warna genteng rumah orang. Ini adalah contoh...",
+      "options": [
+        "Dekomposisi",
+        "Abstraksi",
+        "Pattern Recognition",
+        "Coding"
+      ],
+      "correct": 1,
+      "desc": "Abstraksi membuang detail yang tidak penting (pohon/genteng) dan fokus pada yang penting (jalan)."
+    },
+    {
+      "no": 5,
+      "text": "Resep masakan yang berisi urutan: '1. Didihkan air, 2. Masukkan mie, 3. Tiriskan', merupakan contoh sederhana dari...",
+      "options": [
+        "Algoritma",
+        "Abstraksi",
+        "Dekomposisi",
+        "Biner"
+      ],
+      "correct": 0,
+      "desc": "Algoritma adalah langkah-langkah urut untuk mencapai tujuan tertentu."
+    },
+    {
+      "no": 6,
+      "text": "Seorang dokter mendiagnosa penyakit pasien dengan melihat gejala-gejala yang mirip dengan pasien sebelumnya. Dokter tersebut menerapkan...",
+      "options": [
+        "Pengenalan Pola",
+        "Dekomposisi",
+        "Abstraksi",
+        "Algoritma"
+      ],
+      "correct": 0,
+      "desc": "Melihat kemiripan gejala (tren/data lama) adalah Pengenalan Pola."
+    },
+    {
+      "no": 7,
+      "text": "Untuk membuat sebuah Game, tim pengembang membaginya menjadi tim Desain Karakter, tim Suara, dan tim Coding. Teknik ini disebut...",
+      "options": [
+        "Enkripsi",
+        "Dekomposisi",
+        "Abstraksi",
+        "Searching"
+      ],
+      "correct": 1,
+      "desc": "Memecah proyek besar (Game) menjadi tim-tim kecil adalah Dekomposisi."
+    },
+    {
+      "no": 8,
+      "text": "Sistem operasi lama seperti MS-DOS yang mengharuskan pengguna mengetik perintah teks (contoh: 'DIR', 'CD') menggunakan antarmuka jenis...",
+      "options": [
+        "GUI",
+        "VUI",
+        "CLI",
+        "Touchscreen"
+      ],
+      "correct": 2,
+      "desc": "CLI (Command Line Interface) berbasis teks dan baris perintah."
+    },
+    {
+      "no": 9,
+      "text": "Antarmuka pada Smartphone Android atau iPhone yang menggunakan layar sentuh dan ikon aplikasi termasuk dalam kategori...",
+      "options": [
+        "CLI",
+        "GUI",
+        "Coding",
+        "Hardware"
+      ],
+      "correct": 1,
+      "desc": "GUI (Graphical User Interface) menggunakan elemen grafis visual (ikon, tombol)."
+    },
+    {
+      "no": 10,
+      "text": "File berekstensi .xlsx atau .xls adalah file yang dihasilkan oleh aplikasi...",
+      "options": [
+        "Microsoft Word",
+        "Microsoft PowerPoint",
+        "Microsoft Excel",
+        "Adobe Photoshop"
+      ],
+      "correct": 2,
+      "desc": ".xlsx adalah format Spreadsheet milik Microsoft Excel."
+    },
+    {
+      "no": 11,
+      "text": "Manakah di bawah ini yang merupakan format file untuk VIDEO?",
+      "options": [
+        ".mp3",
+        ".mp4",
+        ".jpg",
+        ".pdf"
+      ],
+      "correct": 1,
+      "desc": ".mp4 adalah format video. .mp3 (audio), .jpg (gambar), .pdf (dokumen)."
+    },
+    {
+      "no": 12,
+      "text": "Google Chrome, Mozilla Firefox, dan Microsoft Edge adalah contoh dari...",
+      "options": [
+        "Sistem Operasi",
+        "Search Engine",
+        "Web Browser",
+        "Antivirus"
+      ],
+      "correct": 2,
+      "desc": "Aplikasi untuk membuka website disebut Web Browser (Peramban)."
+    },
+    {
+      "no": 13,
+      "text": "Layanan web seperti Google.com atau Bing.com yang digunakan untuk mencari informasi dengan kata kunci disebut...",
+      "options": [
+        "Web Browser",
+        "Search Engine",
+        "Social Media",
+        "E-Commerce"
+      ],
+      "correct": 1,
+      "desc": "Mesin Pencari (Search Engine) mencari konten di dalam internet."
+    },
+    {
+      "no": 14,
+      "text": "Tombol 'Refresh' atau 'Reload' pada browser berfungsi untuk...",
+      "options": [
+        "Menutup aplikasi",
+        "Mencetak halaman",
+        "Memuat ulang halaman web yang sedang dibuka",
+        "Menghapus riwayat"
+      ],
+      "correct": 2,
+      "desc": "Refresh/Reload memuat ulang halaman untuk memperbarui konten."
+    },
+    {
+      "no": 15,
+      "text": "Aplikasi Microsoft PowerPoint identik dengan warna ikon...",
+      "options": [
+        "Biru",
+        "Hijau",
+        "Oranye/Merah Bata",
+        "Kuning"
+      ],
+      "correct": 2,
+      "desc": "PowerPoint biasanya berwarna Oranye atau Merah Bata dengan huruf P."
+    },
+    {
+      "no": 16,
+      "text": "Jika kamu ingin membuat surat resmi atau makalah, aplikasi yang paling tepat digunakan adalah...",
+      "options": [
+        "Pengolah Angka (Spreadsheet)",
+        "Pengolah Kata (Word Processor)",
+        "Pengolah Presentasi",
+        "Pengolah Gambar"
+      ],
+      "correct": 1,
+      "desc": "Membuat surat/makalah adalah fungsi utama Word Processor (MS Word/Google Docs)."
+    },
+    {
+      "no": 17,
+      "text": "Fungsi utama dari aplikasi Spreadsheet (seperti Excel) adalah...",
+      "options": [
+        "Mengedit video",
+        "Membuat presentasi animasi",
+        "Mengolah data angka, tabel, dan statistik",
+        "Menulis novel"
+      ],
+      "correct": 2,
+      "desc": "Excel fokus pada perhitungan angka dan tabel."
+    },
+    {
+      "no": 18,
+      "text": "Format alamat email yang benar di bawah ini adalah...",
+      "options": [
+        "siswa#sekolah.com",
+        "siswa@sekolah.com",
+        "siswa.sekolah@com",
+        "siswa at sekolah dot com"
+      ],
+      "correct": 1,
+      "desc": "Email wajib menggunakan simbol '@' dan domain (contoh: .com)."
+    },
+    {
+      "no": 19,
+      "text": "Istilah 'Bit' dalam sistem komputer merupakan singkatan dari...",
+      "options": [
+        "Big Integer",
+        "Binary Digit",
+        "Basic Information",
+        "Byte Index"
+      ],
+      "correct": 1,
+      "desc": "Bit singkatan dari Binary Digit (0 atau 1)."
+    },
+    {
+      "no": 20,
+      "text": "Sistem bilangan yang kita gunakan sehari-hari (0, 1, 2, ... 9) disebut sistem bilangan...",
+      "options": [
+        "Biner (Basis 2)",
+        "Oktal (Basis 8)",
+        "Desimal (Basis 10)",
+        "Heksadesimal (Basis 16)"
+      ],
+      "correct": 2,
+      "desc": "Manusia menggunakan Desimal (0-9). Komputer menggunakan Biner (0-1)."
+    },
+    {
+      "no": 21,
+      "text": "Dalam kode biner, angka 0 biasanya mewakili kondisi...",
+      "options": [
+        "Hidup / Nyala (On)",
+        "Mati / Padam (Off)",
+        "Tinggi",
+        "Cepat"
+      ],
+      "correct": 1,
+      "desc": "0 = Off/False, 1 = On/True."
+    },
+    {
+      "no": 22,
+      "text": "Berapakah nilai desimal dari bilangan biner \\( 110 \\)?",
+      "options": [
+        "4",
+        "5",
+        "6",
+        "7"
+      ],
+      "correct": 2,
+      "desc": "110 = (1x4) + (1x2) + (0x1) = 4 + 2 + 0 = 6."
+    },
+    {
+      "no": 23,
+      "text": "Berapakah nilai desimal dari bilangan biner \\( 111 \\)?",
+      "options": [
+        "6",
+        "7",
+        "8",
+        "9"
+      ],
+      "correct": 1,
+      "desc": "111 = 4 + 2 + 1 = 7."
+    },
+    {
+      "no": 24,
+      "text": "Konversi bilangan desimal 5 ke dalam biner adalah...",
+      "options": [
+        "100",
+        "101",
+        "110",
+        "111"
+      ],
+      "correct": 1,
+      "desc": "5 = 4 + 1. Jadi bit 4=1, bit 2=0, bit 1=1. Hasil: 101."
+    },
+    {
+      "no": 25,
+      "text": "Jaringan internet global yang menghubungkan komputer di seluruh dunia disebut...",
+      "options": [
+        "LAN",
+        "MAN",
+        "WAN",
+        "PAN"
+      ],
+      "correct": 2,
+      "desc": "WAN (Wide Area Network) mencakup area geografis yang sangat luas (antar negara/benua)."
+    },
+    {
+      "no": 26,
+      "text": "Jaringan komputer di laboratorium sekolah yang menghubungkan 20 komputer dalam satu ruangan termasuk jenis...",
+      "options": [
+        "LAN",
+        "MAN",
+        "WAN",
+        "Internet"
+      ],
+      "correct": 0,
+      "desc": "Satu ruangan/gedung = LAN (Local Area Network)."
+    },
+    {
+      "no": 27,
+      "text": "Manakah yang merupakan syarat agar bisa terhubung ke Internet?",
+      "options": [
+        "Harus punya printer",
+        "Harus punya perangkat (HP/Laptop) dan koneksi ISP (Kuota/WiFi)",
+        "Harus punya akun Facebook",
+        "Harus menggunakan kabel saja"
+      ],
+      "correct": 1,
+      "desc": "Koneksi internet membutuhkan perangkat dan layanan ISP (Internet Service Provider)."
+    },
+    {
+      "no": 28,
+      "text": "Saat menggunakan Tethering (Hotspot) HP, apa yang terjadi pada baterai HP tersebut?",
+      "options": [
+        "Baterai lebih hemat",
+        "Baterai tidak terpengaruh",
+        "Baterai akan lebih cepat habis (boros)",
+        "Baterai akan terisi otomatis"
+      ],
+      "correct": 2,
+      "desc": "Tethering menguras baterai karena HP bekerja sebagai modem dan pemancar sinyal sekaligus."
+    },
+    {
+      "no": 29,
+      "text": "Contoh penulisan Alamat IP (IP Address) versi 4 yang benar adalah...",
+      "options": [
+        "www.google.com",
+        "192.168.1.10",
+        "user@gmail.com",
+        "#FF0000"
+      ],
+      "correct": 1,
+      "desc": "IPv4 terdiri dari 4 blok angka yang dipisah titik (contoh: 192.168.0.1)."
+    },
+    {
+      "no": 30,
+      "text": "Salah satu fungsi Firewall adalah memblokir...",
+      "options": [
+        "Sinyal WiFi",
+        "Akses listrik",
+        "Paket data yang mencurigakan atau berbahaya dari internet",
+        "Kamera webcam"
+      ],
+      "correct": 2,
+      "desc": "Firewall menyaring data masuk/keluar untuk mencegah serangan siber."
+    },
+    {
+      "no": 31,
+      "text": "Manakah yang termasuk Perangkat MASUKAN (Input Device)?",
+      "options": [
+        "Monitor",
+        "Speaker",
+        "Printer",
+        "Microphone"
+      ],
+      "correct": 3,
+      "desc": "Microphone memasukkan suara ke komputer (Input). Sisanya adalah Output."
+    },
+    {
+      "no": 32,
+      "text": "Mengapa kita tidak boleh sembarangan menggunakan WiFi publik (gratisan) untuk transaksi perbankan?",
+      "options": [
+        "Karena koneksinya lambat",
+        "Karena data kita bisa disadap (sniffing) jika tidak dienkripsi",
+        "Karena bank akan memblokir akun kita",
+        "Karena kuota cepat habis"
+      ],
+      "correct": 1,
+      "desc": "WiFi publik rawan penyadapan data sensitif."
+    },
+    {
+      "no": 33,
+      "text": "Teks yang sudah diacak menggunakan metode enkripsi sehingga tidak bisa dibaca disebut...",
+      "options": [
+        "Plaintext",
+        "Ciphertext",
+        "Hypertext",
+        "Context"
+      ],
+      "correct": 1,
+      "desc": "Plaintext (teks asli) -> Enkripsi -> Ciphertext (teks sandi)."
+    },
+    {
+      "no": 34,
+      "text": "Teknologi nirkabel jarak pendek yang sering digunakan untuk menghubungkan Headset atau Mouse ke HP/Laptop adalah...",
+      "options": [
+        "Infrared",
+        "Bluetooth",
+        "NFC",
+        "GPS"
+      ],
+      "correct": 1,
+      "desc": "Bluetooth adalah standar koneksi nirkabel jarak dekat untuk periferal."
+    },
+    {
+      "no": 35,
+      "text": "Caesar Cipher adalah metode enkripsi dengan cara...",
+      "options": [
+        "Mengacak huruf secara acak",
+        "Menggeser urutan huruf (Shifting) sejumlah langkah tertentu",
+        "Mengganti huruf dengan angka",
+        "Menghapus huruf vokal"
+      ],
+      "correct": 1,
+      "desc": "Caesar Cipher adalah teknik substitusi dengan menggeser alfabet."
+    },
+    {
+      "no": 36,
+      "text": "Jika menggunakan Caesar Cipher geser 1 ke kanan, kata 'AKU' akan menjadi...",
+      "options": [
+        "BLV",
+        "ZJT",
+        "CLW",
+        "BKU"
+      ],
+      "correct": 0,
+      "desc": "A(+1)->B, K(+1)->L, U(+1)->V. Jadi AKU -> BLV."
+    },
+    {
+      "no": 37,
+      "text": "Saat membuka website, tanda 'Gembok' di sebelah alamat URL menandakan bahwa website tersebut menggunakan protokol aman, yaitu...",
+      "options": [
+        "HTTP",
+        "HTML",
+        "HTTPS",
+        "WWW"
+      ],
+      "correct": 2,
+      "desc": "S di akhir HTTPS berarti Secure (Aman/Terenkripsi)."
+    },
+    {
+      "no": 38,
+      "text": "Perangkat keras yang berfungsi memancarkan sinyal WiFi di rumah disebut...",
+      "options": [
+        "Harddisk",
+        "Access Point / Wireless Router",
+        "VGA Card",
+        "Processor"
+      ],
+      "correct": 1,
+      "desc": "Wireless Router atau Access Point berfungsi menyebarkan sinyal nirkabel."
+    },
+    {
+      "no": 39,
+      "text": "Perangkat keras (Hardware) tidak akan bisa bekerja tanpa adanya instruksi dari...",
+      "options": [
+        "Casing",
+        "Perangkat Lunak (Software)",
+        "Meja Komputer",
+        "Stabilizer"
+      ],
+      "correct": 1,
+      "desc": "Hardware digerakkan oleh Software (Sistem Operasi & Aplikasi)."
+    },
+    {
+      "no": 40,
+      "text": "Autentikasi Dua Faktor (2FA) meningkatkan keamanan akun dengan cara...",
+      "options": [
+        "Hanya menggunakan password yang panjang",
+        "Meminta verifikasi tambahan (kode SMS/App) selain password",
+        "Tidak menggunakan password sama sekali",
+        "Mengganti username setiap hari"
+      ],
+      "correct": 1,
+      "desc": "2FA butuh dua kunci: sesuatu yang kamu tahu (password) dan sesuatu yang kamu punya (HP/Kode)."
+    }
+  ]
+}

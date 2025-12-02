@@ -1,0 +1,130 @@
+{
+  "subject": "Fisika",
+  "grade": "10 SMA",
+  "title": "Persiapan ASAS Fisika Kelas X (Paket 3)",
+  "subtitle": "Latihan Soal Pendalaman (Konversi & Dimensi Lanjut)",
+  "questions": [
+    {
+      "no": 1,
+      "text": "Tekanan adalah Gaya per Luas (P = F/A). Dimensi tekanan adalah...",
+      "options": [
+        "\\( [M][L]^{-1}[T]^{-2} \\)",
+        "\\( [M][L][T]^{-2} \\)",
+        "\\( [M][L]^2[T]^{-2} \\)",
+        "\\( [M][L]^{-2}[T]^{-2} \\)"
+      ],
+      "correct": 0,
+      "desc": "Gaya [M][L][T]⁻² dibagi Luas [L]² = [M][L]⁻¹[T]⁻²."
+    },
+    {
+      "no": 2,
+      "text": "Jika massa bumi adalah \\( 5.970.000.000.000.000.000.000.000 \\) kg, penulisan notasi ilmiah yang paling tepat adalah...",
+      "options": [
+        "\\( 5,97 \\times 10^{24} \\) kg",
+        "\\( 59,7 \\times 10^{23} \\) kg",
+        "\\( 0,597 \\times 10^{25} \\) kg",
+        "\\( 5,97 \\times 10^{-24} \\) kg"
+      ],
+      "correct": 0,
+      "desc": "Geser koma ke kiri sampai di belakang angka 5 (24 langkah). Pangkat positif."
+    },
+    {
+      "no": 3,
+      "text": "Massa jenis air 1 g/cm³. Jika dikonversi ke SI (kg/m³), nilainya adalah...",
+      "options": [
+        "1 kg/m³",
+        "100 kg/m³",
+        "1000 kg/m³",
+        "10.000 kg/m³"
+      ],
+      "correct": 2,
+      "desc": "1 g/cm³ = 1000 kg/m³ (dikali 1000)."
+    },
+    {
+      "no": 4,
+      "text": "Hasil penjumlahan dari 12,5 cm (3 AP) dan 2,75 cm (3 AP) menurut aturan angka penting adalah...",
+      "options": [
+        "15,25 cm",
+        "15,2 cm",
+        "15,3 cm",
+        "15 cm"
+      ],
+      "correct": 1,
+      "desc": "Penjumlahan mengikuti desimal paling sedikit (1 desimal di 12,5). 15,25 dibulatkan menjadi 15,2 (karena 5 didahului genap, atau aturan pembulatan terdekat, namun di SMA sering dipakai aturan taksiran 1 desimal)."
+    },
+    {
+      "no": 5,
+      "text": "Energi Potensial dirumuskan \\( Ep = m \\cdot g \\cdot h \\). Dimensinya adalah...",
+      "options": [
+        "\\( [M][L][T]^{-1} \\)",
+        "\\( [M][L][T]^{-2} \\)",
+        "\\( [M][L]^2[T]^{-2} \\)",
+        "\\( [M][L]^2[T]^{-3} \\)"
+      ],
+      "correct": 2,
+      "desc": "Energi (Usaha) selalu berdimensi [M][L]²[T]⁻²."
+    },
+    {
+      "no": 6,
+      "text": "Cabang fisika yang mempelajari tentang fenomena kelistrikan dan kemagnetan adalah...",
+      "options": [
+        "Mekanika",
+        "Optika",
+        "Termodinamika",
+        "Elektromagnetisme"
+      ],
+      "correct": 3,
+      "desc": "Elektromagnetisme mempelajari listrik dan magnet."
+    },
+    {
+      "no": 7,
+      "text": "Alat ukur massa yang memiliki ketelitian tinggi di laboratorium adalah...",
+      "options": [
+        "Neraca Pegas",
+        "Neraca Ohaus",
+        "Neraca Digital",
+        "Neraca Sama Lengan"
+      ],
+      "correct": 2,
+      "desc": "Neraca digital (analitik) paling teliti, disusul Neraca Ohaus."
+    },
+    {
+      "no": 8,
+      "text": "Jangka Sorong: Skala Utama 10,2 cm, Nonius 5. Hasilnya?",
+      "visual": "<svg width='300' height='100' viewBox='0 0 300 100' class='mx-auto bg-gray-100 border border-gray-400'><rect x='10' y='20' width='280' height='30' fill='#e2e8f0' stroke='black'/><line x1='50' y1='20' x2='50' y2='40' stroke='black'/><text x='45' y='15' font-size='12'>10 cm</text><line x1='70' y1='20' x2='70' y2='35' stroke='black'/><line x1='90' y1='20' x2='90' y2='35' stroke='black'/><rect x='60' y='50' width='100' height='30' fill='#cbd5e1' stroke='black'/><text x='58' y='75' font-size='10'>0</text><line x1='140' y1='50' x2='140' y2='60' stroke='red' stroke-width='2'/><text x='138' y='75' font-size='10' fill='red'>5</text></svg>",
+      "options": [
+        "10,25 cm",
+        "10,70 cm",
+        "10,05 cm",
+        "10,50 cm"
+      ],
+      "correct": 0,
+      "desc": "Hasil = 10,2 + (5 x 0,01) = 10,25 cm."
+    },
+    {
+      "no": 9,
+      "text": "Mikrometer Sekrup: Utama 3,5 mm, Putar 15. Hasilnya?",
+      "visual": "<svg width='300' height='120' viewBox='0 0 300 120' class='mx-auto bg-white border border-gray-400'><path d='M20 40 H150 V80 H20 Z' fill='#cbd5e1' stroke='black'/><text x='100' y='45' font-size='12'>3</text><line x1='135' y1='60' x2='135' y2='70' stroke='black'/><path d='M150 30 H210 V90 H150 Z' fill='#f1f5f9' stroke='black'/><line x1='150' y1='60' x2='170' y2='60' stroke='red' stroke-width='2'/><text x='180' y='65' font-size='12' fill='red'>15</text></svg>",
+      "options": [
+        "3,15 mm",
+        "3,65 mm",
+        "3,55 mm",
+        "3,515 mm"
+      ],
+      "correct": 1,
+      "desc": "Hasil = 3,5 + 0,15 = 3,65 mm."
+    },
+    {
+      "no": 10,
+      "text": "Urutan metode ilmiah: 1. Hipotesis, 2. Eksperimen, 3. Masalah, 4. Kesimpulan, 5. Analisis Data. Urutan yang benar adalah...",
+      "options": [
+        "3 - 1 - 2 - 5 - 4",
+        "1 - 3 - 2 - 5 - 4",
+        "3 - 2 - 1 - 5 - 4",
+        "1 - 2 - 3 - 4 - 5"
+      ],
+      "correct": 0,
+      "desc": "Masalah -> Hipotesis -> Eksperimen -> Analisis -> Kesimpulan."
+    }
+  ]
+}

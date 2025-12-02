@@ -194,6 +194,31 @@
         "children": [
           {
             "type": "folder",
+            "title": "Informatika",
+            "icon": "🔬",
+            "children": [
+              {
+                "type": "file",
+                "id": "inf-8-psas-2025-1",
+                "title": "Latihan PSAS Informatika Semester Ganjil # 1",
+                "subject": "Informatika",
+                "grade": "8 SMP",
+                "file": "psa1-info-8-biyan-1.json",
+                "icon": "💻"
+              },
+              {
+                "type": "file",
+                "id": "inf-8-psas-2025-2",
+                "title": "Latihan PSAS Informatika Semester Ganjil # 2",
+                "subject": "Informatika",
+                "grade": "8 SMP",
+                "file": "psa1-info-8-biyan-2.json",
+                "icon": "💻"
+              }
+            ]
+          },
+          {
+            "type": "folder",
             "title": "IPAS",
             "icon": "🧬",
             "children": [

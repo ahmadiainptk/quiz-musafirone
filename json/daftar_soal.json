@@ -39,6 +39,14 @@
     "file": "psa1-ppkn-5-qisthy-1.json",
     "icon": "📝"
   },
+  {
+    "id": "psa1-bindo-5-qisthy-1",
+    "title": "Latihan PSA B. Indonesia Kelas 5 Semester Ganjil",
+    "subject": "B. Indo",
+    "grade": "5 SD",
+    "file": "psa1-bindo-5-qisthy-1.json",
+    "icon": "📝"
+  },
  {
     "id": "psa1-sbk-7-khairin-1",
     "title": "Latihan PSA SBK Kelas 7 Semester Ganjil",

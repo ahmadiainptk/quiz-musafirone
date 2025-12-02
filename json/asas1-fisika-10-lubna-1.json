@@ -1,0 +1,191 @@
+{
+  "subject": "Fisika",
+  "grade": "10 SMA",
+  "title": "Latihan Persiapan ASAS Fisika Kelas X",
+  "subtitle": "Latihan soal Besaran, Satuan, Dimensi, dan Pengukuran (Jangka Sorong & Mikrometer)",
+  "questions": [
+    {
+      "no": 1,
+      "text": "Cabang ilmu fisika yang mempelajari tentang gerak benda dan penyebab terjadinya gerak tersebut adalah...",
+      "options": [
+        "Mekanika",
+        "Termodinamika",
+        "Optika",
+        "Elektromagnetisme"
+      ],
+      "correct": 0,
+      "desc": "Mekanika adalah cabang fisika yang mempelajari gerak benda, baik kinematika (gerak tanpa meninjau penyebab) maupun dinamika (gerak dengan meninjau penyebabnya)."
+    },
+    {
+      "no": 2,
+      "text": "Percepatan didefinisikan sebagai perubahan kecepatan per satuan waktu kuadrat. Dimensi yang tepat untuk besaran percepatan adalah...",
+      "options": [
+        "\\( [L][T]^{-1} \\)",
+        "\\( [L][T]^{-2} \\)",
+        "\\( [M][L][T]^{-2} \\)",
+        "\\( [M][L]^2[T]^{-2} \\)"
+      ],
+      "correct": 1,
+      "desc": "Percepatan memiliki satuan m/s². Meter berdimensi Panjang [L] dan sekon berdimensi Waktu [T], sehingga dimensinya [L]/[T]² atau [L][T]⁻²."
+    },
+    {
+      "no": 3,
+      "text": "Dimensi \\( [M][L]^2[T]^{-2} \\) merupakan dimensi dari besaran...",
+      "options": [
+        "Gaya",
+        "Tekanan",
+        "Usaha (Energi)",
+        "Daya"
+      ],
+      "correct": 2,
+      "desc": "Usaha (W) = Gaya (F) x Perpindahan (s). Dimensinya adalah [M][L][T]⁻² x [L] = [M][L]²[T]⁻²."
+    },
+    {
+      "no": 4,
+      "text": "Penulisan notasi ilmiah yang benar untuk bilangan 0,0000006 adalah...",
+      "options": [
+        "\\( 6 \\times 10^7 \\)",
+        "\\( 6 \\times 10^{-7} \\)",
+        "\\( 60 \\times 10^{-8} \\)",
+        "\\( 0,6 \\times 10^{-6} \\)"
+      ],
+      "correct": 1,
+      "desc": "Koma digeser ke kanan sebanyak 7 kali untuk mendapatkan angka 6, sehingga pangkatnya adalah -7. Bentuk bakunya menjadi 6 x 10⁻⁷."
+    },
+    {
+      "no": 5,
+      "text": "Laju sebuah motor adalah 54 km/jam. Jika dikonversi ke dalam satuan Sistem Internasional (SI), kelajuan tersebut adalah...",
+      "options": [
+        "10 m/s",
+        "15 m/s",
+        "20 m/s",
+        "54 m/s"
+      ],
+      "correct": 1,
+      "desc": "54 km = 54.000 m dan 1 jam = 3600 s. Maka 54.000 / 3600 = 15 m/s."
+    },
+    {
+      "no": 6,
+      "text": "Massa jenis batu beton adalah 2400 kg/m³. Jika dikonversi ke dalam satuan g/cm³, nilainya adalah...",
+      "options": [
+        "0,24 g/cm³",
+        "2,4 g/cm³",
+        "24 g/cm³",
+        "2.400.000 g/cm³"
+      ],
+      "correct": 1,
+      "desc": "1 kg/m³ = 0,001 g/cm³. Maka 2400 x 0,001 = 2,4 g/cm³."
+    },
+    {
+      "no": 7,
+      "text": "Kelompok besaran di bawah ini yang semuanya merupakan besaran pokok adalah...",
+      "options": [
+        "Panjang, Massa, Kecepatan",
+        "Usaha, Gaya, Daya",
+        "Kuat Arus, Suhu, Waktu",
+        "Volume, Massa, Panjang"
+      ],
+      "correct": 2,
+      "desc": "Ada 7 besaran pokok: Panjang, Massa, Waktu, Suhu, Kuat Arus, Intensitas Cahaya, dan Jumlah Zat."
+    },
+    {
+      "no": 8,
+      "text": "Sebuah benda diukur menggunakan jangka sorong seperti gambar ilustrasi berikut. Jika skala utama menunjukkan angka 2,1 cm dan garis skala nonius yang berimpit adalah garis ke-5. Berapa hasil pengukurannya?",
+      "visual": "<svg width='300' height='100' viewBox='0 0 300 100' class='mx-auto bg-gray-100 border border-gray-400'><rect x='10' y='20' width='280' height='30' fill='#e2e8f0' stroke='black'/><line x1='50' y1='20' x2='50' y2='40' stroke='black' stroke-width='2'/><text x='45' y='15' font-size='12'>2 cm</text><line x1='60' y1='20' x2='60' y2='35' stroke='black'/><line x1='70' y1='20' x2='70' y2='35' stroke='black'/><line x1='150' y1='20' x2='150' y2='40' stroke='black' stroke-width='2'/><text x='145' y='15' font-size='12'>3 cm</text><rect x='60' y='50' width='100' height='30' fill='#cbd5e1' stroke='black'/><line x1='60' y1='50' x2='60' y2='60' stroke='black'/><text x='58' y='75' font-size='10'>0</text><line x1='110' y1='50' x2='110' y2='60' stroke='black' stroke-width='2' stroke='red'/><text x='108' y='75' font-size='10' fill='red'>5</text><line x1='160' y1='50' x2='160' y2='60' stroke='black'/><text x='155' y='75' font-size='10'>10</text></svg>",
+      "options": [
+        "2,15 cm",
+        "2,60 cm",
+        "2,105 cm",
+        "7,1 cm"
+      ],
+      "correct": 0,
+      "desc": "Hasil = Skala Utama + (Skala Nonius x Ketelitian). Hasil = 2,1 cm + (5 x 0,01 cm) = 2,1 + 0,05 = 2,15 cm."
+    },
+    {
+      "no": 9,
+      "text": "Pada pengukuran tebal plat logam menggunakan mikrometer sekrup, skala utama menunjukkan 4,5 mm dan skala putar menunjuk angka 30. Hasil pengukurannya adalah...",
+      "visual": "<svg width='300' height='120' viewBox='0 0 300 120' class='mx-auto bg-white border border-gray-400'><path d='M20 40 H180 V80 H20 Z' fill='#cbd5e1' stroke='black'/><line x1='20' y1='60' x2='180' y2='60' stroke='black'/><line x1='50' y1='60' x2='50' y2='50' stroke='black'/><text x='45' y='45' font-size='12'>0</text><line x1='90' y1='60' x2='90' y2='50' stroke='black'/><line x1='130' y1='60' x2='130' y2='50' stroke='black'/><text x='125' y='45' font-size='12'>4</text><line x1='150' y1='60' x2='150' y2='70' stroke='black'/><path d='M180 30 H240 V90 H180 Z' fill='#f1f5f9' stroke='black'/><line x1='180' y1='40' x2='200' y2='40' stroke='black'/><text x='210' y='45' font-size='12'>35</text><line x1='180' y1='60' x2='200' y2='60' stroke='red' stroke-width='2'/><text x='210' y='65' font-size='12' fill='red'>30</text><line x1='180' y1='80' x2='200' y2='80' stroke='black'/><text x='210' y='85' font-size='12'>25</text></svg>",
+      "options": [
+        "4,53 mm",
+        "4,80 mm",
+        "7,5 mm",
+        "4,35 mm"
+      ],
+      "correct": 1,
+      "desc": "Hasil = Skala Utama + (Skala Putar x 0,01 mm). Hasil = 4,5 mm + (30 x 0,01 mm) = 4,5 + 0,30 = 4,80 mm."
+    },
+    {
+      "no": 10,
+      "text": "Berikut ini yang merupakan langkah pertama dalam metode ilmiah adalah...",
+      "options": [
+        "Melakukan Eksperimen",
+        "Merumuskan Hipotesis",
+        "Identifikasi Masalah / Observasi",
+        "Menarik Kesimpulan"
+      ],
+      "correct": 2,
+      "desc": "Langkah awal metode ilmiah selalu dimulai dengan mengamati fenomena dan mengidentifikasi masalah yang ingin dipecahkan."
+    },
+    {
+      "no": 11,
+      "text": "Sesuai aturan angka penting, hasil dari \\( \\sqrt{8100} \\) adalah 90. Angka 90 memiliki berapa angka penting jika 8100 dianggap memiliki 3 angka penting?",
+      "options": [
+        "1 Angka Penting",
+        "2 Angka Penting",
+        "3 Angka Penting",
+        "4 Angka Penting"
+      ],
+      "correct": 1,
+      "desc": "Akar kuadrat dari 8100 adalah 90. Dalam notasi ilmiah 9,0 x 10^1 (2 AP). Jika konteks soal sederhana, 90 memiliki 2 angka penting (angka 9 dan 0)."
+    },
+    {
+      "no": 12,
+      "text": "Gambar berikut menunjukkan hasil pengukuran massa menggunakan neraca Ohaus tiga lengan. Hasil pengukurannya adalah...",
+      "visual": "<svg width='300' height='100' viewBox='0 0 300 100' class='mx-auto bg-white border border-gray-300'><rect x='20' y='20' width='260' height='10' fill='#e2e8f0' stroke='black'/><rect x='150' y='15' width='10' height='20' fill='gray'/><text x='140' y='15' font-size='10'>300g</text><rect x='20' y='40' width='260' height='10' fill='#e2e8f0' stroke='black'/><rect x='200' y='35' width='10' height='20' fill='gray'/><text x='190' y='35' font-size='10'>70g</text><rect x='20' y='60' width='260' height='10' fill='#e2e8f0' stroke='black'/><rect x='100' y='55' width='10' height='20' fill='gray'/><text x='95' y='85' font-size='10'>5.4g</text></svg>",
+      "options": [
+        "375,4 gram",
+        "370,54 gram",
+        "547,3 gram",
+        "307,54 gram"
+      ],
+      "correct": 0,
+      "desc": "Hasil = Lengan Belakang + Lengan Tengah + Lengan Depan = 300g + 70g + 5,4g = 375,4 gram."
+    },
+    {
+      "no": 13,
+      "text": "Besaran yang satuannya diturunkan dari besaran pokok disebut...",
+      "options": [
+        "Besaran Standar",
+        "Besaran Turunan",
+        "Besaran Vektor",
+        "Besaran Skalar"
+      ],
+      "correct": 1,
+      "desc": "Besaran turunan adalah besaran yang tersusun dari satu atau lebih besaran pokok."
+    },
+    {
+      "no": 14,
+      "text": "Berikut ini adalah bidang pekerjaan yang sangat bergantung pada penerapan ilmu fisika, KECUALI...",
+      "options": [
+        "Teknik Sipil (Pembangunan Gedung)",
+        "Teknik Elektro (Kelistrikan)",
+        "Astronomi (Luar Angkasa)",
+        "Sastra dan Bahasa"
+      ],
+      "correct": 3,
+      "desc": "Sastra dan Bahasa lebih fokus pada ilmu humaniora, bukan ilmu fisika/alam."
+    },
+    {
+      "no": 15,
+      "text": "Alat ukur panjang yang memiliki ketelitian paling tinggi di antara pilihan berikut adalah...",
+      "options": [
+        "Mistar / Penggaris",
+        "Jangka Sorong",
+        "Mikrometer Sekrup",
+        "Meteran Gulung"
+      ],
+      "correct": 2,
+      "desc": "Mikrometer sekrup memiliki ketelitian 0,01 mm, lebih teliti dibandingkan jangka sorong (0,1 mm atau 0,05 mm) dan mistar (1 mm)."
+    }
+  ]
+}

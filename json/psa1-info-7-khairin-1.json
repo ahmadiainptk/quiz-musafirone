@@ -1,8 +1,8 @@
 {
   "subject": "Informatika",
   "grade": "7 SMP",
-  "title": "Latihan PSAS Informatika Kelas 7",
-  "subtitle": "Latihan soal berdasarkan Kisi-Kisi PSAS Ganjil 2025 (Berpikir Komputasional, TIK, Sistem Komputer, JKI)",
+  "title": "Latihan PSAS Informatika Kelas 7 (Lengkap)",
+  "subtitle": "Latihan soal lengkap 40 nomor berdasarkan Kisi-Kisi PSAS Ganjil 2025",
   "questions": [
     {
       "no": 1,
@@ -363,6 +363,126 @@
       ],
       "correct": 2,
       "desc": "Firewall berfungsi sebagai tembok api/keamanan untuk menyaring lalu lintas data."
+    },
+    {
+      "no": 31,
+      "text": "Perangkat Keras (Hardware) berikut yang berfungsi sebagai alat KELUARAN (Output Device) adalah...",
+      "options": [
+        "Keyboard dan Mouse",
+        "Scanner dan Webcam",
+        "Monitor dan Printer",
+        "Flashdisk dan Harddisk"
+      ],
+      "correct": 2,
+      "desc": "Monitor menampilkan gambar dan Printer mencetak dokumen, keduanya adalah output."
+    },
+    {
+      "no": 32,
+      "text": "Apa yang dimaksud dengan Enkripsi?",
+      "options": [
+        "Proses menghapus data secara permanen",
+        "Proses menyandikan data agar tidak bisa dibaca oleh orang yang tidak berhak",
+        "Proses mengirim data ke internet",
+        "Proses memperbaiki komputer yang rusak"
+      ],
+      "correct": 1,
+      "desc": "Enkripsi mengubah data menjadi kode rahasia untuk keamanan."
+    },
+    {
+      "no": 33,
+      "text": "Kebalikan dari Enkripsi, yaitu proses mengembalikan data acak menjadi data asli disebut...",
+      "options": [
+        "Deskripsi",
+        "Dekripsi",
+        "Deduksi",
+        "Deteksi"
+      ],
+      "correct": 1,
+      "desc": "Dekripsi (Decryption) adalah proses membuka kode enkripsi."
+    },
+    {
+      "no": 34,
+      "text": "Manakah di bawah ini yang BUKAN merupakan cara melakukan Tethering?",
+      "options": [
+        "Wi-Fi Tethering (Hotspot)",
+        "Bluetooth Tethering",
+        "USB Tethering",
+        "HDMI Tethering"
+      ],
+      "correct": 3,
+      "desc": "Tethering umum dilakukan via Wi-Fi, Bluetooth, atau USB. HDMI untuk transfer video/audio."
+    },
+    {
+      "no": 35,
+      "text": "Dalam Kriptografi Caesar Cipher dengan geseran 1 ke kanan, huruf 'A' akan menjadi...",
+      "options": [
+        "B",
+        "Z",
+        "C",
+        "A"
+      ],
+      "correct": 0,
+      "desc": "Geser 1 ke kanan: A -> B."
+    },
+    {
+      "no": 36,
+      "text": "Jika menggunakan Caesar Cipher geser 3 ke kanan, kata 'DOG' akan menjadi...",
+      "options": [
+        "ALB",
+        "GRJ",
+        "FQI",
+        "EPK"
+      ],
+      "correct": 1,
+      "desc": "D(+3)->G, O(+3)->R, G(+3)->J. Jadi DOG -> GRJ."
+    },
+    {
+      "no": 37,
+      "text": "Tujuan utama keamanan data dengan enkripsi saat menggunakan WiFi publik adalah...",
+      "options": [
+        "Agar internet lebih cepat",
+        "Agar baterai HP awet",
+        "Mencegah pencurian data pribadi (username/password)",
+        "Agar bisa membuka situs yang diblokir"
+      ],
+      "correct": 2,
+      "desc": "Enkripsi melindungi data sensitif dari peretas di jaringan publik."
+    },
+    {
+      "no": 38,
+      "text": "Perangkat yang berfungsi untuk menghubungkan beberapa jaringan dan mengarahkan lalu lintas data (rute) disebut...",
+      "options": [
+        "Modem",
+        "Router",
+        "Switch",
+        "Kabel LAN"
+      ],
+      "correct": 1,
+      "desc": "Router berfungsi me-rute-kan paket data antar jaringan."
+    },
+    {
+      "no": 39,
+      "text": "Apa peran dari 'Brainware' dalam sistem komputer?",
+      "options": [
+        "Perangkat keras fisik",
+        "Program aplikasi",
+        "Pengguna/Manusia yang mengoperasikan komputer",
+        "Sistem operasi"
+      ],
+      "correct": 2,
+      "desc": "Brainware adalah istilah untuk pengguna (user) atau manusia yang terlibat."
+    },
+    {
+      "no": 40,
+      "text": "Jika kamu ingin mengamankan file rahasia agar tidak bisa dibuka orang lain di komputermu, langkah terbaik adalah...",
+      "options": [
+        "Menyimpannya di Desktop",
+        "Mengganti nama file",
+        "Mengenkripsi file atau memberi password",
+        "Menyembunyikan monitor"
+      ],
+      "correct": 2,
+      "desc": "Memberi password atau enkripsi adalah cara paling aman melindungi file."
     }
   ]
 }

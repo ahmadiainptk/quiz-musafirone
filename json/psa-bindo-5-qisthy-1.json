@@ -1,0 +1,608 @@
+{
+  "subject": "Bahasa Indonesia",
+  "grade": "5 SD",
+  "title": "Latihan Soal SAS Ganjil Bahasa Indonesia Kelas 5 (Full Kisi-Kisi)",
+  "subtitle": "Paket 50 soal lengkap mencakup Kata Sifat, Sinonim-Antonim, Majas, Imbuhan, Teks Prosedur, dan Idiom sesuai kisi-kisi.",
+  "questions": [
+    {
+      "no": 1,
+      "text": "Kalimat berikut yang mengandung kata sifat adalah...",
+      "options": [
+        "Adik bermain bola di lapangan.",
+        "Ibu memasak nasi goreng yang lezat.",
+        "Ayah membaca koran di teras.",
+        "Kakak pergi ke sekolah naik sepeda."
+      ],
+      "correct": 1,
+      "desc": "Indikator 1: Mengidentifikasi kata sifat ('lezat' adalah kata sifat)."
+    },
+    {
+      "no": 2,
+      "text": "Manakah yang termasuk kelompok kata kerja?",
+      "options": [
+        "Cantik, ramah, pintar",
+        "Makan, berlari, tidur",
+        "Meja, kursi, lemari",
+        "Merah, kuning, hijau"
+      ],
+      "correct": 1,
+      "desc": "Indikator 2: Membedakan kata sifat dan kata kerja (Makan, berlari, tidur adalah kata kerja)."
+    },
+    {
+      "no": 3,
+      "text": "Penggunaan kata sifat yang tepat terdapat pada kalimat...",
+      "options": [
+        "Rani sangat rajin belajar setiap malam.",
+        "Budi sedang rajin di kamarnya.",
+        "Ayah rajin ke kantor pagi ini.",
+        "Kucing itu rajin makan ikan."
+      ],
+      "correct": 0,
+      "desc": "Indikator 3: Mengenali penggunaan kata sifat yang tepat (Rajin menjelaskan sifat Rani)."
+    },
+    {
+      "no": 4,
+      "text": "Arti kata 'cerdik' dalam kalimat 'Kancil adalah hewan yang cerdik' adalah...",
+      "options": [
+        "Bodoh dan lambat",
+        "Pandai mencari pemecahan masalah",
+        "Suka menipu teman",
+        "Sangat kuat tenaganya"
+      ],
+      "correct": 1,
+      "desc": "Indikator 4: Menentukan makna kata (Cerdik = pandai/banyak akal)."
+    },
+    {
+      "no": 5,
+      "text": "Di bawah ini yang merupakan kalimat ber-kata sifat adalah...",
+      "options": [
+        "Pemandangan di desa itu sangat indah.",
+        "Petani menanam padi di sawah.",
+        "Burung terbang tinggi di angkasa.",
+        "Nelayan menangkap ikan dengan jaring."
+      ],
+      "correct": 0,
+      "desc": "Indikator 5: Mengidentifikasi kalimat ber-kata sifat ('indah')."
+    },
+    {
+      "no": 6,
+      "text": "Sinonim dari kata 'pintar' adalah...",
+      "options": [
+        "Bodoh",
+        "Pandai",
+        "Malas",
+        "Rajin"
+      ],
+      "correct": 1,
+      "desc": "Indikator 6: Menentukan sinonim kata (Pintar = Pandai)."
+    },
+    {
+      "no": 7,
+      "text": "Kata 'melihat' memiliki makna yang sama (sinonim) dengan kata...",
+      "options": [
+        "Mendengar",
+        "Memandang",
+        "Meraba",
+        "Mencium"
+      ],
+      "correct": 1,
+      "desc": "Indikator 7: Menentukan makna kata yang sama (Melihat = Memandang)."
+    },
+    {
+      "no": 8,
+      "text": "Antonim dari kata 'panas' dalam kalimat 'Kopi ini masih panas' adalah...",
+      "options": [
+        "Hangat",
+        "Mendidih",
+        "Dingin",
+        "Sejuk"
+      ],
+      "correct": 2,
+      "desc": "Indikator 8: Menentukan antonim kata sifat (Lawan Panas = Dingin)."
+    },
+    {
+      "no": 9,
+      "text": "Antonim kata sifat dalam kalimat perbandingan: 'Gajah itu besar, sedangkan semut itu ...'",
+      "options": [
+        "Tinggi",
+        "Kecil",
+        "Gemuk",
+        "Panjang"
+      ],
+      "correct": 1,
+      "desc": "Indikator 9: Antonim dalam perbandingan (Besar >< Kecil)."
+    },
+    {
+      "no": 10,
+      "text": "Pasar itu sangat 'ramai' pengunjung. Antonim kata 'ramai' berdasarkan konteks tempat adalah...",
+      "options": [
+        "Ribut",
+        "Padat",
+        "Sepi",
+        "Luas"
+      ],
+      "correct": 2,
+      "desc": "Indikator 10: Antonim berdasarkan konteks tempat (Ramai >< Sepi)."
+    },
+    {
+      "no": 11,
+      "text": "Para pahlawan berjuang dengan penuh 'semangat'. Antonim dari kata 'semangat' dalam konteks perjuangan adalah...",
+      "options": [
+        "Giat",
+        "Putus asa",
+        "Berani",
+        "Kuat"
+      ],
+      "correct": 1,
+      "desc": "Indikator 11: Antonim dalam konteks perjuangan (Semangat >< Putus asa)."
+    },
+    {
+      "no": 12,
+      "text": "Pola kalimat langsung yang benar ditandai dengan penggunaan tanda baca...",
+      "options": [
+        "Tanda kurung ( )",
+        "Tanda petik dua (\" \")",
+        "Tanda tanya (?) saja",
+        "Tanda seru (!) saja"
+      ],
+      "correct": 1,
+      "desc": "Indikator 12: Mengidentifikasi pola kalimat langsung (Tanda petik dua)."
+    },
+    {
+      "no": 13,
+      "text": "Ciri utama kalimat tidak langsung adalah adanya perubahan kata ganti dan penggunaan kata penghubung...",
+      "options": [
+        "Dan",
+        "Atau",
+        "Bahwa",
+        "Tetapi"
+      ],
+      "correct": 2,
+      "desc": "Indikator 13: Ciri kalimat tidak langsung (Kata penghubung 'bahwa')."
+    },
+    {
+      "no": 14,
+      "text": "Salah satu ciri kalimat langsung adalah...",
+      "options": [
+        "Intonasinya datar",
+        "Menggunakan kata penghubung 'bahwa'",
+        "Intonasinya menirukan ucapan tokoh/pembicara",
+        "Tidak menggunakan tanda petik"
+      ],
+      "correct": 2,
+      "desc": "Indikator 14: Ciri kalimat langsung (Intonasi menirukan ucapan asli)."
+    },
+    {
+      "no": 15,
+      "text": "Ubah kalimat langsung berikut menjadi tidak langsung: Ibu berkata, \"Aku sedang memasak.\"",
+      "options": [
+        "Ibu berkata bahwa aku sedang memasak.",
+        "Ibu berkata bahwa dia sedang memasak.",
+        "Ibu berkata, \"Dia sedang memasak.\"",
+        "Ibu berkata bahwa kamu sedang memasak."
+      ],
+      "correct": 1,
+      "desc": "Indikator 15: Mengubah langsung ke tidak langsung ('Aku' berubah menjadi 'Dia' merujuk ke Ibu)."
+    },
+    {
+      "no": 16,
+      "text": "Kalimat langsung: Budi berkata, \"Bukuku tertinggal di kelas.\" Jika diubah menjadi kalimat tidak langsung, kata ganti 'bukuku' berubah menjadi...",
+      "options": [
+        "Bukumu",
+        "Bukunya",
+        "Buku kami",
+        "Buku mereka"
+      ],
+      "correct": 1,
+      "desc": "Indikator 16: Perubahan kata ganti yang tepat ('Bukuku' -> 'Bukunya')."
+    },
+    {
+      "no": 17,
+      "text": "Kalimat tidak langsung: 'Ayah mengatakan bahwa kita harus rajin belajar.' Bentuk kalimat langsungnya adalah...",
+      "options": [
+        "Ayah berkata, \"Kita harus rajin belajar.\"",
+        "Ayah berkata, \"Kami harus rajin belajar.\"",
+        "Ayah berkata, \"Kamu harus rajin belajar.\"",
+        "Ayah berkata, \"Mereka harus rajin belajar.\""
+      ],
+      "correct": 0,
+      "desc": "Indikator 17: Mengubah tidak langsung ke langsung ('Kita' tetap 'Kita' jika mengajak, atau 'Kalian' tergantung konteks. Di sini 'Kita' paling tepat untuk keluarga)."
+    },
+    {
+      "no": 18,
+      "text": "Kalimat yang menggunakan majas metafora adalah...",
+      "options": [
+        "Wajahnya bersinar seperti bulan purnama.",
+        "Raja siang telah menampakkan diri dari ufuk timur.",
+        "Pena itu menari-nari di atas kertas.",
+        "Suaranya menggelegar membelah angkasa."
+      ],
+      "correct": 1,
+      "desc": "Indikator 18: Majas metafora (Raja siang = Matahari, perbandingan langsung tanpa kata 'seperti')."
+    },
+    {
+      "no": 19,
+      "text": "Kalimat berikut yang menggunakan majas personifikasi adalah...",
+      "options": [
+        "Hatinya sekeras batu.",
+        "Angin berbisik menyampaikan salam.",
+        "Ia adalah tulang punggung keluarga.",
+        "Air matanya mengalir menganak sungai."
+      ],
+      "correct": 1,
+      "desc": "Indikator 19: Majas personifikasi (Angin berbisik seolah-olah manusia)."
+    },
+    {
+      "no": 20,
+      "text": "Kalimat yang menggunakan majas hiperbola (melebih-lebihkan) adalah...",
+      "options": [
+        "Daun kelapa melambai-lambai di tepi pantai.",
+        "Suaranya memecahkan gendang telingaku.",
+        "Ia adalah bintang kelas kami.",
+        "Wajahnya pucat pasi seperti mayat."
+      ],
+      "correct": 1,
+      "desc": "Indikator 20: Majas hiperbola (Suara memecahkan gendang telinga = berlebihan)."
+    },
+    {
+      "no": 21,
+      "text": "Kalimat: 'Sampah itu menggunung di pinggir jalan.' Majas yang digunakan adalah...",
+      "options": [
+        "Metafora",
+        "Personifikasi",
+        "Hiperbola",
+        "Asosiasi"
+      ],
+      "correct": 2,
+      "desc": "Indikator 21: Mengidentifikasi jenis majas (Menggunung = Hiperbola)."
+    },
+    {
+      "no": 22,
+      "text": "Makna 'Kutu Buku' dalam kalimat 'Andi dikenal sebagai kutu buku di kelasnya' adalah...",
+      "options": [
+        "Orang yang suka memelihara kutu",
+        "Orang yang gemar membaca buku",
+        "Orang yang suka merusak buku",
+        "Orang yang berjualan buku"
+      ],
+      "correct": 1,
+      "desc": "Indikator 22: Menentukan makna kata majas/ungkapan (Kutu buku = gemar membaca)."
+    },
+    {
+      "no": 23,
+      "text": "Bentuk kata berimbuhan 'me-' yang tepat dari kata dasar 'tulis' adalah...",
+      "options": [
+        "Mentulis",
+        "Menulis",
+        "Metulis",
+        "Mengtulis"
+      ],
+      "correct": 1,
+      "desc": "Indikator 23: Pembentukan kata berimbuhan me- (T luluh menjadi N)."
+    },
+    {
+      "no": 24,
+      "text": "Penggunaan imbuhan '-lah' dalam kalimat 'Bukalah pintu itu!' berfungsi sebagai...",
+      "options": [
+        "Penegas atau perintah",
+        "Pertanyaan",
+        "Pernyataan berita",
+        "Larangan"
+      ],
+      "correct": 0,
+      "desc": "Indikator 24: Fungsi imbuhan -lah (Penegas/Imperatif)."
+    },
+    {
+      "no": 25,
+      "text": "Adik sedang ... (gambar) pemandangan alam. Kata berimbuhan yang tepat adalah...",
+      "options": [
+        "Menggambar",
+        "Menngambar",
+        "Megambar",
+        "Mengambar"
+      ],
+      "correct": 0,
+      "desc": "Indikator 25: Memilih bentuk me- yang sesuai (Gambar -> Menggambar)."
+    },
+    {
+      "no": 26,
+      "text": "Bentuk kalimat perintah dengan imbuhan '-kan' yang benar adalah...",
+      "options": [
+        "Tolong ambilkan buku itu!",
+        "Saya ambilkan buku itu.",
+        "Dia sedang ambilkan buku.",
+        "Mereka ambilkan buku."
+      ],
+      "correct": 0,
+      "desc": "Indikator 26: Mengenali kalimat perintah dengan -kan."
+    },
+    {
+      "no": 27,
+      "text": "Makna imbuhan '-kan' pada kata 'bersihkan' dalam kalimat 'Bersihkan kamarmu!' adalah...",
+      "options": [
+        "Melakukan pekerjaan untuk orang lain",
+        "Membuat jadi bersih (kausatif)",
+        "Melakukan pekerjaan secara tidak sengaja",
+        "Saling membersihkan"
+      ],
+      "correct": 1,
+      "desc": "Indikator 27: Makna imbuhan -kan (Membuat jadi...)."
+    },
+    {
+      "no": 28,
+      "text": "Kata dasar dari kata 'menghasilkan' adalah...",
+      "options": [
+        "Hasil",
+        "Asil",
+        "Silkan",
+        "Nghasil"
+      ],
+      "correct": 0,
+      "desc": "Indikator 28: Menentukan kata dasar (Menghasilkan -> Hasil)."
+    },
+    {
+      "no": 29,
+      "text": "Kalimat yang menggunakan kata berimbuhan gabung 'me-kan' dengan benar adalah...",
+      "options": [
+        "Ibu sedang masak nasi.",
+        "Ayah membacakan dongeng untuk adik.",
+        "Adik bermain bola.",
+        "Kakak tidur di kamar."
+      ],
+      "correct": 1,
+      "desc": "Indikator 29: Menemukan kalimat dengan me-kan (Membacakan)."
+    },
+    {
+      "no": 30,
+      "text": "Kita harus ... (jaga) kebersihan lingkungan. Kata berimbuhan yang tepat adalah...",
+      "options": [
+        "Menjaga",
+        "Mejaga",
+        "Mengjaga",
+        "Menyaga"
+      ],
+      "correct": 0,
+      "desc": "Indikator 30: Menggunakan kata berimbuhan dengan tepat (Jaga -> Menjaga)."
+    },
+    {
+      "no": 31,
+      "text": "Ciri kebahasaan teks prosedur adalah banyak menggunakan kalimat...",
+      "options": [
+        "Tanya",
+        "Berita",
+        "Perintah (Imperatif)",
+        "Seru"
+      ],
+      "correct": 2,
+      "desc": "Indikator 31: Ciri kebahasaan teks prosedur (Kalimat perintah)."
+    },
+    {
+      "no": 32,
+      "text": "Struktur penulisan teks prosedur yang benar biasanya terdiri dari...",
+      "options": [
+        "Judul - Tujuan - Alat/Bahan - Langkah-langkah",
+        "Judul - Tokoh - Konflik - Penyelesaian",
+        "Judul - Pembukaan - Isi - Penutup (Pidato)",
+        "Judul - Klasifikasi - Deskripsi"
+      ],
+      "correct": 0,
+      "desc": "Indikator 32: Mengidentifikasi struktur teks prosedur."
+    },
+    {
+      "no": 33,
+      "text": "Manakah yang termasuk kalimat perintah dalam teks prosedur?",
+      "options": [
+        "Apakah air sudah mendidih?",
+        "Masukkan mie ke dalam air mendidih!",
+        "Air mendidih sangat panas.",
+        "Saya suka makan mie rebus."
+      ],
+      "correct": 1,
+      "desc": "Indikator 33: Membedakan kalimat perintah dalam prosedur."
+    },
+    {
+      "no": 34,
+      "text": "Kalimat yang mengandung idiom (ungkapan) adalah...",
+      "options": [
+        "Tangannya terluka karena pisau.",
+        "Dia menjadi tangan kanan bosnya.",
+        "Dia mencuci tangan sebelum makan.",
+        "Tangannya sangat kuat mengangkat beban."
+      ],
+      "correct": 1,
+      "desc": "Indikator 34: Menentukan kalimat beridiom (Tangan kanan = orang kepercayaan)."
+    },
+    {
+      "no": 35,
+      "text": "Makna idiom 'Tangan Kanan' adalah...",
+      "options": [
+        "Tangan sebelah kanan",
+        "Orang yang suka memukul",
+        "Orang kepercayaan",
+        "Orang yang suka meminta"
+      ],
+      "correct": 2,
+      "desc": "Indikator 35: Menjelaskan makna idiom."
+    },
+    {
+      "no": 36,
+      "text": "Penggunaan idiom yang tepat terdapat pada kalimat...",
+      "options": [
+        "Dia sangat 'besar kepala' karena memakai topi besar.",
+        "Dia 'besar kepala' setelah dipuji oleh gurunya.",
+        "Kepalanya besar karena sakit.",
+        "Dia membeli kepala besar di pasar."
+      ],
+      "correct": 1,
+      "desc": "Indikator 36: Mengidentifikasi penggunaan idiom yang tepat (Besar kepala = sombong)."
+    },
+    {
+      "no": 37,
+      "text": "Dalam kalimat 'Jangan mudah terpancing, dia hanya *adu domba* kita', arti *adu domba* adalah...",
+      "options": [
+        "Mempertandingkan domba",
+        "Menghasut agar bermusuhan",
+        "Berternak domba",
+        "Makan daging domba"
+      ],
+      "correct": 1,
+      "desc": "Indikator 37: Arti idiom berdasarkan konteks (Adu domba = menghasut)."
+    },
+    {
+      "no": 38,
+      "text": "Kalimat 'Dia anak yang *panjang tangan*' memiliki makna yang sama dengan...",
+      "options": [
+        "Dia anak yang suka menolong.",
+        "Dia anak yang suka mencuri.",
+        "Dia anak yang tangannya panjang.",
+        "Dia anak yang rajin bekerja."
+      ],
+      "correct": 1,
+      "desc": "Indikator 38: Kalimat beridiom makna sama (Panjang tangan = suka mencuri)."
+    },
+    {
+      "no": 39,
+      "text": "Ayah membawa ... (oleh-oleh) dari Bandung untuk kami. Idiom yang tepat untuk melengkapi adalah...",
+      "options": [
+        "Buah tangan",
+        "Buah bibir",
+        "Buah hati",
+        "Tangan hampa"
+      ],
+      "correct": 0,
+      "desc": "Indikator 39: Melengkapi rumpang dengan idiom (Oleh-oleh = Buah tangan)."
+    },
+    {
+      "no": 40,
+      "text": "Bacaan: 'Komodo adalah hewan endemik Indonesia yang hidup di Pulau Komodo. Hewan ini termasuk jenis kadal terbesar di dunia.' Informasi faktual dari bacaan tersebut adalah...",
+      "options": [
+        "Komodo hewan yang sangat lucu.",
+        "Komodo adalah kadal terbesar di dunia.",
+        "Semua orang suka melihat Komodo.",
+        "Komodo sebaiknya dipelihara di rumah."
+      ],
+      "correct": 1,
+      "desc": "Indikator 40: Menemukan informasi faktual (fakta) dalam teks."
+    },
+    {
+      "no": 41,
+      "text": "Bacaan: 'Rani menangis tersedu-sedu karena boneka kesayangannya hilang.' Perasaan tokoh Rani adalah...",
+      "options": [
+        "Gembira",
+        "Sedih",
+        "Marah",
+        "Takut"
+      ],
+      "correct": 1,
+      "desc": "Indikator 41: Mengidentifikasi perasaan tokoh."
+    },
+    {
+      "no": 42,
+      "text": "Bacaan: 'Budi segera membantu nenek itu menyeberang jalan.' Bukti perilaku Budi yang baik adalah...",
+      "options": [
+        "Budi melihat nenek.",
+        "Budi membantu menyeberang jalan.",
+        "Budi berjalan di trotoar.",
+        "Budi sedang terburu-buru."
+      ],
+      "correct": 1,
+      "desc": "Indikator 42: Menemukan bukti perilaku tokoh."
+    },
+    {
+      "no": 43,
+      "text": "Kata tanya yang digunakan untuk menanyakan 'sebab' atau 'alasan' adalah...",
+      "options": [
+        "Apa",
+        "Siapa",
+        "Mengapa",
+        "Bagaimana"
+      ],
+      "correct": 2,
+      "desc": "Indikator 43: Fungsi kata tanya (Mengapa untuk alasan)."
+    },
+    {
+      "no": 44,
+      "text": "Jika teks berisi tentang 'Cara Membuat Nasi Goreng', pertanyaan yang relevan adalah...",
+      "options": [
+        "Siapa penemu nasi goreng?",
+        "Di mana nasi goreng dijual?",
+        "Bagaimana langkah-langkah membuat nasi goreng?",
+        "Kapan nasi goreng pertama kali dibuat?"
+      ],
+      "correct": 2,
+      "desc": "Indikator 44: Memilih pertanyaan relevan dengan teks prosedur."
+    },
+    {
+      "no": 45,
+      "text": "Teks membahas tentang 'Siklus Hidup Kupu-kupu'. Pertanyaan yang TIDAK relevan adalah...",
+      "options": [
+        "Apa makanan ulat?",
+        "Berapa harga kupu-kupu mainan?",
+        "Bagaimana proses kepompong menjadi kupu-kupu?",
+        "Di mana kupu-kupu biasanya bertelur?"
+      ],
+      "correct": 1,
+      "desc": "Indikator 45: Mengidentifikasi pertanyaan tidak relevan (Harga mainan tidak dibahas)."
+    },
+    {
+      "no": 46,
+      "text": "Sinonim yang tepat untuk mengganti kata 'elok' dalam kalimat 'Pemandangan di sini sangat elok' adalah...",
+      "options": [
+        "Jelek",
+        "Indah",
+        "Buruk",
+        "Biasa"
+      ],
+      "correct": 1,
+      "desc": "Indikator 46 (Adaptasi Esai): Mengganti kata sifat dengan sinonim (Elok = Indah)."
+    },
+    {
+      "no": 47,
+      "text": "Contoh kalimat bermajas personifikasi yang benar adalah...",
+      "options": [
+        "Dia berlari secepat kilat.",
+        "Matahari tersenyum menyapa pagi.",
+        "Wajahnya bersinar seperti bintang.",
+        "Suaranya menggelegar."
+      ],
+      "correct": 1,
+      "desc": "Indikator 47 (Adaptasi Esai): Membuat kalimat majas (Matahari tersenyum)."
+    },
+    {
+      "no": 48,
+      "text": "Bagian 'Langkah-langkah' dalam teks prosedur berisi...",
+      "options": [
+        "Daftar alat dan bahan yang dibutuhkan",
+        "Urutan kegiatan yang harus dilakukan",
+        "Kata penutup atau kesimpulan",
+        "Judul masakan"
+      ],
+      "correct": 1,
+      "desc": "Indikator 48 (Adaptasi Esai): Struktur teks prosedur (Langkah-langkah)."
+    },
+    {
+      "no": 49,
+      "text": "Kalimat yang menggunakan idiom dengan tepat untuk menggambarkan orang yang 'sombong' adalah...",
+      "options": [
+        "Dia anak yang rendah hati.",
+        "Dia anak yang tinggi hati.",
+        "Dia anak yang murah hati.",
+        "Dia anak yang kecil hati."
+      ],
+      "correct": 1,
+      "desc": "Indikator 49 (Adaptasi Esai): Membuat kalimat idiom (Tinggi hati = sombong)."
+    },
+    {
+      "no": 50,
+      "text": "Teks: 'Banjir terjadi karena hujan deras dan saluran air tersumbat.' Kalimat tanya yang tepat sesuai isi teks adalah...",
+      "options": [
+        "Siapa yang membersihkan saluran air?",
+        "Kapan banjir akan surut?",
+        "Mengapa banjir bisa terjadi?",
+        "Di mana tempat pengungsian?"
+      ],
+      "correct": 2,
+      "desc": "Indikator 50 (Adaptasi Esai): Membuat kalimat tanya berdasarkan teks (Menanyakan sebab)."
+    }
+  ]
+}

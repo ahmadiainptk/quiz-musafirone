@@ -138,12 +138,12 @@
           {
             "type": "folder",
             "title": "Informatika",
-            "icon": "🔬",
+            "icon": "💻",
             "children": [
               {
                 "type": "file",
                 "id": "inf-7-psas-2025-1",
-                "title": "Latihan PSAS Informatika Semester Ganjil # 1",
+                "title": "Latihan PSAS Informatika Ganjil #1",
                 "subject": "Informatika",
                 "grade": "7 SMP",
                 "file": "psa1-info-7-khairin-1.json",
@@ -152,7 +152,7 @@
               {
                 "type": "file",
                 "id": "inf-7-psas-2025-2",
-                "title": "Latihan PSAS Informatika Semester Ganjil # 2",
+                "title": "Latihan PSAS Informatika Ganjil #2",
                 "subject": "Informatika",
                 "grade": "7 SMP",
                 "file": "psa1-info-7-khairin-2.json",
@@ -195,12 +195,12 @@
           {
             "type": "folder",
             "title": "Informatika",
-            "icon": "🔬",
+            "icon": "💻",
             "children": [
               {
                 "type": "file",
                 "id": "inf-8-psas-2025-1",
-                "title": "Latihan PSAS Informatika Semester Ganjil # 1",
+                "title": "Latihan PSAS Informatika Ganjil #1",
                 "subject": "Informatika",
                 "grade": "8 SMP",
                 "file": "psa1-info-8-biyan-1.json",
@@ -209,7 +209,7 @@
               {
                 "type": "file",
                 "id": "inf-8-psas-2025-2",
-                "title": "Latihan PSAS Informatika Semester Ganjil # 2",
+                "title": "Latihan PSAS Informatika Ganjil #2",
                 "subject": "Informatika",
                 "grade": "8 SMP",
                 "file": "psa1-info-8-biyan-2.json",
@@ -218,7 +218,7 @@
               {
                 "type": "file",
                 "id": "inf-8-psas-2025-3",
-                "title": "Latihan PSAS Informatika Semester Ganjil # 3",
+                "title": "Latihan PSAS Informatika Ganjil #3",
                 "subject": "Informatika",
                 "grade": "8 SMP",
                 "file": "psa1-info-8-biyan-3.json",
@@ -227,7 +227,7 @@
               {
                 "type": "file",
                 "id": "inf-8-psas-2025-4",
-                "title": "Latihan PSAS Informatika Semester Ganjil # 4",
+                "title": "Latihan PSAS Informatika Ganjil #4",
                 "subject": "Informatika",
                 "grade": "8 SMP",
                 "file": "psa1-info-8-biyan-4.json",
@@ -277,12 +277,12 @@
           {
             "type": "folder",
             "title": "Fisika",
-            "icon": "📈",
+            "icon": "⚛️",
             "children": [
               {
                 "type": "file",
                 "id": "fisika-10-asas-1",
-                "title": "Persiapan ASAS Fisika Semester Ganjil # 1",
+                "title": "Persiapan ASAS Fisika Ganjil #1",
                 "subject": "Fisika",
                 "grade": "10 SMA",
                 "file": "asas1-fisika-10-lubna-1.json",
@@ -291,7 +291,7 @@
               {
                 "type": "file",
                 "id": "fisika-10-asas-2",
-                "title": "Persiapan ASAS Fisika Semester Ganjil # 2",
+                "title": "Persiapan ASAS Fisika Ganjil #2",
                 "subject": "Fisika",
                 "grade": "10 SMA",
                 "file": "asas1-fisika-10-lubna-2.json",
@@ -300,7 +300,7 @@
               {
                 "type": "file",
                 "id": "fisika-10-asas-3",
-                "title": "Persiapan ASAS Fisika Semester Ganjil # 3",
+                "title": "Persiapan ASAS Fisika Ganjil #3",
                 "subject": "Fisika",
                 "grade": "10 SMA",
                 "file": "asas1-fisika-10-lubna-3.json",
@@ -336,4 +336,3 @@
     ]
   }
 ]
-

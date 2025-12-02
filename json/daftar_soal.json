@@ -1,98 +1,229 @@
 [
-  { 
-    "id": "psa1-mtk-6-binan-6",
-    "title": "Latihan PSA MTK Kelas 6 Semester Ganjil",
-    "subject": "Matematika",
-    "grade": "6 SD",
-    "file": "psa1-mtk-6-binan-6.json",
-    "icon": "📐"
+  {
+    "type": "folder",
+    "title": "Sekolah Dasar (SD)",
+    "icon": "🏫",
+    "children": [
+      {
+        "type": "folder",
+        "title": "Kelas 5",
+        "icon": "5️⃣",
+        "children": [
+          {
+            "type": "folder",
+            "title": "IPAS",
+            "icon": "🌱",
+            "children": [
+              {
+                "type": "file",
+                "id": "psa1-ipas-5-qisthy-1",
+                "title": "Latihan PSA IPAS Semester Ganjil",
+                "subject": "IPAS",
+                "grade": "5 SD",
+                "file": "psa1-ipas-5-qisthy-1.json",
+                "icon": "🪐"
+              }
+            ]
+          },
+          {
+            "type": "folder",
+            "title": "Bahasa Arab",
+            "icon": "☪️",
+            "children": [
+              {
+                "type": "file",
+                "id": "psa1-barab-5-qisthy-1",
+                "title": "Latihan PSA B. Arab Ganjil #1",
+                "subject": "B. Arab",
+                "grade": "5 SD",
+                "file": "psa1-barab-5-qisthy-1.json",
+                "icon": "📝"
+              },
+              {
+                "type": "file",
+                "id": "psa1-barab-5-qisthy-2",
+                "title": "Latihan PSA B. Arab Ganjil #2",
+                "subject": "B. Arab",
+                "grade": "5 SD",
+                "file": "psa1-barab-5-qisthy-2.json",
+                "icon": "📝"
+              }
+            ]
+          },
+          {
+            "type": "folder",
+            "title": "PPKN",
+            "icon": "🇮🇩",
+            "children": [
+              {
+                "type": "file",
+                "id": "psa1-ppkn-5-qisthy-1",
+                "title": "Latihan PSA PPKN Semester Ganjil",
+                "subject": "PPKN",
+                "grade": "5 SD",
+                "file": "psa1-ppkn-5-qisthy-1.json",
+                "icon": "📝"
+              }
+            ]
+          },
+          {
+            "type": "folder",
+            "title": "Bahasa Indonesia",
+            "icon": "📖",
+            "children": [
+              {
+                "type": "file",
+                "id": "psa1-bindo-5-qisthy-1",
+                "title": "Latihan PSA B. Indo Semester Ganjil",
+                "subject": "B. Indo",
+                "grade": "5 SD",
+                "file": "psa1-bindo-5-qisthy-1.json",
+                "icon": "📝"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "folder",
+        "title": "Kelas 6",
+        "icon": "6️⃣",
+        "children": [
+          {
+            "type": "folder",
+            "title": "Matematika",
+            "icon": "📐",
+            "children": [
+              {
+                "type": "file",
+                "id": "psa1-mtk-6-binan-6",
+                "title": "Latihan PSA MTK Semester Ganjil",
+                "subject": "Matematika",
+                "grade": "6 SD",
+                "file": "psa1-mtk-6-binan-6.json",
+                "icon": "📐"
+              }
+            ]
+          }
+        ]
+      }
+    ]
   },
   {
-    "id": "psa1-ipas-5-qisthy-1",
-    "title": "Latihan PSA IPAS Kelas 5 Semester Ganjil",
-    "subject": "IPAS",
-    "grade": "5 SD",
-    "file": "psa1-ipas-5-qisthy-1.json",
-    "icon": "🪐"
+    "type": "folder",
+    "title": "Sekolah Menengah (SMP)",
+    "icon": "🏢",
+    "children": [
+      {
+        "type": "folder",
+        "title": "Kelas 7",
+        "icon": "7️⃣",
+        "children": [
+          {
+            "type": "folder",
+            "title": "Seni Budaya (SBK)",
+            "icon": "🎨",
+            "children": [
+              {
+                "type": "file",
+                "id": "psa1-sbk-7-khairin-1",
+                "title": "Latihan PSA SBK Semester Ganjil",
+                "subject": "SBK",
+                "grade": "7 SMP",
+                "file": "psa1-sbk-7-khairin-1.json",
+                "icon": "🎨"
+              }
+            ]
+          },
+          {
+            "type": "folder",
+            "title": "IPAS",
+            "icon": "🔬",
+            "children": [
+              {
+                "type": "file",
+                "id": "psa1-ipas-7-khairin-1",
+                "title": "Latihan PSA IPAS Ganjil #1",
+                "subject": "IPAS",
+                "grade": "7 SMP",
+                "file": "psa1-ipas-7-khairin-1.json",
+                "icon": "🪐"
+              },
+              {
+                "type": "file",
+                "id": "psa1-ipas-7-khairin-2",
+                "title": "Latihan PSA IPAS Ganjil #2",
+                "subject": "IPAS",
+                "grade": "7 SMP",
+                "file": "psa1-ipas-7-khairin-2.json",
+                "icon": "🪐"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "folder",
+        "title": "Kelas 8",
+        "icon": "8️⃣",
+        "children": [
+          {
+            "type": "folder",
+            "title": "IPAS",
+            "icon": "🧬",
+            "children": [
+              {
+                "type": "file",
+                "id": "psa1-ipas-8-biyan-1",
+                "title": "Latihan PSA IPAS Ganjil #1",
+                "subject": "IPAS",
+                "grade": "8 SMP",
+                "file": "psa1-ipas-8-biyan-1.json",
+                "icon": "🪐"
+              },
+              {
+                "type": "file",
+                "id": "psa1-ipas-8-biyan-2",
+                "title": "Latihan PSA IPAS Ganjil #2",
+                "subject": "IPAS",
+                "grade": "8 SMP",
+                "file": "psa1-ipas-8-biyan-2.json",
+                "icon": "🪐"
+              }
+            ]
+          }
+        ]
+      }
+    ]
   },
   {
-    "id": "psa1-barab-5-qisthy-1",
-    "title": "Latihan PSA Bahasa Arab Kelas 5 Semester Ganjil # 1",
-    "subject": "B. Arab",
-    "grade": "5 SD",
-    "file": "psa1-barab-5-qisthy-1.json",
-    "icon": "📝"
-  },
-  {
-    "id": "psa1-barab-5-qisthy-2",
-    "title": "Latihan PSA Bahasa Arab Kelas 5 Semester Ganjil # 2",
-    "subject": "B. Arab",
-    "grade": "5 SD",
-    "file": "psa1-barab-5-qisthy-2.json",
-    "icon": "📝"
-  },
-  {
-    "id": "psa1-ppkn-5-qisthy-1",
-    "title": "Latihan PSA PPKN Kelas 5 Semester Ganjil",
-    "subject": "PPKN",
-    "grade": "5 SD",
-    "file": "psa1-ppkn-5-qisthy-1.json",
-    "icon": "📝"
-  },
-  {
-    "id": "psa1-bindo-5-qisthy-1",
-    "title": "Latihan PSA B. Indonesia Kelas 5 Semester Ganjil",
-    "subject": "B. Indo",
-    "grade": "5 SD",
-    "file": "psa1-bindo-5-qisthy-1.json",
-    "icon": "📝"
-  },
- {
-    "id": "psa1-sbk-7-khairin-1",
-    "title": "Latihan PSA SBK Kelas 7 Semester Ganjil",
-    "subject": "SBK",
-    "grade": "7 SMP",
-    "file": "psa1-sbk-7-khairin-1.json",
-    "icon": "🪐"
-  },
-  {
-    "id": "psa1-ipas-7-khairin-1",
-    "title": "Latihan PSA IPAS Kelas 7 Semester Ganjil # 1",
-    "subject": "IPAS",
-    "grade": "7 SMP",
-    "file": "psa1-ipas-7-khairin-1.json",
-    "icon": "🪐"
-  },
-  {
-    "id": "psa1-ipas-7-khairin-2",
-    "title": "Latihan PSA IPAS Kelas 7 Semester Ganjil # 2",
-    "subject": "IPAS",
-    "grade": "7 SMP",
-    "file": "psa1-ipas-7-khairin-2.json",
-    "icon": "🪐"
-  },
-  {
-    "id": "psa1-ipas-8-biyan-1",
-    "title": "Latihan PSA IPAS Kelas 8 Semester Ganjil # 1",
-    "subject": "IPAS",
-    "grade": "8 SMP",
-    "file": "psa1-ipas-8-biyan-1.json",
-    "icon": "🪐"
-  },
-  {
-    "id": "psa1-ipas-8-biyan-2",
-    "title": "Latihan PSA IPAS Kelas 8 Semester Ganjil # 2",
-    "subject": "IPAS",
-    "grade": "8 SMP",
-    "file": "psa1-ipas-8-biyan-2.json",
-    "icon": "🪐"
-  }, 
- {
-    "id": "asas1-mtk-11-yudo-1",
-    "title": "Latihan ASAS MTK Kelas 11 Semester Ganjil",
-    "subject": "MTK",
-    "grade": "11 SMA",
-    "file": "asas1-mtk-11-yudo-1.json",
-    "icon": "📐"
+    "type": "folder",
+    "title": "Sekolah Menengah Atas (SMA)",
+    "icon": "🎓",
+    "children": [
+      {
+        "type": "folder",
+        "title": "Kelas 11",
+        "icon": "1️⃣1️⃣",
+        "children": [
+          {
+            "type": "folder",
+            "title": "Matematika",
+            "icon": "📈",
+            "children": [
+              {
+                "type": "file",
+                "id": "asas1-mtk-11-yudo-1",
+                "title": "Latihan ASAS MTK Ganjil",
+                "subject": "MTK",
+                "grade": "11 SMA",
+                "file": "asas1-mtk-11-yudo-1.json",
+                "icon": "📐"
+              }
+            ]
+          }
+        ]
+      }
+    ]
   }
 ]

@@ -1,0 +1,608 @@
+{
+  "subject": "Bahasa Indonesia",
+  "grade": "7 SMP",
+  "title": "Latihan Soal SAS Ganjil Bahasa Indonesia Kelas 7",
+  "subtitle": "Paket 50 soal lengkap mencakup Teks Deskripsi, Fantasi, Prosedur, dan Berita sesuai kisi-kisi SAS 2025.",
+  "questions": [
+    {
+      "no": 1,
+      "text": "Teks yang bertujuan menggambarkan objek secara rinci dan konkret seolah-olah pembaca melihat, mendengar, dan merasakan sendiri objek tersebut disebut...",
+      "options": [
+        "Teks Narasi",
+        "Teks Deskripsi",
+        "Teks Prosedur",
+        "Teks Eksposisi"
+      ],
+      "correct": 1,
+      "desc": "Indikator 1: Pengertian teks deskripsi adalah menggambarkan objek secara mendetail."
+    },
+    {
+      "no": 2,
+      "text": "Tujuan utama dari penulisan teks deskripsi adalah...",
+      "options": [
+        "Menjelaskan langkah-langkah membuat sesuatu",
+        "Menceritakan kisah imajinatif",
+        "Menggambarkan objek dengan cara merinci secara subjektif",
+        "Memberikan kabar berita terkini"
+      ],
+      "correct": 2,
+      "desc": "Indikator 2: Tujuan teks deskripsi."
+    },
+    {
+      "no": 3,
+      "text": "Berikut ini yang merupakan ciri-ciri teks deskripsi adalah...",
+      "options": [
+        "Mengandung bukti dan fakta ilmiah",
+        "Menggunakan alur cerita yang menegangkan",
+        "Melibatkan kesan indra (penglihatan, pendengaran, dll)",
+        "Berisi langkah-langkah kerja"
+      ],
+      "correct": 2,
+      "desc": "Indikator 3: Ciri teks deskripsi melibatkan panca indra."
+    },
+    {
+      "no": 4,
+      "text": "Bagian struktur teks deskripsi yang berisi pengenalan nama objek, lokasi, dan gambaran umum objek disebut...",
+      "options": [
+        "Identifikasi",
+        "Deskripsi Bagian",
+        "Simpulan/Kesan",
+        "Orientasi"
+      ],
+      "correct": 0,
+      "desc": "Indikator 4: Struktur teks deskripsi (Identifikasi)."
+    },
+    {
+      "no": 5,
+      "text": "Bacalah kutipan: 'Pantai Parangtritis sangat mempesona. Di sebelah kiri, terlihat tebing yang sangat tinggi. Di sebelah kanan, kita bisa melihat batu karang besar.' Kutipan tersebut termasuk bagian struktur...",
+      "options": [
+        "Identifikasi",
+        "Deskripsi Bagian",
+        "Penutup",
+        "Koda"
+      ],
+      "correct": 1,
+      "desc": "Indikator 5: Struktur teks deskripsi (Deskripsi Bagian merinci objek)."
+    },
+    {
+      "no": 6,
+      "text": "Teks cerita yang berisi kisah imajinasi, khayalan, atau angan-angan yang tidak nyata disebut...",
+      "options": [
+        "Teks Deskripsi",
+        "Teks Fantasi",
+        "Teks Prosedur",
+        "Teks Laporan"
+      ],
+      "correct": 1,
+      "desc": "Indikator 6: Pengertian teks fantasi."
+    },
+    {
+      "no": 7,
+      "text": "Tujuan utama dari teks cerita fantasi adalah...",
+      "options": [
+        "Memberikan informasi faktual",
+        "Menghibur pembaca dengan keajaiban dan imajinasi",
+        "Menjelaskan cara melakukan sesuatu",
+        "Menggambarkan objek secara nyata"
+      ],
+      "correct": 1,
+      "desc": "Indikator 7: Tujuan teks fantasi adalah menghibur (entertain)."
+    },
+    {
+      "no": 8,
+      "text": "Salah satu ciri utama teks fantasi yang membedakannya dengan teks lain adalah...",
+      "options": [
+        "Ada keajaiban, keanehan, atau kemisteriusan",
+        "Berdasarkan data dan fakta",
+        "Menggunakan bahasa baku dan formal",
+        "Berisi urutan waktu yang nyata"
+      ],
+      "correct": 0,
+      "desc": "Indikator 8: Ciri teks fantasi (Keajaiban)."
+    },
+    {
+      "no": 9,
+      "text": "Struktur teks fantasi yang berisi pengenalan tokoh, latar tempat, dan waktu kejadian disebut...",
+      "options": [
+        "Orientasi",
+        "Komplikasi",
+        "Resolusi",
+        "Reorientasi"
+      ],
+      "correct": 0,
+      "desc": "Indikator 9: Struktur teks fantasi (Orientasi)."
+    },
+    {
+      "no": 10,
+      "text": "Bagian di mana masalah mulai muncul hingga memuncak dalam cerita fantasi disebut...",
+      "options": [
+        "Orientasi",
+        "Komplikasi",
+        "Resolusi",
+        "Koda"
+      ],
+      "correct": 1,
+      "desc": "Indikator 10: Struktur teks fantasi (Komplikasi)."
+    },
+    {
+      "no": 11,
+      "text": "Bagian penyelesaian masalah dalam cerita fantasi disebut...",
+      "options": [
+        "Orientasi",
+        "Komplikasi",
+        "Resolusi",
+        "Abstraksi"
+      ],
+      "correct": 2,
+      "desc": "Indikator 11: Struktur teks fantasi (Resolusi)."
+    },
+    {
+      "no": 12,
+      "text": "Kutipan: 'Akhirnya, Harry berhasil mengalahkan naga itu dan kembali ke kastil dengan selamat.' Bagian ini termasuk struktur...",
+      "options": [
+        "Orientasi",
+        "Komplikasi",
+        "Resolusi",
+        "Identifikasi"
+      ],
+      "correct": 2,
+      "desc": "Indikator 12: Menentukan struktur (Resolusi/Penyelesaian)."
+    },
+    {
+      "no": 13,
+      "text": "Teks yang berisi langkah-langkah atau tahapan yang harus dilakukan untuk mencapai tujuan tertentu disebut...",
+      "options": [
+        "Teks Deskripsi",
+        "Teks Fantasi",
+        "Teks Prosedur",
+        "Teks Berita"
+      ],
+      "correct": 2,
+      "desc": "Indikator 13: Pengertian teks prosedur."
+    },
+    {
+      "no": 14,
+      "text": "Tujuan utama teks prosedur adalah...",
+      "options": [
+        "Menggambarkan suatu objek",
+        "Memberikan petunjuk cara melakukan sesuatu secara urut",
+        "Menceritakan pengalaman pribadi",
+        "Menyampaikan pendapat penulis"
+      ],
+      "correct": 1,
+      "desc": "Indikator 14: Tujuan teks prosedur."
+    },
+    {
+      "no": 15,
+      "text": "Berikut ini yang merupakan ciri-ciri teks prosedur adalah...",
+      "options": [
+        "Menggunakan kalimat perintah (imperatif)",
+        "Menggunakan majas personifikasi",
+        "Alur ceritanya maju mundur",
+        "Menggunakan kata sifat yang emosional"
+      ],
+      "correct": 0,
+      "desc": "Indikator 15: Ciri teks prosedur (Kalimat perintah/imperatif)."
+    },
+    {
+      "no": 16,
+      "text": "Penggunaan kata penghubung (konjungsi) urutan seperti 'pertama', 'kemudian', 'selanjutnya' adalah ciri kebahasaan dari teks...",
+      "options": [
+        "Deskripsi",
+        "Fantasi",
+        "Prosedur",
+        "Berita"
+      ],
+      "correct": 2,
+      "desc": "Indikator 16: Ciri kebahasaan prosedur (Konjungsi temporal)."
+    },
+    {
+      "no": 17,
+      "text": "Ciri teks prosedur dari segi isinya adalah adanya...",
+      "options": [
+        "Tokoh dan penokohan",
+        "Panduan langkah-langkah yang sistematis",
+        "Fakta aktual dan terpercaya",
+        "Penggambaran fisik objek"
+      ],
+      "correct": 1,
+      "desc": "Indikator 17: Ciri isi prosedur."
+    },
+    {
+      "no": 18,
+      "text": "Struktur teks prosedur yang pertama kali muncul dan menjelaskan apa yang akan dibuat atau dilakukan adalah...",
+      "options": [
+        "Tujuan",
+        "Alat dan Bahan",
+        "Langkah-langkah",
+        "Penutup"
+      ],
+      "correct": 0,
+      "desc": "Indikator 18: Struktur prosedur (Tujuan/Judul)."
+    },
+    {
+      "no": 19,
+      "text": "Bagian teks prosedur yang merinci benda-benda yang diperlukan disebut...",
+      "options": [
+        "Tujuan",
+        "Alat dan Bahan",
+        "Langkah-langkah",
+        "Simpulan"
+      ],
+      "correct": 1,
+      "desc": "Indikator 19: Struktur prosedur (Alat dan Bahan)."
+    },
+    {
+      "no": 20,
+      "text": "Bagian inti teks prosedur yang berisi urutan kegiatan disebut...",
+      "options": [
+        "Tujuan",
+        "Material",
+        "Langkah-langkah",
+        "Penegasan Ulang"
+      ],
+      "correct": 2,
+      "desc": "Indikator 20: Struktur prosedur (Langkah-langkah)."
+    },
+    {
+      "no": 21,
+      "text": "Bagian akhir teks prosedur yang berisi harapan atau ucapan selamat disebut...",
+      "options": [
+        "Langkah-langkah",
+        "Penutup",
+        "Tujuan",
+        "Orientasi"
+      ],
+      "correct": 1,
+      "desc": "Indikator 21: Struktur prosedur (Penutup)."
+    },
+    {
+      "no": 22,
+      "text": "Kutipan: 'Selamat mencoba resep ini dan semoga berhasil!' Kutipan tersebut adalah bagian struktur...",
+      "options": [
+        "Tujuan",
+        "Alat dan Bahan",
+        "Langkah-langkah",
+        "Penutup"
+      ],
+      "correct": 3,
+      "desc": "Indikator 22: Menentukan struktur (Penutup)."
+    },
+    {
+      "no": 23,
+      "text": "Ciri kalimat yang dominan dalam teks prosedur adalah...",
+      "options": [
+        "Kalimat Tanya",
+        "Kalimat Berita",
+        "Kalimat Perintah (Imperatif)",
+        "Kalimat Seru"
+      ],
+      "correct": 2,
+      "desc": "Indikator 23: Ciri kebahasaan prosedur (Imperatif)."
+    },
+    {
+      "no": 24,
+      "text": "Kata-kata seperti 'aduklah', 'masukkan', 'tuangkan' termasuk jenis kata...",
+      "options": [
+        "Kerja Imperatif",
+        "Sifat",
+        "Benda",
+        "Ganti"
+      ],
+      "correct": 0,
+      "desc": "Indikator 24: Ciri kebahasaan prosedur (Kata kerja perintah)."
+    },
+    {
+      "no": 25,
+      "text": "Penggunaan kriteria atau batasan (misal: 'rebus hingga mendidih', 'potong sepanjang 2 cm') bertujuan untuk...",
+      "options": [
+        "Membuat teks menjadi panjang",
+        "Agar pembaca bingung",
+        "Agar hasil kegiatan sesuai dan selamat",
+        "Memperindah tulisan"
+      ],
+      "correct": 2,
+      "desc": "Indikator 25: Ciri prosedur (Batasan/Kriteria)."
+    },
+    {
+      "no": 26,
+      "text": "Teks yang berisi laporan mengenai suatu kejadian atau peristiwa yang baru saja terjadi (hangat) disebut...",
+      "options": [
+        "Teks Deskripsi",
+        "Teks Berita",
+        "Teks Fantasi",
+        "Teks Prosedur"
+      ],
+      "correct": 1,
+      "desc": "Indikator 26: Pengertian teks berita."
+    },
+    {
+      "no": 27,
+      "text": "Tujuan utama teks berita adalah...",
+      "options": [
+        "Menghibur pembaca",
+        "Menyampaikan informasi faktual dan aktual",
+        "Menjelaskan cara membuat sesuatu",
+        "Menggambarkan keindahan alam"
+      ],
+      "correct": 1,
+      "desc": "Indikator 27: Tujuan teks berita."
+    },
+    {
+      "no": 28,
+      "text": "Salah satu ciri teks berita adalah 'Faktual', artinya...",
+      "options": [
+        "Berita tersebut masih hangat diperbincangkan",
+        "Berita tersebut berdasarkan kenyataan/fakta",
+        "Berita tersebut berisi opini penulis",
+        "Berita tersebut berisi rekayasa"
+      ],
+      "correct": 1,
+      "desc": "Indikator 28: Ciri berita (Faktual)."
+    },
+    {
+      "no": 29,
+      "text": "Ciri teks berita 'Aktual' berarti...",
+      "options": [
+        "Peristiwa yang sudah lama terjadi",
+        "Peristiwa yang baru saja terjadi (terkini)",
+        "Peristiwa sejarah masa lampau",
+        "Peristiwa khayalan"
+      ],
+      "correct": 1,
+      "desc": "Indikator 29: Ciri berita (Aktual)."
+    },
+    {
+      "no": 30,
+      "text": "Selain faktual dan aktual, bahasa dalam teks berita harus...",
+      "options": [
+        "Berbelit-belit",
+        "Puitis dan indah",
+        "Jelas, padat, dan komunikatif",
+        "Menggunakan bahasa gaul"
+      ],
+      "correct": 2,
+      "desc": "Indikator 30: Ciri bahasa berita."
+    },
+    {
+      "no": 31,
+      "text": "Bacalah teks berita singkat: 'Banjir bandang melanda Desa Sukamaju pada hari Senin (2/12) akibat hujan deras.' Unsur 'Apa' dalam teks tersebut adalah...",
+      "options": [
+        "Desa Sukamaju",
+        "Hari Senin",
+        "Banjir bandang",
+        "Hujan deras"
+      ],
+      "correct": 2,
+      "desc": "Indikator 31: Menentukan unsur Apa (What)."
+    },
+    {
+      "no": 32,
+      "text": "Dari teks soal no. 31, unsur 'Di mana' adalah...",
+      "options": [
+        "Banjir bandang",
+        "Desa Sukamaju",
+        "Hari Senin",
+        "Hujan deras"
+      ],
+      "correct": 1,
+      "desc": "Indikator 32: Menentukan unsur Di mana (Where)."
+    },
+    {
+      "no": 33,
+      "text": "Dari teks soal no. 31, unsur 'Kapan' adalah...",
+      "options": [
+        "Banjir bandang",
+        "Desa Sukamaju",
+        "Hari Senin (2/12)",
+        "Akibat hujan"
+      ],
+      "correct": 2,
+      "desc": "Indikator 33: Menentukan unsur Kapan (When)."
+    },
+    {
+      "no": 34,
+      "text": "Bacalah teks: 'Tim SAR berhasil mengevakuasi warga yang terjebak.' Unsur 'Siapa' dalam kalimat tersebut adalah...",
+      "options": [
+        "Mengevakuasi",
+        "Tim SAR dan Warga",
+        "Terjebak",
+        "Berhasil"
+      ],
+      "correct": 1,
+      "desc": "Indikator 34: Menentukan unsur Siapa (Who)."
+    },
+    {
+      "no": 35,
+      "text": "Bacalah teks: 'Kebakaran terjadi karena korsleting listrik.' Kalimat tersebut menjawab unsur...",
+      "options": [
+        "Siapa",
+        "Kapan",
+        "Di mana",
+        "Mengapa"
+      ],
+      "correct": 3,
+      "desc": "Indikator 35: Menentukan unsur Mengapa (Why)."
+    },
+    {
+      "no": 36,
+      "text": "Penggunaan kalimat langsung dalam teks berita ditandai dengan...",
+      "options": [
+        "Tanda kurung ( )",
+        "Tanda petik dua (\" \")",
+        "Tanda seru (!)",
+        "Huruf miring"
+      ],
+      "correct": 1,
+      "desc": "Indikator 36: Aspek kebahasaan (Kalimat Langsung)."
+    },
+    {
+      "no": 37,
+      "text": "Kata kerja mental (seperti: memikirkan, menduga) sering digunakan dalam berita. Contoh kalimatnya adalah...",
+      "options": [
+        "Polisi menduga penyebab kecelakaan adalah rem blong.",
+        "Mobil itu berwarna merah.",
+        "Hujan turun sangat deras.",
+        "Banjir setinggi lutut orang dewasa."
+      ],
+      "correct": 0,
+      "desc": "Indikator 37: Aspek kebahasaan (Kata kerja mental)."
+    },
+    {
+      "no": 38,
+      "text": "Contoh kalimat langsung yang benar dalam berita adalah...",
+      "options": [
+        "Kepala Desa mengatakan bahwa warga aman.",
+        "\"Warga sudah dievakuasi ke tempat aman,\" ujar Kepala Desa.",
+        "Kepala Desa menyuruh warga mengungsi.",
+        "Menurut Kepala Desa, banjir sudah surut."
+      ],
+      "correct": 1,
+      "desc": "Indikator 38: Menentukan contoh kalimat langsung."
+    },
+    {
+      "no": 39,
+      "text": "Contoh kalimat tidak langsung dalam berita adalah...",
+      "options": [
+        "Saksi mata berkata, \"Api berasal dari dapur.\"",
+        "\"Kami butuh bantuan,\" teriak warga.",
+        "Polisi menyatakan bahwa jalur Puncak ditutup sementara.",
+        "\"Hati-hati di jalan,\" pesan petugas."
+      ],
+      "correct": 2,
+      "desc": "Indikator 39: Menentukan contoh kalimat tidak langsung."
+    },
+    {
+      "no": 40,
+      "text": "Ciri teks berita adalah objektif, artinya...",
+      "options": [
+        "Memihak salah satu pihak",
+        "Berdasarkan pendapat pribadi penulis",
+        "Apa adanya, tidak memihak, dan sesuai fakta",
+        "Dibuat-buat agar heboh"
+      ],
+      "correct": 2,
+      "desc": "Indikator 40: Ciri berita (Objektif)."
+    },
+    {
+      "no": 41,
+      "text": "Pasangan unsur berita (5W+1H) dan maknanya yang benar adalah...",
+      "options": [
+        "What - Siapa yang terlibat",
+        "Who - Apa yang terjadi",
+        "Where - Di mana peristiwa terjadi",
+        "When - Mengapa peristiwa terjadi"
+      ],
+      "correct": 2,
+      "desc": "Indikator 41-45 (Adaptasi Menjodohkan): Where = Di mana."
+    },
+    {
+      "no": 42,
+      "text": "Unsur berita yang menanyakan 'Waktu kejadian' dalam bahasa Inggris disebut...",
+      "options": [
+        "What",
+        "When",
+        "Where",
+        "Why"
+      ],
+      "correct": 1,
+      "desc": "Indikator 41-45 (Adaptasi Menjodohkan): When = Kapan."
+    },
+    {
+      "no": 43,
+      "text": "Unsur berita 'Why' berfungsi untuk menjelaskan...",
+      "options": [
+        "Tempat kejadian",
+        "Waktu kejadian",
+        "Alasan atau penyebab terjadinya peristiwa",
+        "Pelaku peristiwa"
+      ],
+      "correct": 2,
+      "desc": "Indikator 41-45 (Adaptasi Menjodohkan): Why = Mengapa."
+    },
+    {
+      "no": 44,
+      "text": "Unsur 'How' (Bagaimana) dalam berita menjelaskan...",
+      "options": [
+        "Nama korban",
+        "Lokasi kejadian",
+        "Proses atau kronologi kejadian",
+        "Waktu kejadian"
+      ],
+      "correct": 2,
+      "desc": "Indikator 41-45 (Adaptasi Menjodohkan): How = Bagaimana/Proses."
+    },
+    {
+      "no": 45,
+      "text": "Unsur 'Who' (Siapa) dalam berita merujuk pada...",
+      "options": [
+        "Subjek atau orang yang terlibat dalam peristiwa",
+        "Benda yang hilang",
+        "Alat yang digunakan",
+        "Suasana kejadian"
+      ],
+      "correct": 0,
+      "desc": "Indikator 41-45 (Adaptasi Menjodohkan): Who = Siapa."
+    },
+    {
+      "no": 46,
+      "text": "Teks: 'Pemerintah akan menaikkan harga BBM.' Unsur 'Siapa' (Pelaku) dalam kalimat tersebut adalah...",
+      "options": [
+        "Harga BBM",
+        "Menaikkan",
+        "Pemerintah",
+        "Akan"
+      ],
+      "correct": 2,
+      "desc": "Indikator 46-50 (Adaptasi Isian): Menentukan Subjek/Pelaku."
+    },
+    {
+      "no": 47,
+      "text": "Teks: 'Kecelakaan terjadi di Tol Cipularang KM 92.' Unsur berita yang terdapat dalam kalimat tersebut adalah...",
+      "options": [
+        "Kapan (When)",
+        "Di mana (Where)",
+        "Siapa (Who)",
+        "Mengapa (Why)"
+      ],
+      "correct": 1,
+      "desc": "Indikator 46-50 (Adaptasi Isian): Menentukan Tempat."
+    },
+    {
+      "no": 48,
+      "text": "Teks: 'Gempa bumi berkekuatan 5.6 SR mengguncang Cianjur.' Unsur 'Apa' (Peristiwa) dalam kalimat tersebut adalah...",
+      "options": [
+        "Cianjur",
+        "5.6 SR",
+        "Gempa bumi",
+        "Mengguncang"
+      ],
+      "correct": 2,
+      "desc": "Indikator 46-50 (Adaptasi Isian): Menentukan Peristiwa."
+    },
+    {
+      "no": 49,
+      "text": "Teks: 'Polisi menyelidiki kasus pencurian ini.' Kata kerja transitif dalam kalimat berita tersebut adalah...",
+      "options": [
+        "Polisi",
+        "Menyelidiki",
+        "Kasus",
+        "Ini"
+      ],
+      "correct": 1,
+      "desc": "Indikator 46-50 (Adaptasi Isian): Aspek kebahasaan (Kata kerja)."
+    },
+    {
+      "no": 50,
+      "text": "Judul berita yang baik harus...",
+      "options": [
+        "Sangat panjang dan rumit",
+        "Singkat, padat, dan mewakili isi berita (Headlines)",
+        "Tidak nyambung dengan isi",
+        "Menggunakan bahasa asing seluruhnya"
+      ],
+      "correct": 1,
+      "desc": "Indikator 46-50 (Adaptasi Isian): Syarat judul berita."
+    }
+  ]
+}

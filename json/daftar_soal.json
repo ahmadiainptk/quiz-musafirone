@@ -119,6 +119,22 @@
         "title": "Kelas 7",
         "icon": "7️⃣",
         "children": [
+{
+            "type": "folder",
+            "title": "Bahasa Indonesia",
+            "icon": "📖",
+            "children": [
+              {
+                "type": "file",
+                "id": "psa1-bindo-7-khairin-1",
+                "title": "Latihan PSA B. Indo Semester Ganjil",
+                "subject": "B. Indo",
+                "grade": "5 SD",
+                "file": "psa1-bindo-7-khairin-1.json",
+                "icon": "📝"
+              }
+            ]
+          }, 
           {
             "type": "folder",
             "title": "Seni Budaya (SBK)",

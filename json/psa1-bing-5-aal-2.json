@@ -1,0 +1,608 @@
+{
+  "subject": "Bahasa Inggris",
+  "grade": "5 SD",
+  "title": "Latihan Soal SAS Ganjil Bahasa Inggris Kelas 5 (Paket 2)",
+  "subtitle": "Paket 50 soal variasi baru mencakup materi Taste, Quantifiers, Prices, Health, dan Clothes.",
+  "questions": [
+    {
+      "no": 1,
+      "text": "A: 'How does the tamarind taste?'\nB: 'It tastes ...'",
+      "options": [
+        "Sweet",
+        "Salty",
+        "Sour",
+        "Bitter"
+      ],
+      "correct": 2,
+      "desc": "Indikator 1: Tamarind (asam jawa) rasanya asam (sour)."
+    },
+    {
+      "no": 2,
+      "text": "Look at the picture of the salt. The taste is...",
+      "options": [
+        "Salty",
+        "Sweet",
+        "Spicy",
+        "Sour"
+      ],
+      "correct": 0,
+      "desc": "Indikator 2: Garam (salt) rasanya asin (salty)."
+    },
+    {
+      "no": 3,
+      "text": "I am a fruit. I have sharp spikes (duri). I have a strong smell. My flesh is yellow and sweet. I am a...",
+      "options": [
+        "Apple",
+        "Durian",
+        "Grape",
+        "Watermelon"
+      ],
+      "correct": 1,
+      "desc": "Indikator 3: Buah berduri dan berbau menyengat adalah Durian."
+    },
+    {
+      "no": 4,
+      "text": "Which pair is correct?",
+      "options": [
+        "Sugar - Salty",
+        "Pare (Bitter Melon) - Bitter",
+        "Cake - Sour",
+        "Lemon - Sweet"
+      ],
+      "correct": 1,
+      "desc": "Indikator 4: Pare rasanya pahit (bitter)."
+    },
+    {
+      "no": 5,
+      "text": "Which statement is TRUE?",
+      "options": [
+        "Chili is sweet",
+        "Candy is spicy",
+        "Cake is sweet",
+        "Coffee is salty"
+      ],
+      "correct": 2,
+      "desc": "Indikator 5: Pernyataan yang benar adalah kue rasanya manis."
+    },
+    {
+      "no": 6,
+      "text": "Arrange the words: sour - is - The - mango.\nThe correct sentence is...",
+      "options": [
+        "The sour is mango",
+        "Is the mango sour",
+        "The mango is sour",
+        "Mango the is sour"
+      ],
+      "correct": 2,
+      "desc": "Indikator 6: Susunan kalimat: Subject + To Be + Adjective."
+    },
+    {
+      "no": 7,
+      "text": "Look at the picture! The girl is drinking medicine. It tastes...",
+      "options": [
+        "Delicious",
+        "Sweet",
+        "Bitter",
+        "Salty"
+      ],
+      "correct": 2,
+      "desc": "Indikator 7: Obat (medicine) umumnya rasanya pahit (bitter)."
+    },
+    {
+      "no": 8,
+      "text": "Read the text: 'Siti does not like chili sauce. She loves candies.' It means Siti dislikes ... food.",
+      "options": [
+        "Sweet",
+        "Spicy",
+        "Salty",
+        "Sour"
+      ],
+      "correct": 1,
+      "desc": "Indikator 8: Tidak suka sambal (chili) berarti tidak suka pedas (spicy)."
+    },
+    {
+      "no": 9,
+      "text": "The Indonesian meaning of 'Sour' is...",
+      "options": [
+        "Manis",
+        "Pahit",
+        "Pedas",
+        "Asam"
+      ],
+      "correct": 3,
+      "desc": "Indikator 9: Sour artinya Asam."
+    },
+    {
+      "no": 10,
+      "text": "Seller: 'Can I help you?'\nBuyer: 'Yes, I need ... of bananas.'",
+      "options": [
+        "A hand",
+        "A spoon",
+        "A bottle",
+        "A glass"
+      ],
+      "correct": 0,
+      "desc": "Indikator 10: Satuan untuk pisang adalah sesisir (a hand)."
+    },
+    {
+      "no": 11,
+      "text": "Look at the picture (Botol air mineral). It is...",
+      "options": [
+        "A plate of water",
+        "A bottle of water",
+        "A bowl of water",
+        "A piece of water"
+      ],
+      "correct": 1,
+      "desc": "Indikator 11: Satuan air dalam botol adalah 'a bottle'."
+    },
+    {
+      "no": 12,
+      "text": "Look at the picture (Kotak Pizza). Is it a plate of rice?",
+      "options": [
+        "Yes, it is",
+        "No, it is not. It is a box of pizza",
+        "Yes, it is pizza",
+        "No, it is a bowl of soup"
+      ],
+      "correct": 1,
+      "desc": "Indikator 12: Respon negatif yang tepat untuk gambar pizza."
+    },
+    {
+      "no": 13,
+      "text": "Which picture matches 'A bar of chocolate'?",
+      "options": [
+        "[attachment_0](attachment)",
+        "[attachment_1](attachment)",
+        "[attachment_2](attachment)",
+        "[attachment_3](attachment)"
+      ],
+      "correct": 1,
+      "desc": "Indikator 13: Menentukan gambar cokelat batangan."
+    },
+    {
+      "no": 14,
+      "text": "The English translation for 'Segelas jus' is...",
+      "options": [
+        "A cup of tea",
+        "A bottle of water",
+        "A glass of juice",
+        "A bowl of soup"
+      ],
+      "correct": 2,
+      "desc": "Indikator 14: Translasi yang tepat."
+    },
+    {
+      "no": 15,
+      "text": "Which pair is correct?",
+      "options": [
+        "Bread - A loaf of",
+        "Coke - A slice of",
+        "Rice - A bottle of",
+        "Noodle - A bar of"
+      ],
+      "correct": 0,
+      "desc": "Indikator 15: Satuan roti tawar adalah 'a loaf' (sebungkus/sepotong besar)."
+    },
+    {
+      "no": 16,
+      "text": "A: 'I am hungry. Can I have ... of noodle?'\nB: 'Here you are.'",
+      "options": [
+        "A glass",
+        "A bowl",
+        "A bottle",
+        "A hand"
+      ],
+      "correct": 1,
+      "desc": "Indikator 16: Satuan mie biasanya mangkuk (bowl)."
+    },
+    {
+      "no": 17,
+      "text": "Look at the picture! Cici is eating ... of ice cream.",
+      "options": [
+        "A cone",
+        "A plate",
+        "A bottle",
+        "A loaf"
+      ],
+      "correct": 0,
+      "desc": "Indikator 17: Es krim biasanya menggunakan satuan 'cone'."
+    },
+    {
+      "no": 18,
+      "text": "Arrange the words: slice - a - of - pizza.\nThe correct phrase is...",
+      "options": [
+        "A pizza of slice",
+        "Of a pizza slice",
+        "A slice of pizza",
+        "Pizza of a slice"
+      ],
+      "correct": 2,
+      "desc": "Indikator 18: Susunan quantity: A + Unit + of + Noun."
+    },
+    {
+      "no": 19,
+      "text": "Look at the money (Gambar uang Rp 10.000). The amount is...",
+      "options": [
+        "One thousand rupiahs",
+        "Ten thousand rupiahs",
+        "One hundred rupiahs",
+        "Ten hundred rupiahs"
+      ],
+      "correct": 1,
+      "desc": "Indikator 19: 10.000 = Ten thousand."
+    },
+    {
+      "no": 20,
+      "text": "Look at the toy car. The price tag says 'Rp 45.000'. The toy costs...",
+      "options": [
+        "Forty five thousand rupiahs",
+        "Four thousand five hundred rupiahs",
+        "Fifty four thousand rupiahs",
+        "Four hundred rupiahs"
+      ],
+      "correct": 0,
+      "desc": "Indikator 20: 45.000 = Forty five thousand."
+    },
+    {
+      "no": 21,
+      "text": "Menu:\n- Satay: Rp 15.000\n- Soto: Rp 12.000\nHow much is the Satay?",
+      "options": [
+        "Twelve thousand rupiahs",
+        "Fifty thousand rupiahs",
+        "Fifteen thousand rupiahs",
+        "Five thousand rupiahs"
+      ],
+      "correct": 2,
+      "desc": "Indikator 21: Harga sate di menu adalah 15.000."
+    },
+    {
+      "no": 22,
+      "text": "Menu:\n- Steak: Rp 50.000\n- Burger: Rp 25.000\n- Orange Juice: Rp 10.000\nWhich item is the cheapest (paling murah)?",
+      "options": [
+        "Steak",
+        "Burger",
+        "Orange Juice",
+        "None"
+      ],
+      "correct": 2,
+      "desc": "Indikator 22: Item termurah adalah Jus Jeruk (10k)."
+    },
+    {
+      "no": 23,
+      "text": "Look at the menu in No. 22. Is the Satay twelve thousand rupiahs?",
+      "options": [
+        "Yes, it is",
+        "No, it is not. It is fifteen thousand",
+        "No, it is ten thousand",
+        "Yes, it is cheap"
+      ],
+      "correct": 1,
+      "desc": "Indikator 23: Konfirmasi harga sate (di soal no 21) adalah 15rb, bukan 12rb."
+    },
+    {
+      "no": 24,
+      "text": "You buy Satay (Rp 15.000) and Orange Juice (Rp 10.000). How much is the total?",
+      "options": [
+        "Twenty thousand rupiahs",
+        "Twenty five thousand rupiahs",
+        "Thirty thousand rupiahs",
+        "Fifteen thousand rupiahs"
+      ],
+      "correct": 1,
+      "desc": "Indikator 24: 15.000 + 10.000 = 25.000."
+    },
+    {
+      "no": 25,
+      "text": "The total price is Rp 80.000. You pay with Rp 100.000. How much is the change?",
+      "options": [
+        "Ten thousand rupiahs",
+        "Twenty thousand rupiahs",
+        "Thirty thousand rupiahs",
+        "Fifty thousand rupiahs"
+      ],
+      "correct": 1,
+      "desc": "Indikator 25: 100.000 - 80.000 = 20.000."
+    },
+    {
+      "no": 26,
+      "text": "Look at the shirt with label 'Rp 65.000'. The sentence is...",
+      "options": [
+        "The shirt is sixty five thousand rupiahs",
+        "The shirt is six thousand five hundred rupiahs",
+        "The shirt is fifty six thousand rupiahs",
+        "The shirt is sixty rupiahs"
+      ],
+      "correct": 0,
+      "desc": "Indikator 26: 65.000 = Sixty five thousand."
+    },
+    {
+      "no": 27,
+      "text": "Look at the picture! The girl has a high temperature and looks hot. She has a...",
+      "options": [
+        "Toothache",
+        "Fever",
+        "Earache",
+        "Broken leg"
+      ],
+      "correct": 1,
+      "desc": "Indikator 27: Suhu tinggi = Demam (Fever)."
+    },
+    {
+      "no": 28,
+      "text": "Look at the picture (Batuk). The correct sentence is...",
+      "options": [
+        "He has a cough",
+        "He has a stomachache",
+        "He has a headache",
+        "He has a sore eye"
+      ],
+      "correct": 0,
+      "desc": "Indikator 28: Batuk = Cough."
+    },
+    {
+      "no": 29,
+      "text": "A: 'I have a headache.'\nB: 'You should ...'",
+      "options": [
+        "Play games",
+        "Watch TV",
+        "Take a rest",
+        "Run fast"
+      ],
+      "correct": 2,
+      "desc": "Indikator 29: Saran untuk sakit kepala adalah istirahat."
+    },
+    {
+      "no": 30,
+      "text": "Playing in the rain for a long time can cause...",
+      "options": [
+        "A cold/flu",
+        "A toothache",
+        "A broken arm",
+        "Stomachache"
+      ],
+      "correct": 0,
+      "desc": "Indikator 30: Main hujan bisa menyebabkan pilek/flu."
+    },
+    {
+      "no": 31,
+      "text": "The cause of 'Toothache' is usually...",
+      "options": [
+        "Eating too many sweets and not brushing teeth",
+        "Eating spicy food",
+        "Drinking too much water",
+        "Sleeping too early"
+      ],
+      "correct": 0,
+      "desc": "Indikator 31: Penyebab sakit gigi."
+    },
+    {
+      "no": 32,
+      "text": "Read the dialog:\nMom: 'Dayu, are you okay?'\nDayu: 'No, Mom. I have a stomachache.'\nWho is sick?",
+      "options": [
+        "Mom",
+        "Dayu",
+        "Dad",
+        "Sister"
+      ],
+      "correct": 1,
+      "desc": "Indikator 32: Tokoh yang sakit adalah Dayu."
+    },
+    {
+      "no": 33,
+      "text": "Why does he have a stomachache?",
+      "options": [
+        "Because he eats healthy food",
+        "Because he eats late or spicy food",
+        "Because he studies hard",
+        "Because he plays football"
+      ],
+      "correct": 1,
+      "desc": "Indikator 33: Penyebab umum sakit perut."
+    },
+    {
+      "no": 34,
+      "text": "Text: 'Budi has a fever. His body is hot.'\nQuestion: What does Budi feel?",
+      "options": [
+        "His body is cold",
+        "His body is hot",
+        "His teeth hurt",
+        "His stomach hurts"
+      ],
+      "correct": 1,
+      "desc": "Indikator 34: Gejala demam adalah badan panas."
+    },
+    {
+      "no": 35,
+      "text": "If you have sore eyes, you should not...",
+      "options": [
+        "Sleep",
+        "Use eye drops",
+        "Watch TV too close",
+        "Eat vegetables"
+      ],
+      "correct": 2,
+      "desc": "Indikator 35: Larangan saat sakit mata."
+    },
+    {
+      "no": 36,
+      "text": "Look at the list:\n1. Dry hands\n2. Wash with soap\n3. Wet hands\nThe correct order of washing hands is...",
+      "options": [
+        "1 - 2 - 3",
+        "3 - 2 - 1",
+        "2 - 3 - 1",
+        "3 - 1 - 2"
+      ],
+      "correct": 1,
+      "desc": "Indikator 36: Urutan cuci tangan (Basahi -> Sabun -> Keringkan)."
+    },
+    {
+      "no": 37,
+      "text": "Arrange the words: wearing - is - Cici - a - skirt.\nThe correct sentence is...",
+      "options": [
+        "Cici is wearing a skirt",
+        "Cici wearing is a skirt",
+        "Is wearing a skirt Cici",
+        "Skirt is wearing a Cici"
+      ],
+      "correct": 0,
+      "desc": "Indikator 37: Menyusun kalimat pakaian."
+    },
+    {
+      "no": 38,
+      "text": "Look at the picture of a boy wearing a school uniform with a tie. Is he wearing a tie?",
+      "options": [
+        "Yes, he is",
+        "No, he is not",
+        "Yes, she is",
+        "No, she is not"
+      ],
+      "correct": 0,
+      "desc": "Indikator 38: Pertanyaan Yes/No tentang aksesoris (dasi)."
+    },
+    {
+      "no": 39,
+      "text": "Look at the picture of a boy. He is playing at the park. He is wearing...",
+      "options": [
+        "Pajamas",
+        "Shorts and a T-shirt",
+        "A suit",
+        "A raincoat"
+      ],
+      "correct": 1,
+      "desc": "Indikator 39: Pakaian santai untuk bermain."
+    },
+    {
+      "no": 40,
+      "text": "Joshua is going to sleep. He wears...",
+      "options": [
+        "A uniform",
+        "A jersey",
+        "Pajamas",
+        "Jeans"
+      ],
+      "correct": 2,
+      "desc": "Indikator 40: Pakaian tidur."
+    },
+    {
+      "no": 41,
+      "text": "We wear a hat on our...",
+      "options": [
+        "Foot",
+        "Hand",
+        "Head",
+        "Body"
+      ],
+      "correct": 2,
+      "desc": "Indikator 41: Topi dipakai di kepala."
+    },
+    {
+      "no": 42,
+      "text": "It is clothes for school. It is a...",
+      "options": [
+        "Pajamas",
+        "Uniform",
+        "Swimsuit",
+        "Jacket"
+      ],
+      "correct": 1,
+      "desc": "Indikator 42: Pakaian sekolah = Seragam."
+    },
+    {
+      "no": 43,
+      "text": "The weather is very cold. You should wear a...",
+      "options": [
+        "T-shirt",
+        "Sweater / Jacket",
+        "Shorts",
+        "Singlet"
+      ],
+      "correct": 1,
+      "desc": "Indikator 43: Pakaian untuk cuaca dingin."
+    },
+    {
+      "no": 44,
+      "text": "Which pair is correct?",
+      "options": [
+        "Sleeping - Uniform",
+        "School - Uniform",
+        "Swimming - Jacket",
+        "Football - Pajamas"
+      ],
+      "correct": 1,
+      "desc": "Indikator 44: Pasangan kegiatan dan pakaian yang benar."
+    },
+    {
+      "no": 45,
+      "text": "In Islam, we must wear clothes that...",
+      "options": [
+        "Are very expensive",
+        "Cover the aurat and are polite",
+        "Are transparent",
+        "Are very tight"
+      ],
+      "correct": 1,
+      "desc": "Indikator 45: Pakaian Islami = Menutup aurat dan sopan."
+    },
+    {
+      "no": 46,
+      "text": "Look at the picture of a lime (jeruk nipis). The sentence is: 'The lime tastes ...'",
+      "options": [
+        "Sweet",
+        "Sour",
+        "Salty",
+        "Spicy"
+      ],
+      "correct": 1,
+      "desc": "Indikator 46 (Adaptasi Esai): Jeruk nipis rasanya asam."
+    },
+    {
+      "no": 47,
+      "text": "I am thirsty after running. I want to...",
+      "options": [
+        "Eat pizza",
+        "Drink water",
+        "Sleep",
+        "Read a book"
+      ],
+      "correct": 1,
+      "desc": "Indikator 47 (Adaptasi Esai): Haus -> Minum."
+    },
+    {
+      "no": 48,
+      "text": "Menu: Bakso (12k) + Ice Tea (4k). The total is...",
+      "options": [
+        "15k",
+        "16k",
+        "20k",
+        "10k"
+      ],
+      "correct": 1,
+      "desc": "Indikator 48 (Adaptasi Esai): 12 + 4 = 16."
+    },
+    {
+      "no": 49,
+      "text": "Why does he have a toothache? Because he...",
+      "options": [
+        "Brushed his teeth",
+        "Ate too many sweets and didn't brush teeth",
+        "Drank milk",
+        "Ate vegetables"
+      ],
+      "correct": 1,
+      "desc": "Indikator 49 (Adaptasi Esai): Alasan sakit gigi."
+    },
+    {
+      "no": 50,
+      "text": "These are clothes for the feet, EXCEPT (Kecuali)...",
+      "options": [
+        "Shoes",
+        "Socks",
+        "Sandals",
+        "Cap"
+      ],
+      "correct": 3,
+      "desc": "Indikator 50 (Adaptasi Esai): Cap (topi) untuk kepala, bukan kaki."
+    }
+  ]
+}

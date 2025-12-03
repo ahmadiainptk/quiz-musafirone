@@ -1,0 +1,608 @@
+{
+  "subject": "Pendidikan Agama Islam",
+  "grade": "5 SD",
+  "title": "Latihan Soal SAS Ganjil PAI Kelas 5 (Full Kisi-Kisi)",
+  "subtitle": "Paket 50 soal lengkap sesuai kisi-kisi 2025/2026: Al-Ma'un, Asmaul Husna, Zakat, dan Sejarah Nabi.",
+  "questions": [
+    {
+      "no": 1,
+      "text": "Surah yang memiliki ciri-ciri terdiri dari 7 ayat, diturunkan di Mekkah, dan membahas tentang ciri-ciri pendusta agama adalah surah...",
+      "options": [
+        "Al-Fil",
+        "Al-Ma'un",
+        "Al-Kautsar",
+        "At-Tin"
+      ],
+      "correct": 1,
+      "desc": "Indikator 1: Menentukan nama surah berdasarkan kriteria (7 ayat, tentang pendusta agama)."
+    },
+    {
+      "no": 2,
+      "text": "Perhatikan terjemahan berikut: 'Tahukah kamu (orang) yang mendustakan agama?'. Terjemahan tersebut merupakan arti dari Surah Al-Ma'un ayat ke-...",
+      "options": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "correct": 0,
+      "desc": "Indikator 2: Menentukan ayat sesuai terjemahan (Ayat 1: Ara-aita alladzi yukazzibu biddin)."
+    },
+    {
+      "no": 3,
+      "text": "Potongan ayat 'Fadzalika alladzi yadu'ul yatim' memiliki arti...",
+      "options": [
+        "Maka itulah orang yang menghardik anak yatim",
+        "Dan tidak menganjurkan memberi makan orang miskin",
+        "Maka celakalah bagi orang-orang yang shalat",
+        "Orang-orang yang berbuat riya"
+      ],
+      "correct": 0,
+      "desc": "Indikator 3: Menerjemahkan potongan ayat."
+    },
+    {
+      "no": 4,
+      "text": "Pasangan lafal ayat dan arti yang benar di bawah ini adalah...",
+      "options": [
+        "Wa la yahuddu 'ala ta'amil miskin = Maka itulah orang yang menghardik anak yatim",
+        "Fa wailul lil mushollin = Maka celakalah bagi orang-orang yang shalat",
+        "Alladzina hum yuraa-un = Dan tidak menganjurkan memberi makan orang miskin",
+        "Wa yamna'unal ma'un = Orang-orang yang lalai dari shalatnya"
+      ],
+      "correct": 1,
+      "desc": "Indikator 4: Menjodohkan potongan ayat dan artinya."
+    },
+    {
+      "no": 5,
+      "text": "Salah satu pokok kandungan Surah Al-Ma'un adalah perintah untuk...",
+      "options": [
+        "Berpuasa di bulan Ramadhan",
+        "Menyayangi dan menyantuni anak yatim",
+        "Berhaji jika mampu",
+        "Berjihad di jalan Allah"
+      ],
+      "correct": 1,
+      "desc": "Indikator 5: Menentukan kandungan surah pendek (Kepedulian sosial)."
+    },
+    {
+      "no": 6,
+      "text": "Menurut Surah Al-Ma'un, orang yang shalatnya celaka adalah orang yang...",
+      "options": [
+        "Shalat tepat waktu",
+        "Lalai dalam shalatnya",
+        "Shalat berjamaah di masjid",
+        "Khusyuk dalam shalat"
+      ],
+      "correct": 1,
+      "desc": "Indikator 6: Salah satu isi kandungan Al-Ma'un (Sahun/Lalai)."
+    },
+    {
+      "no": 7,
+      "text": "Urutan ayat yang benar setelah 'Fa wailul lil mushollin' adalah...",
+      "options": [
+        "Alladzina hum yuraa-un",
+        "Wa yamna'unal ma'un",
+        "Alladzina hum 'an sholatihim sahun",
+        "Fadzalika alladzi yadu'ul yatim"
+      ],
+      "correct": 2,
+      "desc": "Indikator 7: Menentukan urutan nomor ayat."
+    },
+    {
+      "no": 8,
+      "text": "Lengkapi ayat rumpang berikut: 'Wa laa ..... 'ala tho'amil miskin'.",
+      "options": [
+        "yuraa-un",
+        "yahuddu",
+        "sahun",
+        "yadu'u"
+      ],
+      "correct": 1,
+      "desc": "Indikator 8: Melengkapi ayat rumpang (Wa laa yahuddu...)."
+    },
+    {
+      "no": 9,
+      "text": "Bunyi ayat terakhir (ke-7) dari Surah Al-Ma'un adalah...",
+      "options": [
+        "Wa yamna'unal ma'un",
+        "Alladzina hum yuraa-un",
+        "Fa wailul lil mushollin",
+        "Ara-aita alladzi yukazzibu biddin"
+      ],
+      "correct": 0,
+      "desc": "Indikator 9: Menentukan bunyi ayat."
+    },
+    {
+      "no": 10,
+      "text": "Allah SWT mampu menghidupkan kembali tanah yang tandus menjadi subur dengan air hujan. Peristiwa ini menunjukkan bukti bahwa Allah memiliki Asmaul Husna...",
+      "options": [
+        "Al-Mumit",
+        "Al-Muhyi",
+        "Al-Qayyum",
+        "Al-Qawiyy"
+      ],
+      "correct": 1,
+      "desc": "Indikator 10: Ilustrasi Asmaul Husna (Al-Muhyi = Maha Menghidupkan)."
+    },
+    {
+      "no": 11,
+      "text": "Dalil naqli yang menjelaskan bahwa Allah SWT memiliki nama-nama yang indah (Asmaul Husna) terdapat dalam Al-Qur'an surah...",
+      "options": [
+        "Al-A'raf ayat 180",
+        "Al-Ikhlas ayat 1",
+        "Al-Fatihah ayat 2",
+        "An-Nas ayat 3"
+      ],
+      "correct": 0,
+      "desc": "Indikator 11: Menentukan dalil Asmaul Husna."
+    },
+    {
+      "no": 12,
+      "text": "Jika disajikan gambar bayi yang baru lahir dan orang tua yang meninggal dunia, hal tersebut menunjukkan bahwa Allah bersifat...",
+      "options": [
+        "Al-Muhyi dan Al-Mumit",
+        "Al-Qawiyy dan Al-Qayyum",
+        "Al-Ahad dan As-Samad",
+        "Al-Ghaffar dan Al-Afuw"
+      ],
+      "correct": 0,
+      "desc": "Indikator 12: Menentukan Asmaul Husna sesuai gambar (Hidup dan Mati)."
+    },
+    {
+      "no": 13,
+      "text": "Cara meneladani Asmaul Husna 'Al-Qayyum' (Maha Mandiri/Berdiri Sendiri) sebagai seorang pelajar adalah...",
+      "options": [
+        "Selalu meminta bantuan teman saat ulangan",
+        "Merapikan tempat tidur dan menyiapkan buku pelajaran sendiri",
+        "Bergantung kepada orang tua dalam segala hal",
+        "Menyontek pekerjaan rumah teman"
+      ],
+      "correct": 1,
+      "desc": "Indikator 13: Cara meneladani Asmaul Husna (Kemandirian)."
+    },
+    {
+      "no": 14,
+      "text": "Mengakui bahwa segala kekuatan yang kita miliki berasal dari Allah dan tidak menyombongkan diri adalah bentuk pengamalan Asmaul Husna...",
+      "options": [
+        "Al-Mumit",
+        "Al-Ba'its",
+        "Al-Qawiyy",
+        "Al-Muhyi"
+      ],
+      "correct": 2,
+      "desc": "Indikator 14: Perbuatan mengakui Al-Qawiyy (Maha Kuat)."
+    },
+    {
+      "no": 15,
+      "text": "Hikmah meyakini Asmaul Husna 'Al-Ba'its' (Maha Membangkitkan) adalah...",
+      "options": [
+        "Takut menghadapi kematian",
+        "Semangat bangkit dari kegagalan dan rajin beramal untuk bekal akhirat",
+        "Merasa diri paling kuat",
+        "Pasrah tanpa usaha"
+      ],
+      "correct": 1,
+      "desc": "Indikator 15: Hikmah Al-Ba'its (Bangkit dari kubur/keterpurukan)."
+    },
+    {
+      "no": 16,
+      "text": "Pasangan Asmaul Husna dan artinya yang benar adalah...",
+      "options": [
+        "Al-Mumit = Maha Menghidupkan",
+        "Al-Qayyum = Maha Mematikan",
+        "Al-Qawiyy = Maha Kuat",
+        "Al-Ba'its = Maha Mandiri"
+      ],
+      "correct": 2,
+      "desc": "Indikator 16: Menjodohkan Asmaul Husna dan artinya."
+    },
+    {
+      "no": 17,
+      "text": "Istilah 'Ihya' dan 'Imatah' dalam bahasa Arab berkaitan erat dengan sifat Allah...",
+      "options": [
+        "Menghidupkan dan Mematikan",
+        "Memberi Rezeki",
+        "Maha Mendengar dan Melihat",
+        "Maha Pengampun"
+      ],
+      "correct": 0,
+      "desc": "Indikator 17: Istilah bahasa Arab terkait nama-nama yang dimaksud (Al-Muhyi/Al-Mumit)."
+    },
+    {
+      "no": 18,
+      "text": "Arti dari Asmaul Husna 'Al-Mumit' adalah...",
+      "options": [
+        "Yang Maha Mematikan",
+        "Yang Maha Menghidupkan",
+        "Yang Maha Kokoh",
+        "Yang Maha Berdiri Sendiri"
+      ],
+      "correct": 0,
+      "desc": "Indikator 18: Arti Al-Mumit."
+    },
+    {
+      "no": 19,
+      "text": "Sikap yang tepat ketika melihat teman yang sedang tertimpa musibah agar sesuai dengan pengamalan sifat Allah adalah...",
+      "options": [
+        "Menertawakannya",
+        "Membantu dan menghiburnya agar bangkit kembali (meneladani Al-Ba'its/Al-Muhyi)",
+        "Membiarkannya saja",
+        "Menjauhinya"
+      ],
+      "correct": 1,
+      "desc": "Indikator 19: Sikap tepat dalam situasi tertentu (Empati/Membantu)."
+    },
+    {
+      "no": 20,
+      "text": "Ahmad selalu berusaha tegar dan kuat dalam menghadapi cobaan, serta menggunakan kekuatannya untuk menolong yang lemah. Ahmad meneladani sifat...",
+      "options": [
+        "Al-Mumit",
+        "Al-Qawiyy",
+        "Al-Ahad",
+        "Al-Wahhab"
+      ],
+      "correct": 1,
+      "desc": "Indikator 20: Mempraktekkan sifat terpuji (Al-Qawiyy)."
+    },
+    {
+      "no": 21,
+      "text": "Indonesia memiliki keragaman budaya seperti pakaian adat, tarian, dan rumah adat. Contoh budaya khas dari daerah Jawa Barat adalah...",
+      "options": [
+        "Rumah Gadang",
+        "Wayang Golek dan Angklung",
+        "Tari Kecak",
+        "Reog Ponorogo"
+      ],
+      "correct": 1,
+      "desc": "Indikator 21: Menentukan budaya khas Indonesia."
+    },
+    {
+      "no": 22,
+      "text": "Semboyan 'Bhinneka Tunggal Ika' yang berasal dari kitab Sutasoma memiliki arti...",
+      "options": [
+        "Bersatu kita teguh bercerai kita runtuh",
+        "Berbeda-beda tetapi tetap satu jua",
+        "Maju tak gentar membela yang benar",
+        "Satu nusa satu bangsa"
+      ],
+      "correct": 1,
+      "desc": "Indikator 22: Arti semboyan dalam bahasa Jawa Kuno."
+    },
+    {
+      "no": 23,
+      "text": "Berikut ini adalah bentuk keberagaman yang ada di Indonesia, KECUALI...",
+      "options": [
+        "Keberagaman Agama",
+        "Keberagaman Suku Bangsa",
+        "Keberagaman Bahasa Daerah",
+        "Keberagaman Negara"
+      ],
+      "correct": 3,
+      "desc": "Indikator 23: Bentuk keberagaman (Kita satu negara, bukan beragam negara)."
+    },
+    {
+      "no": 24,
+      "text": "Dalam Q.S. Al-Hujurat ayat 13, Allah menciptakan manusia berbangsa-bangsa dan bersuku-suku dengan tujuan untuk...",
+      "options": [
+        "Saling bermusuhan",
+        "Saling mengenal (Lita'arafu)",
+        "Saling bersaing",
+        "Saling mengejek"
+      ],
+      "correct": 1,
+      "desc": "Indikator 24: Tujuan keberagaman (Saling mengenal)."
+    },
+    {
+      "no": 25,
+      "text": "Sebagai khalifah di bumi, tugas utama manusia adalah...",
+      "options": [
+        "Merusak alam semesta",
+        "Menebang pohon sembarangan",
+        "Menjaga dan melestarikan bumi",
+        "Mengeksploitasi alam habis-habisan"
+      ],
+      "correct": 2,
+      "desc": "Indikator 25: Tugas manusia sebagai khalifah (pemimpin/pengelola)."
+    },
+    {
+      "no": 26,
+      "text": "Di Indonesia terdapat 6 agama yang diakui secara resmi. Agama tersebut adalah Islam, Kristen Protestan, Katolik, Hindu, Buddha, dan...",
+      "options": [
+        "Khonghucu",
+        "Shinto",
+        "Yahudi",
+        "Taoisme"
+      ],
+      "correct": 0,
+      "desc": "Indikator 26: Macam-macam agama di Indonesia."
+    },
+    {
+      "no": 27,
+      "text": "Perhatikan ilustrasi: Di kampung Ahmad diadakan kerja bakti membersihkan selokan. Warga dari berbagai suku dan agama ikut serta. Sikap terpuji yang ditunjukkan adalah...",
+      "options": [
+        "Toleransi dan Gotong Royong",
+        "Egois dan Individualis",
+        "Riya dan Sombong",
+        "Malas dan Acuh"
+      ],
+      "correct": 0,
+      "desc": "Indikator 27: Sikap terpuji dalam ilustrasi keberagaman."
+    },
+    {
+      "no": 28,
+      "text": "Pemberian sebagian harta yang WAJIB dikeluarkan oleh umat Islam apabila telah mencapai syarat tertentu disebut...",
+      "options": [
+        "Infaq",
+        "Sedekah",
+        "Hadiah",
+        "Zakat"
+      ],
+      "correct": 3,
+      "desc": "Indikator 28: Menentukan istilah (Zakat hukumnya wajib)."
+    },
+    {
+      "no": 29,
+      "text": "Batas minimal jumlah harta yang wajib dikeluarkan zakatnya disebut...",
+      "options": [
+        "Haul",
+        "Nisab",
+        "Kadar",
+        "Muzakki"
+      ],
+      "correct": 1,
+      "desc": "Indikator 29: Ketentuan zakat (Istilah Nisab)."
+    },
+    {
+      "no": 30,
+      "text": "Besarnya Zakat Fitrah yang harus dikeluarkan untuk setiap jiwa adalah...",
+      "options": [
+        "2,5 Kg makanan pokok",
+        "5 Kg makanan pokok",
+        "10% dari penghasilan",
+        "2,5% dari harta simpanan"
+      ],
+      "correct": 0,
+      "desc": "Indikator 30: Banyaknya zakat (Fitrah = 2,5 kg atau 3,5 liter)."
+    },
+    {
+      "no": 31,
+      "text": "Pak Budi memiliki tabungan emas seberat 100 gram dan sudah tersimpan selama satu tahun. Karena sudah mencapai nisab (85 gram), Pak Budi wajib mengeluarkan zakat...",
+      "options": [
+        "Zakat Fitrah",
+        "Zakat Mal (Harta)",
+        "Zakat Pertanian",
+        "Zakat Peternakan"
+      ],
+      "correct": 1,
+      "desc": "Indikator 31: Ilustrasi zakat harta (Mal)."
+    },
+    {
+      "no": 32,
+      "text": "Orang yang berhak menerima zakat disebut dengan istilah...",
+      "options": [
+        "Muzakki",
+        "Mustahik",
+        "Mufassir",
+        "Muhajirin"
+      ],
+      "correct": 1,
+      "desc": "Indikator 32: Istilah penerima zakat (Mustahik)."
+    },
+    {
+      "no": 33,
+      "text": "Golongan penerima zakat yang memiliki banyak hutang untuk kebaikan disebut...",
+      "options": [
+        "Fakir",
+        "Miskin",
+        "Gharim",
+        "Ibnu Sabil"
+      ],
+      "correct": 2,
+      "desc": "Indikator 33: Menentukan golongan 8 asnaf (Gharim)."
+    },
+    {
+      "no": 34,
+      "text": "Pernyataan yang benar mengenai Zakat Fitrah adalah...",
+      "options": [
+        "Dikeluarkan saat panen tiba",
+        "Bertujuan menyucikan jiwa dan dibayarkan pada bulan Ramadhan",
+        "Wajib bagi orang yang kaya raya saja",
+        "Besarnya 2,5% dari harta"
+      ],
+      "correct": 1,
+      "desc": "Indikator 34: Ketentuan zakat fitrah."
+    },
+    {
+      "no": 35,
+      "text": "Salah satu syarat harta yang wajib dizakati adalah 'Haul', yang artinya...",
+      "options": [
+        "Milik sendiri sepenuhnya",
+        "Harta tersebut halal",
+        "Sudah dimiliki selama satu tahun",
+        "Mencapai batas minimal"
+      ],
+      "correct": 2,
+      "desc": "Indikator 35: Ketentuan haul (Satu tahun)."
+    },
+    {
+      "no": 36,
+      "text": "Hukum mengeluarkan zakat bagi umat Islam yang mampu adalah...",
+      "options": [
+        "Sunnah Muakkad",
+        "Fardhu Ain (Wajib)",
+        "Fardhu Kifayah",
+        "Mubah"
+      ],
+      "correct": 1,
+      "desc": "Indikator 36: Hukum zakat (Wajib)."
+    },
+    {
+      "no": 37,
+      "text": "Peristiwa Fathu Makkah (Pembebasan Kota Mekah) terjadi pada bulan Ramadhan tahun...",
+      "options": [
+        "2 Hijriyah",
+        "6 Hijriyah",
+        "8 Hijriyah",
+        "10 Hijriyah"
+      ],
+      "correct": 2,
+      "desc": "Indikator 37: Waktu peristiwa (8 H)."
+    },
+    {
+      "no": 38,
+      "text": "Sebab utama terjadinya Fathu Makkah adalah...",
+      "options": [
+        "Kaum Quraisy melanggar Perjanjian Hudaibiyah",
+        "Kaum Muslimin ingin balas dendam",
+        "Nabi Muhammad ingin menjadi raja",
+        "Kaum Quraisy menantang perang terbuka"
+      ],
+      "correct": 0,
+      "desc": "Indikator 38: Sebab peristiwa (Pelanggaran perjanjian)."
+    },
+    {
+      "no": 39,
+      "text": "Perjanjian Hudaibiyah batal karena kaum Kafir Quraisy membantu Bani Bakr menyerang sekutu kaum Muslimin, yaitu...",
+      "options": [
+        "Bani Quraizhah",
+        "Bani Khuza'ah",
+        "Bani Nadhir",
+        "Bani Qainuqa"
+      ],
+      "correct": 1,
+      "desc": "Indikator 39: Sebab batalnya perjanjian."
+    },
+    {
+      "no": 40,
+      "text": "Perjanjian damai antara kaum Muslimin Madinah dan kaum Kafir Quraisy Mekah yang disepakati pada tahun 6 H disebut...",
+      "options": [
+        "Perjanjian Aqabah",
+        "Perjanjian Madinah",
+        "Perjanjian Hudaibiyah",
+        "Perjanjian Daumatul Jandal"
+      ],
+      "correct": 2,
+      "desc": "Indikator 40: Nama perjanjian (Hudaibiyah)."
+    },
+    {
+      "no": 41,
+      "text": "Makna dari 'Fathu Makkah' adalah...",
+      "options": [
+        "Kehancuran Kota Mekah",
+        "Perang di Kota Mekah",
+        "Terbukanya / Pembebasan Kota Mekah",
+        "Perjalanan ke Mekah"
+      ],
+      "correct": 2,
+      "desc": "Indikator 41: Makna istilah (Fathu = Pembukaan/Kemenangan)."
+    },
+    {
+      "no": 42,
+      "text": "Dalil Al-Qur'an yang berkaitan dengan peristiwa Fathu Makkah (Kemenangan) adalah...",
+      "options": [
+        "Q.S. Al-Fil",
+        "Q.S. An-Nasr",
+        "Q.S. Al-Lahab",
+        "Q.S. Al-Kafirun"
+      ],
+      "correct": 1,
+      "desc": "Indikator 42: Dalil kemenangan (Idza jaa-a nasrullah...)."
+    },
+    {
+      "no": 43,
+      "text": "Dalam pidato saat Haji Wada' (Haji Perpisahan), Rasulullah SAW berpesan agar umat Islam berpegang teguh kepada...",
+      "options": [
+        "Harta dan Jabatan",
+        "Nenek moyang dan Adat",
+        "Al-Qur'an dan Sunnah (Hadis)",
+        "Teman dan Sahabat"
+      ],
+      "correct": 2,
+      "desc": "Indikator 43: Pesan Rasulullah (Al-Qur'an dan Sunnah)."
+    },
+    {
+      "no": 44,
+      "text": "Tokoh Quraisy yang masuk Islam saat peristiwa Fathu Makkah dan rumahnya dijadikan tempat aman oleh Rasulullah adalah...",
+      "options": [
+        "Abu Lahab",
+        "Abu Jahal",
+        "Abu Sufyan",
+        "Khalid bin Walid"
+      ],
+      "correct": 2,
+      "desc": "Indikator 44: Tokoh penaklukan (Abu Sufyan)."
+    },
+    {
+      "no": 45,
+      "text": "Salah satu pesan penting Rasulullah dalam khutbah Haji Wada' adalah larangan untuk...",
+      "options": [
+        "Shalat lima waktu",
+        "Melakukan riba dan menumpahkan darah",
+        "Berbuat baik kepada istri",
+        "Mengerjakan haji"
+      ],
+      "correct": 1,
+      "desc": "Indikator 45: Pesan haji wada (Larangan riba)."
+    },
+    {
+      "no": 46,
+      "text": "Hukum bacaan pada lafal yang bergaris bawah di Surah Al-Ma'un (misal: 'Ara-aita') adalah...",
+      "options": [
+        "Idgham Bighunnah",
+        "Izhar Syafawi",
+        "Mad Layyin",
+        "Iqlab"
+      ],
+      "correct": 2,
+      "desc": "Indikator 46: Hukum bacaan (Ara-aita = Mad Layyin karena ya sukun didahului fathah)."
+    },
+    {
+      "no": 47,
+      "text": "Istilah yang berarti 'Maha Menghidupkan' dalam Asmaul Husna adalah...",
+      "options": [
+        "Al-Muhyi",
+        "Al-Mumit",
+        "Al-Awwal",
+        "Al-Akhir"
+      ],
+      "correct": 0,
+      "desc": "Indikator 47: Istilah Asmaul Husna."
+    },
+    {
+      "no": 48,
+      "text": "Semboyan 'Bhinneka Tunggal Ika' mengajarkan kita untuk...",
+      "options": [
+        "Membeda-bedakan teman",
+        "Hanya berteman dengan satu suku",
+        "Tetap bersatu meskipun berbeda-beda",
+        "Menganggap budaya sendiri paling baik"
+      ],
+      "correct": 2,
+      "desc": "Indikator 48: Keberagaman Indonesia."
+    },
+    {
+      "no": 49,
+      "text": "Salah satu syarat wajib zakat fitrah adalah...",
+      "options": [
+        "Memiliki kebun yang luas",
+        "Hidup pada saat bulan Ramadhan hingga terbit matahari hari raya",
+        "Sudah menunaikan ibadah haji",
+        "Berakal cerdas"
+      ],
+      "correct": 1,
+      "desc": "Indikator 49: Ketentuan zakat fitrah (Menemui Ramadhan dan Syawal)."
+    },
+    {
+      "no": 50,
+      "text": "Sebab utama Nabi Muhammad SAW dan kaum Muslimin melaksanakan Haji Wada' adalah...",
+      "options": [
+        "Karena diperintahkan oleh Raja Mekah",
+        "Sebagai haji perpisahan sebelum Rasulullah wafat",
+        "Untuk berperang melawan kafir Quraisy",
+        "Untuk berdagang di Mekah"
+      ],
+      "correct": 1,
+      "desc": "Indikator 50: Sebab peristiwa Haji Wada'."
+    }
+  ]
+}

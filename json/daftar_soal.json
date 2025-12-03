@@ -81,8 +81,8 @@
                 "icon": "📝"
               }
             ]
-          }, 
-{
+          },
+          {
             "type": "folder",
             "title": "PAI",
             "icon": "🌱",
@@ -95,8 +95,8 @@
                 "grade": "5 SD",
                 "file": "psa1-pai-5-aal-1.json",
                 "icon": "🪐"
-              }, 
-{
+              },
+              {
                 "type": "file",
                 "id": "psa1-pai-5-aal-2",
                 "title": "Latihan PSA PAI Semester Ganjil # 2",
@@ -106,8 +106,8 @@
                 "icon": "🪐"
               }
             ]
-          }, 
-{
+          },
+          {
             "type": "folder",
             "title": "B. Inggris",
             "icon": "🌱",
@@ -120,8 +120,8 @@
                 "grade": "5 SD",
                 "file": "psa1-bing-5-aal-1.json",
                 "icon": "🪐"
-              }, 
-{
+              },
+              {
                 "type": "file",
                 "id": "psa1-bing-5-aal-2",
                 "title": "Latihan PSA B. Inggris Semester Ganjil # 2",
@@ -169,7 +169,7 @@
         "title": "Kelas 7",
         "icon": "7️⃣",
         "children": [
-{
+          {
             "type": "folder",
             "title": "Bahasa Indonesia",
             "icon": "📖",
@@ -182,8 +182,8 @@
                 "grade": "7 SMP",
                 "file": "psa1-bindo-7-khairin-1.json",
                 "icon": "📝"
-              }, 
-{
+              },
+              {
                 "type": "file",
                 "id": "psa1-bindo-7-khairin-2",
                 "title": "Latihan PSA B. Indo Semester Ganjil",
@@ -193,7 +193,7 @@
                 "icon": "📝"
               }
             ]
-          }, 
+          },
           {
             "type": "folder",
             "title": "Seni Budaya (SBK)",
@@ -210,12 +210,12 @@
               }
             ]
           },
-{
-"type": "folder",
+          {
+            "type": "folder",
             "title": "PAI",
-            "icon": "💻",
+            "icon": "☪️",
             "children": [
-{
+              {
                 "type": "file",
                 "id": "pai-7-psas-2025-1",
                 "title": "Latihan PSA PAI Ganjil #1",
@@ -224,8 +224,8 @@
                 "file": "psa1-pai-7-khairin-1.json",
                 "icon": "💻"
               }
-]
-}, 
+            ]
+          },
           {
             "type": "folder",
             "title": "Informatika",

@@ -129,8 +129,17 @@
                 "id": "psa1-bindo-7-khairin-1",
                 "title": "Latihan PSA B. Indo Semester Ganjil",
                 "subject": "B. Indo",
-                "grade": "5 SD",
+                "grade": "7 SMP",
                 "file": "psa1-bindo-7-khairin-1.json",
+                "icon": "📝"
+              }, 
+{
+                "type": "file",
+                "id": "psa1-bindo-7-khairin-2",
+                "title": "Latihan PSA B. Indo Semester Ganjil",
+                "subject": "B. Indo",
+                "grade": "7 SMP",
+                "file": "psa1-bindo-7-khairin-2.json",
                 "icon": "📝"
               }
             ]

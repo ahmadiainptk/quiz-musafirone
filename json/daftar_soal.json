@@ -81,6 +81,56 @@
                 "icon": "📝"
               }
             ]
+          }, 
+{
+            "type": "folder",
+            "title": "PAI",
+            "icon": "🌱",
+            "children": [
+              {
+                "type": "file",
+                "id": "psa1-pai-5-aal-1",
+                "title": "Latihan PSA PAI Semester Ganjil # 1",
+                "subject": "PAI",
+                "grade": "5 SD",
+                "file": "psa1-pai-5-aal-1.json",
+                "icon": "🪐"
+              }, 
+{
+                "type": "file",
+                "id": "psa1-pai-5-aal-2",
+                "title": "Latihan PSA PAI Semester Ganjil # 2",
+                "subject": "PAI",
+                "grade": "5 SD",
+                "file": "psa1-pai-5-aal-2.json",
+                "icon": "🪐"
+              }
+            ]
+          }, 
+{
+            "type": "folder",
+            "title": "B. Inggris",
+            "icon": "🌱",
+            "children": [
+              {
+                "type": "file",
+                "id": "psa1-bing-5-aal-1",
+                "title": "Latihan PSA B. Inggris Semester Ganjil # 1",
+                "subject": "B. Inggris",
+                "grade": "5 SD",
+                "file": "psa1-bing-5-aal-1.json",
+                "icon": "🪐"
+              }, 
+{
+                "type": "file",
+                "id": "psa1-bing-5-aal-2",
+                "title": "Latihan PSA B. Inggris Semester Ganjil # 2",
+                "subject": "B. Inggris",
+                "grade": "5 SD",
+                "file": "psa1-bing-5-aal-2.json",
+                "icon": "🪐"
+              }
+            ]
           }
         ]
       },

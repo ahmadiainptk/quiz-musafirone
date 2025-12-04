@@ -1,0 +1,608 @@
+{
+  "subject": "Bahasa Inggris",
+  "grade": "7 SMP",
+  "title": "Latihan Soal SAS Ganjil Bahasa Inggris Kelas 7 (Paket B)",
+  "subtitle": "Paket B: Variasi soal Greetings, Descriptive Text (Numismatics, Character, Food), & House Chores.",
+  "questions": [
+    {
+      "no": 1,
+      "text": "Teacher: 'How are you today, students?'\nStudents: '..., thank you.'",
+      "options": [
+        "I am sorry",
+        "We are fine",
+        "Good bye",
+        "Nice to meet you"
+      ],
+      "correct": 1,
+      "desc": "Indikator 1: Menentukan respon greeting menanyakan kabar."
+    },
+    {
+      "no": 2,
+      "text": "It is 09.00 PM. You want to go to sleep. You say to your parents...",
+      "options": [
+        "Good evening, Mom and Dad",
+        "Good morning, Mom and Dad",
+        "Good night, Mom and Dad",
+        "Goodbye, Mom and Dad"
+      ],
+      "correct": 2,
+      "desc": "Indikator 2: Salam perpisahan saat hendak tidur."
+    },
+    {
+      "no": 3,
+      "text": "A formal greeting suitable for a flag ceremony speech is...",
+      "options": [
+        "Hi guys",
+        "Good morning, ladies and gentlemen",
+        "What's up",
+        "Hello everyone"
+      ],
+      "correct": 1,
+      "desc": "Indikator 3: Greeting formal di upacara."
+    },
+    {
+      "no": 4,
+      "text": "Situation: You made a mistake and stepped on your friend's bag. You say...",
+      "options": [
+        "Thank you",
+        "You are welcome",
+        "I am sorry",
+        "See you"
+      ],
+      "correct": 2,
+      "desc": "Indikator 4: Ungkapan permintaan maaf."
+    },
+    {
+      "no": 5,
+      "text": "You want to ask a question to your teacher during class. You say...",
+      "options": [
+        "Excuse me, Sir. May I ask a question?",
+        "I want to ask!",
+        "Sir, listen to me!",
+        "Quiet please"
+      ],
+      "correct": 0,
+      "desc": "Indikator 5: Ungkapan permisi (Excuse me) untuk menyela/bertanya."
+    },
+    {
+      "no": 6,
+      "text": "Which sentence is a formal self-introduction?",
+      "options": [
+        "Hi, I'm Rina",
+        "I would like to introduce myself. My name is Rina",
+        "This is Rina speaking",
+        "It's me, Rina"
+      ],
+      "correct": 1,
+      "desc": "Indikator 6: Kalimat perkenalan formal."
+    },
+    {
+      "no": 7,
+      "text": "The polite way to ask someone to close the window is...",
+      "options": [
+        "Close it!",
+        "Window now!",
+        "Could you please close the window?",
+        "Don't open the window"
+      ],
+      "correct": 2,
+      "desc": "Indikator 7: Ungkapan perintah sopan (Polite Request)."
+    },
+    {
+      "no": 8,
+      "text": "When you introduce your friend 'Ahmad' to your father, you say...",
+      "options": [
+        "Dad, this is Ahmad",
+        "Ahmad, this is Dad",
+        "Who is this?",
+        "I don't know him"
+      ],
+      "correct": 0,
+      "desc": "Indikator 8: Etika memperkenalkan teman (yang lebih muda) kepada orang tua (yang lebih tua)."
+    },
+    {
+      "no": 9,
+      "text": "The phrase 'Goodbye' expresses...",
+      "options": [
+        "Greeting",
+        "Apologizing",
+        "Leave-taking (Parting)",
+        "Thanking"
+      ],
+      "correct": 2,
+      "desc": "Indikator 9: Fungsi ungkapan Goodbye."
+    },
+    {
+      "no": 10,
+      "text": "If someone says 'See you next week', you reply...",
+      "options": [
+        "I am fine",
+        "See you",
+        "Thank you",
+        "I am sorry"
+      ],
+      "correct": 1,
+      "desc": "Indikator 10: Respon perpisahan."
+    },
+    {
+      "no": 11,
+      "text": "Teacher: 'Here is your book.'\nStudent: 'Thank you for your help, Sir.'\nThe underlined phrase expresses...",
+      "options": [
+        "Gratitude (Thanking)",
+        "Apology",
+        "Greeting",
+        "Introduction"
+      ],
+      "correct": 0,
+      "desc": "Indikator 11: Ungkapan berterima kasih."
+    },
+    {
+      "no": 12,
+      "text": "A: 'Hello, I'm Galang.'\nB: 'Hi Galang, I'm Andre. ...'\nA: 'Nice to meet you too.'",
+      "options": [
+        "See you later",
+        "Nice to meet you",
+        "I am sorry",
+        "Good night"
+      ],
+      "correct": 1,
+      "desc": "Indikator 12: Ungkapan 'Nice to meet you'."
+    },
+    {
+      "no": 13,
+      "text": "In a formal situation, students usually stand up when the teacher enters. This shows...",
+      "options": [
+        "Laziness",
+        "Respect",
+        "Anger",
+        "Hunger"
+      ],
+      "correct": 1,
+      "desc": "Indikator 13: Status/sikap hormat."
+    },
+    {
+      "no": 14,
+      "text": "We should say 'Thank you' when...",
+      "options": [
+        "We make a mistake",
+        "We receive something or get help",
+        "We leave a place",
+        "We meet someone"
+      ],
+      "correct": 1,
+      "desc": "Indikator 14: Alasan berterima kasih."
+    },
+    {
+      "no": 15,
+      "text": "Why is it important to say 'Sorry' when we are late?",
+      "options": [
+        "To show we are polite and admit mistakes",
+        "To make the teacher happy",
+        "To get a prize",
+        "To go home early"
+      ],
+      "correct": 0,
+      "desc": "Indikator 15: Pentingnya meminta maaf."
+    },
+    {
+      "no": 16,
+      "text": "The polite way to close a conversation with a teacher is...",
+      "options": [
+        "Bye bye",
+        "I have to go now, Sir. Goodbye",
+        "See ya",
+        "I'm done"
+      ],
+      "correct": 1,
+      "desc": "Indikator 16: Penutup sopan."
+    },
+    {
+      "no": 17,
+      "text": "Text: 'My name is Fatih. My hobby is Numismatics. It means I collect coins.'\nFatih's hobby is related to...",
+      "options": [
+        "Stamps",
+        "Old money/Coins",
+        "Books",
+        "Toys"
+      ],
+      "correct": 1,
+      "desc": "Indikator 17: Hobi Numismatics (Koleksi koin)."
+    },
+    {
+      "no": 18,
+      "text": "Text: 'Fatih organizes his coin album every Saturday night.'\nWhen does he organize his collection?",
+      "options": [
+        "Every Sunday morning",
+        "Every Saturday night",
+        "Every day",
+        "Once a year"
+      ],
+      "correct": 1,
+      "desc": "Indikator 18: Waktu kegiatan hobi."
+    },
+    {
+      "no": 19,
+      "text": "Based on the text, Fatih collects coins because...",
+      "options": [
+        "He wants to be rich",
+        "He learns history from the pictures on the coins",
+        "He likes the sound of coins",
+        "He wants to buy toys"
+      ],
+      "correct": 1,
+      "desc": "Indikator 19: Alasan mengumpulkan koin (Belajar sejarah)."
+    },
+    {
+      "no": 20,
+      "text": "Text: 'Fatih never gives up finding rare coins.' This shows he is a ... person.",
+      "options": [
+        "Lazy",
+        "Persistent/Patient",
+        "Careless",
+        "Angry"
+      ],
+      "correct": 1,
+      "desc": "Indikator 20: Sifat pantang menyerah (Persistent/Patient)."
+    },
+    {
+      "no": 21,
+      "text": "Text: 'He usually cleans the rusty coins in the living room.'\nWhere does he clean them?",
+      "options": [
+        "Bedroom",
+        "Kitchen",
+        "Living room",
+        "Bathroom"
+      ],
+      "correct": 2,
+      "desc": "Indikator 21: Lokasi membersihkan koin."
+    },
+    {
+      "no": 22,
+      "text": "Text: 'Aisyah is a polite girl. She always smiles and greets teachers.'\nAisyah's attitude is...",
+      "options": [
+        "Rude",
+        "Polite and Friendly",
+        "Lazy",
+        "Arrogant"
+      ],
+      "correct": 1,
+      "desc": "Indikator 22: Karakter tokoh dalam teks."
+    },
+    {
+      "no": 23,
+      "text": "Text: 'Aisyah likes wearing a white hijab because it symbolizes purity and cleanliness.'\nWhy does she choose white?",
+      "options": [
+        "It is cheap",
+        "It is colorful",
+        "It symbolizes purity",
+        "It is dark"
+      ],
+      "correct": 2,
+      "desc": "Indikator 23: Alasan penggunaan warna hijab."
+    },
+    {
+      "no": 24,
+      "text": "Text: 'Aisyah never forgets to pray five times a day.'\nThis sentence shows values of...",
+      "options": [
+        "Sport",
+        "Islamic/Religious values",
+        "Friendship",
+        "Hobby"
+      ],
+      "correct": 1,
+      "desc": "Indikator 24: Nilai Islami."
+    },
+    {
+      "no": 25,
+      "text": "Aisyah joins the 'English Club' to improve her speaking skills.\nWhich club does she join?",
+      "options": [
+        "Science Club",
+        "English Club",
+        "Math Club",
+        "Art Club"
+      ],
+      "correct": 1,
+      "desc": "Indikator 25: Partisipasi klub."
+    },
+    {
+      "no": 26,
+      "text": "Text: 'Aisyah makes a to-do list every morning to manage her time.'\nHow does she manage her time?",
+      "options": [
+        "By sleeping late",
+        "By playing games",
+        "By making a to-do list",
+        "By watching TV"
+      ],
+      "correct": 2,
+      "desc": "Indikator 26: Cara manajemen waktu."
+    },
+    {
+      "no": 27,
+      "text": "Aisyah is 'generous'. She likes to share her food. 'Generous' means...",
+      "options": [
+        "Pelit",
+        "Dermawan/Pemurah",
+        "Sombong",
+        "Malas"
+      ],
+      "correct": 1,
+      "desc": "Indikator 27: Makna karakter baik."
+    },
+    {
+      "no": 28,
+      "text": "Teachers trust Aisyah because she is 'responsible'. The reason is...",
+      "options": [
+        "Her beauty",
+        "Her responsibility",
+        "Her money",
+        "Her house"
+      ],
+      "correct": 1,
+      "desc": "Indikator 28: Alasan kepercayaan (Tanggung jawab)."
+    },
+    {
+      "no": 29,
+      "text": "Based on the text, the conclusion about Aisyah is...",
+      "options": [
+        "She is a lazy student",
+        "She is a good role model",
+        "She is a naughty girl",
+        "She is not smart"
+      ],
+      "correct": 1,
+      "desc": "Indikator 29: Simpulan karakter."
+    },
+    {
+      "no": 30,
+      "text": "What positive trait can we learn from Aisyah?",
+      "options": [
+        "Being late",
+        "Being polite and religious",
+        "Being messy",
+        "Being rude"
+      ],
+      "correct": 1,
+      "desc": "Indikator 30: Meneladani karakter."
+    },
+    {
+      "no": 31,
+      "text": "Text: 'I really like Chicken Satay. The meat is tender and the sauce is savory.'\nThe texture of the meat is...",
+      "options": [
+        "Hard",
+        "Tough",
+        "Tender (Soft)",
+        "Crispy"
+      ],
+      "correct": 2,
+      "desc": "Indikator 31: Tekstur makanan (Tender = Empuk)."
+    },
+    {
+      "no": 32,
+      "text": "Who likes the Chicken Satay? 'My father likes it very much.'",
+      "options": [
+        "The writer",
+        "My father",
+        "My mother",
+        "My sister"
+      ],
+      "correct": 1,
+      "desc": "Indikator 32: Siapa yang suka."
+    },
+    {
+      "no": 33,
+      "text": "When do they usually eat Satay? 'At dinner time.'",
+      "options": [
+        "Breakfast",
+        "Lunch",
+        "Dinner",
+        "School time"
+      ],
+      "correct": 2,
+      "desc": "Indikator 33: Waktu makan."
+    },
+    {
+      "no": 34,
+      "text": "Text: 'How to make Omelet. First, crack the eggs into a bowl.'\nThe first basic step is...",
+      "options": [
+        "Fry the eggs",
+        "Crack the eggs",
+        "Eat the eggs",
+        "Boil the eggs"
+      ],
+      "correct": 1,
+      "desc": "Indikator 34: Langkah dasar resep."
+    },
+    {
+      "no": 35,
+      "text": "Text: 'Do not use peanuts. My brother is allergic.'\nWho is allergic to peanuts?",
+      "options": [
+        "The writer",
+        "My brother",
+        "My father",
+        "Everyone"
+      ],
+      "correct": 1,
+      "desc": "Indikator 35: Info alergi."
+    },
+    {
+      "no": 36,
+      "text": "Question: 'How much sugar do we add?' asks about...",
+      "options": [
+        "Ingredient quantity",
+        "Cooking method",
+        "Tool name",
+        "Food price"
+      ],
+      "correct": 0,
+      "desc": "Indikator 36: Pertanyaan tentang bahan (jumlah)."
+    },
+    {
+      "no": 37,
+      "text": "Text: 'The chili powder is in the red bottle.'\nWhere is the chili powder?",
+      "options": [
+        "In the red bottle",
+        "In the blue box",
+        "On the plate",
+        "Under the chair"
+      ],
+      "correct": 0,
+      "desc": "Indikator 37: Lokasi bahan."
+    },
+    {
+      "no": 38,
+      "text": "Why must we read the recipe carefully?",
+      "options": [
+        "To make the food taste good and safe",
+        "To waste ingredients",
+        "To break the tools",
+        "To play in the kitchen"
+      ],
+      "correct": 0,
+      "desc": "Indikator 38: Alasan memahami resep."
+    },
+    {
+      "no": 39,
+      "text": "Which of the following is a cooking ingredient?",
+      "options": [
+        "Frying pan",
+        "Salt",
+        "Stove",
+        "Knife"
+      ],
+      "correct": 1,
+      "desc": "Indikator 39: Bahan makanan."
+    },
+    {
+      "no": 40,
+      "text": "We use a 'Ladle' (Sendok sayur) to...",
+      "options": [
+        "Fry fish",
+        "Cut meat",
+        "Serve soup",
+        "Boil water"
+      ],
+      "correct": 2,
+      "desc": "Indikator 40: Fungsi alat masak."
+    },
+    {
+      "no": 41,
+      "text": "A room where we keep our clothes and sleep is...",
+      "options": [
+        "Bedroom",
+        "Bathroom",
+        "Kitchen",
+        "Dining room"
+      ],
+      "correct": 0,
+      "desc": "Indikator 41: Fungsi ruangan."
+    },
+    {
+      "no": 42,
+      "text": "A tool in the kitchen used to boil water is...",
+      "options": [
+        "Refrigerator",
+        "Kettle/Stove",
+        "Plate",
+        "Fork"
+      ],
+      "correct": 1,
+      "desc": "Indikator 42: Alat dapur."
+    },
+    {
+      "no": 43,
+      "text": "Activity: 'Parking the motorcycle'. Room: ...",
+      "options": [
+        "Living room",
+        "Garage",
+        "Kitchen",
+        "Bedroom"
+      ],
+      "correct": 1,
+      "desc": "Indikator 43: Aktivitas ruangan."
+    },
+    {
+      "no": 44,
+      "text": "A tool to clean the dust on the table is...",
+      "options": [
+        "Feather duster (Kemoceng)",
+        "Broom",
+        "Mop",
+        "Rake"
+      ],
+      "correct": 0,
+      "desc": "Indikator 44: Alat kebersihan."
+    },
+    {
+      "no": 45,
+      "text": "Activity: 'Brushing teeth'. Room: ...",
+      "options": [
+        "Bathroom",
+        "Kitchen",
+        "Garage",
+        "Attic"
+      ],
+      "correct": 0,
+      "desc": "Indikator 45: Aktivitas ruangan."
+    },
+    {
+      "no": 46,
+      "text": "Text: 'I need a bucket and a sponge to wash the bike.'\nWhat tools are needed?",
+      "options": [
+        "Broom and dustpan",
+        "Bucket and sponge",
+        "Pen and pencil",
+        "Knife and fork"
+      ],
+      "correct": 1,
+      "desc": "Indikator 46 (Adaptasi Esai): Perlengkapan kerja."
+    },
+    {
+      "no": 47,
+      "text": "Who usually waters the flowers? 'My sister does it.'",
+      "options": [
+        "My father",
+        "My mother",
+        "My sister",
+        "My brother"
+      ],
+      "correct": 2,
+      "desc": "Indikator 47 (Adaptasi Esai): Pelaku kegiatan."
+    },
+    {
+      "no": 48,
+      "text": "Text: 'We clean the house on Sunday morning.'\nWhen is the activity done?",
+      "options": [
+        "Monday night",
+        "Sunday morning",
+        "Friday afternoon",
+        "Every day"
+      ],
+      "correct": 1,
+      "desc": "Indikator 48 (Adaptasi Esai): Waktu kegiatan."
+    },
+    {
+      "no": 49,
+      "text": "Where do we usually wash the dirty dishes?",
+      "options": [
+        "In the bedroom",
+        "In the kitchen sink",
+        "In the garage",
+        "In the living room"
+      ],
+      "correct": 1,
+      "desc": "Indikator 49 (Adaptasi Esai): Lokasi kegiatan."
+    },
+    {
+      "no": 50,
+      "text": "How do we clean the carpet? 'By using a vacuum cleaner.'\nThe tool used is...",
+      "options": [
+        "Broom",
+        "Vacuum cleaner",
+        "Mop",
+        "Brush"
+      ],
+      "correct": 1,
+      "desc": "Indikator 50 (Adaptasi Esai): Cara/Alat kegiatan."
+    }
+  ]
+}

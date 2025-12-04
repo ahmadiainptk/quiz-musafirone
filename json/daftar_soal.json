@@ -251,6 +251,74 @@
               }
             ]
           },
+{
+            "type": "folder",
+            "title": "B. Inggris",
+            "icon": "💻",
+            "children": [
+              {
+                "type": "file",
+                "id": "bing-7-psas-2025-1",
+                "title": "Latihan PSAS B. Inggris Ganjil #1",
+                "subject": "B. Inggris",
+                "grade": "7 SMP",
+                "file": "psa1-bing-7-khairin-1.json",
+                "icon": "💻"
+              },
+              {
+                "type": "file",
+                "id": "bing-7-psas-2025-2",
+                "title": "Latihan PSAS B. Inggris Ganjil #2",
+                "subject": "B. Inggris",
+                "grade": "7 SMP",
+                "file": "psa1-bing-7-khairin-2.json",
+                "icon": "💻"
+              }, 
+{
+                "type": "file",
+                "id": "bing-7-psas-2025-3",
+                "title": "Latihan PSAS B. Inggris Ganjil #3",
+                "subject": "B. Inggris",
+                "grade": "7 SMP",
+                "file": "psa1-bing-7-khairin-3.json",
+                "icon": "💻"
+              }
+            ]
+          },
+{
+            "type": "folder",
+            "title": "B. Arab",
+            "icon": "💻",
+            "children": [
+              {
+                "type": "file",
+                "id": "barab-7-psas-2025-1",
+                "title": "Latihan PSAS B. Arab Ganjil #1",
+                "subject": "B. Arab",
+                "grade": "7 SMP",
+                "file": "psa1-barab-7-khairin-1.json",
+                "icon": "💻"
+              },
+              {
+                "type": "file",
+                "id": "barab-7-psas-2025-2",
+                "title": "Latihan PSAS B. Arab Ganjil #2",
+                "subject": "B. Arab",
+                "grade": "7 SMP",
+                "file": "psa1-barab-7-khairin-2.json",
+                "icon": "💻"
+              }, 
+{
+                "type": "file",
+                "id": "barab-7-psas-2025-3",
+                "title": "Latihan PSAS B. Arab Ganjil #3",
+                "subject": "B. Arab",
+                "grade": "7 SMP",
+                "file": "psa1-barab-7-khairin-3.json",
+                "icon": "💻"
+              }
+            ]
+          },
           {
             "type": "folder",
             "title": "IPAS",

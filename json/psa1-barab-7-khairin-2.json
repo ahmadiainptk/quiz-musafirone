@@ -1,0 +1,608 @@
+{
+  "subject": "Bahasa Arab",
+  "grade": "7 SMP",
+  "title": "Latihan Soal SAS Ganjil Bahasa Arab Kelas 7 (Paket B)",
+  "subtitle": "Paket 50 soal variasi baru mencakup At-Tahiyyah, Al-Usrah, As-Sakan, dan Qawaid Nahwu Sharaf.",
+  "questions": [
+    {
+      "no": 1,
+      "text": "Baca teks perkenalan berikut!\n(اِسْمِيْ سَلْمَى. أَنَا طَالِبَةٌ فِيْ الْمَدْرَسَةِ الْمُتَوَسِّطَةِ الْإِسْلَامِيَّة. وَ هَذِهِ صَدِيْقَتِيْ، اِسْمُهَا عَائِشَة)\nSiapakah nama teman Salma?",
+      "options": [
+        "سَلْمَى",
+        "عَائِشَة",
+        "فَاطِمَة",
+        "خَدِيْجَة"
+      ],
+      "correct": 1,
+      "desc": "Indikator 1: Nama teman disebutkan dalam teks 'ismuha 'Aisyah'."
+    },
+    {
+      "no": 2,
+      "text": "Berdasarkan teks nomor 1, kata 'طَالِبَةٌ' artinya...",
+      "options": [
+        "Siswa (laki-laki)",
+        "Siswi (perempuan)",
+        "Guru (perempuan)",
+        "Pegawai (perempuan)"
+      ],
+      "correct": 1,
+      "desc": "Indikator 1: Thalibah = Siswi."
+    },
+    {
+      "no": 3,
+      "text": "Kata 'صَدِيْقَتِيْ' dalam teks tersebut memiliki arti...",
+      "options": [
+        "Saudariku",
+        "Guruku",
+        "Ibuku",
+        "Temanku (perempuan)"
+      ],
+      "correct": 3,
+      "desc": "Indikator 1: Shadiqati = Temanku (pr)."
+    },
+    {
+      "no": 4,
+      "text": "Kalimat tanya yang sesuai untuk jawaban 'أَنَا مِنْ سُوْرَابَايَا' adalah...",
+      "options": [
+        "مَا اِسْمُكَ؟",
+        "مَنْ أَنْتَ؟",
+        "مِنْ أَيْنَ أَنْتَ؟",
+        "هَلْ أَنْتَ طَالِبٌ؟"
+      ],
+      "correct": 2,
+      "desc": "Indikator 1: Pertanyaan asal daerah adalah 'Min aina anta?'."
+    },
+    {
+      "no": 5,
+      "text": "Lengkapi kalimat berikut: '... طَالِبَةٌ نَشِيْطَةٌ'.",
+      "options": [
+        "هُوَ",
+        "أَنْتَ",
+        "هَذَا",
+        "هِيَ"
+      ],
+      "correct": 3,
+      "desc": "Indikator 1: Kata sifat 'Thalibah' (perempuan) membutuhkan subjek perempuan 'Hiya' (Dia pr)."
+    },
+    {
+      "no": 6,
+      "text": "Jika guru mengucapkan 'صَبَاحُ الْخَيْر' (Selamat Pagi), maka murid menjawab...",
+      "options": [
+        "صَبَاحُ النُّوْر",
+        "مَسَاءُ النُّوْر",
+        "أَهْلًا بِكَ",
+        "وَعَلَيْكُمُ السَّلَام"
+      ],
+      "correct": 0,
+      "desc": "Indikator 2: Jawaban Shabahul Khair adalah Shabahun Nur."
+    },
+    {
+      "no": 7,
+      "text": "Ucapan 'مَسَاءُ الْخَيْر' artinya adalah...",
+      "options": [
+        "Selamat Pagi",
+        "Selamat Siang",
+        "Selamat Sore/Malam",
+        "Selamat Tidur"
+      ],
+      "correct": 2,
+      "desc": "Indikator 2: Masa'ul khair = Selamat sore."
+    },
+    {
+      "no": 8,
+      "text": "Jawaban dari ucapan perpisahan 'إِلَى اللِّقَاءِ' (Sampai jumpa) adalah...",
+      "options": [
+        "أَهْلًا وَ سَهْلًا",
+        "مَعَ السَّلَامَة",
+        "الْحَمْدُ لِلّٰهِ",
+        "عَفْوًا"
+      ],
+      "correct": 1,
+      "desc": "Indikator 2: Ilal liqa' dijawab Ma'as salamah."
+    },
+    {
+      "no": 9,
+      "text": "Jika seseorang mengucapkan 'شُكْرًا' (Terima kasih), kita menjawab...",
+      "options": [
+        "عَفْوًا",
+        "نَعَمْ",
+        "لَا",
+        "أَهْلًا"
+      ],
+      "correct": 0,
+      "desc": "Indikator 2: Syukran dijawab 'Afwan (Sama-sama)."
+    },
+    {
+      "no": 10,
+      "text": "Arti kata 'هَذَا' dalam kalimat 'هَذَا أَخِيْ' adalah...",
+      "options": [
+        "Ini (untuk laki-laki)",
+        "Ini (untuk perempuan)",
+        "Itu (untuk laki-laki)",
+        "Itu (untuk perempuan)"
+      ],
+      "correct": 0,
+      "desc": "Indikator 3: Hadza = Ini (lk)."
+    },
+    {
+      "no": 11,
+      "text": "Kata yang bergaris bawah pada kalimat 'مَنْ <u>أَنْتِ</u> يَا فَاطِمَة؟' artinya...",
+      "options": [
+        "Saya",
+        "Kamu (laki-laki)",
+        "Kamu (perempuan)",
+        "Dia (perempuan)"
+      ],
+      "correct": 2,
+      "desc": "Indikator 4: Anti = Kamu (pr)."
+    },
+    {
+      "no": 12,
+      "text": "Paman Rasulullah yang namanya diabadikan dalam Al-Qur'an sebagai orang yang celaka adalah...",
+      "options": [
+        "أَبُو طَالِب",
+        "أَبُو لَهَب",
+        "حَمْزَة",
+        "عَبَّاس"
+      ],
+      "correct": 1,
+      "desc": "Indikator 5: Paman Nabi yang menentang Islam adalah Abu Lahab."
+    },
+    {
+      "no": 13,
+      "text": "Istri pertama Rasulullah SAW bernama...",
+      "options": [
+        "عَائِشَة",
+        "خَدِيْجَة",
+        "حَفْصَة",
+        "زَيْنَب"
+      ],
+      "correct": 1,
+      "desc": "Indikator 5: Istri pertama Nabi adalah Khadijah."
+    },
+    {
+      "no": 14,
+      "text": "Kata 'أُخْتٌ' dalam anggota keluarga artinya...",
+      "options": [
+        "Ibu",
+        "Nenek",
+        "Saudari (Perempuan)",
+        "Bibi"
+      ],
+      "correct": 2,
+      "desc": "Indikator 5: Ukhtun = Saudari."
+    },
+    {
+      "no": 15,
+      "text": "Bahasa Arab dari 'Kakek' adalah...",
+      "options": [
+        "أَبٌ",
+        "عَمٌّ",
+        "جَدٌّ",
+        "أَخٌ"
+      ],
+      "correct": 2,
+      "desc": "Indikator 5: Jaddun = Kakek."
+    },
+    {
+      "no": 16,
+      "text": "Ayah dari ayah kita (Kakek) dalam bahasa Arab disebut...",
+      "options": [
+        "وَالِدُ الْأَبِ",
+        "أَخُو الْأَبِ",
+        "اِبْنُ الْأَبِ",
+        "زَوْجُ الْأُمِّ"
+      ],
+      "correct": 0,
+      "desc": "Indikator 5: Walidul Abi = Ayahnya ayah (Kakek)."
+    },
+    {
+      "no": 17,
+      "text": "Perhatikan kalimat: (هَذَا عَمَّار. هُوَ صَدِيْقِيْ). Kata 'هُوَ' merujuk kepada...",
+      "options": [
+        "Saya",
+        "Ammar",
+        "Teman perempuan",
+        "Guru"
+      ],
+      "correct": 1,
+      "desc": "Indikator 6: Hua (Dia lk) merujuk ke Ammar."
+    },
+    {
+      "no": 18,
+      "text": "Kata 'اِبْنَةٌ' atau 'بِنْتٌ' artinya...",
+      "options": [
+        "Anak laki-laki",
+        "Anak perempuan",
+        "Ibu",
+        "Nenek"
+      ],
+      "correct": 1,
+      "desc": "Indikator 6: Ibnatun/Bintun = Anak perempuan."
+    },
+    {
+      "no": 19,
+      "text": "Saudara laki-laki dari ayah (Paman) disebut...",
+      "options": [
+        "خَالٌ",
+        "عَمٌّ",
+        "جَدٌّ",
+        "حَفِيْدٌ"
+      ],
+      "correct": 1,
+      "desc": "Indikator 6: 'Ammun = Paman (dari ayah). Khalun = Paman (dari ibu)."
+    },
+    {
+      "no": 20,
+      "text": "Untuk menanyakan 'Siapa dia (perempuan)?', kalimat yang benar adalah...",
+      "options": [
+        "مَنْ هَذَا؟",
+        "مَنْ هُوَ؟",
+        "مَنْ هِيَ؟",
+        "مَنْ أَنْتَ؟"
+      ],
+      "correct": 2,
+      "desc": "Indikator 6: Man hiya? = Siapa dia (pr)?"
+    },
+    {
+      "no": 21,
+      "text": "Susunan kalimat yang benar adalah: ( طَبِيْبَةٌ - أُمِّيْ - هَذِهِ ).",
+      "options": [
+        "أُمِّيْ هَذِهِ طَبِيْبَةٌ",
+        "هَذِهِ أُمِّيْ طَبِيْبَةٌ",
+        "هَذِهِ طَبِيْبَةٌ أُمِّيْ",
+        "طَبِيْبَةٌ هَذِهِ أُمِّيْ"
+      ],
+      "correct": 1,
+      "desc": "Indikator 6: Hazihi Ummi thalibah (Ini ibuku, dia seorang dokter)."
+    },
+    {
+      "no": 22,
+      "text": "Kata 'عُنْوَانٌ' yang sering ada dalam kartu identitas artinya...",
+      "options": [
+        "Nama",
+        "Profesi",
+        "Alamat",
+        "Sekolah"
+      ],
+      "correct": 2,
+      "desc": "Indikator 8: 'Unwan = Alamat."
+    },
+    {
+      "no": 23,
+      "text": "(بَيْتِيْ بَعِيْدٌ عَنِ الْمَدْرَسَة). Kata 'بَعِيْدٌ' artinya...",
+      "options": [
+        "Dekat",
+        "Jauh",
+        "Bagus",
+        "Luas"
+      ],
+      "correct": 1,
+      "desc": "Indikator 8: Ba'idun = Jauh."
+    },
+    {
+      "no": 24,
+      "text": "Angka '٩' dalam bahasa Arab dibaca...",
+      "options": [
+        "سِتَّة",
+        "سَبْعَة",
+        "ثَمَانِيَة",
+        "تِسْعَة"
+      ],
+      "correct": 3,
+      "desc": "Indikator 8: Tis'ah = 9."
+    },
+    {
+      "no": 25,
+      "text": "Bahasa Arab dari 'Jalan' (nama jalan) adalah...",
+      "options": [
+        "بَيْت",
+        "رَقْم",
+        "شَارِع",
+        "مَدِيْنَة"
+      ],
+      "correct": 2,
+      "desc": "Indikator 8: Syari' = Jalan."
+    },
+    {
+      "no": 26,
+      "text": "Orang yang melakukan perjalanan jauh disebut...",
+      "options": [
+        "مُسَافِر",
+        "مُدَرِّس",
+        "طَبِيْب",
+        "تَاجِر"
+      ],
+      "correct": 0,
+      "desc": "Indikator 9: Musafir = Orang yang bepergian."
+    },
+    {
+      "no": 27,
+      "text": "Kata 'صَالَةُ الِانْتِظَار' di bandara artinya...",
+      "options": [
+        "Ruang makan",
+        "Ruang tidur",
+        "Ruang tunggu",
+        "Kamar mandi"
+      ],
+      "correct": 2,
+      "desc": "Indikator 9: Shalatul intizhar = Ruang tunggu."
+    },
+    {
+      "no": 28,
+      "text": "Untuk masuk ke pesawat, kita harus menunjukkan 'تَذْكِرَة'. Artinya...",
+      "options": [
+        "KTP",
+        "Uang",
+        "Tiket",
+        "Koper"
+      ],
+      "correct": 2,
+      "desc": "Indikator 10: Tadzkirah = Tiket."
+    },
+    {
+      "no": 29,
+      "text": "Bahasa Arab dari 'Paspor' adalah...",
+      "options": [
+        "جَوَازُ السَّفَر",
+        "تَذْكِرَة",
+        "بِطَاقَة",
+        "صُوْرَة"
+      ],
+      "correct": 0,
+      "desc": "Indikator 10: Jawazus safar = Paspor."
+    },
+    {
+      "no": 30,
+      "text": "Tempat pesawat lepas landas dan mendarat disebut...",
+      "options": [
+        "الْمَحَطَّة",
+        "الْمَطَار",
+        "الْمِيْنَاء",
+        "السُّوْق"
+      ],
+      "correct": 1,
+      "desc": "Indikator 11: Al-Mathar = Bandara."
+    },
+    {
+      "no": 31,
+      "text": "Kata 'مُوَظَّفُ الْجَوَازَات' artinya...",
+      "options": [
+        "Petugas imigrasi/paspor",
+        "Pilot",
+        "Pramugari",
+        "Sopir taksi"
+      ],
+      "correct": 0,
+      "desc": "Indikator 12: Muwazhzhaf al-jawazat = Petugas paspor."
+    },
+    {
+      "no": 32,
+      "text": "Kata 'بَيْتٌ' (Rumah) sinonimnya adalah...",
+      "options": [
+        "مَنْزِلٌ",
+        "مَسْجِدٌ",
+        "مَدْرَسَةٌ",
+        "مَلْعَبٌ"
+      ],
+      "correct": 0,
+      "desc": "Indikator 13: Baitun sinonim dengan Manzilun."
+    },
+    {
+      "no": 33,
+      "text": "(أَسْكُنُ فِيْ الدَّوْرِ الثَّانِي). Kata 'الدَّوْر' artinya...",
+      "options": [
+        "Kamar",
+        "Lantai/Tingkat",
+        "Atap",
+        "Pintu"
+      ],
+      "correct": 1,
+      "desc": "Indikator 13: Ad-daur = Lantai."
+    },
+    {
+      "no": 34,
+      "text": "Bahasa Arab dari 'Nomor HP' adalah...",
+      "options": [
+        "رَقْمُ الْبَيْت",
+        "رَقْمُ الْجَوَّال / الْهَاتِف",
+        "رَقْمُ الْغُرْفَة",
+        "رَقْمُ الْفَصْل"
+      ],
+      "correct": 1,
+      "desc": "Indikator 13: Raqmul Jawwal/Hatif = Nomor HP."
+    },
+    {
+      "no": 35,
+      "text": "Angka '٥' dalam bahasa Arab dibaca...",
+      "options": [
+        "أَرْبَعَة",
+        "خَمْسَة",
+        "سِتَّة",
+        "سَبْعَة"
+      ],
+      "correct": 1,
+      "desc": "Indikator 13: Khamsah = 5."
+    },
+    {
+      "no": 36,
+      "text": "Lawan kata dari 'جَدِيْدٌ' (Baru) adalah...",
+      "options": [
+        "قَدِيْمٌ",
+        "جَمِيْلٌ",
+        "نَظِيْفٌ",
+        "وَاسِعٌ"
+      ],
+      "correct": 0,
+      "desc": "Indikator 13: Qadimun = Lama/Usang."
+    },
+    {
+      "no": 37,
+      "text": "(غُرْفَةُ النَّوْم) adalah ruangan untuk...",
+      "options": [
+        "Makan",
+        "Tidur",
+        "Belajar",
+        "Mandi"
+      ],
+      "correct": 1,
+      "desc": "Indikator 13: Ghurfatun Naum = Kamar Tidur."
+    },
+    {
+      "no": 38,
+      "text": "Kata 'أُثَاثٌ' dalam rumah artinya...",
+      "options": [
+        "Perabotan/Furniture",
+        "Makanan",
+        "Pakaian",
+        "Keluarga"
+      ],
+      "correct": 0,
+      "desc": "Indikator 14: Atsats = Perabotan."
+    },
+    {
+      "no": 39,
+      "text": "Bahasa Arab dari 'Dapur' adalah...",
+      "options": [
+        "حَمَّام",
+        "مَطْبَخ",
+        "مَكْتَب",
+        "فَصْل"
+      ],
+      "correct": 1,
+      "desc": "Indikator 14: Matbakh = Dapur."
+    },
+    {
+      "no": 40,
+      "text": "Tempat untuk mandi disebut...",
+      "options": [
+        "غُرْفَةُ النَّوْم",
+        "الْمَطْبَخ",
+        "الْحَمَّام",
+        "الْحَدِيْقَة"
+      ],
+      "correct": 2,
+      "desc": "Indikator 14: Al-Hammam = Kamar Mandi."
+    },
+    {
+      "no": 41,
+      "text": "Manakah yang termasuk 'Jumlah Mufidah' (Kalimat Sempurna)?",
+      "options": [
+        "فِي الْبَيْتِ (Di rumah)",
+        "أَحْمَدُ يَقْرَأُ الْقُرْآنَ (Ahmad membaca Quran)",
+        "كِتَابُ الْفِقْهِ (Buku Fiqih)",
+        "عَلَى الْمَكْتَبِ (Di atas meja)"
+      ],
+      "correct": 1,
+      "desc": "Indikator 7 (Adaptasi Menjodohkan): Kalimat sempurna memiliki subjek dan predikat yang jelas."
+    },
+    {
+      "no": 42,
+      "text": "Susunan kalimat yang benar: ( جَمِيْلَةٌ - تِلْكَ - حَدِيْقَةٌ ).",
+      "options": [
+        "تِلْكَ حَدِيْقَةٌ جَمِيْلَةٌ",
+        "حَدِيْقَةٌ تِلْكَ جَمِيْلَةٌ",
+        "جَمِيْلَةٌ حَدِيْقَةٌ تِلْكَ",
+        "تِلْكَ جَمِيْلَةٌ حَدِيْقَةٌ"
+      ],
+      "correct": 0,
+      "desc": "Indikator 7: Isim Isyarah + Mushar Ilaih + Sifat (Itu kebun yang indah)."
+    },
+    {
+      "no": 43,
+      "text": "Lengkapi: '... يَلْعَبُ كُرَةَ الْقَدَم'.",
+      "options": [
+        "فَاطِمَة",
+        "أَحْمَد",
+        "هِيَ",
+        "أَنْتِ"
+      ],
+      "correct": 1,
+      "desc": "Indikator 7: 'Yal'abu' (dia lk bermain) butuh subjek laki-laki (Ahmad)."
+    },
+    {
+      "no": 44,
+      "text": "Kalimat 'الْبَيْتُ وَاسِعٌ' (Rumah itu luas). Kata 'وَاسِعٌ' berkedudukan sebagai...",
+      "options": [
+        "Mubtada' (Subjek)",
+        "Khabar (Predikat)",
+        "Fi'il (Kata Kerja)",
+        "Huruf"
+      ],
+      "correct": 1,
+      "desc": "Indikator 7: Kata sifat yang menjelaskan Mubtada' adalah Khabar."
+    },
+    {
+      "no": 45,
+      "text": "Terjemahan 'Saya mencintai bahasaku' adalah...",
+      "options": [
+        "أُحِبُّ لُغَتِيْ",
+        "أُحِبُّ بَيْتِيْ",
+        "أُحِبُّ فَصْلِيْ",
+        "أُحِبُّ مَدْرَسَتِيْ"
+      ],
+      "correct": 0,
+      "desc": "Indikator 7: Uhibbu Lughati."
+    },
+    {
+      "no": 46,
+      "text": "Jenis kata kerja yang menunjukkan masa sekarang atau akan datang disebut...",
+      "options": [
+        "Fi'il Madhi",
+        "Fi'il Mudhari'",
+        "Fi'il Amr",
+        "Isim"
+      ],
+      "correct": 1,
+      "desc": "Indikator 15 (Adaptasi Essay): Definisi Fi'il Mudhari'."
+    },
+    {
+      "no": 47,
+      "text": "Kata 'ذَهَبَ' (telah pergi) termasuk jenis...",
+      "options": [
+        "Fi'il Madhi",
+        "Fi'il Mudhari'",
+        "Fi'il Amr",
+        "Huruf"
+      ],
+      "correct": 0,
+      "desc": "Indikator 15 (Adaptasi Essay): Dzahaba adalah bentuk lampau (Madhi)."
+    },
+    {
+      "no": 48,
+      "text": "Bentuk perintah (Fi'il Amr) dari kata 'كَتَبَ' (Menulis) adalah...",
+      "options": [
+        "يَكْتُبُ",
+        "كِتَابَة",
+        "اُكْتُبْ",
+        "كَاتِب"
+      ],
+      "correct": 2,
+      "desc": "Indikator 15 (Adaptasi Essay): Uktub = Tulislah!"
+    },
+    {
+      "no": 49,
+      "text": "Fi'il Mudhari' dari kata 'قَرَأَ' (Membaca) adalah...",
+      "options": [
+        "يَقْرَأُ",
+        "اِقْرَأْ",
+        "قَارِئ",
+        "قِرَاءَة"
+      ],
+      "correct": 0,
+      "desc": "Indikator 15 (Adaptasi Essay): Yaqra'u = Sedang membaca."
+    },
+    {
+      "no": 50,
+      "text": "Tanda Fi'il Amr (Perintah) biasanya diakhiri dengan harakat...",
+      "options": [
+        "Fathah",
+        "Kasrah",
+        "Sukun",
+        "Dhammah"
+      ],
+      "correct": 2,
+      "desc": "Indikator 15 (Adaptasi Essay): Fi'il Amr shahih akhir lazimnya sukun (contoh: Uktub, IjlIs)."
+    }
+  ]
+}

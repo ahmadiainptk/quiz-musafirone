@@ -1,0 +1,488 @@
+{
+  "subject": "Matematika",
+  "grade": "8 SMP",
+  "title": "Latihan Soal SAS Ganjil Matematika Kelas 8",
+  "subtitle": "Paket 40 soal lengkap mencakup Bilangan Berpangkat, Pythagoras, PLSV, dan PtSLV sesuai kisi-kisi 2025.",
+  "questions": [
+    {
+      "no": 1,
+      "text": "Hasil dari operasi bilangan berpangkat \\( 2^3 \\times 2^4 \\) adalah...",
+      "options": [
+        "\\( 2^7 \\)",
+        "\\( 2^{12} \\)",
+        "\\( 4^7 \\)",
+        "\\( 4^{12} \\)"
+      ],
+      "correct": 0,
+      "desc": "Indikator 1: Sifat perkalian bilangan berpangkat (pangkat dijumlahkan). 3+4=7."
+    },
+    {
+      "no": 2,
+      "text": "Bentuk baku (notasi ilmiah) dari bilangan 0,0000056 adalah...",
+      "options": [
+        "\\( 5,6 \\times 10^{-5} \\)",
+        "\\( 5,6 \\times 10^{-6} \\)",
+        "\\( 56 \\times 10^{-7} \\)",
+        "\\( 0,56 \\times 10^{-5} \\)"
+      ],
+      "correct": 1,
+      "desc": "Indikator 4: Mengubah desimal ke notasi ilmiah. Geser koma ke kanan 6 kali."
+    },
+    {
+      "no": 3,
+      "text": "Hasil dari \\( \\sqrt{12} + \\sqrt{27} \\) adalah...",
+      "options": [
+        "\\( 5\\sqrt{3} \\)",
+        "\\( 2\\sqrt{3} \\)",
+        "\\( 4\\sqrt{3} \\)",
+        "\\( \\sqrt{39} \\)"
+      ],
+      "correct": 0,
+      "desc": "Indikator 3: Operasi bentuk akar. \\( 2\\sqrt{3} + 3\\sqrt{3} = 5\\sqrt{3} \\)."
+    },
+    {
+      "no": 4,
+      "text": "Hasil perkalian \\( \\sqrt{8} \\times \\sqrt{6} \\) adalah...",
+      "options": [
+        "\\( 4\\sqrt{3} \\)",
+        "\\( 3\\sqrt{2} \\)",
+        "\\( 2\\sqrt{6} \\)",
+        "\\( 4\\sqrt{2} \\)"
+      ],
+      "correct": 0,
+      "desc": "Indikator 3: \\( \\sqrt{48} = \\sqrt{16 \\times 3} = 4\\sqrt{3} \\)."
+    },
+    {
+      "no": 5,
+      "text": "Arti dari \\( 5^4 \\) adalah...",
+      "options": [
+        "\\( 5 \\times 4 \\)",
+        "\\( 4 \\times 4 \\times 4 \\times 4 \\times 4 \\)",
+        "\\( 5 + 5 + 5 + 5 \\)",
+        "\\( 5 \\times 5 \\times 5 \\times 5 \\)"
+      ],
+      "correct": 3,
+      "desc": "Indikator 2: Definisi perpangkatan (perkalian berulang)."
+    },
+    {
+      "no": 6,
+      "text": "Hasil dari \\( (-3)^3 \\) adalah...",
+      "options": [
+        "9",
+        "-9",
+        "27",
+        "-27"
+      ],
+      "correct": 3,
+      "desc": "Indikator 2: Bilangan negatif pangkat ganjil hasilnya negatif."
+    },
+    {
+      "no": 7,
+      "text": "Hasil dari \\( (3^2)^3 \\) adalah...",
+      "options": [
+        "\\( 3^5 \\)",
+        "\\( 3^6 \\)",
+        "\\( 3^8 \\)",
+        "\\( 9^3 \\)"
+      ],
+      "correct": 1,
+      "desc": "Indikator 1: Sifat pemangkatan bilangan berpangkat (pangkat dikalikan)."
+    },
+    {
+      "no": 8,
+      "text": "Hasil pembagian \\( \\frac{\\sqrt{18}}{\\sqrt{2}} \\) adalah...",
+      "options": [
+        "3",
+        "9",
+        "\\( \\sqrt{9} \\)",
+        "\\( 3\\sqrt{2} \\)"
+      ],
+      "correct": 0,
+      "desc": "Indikator 3: \\( \\sqrt{18/2} = \\sqrt{9} = 3 \\)."
+    },
+    {
+      "no": 9,
+      "text": "Perhatikan segitiga siku-siku ABC siku-siku di B. Sisi yang disebut hipotenusa adalah...",
+      "options": [
+        "Sisi AB",
+        "Sisi BC",
+        "Sisi AC",
+        "Semua sisi sama"
+      ],
+      "correct": 2,
+      "desc": "Indikator 5: Hipotenusa adalah sisi di depan sudut siku-siku (AC)."
+    },
+    {
+      "no": 10,
+      "text": "Rumus Teorema Pythagoras yang berlaku untuk segitiga siku-siku dengan sisi miring \\( c \\) dan sisi siku-siku \\( a \\) dan \\( b \\) adalah...",
+      "options": [
+        "\\( a^2 + c^2 = b^2 \\)",
+        "\\( b^2 + c^2 = a^2 \\)",
+        "\\( c^2 - a^2 = b^2 \\)",
+        "\\( c^2 + a^2 = b^2 \\)"
+      ],
+      "correct": 2,
+      "desc": "Indikator 6: Rumus dasar \\( a^2 + b^2 = c^2 \\), maka \\( c^2 - a^2 = b^2 \\)."
+    },
+    {
+      "no": 11,
+      "text": "Sebuah persegi panjang memiliki panjang 12 cm dan lebar 5 cm. Panjang diagonalnya adalah...",
+      "options": [
+        "13 cm",
+        "15 cm",
+        "17 cm",
+        "14 cm"
+      ],
+      "correct": 0,
+      "desc": "Indikator 7: Tripel Pythagoras 5, 12, 13."
+    },
+    {
+      "no": 12,
+      "text": "Sebuah tangga sepanjang 5 meter disandarkan pada tembok. Jarak kaki tangga ke tembok 3 meter. Tinggi tembok yang dicapai tangga adalah...",
+      "options": [
+        "2 meter",
+        "3 meter",
+        "4 meter",
+        "5 meter"
+      ],
+      "correct": 2,
+      "desc": "Indikator 8: \\( \\sqrt{5^2 - 3^2} = \\sqrt{25-9} = \\sqrt{16} = 4 \\)."
+    },
+    {
+      "no": 13,
+      "text": "Kapal berlayar ke arah utara sejauh 8 km, kemudian berbelok ke arah timur sejauh 15 km. Jarak terdekat kapal dari titik awal keberangkatan adalah...",
+      "options": [
+        "17 km",
+        "20 km",
+        "23 km",
+        "25 km"
+      ],
+      "correct": 0,
+      "desc": "Indikator 8: \\( \\sqrt{8^2 + 15^2} = \\sqrt{64 + 225} = \\sqrt{289} = 17 \\)."
+    },
+    {
+      "no": 14,
+      "text": "Diketahui kelompok sisi segitiga: 6 cm, 8 cm, 10 cm. Jenis segitiga tersebut adalah...",
+      "options": [
+        "Segitiga Lancip",
+        "Segitiga Tumpul",
+        "Segitiga Siku-siku",
+        "Segitiga Sama Sisi"
+      ],
+      "correct": 2,
+      "desc": "Indikator 9: \\( 6^2 + 8^2 = 36 + 64 = 100 \\) dan \\( 10^2 = 100 \\). Sama, jadi siku-siku."
+    },
+    {
+      "no": 15,
+      "text": "Jika \\( a^2 + b^2 < c^2 \\) (dimana c sisi terpanjang), maka jenis segitiganya adalah...",
+      "options": [
+        "Siku-siku",
+        "Lancip",
+        "Tumpul",
+        "Sembarang"
+      ],
+      "correct": 2,
+      "desc": "Indikator 9: Kuadrat sisi terpanjang lebih besar dari jumlah kuadrat sisi lain = Tumpul."
+    },
+    {
+      "no": 16,
+      "text": "Perhatikan segitiga siku-siku sama kaki (sudut 45-45-90). Jika panjang sisi siku-sikunya 5 cm, maka panjang sisi miringnya adalah...",
+      "options": [
+        "\\( 5\\sqrt{2} \\) cm",
+        "\\( 5\\sqrt{3} \\) cm",
+        "10 cm",
+        "5 cm"
+      ],
+      "correct": 0,
+      "desc": "Indikator 10: Perbandingan sisi segitiga 45-45-90 adalah \\( 1 : 1 : \\sqrt{2} \\)."
+    },
+    {
+      "no": 17,
+      "text": "Pada segitiga siku-siku dengan sudut 30-60-90, jika panjang sisi di depan sudut 30 adalah 4 cm, maka panjang sisi miringnya adalah...",
+      "options": [
+        "4 cm",
+        "8 cm",
+        "\\( 4\\sqrt{3} \\) cm",
+        "\\( 8\\sqrt{3} \\) cm"
+      ],
+      "correct": 1,
+      "desc": "Indikator 10: Sisi miring = 2 x sisi terpendek (depan 30). 2 x 4 = 8."
+    },
+    {
+      "no": 18,
+      "text": "Kelompok bilangan berikut yang merupakan Tripel Pythagoras adalah...",
+      "options": [
+        "3, 4, 6",
+        "5, 12, 13",
+        "6, 8, 12",
+        "7, 24, 26"
+      ],
+      "correct": 1,
+      "desc": "Indikator 10: \\( 5^2 + 12^2 = 25 + 144 = 169 = 13^2 \\)."
+    },
+    {
+      "no": 19,
+      "text": "Kalimat berikut yang merupakan kalimat terbuka adalah...",
+      "options": [
+        "Jakarta adalah ibu kota Indonesia",
+        "5 + 3 = 8",
+        "x + 4 = 10",
+        "Matahari terbit dari barat"
+      ],
+      "correct": 2,
+      "desc": "Indikator 11: Kalimat terbuka memuat variabel dan belum diketahui nilai kebenarannya."
+    },
+    {
+      "no": 20,
+      "text": "Contoh kalimat tertutup yang bernilai salah adalah...",
+      "options": [
+        "Bilangan prima terkecil adalah 2",
+        "Presiden RI pertama adalah Soekarno",
+        "2 adalah bilangan ganjil",
+        "Satu minggu ada 7 hari"
+      ],
+      "correct": 2,
+      "desc": "Indikator 11: Pernyataan yang sudah jelas salah."
+    },
+    {
+      "no": 21,
+      "text": "Manakah di bawah ini yang merupakan Persamaan Linear Satu Variabel (PLSV)?",
+      "options": [
+        "\\( x + y = 5 \\)",
+        "\\( 2x - 4 = 8 \\)",
+        "\\( x^2 + 2x = 0 \\)",
+        "\\( x + 3 > 5 \\)"
+      ],
+      "correct": 1,
+      "desc": "Indikator 12: Hanya satu variabel pangkat satu dan tanda sama dengan."
+    },
+    {
+      "no": 22,
+      "text": "Kalimat matematika dari 'Suatu bilangan dikalikan 3 kemudian ditambah 5 hasilnya 20' adalah...",
+      "options": [
+        "\\( 3x + 5 = 20 \\)",
+        "\\( 3(x + 5) = 20 \\)",
+        "\\( x + 3 + 5 = 20 \\)",
+        "\\( 5x + 3 = 20 \\)"
+      ],
+      "correct": 0,
+      "desc": "Indikator 13: Membuat model matematika."
+    },
+    {
+      "no": 23,
+      "text": "Umur Budi 5 tahun lebih tua dari umur Ani. Jika umur Ani \\( x \\) tahun dan jumlah umur mereka 25 tahun, model matematikanya adalah...",
+      "options": [
+        "\\( x + 5 = 25 \\)",
+        "\\( x + (x + 5) = 25 \\)",
+        "\\( 2x - 5 = 25 \\)",
+        "\\( x + 5x = 25 \\)"
+      ],
+      "correct": 1,
+      "desc": "Indikator 13: Ani=x, Budi=x+5. Jumlah = x + x + 5 = 25."
+    },
+    {
+      "no": 24,
+      "text": "Penyelesaian dari persamaan \\( 4x - 5 = 7 \\) adalah...",
+      "options": [
+        "x = 2",
+        "x = 3",
+        "x = 4",
+        "x = 5"
+      ],
+      "correct": 1,
+      "desc": "Indikator 14: \\( 4x = 12 \\), maka \\( x = 3 \\)."
+    },
+    {
+      "no": 25,
+      "text": "Tiga bilangan genap berurutan jumlahnya 60. Bilangan terbesarnya adalah...",
+      "options": [
+        "18",
+        "20",
+        "22",
+        "24"
+      ],
+      "correct": 2,
+      "desc": "Indikator 16: \\( n + (n+2) + (n+4) = 60 \\rightarrow 3n+6=60 \\rightarrow 3n=54 \\rightarrow n=18 \\). Terbesar n+4=22."
+    },
+    {
+      "no": 26,
+      "text": "Keliling persegi panjang adalah 40 cm. Jika panjangnya \\( (2x+3) \\) cm dan lebarnya \\( (x+2) \\) cm, nilai x adalah...",
+      "options": [
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
+      "correct": 2,
+      "desc": "Indikator 16: \\( 2(2x+3 + x+2) = 40 \\rightarrow 2(3x+5) = 40 \\rightarrow 6x+10=40 \\rightarrow 6x=30 \\rightarrow x=5 \\)."
+    },
+    {
+      "no": 27,
+      "text": "Harga sebuah buku tulis dan sebuah pensil adalah Rp5.000. Jika harga buku tulis Rp3.000 lebih mahal dari pensil, maka harga pensil adalah...",
+      "options": [
+        "Rp1.000",
+        "Rp1.500",
+        "Rp2.000",
+        "Rp4.000"
+      ],
+      "correct": 0,
+      "desc": "Indikator 16: \\( p + (p+3000) = 5000 \\rightarrow 2p=2000 \\rightarrow p=1000 \\)."
+    },
+    {
+      "no": 28,
+      "text": "Sebuah bus dapat mengangkut tidak lebih dari 40 penumpang. Jika banyak penumpang adalah \\( x \\), model pertidaksamaannya adalah...",
+      "options": [
+        "\\( x < 40 \\)",
+        "\\( x > 40 \\)",
+        "\\( x \\leq 40 \\)",
+        "\\( x \\geq 40 \\)"
+      ],
+      "correct": 2,
+      "desc": "Indikator 20: Tidak lebih dari berarti kurang dari atau sama dengan (\\(\\le\\))."
+    },
+    {
+      "no": 29,
+      "text": "Himpunan penyelesaian dari \\( 2x - 3 < 7 \\) adalah...",
+      "options": [
+        "\\( x < 5 \\)",
+        "\\( x > 5 \\)",
+        "\\( x < 2 \\)",
+        "\\( x > 2 \\)"
+      ],
+      "correct": 0,
+      "desc": "Indikator 21: \\( 2x < 10 \\rightarrow x < 5 \\)."
+    },
+    {
+      "no": 30,
+      "text": "Soni ingin membeli mainan seharga paling sedikit Rp50.000. Kalimat matematika yang tepat adalah...",
+      "options": [
+        "\\( x < 50.000 \\)",
+        "\\( x > 50.000 \\)",
+        "\\( x \\leq 50.000 \\)",
+        "\\( x \\geq 50.000 \\)"
+      ],
+      "correct": 3,
+      "desc": "Indikator 22: Paling sedikit berarti lebih dari atau sama dengan (\\(\\ge\\))."
+    },
+    {
+      "no": 31,
+      "text": "Penyelesaian dari persamaan \\( x + 3 = 10 \\) adalah...",
+      "options": [
+        "x = 3",
+        "x = 5",
+        "x = 7",
+        "x = 13"
+      ],
+      "correct": 2,
+      "desc": "Indikator 15 (Menjodohkan): \\( x = 10-3 = 7 \\)."
+    },
+    {
+      "no": 32,
+      "text": "Nilai y yang memenuhi \\( 3y = 15 \\) adalah...",
+      "options": [
+        "3",
+        "5",
+        "12",
+        "45"
+      ],
+      "correct": 1,
+      "desc": "Indikator 15 (Menjodohkan): \\( y = 15/3 = 5 \\)."
+    },
+    {
+      "no": 33,
+      "text": "Penyelesaian dari \\( a - 5 = -2 \\) adalah...",
+      "options": [
+        "-7",
+        "-3",
+        "3",
+        "7"
+      ],
+      "correct": 2,
+      "desc": "Indikator 15 (Menjodohkan): \\( a = -2+5 = 3 \\)."
+    },
+    {
+      "no": 34,
+      "text": "Nilai m dari persamaan \\( 2m + 4 = 10 \\) adalah...",
+      "options": [
+        "2",
+        "3",
+        "4",
+        "6"
+      ],
+      "correct": 1,
+      "desc": "Indikator 15 (Menjodohkan): \\( 2m=6 \\rightarrow m=3 \\)."
+    },
+    {
+      "no": 35,
+      "text": "Jika \\( \\frac{1}{2}p = 8 \\), maka nilai p adalah...",
+      "options": [
+        "4",
+        "8",
+        "12",
+        "16"
+      ],
+      "correct": 3,
+      "desc": "Indikator 15 (Menjodohkan): \\( p = 8 \\times 2 = 16 \\)."
+    },
+    {
+      "no": 36,
+      "text": "Diketahui \\( x = 5 \\). Nilai dari bentuk aljabar \\( 2x + 3 \\) adalah...",
+      "options": [
+        "8",
+        "10",
+        "13",
+        "15"
+      ],
+      "correct": 2,
+      "desc": "Indikator 18 (Essay): \\( 2(5) + 3 = 10 + 3 = 13 \\)."
+    },
+    {
+      "no": 37,
+      "text": "Sebuah segitiga memiliki sisi-sisi \\( x \\), \\( x+2 \\), dan \\( x+3 \\). Jika kelilingnya 20 cm, nilai \\( x \\) adalah...",
+      "options": [
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
+      "correct": 2,
+      "desc": "Indikator 19 (Essay): \\( x + x+2 + x+3 = 20 \\rightarrow 3x+5=20 \\rightarrow 3x=15 \\rightarrow x=5 \\)."
+    },
+    {
+      "no": 38,
+      "text": "Jika \\( y = -2 \\) adalah penyelesaian dari \\( 3y + k = 4 \\), maka nilai \\( k \\) adalah...",
+      "options": [
+        "2",
+        "6",
+        "8",
+        "10"
+      ],
+      "correct": 3,
+      "desc": "Indikator 18 (Essay): \\( 3(-2) + k = 4 \\rightarrow -6 + k = 4 \\rightarrow k = 10 \\)."
+    },
+    {
+      "no": 39,
+      "text": "Panjang sebuah persegi panjang adalah \\( 10 \\) cm dan lebarnya \\( (x-2) \\) cm. Jika luasnya tidak lebih dari 50 cm², pertidaksamaannya adalah...",
+      "options": [
+        "\\( 10(x-2) < 50 \\)",
+        "\\( 10(x-2) \\leq 50 \\)",
+        "\\( 10(x-2) > 50 \\)",
+        "\\( 10(x-2) \\geq 50 \\)"
+      ],
+      "correct": 1,
+      "desc": "Indikator 22 (Essay): Luas \\( \\le \\) 50. \\( 10(x-2) \\le 50 \\)."
+    },
+    {
+      "no": 40,
+      "text": "Sebuah truk hanya mampu mengangkut beban tidak lebih dari 5 ton. Jika berat truk kosong 3 ton dan ia mengangkut muatan seberat \\( x \\) ton, maka...",
+      "options": [
+        "\\( 3 + x \\leq 5 \\)",
+        "\\( 3 + x < 5 \\)",
+        "\\( 3 + x \\geq 5 \\)",
+        "\\( x - 3 \\leq 5 \\)"
+      ],
+      "correct": 0,
+      "desc": "Indikator 22 (Essay): Total berat (truk+muatan) \\( \\le \\) 5."
+    }
+  ]
+}

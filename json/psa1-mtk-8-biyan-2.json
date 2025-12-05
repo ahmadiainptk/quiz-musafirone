@@ -1,0 +1,488 @@
+{
+  "subject": "Matematika",
+  "grade": "8 SMP",
+  "title": "Latihan Soal SAS Ganjil Matematika Kelas 8 (Paket B)",
+  "subtitle": "Paket 40 soal variasi baru mencakup Bilangan Berpangkat, Pythagoras, PLSV, dan PtSLV.",
+  "questions": [
+    {
+      "no": 1,
+      "text": "Hasil dari \\( 3^5 : 3^2 \\) adalah...",
+      "options": [
+        "\\( 3^{10} \\)",
+        "\\( 3^7 \\)",
+        "\\( 3^3 \\)",
+        "\\( 3^{2,5} \\)"
+      ],
+      "correct": 2,
+      "desc": "Indikator 1: Sifat pembagian bilangan berpangkat (pangkat dikurangkan). 5 - 2 = 3."
+    },
+    {
+      "no": 2,
+      "text": "Bentuk baku dari 145.000.000 adalah...",
+      "options": [
+        "\\( 1,45 \\times 10^8 \\)",
+        "\\( 1,45 \\times 10^7 \\)",
+        "\\( 14,5 \\times 10^7 \\)",
+        "\\( 145 \\times 10^6 \\)"
+      ],
+      "correct": 0,
+      "desc": "Indikator 4: Geser koma ke kiri 8 kali sampai tersisa satu angka di depan koma."
+    },
+    {
+      "no": 3,
+      "text": "Hasil dari \\( \\sqrt{20} + \\sqrt{45} \\) adalah...",
+      "options": [
+        "\\( 5\\sqrt{5} \\)",
+        "\\( 2\\sqrt{5} \\)",
+        "\\( \\sqrt{65} \\)",
+        "\\( 7\\sqrt{5} \\)"
+      ],
+      "correct": 0,
+      "desc": "Indikator 3: \\( \\sqrt{20} = 2\\sqrt{5} \\) dan \\( \\sqrt{45} = 3\\sqrt{5} \\). Jumlahkan koefisiennya: 2+3=5."
+    },
+    {
+      "no": 4,
+      "text": "Hasil dari \\( 2\\sqrt{3} \\times \\sqrt{12} \\) adalah...",
+      "options": [
+        "6",
+        "12",
+        "\\( 2\\sqrt{15} \\)",
+        "\\( 2\\sqrt{36} \\)"
+      ],
+      "correct": 1,
+      "desc": "Indikator 3: \\( 2\\sqrt{36} = 2 \\times 6 = 12 \\)."
+    },
+    {
+      "no": 5,
+      "text": "Arti dari \\( (-2)^4 \\) adalah...",
+      "options": [
+        "\\( -2 \\times 4 \\)",
+        "\\( -(2 \\times 2 \\times 2 \\times 2) \\)",
+        "\\( (-2) \\times (-2) \\times (-2) \\times (-2) \\)",
+        "\\( 2 \\times 2 \\times 2 \\times 2 \\)"
+      ],
+      "correct": 2,
+      "desc": "Indikator 2: Definisi pangkat bilangan negatif."
+    },
+    {
+      "no": 6,
+      "text": "Nilai dari \\( 2^{-3} \\) adalah...",
+      "options": [
+        "-6",
+        "-8",
+        "\\( \\frac{1}{6} \\)",
+        "\\( \\frac{1}{8} \\)"
+      ],
+      "correct": 3,
+      "desc": "Indikator 2: Pangkat negatif menjadi pecahan positif \\( 1/2^3 = 1/8 \\)."
+    },
+    {
+      "no": 7,
+      "text": "Hasil sederhana dari \\( (a^3 \\times a^2)^2 \\) adalah...",
+      "options": [
+        "\\( a^7 \\)",
+        "\\( a^{10} \\)",
+        "\\( a^{12} \\)",
+        "\\( a^6 \\)"
+      ],
+      "correct": 1,
+      "desc": "Indikator 1: \\( (a^5)^2 = a^{10} \\)."
+    },
+    {
+      "no": 8,
+      "text": "Hasil dari \\( \\frac{\\sqrt{72}}{\\sqrt{2}} \\) adalah...",
+      "options": [
+        "6",
+        "36",
+        "\\( \\sqrt{36} \\)",
+        "\\( 6\\sqrt{2} \\)"
+      ],
+      "correct": 0,
+      "desc": "Indikator 3: \\( \\sqrt{36} = 6 \\)."
+    },
+    {
+      "no": 9,
+      "text": "Pada segitiga PQR siku-siku di Q, sisi miringnya adalah...",
+      "options": [
+        "PQ",
+        "QR",
+        "PR",
+        "Tidak ada"
+      ],
+      "correct": 2,
+      "desc": "Indikator 5: Sisi miring selalu di depan sudut siku-siku (Q), yaitu PR."
+    },
+    {
+      "no": 10,
+      "text": "Jika a, b, dan c adalah sisi-sisi segitiga siku-siku dengan c sebagai sisi terpanjang, pernyataan yang SALAH adalah...",
+      "options": [
+        "\\( c^2 = a^2 + b^2 \\)",
+        "\\( a^2 = c^2 - b^2 \\)",
+        "\\( b^2 = c^2 - a^2 \\)",
+        "\\( a^2 = c^2 + b^2 \\)"
+      ],
+      "correct": 3,
+      "desc": "Indikator 6: Sisi siku-siku tidak mungkin hasil penjumlahan sisi miring dan sisi lain."
+    },
+    {
+      "no": 11,
+      "text": "Sebuah belah ketupat memiliki panjang diagonal 16 cm dan 12 cm. Keliling belah ketupat tersebut adalah...",
+      "options": [
+        "20 cm",
+        "28 cm",
+        "40 cm",
+        "56 cm"
+      ],
+      "correct": 2,
+      "desc": "Indikator 7: Setengah diagonal = 8 dan 6. Sisi miring = \\( \\sqrt{8^2+6^2} = 10 \\). Keliling = 4 x 10 = 40."
+    },
+    {
+      "no": 12,
+      "text": "Tiang bendera setinggi 12 meter diikat dengan kawat ke pasak tanah yang berjarak 5 meter dari pangkal tiang. Panjang kawat minimal yang dibutuhkan adalah...",
+      "options": [
+        "13 meter",
+        "15 meter",
+        "17 meter",
+        "14 meter"
+      ],
+      "correct": 0,
+      "desc": "Indikator 8: \\( \\sqrt{12^2 + 5^2} = \\sqrt{144+25} = \\sqrt{169} = 13 \\)."
+    },
+    {
+      "no": 13,
+      "text": "Seorang anak menaikkan layang-layang dengan benang sepanjang 25 meter. Jarak horizontal anak ke titik tepat di bawah layang-layang adalah 7 meter. Tinggi layang-layang adalah...",
+      "options": [
+        "20 meter",
+        "24 meter",
+        "18 meter",
+        "15 meter"
+      ],
+      "correct": 1,
+      "desc": "Indikator 8: \\( \\sqrt{25^2 - 7^2} = \\sqrt{625-49} = \\sqrt{576} = 24 \\)."
+    },
+    {
+      "no": 14,
+      "text": "Suatu segitiga memiliki panjang sisi 9 cm, 12 cm, dan 15 cm. Jenis segitiga tersebut adalah...",
+      "options": [
+        "Segitiga Lancip",
+        "Segitiga Tumpul",
+        "Segitiga Siku-siku",
+        "Segitiga Sama Kaki"
+      ],
+      "correct": 2,
+      "desc": "Indikator 9: \\( 9^2 + 12^2 = 81 + 144 = 225 \\) dan \\( 15^2 = 225 \\). Sama, jadi siku-siku."
+    },
+    {
+      "no": 15,
+      "text": "Diketahui sisi segitiga: 5 cm, 7 cm, 9 cm. Jenis segitiga ini adalah...",
+      "options": [
+        "Siku-siku",
+        "Tumpul",
+        "Lancip",
+        "Sama Sisi"
+      ],
+      "correct": 1,
+      "desc": "Indikator 9: \\( 9^2 = 81 \\). \\( 5^2 + 7^2 = 25 + 49 = 74 \\). Karena \\( 81 > 74 \\), maka Tumpul."
+    },
+    {
+      "no": 16,
+      "text": "Pada segitiga siku-siku sama kaki, jika sisi miringnya \\( 10\\sqrt{2} \\) cm, maka panjang sisi siku-sikunya adalah...",
+      "options": [
+        "5 cm",
+        "10 cm",
+        "15 cm",
+        "20 cm"
+      ],
+      "correct": 1,
+      "desc": "Indikator 10: Sisi miring = \\( s\\sqrt{2} \\). Maka \\( s = 10 \\)."
+    },
+    {
+      "no": 17,
+      "text": "Perhatikan segitiga ABC siku-siku di B dengan sudut A = 30 derajat. Jika panjang BC (sisi di depan sudut 30) adalah 6 cm, panjang AC adalah...",
+      "options": [
+        "3 cm",
+        "6 cm",
+        "12 cm",
+        "\\( 6\\sqrt{3} \\) cm"
+      ],
+      "correct": 2,
+      "desc": "Indikator 10: Sisi miring (AC) = 2 x sisi depan sudut 30. AC = 2 x 6 = 12."
+    },
+    {
+      "no": 18,
+      "text": "Manakah yang BUKAN Tripel Pythagoras?",
+      "options": [
+        "3, 4, 5",
+        "5, 12, 13",
+        "8, 15, 17",
+        "6, 9, 12"
+      ],
+      "correct": 3,
+      "desc": "Indikator 10: \\( 6^2 + 9^2 = 36 + 81 = 117 \\). \\( 12^2 = 144 \\). Tidak sama."
+    },
+    {
+      "no": 19,
+      "text": "Kalimat \"x adalah faktor dari 12\" merupakan contoh dari...",
+      "options": [
+        "Kalimat Tertutup",
+        "Pernyataan",
+        "Kalimat Terbuka",
+        "Ketidaksamaan"
+      ],
+      "correct": 2,
+      "desc": "Indikator 11: Nilai kebenarannya belum tahu karena ada variabel x."
+    },
+    {
+      "no": 20,
+      "text": "Pernyataan berikut yang bernilai BENAR adalah...",
+      "options": [
+        "3 + 4 = 10",
+        "Bilangan genap dikali bilangan genap hasilnya ganjil",
+        "Balok memiliki 6 sisi",
+        "1 jam = 3600 menit"
+      ],
+      "correct": 2,
+      "desc": "Indikator 11: Fakta geometri yang benar."
+    },
+    {
+      "no": 21,
+      "text": "Persamaan berikut yang BUKAN merupakan PLSV adalah...",
+      "options": [
+        "\\( 3x - 1 = 5 \\)",
+        "\\( 2y + 5 = 11 \\)",
+        "\\( x + y = 10 \\)",
+        "\\( 4a = 12 \\)"
+      ],
+      "correct": 2,
+      "desc": "Indikator 12: Memiliki dua variabel (x dan y), jadi bukan PLSV."
+    },
+    {
+      "no": 22,
+      "text": "Kalimat matematika dari \"Selisih umur Ayah dan Budi adalah 30 tahun\" jika umur Budi \\( x \\) dan umur Ayah 45 tahun adalah...",
+      "options": [
+        "\\( 45 - x = 30 \\)",
+        "\\( x - 45 = 30 \\)",
+        "\\( 45 + x = 30 \\)",
+        "\\( 30x = 45 \\)"
+      ],
+      "correct": 0,
+      "desc": "Indikator 13: Model matematika selisih."
+    },
+    {
+      "no": 23,
+      "text": "Keliling persegi adalah 32 cm. Jika panjang sisinya \\( s \\), model matematikanya adalah...",
+      "options": [
+        "\\( s = 32 \\)",
+        "\\( 4s = 32 \\)",
+        "\\( s^2 = 32 \\)",
+        "\\( 2s = 32 \\)"
+      ],
+      "correct": 1,
+      "desc": "Indikator 13: Rumus keliling persegi 4s."
+    },
+    {
+      "no": 24,
+      "text": "Nilai \\( x \\) yang memenuhi \\( 3x + 2 = 14 \\) adalah...",
+      "options": [
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
+      "correct": 1,
+      "desc": "Indikator 14: \\( 3x = 12 \\rightarrow x = 4 \\)."
+    },
+    {
+      "no": 25,
+      "text": "Jumlah tiga bilangan ganjil berurutan adalah 39. Bilangan terkecilnya adalah...",
+      "options": [
+        "11",
+        "13",
+        "15",
+        "17"
+      ],
+      "correct": 0,
+      "desc": "Indikator 16: \\( n + (n+2) + (n+4) = 39 \\rightarrow 3n+6=39 \\rightarrow 3n=33 \\rightarrow n=11 \\)."
+    },
+    {
+      "no": 26,
+      "text": "Panjang persegi panjang 5 cm lebih dari lebarnya. Jika kelilingnya 50 cm, lebar persegi panjang tersebut adalah...",
+      "options": [
+        "10 cm",
+        "15 cm",
+        "20 cm",
+        "25 cm"
+      ],
+      "correct": 0,
+      "desc": "Indikator 16: \\( 2(l+5 + l) = 50 \\rightarrow 2l+5=25 \\rightarrow 2l=20 \\rightarrow l=10 \\)."
+    },
+    {
+      "no": 27,
+      "text": "Ibu membeli 3 kg apel dan 2 kg jeruk seharga Rp100.000. Jika harga 1 kg apel Rp20.000, berapakah harga 1 kg jeruk?",
+      "options": [
+        "Rp15.000",
+        "Rp20.000",
+        "Rp25.000",
+        "Rp30.000"
+      ],
+      "correct": 1,
+      "desc": "Indikator 16: \\( 3(20000) + 2x = 100000 \\rightarrow 60000 + 2x = 100000 \\rightarrow 2x = 40000 \\rightarrow x = 20000 \\)."
+    },
+    {
+      "no": 28,
+      "text": "Kecepatan maksimum kendaraan di jalan tol adalah 100 km/jam. Model pertidaksamaannya adalah...",
+      "options": [
+        "\\( v < 100 \\)",
+        "\\( v > 100 \\)",
+        "\\( v \\leq 100 \\)",
+        "\\( v \\geq 100 \\)"
+      ],
+      "correct": 2,
+      "desc": "Indikator 20: Maksimum berarti boleh kurang atau pas 100 (\\( \\le \\))."
+    },
+    {
+      "no": 29,
+      "text": "Penyelesaian dari \\( 3x - 2 > x + 6 \\) adalah...",
+      "options": [
+        "\\( x > 4 \\)",
+        "\\( x < 4 \\)",
+        "\\( x > 2 \\)",
+        "\\( x < 2 \\)"
+      ],
+      "correct": 0,
+      "desc": "Indikator 21: \\( 2x > 8 \\rightarrow x > 4 \\)."
+    },
+    {
+      "no": 30,
+      "text": "Pak Ali ingin membuat pagar persegi panjang dengan keliling tidak kurang dari 60 meter. Model matematikanya adalah...",
+      "options": [
+        "\\( K < 60 \\)",
+        "\\( K \\leq 60 \\)",
+        "\\( K > 60 \\)",
+        "\\( K \\geq 60 \\)"
+      ],
+      "correct": 3,
+      "desc": "Indikator 22: Tidak kurang dari artinya lebih dari atau sama dengan (\\( \\ge \\))."
+    },
+    {
+      "no": 31,
+      "text": "Nilai x yang memenuhi persamaan \\( 2x = 10 \\) adalah...",
+      "options": [
+        "2",
+        "5",
+        "8",
+        "20"
+      ],
+      "correct": 1,
+      "desc": "Indikator 15 (Menjodohkan): \\( x = 10/2 = 5 \\)."
+    },
+    {
+      "no": 32,
+      "text": "Penyelesaian dari \\( x + 5 = 12 \\) adalah...",
+      "options": [
+        "x = 5",
+        "x = 7",
+        "x = 12",
+        "x = 17"
+      ],
+      "correct": 1,
+      "desc": "Indikator 15 (Menjodohkan): \\( x = 12-5 = 7 \\)."
+    },
+    {
+      "no": 33,
+      "text": "Jika \\( m - 4 = 8 \\), maka nilai m adalah...",
+      "options": [
+        "4",
+        "8",
+        "12",
+        "32"
+      ],
+      "correct": 2,
+      "desc": "Indikator 15 (Menjodohkan): \\( m = 8+4 = 12 \\)."
+    },
+    {
+      "no": 34,
+      "text": "Nilai p dari persamaan \\( 3p + 1 = 10 \\) adalah...",
+      "options": [
+        "3",
+        "9",
+        "11",
+        "27"
+      ],
+      "correct": 0,
+      "desc": "Indikator 15 (Menjodohkan): \\( 3p = 9 \\rightarrow p = 3 \\)."
+    },
+    {
+      "no": 35,
+      "text": "Jika \\( \\frac{1}{3}y = 4 \\), maka y adalah...",
+      "options": [
+        "4",
+        "7",
+        "12",
+        "34"
+      ],
+      "correct": 2,
+      "desc": "Indikator 15 (Menjodohkan): \\( y = 4 \\times 3 = 12 \\)."
+    },
+    {
+      "no": 36,
+      "text": "Diketahui \\( a = -3 \\). Nilai dari \\( 5a - 2 \\) adalah...",
+      "options": [
+        "-13",
+        "-15",
+        "-17",
+        "13"
+      ],
+      "correct": 2,
+      "desc": "Indikator 18 (Essay): \\( 5(-3) - 2 = -15 - 2 = -17 \\)."
+    },
+    {
+      "no": 37,
+      "text": "Panjang sisi persegi adalah \\( (x+3) \\) cm. Jika kelilingnya 24 cm, maka nilai x adalah...",
+      "options": [
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
+      "correct": 0,
+      "desc": "Indikator 19 (Essay): \\( 4(x+3) = 24 \\rightarrow x+3=6 \\rightarrow x=3 \\)."
+    },
+    {
+      "no": 38,
+      "text": "Diketahui \\( 2x + 5 = 11 \\). Nilai dari \\( x + 3 \\) adalah...",
+      "options": [
+        "3",
+        "5",
+        "6",
+        "8"
+      ],
+      "correct": 2,
+      "desc": "Indikator 18 (Essay): \\( 2x = 6 \\rightarrow x = 3 \\). Maka \\( 3 + 3 = 6 \\)."
+    },
+    {
+      "no": 39,
+      "text": "Sebuah jajar genjang memiliki alas 10 cm dan tinggi \\( t \\) cm. Jika luasnya tidak lebih dari 40 cm², pertidaksamaannya adalah...",
+      "options": [
+        "\\( 10t > 40 \\)",
+        "\\( 10t \\geq 40 \\)",
+        "\\( 10t \\leq 40 \\)",
+        "\\( 10t < 40 \\)"
+      ],
+      "correct": 2,
+      "desc": "Indikator 22 (Essay): \\( 10t \\le 40 \\)."
+    },
+    {
+      "no": 40,
+      "text": "Syarat naik wahana roller coaster adalah tinggi badan minimal 150 cm. Jika tinggi badan Budi \\( t \\), maka...",
+      "options": [
+        "\\( t > 150 \\)",
+        "\\( t \\geq 150 \\)",
+        "\\( t < 150 \\)",
+        "\\( t \\leq 150 \\)"
+      ],
+      "correct": 1,
+      "desc": "Indikator 22 (Essay): Minimal artinya \\( \\ge 150 \\)."
+    }
+  ]
+}

@@ -1,0 +1,488 @@
+{
+  "subject": "Matematika",
+  "grade": "7 SMP",
+  "title": "Latihan Soal SAS Ganjil Matematika Kelas 7 (Paket B)",
+  "subtitle": "Paket 40 soal variasi baru mencakup Bilangan Bulat, Pecahan, Aljabar, dan Perbandingan.",
+  "questions": [
+    {
+      "no": 1,
+      "text": "Suhu mula-mula sebuah ruangan adalah -5°C. Setelah penghangat ruangan dihidupkan, suhunya naik 8°C. Suhu ruangan sekarang adalah...",
+      "options": [
+        "-13°C",
+        "-3°C",
+        "3°C",
+        "13°C"
+      ],
+      "correct": 2,
+      "desc": "Indikator 1: Operasi garis bilangan. -5 + 8 = 3."
+    },
+    {
+      "no": 2,
+      "text": "Bilangan yang letaknya 5 satuan di sebelah kiri angka -3 pada garis bilangan adalah...",
+      "options": [
+        "-8",
+        "-2",
+        "2",
+        "8"
+      ],
+      "correct": 0,
+      "desc": "Indikator 2: Posisi pada garis bilangan. -3 - 5 = -8."
+    },
+    {
+      "no": 3,
+      "text": "Urutan bilangan -12, 5, -8, 0, 10 dari yang terbesar ke yang terkecil adalah...",
+      "options": [
+        "10, 5, 0, -8, -12",
+        "10, 5, 0, -12, -8",
+        "-12, -8, 0, 5, 10",
+        "-8, -12, 0, 5, 10"
+      ],
+      "correct": 0,
+      "desc": "Indikator 3: Mengurutkan bilangan bulat dari terbesar."
+    },
+    {
+      "no": 4,
+      "text": "Diketahui P = -25 dan Q = -30. Tanda pembanding yang tepat adalah...",
+      "options": [
+        "P < Q",
+        "P > Q",
+        "P = Q",
+        "P ≤ Q"
+      ],
+      "correct": 1,
+      "desc": "Indikator 4: Pada bilangan negatif, angka yang lebih kecil nilainya lebih besar."
+    },
+    {
+      "no": 5,
+      "text": "Hasil dari \\( 15 - (-8) + (-10) \\) adalah...",
+      "options": [
+        "13",
+        "17",
+        "33",
+        "-3"
+      ],
+      "correct": 0,
+      "desc": "Indikator 5: 15 + 8 - 10 = 23 - 10 = 13."
+    },
+    {
+      "no": 6,
+      "text": "Hasil dari \\( -48 : (-6) \\times 3 \\) adalah...",
+      "options": [
+        "-24",
+        "24",
+        "-8",
+        "8"
+      ],
+      "correct": 1,
+      "desc": "Indikator 6: 8 x 3 = 24."
+    },
+    {
+      "no": 7,
+      "text": "Hasil dari \\( 12 + 6 \\times (-5) \\) adalah...",
+      "options": [
+        "-90",
+        "-18",
+        "42",
+        "18"
+      ],
+      "correct": 1,
+      "desc": "Indikator 7: Perkalian didahulukan. 12 + (-30) = -18."
+    },
+    {
+      "no": 8,
+      "text": "Dalam tes masuk, jawaban benar bernilai 5, salah -1, dan kosong 0. Dari 20 soal, Budi menjawab benar 15 dan kosong 2. Nilai Budi adalah...",
+      "options": [
+        "72",
+        "75",
+        "73",
+        "70"
+      ],
+      "correct": 0,
+      "desc": "Indikator 9: Benar 15x5=75. Kosong 2x0=0. Salah 3x(-1)=-3. Total 75-3=72."
+    },
+    {
+      "no": 9,
+      "text": "Suhu daging beku -10°C. Setelah dikeluarkan, suhunya naik 2°C setiap 5 menit. Suhu daging setelah 20 menit adalah...",
+      "options": [
+        "-6°C",
+        "-2°C",
+        "0°C",
+        "2°C"
+      ],
+      "correct": 1,
+      "desc": "Indikator 8: Kenaikan = (20/5) x 2 = 4 x 2 = 8°C. Akhir = -10 + 8 = -2°C."
+    },
+    {
+      "no": 10,
+      "text": "Sebuah pesawat terbang pada ketinggian 1200 m di atas laut. Sebuah kapal selam berada pada kedalaman 80 m di bawah laut. Jarak vertikal keduanya adalah...",
+      "options": [
+        "1120 m",
+        "1280 m",
+        "1000 m",
+        "1200 m"
+      ],
+      "correct": 1,
+      "desc": "Indikator 10: 1200 - (-80) = 1280 m."
+    },
+    {
+      "no": 11,
+      "text": "Ayah membawa uang Rp50.000. Ia membeli 3 buku seharga Rp5.000 per buah dan 2 pulpen seharga Rp3.000 per buah. Sisa uang Ayah adalah...",
+      "options": [
+        "Rp21.000",
+        "Rp29.000",
+        "Rp30.000",
+        "Rp35.000"
+      ],
+      "correct": 1,
+      "desc": "Indikator 11: Belanja = (3x5.000) + (2x3.000) = 15.000 + 6.000 = 21.000. Sisa = 50.000 - 21.000 = 29.000."
+    },
+    {
+      "no": 12,
+      "text": "Urutan pecahan dari terkecil ke terbesar: \\( 0,6; 55\\%; \\frac{2}{3}; 0,58 \\) adalah...",
+      "options": [
+        "\\( 55\\%; 0,58; 0,6; \\frac{2}{3} \\)",
+        "\\( 0,58; 55\\%; 0,6; \\frac{2}{3} \\)",
+        "\\( 0,6; 55\\%; 0,58; \\frac{2}{3} \\)",
+        "\\( \\frac{2}{3}; 0,6; 0,58; 55\\% \\)"
+      ],
+      "correct": 0,
+      "desc": "Indikator 12: 55%=0,55; 0,58; 0,60; 2/3=0,66."
+    },
+    {
+      "no": 13,
+      "text": "Hasil dari \\( 2 \\frac{1}{2} + 1 \\frac{1}{4} - 0,5 \\) adalah...",
+      "options": [
+        "\\( 3 \\frac{1}{4} \\)",
+        "\\( 3 \\frac{1}{2} \\)",
+        "\\( 3,75 \\)",
+        "\\( 4 \\)"
+      ],
+      "correct": 0,
+      "desc": "Indikator 13: 2,5 + 1,25 - 0,5 = 3,25 = 3 1/4."
+    },
+    {
+      "no": 14,
+      "text": "Ibu memiliki kue tart. \\( \\frac{1}{2} \\) bagian diberikan ke nenek, \\( \\frac{1}{3} \\) bagian diberikan ke tetangga. Sisa kue ibu adalah...",
+      "options": [
+        "\\( \\frac{1}{6} \\)",
+        "\\( \\frac{1}{5} \\)",
+        "\\( \\frac{2}{3} \\)",
+        "\\( \\frac{5}{6} \\)"
+      ],
+      "correct": 0,
+      "desc": "Indikator 14: 1 - (1/2 + 1/3) = 1 - 5/6 = 1/6."
+    },
+    {
+      "no": 15,
+      "text": "Sebotol sirup berisi 1,5 liter. Sirup tersebut akan dituang ke dalam gelas yang berkapasitas 0,25 liter. Banyak gelas yang dibutuhkan adalah...",
+      "options": [
+        "4 gelas",
+        "5 gelas",
+        "6 gelas",
+        "7 gelas"
+      ],
+      "correct": 2,
+      "desc": "Indikator 15: 1,5 : 0,25 = 6."
+    },
+    {
+      "no": 16,
+      "text": "Ayah menerima gaji. \\( \\frac{1}{3} \\) bagian ditabung, \\( \\frac{1}{2} \\) bagian untuk belanja bulanan, dan sisanya Rp1.000.000 untuk keperluan lain. Besar gaji Ayah adalah...",
+      "options": [
+        "Rp4.000.000",
+        "Rp5.000.000",
+        "Rp6.000.000",
+        "Rp7.000.000"
+      ],
+      "correct": 2,
+      "desc": "Indikator 16: Sisa bagian = 1 - (1/3 + 1/2) = 1/6. Jika 1/6 = 1 juta, maka total = 6 juta."
+    },
+    {
+      "no": 17,
+      "text": "Koefisien dari \\( y \\) pada bentuk aljabar \\( 5x^2 - 3y + 8 \\) adalah...",
+      "options": [
+        "5",
+        "3",
+        "-3",
+        "8"
+      ],
+      "correct": 2,
+      "desc": "Indikator 17: Angka di depan variabel y."
+    },
+    {
+      "no": 18,
+      "text": "Pada bentuk aljabar \\( 2a + 3b - 5 \\), variabelnya adalah...",
+      "options": [
+        "2 dan 3",
+        "a dan b",
+        "-5",
+        "2a dan 3b"
+      ],
+      "correct": 1,
+      "desc": "Indikator 18: Huruf yang nilainya belum diketahui."
+    },
+    {
+      "no": 19,
+      "text": "Konstanta dari bentuk aljabar \\( x^2 + 4x - 12 \\) adalah...",
+      "options": [
+        "1",
+        "4",
+        "12",
+        "-12"
+      ],
+      "correct": 3,
+      "desc": "Indikator 19: Suku tanpa variabel."
+    },
+    {
+      "no": 20,
+      "text": "Banyak suku pada bentuk aljabar \\( 4x - 2y + 7 \\) adalah...",
+      "options": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "correct": 2,
+      "desc": "Indikator 20: Tiga suku yaitu 4x, -2y, dan 7."
+    },
+    {
+      "no": 21,
+      "text": "Pasangan suku sejenis dari \\( 5x^2 - 2xy + 3x^2 + xy \\) adalah...",
+      "options": [
+        "\\( 5x^2 \\) dan \\( -2xy \\)",
+        "\\( 5x^2 \\) dan \\( 3x^2 \\)",
+        "\\( -2xy \\) dan \\( 3x^2 \\)",
+        "\\( 5x^2 \\) dan \\( xy \\)"
+      ],
+      "correct": 1,
+      "desc": "Indikator 21: Variabel dan pangkatnya sama persis."
+    },
+    {
+      "no": 22,
+      "text": "Hasil penjumlahan \\( (2x + 5) + (3x - 8) \\) adalah...",
+      "options": [
+        "\\( 5x - 3 \\)",
+        "\\( 5x + 13 \\)",
+        "\\( x - 3 \\)",
+        "\\( 5x + 3 \\)"
+      ],
+      "correct": 0,
+      "desc": "Indikator 22: (2x+3x) + (5-8) = 5x - 3."
+    },
+    {
+      "no": 23,
+      "text": "Hasil pengurangan \\( (4a - 2b) - (a + 3b) \\) adalah...",
+      "options": [
+        "\\( 3a + b \\)",
+        "\\( 3a + 5b \\)",
+        "\\( 3a - 5b \\)",
+        "\\( 5a + b \\)"
+      ],
+      "correct": 2,
+      "desc": "Indikator 23: 4a-a = 3a; -2b-3b = -5b."
+    },
+    {
+      "no": 24,
+      "text": "Perbandingan umur Kakak dan Adik adalah 5 : 3. Jika umur Adik 12 tahun, umur Kakak adalah...",
+      "options": [
+        "15 tahun",
+        "18 tahun",
+        "20 tahun",
+        "25 tahun"
+      ],
+      "correct": 2,
+      "desc": "Indikator 24: (5/3) x 12 = 5 x 4 = 20."
+    },
+    {
+      "no": 25,
+      "text": "Bentuk sederhana dari perbandingan 15 : 25 adalah...",
+      "options": [
+        "2 : 3",
+        "3 : 5",
+        "3 : 4",
+        "5 : 3"
+      ],
+      "correct": 1,
+      "desc": "Indikator 25: Dibagi 5."
+    },
+    {
+      "no": 26,
+      "text": "Diketahui \\( X : Y = 4 : 7 \\). Jika \\( X = 20 \\), maka nilai \\( Y \\) adalah...",
+      "options": [
+        "28",
+        "35",
+        "42",
+        "49"
+      ],
+      "correct": 1,
+      "desc": "Indikator 26: Y = (7/4) x 20 = 7 x 5 = 35."
+    },
+    {
+      "no": 27,
+      "text": "Perbandingan kelereng Merah dan Biru adalah 2 : 5. Jika jumlah kelereng 49 butir, banyak kelereng Biru adalah...",
+      "options": [
+        "14",
+        "21",
+        "35",
+        "40"
+      ],
+      "correct": 2,
+      "desc": "Indikator 27: Biru = (5/7) x 49 = 5 x 7 = 35."
+    },
+    {
+      "no": 28,
+      "text": "Harga 5 kg jeruk adalah Rp75.000. Harga 2 kg jeruk adalah...",
+      "options": [
+        "Rp15.000",
+        "Rp20.000",
+        "Rp25.000",
+        "Rp30.000"
+      ],
+      "correct": 3,
+      "desc": "Indikator 28: Perbandingan Senilai. 1 kg = 15.000. 2 kg = 30.000."
+    },
+    {
+      "no": 29,
+      "text": "Sebuah motor menempuh 120 km dengan 4 liter bensin. Jika tersedia 6 liter bensin, jarak yang dapat ditempuh adalah...",
+      "options": [
+        "150 km",
+        "160 km",
+        "180 km",
+        "200 km"
+      ],
+      "correct": 2,
+      "desc": "Indikator 29: Perbandingan Senilai. (6/4) x 120 = 1,5 x 120 = 180."
+    },
+    {
+      "no": 30,
+      "text": "Pembangunan rumah direncanakan selesai dalam 30 hari oleh 10 pekerja. Jika ingin selesai dalam 20 hari, jumlah pekerja yang dibutuhkan adalah...",
+      "options": [
+        "12 orang",
+        "15 orang",
+        "20 orang",
+        "25 orang"
+      ],
+      "correct": 1,
+      "desc": "Indikator 30: Berbalik nilai. 30 x 10 = 20 x P. P = 300/20 = 15."
+    },
+    {
+      "no": 31,
+      "text": "Hasil perkalian \\( 3(2x + 4) \\) adalah...",
+      "options": [
+        "\\( 6x + 4 \\)",
+        "\\( 6x + 12 \\)",
+        "\\( 5x + 7 \\)",
+        "\\( 2x + 12 \\)"
+      ],
+      "correct": 1,
+      "desc": "Indikator 31 (Adaptasi Pasangkan): Distributif. 3x2x + 3x4."
+    },
+    {
+      "no": 32,
+      "text": "Hasil dari \\( (x + 2)(x + 5) \\) adalah...",
+      "options": [
+        "\\( x^2 + 7x + 10 \\)",
+        "\\( x^2 + 3x + 10 \\)",
+        "\\( x^2 + 10x + 7 \\)",
+        "\\( x^2 + 7x + 7 \\)"
+      ],
+      "correct": 0,
+      "desc": "Indikator 32 (Adaptasi Pasangkan): Perkalian binomial."
+    },
+    {
+      "no": 33,
+      "text": "Hasil pembagian \\( 15a^3 : 5a \\) adalah...",
+      "options": [
+        "\\( 3a^2 \\)",
+        "\\( 3a \\)",
+        "\\( 5a^2 \\)",
+        "\\( 3a^3 \\)"
+      ],
+      "correct": 0,
+      "desc": "Indikator 33 (Adaptasi Pasangkan): 15:5=3, a^3:a=a^2."
+    },
+    {
+      "no": 34,
+      "text": "Bentuk sederhana dari \\( (8x + 12) : 4 \\) adalah...",
+      "options": [
+        "\\( 2x + 12 \\)",
+        "\\( 2x + 3 \\)",
+        "\\( 4x + 3 \\)",
+        "\\( 2x + 4 \\)"
+      ],
+      "correct": 1,
+      "desc": "Indikator 34 (Adaptasi Pasangkan): Bagi kedua suku dengan 4."
+    },
+    {
+      "no": 35,
+      "text": "Hasil dari \\( 2(x + 3) + 3(x - 1) \\) adalah...",
+      "options": [
+        "\\( 5x + 2 \\)",
+        "\\( 5x + 3 \\)",
+        "\\( 5x + 6 \\)",
+        "\\( 6x + 3 \\)"
+      ],
+      "correct": 1,
+      "desc": "Indikator 35 (Adaptasi Pasangkan): 2x+6 + 3x-3 = 5x+3."
+    },
+    {
+      "no": 36,
+      "text": "Jarak dua kota pada peta adalah 5 cm. Jika skala peta 1 : 1.200.000, jarak sebenarnya adalah...",
+      "options": [
+        "6 km",
+        "60 km",
+        "600 km",
+        "12 km"
+      ],
+      "correct": 1,
+      "desc": "Indikator 36 (Adaptasi Essay): 5 x 1.200.000 = 6.000.000 cm = 60 km."
+    },
+    {
+      "no": 37,
+      "text": "Jarak sebenarnya 80 km. Jika digambar dengan skala 1 : 2.000.000, jarak pada peta adalah...",
+      "options": [
+        "2 cm",
+        "4 cm",
+        "8 cm",
+        "16 cm"
+      ],
+      "correct": 1,
+      "desc": "Indikator 37 (Adaptasi Essay): 8.000.000 : 2.000.000 = 4 cm."
+    },
+    {
+      "no": 38,
+      "text": "Persediaan rumput cukup untuk 18 sapi selama 4 hari. Jika sapi bertambah 6 ekor (total 24), rumput akan habis dalam...",
+      "options": [
+        "2 hari",
+        "3 hari",
+        "5 hari",
+        "6 hari"
+      ],
+      "correct": 1,
+      "desc": "Indikator 38 (Adaptasi Essay): (18 x 4) / 24 = 72 / 24 = 3 hari."
+    },
+    {
+      "no": 39,
+      "text": "Selisih uang A dan B adalah Rp15.000. Jika perbandingan uang mereka 5 : 2, jumlah uang mereka adalah...",
+      "options": [
+        "Rp25.000",
+        "Rp35.000",
+        "Rp45.000",
+        "Rp50.000"
+      ],
+      "correct": 1,
+      "desc": "Indikator 39 (Adaptasi Essay): Selisih rasio 3 bagian=15rb (1 bag=5rb). Jumlah rasio 7 bagian = 35rb."
+    },
+    {
+      "no": 40,
+      "text": "Proyek perbaikan jalan direncanakan selesai 60 hari oleh 20 pekerja. Setelah 30 hari bekerja, proyek terhenti 10 hari. Agar selesai tepat waktu (sisa 20 hari), tambahan pekerja yang dibutuhkan adalah...",
+      "options": [
+        "10 pekerja",
+        "15 pekerja",
+        "20 pekerja",
+        "30 pekerja"
+      ],
+      "correct": 0,
+      "desc": "Indikator 40 (Adaptasi Essay): Sisa beban 30x20=600. Sisa waktu 20 hari. Butuh 600/20=30 pekerja. Tambahan 30-20=10."
+    }
+  ]
+}

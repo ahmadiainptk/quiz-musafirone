@@ -418,6 +418,31 @@
                 "icon": "🪐"
               }
             ]
+          }, 
+{
+            "type": "folder",
+            "title": "MTK",
+            "icon": "🧬",
+            "children": [
+              {
+                "type": "file",
+                "id": "psa1-mtk-8-biyan-1",
+                "title": "Latihan PSA MTK Ganjil #1",
+                "subject": "MTK",
+                "grade": "8 SMP",
+                "file": "psa1-mtk-8-biyan-1.json",
+                "icon": "🪐"
+              },
+              {
+                "type": "file",
+                "id": "psa1-mtk-8-biyan-2",
+                "title": "Latihan PSA MTK Ganjil #2",
+                "subject": "MTK",
+                "grade": "8 SMP",
+                "file": "psa1-mtk-8-biyan-2.json",
+                "icon": "🪐"
+              }
+            ]
           }
         ]
       }

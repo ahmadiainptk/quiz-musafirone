@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuis Matematika Genza</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- KaTeX CSS & JS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap');
+        
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: #f3f4f6;
+        }
+
+        .math-tex {
+            font-size: 1.1em;
+        }
+
+        /* SVG Container untuk Responsivitas */
+        .svg-container {
+            width: 100%;
+            max-width: 300px;
+            margin: 1rem auto;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 10px;
+            background: white;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* Transisi halus */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .option-label {
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .option-input:checked + .option-content {
+            background-color: #dbeafe; /* blue-100 */
+            border-color: #3b82f6; /* blue-500 */
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <!-- Navbar -->
+    <nav class="bg-blue-600 text-white p-4 shadow-md sticky top-0 z-50">
+        <div class="max-w-3xl mx-auto flex justify-between items-center">
+            <h1 class="text-xl font-bold">Genza Math Quiz</h1>
+            <div id="timer-display" class="hidden bg-red-500 px-3 py-1 rounded-full font-mono font-bold text-sm">
+                00:00
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <main class="max-w-3xl mx-auto p-4 min-h-screen">
+        
+        <!-- Halaman Beranda (Pilih Paket) -->
+        <div id="home-screen" class="fade-in">
+            <div class="text-center mb-8 mt-4">
+                <h2 class="text-2xl font-bold mb-2">Selamat Datang!</h2>
+                <p class="text-gray-600">Silakan pilih paket soal sesuai jenjang kelas Anda.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Paket A -->
+                <button onclick="startQuiz('A')" class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md border-l-4 border-green-500 hover:bg-green-50 transition text-left group">
+                    <h3 class="font-bold text-lg group-hover:text-green-700">Paket A (Kelas 6)</h3>
+                    <p class="text-sm text-gray-500 mt-1">20 Soal • Pecahan, Bangun Ruang, Data</p>
+                    <span class="inline-block mt-3 text-xs bg-gray-100 px-2 py-1 rounded text-gray-600">Waktu: 60 Menit</span>
+                </button>
+
+                <!-- Paket B -->
+                <button onclick="startQuiz('B')" class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md border-l-4 border-blue-500 hover:bg-blue-50 transition text-left group">
+                    <h3 class="font-bold text-lg group-hover:text-blue-700">Paket B (Kelas 7)</h3>
+                    <p class="text-sm text-gray-500 mt-1">20 Soal • Bilangan Bulat, Aljabar Dasar</p>
+                    <span class="inline-block mt-3 text-xs bg-gray-100 px-2 py-1 rounded text-gray-600">Waktu: 60 Menit</span>
+                </button>
+
+                <!-- Paket C -->
+                <button onclick="startQuiz('C')" class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md border-l-4 border-purple-500 hover:bg-purple-50 transition text-left group">
+                    <h3 class="font-bold text-lg group-hover:text-purple-700">Paket C (Kelas 8)</h3>
+                    <p class="text-sm text-gray-500 mt-1">20 Soal • Pola Bilangan, Pythagoras</p>
+                    <span class="inline-block mt-3 text-xs bg-gray-100 px-2 py-1 rounded text-gray-600">Waktu: 60 Menit</span>
+                </button>
+
+                <!-- Paket D -->
+                <button onclick="startQuiz('D')" class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md border-l-4 border-red-500 hover:bg-red-50 transition text-left group">
+                    <h3 class="font-bold text-lg group-hover:text-red-700">Paket D (Kelas 9)</h3>
+                    <p class="text-sm text-gray-500 mt-1">20 Soal • Pangkat, Akar, Bangun Sisi Lengkung</p>
+                    <span class="inline-block mt-3 text-xs bg-gray-100 px-2 py-1 rounded text-gray-600">Waktu: 90 Menit</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Halaman Kuis -->
+        <div id="quiz-screen" class="hidden fade-in">
+            <div id="quiz-header" class="mb-4 flex justify-between items-end border-b pb-2">
+                <span id="package-title" class="font-bold text-gray-700 text-lg"></span>
+                <span id="progress-text" class="text-sm text-gray-500"></span>
+            </div>
+
+            <form id="quiz-form">
+                <div id="questions-container" class="space-y-8">
+                    <!-- Soal akan di-inject di sini oleh JavaScript -->
+                </div>
+
+                <div class="mt-8 text-center pb-12">
+                    <button type="button" onclick="submitQuiz()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition transform hover:scale-105">
+                        Kirim Jawaban
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Halaman Hasil -->
+        <div id="result-screen" class="hidden fade-in">
+            <div class="bg-white rounded-xl shadow-lg p-6 text-center mb-6">
+                <h2 class="text-2xl font-bold mb-2">Hasil Kuis</h2>
+                <div class="text-5xl font-extrabold text-blue-600 my-4" id="final-score">0</div>
+                <p class="text-gray-600 mb-4">Nilai Akhir Anda</p>
+                
+                <div class="flex justify-center gap-4">
+                    <button onclick="resetApp()" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded transition">
+                        Pilih Paket Lain
+                    </button>
+                    <button onclick="retryQuiz()" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded transition">
+                        Coba Lagi
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow p-6">
+                <h3 class="font-bold text-lg mb-4 border-b pb-2">Pembahasan Soal</h3>
+                <div id="discussion-container" class="space-y-6">
+                    <!-- Pembahasan di-inject di sini -->
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        // --- DATA SOAL ---
+        const quizData = {
+            "A": {
+        title: "Paket A (Kelas 6)",
+        time: 60, // menit
+        questions: [
+            {
+                id: 1,
+                q: "Hitunglah hasil dari operasi pecahan berikut: $(1\\frac{1}{3}+1\\frac{1}{8})-(2\\frac{2}{3}-1\\frac{1}{4})$",
+                options: ["$2\\frac{1}{3}$", "$1\\frac{1}{24}$", "$2\\frac{5}{25}$", "$1\\frac{11}{24}$"],
+                correct: 1, // B
+                explanation: "Samakan penyebut menjadi 24. <br> Kelompok 1: $1\\frac{8}{24} + 1\\frac{3}{24} = 2\\frac{11}{24}$. <br> Kelompok 2: $2\\frac{16}{24} - 1\\frac{6}{24} = 1\\frac{10}{24}$. <br> Hasil: $2\\frac{11}{24} - 1\\frac{10}{24} = 1\\frac{1}{24}$"
+            },
+            {
+                id: 2,
+                q: "Pak Ahmad mempunyai 120 kg gula yang akan dibagikan kepada anak yatim dengan berat masing-masing $1\\frac{3}{5}$ kg. Berapa banyak anak yatim yang menerima gula tersebut?",
+                options: ["50 orang", "60 orang", "72 orang", "75 orang"],
+                correct: 3, // D
+                explanation: "Ubah pecahan campuran ke biasa: $1\\frac{3}{5} = \\frac{8}{5}$. <br> Jumlah anak = $120 : \\frac{8}{5} = 120 \\times \\frac{5}{8} = 15 \\times 5 = 75$ orang."
+            },
+            {
+                id: 3,
+                q: "Sawah Pak Mamat seluas $10.000 m^2$ ditanami padi dan jagung. Jika $\\frac{3}{4}$ bagian ditanami padi, maka luas sawah yang ditanami jagung adalah...",
+                options: ["$7.500 m^2$", "$5.000 m^2$", "$2.500 m^2$", "$2.000 m^2$"],
+                correct: 2, // C
+                explanation: "Bagian jagung = $1 - \\frac{3}{4} = \\frac{1}{4}$. <br> Luas jagung = $\\frac{1}{4} \\times 10.000 = 2.500 m^2$."
+            },
+            {
+                id: 4,
+                q: "Hasil perkalian $2,57 \\times 2,4$ adalah...",
+                options: ["6,168", "61,68", "616,8", "6.168"],
+                correct: 0, // A
+                explanation: "$257 \\times 24 = 6168$. Total ada 3 angka di belakang koma (2 dari 2,57 dan 1 dari 2,4). Jadi hasilnya 6,168."
+            },
+            {
+                id: 5,
+                q: "Apabila $25 \\times 18 \\times 4 : (-6) = n$, maka nilai $n$ sama dengan...",
+                options: ["-300", "300", "-330", "330"],
+                correct: 0, // A
+                explanation: "$25 \\times 18 \\times 4 = 1.800$. <br> $1.800 : (-6) = -300$."
+            },
+            {
+                id: 6,
+                q: "Hasil dari $241 + 25 - (-37) - 204$ adalah...",
+                options: ["99", "25", "79", "98"],
+                correct: 0, // A
+                explanation: "$241 + 25 + 37 - 204 = 303 - 204 = 99$."
+            },
+            {
+                id: 7,
+                q: "Hasil dari $1.325 - 125 : 5 \\times 16$ adalah...",
+                options: ["3.840", "3.250", "925", "725"],
+                correct: 2, // C
+                explanation: "Kerjakan pembagian dan perkalian dulu: <br> $125 : 5 = 25$, lalu $25 \\times 16 = 400$. <br> $1.325 - 400 = 925$."
+            },
+            {
+                id: 8,
+                q: "Sebuah daging beku suhunya $-4^\\circ C$. Daging tersebut dimasak hingga suhunya $80^\\circ C$. Saat dihidangkan suhunya turun $22^\\circ C$. Tentukan suhunya sekarang?",
+                options: ["$54^\\circ C$", "$41^\\circ C$", "$44^\\circ C$", "$58^\\circ C$"],
+                correct: 3, // D
+                explanation: "Suhu setelah dimasak $80^\\circ C$, kemudian turun $22^\\circ C$. <br> $80 - 22 = 58^\\circ C$."
+            },
+            {
+                id: 9,
+                q: "Volume sebuah kubus adalah $27.000 cm^3$. Panjang rusuk kubus tersebut adalah...",
+                options: ["10 cm", "20 cm", "30 cm", "40 cm"],
+                correct: 2, // C
+                explanation: "Panjang rusuk = $\\sqrt[3]{Volume}$. <br> $r = \\sqrt[3]{27.000} = 30$ cm."
+            },
+            {
+                id: 10,
+                q: "Kolam renang berukuran panjang 8,5 m, lebar 5 m, dan kedalaman 2 m. Berapa volume air jika kolam diisi penuh?",
+                options: ["$65 m^3$", "$75 m^3$", "$85 m^3$", "$95 m^3$"],
+                correct: 2, // C
+                explanation: "Volume balok = $p \\times l \\times t$. <br> $8,5 \\times 5 \\times 2 = 8,5 \\times 10 = 85 m^3$."
+            },
+            {
+                id: 11,
+                q: "Diketahui nilai ulangan 6 siswa: 78, 66, 81, 72, 73, 68. Berapakah rata-rata (mean) nilai tersebut?",
+                options: ["78", "81", "68", "73"],
+                correct: 3, // D
+                explanation: "Jumlah data = $78+66+81+72+73+68 = 438$. <br> Banyak data = 6. <br> Mean = $438 : 6 = 73$."
+            },
+            {
+                id: 12,
+                q: "Urutkan pecahan berikut dari yang terkecil: $\\frac{2}{5}$; 83%; 2,45; $2\\frac{1}{4}$",
+                options: ["$\\frac{2}{5}$; 83%; 2,45; $2\\frac{1}{4}$", "83%; 2,45; $2\\frac{1}{4}$; $\\frac{2}{5}$", "$\\frac{2}{5}$; 83%; $2\\frac{1}{4}$; 2,45", "2,45; $2\\frac{1}{4}$; 83%; $\\frac{2}{5}$"],
+                correct: 2, // C
+                explanation: "Ubah ke desimal: $\\frac{2}{5}=0,40$; $83\\%=0,83$; $2\\frac{1}{4}=2,25$; $2,45=2,45$. <br> Urutan: 0,40 < 0,83 < 2,25 < 2,45."
+            },
+            {
+                id: 13,
+                q: "Tentukan median dari data berikut:<br>Nilai 4 (4 orang), Nilai 5 (6 orang), Nilai 6 (6 orang), Nilai 7 (8 orang), Nilai 8 (7 orang), Nilai 9 (2 orang).",
+                options: ["5", "6", "6,5", "7"],
+                correct: 3, // D
+                explanation: "Total frekuensi = $4+6+6+8+7+2 = 33$. <br> Median ada di data ke-17. <br> Urutan data: 1-4(nilai 4), 5-10(nilai 5), 11-16(nilai 6), 17-24(nilai 7). <br> Jadi data ke-17 adalah 7."
+            },
+            {
+                id: 14,
+                q: "Doni mengukur keliling bola dan mendapatkan hasil 132 cm. Diameter bola tersebut adalah... ($\\pi = \\frac{22}{7}$)",
+                options: ["14 cm", "25 cm", "42 cm", "50 cm"],
+                correct: 2, // C
+                explanation: "$K = \\pi \\times d \\rightarrow 132 = \\frac{22}{7} \\times d$. <br> $d = 132 \\times \\frac{7}{22} = 6 \\times 7 = 42$ cm."
+            },
+            {
+                id: 15,
+                q: "Luas sebuah lingkaran adalah $2.464 cm^2$. Keliling lingkaran tersebut adalah...",
+                options: ["168 cm", "174 cm", "176 cm", "182 cm"],
+                correct: 2, // C
+                explanation: "$L = \\pi r^2 \\rightarrow 2464 = \\frac{22}{7} r^2 \\rightarrow r^2 = 784 \\rightarrow r = 28$. <br> $K = 2 \\pi r = 2 \\times \\frac{22}{7} \\times 28 = 176$ cm."
+            },
+            {
+                id: 16,
+                q: "Hasil perhitungan dari $\\sqrt{576} + 765 : 15$ adalah...",
+                options: ["75", "82", "95", "60"],
+                correct: 0, // A
+                explanation: "$\\sqrt{576} = 24$. <br> $765 : 15 = 51$. <br> $24 + 51 = 75$."
+            },
+            {
+                id: 17,
+                q: "Perbandingan uang Budi dan Deni adalah 4:7. Jika jumlah total uang mereka adalah Rp 132.000,00, berapakah uang Budi?",
+                options: ["Rp 84.000,00", "Rp 48.000,00", "Rp 68.000,00", "Rp 86.000,00"],
+                correct: 1, // B
+                explanation: "Total bagian = $4+7=11$. <br> Uang Budi = $\\frac{4}{11} \\times 132.000 = 4 \\times 12.000 = 48.000$."
+            },
+            {
+                id: 18,
+                q: "Hasil dari $0,875 : 0,25 + 0,44 : 2,75$ adalah...",
+                options: ["3,42", "3,58", "3,60", "3,66"],
+                correct: 3, // D
+                explanation: "$0,875 : 0,25 = 3,5$. <br> $0,44 : 2,75 = 0,16$. <br> $3,5 + 0,16 = 3,66$."
+            },
+            {
+                id: 19,
+                q: "Nilai $a$ yang memenuhi persamaan $a + (-4) + 5 = -6$ adalah...",
+                options: ["7", "6", "-7", "-6"],
+                correct: 2, // C
+                explanation: "$a - 4 + 5 = -6 \\rightarrow a + 1 = -6 \\rightarrow a = -7$."
+            },
+            {
+                id: 20,
+                q: "Rata-rata nilai 30 siswa adalah 7,4. Setelah nilai 2 siswa susulan digabungkan, rata-rata menjadi 7,5. Berapakah rata-rata nilai kedua siswa susulan tersebut?",
+                options: ["7,6", "8", "9", "9,2"],
+                correct: 2, // C
+                explanation: "Total awal = $30 \\times 7,4 = 222$. <br> Total baru = $32 \\times 7,5 = 240$. <br> Selisih = $240 - 222 = 18$. <br> Rata-rata 2 siswa = $18 : 2 = 9$."
+            }
+        ]
+    },
+            "B": {
+        title: "Paket B (Kelas 7)",
+        time: 60, // menit
+        questions: [
+            {
+                id: 1,
+                q: "Diketahui nilai $a=-2$, $b=4$, $c=-3$, dan $d=7$. Tentukan nilai dari $ab + bc + cd$.",
+                options: ["-25", "-41", "25", "41"],
+                correct: 1, // B
+                explanation: "Substitusi nilai: <br> $ab = -2 \\times 4 = -8$ <br> $bc = 4 \\times -3 = -12$ <br> $cd = -3 \\times 7 = -21$ <br> Total: $-8 + (-12) + (-21) = -20 - 21 = -41$."
+            },
+            {
+                id: 2,
+                q: "Hitunglah hasil dari operasi bilangan bulat berikut: $10 + (-5) + (-18) + 20$.",
+                options: ["7", "5", "-7", "-6"],
+                correct: 0, // A
+                explanation: "$10 - 5 - 18 + 20 = 5 - 18 + 20 = -13 + 20 = 7$."
+            },
+            {
+                id: 3,
+                q: "Jika $-5 < x \\le 3$ dan $x$ adalah anggota bilangan bulat, maka himpunan penyelesaian dari $x$ adalah...",
+                options: ["{-5, -4, -3, -2, -1, 0, 1, 2}", "{-4, -3, -2, -1, 0, 1, 2}", "{-5, -4, -3, -2, -1, 0, 1, 2, 3}", "{-4, -3, -2, -1, 0, 1, 2, 3}"],
+                correct: 3, // D
+                explanation: "Tanda $<$ berarti -5 tidak termasuk (dimulai dari -4). <br> Tanda $\\le$ berarti 3 termasuk. <br> Jadi himpunannya: $\\{-4, -3, -2, -1, 0, 1, 2, 3\\}$."
+            },
+            {
+                id: 4,
+                q: "Hasil dari operasi campuran $10 + (-5 \\times 4) - 15 : (-5)$ adalah...",
+                options: ["-6", "-7", "6", "7"],
+                correct: 1, // B
+                explanation: "Perkalian dan pembagian didahulukan: <br> $(-5 \\times 4) = -20$ <br> $15 : (-5) = -3$ <br> Persamaan menjadi: $10 + (-20) - (-3) = -10 + 3 = -7$."
+            },
+            {
+                id: 5,
+                q: "Jika $a=-3$, $b=2$, dan $c=-5$, hitunglah nilai dari $(3a-2b+c)-(a+2b-3c)$.",
+                options: ["-34", "36", "-30", "34"],
+                correct: 0, // A
+                explanation: "Kelompok 1: $3(-3)-2(2)+(-5) = -9-4-5 = -18$. <br> Kelompok 2: $(-3)+2(2)-3(-5) = -3+4+15 = 16$. <br> Hasil: $-18 - 16 = -34$."
+            },
+            {
+                id: 6,
+                q: "Perhatikan operasi hitung berikut:<br>(i) $-5+(-3)=8$<br>(ii) $7+(-9)=2$<br>(iii) $-3-7=-10$<br>(iv) $-2+(-2)=-4$<br>Pernyataan yang benar adalah...",
+                options: ["(i), (ii), dan (iii)", "(i), (ii), dan (iv)", "(ii) dan (iii)", "(iii) dan (iv)"],
+                correct: 3, // D
+                explanation: "(i) Salah, hasilnya harus -8. <br> (ii) Salah, hasilnya harus -2. <br> (iii) Benar. <br> (iv) Benar."
+            },
+            {
+                id: 7,
+                q: "Bentuk pecahan paling sederhana dari bilangan desimal $0,875$ adalah...",
+                options: ["$\\frac{5}{6}$", "$\\frac{7}{8}$", "$\\frac{3}{4}$", "$\\frac{4}{5}$"],
+                correct: 1, // B
+                explanation: "$0,875 = \\frac{875}{1000}$. Pembilang dan penyebut dibagi 125. <br> $\\frac{875:125}{1000:125} = \\frac{7}{8}$."
+            },
+            {
+                id: 8,
+                q: "Luas sebuah persegi panjang adalah $1\\frac{4}{5} cm^2$. Jika lebarnya $1\\frac{1}{5} cm$, berapakah panjang persegi panjang tersebut?",
+                options: ["$1\\frac{5}{6}$ cm", "$1\\frac{3}{4}$ cm", "$1\\frac{2}{3}$ cm", "$1\\frac{1}{2}$ cm"],
+                correct: 3, // D
+                explanation: "Luas = $\\frac{9}{5}$, Lebar = $\\frac{6}{5}$. <br> Panjang = Luas : Lebar = $\\frac{9}{5} : \\frac{6}{5} = \\frac{9}{5} \\times \\frac{5}{6} = \\frac{45}{30} = 1\\frac{15}{30} = 1\\frac{1}{2}$ cm."
+            },
+            {
+                id: 9,
+                q: "Hasil perkalian dari $1,52 \\times 7,6$ adalah...",
+                options: ["11,552", "1,1552", "115,52", "1155,2"],
+                correct: 0, // A
+                explanation: "$152 \\times 76 = 11552$. <br> Total angka di belakang koma ada 3 (2 dari 1,52 dan 1 dari 7,6). <br> Jadi hasilnya 11,552."
+            },
+            {
+                id: 10,
+                q: "Sebuah pita panjangnya $5\\frac{5}{8}$ m dibagi menjadi tiga bagian yang sama panjang. Berapakah panjang setiap bagian?",
+                options: ["$1\\frac{7}{8}$ m", "$1\\frac{7}{9}$ m", "$1\\frac{5}{8}$ m", "$1\\frac{5}{9}$ m"],
+                correct: 0, // A
+                explanation: "$5\\frac{5}{8} = \\frac{45}{8}$. <br> $\\frac{45}{8} : 3 = \\frac{45}{8} \\times \\frac{1}{3} = \\frac{15}{8} = 1\\frac{7}{8}$ m."
+            },
+            {
+                id: 11,
+                q: "Bentuk desimal dari pecahan $\\frac{17}{40}$ adalah...",
+                options: ["0,475", "0,425", "0,375", "0,0425"],
+                correct: 1, // B
+                explanation: "$17 : 40 = 0,425$."
+            },
+            {
+                id: 12,
+                q: "Diketahui 25 orang pekerja dapat menyelesaikan pekerjaan dalam 6 hari. Jika hanya ada 15 pekerja, berapa lama pekerjaan tersebut selesai?",
+                options: ["8 hari", "9 hari", "10 hari", "11 hari"],
+                correct: 2, // C
+                explanation: "Perbandingan berbalik nilai. <br> $25 \\times 6 = 15 \\times n$ <br> $150 = 15n \\rightarrow n = 10$ hari."
+            },
+            {
+                id: 13,
+                q: "Uang Rita Rp 8.000,00, sedangkan uang Lisa Rp 4.000,00 lebih banyak dari uang Rita. Perbandingan uang Rita dan uang Lisa adalah...",
+                options: ["2 : 1", "2 : 3", "3 : 4", "4 : 5"],
+                correct: 1, // B
+                explanation: "Uang Lisa = $8.000 + 4.000 = 12.000$. <br> Perbandingan Rita : Lisa = $8.000 : 12.000$. <br> Disederhanakan (bagi 4.000) menjadi $2 : 3$."
+            },
+            {
+                id: 14,
+                q: "Sebuah kaleng berbentuk tabung memiliki jari-jari 14 cm dan tinggi 10 cm. Hitunglah luas permukaan kaleng tersebut!",
+                svg: `
+                <svg viewBox="0 0 100 120" class="w-24 h-32 stroke-current text-blue-600" fill="none" stroke-width="2">
+                    <ellipse cx="50" cy="15" rx="40" ry="10" />
+                    <line x1="10" y1="15" x2="10" y2="105" />
+                    <line x1="90" y1="15" x2="90" y2="105" />
+                    <path d="M10 105 a40 10 0 0 0 80 0" />
+                    <path d="M10 105 a40 10 0 0 1 80 0" stroke-dasharray="4" opacity="0.5"/>
+                    <text x="50" y="60" text-anchor="middle" font-size="10" stroke="none" fill="black">t=10</text>
+                    <text x="50" y="15" text-anchor="middle" font-size="10" stroke="none" fill="black">r=14</text>
+                </svg>`,
+                options: ["2.112 cm²", "2.212 cm²", "3.112 cm²", "3.212 cm²"],
+                correct: 0, // A
+                explanation: "$LP = 2\\pi r(r+t)$. <br> $2 \\times \\frac{22}{7} \\times 14 \\times (14+10)$ <br> $= 2 \\times 44 \\times 24 = 88 \\times 24 = 2.112$ cm²."
+            },
+            {
+                id: 15,
+                q: "Volume kubus yang memiliki panjang rusuk 16 cm adalah...",
+                options: ["3.068", "3.568", "4.156", "4.096"],
+                correct: 3, // D
+                explanation: "$V = s \\times s \\times s = 16 \\times 16 \\times 16 = 4.096$."
+            },
+            {
+                id: 16,
+                q: "Satu kodi kain (20 lembar) harganya Rp 190.000,00. Berapakah harga 17 lembar kain yang sama?",
+                options: ["Rp 165.500,00", "Rp 160.500,00", "Rp 161.500,00", "Rp 163.500,00"],
+                correct: 2, // C
+                explanation: "Harga per lembar = $190.000 : 20 = 9.500$. <br> Harga 17 lembar = $17 \\times 9.500 = 161.500$."
+            },
+            {
+                id: 17,
+                q: "Nilai $n$ yang memenuhi persamaan $3n : (-4) = -9$ adalah...",
+                options: ["12", "-12", "8", "10"],
+                correct: 0, // A
+                explanation: "$3n = -9 \\times (-4)$ <br> $3n = 36 \\rightarrow n = 12$."
+            },
+            {
+                id: 18,
+                q: "Jika $4^5 : 4^n = 16$, maka nilai dari $(n+1)^2$ adalah...",
+                options: ["18", "16", "15", "14"],
+                correct: 1, // B
+                explanation: "$4^5 : 4^n = 4^2$. <br> Pangkat: $5 - n = 2 \\rightarrow n = 3$. <br> Nilai $(n+1)^2 = (3+1)^2 = 4^2 = 16$."
+            },
+            {
+                id: 19,
+                q: "Hasil dari $(12:4) - (3 \\times -4)$ adalah...",
+                options: ["-15", "15", "-14", "14"],
+                correct: 1, // B
+                explanation: "$3 - (-12) = 3 + 12 = 15$."
+            },
+            {
+                id: 20,
+                q: "Salah satu bilangan rasional yang terletak di antara pecahan $\\frac{3}{2}$ dan $\\frac{9}{5}$ adalah...",
+                options: ["$\\frac{18}{10}$", "$\\frac{20}{10}$", "$\\frac{19}{10}$", "$\\frac{17}{10}$"],
+                correct: 3, // D
+                explanation: "Ubah ke desimal: $\\frac{3}{2}=1,5$ dan $\\frac{9}{5}=1,8$. <br> Pilihan D: $\\frac{17}{10} = 1,7$. <br> 1,7 terletak di antara 1,5 dan 1,8."
+            }
+        ]
+    },
+            "C": {
+                title: "Paket C (Kelas 8)",
+                time: 60,
+                questions: [
+                    {
+                        id: 1,
+                        q: "Manakah pasangan suku sejenis dari bentuk aljabar: $7x^2 + 5xy - 4y^2 - 6x^2 + 2xy + 2y^2$?",
+                        // FIXED: Added $ delimiters to math parts of options
+                        options: ["$7x^2$ dan $5xy$", "$5xy$ dan $2xy$", "$-4y^2$ dan $2xy$", "$7x^2$ dan $-4y^2$"],
+                        correct: 1,
+                        explanation: "Suku sejenis memiliki variabel dan pangkat yang sama. Disini $5xy$ dan $2xy$ adalah sejenis."
+                    },
+                    {
+                        id: 3,
+                        q: "Faktorkanlah bentuk persamaan kuadrat berikut: $x^2 + 2x - 48$.",
+                        // FIXED: Added $ delimiters to options
+                        options: ["$(x-8)(x-6)$", "$(x-4)(x-6)$", "$(x+8)(x-6)$", "$(x+24)(x-2)$"],
+                        correct: 2,
+                        explanation: "Cari dua angka yang dikali hasilnya -48 dan dijumlah hasilnya 2. Angka tersebut adalah 8 dan -6. Maka $(x+8)(x-6)$."
+                    },
+                    {
+                        id: 6,
+                        q: "Perhatikan gambar garis lurus. Jika sudut pertama $(7x+5)^\\circ$ dan pelurusnya $(-2x+25)^\\circ$. Tentukan nilai $3x+30$.",
+                        svg: `
+                        <svg viewBox="0 0 200 60" class="w-full stroke-current text-gray-700" stroke-width="2">
+                            <line x1="10" y1="50" x2="190" y2="50" />
+                            <line x1="100" y1="50" x2="140" y2="10" />
+                            <text x="60" y="40" font-size="12" stroke="none" fill="black">(7x+5)°</text>
+                            <text x="140" y="40" font-size="12" stroke="none" fill="black">Pelurus</text>
+                        </svg>`,
+                        options: ["120°", "160°", "180°", "165°"],
+                        correct: 0,
+                        explanation: "Jika berpelurus: $(7x+5) + (-2x+25) = 180 \\rightarrow 5x+30=180 \\rightarrow 5x=150 \\rightarrow x=30$. <br> Nilai $3x+30 = 3(30)+30 = 90+30 = 120$."
+                    },
+                    {
+                        id: 13,
+                        q: "Segitiga PQR siku-siku di P. Jika panjang $PQ=12$ cm dan $PR=5$ cm, berapakah panjang sisi miring QR?",
+                        svg: `
+                        <svg viewBox="0 0 100 100" class="w-32 h-32 stroke-current text-purple-600" fill="none" stroke-width="2">
+                            <polygon points="10,90 90,90 10,30" />
+                            <text x="5" y="95" font-size="12" stroke="none" fill="black">P</text>
+                            <text x="95" y="95" font-size="12" stroke="none" fill="black">R</text>
+                            <text x="5" y="25" font-size="12" stroke="none" fill="black">Q</text>
+                            <text x="50" y="95" font-size="10" stroke="none" fill="black">5</text>
+                            <text x="5" y="60" font-size="10" stroke="none" fill="black">12</text>
+                        </svg>`,
+                        options: ["13 cm", "12 cm", "15 cm", "10 cm"],
+                        correct: 0,
+                        explanation: "Dalil Pythagoras: $QR = \\sqrt{12^2 + 5^2} = \\sqrt{144+25} = \\sqrt{169} = 13$ cm."
+                    },
+                    {
+                        id: 16,
+                        q: "Sebuah tangga sepanjang 5 m disandarkan pada pohon. Jarak ujung bawah tangga ke pohon adalah 3 m. Berapa tinggi ujung atas tangga dari tanah?",
+                        options: ["4 m", "5 m", "3 m", "6 m"],
+                        correct: 0,
+                        explanation: "Tripel Pythagoras (3, 4, 5). Tinggi = $\\sqrt{5^2 - 3^2} = \\sqrt{25-9} = 4$ m."
+                    }
+                ]
+            },
+            "D": {
+                title: "Paket D (Kelas 9)",
+                time: 90,
+                questions: [
+                    {
+                        id: 1,
+                        q: "Sederhanakan bentuk pecahan akar berikut: $\\frac{\\sqrt{5}}{3-\\sqrt{5}}$",
+                        // FIXED: Added $ delimiters to options
+                        options: ["$\\frac{3\\sqrt{5}+5}{3}$", "$\\frac{3\\sqrt{5}+5}{4}$", "$\\frac{3\\sqrt{5}-5}{3}$", "$\\frac{\\sqrt{5}-5}{3}$"],
+                        correct: 1,
+                        explanation: "Kalikan sekawan: $\\frac{\\sqrt{5}}{3-\\sqrt{5}} \\times \\frac{3+\\sqrt{5}}{3+\\sqrt{5}} = \\frac{3\\sqrt{5}+5}{9-5} = \\frac{3\\sqrt{5}+5}{4}$."
+                    },
+                    {
+                        id: 2,
+                        q: "Sederhanakan bentuk akar: $2\\sqrt{28} + \\sqrt{20} + \\sqrt{125}$",
+                        // FIXED: Added $ delimiters to options
+                        options: ["$4\\sqrt{7}+7\\sqrt{5}$", "$4\\sqrt{7}+5\\sqrt{5}$", "$4\\sqrt{5}+7\\sqrt{7}$", "$2\\sqrt{7}+3\\sqrt{5}$"],
+                        correct: 0,
+                        explanation: "$2\\sqrt{4\\times7} + \\sqrt{4\\times5} + \\sqrt{25\\times5}$ <br> $= 4\\sqrt{7} + 2\\sqrt{5} + 5\\sqrt{5}$ <br> $= 4\\sqrt{7} + 7\\sqrt{5}$."
+                    },
+                    {
+                        id: 5,
+                        q: "Hitung nilai dari: $216^{\\frac{1}{3}} - 16^{\\frac{1}{4}} + 125^{\\frac{2}{3}}$",
+                        options: ["21", "22", "29", "34"],
+                        correct: 2,
+                        explanation: "$6 - 2 + 5^2 = 6 - 2 + 25 = 29$."
+                    },
+                    {
+                        id: 11,
+                        q: "Sebuah kerucut memiliki jari-jari alas 4 cm dan tinggi 12 cm. Berapakah volumenya?",
+                        svg: `
+                        <svg viewBox="0 0 100 120" class="w-24 h-32 stroke-current text-red-600" fill="none" stroke-width="2">
+                            <ellipse cx="50" cy="100" rx="40" ry="10" />
+                            <line x1="10" y1="100" x2="50" y2="10" />
+                            <line x1="90" y1="100" x2="50" y2="10" />
+                            <line x1="50" y1="10" x2="50" y2="100" stroke-dasharray="4" opacity="0.5"/>
+                            <text x="60" y="60" font-size="10" stroke="none" fill="black">t=12</text>
+                        </svg>`,
+                        options: ["200,96 cm³", "150,75 cm³", "301,44 cm³", "420,05 cm³"],
+                        correct: 0,
+                        explanation: "$V = \\frac{1}{3} \\pi r^2 t = \\frac{1}{3} \\times 3,14 \\times 16 \\times 12 = 3,14 \\times 64 = 200,96$."
+                    },
+                    {
+                        id: 17,
+                        q: "Volume kubus sama dengan volume balok (64.000). Panjang balok 2 kali sisi kubus, lebar dan tinggi balok sama. Berapa lebar balok?",
+                        // FIXED: Added $ delimiters to options
+                        options: ["$20\\sqrt{2}$", "40", "$40\\sqrt{2}$", "80"],
+                        correct: 0,
+                        explanation: "Sisi kubus = 40. P Balok = 80. <br> $64000 = 80 \\times l^2 \\rightarrow l^2=800 \\rightarrow l = \\sqrt{800} = 20\\sqrt{2}$."
+                    }
+                ]
+            }
+        };
+
+        // --- STATE VARIABLES ---
+        let currentPackage = null;
+        let timerInterval = null;
+        let timeLeft = 0;
+        let userAnswers = {}; // { questionIndex: optionIndex }
+
+        // --- DOM ELEMENTS ---
+        const homeScreen = document.getElementById('home-screen');
+        const quizScreen = document.getElementById('quiz-screen');
+        const resultScreen = document.getElementById('result-screen');
+        const timerDisplay = document.getElementById('timer-display');
+        const questionsContainer = document.getElementById('questions-container');
+
+        // --- FUNCTIONS ---
+
+        function startQuiz(pkgId) {
+            currentPackage = quizData[pkgId];
+            userAnswers = {};
+            timeLeft = currentPackage.time * 60; // seconds
+
+            // UI Switching
+            homeScreen.classList.add('hidden');
+            resultScreen.classList.add('hidden');
+            quizScreen.classList.remove('hidden');
+            timerDisplay.classList.remove('hidden');
+
+            // Header Info
+            document.getElementById('package-title').innerText = currentPackage.title;
+            
+            // Render Questions
+            renderQuestions();
+
+            // Start Timer
+            startTimer();
+            
+            // Render Math (Initial)
+            renderMathInElement(document.body);
+            window.scrollTo(0,0);
+        }
+
+        function renderQuestions() {
+            questionsContainer.innerHTML = '';
+            
+            currentPackage.questions.forEach((q, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = "bg-white p-6 rounded-lg shadow-sm border border-gray-100";
+                
+                // SVG rendering if exists
+                const svgContent = q.svg ? `<div class="svg-container">${q.svg}</div>` : '';
+
+                let optionsHtml = '';
+                q.options.forEach((opt, optIdx) => {
+                    optionsHtml += `
+                        <label class="block mb-3 cursor-pointer group">
+                            <input type="radio" name="q${index}" value="${optIdx}" class="hidden option-input" onchange="saveAnswer(${index}, ${optIdx})">
+                            <div class="option-content flex items-center p-3 border rounded-lg hover:bg-blue-50 transition group-hover:border-blue-400">
+                                <span class="w-8 h-8 flex items-center justify-center bg-gray-100 text-gray-600 rounded-full mr-3 text-sm font-bold border shrink-0 transition group-hover:bg-blue-200 group-hover:text-blue-800">
+                                    ${String.fromCharCode(65 + optIdx)}
+                                </span>
+                                <span class="math-content text-gray-700">${opt}</span>
+                            </div>
+                        </label>
+                    `;
+                });
+
+                questionDiv.innerHTML = `
+                    <div class="mb-4">
+                        <span class="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded mb-2 font-bold">Soal ${index + 1}</span>
+                        <div class="text-lg font-medium text-gray-800">${q.q}</div>
+                        ${svgContent}
+                    </div>
+                    <div class="mt-4">
+                        ${optionsHtml}
+                    </div>
+                `;
+                questionsContainer.appendChild(questionDiv);
+            });
+            
+            // Re-render math specifically for new content
+            renderMathInElement(questionsContainer, {
+                delimiters: [
+                    {left: "$$", right: "$$", display: true},
+                    {left: "$", right: "$", display: false}
+                ]
+            });
+        }
+
+        function saveAnswer(qIndex, optIndex) {
+            userAnswers[qIndex] = optIndex;
+            
+            // Update Progress UI
+            const answeredCount = Object.keys(userAnswers).length;
+            const total = currentPackage.questions.length;
+            document.getElementById('progress-text').innerText = `Terjawab: ${answeredCount}/${total}`;
+        }
+
+        function startTimer() {
+            clearInterval(timerInterval);
+            updateTimerDisplay();
+            
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                updateTimerDisplay();
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    alert("Waktu Habis! Jawaban Anda akan dikirim otomatis.");
+                    submitQuiz();
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            timerDisplay.innerText = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            
+            // Warning color
+            if (timeLeft < 300) { // less than 5 mins
+                timerDisplay.classList.remove('bg-blue-500');
+                timerDisplay.classList.add('bg-red-600', 'animate-pulse');
+            } else {
+                timerDisplay.classList.remove('bg-red-600', 'animate-pulse');
+                timerDisplay.classList.add('bg-blue-500');
+            }
+        }
+
+        function submitQuiz() {
+            clearInterval(timerInterval);
+            let score = 0;
+            let total = currentPackage.questions.length;
+            
+            // Calculate Score
+            currentPackage.questions.forEach((q, index) => {
+                if (userAnswers[index] === q.correct) {
+                    score++;
+                }
+            });
+            
+            const finalScore = Math.round((score / total) * 100);
+            document.getElementById('final-score').innerText = finalScore;
+            
+            renderResults();
+            
+            // Switch UI
+            quizScreen.classList.add('hidden');
+            timerDisplay.classList.add('hidden');
+            resultScreen.classList.remove('hidden');
+            window.scrollTo(0,0);
+        }
+
+        function renderResults() {
+            const container = document.getElementById('discussion-container');
+            container.innerHTML = '';
+            
+            currentPackage.questions.forEach((q, index) => {
+                const userAnswer = userAnswers[index];
+                const isCorrect = userAnswer === q.correct;
+                const userLabel = userAnswer !== undefined ? String.fromCharCode(65 + userAnswer) : "-";
+                const correctLabel = String.fromCharCode(65 + q.correct);
+                
+                const statusColor = isCorrect ? "bg-green-100 border-green-300" : "bg-red-50 border-red-200";
+                const statusText = isCorrect ? "<span class='text-green-700 font-bold'>Benar</span>" : "<span class='text-red-700 font-bold'>Salah</span>";
+
+                const svgContent = q.svg ? `<div class="svg-container w-full max-w-[200px]">${q.svg}</div>` : '';
+
+                const div = document.createElement('div');
+                div.className = `p-4 rounded-lg border ${statusColor}`;
+                div.innerHTML = `
+                    <div class="flex justify-between items-start mb-2">
+                        <div class="font-bold text-gray-700">Soal ${index + 1}</div>
+                        <div>${statusText}</div>
+                    </div>
+                    <div class="mb-3 text-gray-800">${q.q}</div>
+                    ${svgContent}
+                    <div class="text-sm grid grid-cols-2 gap-2 mt-3 bg-white p-3 rounded">
+                        <div>Jawaban Anda: <span class="font-bold">${userLabel}</span></div>
+                        <div>Kunci Jawaban: <span class="font-bold text-green-600">${correctLabel}</span></div>
+                    </div>
+                    <div class="mt-3 pt-2 border-t border-gray-200 text-sm">
+                        <strong class="text-gray-600">Pembahasan:</strong>
+                        <div class="mt-1 text-gray-700 bg-gray-50 p-2 rounded">${q.explanation}</div>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+            
+            // Render Math in Results
+            renderMathInElement(container, {
+                delimiters: [
+                    {left: "$$", right: "$$", display: true},
+                    {left: "$", right: "$", display: false}
+                ]
+            });
+        }
+
+        function resetApp() {
+            resultScreen.classList.add('hidden');
+            homeScreen.classList.remove('hidden');
+            currentPackage = null;
+        }
+
+        function retryQuiz() {
+            // Restart same package
+            const pkgId = Object.keys(quizData).find(key => quizData[key] === currentPackage);
+            startQuiz(pkgId);
+        }
+
+        // Initialize KaTeX Auto Render on Load (for any static math)
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body);
+        });
+
+    </script>
+</body>
+</html>

@@ -162,8 +162,8 @@
         // --- DATA SOAL ---
         const quizData = {
             "A": {
-        title: "Paket A (Kelas 6)",
-        time: 60, // menit
+        title: "Paket A (Easy)",
+        time: 30, // menit
         questions: [
             {
                 id: 1,
@@ -308,8 +308,8 @@
         ]
     },
             "B": {
-        title: "Paket B (Kelas 7)",
-        time: 60, // menit
+        title: "Paket B (Medium)",
+        time: 45, // menit
         questions: [
             {
                 id: 1,
@@ -464,116 +464,368 @@
         ]
     },
             "C": {
-                title: "Paket C (Kelas 8)",
-                time: 60,
-                questions: [
-                    {
-                        id: 1,
-                        q: "Manakah pasangan suku sejenis dari bentuk aljabar: $7x^2 + 5xy - 4y^2 - 6x^2 + 2xy + 2y^2$?",
-                        // FIXED: Added $ delimiters to math parts of options
-                        options: ["$7x^2$ dan $5xy$", "$5xy$ dan $2xy$", "$-4y^2$ dan $2xy$", "$7x^2$ dan $-4y^2$"],
-                        correct: 1,
-                        explanation: "Suku sejenis memiliki variabel dan pangkat yang sama. Disini $5xy$ dan $2xy$ adalah sejenis."
-                    },
-                    {
-                        id: 3,
-                        q: "Faktorkanlah bentuk persamaan kuadrat berikut: $x^2 + 2x - 48$.",
-                        // FIXED: Added $ delimiters to options
-                        options: ["$(x-8)(x-6)$", "$(x-4)(x-6)$", "$(x+8)(x-6)$", "$(x+24)(x-2)$"],
-                        correct: 2,
-                        explanation: "Cari dua angka yang dikali hasilnya -48 dan dijumlah hasilnya 2. Angka tersebut adalah 8 dan -6. Maka $(x+8)(x-6)$."
-                    },
-                    {
-                        id: 6,
-                        q: "Perhatikan gambar garis lurus. Jika sudut pertama $(7x+5)^\\circ$ dan pelurusnya $(-2x+25)^\\circ$. Tentukan nilai $3x+30$.",
-                        svg: `
-                        <svg viewBox="0 0 200 60" class="w-full stroke-current text-gray-700" stroke-width="2">
-                            <line x1="10" y1="50" x2="190" y2="50" />
-                            <line x1="100" y1="50" x2="140" y2="10" />
-                            <text x="60" y="40" font-size="12" stroke="none" fill="black">(7x+5)°</text>
-                            <text x="140" y="40" font-size="12" stroke="none" fill="black">Pelurus</text>
-                        </svg>`,
-                        options: ["120°", "160°", "180°", "165°"],
-                        correct: 0,
-                        explanation: "Jika berpelurus: $(7x+5) + (-2x+25) = 180 \\rightarrow 5x+30=180 \\rightarrow 5x=150 \\rightarrow x=30$. <br> Nilai $3x+30 = 3(30)+30 = 90+30 = 120$."
-                    },
-                    {
-                        id: 13,
-                        q: "Segitiga PQR siku-siku di P. Jika panjang $PQ=12$ cm dan $PR=5$ cm, berapakah panjang sisi miring QR?",
-                        svg: `
-                        <svg viewBox="0 0 100 100" class="w-32 h-32 stroke-current text-purple-600" fill="none" stroke-width="2">
-                            <polygon points="10,90 90,90 10,30" />
-                            <text x="5" y="95" font-size="12" stroke="none" fill="black">P</text>
-                            <text x="95" y="95" font-size="12" stroke="none" fill="black">R</text>
-                            <text x="5" y="25" font-size="12" stroke="none" fill="black">Q</text>
-                            <text x="50" y="95" font-size="10" stroke="none" fill="black">5</text>
-                            <text x="5" y="60" font-size="10" stroke="none" fill="black">12</text>
-                        </svg>`,
-                        options: ["13 cm", "12 cm", "15 cm", "10 cm"],
-                        correct: 0,
-                        explanation: "Dalil Pythagoras: $QR = \\sqrt{12^2 + 5^2} = \\sqrt{144+25} = \\sqrt{169} = 13$ cm."
-                    },
-                    {
-                        id: 16,
-                        q: "Sebuah tangga sepanjang 5 m disandarkan pada pohon. Jarak ujung bawah tangga ke pohon adalah 3 m. Berapa tinggi ujung atas tangga dari tanah?",
-                        options: ["4 m", "5 m", "3 m", "6 m"],
-                        correct: 0,
-                        explanation: "Tripel Pythagoras (3, 4, 5). Tinggi = $\\sqrt{5^2 - 3^2} = \\sqrt{25-9} = 4$ m."
-                    }
-                ]
+        title: "Paket C (Hard)",
+        time: 60, // menit
+        questions: [
+            {
+                id: 1,
+                q: "Suku-suku sejenis dari bentuk aljabar $7x^2 + 5xy - 4y^2 - 6x^2 + 2xy + 2y^2$ adalah...",
+                options: ["$7x^2$ dan $5xy$", "$5xy$ dan $2xy$", "$-4y^2$ dan $2xy$", "$7x^2$ dan $-4y^2$"],
+                correct: 1, // B
+                explanation: "Suku sejenis adalah suku yang memiliki variabel dan pangkat yang sama. <br> Di sini, $5xy$ dan $2xy$ memiliki variabel yang sama yaitu $xy$."
             },
-            "D": {
-                title: "Paket D (Kelas 9)",
-                time: 90,
-                questions: [
-                    {
-                        id: 1,
-                        q: "Sederhanakan bentuk pecahan akar berikut: $\\frac{\\sqrt{5}}{3-\\sqrt{5}}$",
-                        // FIXED: Added $ delimiters to options
-                        options: ["$\\frac{3\\sqrt{5}+5}{3}$", "$\\frac{3\\sqrt{5}+5}{4}$", "$\\frac{3\\sqrt{5}-5}{3}$", "$\\frac{\\sqrt{5}-5}{3}$"],
-                        correct: 1,
-                        explanation: "Kalikan sekawan: $\\frac{\\sqrt{5}}{3-\\sqrt{5}} \\times \\frac{3+\\sqrt{5}}{3+\\sqrt{5}} = \\frac{3\\sqrt{5}+5}{9-5} = \\frac{3\\sqrt{5}+5}{4}$."
-                    },
-                    {
-                        id: 2,
-                        q: "Sederhanakan bentuk akar: $2\\sqrt{28} + \\sqrt{20} + \\sqrt{125}$",
-                        // FIXED: Added $ delimiters to options
-                        options: ["$4\\sqrt{7}+7\\sqrt{5}$", "$4\\sqrt{7}+5\\sqrt{5}$", "$4\\sqrt{5}+7\\sqrt{7}$", "$2\\sqrt{7}+3\\sqrt{5}$"],
-                        correct: 0,
-                        explanation: "$2\\sqrt{4\\times7} + \\sqrt{4\\times5} + \\sqrt{25\\times5}$ <br> $= 4\\sqrt{7} + 2\\sqrt{5} + 5\\sqrt{5}$ <br> $= 4\\sqrt{7} + 7\\sqrt{5}$."
-                    },
-                    {
-                        id: 5,
-                        q: "Hitung nilai dari: $216^{\\frac{1}{3}} - 16^{\\frac{1}{4}} + 125^{\\frac{2}{3}}$",
-                        options: ["21", "22", "29", "34"],
-                        correct: 2,
-                        explanation: "$6 - 2 + 5^2 = 6 - 2 + 25 = 29$."
-                    },
-                    {
-                        id: 11,
-                        q: "Sebuah kerucut memiliki jari-jari alas 4 cm dan tinggi 12 cm. Berapakah volumenya?",
-                        svg: `
-                        <svg viewBox="0 0 100 120" class="w-24 h-32 stroke-current text-red-600" fill="none" stroke-width="2">
-                            <ellipse cx="50" cy="100" rx="40" ry="10" />
-                            <line x1="10" y1="100" x2="50" y2="10" />
-                            <line x1="90" y1="100" x2="50" y2="10" />
-                            <line x1="50" y1="10" x2="50" y2="100" stroke-dasharray="4" opacity="0.5"/>
-                            <text x="60" y="60" font-size="10" stroke="none" fill="black">t=12</text>
-                        </svg>`,
-                        options: ["200,96 cm³", "150,75 cm³", "301,44 cm³", "420,05 cm³"],
-                        correct: 0,
-                        explanation: "$V = \\frac{1}{3} \\pi r^2 t = \\frac{1}{3} \\times 3,14 \\times 16 \\times 12 = 3,14 \\times 64 = 200,96$."
-                    },
-                    {
-                        id: 17,
-                        q: "Volume kubus sama dengan volume balok (64.000). Panjang balok 2 kali sisi kubus, lebar dan tinggi balok sama. Berapa lebar balok?",
-                        // FIXED: Added $ delimiters to options
-                        options: ["$20\\sqrt{2}$", "40", "$40\\sqrt{2}$", "80"],
-                        correct: 0,
-                        explanation: "Sisi kubus = 40. P Balok = 80. <br> $64000 = 80 \\times l^2 \\rightarrow l^2=800 \\rightarrow l = \\sqrt{800} = 20\\sqrt{2}$."
-                    }
-                ]
+            {
+                id: 2,
+                q: "Bentuk sederhana dari $9y^2 - 4xy + 5y + 7y^2 + 3xy$ adalah...",
+                options: ["$16y^2 - xy + 5y$", "$5y^2 + 4xy + 8y$", "$16y^2 - 7xy + 5y$", "$9y^2 - 7xy + 5y$"],
+                correct: 0, // A
+                explanation: "Jumlahkan suku sejenis: <br> $9y^2 + 7y^2 = 16y^2$ <br> $-4xy + 3xy = -xy$ <br> Suku $5y$ tetap."
+            },
+            {
+                id: 3,
+                q: "Pemfaktoran bentuk $x^2 + 2x - 48$ adalah...",
+                options: ["$(x-8)(x-6)$", "$(x-4)(x-6)$", "$(x+8)(x-6)$", "$(x+24)(x-2)$"],
+                correct: 2, // C
+                explanation: "Cari bilangan yang jika dikali hasilnya -48 dan dijumlah hasilnya 2. <br> Bilangan tersebut adalah 8 dan -6. <br> Maka faktornya $(x+8)(x-6)$."
+            },
+            {
+                id: 4,
+                q: "Hasil dari $-3x(-4y + 5z)$ adalah...",
+                options: ["$12xy - 15xz$", "$-12xy - 15xz$", "$12xy + 15xz$", "$-12xy - 5xz$"],
+                correct: 0, // A
+                explanation: "Distributif: <br> $(-3x)(-4y) = 12xy$ <br> $(-3x)(5z) = -15xz$."
+            },
+            {
+                id: 5,
+                q: "Hasil dari $(4x-3)^2$ adalah...",
+                options: ["$8x^2 + 9$", "$16x^2 - 24$", "$8x^2 + 12x + 9$", "$16x^2 - 24x + 9$"],
+                correct: 3, // D
+                explanation: "Rumus $(a-b)^2 = a^2 - 2ab + b^2$. <br> $(4x)^2 - 2(4x)(3) + 3^2 = 16x^2 - 24x + 9$."
+            },
+            {
+                id: 6,
+                q: "Perhatikan gambar garis lurus. Jika besar sudut pertama $(7x+5)^\\circ$ dan pelurusnya $(-2x+25)^\\circ$ (Asumsi: Soal asli sudut berdampingan saling berpelurus), tentukan nilai $3x+30$.",
+                svg: `
+                <svg viewBox="0 0 200 80" class="w-full stroke-current text-gray-700" stroke-width="2">
+                    <line x1="10" y1="70" x2="190" y2="70" />
+                    <line x1="100" y1="70" x2="140" y2="10" />
+                    <text x="50" y="60" font-size="12" stroke="none" fill="black">(7x+5)°</text>
+                    <text x="120" y="60" font-size="12" stroke="none" fill="black">(-2x+25)°</text>
+                </svg>`,
+                options: ["$120^\\circ$", "$160^\\circ$", "$180^\\circ$", "$165^\\circ$"],
+                correct: 0, // A
+                explanation: "Total sudut berpelurus = 180°. <br> $(7x+5) + (-2x+25) = 180 \\rightarrow 5x + 30 = 180 \\rightarrow 5x = 150 \\rightarrow x = 30$. <br> Nilai $3x+30 = 3(30)+30 = 120$."
+            },
+            {
+                id: 7,
+                q: "KPK dan FPB dari bentuk aljabar $4m$ dan $10m^2n$ berturut-turut adalah...",
+                options: ["$10m^2n$ dan $2m$", "$10m^2n$ dan $5m$", "$20m^2n$ dan $2m$", "$15m^2n$ dan $5m$"],
+                correct: 2, // C
+                explanation: "KPK (pangkat tertinggi): KPK(4,10)=20, variabel $m^2n$. <br> FPB (pangkat terendah): FPB(4,10)=2, variabel $m$."
+            },
+            {
+                id: 8,
+                q: "Perhatikan gambar. Dua sudut saling berpelurus besarnya $7x^\\circ$ dan $5x^\\circ$. Besar sudut yang lebih besar (ABD) adalah...",
+                svg: `
+                <svg viewBox="0 0 200 80" class="w-full stroke-current text-gray-700" stroke-width="2">
+                    <line x1="10" y1="70" x2="190" y2="70" />
+                    <line x1="100" y1="70" x2="60" y2="10" />
+                    <text x="65" y="60" font-size="12" stroke="none" fill="black">5x°</text>
+                    <text x="110" y="60" font-size="12" stroke="none" fill="black">7x°</text>
+                    <text x="60" y="10" dx="-10" font-size="12" stroke="none" fill="black">A</text>
+                    <text x="100" y="70" dy="15" font-size="12" stroke="none" fill="black">B</text>
+                    <text x="190" y="70" dy="15" font-size="12" stroke="none" fill="black">C</text>
+                    <text x="10" y="70" dy="15" font-size="12" stroke="none" fill="black">D</text>
+                </svg>`,
+                options: ["$119^\\circ$", "$98^\\circ$", "$105^\\circ$", "$112^\\circ$"],
+                correct: 2, // C
+                explanation: "$7x + 5x = 180 \\rightarrow 12x = 180 \\rightarrow x = 15$. <br> Sudut besar = $7x = 7(15) = 105^\\circ$."
+            },
+            {
+                id: 9,
+                q: "Nilai dari $2\\sqrt{5} \\times 3\\sqrt{5}$ adalah...",
+                options: ["30", "24", "34", "20"],
+                correct: 0, // A
+                explanation: "Kalikan luar dengan luar, dalam dengan dalam. <br> $(2 \\times 3) \\times (\\sqrt{5} \\times \\sqrt{5}) = 6 \\times 5 = 30$."
+            },
+            {
+                id: 10,
+                q: "Hasil dari $2\\sqrt{8} + 3\\sqrt{27} - \\sqrt{12} + 2\\sqrt{32}$ adalah...",
+                options: ["$12\\sqrt{2} - 5\\sqrt{3}$", "$2\\sqrt{2} + 15\\sqrt{3}$", "$12\\sqrt{2} + 7\\sqrt{3}$", "$12\\sqrt{2} - 7\\sqrt{3}$"],
+                correct: 2, // C
+                explanation: "Sederhanakan: <br> $4\\sqrt{2} + 9\\sqrt{3} - 2\\sqrt{3} + 8\\sqrt{2}$. <br> Gabungkan: $(4+8)\\sqrt{2} + (9-2)\\sqrt{3} = 12\\sqrt{2} + 7\\sqrt{3}$."
+            },
+            {
+                id: 11,
+                q: "Bentuk rasional dari $\\frac{-3}{\\sqrt{7}}$ adalah...",
+                options: ["$-3\\sqrt{7}$", "$-\\frac{3}{7}\\sqrt{7}$", "$\\sqrt{7}$", "-21"],
+                correct: 1, // B
+                explanation: "Kalikan sekawan $\\sqrt{7}/\\sqrt{7}$. <br> $\\frac{-3\\sqrt{7}}{7} = -\\frac{3}{7}\\sqrt{7}$."
+            },
+            {
+                id: 12,
+                q: "Hasil dari $2^9 \\times 4^{-3} : 2^2$ adalah...",
+                options: ["1", "2", "4", "8"],
+                correct: 1, // B
+                explanation: "Ubah basis 4 ke 2: $4^{-3} = (2^2)^{-3} = 2^{-6}$. <br> $2^9 \\times 2^{-6} : 2^2 = 2^{9-6-2} = 2^1 = 2$."
+            },
+            {
+                id: 13,
+                q: "Segitiga PQR siku-siku di P. Jika $PQ=12$ cm dan $PR=5$ cm, maka panjang QR adalah...",
+                svg: `
+                <svg viewBox="0 0 100 100" class="w-32 h-32 stroke-current text-purple-600" fill="none" stroke-width="2">
+                    <polygon points="10,90 90,90 10,30" />
+                    <text x="5" y="95" font-size="12" stroke="none" fill="black">P</text>
+                    <text x="95" y="95" font-size="12" stroke="none" fill="black">R</text>
+                    <text x="5" y="25" font-size="12" stroke="none" fill="black">Q</text>
+                    <text x="50" y="95" font-size="10" stroke="none" fill="black">5</text>
+                    <text x="5" y="60" font-size="10" stroke="none" fill="black">12</text>
+                </svg>`,
+                options: ["13 cm", "12 cm", "15 cm", "10 cm"],
+                correct: 0, // A
+                explanation: "Pythagoras sisi miring: $\\sqrt{12^2 + 5^2} = \\sqrt{144+25} = \\sqrt{169} = 13$ cm."
+            },
+            {
+                id: 14,
+                q: "Segitiga LMN siku-siku di L. Jika $LM=5$ cm dan sisi miring $MN=13$ cm, maka panjang LN adalah...",
+                svg: `
+                <svg viewBox="0 0 100 100" class="w-32 h-32 stroke-current text-purple-600" fill="none" stroke-width="2">
+                    <polygon points="10,90 90,90 10,10" />
+                    <text x="5" y="95" font-size="12" stroke="none" fill="black">L</text>
+                    <text x="95" y="95" font-size="12" stroke="none" fill="black">N</text>
+                    <text x="5" y="10" font-size="12" stroke="none" fill="black">M</text>
+                    <text x="50" y="60" font-size="10" stroke="none" fill="black">13</text>
+                    <text x="5" y="60" dx="-15" font-size="10" stroke="none" fill="black">5</text>
+                </svg>`,
+                options: ["15 cm", "10 cm", "13 cm", "12 cm"],
+                correct: 3, // D
+                explanation: "Pythagoras sisi tegak: $\\sqrt{13^2 - 5^2} = \\sqrt{169-25} = \\sqrt{144} = 12$ cm."
+            },
+            {
+                id: 15,
+                q: "Jarak antara dua titik $A(3,-4)$ dan $B(-5,3)$ adalah...",
+                options: ["$\\sqrt{112}$", "$\\sqrt{113}$", "$\\sqrt{115}$", "$\\sqrt{110}$"],
+                correct: 1, // B
+                explanation: "Rumus jarak: $\\sqrt{(x_2-x_1)^2 + (y_2-y_1)^2}$. <br> $\\sqrt{(-5-3)^2 + (3-(-4))^2} = \\sqrt{(-8)^2 + 7^2} = \\sqrt{64+49} = \\sqrt{113}$."
+            },
+            {
+                id: 16,
+                q: "Sebuah tangga sepanjang 5 m disandarkan pada pohon. Jarak ujung bawah tangga terhadap pohon adalah 3 m. Berapa tinggi ujung atas tangga dari tanah?",
+                svg: `
+                <svg viewBox="0 0 100 100" class="w-32 h-32 stroke-current text-green-700" fill="none" stroke-width="2">
+                    <line x1="20" y1="10" x2="20" y2="90" stroke="brown" stroke-width="4" /> <!-- Pohon -->
+                    <line x1="10" y1="90" x2="90" y2="90" stroke="black" /> <!-- Tanah -->
+                    <line x1="50" y1="90" x2="20" y2="40" stroke="gray" stroke-width="3" /> <!-- Tangga -->
+                    <text x="40" y="70" font-size="10" stroke="none" fill="black">5m</text>
+                    <text x="35" y="95" font-size="10" stroke="none" fill="black">3m</text>
+                </svg>`,
+                options: ["4 m", "5 m", "3 m", "6 m"],
+                correct: 0, // A
+                explanation: "Tripel Pythagoras 3, 4, 5. <br> Tinggi = $\\sqrt{5^2 - 3^2} = \\sqrt{16} = 4$ m."
+            },
+            {
+                id: 17,
+                q: "Sebuah limas persegi memiliki keliling alas 40 cm dan tinggi limas 12 cm. Luas permukaan limas adalah...",
+                options: ["360 cm²", "380 cm²", "400 cm²", "420 cm²"],
+                correct: 0, // A
+                explanation: "Sisi alas = $40:4 = 10$. Luas alas = $10^2 = 100$. <br> Tinggi sisi tegak segitiga (Pythagoras): $\\sqrt{12^2 + 5^2} = 13$. <br> Luas selimut = $4 \\times (\\frac{1}{2} \\times 10 \\times 13) = 260$. <br> Total LP = $100 + 260 = 360$."
+            },
+            {
+                id: 18,
+                q: "Sebuah foto $18 \\times 12$ cm diperbesar hingga panjangnya 24 cm. Perbandingan luas foto sebelum dan sesudah diperbesar adalah...",
+                options: ["3 : 4", "9 : 16", "2 : 5", "7 : 15"],
+                correct: 1, // B
+                explanation: "Perbandingan panjang = $18:24 = 3:4$. <br> Perbandingan luas = kuadrat perbandingan panjang = $3^2 : 4^2 = 9 : 16$."
+            },
+            {
+                id: 19,
+                q: "Sebuah balok berukuran $15 \\times 11 \\times 9$ cm. Luas permukaan balok tersebut adalah...",
+                options: ["798 cm²", "796 cm²", "797 cm²", "795 cm²"],
+                correct: 0, // A
+                explanation: "$LP = 2(pl + pt + lt) = 2(165 + 135 + 99) = 2(399) = 798$."
+            },
+            {
+                id: 20,
+                q: "Perhatikan data nilai: 4(3), 5(7), 6(6), 7(8), 8(9), 9(5), 10(2). Mean dan median berturut-turut adalah...",
+                options: ["6,90 dan 7,00", "7,10 dan 7,00", "6,90 dan 7,50", "7,10 dan 7,50"],
+                correct: 0, // A
+                explanation: "Mean = $\\frac{\\text{Jumlah Nilai}}{\\text{Total Data}} = \\frac{276}{40} = 6,9$. <br> Median (data ke-20 dan 21) adalah 7."
             }
+        ]
+    },
+            "D": {
+        title: "Paket D (Ultimate)",
+        time: 90, // menit
+        questions: [
+            {
+                id: 1,
+                q: "Bentuk sederhana dari pecahan $\\frac{\\sqrt{5}}{3-\\sqrt{5}}$ adalah...",
+                options: ["$\\frac{3\\sqrt{5}+5}{3}$", "$\\frac{3\\sqrt{5}+5}{4}$", "$\\frac{3\\sqrt{5}-5}{3}$", "$\\frac{\\sqrt{5}-5}{3}$"],
+                correct: 1, // B
+                explanation: "Rasionalkan penyebut dengan mengalikan sekawannya $(3+\\sqrt{5})$. <br> $\\frac{\\sqrt{5}(3+\\sqrt{5})}{9-5} = \\frac{3\\sqrt{5}+5}{4}$."
+            },
+            {
+                id: 2,
+                q: "Bentuk sederhana dari $2\\sqrt{28} + \\sqrt{20} + \\sqrt{125}$ adalah...",
+                options: ["$4\\sqrt{7}+7\\sqrt{5}$", "$4\\sqrt{7}+5\\sqrt{5}$", "$4\\sqrt{5}+7\\sqrt{7}$", "$2\\sqrt{7}+3\\sqrt{5}$"],
+                correct: 0, // A
+                explanation: "Sederhanakan akar: <br> $2\\sqrt{4\\times7} + \\sqrt{4\\times5} + \\sqrt{25\\times5}$ <br> $= 4\\sqrt{7} + 2\\sqrt{5} + 5\\sqrt{5} = 4\\sqrt{7} + 7\\sqrt{5}$."
+            },
+            {
+                id: 3,
+                q: "Bentuk akar dari bilangan berpangkat $7^{\\frac{5}{2}}$ adalah...",
+                options: ["$\\sqrt[5]{7^7}$", "$\\sqrt{7^2}$", "$\\sqrt{7^5}$", "$\\sqrt[5]{7^2}$"],
+                correct: 2, // C
+                explanation: "Sifat eksponen: $a^{\\frac{m}{n}} = \\sqrt[n]{a^m}$. <br> Maka $7^{\\frac{5}{2}} = \\sqrt[2]{7^5} = \\sqrt{7^5}$."
+            },
+            {
+                id: 4,
+                q: "Nilai dari $\\frac{1}{15^6}$ dalam bentuk pangkat negatif adalah...",
+                options: ["$-15^6$", "$15^{-6}$", "$6^{-13}$", "$-6^{13}$"],
+                correct: 1, // B
+                explanation: "Sifat eksponen negatif: $\\frac{1}{a^n} = a^{-n}$."
+            },
+            {
+                id: 5,
+                q: "Hasil dari operasi $216^{\\frac{1}{3}} - 16^{\\frac{1}{4}} + 125^{\\frac{2}{3}}$ adalah...",
+                options: ["21", "22", "29", "34"],
+                correct: 2, // C
+                explanation: "$\\sqrt[3]{216} - \\sqrt[4]{16} + (\\sqrt[3]{125})^2$ <br> $= 6 - 2 + 5^2 = 6 - 2 + 25 = 29$."
+            },
+            {
+                id: 6,
+                q: "Bentuk sederhana dari perkalian $(\\sqrt{6}+\\sqrt{3})(\\sqrt{6}-\\sqrt{3})$ adalah...",
+                options: ["2", "6", "5", "3"],
+                correct: 3, // D
+                explanation: "Rumus selisih dua kuadrat $(a+b)(a-b) = a^2 - b^2$. <br> $(\\sqrt{6})^2 - (\\sqrt{3})^2 = 6 - 3 = 3$."
+            },
+            {
+                id: 7,
+                q: "Nilai $x$ dari persamaan $6x - 4 = 5x + 2$ adalah...",
+                options: ["6", "4", "5", "2"],
+                correct: 0, // A
+                explanation: "Pindahkan suku sejenis: $6x - 5x = 2 + 4 \\rightarrow x = 6$."
+            },
+            {
+                id: 8,
+                q: "Faktor dari bentuk kuadrat $3x^2 - 12$ adalah...",
+                options: ["$(3x-4)(x+3)$", "$(3x+2)(x-6)$", "$3(x+2)(x-2)$", "$3(x+6)(x-6)$"],
+                correct: 2, // C
+                explanation: "Keluarkan faktor persekutuan 3: $3(x^2 - 4)$. <br> Faktorkan selisih kuadrat: $3(x+2)(x-2)$."
+            },
+            {
+                id: 9,
+                q: "Pemfaktoran dari persamaan kuadrat $x^2 + 2x - 48$ adalah...",
+                options: ["$(x-6)(x-8)$", "$(x+8)(x-6)$", "$(x-4)(x-12)$", "$(x+24)(x-2)$"],
+                correct: 1, // B
+                explanation: "Cari dua bilangan yang dikali hasilnya -48 dan dijumlah hasilnya 2. <br> Bilangan tersebut adalah 8 dan -6. Maka $(x+8)(x-6)$."
+            },
+            {
+                id: 10,
+                q: "Sebuah tangki minyak berbentuk tabung berisi 183,69 liter minyak. Jika jari-jari tangki 30 cm, berapakah tingginya?",
+                options: ["3,5 dm", "4,5 dm", "5,5 dm", "6,5 dm"],
+                correct: 3, // D
+                explanation: "Volume = 183,69 liter ($dm^3$). $r=30$ cm $= 3$ dm. <br> $V = \\pi r^2 t \\rightarrow 183,69 = 3,14 \\times 3^2 \\times t$. <br> $183,69 = 28,26 t \\rightarrow t = 6,5$ dm."
+            },
+            {
+                id: 11,
+                q: "Sebuah kerucut memiliki jari-jari alas 4 cm dan tinggi 12 cm. Volume kerucut tersebut adalah...",
+                svg: `
+                <svg viewBox="0 0 100 120" class="w-24 h-32 stroke-current text-red-600" fill="none" stroke-width="2">
+                    <ellipse cx="50" cy="100" rx="40" ry="10" />
+                    <line x1="10" y1="100" x2="50" y2="10" />
+                    <line x1="90" y1="100" x2="50" y2="10" />
+                    <line x1="50" y1="10" x2="50" y2="100" stroke-dasharray="4" opacity="0.5"/>
+                    <text x="60" y="60" font-size="10" stroke="none" fill="black">t=12</text>
+                    <text x="50" y="115" font-size="10" stroke="none" fill="black">r=4</text>
+                </svg>`,
+                options: ["200,96 cm³", "150,75 cm³", "301,44 cm³", "420,05 cm³"],
+                correct: 0, // A
+                explanation: "$V = \\frac{1}{3} \\pi r^2 t = \\frac{1}{3} \\times 3,14 \\times 16 \\times 12 = 3,14 \\times 64 = 200,96$."
+            },
+            {
+                id: 12,
+                q: "Luas permukaan bola yang berjari-jari 4 cm adalah...",
+                options: ["96,375 cm²", "100,43 cm²", "200,96 cm²", "213,01 cm²"],
+                correct: 2, // C
+                explanation: "$L = 4 \\pi r^2 = 4 \\times 3,14 \\times 4^2 = 4 \\times 3,14 \\times 16 = 200,96$ cm²."
+            },
+            {
+                id: 13,
+                q: "Jarak dua pusat lingkaran adalah 17 cm, panjang garis singgung persekutuan dalam 15 cm. Jika jari-jari salah satu lingkaran 3 cm, berapakah jari-jari lingkaran lainnya?",
+                svg: `
+                <svg viewBox="0 0 200 100" class="w-full stroke-current text-gray-700" stroke-width="2">
+                    <circle cx="30" cy="50" r="20" />
+                    <circle cx="170" cy="50" r="10" />
+                    <line x1="30" y1="50" x2="170" y2="50" stroke-dasharray="4" />
+                    <line x1="45" y1="35" x2="165" y2="55" stroke="red" /> <!-- GSPD -->
+                    <text x="100" y="45" font-size="10" stroke="none" fill="black">p=17</text>
+                    <text x="100" y="30" font-size="10" stroke="none" fill="red">d=15</text>
+                </svg>`,
+                options: ["3 cm", "5 cm", "6 cm", "7 cm"],
+                correct: 1, // B
+                explanation: "Rumus GSPD: $d^2 = p^2 - (r1+r2)^2$. <br> $15^2 = 17^2 - (3+r2)^2 \\rightarrow 225 = 289 - (3+r2)^2$. <br> $(3+r2)^2 = 64 \\rightarrow 3+r2 = 8 \\rightarrow r2 = 5$."
+            },
+            {
+                id: 14,
+                q: "Segitiga ABC siku-siku di A. Jika $AB=5$ cm dan $BC=13$ cm, maka panjang AC adalah...",
+                svg: `
+                <svg viewBox="0 0 100 100" class="w-32 h-32 stroke-current text-purple-600" fill="none" stroke-width="2">
+                    <polygon points="10,90 90,90 10,30" />
+                    <text x="5" y="95" font-size="12" stroke="none" fill="black">A</text>
+                    <text x="95" y="95" font-size="12" stroke="none" fill="black">C</text>
+                    <text x="5" y="25" font-size="12" stroke="none" fill="black">B</text>
+                    <text x="50" y="60" font-size="10" stroke="none" fill="black">13</text>
+                    <text x="5" y="60" dx="-15" font-size="10" stroke="none" fill="black">5</text>
+                </svg>`,
+                options: ["15 cm", "10 cm", "13 cm", "12 cm"],
+                correct: 3, // D
+                explanation: "Siku-siku di A, berarti BC adalah sisi miring. <br> $AC = \\sqrt{13^2 - 5^2} = \\sqrt{169-25} = \\sqrt{144} = 12$."
+            },
+            {
+                id: 15,
+                q: "Jarak kedua pusat lingkaran 20 cm, garis singgung persekutuan luar 16 cm. Jika jari-jari besar 5 kali jari-jari kecil, tentukan panjang salah satu jari-jari.",
+                options: ["2 cm", "3 cm", "8 cm", "12 cm"],
+                correct: 1, // B
+                explanation: "GSPL: $16^2 = 20^2 - (5r-r)^2 \\rightarrow 256 = 400 - (4r)^2$. <br> $16r^2 = 144 \\rightarrow r^2 = 9 \\rightarrow r = 3$."
+            },
+            {
+                id: 16,
+                q: "Diketahui tabel nilai: Nilai 4 (1 siswa), 5 (10 siswa), 6 (15 siswa), 7 (4 siswa). Median dari data tersebut adalah...",
+                options: ["4", "6", "7", "15"],
+                correct: 1, // B
+                explanation: "Total frekuensi = 30. Median adalah rata-rata data ke-15 dan 16. <br> Data ke-1 sampai 11 adalah 4 dan 5. Data ke-12 sampai 26 adalah 6. <br> Jadi data ke-15 dan 16 bernilai 6."
+            },
+            {
+                id: 17,
+                q: "Volume kubus sama dengan volume balok (64.000). Panjang balok 2 kali sisi kubus, lebar dan tinggi balok sama. Berapa lebar balok?",
+                options: ["$20\\sqrt{2}$", "40", "$40\\sqrt{2}$", "80"],
+                correct: 0, // A
+                explanation: "Sisi kubus = 40. Panjang balok = 80. <br> $64000 = 80 \\times l \\times l \\rightarrow l^2 = 800 \\rightarrow l = 20\\sqrt{2}$."
+            },
+            {
+                id: 18,
+                q: "Jarak antara dua titik $A(-4,3)$ dan $B(2,-5)$ adalah...",
+                options: ["12", "10", "14", "16"],
+                correct: 1, // B
+                explanation: "Rumus jarak: $\\sqrt{(2-(-4))^2 + (-5-3)^2} = \\sqrt{6^2 + (-8)^2} = \\sqrt{36+64} = 10$."
+            },
+            {
+                id: 19,
+                q: "Sebuah segitiga siku-siku memiliki sisi miring 35 cm dan sisi alas 28 cm. Luas segitiga tersebut adalah...",
+                options: ["265 cm²", "280 cm²", "294 cm²", "330 cm²"],
+                correct: 2, // C
+                explanation: "Tinggi = $\\sqrt{35^2 - 28^2} = \\sqrt{1225-784} = \\sqrt{441} = 21$. <br> Luas = $\\frac{1}{2} \\times 28 \\times 21 = 14 \\times 21 = 294$."
+            },
+            {
+                id: 20,
+                q: "Sebuah bak mandi kubus (kedalaman 90 cm) berisi air $\\frac{2}{3}$ bagian. Jika digunakan 40 liter, sisa air adalah...",
+                options: ["344 liter", "442 liter", "364 liter", "446 liter"],
+                correct: 3, // D
+                explanation: "Volume penuh = $90^3$ cm³ = 729 liter. <br> Isi awal = $\\frac{2}{3} \\times 729 = 486$ liter. <br> Sisa = $486 - 40 = 446$ liter."
+            }
+        ]
+    }
         };
 
         // --- STATE VARIABLES ---

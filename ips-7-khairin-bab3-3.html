@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuis IPS - Paket 3 (Potensi Ekonomi Lingkungan)</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f3e8ff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .quiz-container {
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(107, 70, 193, 0.2);
+            width: 90%;
+            max-width: 650px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .quiz-header {
+            padding: 2.5rem;
+        }
+        h2 {
+            margin: 0;
+            color: #44337a;
+            font-size: 1.25rem;
+            line-height: 1.5;
+            margin-bottom: 1.5rem;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        ul li {
+            background-color: #faf5ff;
+            border: 1px solid #e9d8fd;
+            margin: 12px 0;
+            border-radius: 8px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+        }
+        ul li:hover {
+            background-color: #e9d8fd;
+        }
+        input[type="radio"] {
+            margin-right: 15px;
+            cursor: pointer;
+            transform: scale(1.2);
+        }
+        label {
+            cursor: pointer;
+            width: 100%;
+            font-size: 1.05rem;
+            color: #2d3748;
+        }
+        .submit-btn {
+            background-color: #805ad5;
+            color: white;
+            border: none;
+            display: block;
+            width: 100%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            padding: 1.2rem;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+        .submit-btn:hover {
+            background-color: #6b46c1;
+        }
+        .result-container {
+            text-align: center;
+            padding: 3rem 2rem;
+        }
+        .score-text {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #805ad5;
+            margin: 1rem 0;
+        }
+        .progress {
+            text-align: right;
+            font-size: 1rem;
+            font-weight: bold;
+            color: #9f7aea;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #e9d8fd;
+            padding-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container" id="quiz">
+    <div class="quiz-header">
+        <div class="progress" id="progress">Soal 1 / 30</div>
+        <h2 id="question">Pertanyaan dimuat di sini...</h2>
+        <ul>
+            <li>
+                <input type="radio" name="answer" id="a" class="answer">
+                <label for="a" id="a_text">Pilihan A</label>
+            </li>
+            <li>
+                <input type="radio" name="answer" id="b" class="answer">
+                <label for="b" id="b_text">Pilihan B</label>
+            </li>
+            <li>
+                <input type="radio" name="answer" id="c" class="answer">
+                <label for="c" id="c_text">Pilihan C</label>
+            </li>
+            <li>
+                <input type="radio" name="answer" id="d" class="answer">
+                <label for="d" id="d_text">Pilihan D</label>
+            </li>
+        </ul>
+    </div>
+    <button id="submit" class="submit-btn">Jawab & Lanjut</button>
+</div>
+
+<script>
+    const quizData = [
+        { question: "1. Sumber daya alam anorganik (abiotik) merupakan sumber daya yang berasal dari benda mati. Manakah di bawah ini yang merupakan contohnya?", a: "Batuan, gas alam, mineral, dan tanah", b: "Kehutanan, pertanian, dan peternakan", c: "Hewan dan tumbuhan", d: "Sinar matahari dan tenaga kerja", correct: "a" },
+        { question: "2. Hutan yang berfungsi pokok sebagai pengawetan keanekaragaman tumbuhan dan satwa serta ekosistemnya adalah...", a: "Hutan Produksi", b: "Hutan Suaka Alam", c: "Hutan Konservasi", d: "Hutan Lindung", correct: "c" },
+        { question: "3. Wilayah penghasil kayu meranti, kamper, kruing, dan kayu ulin di Indonesia adalah...", a: "Pulau Jawa dan Bali", b: "Nusa Tenggara", c: "Sumatra, Kalimantan, dan Papua", d: "Sulawesi dan Kepulauan Riau", correct: "c" },
+        { question: "4. Menurut klasifikasi UU RI No. 11 Tahun 1967, bahan galian strategis digolongkan ke dalam bahan galian...", a: "Golongan A", b: "Golongan B", c: "Golongan C", d: "Golongan D", correct: "a" },
+        { question: "5. Tembagapura di Provinsi Papua sangat terkenal sebagai daerah penghasil tambang...", a: "Minyak Bumi", b: "Bauksit", c: "Tembaga", d: "Belerang", correct: "c" },
+        { question: "6. Selain pertambahan jumlah penduduk yang pesat, potensi sumber daya alam juga mengalami perubahan akibat...", a: "Pencemaran lingkungan dan eksploitasi berlebihan", b: "Penataan tata ruang", c: "Tingkat pendidikan masyarakat yang tinggi", d: "Konstruksi bangunan tahan gempa", correct: "a" },
+        { question: "7. Pembuatan aturan penataan ruang dan aturan bangunan (building code) oleh pemerintah termasuk ke dalam mitigasi bencana yang bersifat...", a: "Fisik", b: "Struktural", c: "Nonstruktural", d: "Darurat", correct: "c" },
+        { question: "8. Terdapat berbagai teori masuknya Hindu-Buddha ke Indonesia. Berikut ini yang BUKAN merupakan teori masuknya Hindu-Buddha adalah...", a: "Teori Brahmana", b: "Teori Gujarat", c: "Teori Ksatria", d: "Teori Sudra", correct: "b" },
+        { question: "9. Raja yang memerintah pada puncak kejayaan Kerajaan Kutai (Kutai Martadipura) adalah...", a: "Kudungga", b: "Purnawarman", c: "Mulawarman", d: "Hayam Wuruk", correct: "c" },
+        { question: "10. Penggalian saluran irigasi Sungai Gomati sepanjang 12 km yang dicatat dalam Prasasti Tugu terjadi pada masa pemerintahan Kerajaan...", a: "Mataram Kuno", b: "Sriwijaya", c: "Kutai", d: "Tarumanegara", correct: "d" },
+        { question: "11. Pusat pemerintahan Kerajaan Sriwijaya pada masa-masa awal diperkirakan berlokasi di daerah...", a: "Sungai Mahakam, Kalimantan", b: "Muara Takus, Riau", c: "Lembah Sungai Citarum", d: "Prambanan, Jawa Tengah", correct: "b" },
+        { question: "12. Masa kejayaan Kerajaan Majapahit tercapai pada masa pemerintahan raja...", a: "Raden Wijaya", b: "Raja Kertanegara", c: "Hayam Wuruk dibantu Patih Gajah Mada", d: "Raja Balaputradewa", correct: "c" },
+        { question: "13. Proses penyebaran agama Islam di Indonesia dilakukan melalui berbagai jalur, salah satunya melalui ajaran cara mendekatkan diri kepada Allah SWT yang disebut...", a: "Tasawuf", b: "Wali Songo", c: "Perdagangan", d: "Prasasti", correct: "a" },
+        { question: "14. Kerajaan Islam pertama di Indonesia yang mencapai masa kejayaannya di bawah pimpinan Sultan Malik al-Saleh adalah...", a: "Kerajaan Aceh", b: "Kerajaan Demak", c: "Kerajaan Samudera Pasai", d: "Kerajaan Banten", correct: "c" },
+        { question: "15. Kesultanan yang menjadi pusat penyebaran agama Islam di Jawa dan Nusantara bagian timur dengan bantuan Wali Songo adalah...", a: "Kerajaan Demak", b: "Kerajaan Banten", c: "Kerajaan Mataram Islam", d: "Kerajaan Gowa dan Tallo", correct: "a" },
+        { question: "16. Kerajaan maritim terbesar di wilayah timur Indonesia yang merupakan gabungan dari dua kerajaan adalah...", a: "Kerajaan Ternate dan Tidore", b: "Kerajaan Gowa dan Tallo", c: "Kerajaan Samudera Pasai", d: "Kesultanan Yogyakarta", correct: "b" },
+        { question: "17. Kegiatan menghasilkan barang dan jasa dengan tujuan menambah nilai gunanya disebut...", a: "Distribusi", b: "Investasi", c: "Produksi", d: "Konsumsi", correct: "c" },
+        { question: "18. Untuk melakukan kegiatan produksi dibutuhkan faktor produksi. Yang BUKAN merupakan faktor utama produksi adalah...", a: "Sumber Daya Alam (SDA)", b: "Agen dan Makelar", c: "Modal", d: "Tenaga Kerja", correct: "b" },
+        { question: "19. Pihak yang menyalurkan barang atau jasa dari produsen kepada konsumen disebut pelaku...", a: "Produksi", b: "Konsumsi", c: "Eksploitasi", d: "Distribusi", correct: "d" },
+        { question: "20. Faktor nonekonomi yang dapat memengaruhi tingkat konsumsi sebuah keluarga adalah...", a: "Tingkat pendapatan dan harga barang", b: "Jumlah tanggungan keluarga dan adat istiadat", c: "Ketersediaan barang dan modal", d: "Kemajuan teknologi industri", correct: "b" },
+        { question: "21. Rumah Tangga Konsumen (RTK) memiliki salah satu peran yang sangat penting dalam perekonomian, yaitu sebagai...", a: "Penyedia faktor produksi (tenaga kerja, modal)", b: "Penyalur barang ke luar negeri", c: "Pengatur kebijakan ekonomi nasional", d: "Pembangun jalan raya dan sekolah", correct: "a" },
+        { question: "22. Pembangunan sarana publik seperti jembatan dan sekolah merupakan wujud kegiatan ekonomi produksi yang biasanya dilakukan oleh...", a: "Rumah Tangga Konsumen", b: "Pemerintah", c: "Masyarakat Luar Negeri", d: "Importir", correct: "b" },
+        { question: "23. Permintaan atas barang atau jasa yang didukung oleh kemampuan daya beli konsumen disebut...", a: "Permintaan potensial", b: "Permintaan absolut", c: "Permintaan efektif", d: "Permintaan individu", correct: "c" },
+        { question: "24. Sesuai dengan hukum penawaran, jika harga barang mengalami penurunan, maka jumlah barang yang ditawarkan oleh produsen akan...", a: "Ikut menurun", b: "Meningkat tajam", c: "Tetap sama", d: "Semakin banyak dicari", correct: "a" },
+        { question: "25. Pasar dikelompokkan berdasarkan waktu penyelenggaraannya menjadi...", a: "Pasar konkret dan pasar abstrak", b: "Pasar harian, mingguan, bulanan, dan tahunan", c: "Pasar lokal, regional, dan internasional", d: "Pasar monopoli dan pasar oligopoli", correct: "b" },
+        { question: "26. Pengelompokan anggota masyarakat secara horizontal tanpa membedakan kelas (misalnya berdasarkan klan, agama, atau ras) disebut...", a: "Stratifikasi Sosial", b: "Kasta", c: "Diferensiasi Sosial", d: "Status Sosial", correct: "c" },
+        { question: "27. Pengelompokan masyarakat yang dilakukan secara vertikal bertingkat berdasarkan kekayaan, pendidikan, dan kekuasaan dinamakan...", a: "Diferensiasi Sosial", b: "Stratifikasi Sosial", c: "Peran Sosial", d: "Assigned Status", correct: "b" },
+        { question: "28. Perilaku yang diharapkan dari seseorang oleh masyarakat karena status yang dimilikinya disebut...", a: "Peran sosial", b: "Stratifikasi terbuka", c: "Achieved status", d: "Ascribed status", correct: "a" },
+        { question: "29. Status sosial yang harus diraih seseorang melalui usaha yang disengaja seperti menempuh pendidikan dinamakan...", a: "Ascribed status", b: "Achieved status", c: "Assigned status", d: "Peran sosial", correct: "b" },
+        { question: "30. Fungsi harga yang dapat memberikan pendorong atau insentif bagi para produsen agar mau meningkatkan tingkat produksinya disebut fungsi...", a: "Signalling function", b: "Rationing function", c: "Incentive function", d: "Distribution function", correct: "c" }
+    ];
+
+    const quiz = document.getElementById('quiz');
+    const answerEls = document.querySelectorAll('.answer');
+    const questionEl = document.getElementById('question');
+    const a_text = document.getElementById('a_text');
+    const b_text = document.getElementById('b_text');
+    const c_text = document.getElementById('c_text');
+    const d_text = document.getElementById('d_text');
+    const submitBtn = document.getElementById('submit');
+    const progressEl = document.getElementById('progress');
+
+    let currentQuiz = 0;
+    let score = 0;
+
+    loadQuiz();
+
+    function loadQuiz() {
+        deselectAnswers();
+        const currentQuizData = quizData[currentQuiz];
+        progressEl.innerText = `Soal ${currentQuiz + 1} / ${quizData.length}`;
+        questionEl.innerText = currentQuizData.question;
+        a_text.innerText = currentQuizData.a;
+        b_text.innerText = currentQuizData.b;
+        c_text.innerText = currentQuizData.c;
+        d_text.innerText = currentQuizData.d;
+    }
+
+    function deselectAnswers() {
+        answerEls.forEach(answerEl => answerEl.checked = false);
+    }
+
+    function getSelected() {
+        let answer;
+        answerEls.forEach(answerEl => {
+            if (answerEl.checked) {
+                answer = answerEl.id;
+            }
+        });
+        return answer;
+    }
+
+    submitBtn.addEventListener('click', () => {
+        const answer = getSelected();
+        if (answer) {
+            if (answer === quizData[currentQuiz].correct) {
+                score++;
+            }
+            currentQuiz++;
+
+            if (currentQuiz < quizData.length) {
+                loadQuiz();
+            } else {
+                let finalScore = Math.round((score / quizData.length) * 100);
+                let message = "";
+                let emoji = "";
+                
+                if (finalScore >= 90) { message = "Luar biasa! Tingkat pemahamanmu sangat tinggi!"; emoji = "🎓"; }
+                else if (finalScore >= 75) { message = "Keren! Kamu berhasil mengingat banyak materi."; emoji = "👏"; }
+                else if (finalScore >= 60) { message = "Bagus! Kamu sudah di jalan yang benar, sisa poles sedikit lagi."; emoji = "💡"; }
+                else { message = "Tidak apa-apa, kamu bisa belajar materi PPT-nya lagi!"; emoji = "📖"; }
+
+                quiz.innerHTML = `
+                    <div class="result-container">
+                        <div style="font-size: 4.5rem; margin-bottom: 10px;">${emoji}</div>
+                        <h2>Kuis Paket 3 Selesai!</h2>
+                        <p class="score-text">Nilai Kamu: ${finalScore}</p>
+                        <p style="margin-bottom: 10px; font-size: 1.1rem;">Benar <strong>${score}</strong> dari <strong>${quizData.length}</strong> pertanyaan.</p>
+                        <p style="margin-bottom: 30px; color: #4a5568;">${message}</p>
+                        <button class="submit-btn" onclick="location.reload()">Mainkan Lagi</button>
+                    </div>
+                `;
+            }
+        } else {
+            alert("Pilih salah satu jawaban terlebih dahulu ya!");
+        }
+    });
+</script>
+
+</body>
+</html>

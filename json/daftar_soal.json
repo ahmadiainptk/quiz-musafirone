@@ -6,6 +6,65 @@
     "children": [
       {
         "type": "folder",
+        "title": "Kelas 3",
+        "icon": "3️⃣",
+        "children": [
+          {
+            "type": "folder",
+            "title": "Matematika",
+            "icon": "📐",
+            "children": [
+              {
+                "type": "file",
+                "id": "kossmi-mtk-3-natisha-1",
+                "title": "Latihan KoSSMI MTK 2026",
+                "subject": "Matematika",
+                "grade": "3 SD",
+                "file": "kossmi-mtk-3-natisha-1.json",
+                "icon": "📐"
+              },
+              {
+                "type": "file",
+                "id": "kossmi-mtk-3-natisha-2",
+                "title": "Latihan KoSSMI MTK 2026",
+                "subject": "Matematika",
+                "grade": "3 SD",
+                "file": "kossmi-mtk-3-natisha-2.json",
+                "icon": "📐"
+              },
+              {
+                "type": "file",
+                "id": "kossmi-mtk-3-natisha-3",
+                "title": "Latihan KoSSMI MTK 2026",
+                "subject": "Matematika",
+                "grade": "3 SD",
+                "file": "kossmi-mtk-3-natisha-3.json",
+                "icon": "📐"
+              },
+              {
+                "type": "file",
+                "id": "kossmi-mtk-3-natisha-4",
+                "title": "Latihan KoSSMI MTK 2026",
+                "subject": "Matematika",
+                "grade": "3 SD",
+                "file": "kossmi-mtk-3-natisha-4.json",
+                "icon": "📐"
+              },
+              {
+                "type": "file",
+                "id": "kossmi-mtk-3-natisha-5",
+                "title": "Latihan KoSSMI MTK 2026",
+                "subject": "Matematika",
+                "grade": "3 SD",
+                "file": "kossmi-mtk-3-natisha-5.json",
+                "icon": "📐"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "folder",
         "title": "Kelas 5",
         "icon": "5️⃣",
         "children": [
@@ -251,7 +310,7 @@
               }
             ]
           },
-{
+          {
             "type": "folder",
             "title": "B. Inggris",
             "icon": "💻",
@@ -273,8 +332,8 @@
                 "grade": "7 SMP",
                 "file": "psa1-bing-7-khairin-2.json",
                 "icon": "💻"
-              }, 
-{
+              },
+              {
                 "type": "file",
                 "id": "bing-7-psas-2025-3",
                 "title": "Latihan PSAS B. Inggris Ganjil #3",
@@ -285,7 +344,7 @@
               }
             ]
           },
-{
+          {
             "type": "folder",
             "title": "B. Arab",
             "icon": "💻",
@@ -307,8 +366,8 @@
                 "grade": "7 SMP",
                 "file": "psa1-barab-7-khairin-2.json",
                 "icon": "💻"
-              }, 
-{
+              },
+              {
                 "type": "file",
                 "id": "barab-7-psas-2025-3",
                 "title": "Latihan PSAS B. Arab Ganjil #3",
@@ -343,8 +402,8 @@
                 "icon": "🪐"
               }
             ]
-          }, 
-{
+          },
+          {
             "type": "folder",
             "title": "MTK",
             "icon": "🔬",
@@ -443,8 +502,8 @@
                 "icon": "🪐"
               }
             ]
-          }, 
-{
+          },
+          {
             "type": "folder",
             "title": "MTK",
             "icon": "🧬",

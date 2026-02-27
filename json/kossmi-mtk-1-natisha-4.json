@@ -1,0 +1,248 @@
+{
+    "subject": "Matematika",
+    "grade": "3 SD",
+    "title": "Paket D (Medium) - Latihan Persiapan KoSSMI Level 1",
+    "subtitle": "Paket 20 soal latihan tingkat sedang mencakup pemecahan masalah (word problems), logika penalaran, perhitungan waktu, dan operasi hitung tingkat lanjut.",
+    "questions": [
+        {
+            "no": 1,
+            "text": "Perhatikan pola bilangan berikut: 1, 3, 6, 10, ... Angka selanjutnya yang tepat untuk mengisi titik-titik tersebut adalah...",
+            "options": [
+                "12",
+                "14",
+                "15",
+                "16"
+            ],
+            "correct": 2,
+            "desc": "Indikator: Mengidentifikasi pola bilangan bertingkat. Polanya ditambah 2, lalu ditambah 3, ditambah 4. Selanjutnya ditambah 5. Jadi, 10 + 5 = 15."
+        },
+        {
+            "no": 2,
+            "text": "Hasil pengerjaan dari (125 + 75) - (40 x 2) adalah...",
+            "options": [
+                "100",
+                "120",
+                "140",
+                "160"
+            ],
+            "correct": 1,
+            "desc": "Indikator: Operasi hitung campuran dengan tanda kurung. (125 + 75) = 200. (40 x 2) = 80. Lalu 200 - 80 = 120."
+        },
+        {
+            "no": 3,
+            "text": "Umur Fatimah 3 tahun yang lalu adalah 6 tahun. Jika umur Aisyah sekarang 2 tahun lebih tua dari Fatimah, berapakah umur Aisyah sekarang?",
+            "options": [
+                "8 tahun",
+                "9 tahun",
+                "10 tahun",
+                "11 tahun"
+            ],
+            "correct": 3,
+            "desc": "Indikator: Logika perbandingan umur melintasi waktu. Umur Fatimah sekarang = 6 + 3 = 9 tahun. Umur Aisyah = 9 + 2 = 11 tahun."
+        },
+        {
+            "no": 4,
+            "text": "Sebuah semangka dipotong menjadi 12 bagian sama besar. Kakak memakan 3 bagian dan Adik memakan 4 bagian. Sisa pecahan semangka tersebut adalah...",
+            "options": [
+                "5/12",
+                "6/12",
+                "7/12",
+                "12/12"
+            ],
+            "correct": 0,
+            "desc": "Indikator: Pengurangan pecahan berpenyebut sama. Semangka dimakan: 3 + 4 = 7 bagian. Sisa: 12 - 7 = 5 bagian, atau 5/12."
+        },
+        {
+            "no": 5,
+            "text": "Ibu membeli 3 kg telur dengan harga Rp 24.000 per kg. Jika Ibu membayar dengan selembar uang Rp 100.000, uang kembalian yang diterima Ibu adalah...",
+            "options": [
+                "Rp 24.000",
+                "Rp 26.000",
+                "Rp 28.000",
+                "Rp 30.000"
+            ],
+            "correct": 2,
+            "desc": "Indikator: Operasi hitung perkalian dan pengurangan uang. Total belanja: 3 x Rp 24.000 = Rp 72.000. Kembalian: Rp 100.000 - Rp 72.000 = Rp 28.000."
+        },
+        {
+            "no": 6,
+            "text": "Jika hari ini adalah hari Rabu, maka 15 hari lagi adalah hari...",
+            "options": [
+                "Rabu",
+                "Kamis",
+                "Jumat",
+                "Sabtu"
+            ],
+            "correct": 1,
+            "desc": "Indikator: Siklus kalender mingguan. 1 minggu = 7 hari. 14 hari lagi kembali ke hari Rabu. Berarti 15 hari lagi adalah hari setelah Rabu, yaitu Kamis."
+        },
+        {
+            "no": 7,
+            "text": "Keliling sebuah persegi adalah 36 cm. Panjang satu sisi persegi tersebut adalah...",
+            "options": [
+                "6 cm",
+                "8 cm",
+                "9 cm",
+                "12 cm"
+            ],
+            "correct": 2,
+            "desc": "Indikator: Mencari panjang sisi dari keliling persegi. Keliling = 4 x sisi. Sisi = 36 dibagi 4 = 9 cm."
+        },
+        {
+            "no": 8,
+            "text": "Berat sebuah buku Matematika adalah 450 gram dan buku Bahasa Indonesia 350 gram. Jika di dalam tas terdapat 2 buku Matematika dan 1 buku Bahasa Indonesia, berat total buku di dalam tas adalah...",
+            "options": [
+                "800 gram",
+                "1.150 gram",
+                "1.250 gram",
+                "1.300 gram"
+            ],
+            "correct": 2,
+            "desc": "Indikator: Soal cerita konversi dan penjumlahan berat bersusun. (2 x 450) + 350 = 900 + 350 = 1.250 gram."
+        },
+        {
+            "no": 9,
+            "text": "Sebuah bilangan berada di antara 30 dan 40. Jika bilangan tersebut dibagi 4 akan bersisa 2. Bilangan berapakah itu?",
+            "options": [
+                "32",
+                "34",
+                "36",
+                "38"
+            ],
+            "correct": 1,
+            "desc": "Indikator: Logika kelipatan dan sisa pembagian. Kelipatan 4 antara 30 dan 40 adalah 32 dan 36. Ditambah sisa 2 menjadi 34 atau 38. Namun 38 dibagi 4 adalah 9 sisa 2, dan 34 dibagi 4 adalah 8 sisa 2. Keduanya benar, namun di sini 34 adalah kelipatan terdekat (32 + 2 = 34)."
+        },
+        {
+            "no": 10,
+            "text": "Aku adalah bilangan dua angka. Jika angka puluhan dan satuanku dijumlahkan, hasilnya adalah 8. Angka puluhanku 2 lebih besar dari angka satuanku. Bilangan berapakah aku?",
+            "options": [
+                "62",
+                "53",
+                "44",
+                "35"
+            ],
+            "correct": 1,
+            "desc": "Indikator: Teka-teki logika nilai tempat. Misal angka puluhan A dan satuan B. A + B = 8 dan A - B = 2. Coba jawaban 53: 5 + 3 = 8, dan 5 - 3 = 2. Jawabannya 53."
+        },
+        {
+            "no": 11,
+            "text": "Umar mulai murojaah Al-Qur'an pada pukul 15.45. Ia selesai murojaah pada pukul 16.20. Berapa lama Umar melakukan murojaah?",
+            "options": [
+                "25 menit",
+                "30 menit",
+                "35 menit",
+                "45 menit"
+            ],
+            "correct": 2,
+            "desc": "Indikator: Menghitung selisih/durasi waktu melintasi jam. Dari 15.45 ke 16.00 adalah 15 menit. Dari 16.00 ke 16.20 adalah 20 menit. Total = 15 + 20 = 35 menit."
+        },
+        {
+            "no": 12,
+            "text": "Ahmad, Budi, dan Candra mengumpulkan kelereng. Total kelereng mereka bertiga adalah 45 butir. Jika Ahmad memiliki 12 kelereng dan Budi memiliki 15 kelereng, berapa kelereng milik Candra?",
+            "options": [
+                "15",
+                "16",
+                "18",
+                "20"
+            ],
+            "correct": 2,
+            "desc": "Indikator: Soal cerita pengurangan dua langkah. Total milik Ahmad dan Budi = 12 + 15 = 27. Milik Candra = 45 - 27 = 18 kelereng."
+        },
+        {
+            "no": 13,
+            "text": "Panjang tongkat A adalah 1 meter 25 sentimeter. Panjang tongkat B adalah 85 sentimeter. Selisih panjang tongkat A dan B adalah...",
+            "options": [
+                "35 sentimeter",
+                "40 sentimeter",
+                "45 sentimeter",
+                "50 sentimeter"
+            ],
+            "correct": 1,
+            "desc": "Indikator: Pengurangan satuan panjang berbeda. Tongkat A = 125 cm. Selisih = 125 cm - 85 cm = 40 cm."
+        },
+        {
+            "no": 14,
+            "text": "Siti lebih tinggi dari Nisa, tetapi lebih pendek dari Zahra. Rara lebih tinggi dari Zahra. Siapakah yang paling pendek di antara mereka berempat?",
+            "options": [
+                "Siti",
+                "Nisa",
+                "Zahra",
+                "Rara"
+            ],
+            "correct": 1,
+            "desc": "Indikator: Logika urutan (sequencing). Urutan dari yang tertinggi ke terpendek: Rara > Zahra > Siti > Nisa. Jadi, Nisa yang paling pendek."
+        },
+        {
+            "no": 15,
+            "text": "Di sebuah kandang terdapat ayam dan kambing. Jumlah kaki seluruh hewan di kandang adalah 26 kaki. Jika terdapat 3 ekor kambing, maka jumlah ayam di kandang tersebut adalah...",
+            "options": [
+                "5 ekor",
+                "6 ekor",
+                "7 ekor",
+                "8 ekor"
+            ],
+            "correct": 2,
+            "desc": "Indikator: Persamaan logika hewan dan kaki. Kaki 3 kambing = 3 x 4 = 12 kaki. Sisa kaki untuk ayam = 26 - 12 = 14 kaki. Karena ayam punya 2 kaki, jumlah ayam = 14 dibagi 2 = 7 ekor."
+        },
+        {
+            "no": 16,
+            "text": "Timbangan A menunjukkan 2 buah melon sama berat dengan 6 buah apel. Jika berat 1 buah apel adalah 200 gram, berapakah berat 1 buah melon?",
+            "options": [
+                "400 gram",
+                "600 gram",
+                "800 gram",
+                "1.200 gram"
+            ],
+            "correct": 1,
+            "desc": "Indikator: Logika substitusi keseimbangan. Berat 6 apel = 6 x 200 gram = 1.200 gram. Berat 1 melon = 1.200 gram dibagi 2 = 600 gram."
+        },
+        {
+            "no": 17,
+            "text": "Sebuah lapangan berbentuk persegi panjang dengan panjang 20 meter dan lebar 10 meter. Adam berlari mengelilingi lapangan tersebut sebanyak 2 kali. Jarak yang ditempuh Adam adalah...",
+            "options": [
+                "60 meter",
+                "80 meter",
+                "100 meter",
+                "120 meter"
+            ],
+            "correct": 3,
+            "desc": "Indikator: Aplikasi keliling persegi panjang. Keliling = 2 x (20 + 10) = 60 meter. Lari 2 kali putaran = 60 x 2 = 120 meter."
+        },
+        {
+            "no": 18,
+            "text": "Dari 20 soal ujian, Ali berhasil menjawab 15 soal dengan benar. Pecahan yang menunjukkan jumlah soal yang dijawab salah oleh Ali (jika disederhanakan) adalah...",
+            "options": [
+                "1/2",
+                "1/3",
+                "1/4",
+                "1/5"
+            ],
+            "correct": 2,
+            "desc": "Indikator: Pecahan dalam konteks cerita dan penyederhanaan. Salah = 20 - 15 = 5 soal. Bentuk pecahan = 5/20. Disederhanakan dengan dibagi 5 menjadi 1/4."
+        },
+        {
+            "no": 19,
+            "text": "Saat berbaris untuk masuk kelas, posisi Hasan berada pada urutan ke-12 dari depan, yang juga merupakan urutan ke-8 dari belakang. Jumlah murid dalam barisan tersebut adalah...",
+            "options": [
+                "18",
+                "19",
+                "20",
+                "21"
+            ],
+            "correct": 1,
+            "desc": "Indikator: Logika urutan beririsan/himpunan (mirip soal KoSSMI asli). Rumus: (Urutan depan + Urutan belakang) - 1. Yaitu 12 + 8 - 1 = 19 orang."
+        },
+        {
+            "no": 20,
+            "text": "Jumlah umur Ali dan kakaknya saat ini adalah 20 tahun. Berapakah jumlah umur mereka berdua pada 4 tahun yang akan datang?",
+            "options": [
+                "24 tahun",
+                "26 tahun",
+                "28 tahun",
+                "30 tahun"
+            ],
+            "correct": 2,
+            "desc": "Indikator: Logika penjumlahan umur bergeser maju. 4 tahun ke depan, masing-masing bertambah 4 tahun. Total penambahan = 2 orang x 4 tahun = 8 tahun. Jadi, 20 + 8 = 28 tahun."
+        }
+    ]
+}

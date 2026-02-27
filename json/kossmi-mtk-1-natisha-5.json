@@ -1,0 +1,248 @@
+{
+    "subject": "Matematika",
+    "grade": "3 SD",
+    "title": "Paket E (Hard) - Latihan Persiapan KoSSMI Level 1",
+    "subtitle": "Paket 20 soal latihan tingkat sulit (HOTS) mencakup logika penalaran, aljabar dasar, pola tingkat lanjut, dan soal cerita multi-langkah.",
+    "questions": [
+        {
+            "no": 1,
+            "text": "Jika hari ini adalah hari Kamis, maka 100 hari yang akan datang adalah hari...",
+            "options": [
+                "Jumat",
+                "Sabtu",
+                "Minggu",
+                "Senin"
+            ],
+            "correct": 1,
+            "desc": "Indikator: Penalaran modulo (sisa pembagian) pada kalender. 1 minggu = 7 hari. 100 dibagi 7 = 14 sisa 2. Artinya, 14 minggu kemudian tetap hari Kamis, ditambah sisa 2 hari, yaitu Jumat, lalu Sabtu."
+        },
+        {
+            "no": 2,
+            "text": "Sebuah pita panjangnya 4 meter dipotong menjadi 8 bagian yang sama panjang. Kemudian, setiap bagian dipotong lagi menjadi 5 bagian kecil. Panjang 1 bagian kecil tersebut adalah...",
+            "options": [
+                "5 cm",
+                "8 cm",
+                "10 cm",
+                "20 cm"
+            ],
+            "correct": 2,
+            "desc": "Indikator: Konversi satuan dan pembagian bertingkat. 4 meter = 400 cm. Dibagi 8 bagian = 50 cm per bagian. Lalu 50 cm dibagi 5 bagian kecil = 10 cm."
+        },
+        {
+            "no": 3,
+            "text": "Umur Kakak 4 tahun lagi adalah 15 tahun. Umur Adik 2 tahun yang lalu adalah 6 tahun. Selisih umur mereka berdua pada tahun depan adalah...",
+            "options": [
+                "2 tahun",
+                "3 tahun",
+                "4 tahun",
+                "5 tahun"
+            ],
+            "correct": 1,
+            "desc": "Indikator: Logika pelacakan variabel waktu. Umur Kakak sekarang = 15 - 4 = 11 tahun. Umur Adik sekarang = 6 + 2 = 8 tahun. Selisih umur sekarang = 11 - 8 = 3 tahun. (Selisih umur akan selalu tetap sama setiap tahun)."
+        },
+        {
+            "no": 4,
+            "text": "Sulaiman memikirkan sebuah bilangan. Bilangan itu jika dikalikan 4, lalu ditambah 12, hasilnya adalah 60. Bilangan berapakah yang dipikirkan Sulaiman?",
+            "options": [
+                "10",
+                "12",
+                "14",
+                "16"
+            ],
+            "correct": 1,
+            "desc": "Indikator: Logika hitung mundur (Pra-Aljabar). Lakukan operasi kebalikan dari belakang: 60 dikurangi 12 = 48. Lalu 48 dibagi 4 = 12."
+        },
+        {
+            "no": 5,
+            "text": "Terdapat 5 orang anak yang saling bersalaman satu sama lain tepat satu kali. Berapa banyak total salaman yang terjadi?",
+            "options": [
+                "5 salaman",
+                "10 salaman",
+                "15 salaman",
+                "20 salaman"
+            ],
+            "correct": 1,
+            "desc": "Indikator: Kombinatorika dasar. Anak 1 salaman 4 kali, anak 2 salaman 3 kali (karena dengan anak 1 sudah), anak 3 salaman 2 kali, anak 4 salaman 1 kali. Total = 4 + 3 + 2 + 1 = 10 salaman."
+        },
+        {
+            "no": 6,
+            "text": "Harga 3 buah buku dan 2 buah pensil adalah Rp 12.000. Jika harga 1 buah buku adalah Rp 3.000, berapakah harga 4 buah pensil?",
+            "options": [
+                "Rp 3.000",
+                "Rp 4.500",
+                "Rp 6.000",
+                "Rp 7.500"
+            ],
+            "correct": 2,
+            "desc": "Indikator: Substitusi nilai persamaan linier. Harga 3 buku = 3 x Rp 3.000 = Rp 9.000. Maka, 2 pensil = Rp 12.000 - Rp 9.000 = Rp 3.000. Harga 1 pensil = Rp 1.500. Harga 4 pensil = 4 x Rp 1.500 = Rp 6.000."
+        },
+        {
+            "no": 7,
+            "text": "Sebuah antrean kasir terdiri dari 50 orang. Budi berada di urutan ke-15 dari depan. Caca berada di urutan ke-12 dari belakang. Ada berapa banyak orang di antara Budi dan Caca?",
+            "options": [
+                "21 orang",
+                "22 orang",
+                "23 orang",
+                "24 orang"
+            ],
+            "correct": 2,
+            "desc": "Indikator: Logika himpunan rentang angka. Jumlah antrean utuh = 50. Orang di depan Budi (termasuk Budi) = 15. Orang di belakang Caca (termasuk Caca) = 12. Orang di antara mereka = 50 - 15 - 12 = 23 orang."
+        },
+        {
+            "no": 8,
+            "text": "Sebuah persegi besar dibentuk dari 16 persegi kecil yang ukurannya sama. Jika keliling 1 buah persegi kecil adalah 12 cm, luas persegi besar tersebut adalah...",
+            "options": [
+                "64 cm2",
+                "128 cm2",
+                "144 cm2",
+                "256 cm2"
+            ],
+            "correct": 2,
+            "desc": "Indikator: Geometri dan luas daerah bangun majemuk. Keliling persegi kecil 12 cm, maka sisinya 3 cm. Persegi besar tersusun dari 16 persegi kecil (formasi 4 x 4). Panjang sisi persegi besar = 4 x 3 cm = 12 cm. Luas persegi besar = 12 cm x 12 cm = 144 cm2."
+        },
+        {
+            "no": 9,
+            "text": "Bilangan genap terkecil yang terdiri dari 4 angka berbeda yang dapat dibentuk dari angka 0, 3, 5, dan 8 adalah...",
+            "options": [
+                "3058",
+                "3508",
+                "3580",
+                "5308"
+            ],
+            "correct": 0,
+            "desc": "Indikator: Pemahaman nilai tempat bersyarat. Angka ribuan terkecil (tidak boleh 0) adalah 3. Ratusan terkecil adalah 0. Tersisa 5 dan 8. Karena syarat bilangan genap, satuan harus genap (harus 8). Maka urutannya 3-0-5-8 (3058)."
+        },
+        {
+            "no": 10,
+            "text": "Pak Rahmat memiliki 120 ekor ayam. Seperempat (1/4) bagian dari ayam tersebut dijual. Dari ayam yang tersisa, sepertiga (1/3) bagian mati karena penyakit. Berapa sisa ayam Pak Rahmat sekarang?",
+            "options": [
+                "30 ekor",
+                "40 ekor",
+                "60 ekor",
+                "90 ekor"
+            ],
+            "correct": 2,
+            "desc": "Indikator: Pecahan bersyarat berantai. Ayam dijual = 1/4 dari 120 = 30 ekor. Ayam tersisa = 120 - 30 = 90 ekor. Ayam mati = 1/3 dari sisanya (90) = 30 ekor. Sisa ayam sekarang = 90 - 30 = 60 ekor."
+        },
+        {
+            "no": 11,
+            "text": "Sebuah jam dinding rusak sehingga selalu terlambat (bergerak lebih lambat) 5 menit setiap jamnya. Jika jam tersebut dicocokkan dengan waktu yang benar pada pukul 07.00, pukul berapakah yang ditunjukkan jam tersebut saat waktu sebenarnya menunjukkan pukul 12.00?",
+            "options": [
+                "11.35",
+                "11.45",
+                "12.25",
+                "12.35"
+            ],
+            "correct": 0,
+            "desc": "Indikator: Logika penyimpangan waktu kecepatan. Dari pukul 07.00 ke 12.00 adalah 5 jam. Jam telat 5 menit setiap jam, berarti total telat = 5 x 5 menit = 25 menit. Pukul yang ditunjukkan = 12.00 dikurangi 25 menit = Pukul 11.35."
+        },
+        {
+            "no": 12,
+            "text": "Timbangan menunjukkan bahwa berat 1 karung beras ditambah 3 keranjang mangga adalah 45 kg. Jika berat 1 karung beras sama dengan berat 6 keranjang mangga, berapakah berat 1 keranjang mangga?",
+            "options": [
+                "3 kg",
+                "4 kg",
+                "5 kg",
+                "6 kg"
+            ],
+            "correct": 2,
+            "desc": "Indikator: Substitusi persamaan dan kesetimbangan benda. 1 Karung = 6 Mangga. Maka (6 Mangga) + 3 Mangga = 45 kg. 9 Mangga = 45 kg. Berat 1 keranjang mangga = 45 dibagi 9 = 5 kg."
+        },
+        {
+            "no": 13,
+            "text": "Nilai rata-rata dari 4 kali ulangan matematika Budi adalah 80. Budi ingin nilai rata-ratanya menjadi 82. Berapakah nilai yang harus ia peroleh pada ulangan ke-5?",
+            "options": [
+                "84",
+                "86",
+                "88",
+                "90"
+            ],
+            "correct": 3,
+            "desc": "Indikator: Konsep nilai rata-rata. Total nilai saat ini = 4 x 80 = 320. Total nilai yang diinginkan untuk 5 ulangan = 5 x 82 = 410. Nilai ulangan ke-5 = 410 - 320 = 90."
+        },
+        {
+            "no": 14,
+            "text": "Pada bulan ini, hari Senin pertama jatuh pada tanggal 2. Tanggal berapakah hari Senin pada minggu keempat bulan ini?",
+            "options": [
+                "16",
+                "21",
+                "23",
+                "30"
+            ],
+            "correct": 2,
+            "desc": "Indikator: Barisan aritmetika pada penanggalan. Pola hari +7. Senin ke-1: tgl 2. Senin ke-2: tgl 9. Senin ke-3: tgl 16. Senin ke-4: tgl 23."
+        },
+        {
+            "no": 15,
+            "text": "Terdapat 3 buah kotak (A, B, dan C). Kotak A lebih berat dari Kotak B. Kotak C ternyata lebih ringan dari Kotak B. Urutan kotak dari yang paling berat ke yang paling ringan adalah...",
+            "options": [
+                "A - B - C",
+                "B - A - C",
+                "C - B - A",
+                "A - C - B"
+            ],
+            "correct": 0,
+            "desc": "Indikator: Logika deduksi dan penarikan kesimpulan urutan. Diketahui: A > B. Kemudian C < B (berarti B > C). Jika digabungkan menjadi A > B > C."
+        },
+        {
+            "no": 16,
+            "text": "Didefinisikan sebuah aturan operasi hitung: A @ B = (A x B) - (A + B). Hasil dari operasi 5 @ 4 adalah...",
+            "options": [
+                "9",
+                "11",
+                "20",
+                "29"
+            ],
+            "correct": 1,
+            "desc": "Indikator: Pemahaman operator hitung imajiner (Fungsi fungsi pra-aljabar). Ganti nilai A = 5 dan B = 4. Maka (5 x 4) - (5 + 4) = 20 - 9 = 11."
+        },
+        {
+            "no": 17,
+            "text": "Perhatikan barisan bilangan berikut: 1, 2, 4, 7, 11, 16, X, Y. Berapakah hasil dari X + Y?",
+            "options": [
+                "38",
+                "45",
+                "51",
+                "60"
+            ],
+            "correct": 2,
+            "desc": "Indikator: Barisan bilangan dengan pola bertingkat. Pola penambahan: +1, +2, +3, +4, +5... Nilai X = 16 + 6 = 22. Nilai Y = 22 + 7 = 29. Hasil penjumlahan X + Y = 22 + 29 = 51."
+        },
+        {
+            "no": 18,
+            "text": "Sebuah kubus kayu dicat seluruh permukaannya dengan warna merah. Kemudian, kubus tersebut dipotong menjadi 27 kubus kecil yang sama besar. Berapa banyak kubus kecil yang TIDAK terkena cat sama sekali?",
+            "options": [
+                "1 kubus",
+                "6 kubus",
+                "8 kubus",
+                "9 kubus"
+            ],
+            "correct": 0,
+            "desc": "Indikator: Penalaran keruangan geometri 3 Dimensi. 27 kubus kecil berarti tersusun atas 3 x 3 x 3 lapis. Kubus yang tidak terkena cat sama sekali hanyalah 1 buah kubus yang posisinya bersembunyi persis di tengah-tengah formasi (pusat kubus)."
+        },
+        {
+            "no": 19,
+            "text": "Jika 2 ekor kucing dapat menangkap 2 ekor tikus dalam waktu 2 menit, berapakah waktu yang dibutuhkan oleh 10 ekor kucing untuk menangkap 10 ekor tikus?",
+            "options": [
+                "2 menit",
+                "5 menit",
+                "10 menit",
+                "20 menit"
+            ],
+            "correct": 0,
+            "desc": "Indikator: Logika perbandingan kecepatan/waktu. Kecepatannya adalah 1 ekor kucing menangkap 1 ekor tikus membutuhkan waktu 2 menit. Jika ada 10 kucing mengejar 10 tikus secara bersamaan, waktunya tetap sama, yaitu 2 menit."
+        },
+        {
+            "no": 20,
+            "text": "Buku Matematika Budi memiliki 100 halaman. Jika malam ini Budi membaca lembar buku mulai dari halaman nomor 15 sampai halaman nomor 45, berapakah jumlah halaman yang Budi baca malam ini?",
+            "options": [
+                "30 halaman",
+                "31 halaman",
+                "32 halaman",
+                "45 halaman"
+            ],
+            "correct": 1,
+            "desc": "Indikator: Kesalahan Off-by-one (Logika jumlah cacah urutan). Menghitung jumlah halaman inklusif: (Halaman akhir - Halaman awal) + 1. Yaitu (45 - 15) + 1 = 30 + 1 = 31 halaman."
+        }
+    ]
+}

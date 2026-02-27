@@ -1,0 +1,248 @@
+{
+    "subject": "Matematika",
+    "grade": "3 SD",
+    "title": "Paket B (Easy) - Latihan Persiapan KoSSMI Level 1",
+    "subtitle": "Paket 20 soal latihan tingkat mudah (Paket ke-2) mencakup Aritmetika, Logika Sederhana, Pecahan Dasar, dan Satuan Waktu/Berat.",
+    "questions": [
+        {
+            "no": 1,
+            "text": "Perhatikan pola bilangan berikut: 20, 17, 14, ... Angka selanjutnya yang tepat untuk mengisi titik-titik tersebut adalah...",
+            "options": [
+                "10",
+                "11",
+                "12",
+                "13"
+            ],
+            "correct": 1,
+            "desc": "Indikator: Mengidentifikasi pola bilangan menurun. Polanya adalah dikurangi 3. 14 - 3 = 11."
+        },
+        {
+            "no": 2,
+            "text": "Pada bilangan 4.852, angka 8 menempati nilai...",
+            "options": [
+                "8",
+                "80",
+                "800",
+                "8.000"
+            ],
+            "correct": 2,
+            "desc": "Indikator: Memahami nilai tempat bilangan ribuan. Angka 4 (ribuan), 8 (ratusan), 5 (puluhan), 2 (satuan)."
+        },
+        {
+            "no": 3,
+            "text": "Hasil pengerjaan dari 150 + 45 - 20 adalah...",
+            "options": [
+                "165",
+                "170",
+                "175",
+                "180"
+            ],
+            "correct": 2,
+            "desc": "Indikator: Operasi hitung campuran penjumlahan dan pengurangan. 150 + 45 = 195. 195 - 20 = 175."
+        },
+        {
+            "no": 4,
+            "text": "Umur Kakak sekarang adalah 12 tahun. Umur Adik 3 tahun lebih muda dari Kakak. Jumlah umur mereka berdua adalah...",
+            "options": [
+                "18 tahun",
+                "19 tahun",
+                "20 tahun",
+                "21 tahun"
+            ],
+            "correct": 3,
+            "desc": "Indikator: Logika umur. Umur Adik = 12 - 3 = 9 tahun. Jumlah umur = 12 + 9 = 21 tahun."
+        },
+        {
+            "no": 5,
+            "text": "Ibu memiliki 20 buah permen. Setengah bagian dari permen tersebut diberikan kepada Ali. Berapa banyak permen yang didapatkan Ali?",
+            "options": [
+                "5 permen",
+                "10 permen",
+                "15 permen",
+                "40 permen"
+            ],
+            "correct": 1,
+            "desc": "Indikator: Konsep pecahan dasar (setengah). Setengah dari 20 berarti 20 dibagi 2, yaitu 10 permen."
+        },
+        {
+            "no": 6,
+            "text": "Ahmad mengerjakan PR matematika selama 1 jam 15 menit. Waktu yang dihabiskan Ahmad sama dengan ... menit.",
+            "options": [
+                "65 menit",
+                "75 menit",
+                "85 menit",
+                "115 menit"
+            ],
+            "correct": 1,
+            "desc": "Indikator: Konversi satuan waktu. 1 jam = 60 menit. 60 menit + 15 menit = 75 menit."
+        },
+        {
+            "no": 7,
+            "text": "Harga sebuah penghapus adalah Rp 2.500. Budi membayar dengan selembar uang Rp 5.000. Uang kembalian Budi adalah...",
+            "options": [
+                "Rp 1.500",
+                "Rp 2.000",
+                "Rp 2.500",
+                "Rp 3.000"
+            ],
+            "correct": 2,
+            "desc": "Indikator: Operasi pengurangan pada mata uang. Rp 5.000 - Rp 2.500 = Rp 2.500."
+        },
+        {
+            "no": 8,
+            "text": "Berat sebuah semangka adalah 3 kg 200 gram. Berat tersebut sama dengan ... gram.",
+            "options": [
+                "500 gram",
+                "3.020 gram",
+                "3.200 gram",
+                "5.000 gram"
+            ],
+            "correct": 2,
+            "desc": "Indikator: Konversi satuan berat. 3 kg = 3.000 gram. 3.000 gram + 200 gram = 3.200 gram."
+        },
+        {
+            "no": 9,
+            "text": "Aku adalah bangun datar. Aku memiliki empat sudut siku-siku dan memiliki 2 pasang sisi yang sama panjang. Aku adalah...",
+            "options": [
+                "Persegi",
+                "Persegi panjang",
+                "Segitiga siku-siku",
+                "Belah ketupat"
+            ],
+            "correct": 1,
+            "desc": "Indikator: Mengidentifikasi sifat-sifat bangun datar. Persegi panjang memiliki 2 pasang sisi sejajar yang sama panjang dan 4 sudut siku-siku."
+        },
+        {
+            "no": 10,
+            "text": "Pak Tani memiliki 5 ekor ayam. Setiap ayam bertelur 2 butir setiap hari. Berapa jumlah seluruh telur ayam Pak Tani selama 3 hari?",
+            "options": [
+                "10 butir",
+                "15 butir",
+                "20 butir",
+                "30 butir"
+            ],
+            "correct": 3,
+            "desc": "Indikator: Logika perkalian berantai. Telur per hari = 5 x 2 = 10 butir. Selama 3 hari = 10 x 3 = 30 butir."
+        },
+        {
+            "no": 11,
+            "text": "Jika hari ini adalah hari Kamis, maka 10 hari lagi adalah hari...",
+            "options": [
+                "Sabtu",
+                "Minggu",
+                "Senin",
+                "Selasa"
+            ],
+            "correct": 1,
+            "desc": "Indikator: Siklus waktu (hari). 1 minggu = 7 hari (kembali ke Kamis). Sisa 3 hari: Jumat, Sabtu, Minggu."
+        },
+        {
+            "no": 12,
+            "text": "Panjang sebuah tali adalah 2 meter. Tali tersebut digunting sepanjang 80 sentimeter. Sisa panjang tali sekarang adalah...",
+            "options": [
+                "20 sentimeter",
+                "120 sentimeter",
+                "180 sentimeter",
+                "280 sentimeter"
+            ],
+            "correct": 1,
+            "desc": "Indikator: Pengurangan satuan panjang. 2 meter = 200 cm. 200 cm - 80 cm = 120 cm."
+        },
+        {
+            "no": 13,
+            "text": "Hasil dari perkalian dan penjumlahan 4 x 5 + 10 adalah...",
+            "options": [
+                "20",
+                "30",
+                "40",
+                "50"
+            ],
+            "correct": 1,
+            "desc": "Indikator: Urutan operasi hitung (KABATAKU). Kerjakan perkalian dahulu: 4 x 5 = 20. Kemudian ditambah 10: 20 + 10 = 30."
+        },
+        {
+            "no": 14,
+            "text": "Pecahan yang nilainya lebih besar dari 1/4 tetapi lebih kecil dari 3/4 adalah...",
+            "options": [
+                "1/8",
+                "1/2",
+                "4/4",
+                "1/5"
+            ],
+            "correct": 1,
+            "desc": "Indikator: Membandingkan pecahan sederhana. 1/2 sama dengan 2/4. Angka 2/4 berada di antara 1/4 dan 3/4."
+        },
+        {
+            "no": 15,
+            "text": "Dalam sebuah antrian wudhu, Salman berada pada urutan ke-5 dari depan dan ke-4 dari belakang. Ada berapa jumlah orang dalam antrian tersebut?",
+            "options": [
+                "7 orang",
+                "8 orang",
+                "9 orang",
+                "10 orang"
+            ],
+            "correct": 1,
+            "desc": "Indikator: Logika antrian beririsan. Rumusnya: (urutan depan + urutan belakang) - 1. 5 + 4 - 1 = 8 orang."
+        },
+        {
+            "no": 16,
+            "text": "Sebuah segitiga sama sisi memiliki panjang sisi 6 cm. Keliling segitiga tersebut adalah...",
+            "options": [
+                "12 cm",
+                "18 cm",
+                "24 cm",
+                "36 cm"
+            ],
+            "correct": 1,
+            "desc": "Indikator: Keliling bangun datar (segitiga). Segitiga sama sisi memiliki 3 sisi yang sama. 6 cm + 6 cm + 6 cm = 18 cm."
+        },
+        {
+            "no": 17,
+            "text": "Jika sebuah simbol BINTANG bernilai 5 dan BULAN bernilai 3, maka hasil dari BINTANG + BINTANG - BULAN adalah...",
+            "options": [
+                "5",
+                "6",
+                "7",
+                "8"
+            ],
+            "correct": 2,
+            "desc": "Indikator: Substitusi simbol dengan angka (pengenalan variabel). 5 + 5 - 3 = 10 - 3 = 7."
+        },
+        {
+            "no": 18,
+            "text": "Jam dinding di kelas menunjukkan pukul 08.30. Setengah jam yang akan datang adalah pukul...",
+            "options": [
+                "08.00",
+                "09.00",
+                "09.30",
+                "10.00"
+            ],
+            "correct": 1,
+            "desc": "Indikator: Menghitung waktu maju. Setengah jam = 30 menit. 08.30 ditambah 30 menit menjadi tepat pukul 09.00."
+        },
+        {
+            "no": 19,
+            "text": "Ibu guru memiliki 36 buah buku cerita. Buku tersebut akan dibagikan kepada 6 kelompok belajar dengan jumlah yang sama banyak. Setiap kelompok mendapatkan ... buku.",
+            "options": [
+                "4",
+                "5",
+                "6",
+                "7"
+            ],
+            "correct": 2,
+            "desc": "Indikator: Operasi pembagian dasar. 36 dibagi 6 = 6."
+        },
+        {
+            "no": 20,
+            "text": "Di sebuah toko buah, ada 3 keranjang apel. Setiap keranjang berisi 4 buah apel. Ternyata, ada 2 buah apel yang busuk. Berapa buah apel yang masih bagus?",
+            "options": [
+                "8 buah",
+                "10 buah",
+                "12 buah",
+                "14 buah"
+            ],
+            "correct": 1,
+            "desc": "Indikator: Logika matematika cerita. Total apel = 3 x 4 = 12 buah. Apel bagus = 12 - 2 = 10 buah."
+        }
+    ]
+}

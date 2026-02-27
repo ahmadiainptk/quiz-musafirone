@@ -1,0 +1,248 @@
+{
+    "subject": "Matematika",
+    "grade": "3 SD",
+    "title": "Paket A (Easy) - Latihan Persiapan KoSSMI Level 1",
+    "subtitle": "Paket 20 soal latihan tingkat mudah mencakup Aritmetika Dasar, Pola Bilangan, Logika Waktu, Uang, dan Geometri Dasar.",
+    "questions": [
+        {
+            "no": 1,
+            "text": "Barisan bilangan loncat 4 dimulai dari angka 5 adalah...",
+            "options": [
+                "5, 8, 11, 14",
+                "5, 9, 13, 17",
+                "5, 10, 15, 20",
+                "4, 9, 14, 19"
+            ],
+            "correct": 1,
+            "desc": "Indikator: Menentukan barisan bilangan (Pola bilangan). Bilangan ditambah 4 setiap langkahnya: 5 + 4 = 9, 9 + 4 = 13, 13 + 4 = 17."
+        },
+        {
+            "no": 2,
+            "text": "Hasil dari 5 ratusan + 12 puluhan + 6 satuan adalah...",
+            "options": [
+                "5126",
+                "626",
+                "526",
+                "612"
+            ],
+            "correct": 1,
+            "desc": "Indikator: Memahami nilai tempat. 5 ratusan = 500, 12 puluhan = 120, 6 satuan = 6. Dijumlahkan: 500 + 120 + 6 = 626."
+        },
+        {
+            "no": 3,
+            "text": "Sebuah bilangan berada tepat di antara 345 dan 347. Jika bilangan itu ditambah 100, maka hasilnya adalah...",
+            "options": [
+                "445",
+                "446",
+                "447",
+                "448"
+            ],
+            "correct": 1,
+            "desc": "Indikator: Menentukan bilangan berurutan dan penjumlahan. Bilangan di antara 345 dan 347 adalah 346. Kemudian 346 + 100 = 446."
+        },
+        {
+            "no": 4,
+            "text": "Umur Hasan 2 tahun lagi adalah 10 tahun. Berapakah umur Hasan 3 tahun yang lalu?",
+            "options": [
+                "5 tahun",
+                "8 tahun",
+                "12 tahun",
+                "15 tahun"
+            ],
+            "correct": 0,
+            "desc": "Indikator: Logika waktu (usia). Umur sekarang = 10 - 2 = 8 tahun. Umur 3 tahun lalu = 8 - 3 = 5 tahun."
+        },
+        {
+            "no": 5,
+            "text": "Harga 1 buku tulis adalah Rp 3.500. Jika Andi membeli 4 buku tulis, berapa uang yang harus dibayar?",
+            "options": [
+                "Rp 12.000",
+                "Rp 13.500",
+                "Rp 14.000",
+                "Rp 15.000"
+            ],
+            "correct": 2,
+            "desc": "Indikator: Operasi perkalian (uang). 3.500 x 4 = Rp 14.000."
+        },
+        {
+            "no": 6,
+            "text": "Aku adalah bangun datar. Aku memiliki 3 sisi dan 3 sudut. Aku adalah...",
+            "options": [
+                "Persegi",
+                "Persegi Panjang",
+                "Lingkaran",
+                "Segitiga"
+            ],
+            "correct": 3,
+            "desc": "Indikator: Mengidentifikasi ciri-ciri bangun datar dasar."
+        },
+        {
+            "no": 7,
+            "text": "Ibu membeli buah mangga seberat 2 kg dan buah jeruk 500 gram. Total berat belanjaan buah ibu adalah ... gram.",
+            "options": [
+                "250 gram",
+                "700 gram",
+                "2005 gram",
+                "2500 gram"
+            ],
+            "correct": 3,
+            "desc": "Indikator: Konversi satuan berat. 2 kg = 2000 gram. Total = 2000 + 500 = 2500 gram."
+        },
+        {
+            "no": 8,
+            "text": "Jika kemarin adalah hari Selasa, maka 3 hari lagi adalah hari...",
+            "options": [
+                "Jumat",
+                "Sabtu",
+                "Minggu",
+                "Senin"
+            ],
+            "correct": 1,
+            "desc": "Indikator: Penalaran hari. Kemarin Selasa, berarti hari ini Rabu. Tiga hari setelah Rabu adalah Sabtu."
+        },
+        {
+            "no": 9,
+            "text": "Sebuah kue dipotong menjadi 8 bagian sama besar. Adik memakan 3 bagian. Sisa kue tersebut adalah ... bagian.",
+            "options": [
+                "3/8",
+                "5/8",
+                "8/8",
+                "11/8"
+            ],
+            "correct": 1,
+            "desc": "Indikator: Konsep pecahan sederhana. Kue utuh = 8/8. Dimakan 3 bagian (3/8). Sisanya 8/8 - 3/8 = 5/8."
+        },
+        {
+            "no": 10,
+            "text": "Hasil dari 25 + 15 - 10 adalah...",
+            "options": [
+                "20",
+                "30",
+                "40",
+                "50"
+            ],
+            "correct": 1,
+            "desc": "Indikator: Operasi hitung campuran dasar. 25 + 15 = 40. Lalu 40 - 10 = 30."
+        },
+        {
+            "no": 11,
+            "text": "Dari angka 2, 5, 8, dan 1, bilangan ratusan terbesar yang dapat dibentuk dari 3 angka berbeda adalah...",
+            "options": [
+                "851",
+                "852",
+                "582",
+                "258"
+            ],
+            "correct": 1,
+            "desc": "Indikator: Menyusun bilangan (nilai tempat maksimal). Pilih 3 angka terbesar: 8, 5, 2. Susun menurun menjadi 852."
+        },
+        {
+            "no": 12,
+            "text": "Ayah memiliki 24 permen yang akan dibagikan sama rata kepada 4 orang anaknya. Setiap anak akan mendapatkan ... permen.",
+            "options": [
+                "4",
+                "5",
+                "6",
+                "8"
+            ],
+            "correct": 2,
+            "desc": "Indikator: Menyelesaikan soal cerita menggunakan pembagian dasar. 24 : 4 = 6."
+        },
+        {
+            "no": 13,
+            "text": "Panjang pita Aisyah 1 meter 20 sentimeter. Jika pita tersebut dipotong 50 sentimeter, sisa pita Aisyah adalah...",
+            "options": [
+                "60 sentimeter",
+                "70 sentimeter",
+                "80 sentimeter",
+                "170 sentimeter"
+            ],
+            "correct": 1,
+            "desc": "Indikator: Konversi satuan panjang dan pengurangan. 1 m 20 cm = 120 cm. 120 cm - 50 cm = 70 cm."
+        },
+        {
+            "no": 14,
+            "text": "Jika A = 1, B = 2, C = 3, maka hasil dari A + C + B adalah...",
+            "options": [
+                "4",
+                "5",
+                "6",
+                "7"
+            ],
+            "correct": 2,
+            "desc": "Indikator: Pola substitusi simbol sederhana (pra-aljabar). 1 + 3 + 2 = 6."
+        },
+        {
+            "no": 15,
+            "text": "Sebuah taman berbentuk persegi mempunyai panjang sisi 5 meter. Keliling taman tersebut adalah...",
+            "options": [
+                "10 meter",
+                "15 meter",
+                "20 meter",
+                "25 meter"
+            ],
+            "correct": 2,
+            "desc": "Indikator: Menghitung keliling bangun datar. Keliling Persegi = 4 x sisi = 4 x 5 = 20 meter."
+        },
+        {
+            "no": 16,
+            "text": "Budi mulai belajar pukul 19.00. Ia belajar selama 1 jam 30 menit. Pukul berapa Budi selesai belajar?",
+            "options": [
+                "19.30",
+                "20.00",
+                "20.30",
+                "21.00"
+            ],
+            "correct": 2,
+            "desc": "Indikator: Menghitung durasi waktu. Jam 19.00 ditambah 1 jam 30 menit = Pukul 20.30."
+        },
+        {
+            "no": 17,
+            "text": "Selisih nilai angka 7 dan 2 pada bilangan 5.724 adalah...",
+            "options": [
+                "5",
+                "50",
+                "680",
+                "720"
+            ],
+            "correct": 2,
+            "desc": "Indikator: Memahami nilai tempat. Angka 7 bernilai 700. Angka 2 bernilai 20. Selisih = 700 - 20 = 680."
+        },
+        {
+            "no": 18,
+            "text": "Di dalam keranjang ada 15 apel. Ibu memasukkan lagi 10 apel. Lalu ayah memakan 3 apel. Jumlah apel sekarang ada...",
+            "options": [
+                "12",
+                "18",
+                "22",
+                "25"
+            ],
+            "correct": 2,
+            "desc": "Indikator: Operasi hitung campuran berurutan. 15 + 10 - 3 = 25 - 3 = 22."
+        },
+        {
+            "no": 19,
+            "text": "Jika 1 ekor ayam memiliki 2 kaki dan 1 ekor sapi memiliki 4 kaki, berapa jumlah kaki dari 3 ekor ayam dan 2 ekor sapi?",
+            "options": [
+                "10",
+                "12",
+                "14",
+                "16"
+            ],
+            "correct": 2,
+            "desc": "Indikator: Logika penjumlahan perkalian. Kaki ayam: 3 x 2 = 6. Kaki sapi: 2 x 4 = 8. Total = 6 + 8 = 14."
+        },
+        {
+            "no": 20,
+            "text": "Berat 1 buah semangka sama dengan berat 4 buah mangga. Jika berat 1 mangga adalah 250 gram, berat semangka tersebut adalah...",
+            "options": [
+                "500 gram",
+                "750 gram",
+                "1000 gram",
+                "1250 gram"
+            ],
+            "correct": 2,
+            "desc": "Indikator: Persamaan logika keseimbangan berat. Berat semangka = 4 x berat mangga = 4 x 250 gram = 1000 gram."
+        }
+    ]
+}

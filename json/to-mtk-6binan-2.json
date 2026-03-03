@@ -1,0 +1,428 @@
+{
+  "subject": "Matematika",
+  "grade": "6 SD",
+  "title": "Tryout Matematika Kelas 6 SDIT Al Mumtaz - Paket 2",
+  "subtitle": "Paket Latihan Tryout Kedua mencakup Bilangan, Pecahan, Geometri, Data, dan Peluang sesuai Kisi-Kisi TA 2025/2026.",
+  "questions": [
+    {
+      "no": 1,
+      "text": "Suhu di kota A pada malam hari mencapai 5 derajat celcius di bawah nol (-5°C). Pada siang hari, suhu udara naik sebesar 12°C. Suhu udara di kota A pada siang hari adalah...",
+      "options": [
+        "17°C",
+        "7°C",
+        "-7°C",
+        "-17°C"
+      ],
+      "correct": 1,
+      "desc": "Indikator 1: Operasi hitung bilangan bulat. -5 + 12 = 7."
+    },
+    {
+      "no": 2,
+      "text": "Pak Budi memiliki 6 kardus buku cerita. Setiap kardus berisi 40 buah buku. Buku-buku tersebut akan disumbangkan kepada 8 panti asuhan dengan jumlah sama banyak. Setiap panti asuhan akan menerima buku sebanyak...",
+      "options": [
+        "20 buah",
+        "25 buah",
+        "30 buah",
+        "40 buah"
+      ],
+      "correct": 2,
+      "desc": "Indikator 2: Operasi hitung campuran. (6 x 40) : 8 = 240 : 8 = 30."
+    },
+    {
+      "no": 3,
+      "text": "Ibu memiliki 30 kue donat dan 45 kue bolu. Ibu ingin menata kue-kue tersebut ke dalam piring dengan jumlah dan jenis kue yang sama rata di tiap piringnya. Paling banyak piring yang harus disiapkan Ibu adalah...",
+      "options": [
+        "5 piring",
+        "10 piring",
+        "15 piring",
+        "30 piring"
+      ],
+      "correct": 2,
+      "desc": "Indikator 3: FPB. Faktor Persekutuan Terbesar dari 30 dan 45 adalah 15."
+    },
+    {
+      "no": 4,
+      "text": "Ayah memiliki sebidang tanah seluas 240 m². Seperempat (1/4) bagian dari tanah tersebut akan dibangun kolam ikan. Luas tanah yang digunakan untuk kolam ikan adalah...",
+      "options": [
+        "40 m²",
+        "60 m²",
+        "80 m²",
+        "120 m²"
+      ],
+      "correct": 1,
+      "desc": "Indikator 4: Perkalian bilangan asli dan pecahan biasa. 240 x (1/4) = 60 m²."
+    },
+    {
+      "no": 5,
+      "text": "Koperasi sekolah memiliki persediaan gula pasir sebanyak 3 1/2 kg. Gula tersebut akan dibungkus ke dalam kantong plastik kecil berukuran 1/2 kg. Banyak kantong plastik yang dibutuhkan adalah...",
+      "options": [
+        "5 kantong",
+        "6 kantong",
+        "7 kantong",
+        "8 kantong"
+      ],
+      "correct": 2,
+      "desc": "Indikator 5: Pembagian pecahan campuran dan pecahan biasa. 7/2 : 1/2 = 7/2 x 2/1 = 7."
+    },
+    {
+      "no": 6,
+      "text": "Tanda perbandingan yang tepat untuk melengkapi 2/3 ... 5/6 adalah...",
+      "options": [
+        ">",
+        "<",
+        "=",
+        "≥"
+      ],
+      "correct": 1,
+      "desc": "Indikator 6: Lambang perbandingan. Samakan penyebut: 2/3 = 4/6. Karena 4/6 < 5/6, maka tandanya <."
+    },
+    {
+      "no": 7,
+      "text": "Urutan pecahan desimal 0,25 ; 0,1 ; 0,5 ; 0,125 dari yang terkecil ke yang terbesar adalah...",
+      "options": [
+        "0,1 ; 0,125 ; 0,25 ; 0,5",
+        "0,125 ; 0,1 ; 0,25 ; 0,5",
+        "0,1 ; 0,25 ; 0,125 ; 0,5",
+        "0,5 ; 0,25 ; 0,125 ; 0,1"
+      ],
+      "correct": 0,
+      "desc": "Indikator 7: Mengurutkan pecahan desimal. Samakan jumlah digit di belakang koma: 0,100 ; 0,125 ; 0,250 ; 0,500."
+    },
+    {
+      "no": 8,
+      "text": "Hasil pengurangan dari 8,5 - 2,34 adalah...",
+      "options": [
+        "6,16",
+        "6,24",
+        "6,26",
+        "10,84"
+      ],
+      "correct": 0,
+      "desc": "Indikator 8: Pengurangan desimal. 8,50 - 2,34 = 6,16."
+    },
+    {
+      "no": 9,
+      "text": "Hasil perkalian dari 2,5 x 0,4 adalah...",
+      "options": [
+        "0,01",
+        "0,1",
+        "1,0",
+        "10"
+      ],
+      "correct": 2,
+      "desc": "Indikator 9: Perkalian desimal. 25 x 4 = 100. Dua angka di belakang koma menjadi 1,00 atau 1,0."
+    },
+    {
+      "no": 10,
+      "text": "Perhatikan operasi hitung berikut: p + 245 = 500. Nilai dari variabel p adalah...",
+      "options": [
+        "245",
+        "255",
+        "265",
+        "745"
+      ],
+      "correct": 1,
+      "desc": "Indikator 10: Nilai variabel operasi bilangan. p = 500 - 245 = 255."
+    },
+    {
+      "no": 11,
+      "text": "Perhatikan pola bilangan berikut: 1, 4, 9, 16, 25, ... Angka selanjutnya untuk melengkapi pola bilangan tersebut adalah...",
+      "options": [
+        "30",
+        "34",
+        "36",
+        "49"
+      ],
+      "correct": 2,
+      "desc": "Indikator 11: Pola bilangan persegi (kuadrat). 1², 2², 3², 4², 5², maka selanjutnya 6² = 36."
+    },
+    {
+      "no": 12,
+      "text": "Deni bermain sepeda selama 45 menit, sedangkan Rian bermain sepeda selama 1,5 jam. Rasio lama waktu bermain Deni dan Rian adalah...",
+      "options": [
+        "1 : 2",
+        "2 : 1",
+        "1 : 3",
+        "3 : 1"
+      ],
+      "correct": 0,
+      "desc": "Indikator 12: Rasio satuan waktu. 1,5 jam = 90 menit. Rasio 45 : 90 disederhanakan menjadi 1 : 2."
+    },
+    {
+      "no": 13,
+      "text": "Toko Makmur menjual paket 3 batang sabun mandi seharga Rp 12.000. Toko Laris menjual paket 4 batang sabun mandi yang sama seharga Rp 14.000. Pilihan yang lebih bernilai ekonomis adalah...",
+      "options": [
+        "Toko Makmur, karena harganya lebih murah",
+        "Toko Makmur, dengan harga satuan Rp 4.000",
+        "Toko Laris, dengan harga satuan Rp 3.500",
+        "Toko Laris, karena mendapat sabun lebih banyak"
+      ],
+      "correct": 2,
+      "desc": "Indikator 13: Rasio harga ekonomis. Toko Makmur = 12.000 / 3 = Rp 4.000/sabun. Toko Laris = 14.000 / 4 = Rp 3.500/sabun."
+    },
+    {
+      "no": 14,
+      "text": "Perbandingan banyak kelereng Andi dan Budi adalah 3 : 5. Jika jumlah kelereng mereka berdua adalah 40 butir, pernyataan berikut yang BENAR adalah...",
+      "options": [
+        "Kelereng Andi sebanyak 25 butir",
+        "Kelereng Budi sebanyak 15 butir",
+        "Selisih kelereng Andi dan Budi adalah 10 butir",
+        "Kelereng Andi lebih banyak daripada Budi"
+      ],
+      "correct": 2,
+      "desc": "Indikator 14: Pernyataan rasio ilustrasi. Andi = 3/8 x 40 = 15. Budi = 5/8 x 40 = 25. Selisih = 25 - 15 = 10."
+    },
+    {
+      "no": 15,
+      "text": "Harga 1 kodi baju kaos (berisi 20 potong) adalah Rp 600.000. Jika paman hanya ingin membeli 3 potong baju kaos, harga yang harus paman bayar adalah...",
+      "options": [
+        "Rp 60.000",
+        "Rp 90.000",
+        "Rp 100.000",
+        "Rp 120.000"
+      ],
+      "correct": 1,
+      "desc": "Indikator 15: Harga barang dari jumlah. Harga satuan = 600.000 / 20 = 30.000. Harga 3 potong = 3 x 30.000 = 90.000."
+    },
+    {
+      "no": 16,
+      "text": "Sebuah buku tulis berbentuk persegi panjang dengan ukuran panjang 21 cm dan lebar 15 cm. Keliling buku tulis tersebut adalah...",
+      "options": [
+        "36 cm",
+        "72 cm",
+        "315 cm",
+        "630 cm"
+      ],
+      "correct": 1,
+      "desc": "Indikator 16: Keliling bangun datar. 2 x (21 + 15) = 2 x 36 = 72 cm."
+    },
+    {
+      "no": 17,
+      "text": "Sebuah lahan parkir berbentuk jajar genjang memiliki panjang alas 25 meter dan tinggi 10 meter. Luas lahan parkir tersebut adalah...",
+      "options": [
+        "35 m²",
+        "70 m²",
+        "125 m²",
+        "250 m²"
+      ],
+      "correct": 3,
+      "desc": "Indikator 17: Luas bangun datar. Jajar genjang = alas x tinggi = 25 x 10 = 250 m²."
+    },
+    {
+      "no": 18,
+      "text": "Sebuah bangun gabungan berbentuk huruf L dibentuk dari dua buah persegi panjang. Jika kita berjalan menyusuri seluruh batas pinggir terluar dari bangun huruf L tersebut hingga kembali ke titik awal, maka yang kita hitung adalah...",
+      "options": [
+        "Luas bangun gabungan",
+        "Keliling bangun gabungan",
+        "Volume bangun gabungan",
+        "Rasio bangun gabungan"
+      ],
+      "correct": 1,
+      "desc": "Indikator 18: Konsep keliling bangun gabungan. Menghitung garis tepi (batas luar) adalah menghitung keliling."
+    },
+    {
+      "no": 19,
+      "text": "Sebuah dinding tersusun dari sebuah persegi dengan luas 64 m². Tepat di atas persegi tersebut terdapat bentuk segitiga dengan alas sepanjang sisi persegi dan tingginya 6 meter. Luas total bidang dinding tersebut adalah...",
+      "options": [
+        "24 m²",
+        "64 m²",
+        "88 m²",
+        "112 m²"
+      ],
+      "correct": 2,
+      "desc": "Indikator 19: Luas gabungan. Persegi = 64m² (sisi=8m). Segitiga di atasnya alas=8m, tinggi=6m -> Luas = (8x6)/2 = 24m². Total luas = 64 + 24 = 88m²."
+    },
+    {
+      "no": 20,
+      "text": "Kereta api eksekutif berangkat dari stasiun pukul 09.30 dan tiba di stasiun tujuan pada pukul 13.15. Lama perjalanan kereta tersebut adalah...",
+      "options": [
+        "3 jam 15 menit",
+        "3 jam 45 menit",
+        "4 jam 15 menit",
+        "4 jam 45 menit"
+      ],
+      "correct": 1,
+      "desc": "Indikator 20: Rentang waktu acara. Dari 09.30 ke 13.00 = 3 jam 30 menit. Ditambah 15 menit = 3 jam 45 menit."
+    },
+    {
+      "no": 21,
+      "text": "Pada pukul 03.30, jarum pendek berada tepat di tengah-tengah angka 3 dan 4, sedangkan jarum panjang berada di angka 6. Besar sudut terkecil yang dibentuk kedua jarum jam tersebut adalah...",
+      "options": [
+        "75°",
+        "90°",
+        "105°",
+        "180°"
+      ],
+      "correct": 0,
+      "desc": "Indikator 21: Sudut jam dinding. Tiap 5 menit bernilai 30°. Jarak jarum pendek ke angka 6 adalah 2,5 blok (angka). 2,5 x 30° = 75°."
+    },
+    {
+      "no": 22,
+      "text": "Sebuah bangun ruang limas segiempat (seperti piramida) memiliki unsur-unsur pembentuknya. Jumlah sisi yang dimiliki oleh limas segiempat adalah...",
+      "options": [
+        "4 sisi",
+        "5 sisi",
+        "6 sisi",
+        "8 sisi"
+      ],
+      "correct": 1,
+      "desc": "Indikator 22: Unsur bangun ruang. Limas segiempat memiliki 1 sisi alas dan 4 sisi tegak (total 5 sisi)."
+    },
+    {
+      "no": 23,
+      "text": "Sebuah konstruksi kardus disusun menyerupai balok pejal dengan panjang 5 kotak, lebar 4 kotak, dan tinggi 3 kotak. Banyaknya kotak kardus satuan yang menyusun balok tersebut seluruhnya adalah...",
+      "options": [
+        "12 kotak",
+        "20 kotak",
+        "47 kotak",
+        "60 kotak"
+      ],
+      "correct": 3,
+      "desc": "Indikator 23: Konstruksi balok kubus satuan. V = p x l x t = 5 x 4 x 3 = 60 kotak."
+    },
+    {
+      "no": 24,
+      "text": "Sebuah susunan balok dibentuk dari 5 kubus satuan. 3 buah kubus diletakkan mendatar berjejer, kemudian sisa 2 kubusnya ditumpuk lurus ke atas tepat di atas kubus yang berada di tengah. Visualisasi susunan ini paling menyerupai huruf...",
+      "options": [
+        "H",
+        "T (Terbalik)",
+        "L",
+        "U"
+      ],
+      "correct": 1,
+      "desc": "Indikator 24: Visualisasi spasial susunan kubus. Pola tersebut menyerupai huruf T yang terbalik."
+    },
+    {
+      "no": 25,
+      "text": "Pada sebuah peta koordinat, posisi rumah Anton berada sejajar 2 langkah ke arah sumbu X negatif (kiri) dan 5 langkah ke arah sumbu Y positif (atas) dari titik pusat (0,0). Koordinat rumah Anton adalah...",
+      "options": [
+        "(2, 5)",
+        "(-2, 5)",
+        "(5, -2)",
+        "(-2, -5)"
+      ],
+      "correct": 1,
+      "desc": "Indikator 25: Titik koordinat. Kiri = X negatif (-2), Atas = Y positif (5). Menjadi (-2, 5)."
+    },
+    {
+      "no": 26,
+      "text": "Andi berjalan dari titik koordinat (0,0) ke arah Selatan sejauh 3 meter, lalu berbelok ke arah Barat sejauh 4 meter. Posisi Andi saat ini berada di koordinat...",
+      "options": [
+        "(-4, -3)",
+        "(4, 3)",
+        "(-3, -4)",
+        "(3, 4)"
+      ],
+      "correct": 0,
+      "desc": "Indikator 26: Arah mata angin di koordinat. Selatan = Sumbu Y (-3), Barat = Sumbu X (-4). Format (X, Y) menjadi (-4, -3)."
+    },
+    {
+      "no": 27,
+      "text": "Diagram batang nilai ulangan siswa kelas 6 menunjukkan: Nilai 65 (2 siswa), Nilai 75 (5 siswa), Nilai 85 (8 siswa), dan Nilai 95 (10 siswa). Selisih banyak siswa yang mendapat nilai tertinggi dan terendah adalah...",
+      "options": [
+        "2 siswa",
+        "8 siswa",
+        "10 siswa",
+        "30 siswa"
+      ],
+      "correct": 1,
+      "desc": "Indikator 27: Selisih data tertinggi dan terkecil. Tertinggi (95) ada 10 siswa. Terendah (65) ada 2 siswa. Selisihnya = 10 - 2 = 8 siswa."
+    },
+    {
+      "no": 28,
+      "text": "Dalam skala peluang angka 0 sampai 1, sebuah kejadian yang PASTI akan terjadi (misalnya matahari terbit dari timur esok pagi) ditunjukkan oleh angka peluang...",
+      "options": [
+        "0",
+        "0,5",
+        "1",
+        "10"
+      ],
+      "correct": 2,
+      "desc": "Indikator 28: Angka skala peluang. Pasti = 1, Mustahil = 0."
+    },
+    {
+      "no": 29,
+      "text": "Sebuah dadu bersisi enam dilempar sekali. Peluang munculnya mata dadu yang merupakan faktor dari 6 (yaitu 1, 2, 3, 6) adalah...",
+      "options": [
+        "1/6",
+        "2/6",
+        "3/6",
+        "4/6"
+      ],
+      "correct": 3,
+      "desc": "Indikator 29: Pilihan peluang terbesar bersyarat. Terdapat 4 angka yang memenuhi syarat dari total 6 sisi. Maka peluangnya 4/6 (atau 2/3)."
+    },
+    {
+      "no": 30,
+      "text": "Sebuah undian berhadiah (doorprize) diperebutkan oleh 50 orang guru dan 200 orang siswa. Jika hadiah utama hanya 1 buah, maka peluang yang memenangkan hadiah utama tersebut adalah seorang guru adalah sebesar...",
+      "options": [
+        "1/5",
+        "1/4",
+        "1/50",
+        "1/250"
+      ],
+      "correct": 0,
+      "desc": "Indikator 30: Peluang kategori tertentu. Total peserta = 50 + 200 = 250 orang. Peluang guru = 50 / 250 = 1/5."
+    },
+    {
+      "no": 31,
+      "text": "Bus Trans Manggala rute A berangkat setiap 15 menit, dan rute B berangkat setiap 20 menit. Jika kedua bus tersebut berangkat bersamaan pada pukul 07.00, mereka akan berangkat bersamaan lagi pada pukul...",
+      "options": [
+        "07.35",
+        "08.00",
+        "08.20",
+        "09.00"
+      ],
+      "correct": 1,
+      "desc": "Indikator 31 (Adaptasi Essay): KPK perhitungan waktu. KPK 15 dan 20 adalah 60 menit (1 jam). Berarti 07.00 + 1 jam = 08.00."
+    },
+    {
+      "no": 32,
+      "text": "Paman mengendarai mobil dengan kecepatan 60 km/jam. Ia berangkat pukul 07.00 dan tiba pukul 08.30. Jarak tempuh perjalanan paman adalah...",
+      "options": [
+        "60 km",
+        "90 km",
+        "120 km",
+        "150 km"
+      ],
+      "correct": 1,
+      "desc": "Indikator 32 (Adaptasi Essay): Jarak dari kecepatan dan waktu. Waktu = 1,5 jam. Jarak = 60 km/jam x 1,5 jam = 90 km."
+    },
+    {
+      "no": 33,
+      "text": "Sebuah susunan kubus dibuat berbentuk tangga dengan 3 pijakan (bertingkat 1, 2, dan 3 kubus ke atas). Jika dilihat tepat dari posisi atas, visualisasi konstruksi tangga tersebut akan terlihat menyerupai...",
+      "options": [
+        "Huruf L",
+        "Tiga kotak persegi berjejer lurus",
+        "Enam kotak persegi menyebar",
+        "Sebuah segitiga"
+      ],
+      "correct": 1,
+      "desc": "Indikator 33 (Adaptasi Essay): Visualisasi kubus sisi atas. Dari atas, tinggi kubus tidak terlihat, yang terlihat hanya jejeran permukaannya (3 kotak lurus)."
+    },
+    {
+      "no": 34,
+      "text": "Sebuah mobil mainan bergerak lurus dari titik koordinat (-2, 1) menuju ke titik (4, 1). Di bawah ini, titik koordinat yang PASTI dilalui oleh mobil mainan tersebut di tengah perjalanannya adalah...",
+      "options": [
+        "(-3, 1)",
+        "(0, 1)",
+        "(5, 1)",
+        "(2, 2)"
+      ],
+      "correct": 1,
+      "desc": "Indikator 34 (Adaptasi Essay): Jalur titik koordinat. Karena nilai Y tetap (1), mobil bergerak di sumbu X dari -2 melewati -1, 0, 1, 2, 3 hingga 4. Titik (0, 1) ada di jalurnya."
+    },
+    {
+      "no": 35,
+      "text": "Data tinggi badan siswa kelas 6 SD adalah sebagai berikut: Tinggi 130 cm (2 anak), 132 cm (3 anak), 135 cm (5 anak), dan 140 cm (1 anak). Berdasarkan tabel tersebut, jumlah siswa yang memiliki tinggi badan LEBIH DARI 132 cm adalah...",
+      "options": [
+        "1 anak",
+        "5 anak",
+        "6 anak",
+        "11 anak"
+      ],
+      "correct": 2,
+      "desc": "Indikator 35 (Adaptasi Essay): Menentukan tabel tinggi badan. Lebih dari 132 cm berarti kategori 135 cm (5 anak) dan 140 cm (1 anak). Total = 5 + 1 = 6 anak."
+    }
+  ]
+}

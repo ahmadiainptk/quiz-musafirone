@@ -1,0 +1,428 @@
+{
+  "subject": "Matematika",
+  "grade": "6 SD",
+  "title": "Tryout Matematika Kelas 6 SDIT Al Mumtaz",
+  "subtitle": "Paket 35 soal lengkap mencakup Bilangan, Pecahan, Geometri, Data, dan Peluang sesuai Kisi-Kisi Kurikulum Merdeka TA 2025/2026.",
+  "questions": [
+    {
+      "no": 1,
+      "text": "Sebuah kapal selam berada di kedalaman 15 meter di bawah permukaan laut. Kapal selam tersebut kemudian naik sejauh 8 meter. Posisi kapal selam sekarang berada pada kedalaman...",
+      "options": [
+        "7 meter di bawah permukaan laut (-7 m)",
+        "23 meter di bawah permukaan laut (-23 m)",
+        "8 meter di bawah permukaan laut (-8 m)",
+        "7 meter di atas permukaan laut (7 m)"
+      ],
+      "correct": 0,
+      "desc": "Indikator 1: Operasi hitung bilangan bulat. -15 + 8 = -7."
+    },
+    {
+      "no": 2,
+      "text": "Pak Tani memanen 4 keranjang mangga. Setiap keranjang berisi 25 buah mangga. Mangga tersebut kemudian dibagikan sama rata kepada 5 orang tetangganya. Berapa mangga yang diterima setiap tetangga?",
+      "options": [
+        "15 buah",
+        "20 buah",
+        "25 buah",
+        "30 buah"
+      ],
+      "correct": 1,
+      "desc": "Indikator 2: Operasi hitung campuran (perkalian dan pembagian). (4 x 25) / 5 = 100 / 5 = 20."
+    },
+    {
+      "no": 3,
+      "text": "Ibu guru memiliki 24 buku tulis dan 36 pensil. Alat tulis tersebut akan dibagikan kepada kelompok anak dengan jumlah tiap barang yang sama rata. Paling banyak kelompok anak yang dapat dibentuk adalah...",
+      "options": [
+        "6 kelompok",
+        "8 kelompok",
+        "12 kelompok",
+        "24 kelompok"
+      ],
+      "correct": 2,
+      "desc": "Indikator 3: FPB. FPB dari 24 dan 36 adalah 12."
+    },
+    {
+      "no": 4,
+      "text": "Siti memiliki pita sepanjang 15 meter. Sepertiga (1/3) bagian dari pita tersebut digunakan untuk menghias kado. Berapa meter pita yang digunakan Siti?",
+      "options": [
+        "3 meter",
+        "5 meter",
+        "10 meter",
+        "12 meter"
+      ],
+      "correct": 1,
+      "desc": "Indikator 4: Perkalian bilangan asli dan pecahan biasa. 15 x (1/3) = 5 meter."
+    },
+    {
+      "no": 5,
+      "text": "Ibu memiliki 2 1/2 liter minyak goreng. Minyak tersebut akan dituang ke dalam botol-botol kecil berukuran 1/4 liter. Berapa banyak botol yang dibutuhkan Ibu?",
+      "options": [
+        "5 botol",
+        "8 botol",
+        "10 botol",
+        "12 botol"
+      ],
+      "correct": 2,
+      "desc": "Indikator 5: Pembagian pecahan campuran dan pecahan biasa. 5/2 : 1/4 = 5/2 x 4/1 = 10 botol."
+    },
+    {
+      "no": 6,
+      "text": "Tanda perbandingan yang tepat untuk melengkapi 3/4 ... 5/8 adalah...",
+      "options": [
+        "<",
+        ">",
+        "=",
+        "≤"
+      ],
+      "correct": 1,
+      "desc": "Indikator 6: Lambang perbandingan. Samakan penyebut menjadi /8. 3/4 = 6/8. Karena 6/8 > 5/8, maka tandanya adalah >."
+    },
+    {
+      "no": 7,
+      "text": "Urutan pecahan desimal 0,45 ; 0,5 ; 0,125 ; 0,3 dari yang terkecil hingga terbesar adalah...",
+      "options": [
+        "0,125 ; 0,3 ; 0,45 ; 0,5",
+        "0,125 ; 0,45 ; 0,3 ; 0,5",
+        "0,3 ; 0,125 ; 0,45 ; 0,5",
+        "0,5 ; 0,45 ; 0,3 ; 0,125"
+      ],
+      "correct": 0,
+      "desc": "Indikator 7: Mengurutkan pecahan desimal. Disamakan 3 angka di belakang koma: 0,450 ; 0,500 ; 0,125 ; 0,300."
+    },
+    {
+      "no": 8,
+      "text": "Hasil pengurangan dari 4,75 - 1,2 adalah...",
+      "options": [
+        "3,55",
+        "3,63",
+        "3,73",
+        "5,95"
+      ],
+      "correct": 0,
+      "desc": "Indikator 8: Pengurangan pecahan desimal. Sejajarkan koma: 4,75 - 1,20 = 3,55."
+    },
+    {
+      "no": 9,
+      "text": "Hasil perkalian dari 1,2 x 0,5 adalah...",
+      "options": [
+        "0,06",
+        "0,6",
+        "6,0",
+        "60"
+      ],
+      "correct": 1,
+      "desc": "Indikator 9: Perkalian pecahan desimal. 12 x 5 = 60. Karena ada 2 angka di belakang koma totalnya, menjadi 0,60 atau 0,6."
+    },
+    {
+      "no": 10,
+      "text": "Perhatikan operasi bilangan berikut: n + 135 = 250. Nilai dari variabel n adalah...",
+      "options": [
+        "105",
+        "115",
+        "125",
+        "385"
+      ],
+      "correct": 1,
+      "desc": "Indikator 10: Menentukan nilai variabel. n = 250 - 135 = 115."
+    },
+    {
+      "no": 11,
+      "text": "Perhatikan pola bilangan berikut: 2, 6, 12, 20, ... Angka selanjutnya untuk melengkapi pola tersebut adalah...",
+      "options": [
+        "28",
+        "30",
+        "32",
+        "36"
+      ],
+      "correct": 1,
+      "desc": "Indikator 11: Melengkapi pola bilangan. Pola bertambah berurutan +4, +6, +8, maka selanjutnya +10. 20 + 10 = 30."
+    },
+    {
+      "no": 12,
+      "text": "Fatimah belajar selama 2 jam, sedangkan Aisyah belajar selama 90 menit. Rasio waktu belajar Fatimah dan Aisyah adalah...",
+      "options": [
+        "2 : 9",
+        "3 : 4",
+        "4 : 3",
+        "1 : 45"
+      ],
+      "correct": 2,
+      "desc": "Indikator 12: Rasio dua besaran satuan waktu. 2 jam = 120 menit. Rasio 120 : 90 disederhanakan menjadi 4 : 3."
+    },
+    {
+      "no": 13,
+      "text": "Toko A menjual 2 buah pensil seharga Rp 5.000. Toko B menjual 3 buah pensil yang sama seharga Rp 6.000. Manakah pilihan yang lebih bernilai ekonomis (lebih murah per satuannya)?",
+      "options": [
+        "Toko A, karena harga satuannya Rp 2.500",
+        "Toko A, karena modalnya lebih sedikit",
+        "Toko B, karena harga satuannya Rp 2.000",
+        "Toko B, karena dapat pensil lebih banyak"
+      ],
+      "correct": 2,
+      "desc": "Indikator 13: Rasio harga barang yang bernilai ekonomis. Toko B = 6000/3 = 2000 per pensil."
+    },
+    {
+      "no": 14,
+      "text": "Perbandingan jumlah siswa laki-laki dan perempuan di kelas 6 adalah 2 : 3. Jika jumlah seluruh siswa di kelas adalah 30 orang, pernyataan berikut yang BENAR adalah...",
+      "options": [
+        "Siswa laki-laki berjumlah 15 orang",
+        "Siswa perempuan berjumlah 18 orang",
+        "Siswa perempuan lebih sedikit dari laki-laki",
+        "Selisih siswa laki-laki dan perempuan adalah 10 orang"
+      ],
+      "correct": 1,
+      "desc": "Indikator 14: Pernyataan benar tentang rasio. Laki-laki = (2/5)x30 = 12. Perempuan = (3/5)x30 = 18."
+    },
+    {
+      "no": 15,
+      "text": "Harga 1 lusin buku tulis adalah Rp 48.000. Jika Andi hanya ingin membeli 5 buah buku tulis, maka harga yang harus ia bayar adalah...",
+      "options": [
+        "Rp 15.000",
+        "Rp 20.000",
+        "Rp 24.000",
+        "Rp 25.000"
+      ],
+      "correct": 1,
+      "desc": "Indikator 15: Menentukan harga barang berdasarkan jumlah. 1 lusin = 12. Harga satuan = 48.000 / 12 = 4.000. 5 buku x 4.000 = 20.000."
+    },
+    {
+      "no": 16,
+      "text": "Sebuah taman berbentuk persegi panjang memiliki panjang 15 meter dan lebar 10 meter. Keliling taman tersebut adalah...",
+      "options": [
+        "25 meter",
+        "50 meter",
+        "100 meter",
+        "150 meter"
+      ],
+      "correct": 1,
+      "desc": "Indikator 16: Keliling bangun datar. 2 x (15 + 10) = 50 meter."
+    },
+    {
+      "no": 17,
+      "text": "Sebuah papan reklame berbentuk segitiga memiliki panjang alas 12 cm dan tinggi 8 cm. Luas papan tersebut adalah...",
+      "options": [
+        "20 cm²",
+        "40 cm²",
+        "48 cm²",
+        "96 cm²"
+      ],
+      "correct": 2,
+      "desc": "Indikator 17: Luas bangun datar. (Alas x Tinggi) / 2 = (12 x 8) / 2 = 48."
+    },
+    {
+      "no": 18,
+      "text": "Sebuah bangun datar gabungan terdiri dari sebuah persegi dengan panjang sisi 10 cm, di mana salah satu sisinya dihimpitkan sepenuhnya dengan sisi sebuah segitiga sama sisi. Keliling bangun gabungan tersebut adalah...",
+      "options": [
+        "40 cm",
+        "50 cm",
+        "60 cm",
+        "70 cm"
+      ],
+      "correct": 1,
+      "desc": "Indikator 18: Keliling bangun gabungan. Persegi punya 3 sisi luar (3x10=30), Segitiga punya 2 sisi luar (2x10=20). Total = 50 cm."
+    },
+    {
+      "no": 19,
+      "text": "Sebuah bangun dibentuk dari sebuah persegi panjang berukuran panjang 10 cm dan lebar 6 cm. Tepat di atas panjangnya ditumpuk sebuah persegi dengan panjang sisi 6 cm. Luas seluruh bangun gabungan tersebut adalah...",
+      "options": [
+        "36 cm²",
+        "60 cm²",
+        "96 cm²",
+        "120 cm²"
+      ],
+      "correct": 2,
+      "desc": "Indikator 19: Luas bangun gabungan. L1 (Persegi panjang) = 10 x 6 = 60. L2 (Persegi) = 6 x 6 = 36. Total = 96 cm²."
+    },
+    {
+      "no": 20,
+      "text": "Acara wisuda dimulai pada pukul 08.15 dan selesai pada pukul 11.45. Lamanya acara wisuda tersebut berlangsung adalah...",
+      "options": [
+        "2 jam 30 menit",
+        "3 jam 15 menit",
+        "3 jam 30 menit",
+        "4 jam 30 menit"
+      ],
+      "correct": 2,
+      "desc": "Indikator 20: Rentang waktu (durasi). 11.45 - 08.15 = 3 jam 30 menit."
+    },
+    {
+      "no": 21,
+      "text": "Pada pukul 04.00, jarum pendek dan jarum panjang pada jam dinding akan membentuk sudut terkecil sebesar...",
+      "options": [
+        "90°",
+        "120°",
+        "150°",
+        "180°"
+      ],
+      "correct": 1,
+      "desc": "Indikator 21: Besar sudut jam. Tiap 1 angka bernilai 30°. Pukul 4 = 4 x 30° = 120°."
+    },
+    {
+      "no": 22,
+      "text": "Sebuah bangun ruang prisma segitiga memiliki unsur-unsur pembentuknya. Jumlah rusuk yang dimiliki prisma segitiga adalah...",
+      "options": [
+        "5 rusuk",
+        "6 rusuk",
+        "8 rusuk",
+        "9 rusuk"
+      ],
+      "correct": 3,
+      "desc": "Indikator 22: Unsur bangun ruang. Prisma segitiga memiliki 9 rusuk (3 bawah, 3 tegak, 3 atas)."
+    },
+    {
+      "no": 23,
+      "text": "Sebuah konstruksi balok transparan disusun dari kubus-kubus satuan dengan formasi panjang 4 kubus, lebar 3 kubus, dan tinggi 2 kubus. Banyaknya kubus satuan yang menyusun balok tersebut adalah...",
+      "options": [
+        "9 kubus",
+        "14 kubus",
+        "24 kubus",
+        "48 kubus"
+      ],
+      "correct": 2,
+      "desc": "Indikator 23: Volume dalam kubus satuan. 4 x 3 x 2 = 24 kubus."
+    },
+    {
+      "no": 24,
+      "text": "Jika sebuah bangunan dibentuk dari 4 kubus yang ditumpuk menjulang ke atas secara lurus, visualisasi susunan kubus tersebut paling tepat menyerupai huruf...",
+      "options": [
+        "L",
+        "I",
+        "T",
+        "U"
+      ],
+      "correct": 1,
+      "desc": "Indikator 24: Visualisasi spasial susunan kubus. Tumpukan vertikal lurus menyerupai huruf I."
+    },
+    {
+      "no": 25,
+      "text": "Pada bidang koordinat Cartesius, sebuah titik berada sejajar 4 langkah ke kanan dari titik nol (0,0) dan 3 langkah ke atas. Titik tersebut berada pada koordinat...",
+      "options": [
+        "(3, 4)",
+        "(4, 3)",
+        "(-4, 3)",
+        "(4, -3)"
+      ],
+      "correct": 1,
+      "desc": "Indikator 25: Posisi titik koordinat peta. x = 4, y = 3 -> (4, 3)."
+    },
+    {
+      "no": 26,
+      "text": "Dari titik awal, Budi berjalan ke arah Timur sejauh 5 meter, kemudian belok ke Utara sejauh 2 meter. Jika titik awal adalah (0,0), Budi sekarang berada di koordinat...",
+      "options": [
+        "(2, 5)",
+        "(5, 2)",
+        "(-5, 2)",
+        "(5, -2)"
+      ],
+      "correct": 1,
+      "desc": "Indikator 26: Arah mata angin dan koordinat. Timur = sumbu x positif, Utara = sumbu y positif. Menjadi (5, 2)."
+    },
+    {
+      "no": 27,
+      "text": "Diagram batang hasil panen menunjukkan padi 50 ton, jagung 20 ton, kedelai 15 ton, dan kacang tanah 35 ton. Selisih data terbesar dan terkecil dari jenis panen tersebut adalah...",
+      "options": [
+        "15 ton",
+        "25 ton",
+        "30 ton",
+        "35 ton"
+      ],
+      "correct": 3,
+      "desc": "Indikator 27: Selisih diagram batang. Terbesar = 50 (Padi), Terkecil = 15 (Kedelai). 50 - 15 = 35 ton."
+    },
+    {
+      "no": 28,
+      "text": "Pada skala peluang, suatu kejadian yang mustahil (tidak mungkin terjadi) ditunjukkan oleh angka...",
+      "options": [
+        "0",
+        "0,5",
+        "1",
+        "100"
+      ],
+      "correct": 0,
+      "desc": "Indikator 28: Angka pada skala peluang. Mustahil = 0, Pasti = 1."
+    },
+    {
+      "no": 29,
+      "text": "Sebuah dadu dilempar satu kali. Peluang munculnya mata dadu bernomor genap yang juga merupakan bilangan prima adalah...",
+      "options": [
+        "1/6",
+        "2/6",
+        "3/6",
+        "1/2"
+      ],
+      "correct": 0,
+      "desc": "Indikator 29: Peluang dengan syarat. Angka dadu (1,2,3,4,5,6). Genap dan prima hanya angka 2. Peluangnya 1/6."
+    },
+    {
+      "no": 30,
+      "text": "Dalam sebuah lomba lari gembira, terdapat 100 anak yang menjadi peserta. Jika hanya disediakan 1 buah medali emas untuk juara pertama, berapakah peluang seorang anak untuk memenangkan lomba tersebut?",
+      "options": [
+        "0",
+        "1/10",
+        "1/50",
+        "1/100"
+      ],
+      "correct": 3,
+      "desc": "Indikator 30: Peluang peserta lomba. 1 pemenang dari 100 peserta = 1/100."
+    },
+    {
+      "no": 31,
+      "text": "Lampu A menyala setiap 4 menit sekali, dan lampu B menyala setiap 6 menit sekali. Jika kedua lampu menyala bersamaan pada pukul 10.00, pada pukul berapa kedua lampu akan menyala bersama-sama lagi untuk yang kedua kalinya?",
+      "options": [
+        "10.10",
+        "10.12",
+        "10.24",
+        "10.36"
+      ],
+      "correct": 1,
+      "desc": "Indikator 31 (Adaptasi Essay): KPK untuk waktu. KPK dari 4 dan 6 adalah 12. Jadi, 12 menit setelah 10.00 adalah 10.12."
+    },
+    {
+      "no": 32,
+      "text": "Ayah mengendarai sepeda motor dengan kecepatan rata-rata 50 km/jam. Ayah berangkat pukul 07.00 dan sampai di tujuan pukul 09.00. Jarak yang ditempuh Ayah adalah...",
+      "options": [
+        "50 km",
+        "100 km",
+        "150 km",
+        "200 km"
+      ],
+      "correct": 1,
+      "desc": "Indikator 32 (Adaptasi Essay): Kecepatan, Jarak, Waktu. Waktu tempuh = 2 jam. Jarak = 50 km/jam x 2 jam = 100 km."
+    },
+    {
+      "no": 33,
+      "text": "Tiga buah kubus satuan disusun berjajar mendatar di lantai. Jika kita melihat susunan kubus tersebut tepat tegak lurus dari arah atas, visualisasi bangun datar yang tampak adalah...",
+      "options": [
+        "Sebuah persegi",
+        "Sebuah persegi panjang",
+        "Sebuah segitiga",
+        "Sebuah huruf L"
+      ],
+      "correct": 1,
+      "desc": "Indikator 33 (Adaptasi Essay): Visualisasi sisi kubus. Tiga kubus berjajar mendatar jika dilihat dari atas akan tampak seperti sebuah persegi panjang."
+    },
+    {
+      "no": 34,
+      "text": "Sebuah robot pembersih bergerak pada jalur koordinat. Robot berada di titik (2, 2). Ia diperintahkan maju sejauh 4 satuan searah sumbu Y positif, kemudian belok dan maju 3 satuan searah sumbu X negatif. Posisi akhir robot berada di titik...",
+      "options": [
+        "(-1, 6)",
+        "(6, -1)",
+        "(5, 6)",
+        "(-1, -1)"
+      ],
+      "correct": 0,
+      "desc": "Indikator 34 (Adaptasi Essay): Jalur koordinat. Awal (2, 2). Y positif 4 langkah -> (2, 6). X negatif 3 langkah -> (2-3, 6) = (-1, 6)."
+    },
+    {
+      "no": 35,
+      "text": "Data tinggi badan 5 orang siswa (dalam cm) adalah sebagai berikut: 135, 140, 135, 142, 130. Modus (data yang paling sering muncul) dari tabel tinggi badan tersebut adalah...",
+      "options": [
+        "130 cm",
+        "135 cm",
+        "140 cm",
+        "142 cm"
+      ],
+      "correct": 1,
+      "desc": "Indikator 35 (Adaptasi Essay): Menentukan data tabel (Statistika dasar). Angka 135 muncul 2 kali, lainnya hanya 1 kali."
+    }
+  ]
+}

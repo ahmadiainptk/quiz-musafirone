@@ -215,10 +215,19 @@
 {
                 "type": "file",
                 "id": "to-mtk-6-binan-1",
-                "title": "Latihan TO MTK",
+                "title": "Latihan TO MTK #1",
                 "subject": "Matematika",
                 "grade": "6 SD",
                 "file": "to-mtk-6-binan-1.json",
+                "icon": "📐"
+              }, 
+{
+                "type": "file",
+                "id": "to-mtk-6-binan-2",
+                "title": "Latihan TO MTK #2",
+                "subject": "Matematika",
+                "grade": "6 SD",
+                "file": "to-mtk6-binan-2.json",
                 "icon": "📐"
               }
             ]

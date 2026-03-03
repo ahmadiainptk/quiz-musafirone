@@ -211,6 +211,15 @@
                 "grade": "6 SD",
                 "file": "psa1-mtk-6-binan-6.json",
                 "icon": "📐"
+              }, 
+{
+                "type": "file",
+                "id": "to-mtk-6-binan-1",
+                "title": "Latihan TO MTK",
+                "subject": "Matematika",
+                "grade": "6 SD",
+                "file": "to-mtk-6-binan-1.json",
+                "icon": "📐"
               }
             ]
           }

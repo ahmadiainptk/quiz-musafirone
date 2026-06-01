@@ -275,32 +275,106 @@
                 
                 // Data JSON Soal (3 Jenis)
                 questions: [
-                    {
-                        type: 'multiple-choice',
-                        text: 'Framework apa yang digunakan untuk membuat aplikasi presentasi quiz ini secara single-file di bagian frontend?',
-                        options: ["React & Bootstrap", "AlpineJS & TailwindCSS", "Vue & Bulma", "Svelte & Materialize"],
-                        answer: 1,
-                        explanation: 'Sesuai dengan kode sumbernya, aplikasi ini dibangun murni menggunakan kombinasi AlpineJS untuk reaktivitas dan TailwindCSS untuk styling.'
-                    },
-                    {
-                        type: 'short-answer',
-                        text: 'Apa kepanjangan dari singkatan HTML?',
-                        answer: ["Hypertext Markup Language", "Hyper Text Markup Language"], // Array of accepted answers
-                        explanation: 'HTML adalah singkatan dari Hypertext Markup Language, bahasa standar untuk membuat dan menyusun halaman web.'
-                    },
-                    {
-                        type: 'matching',
-                        text: 'Jodohkan ibukota dengan negara yang sesuai!',
-                        left: ["Indonesia", "Jepang", "Korea Selatan"],
-                        right: ["Seoul", "Beijing", "Tokyo", "Jakarta"], // Termasuk pengecoh (Beijing)
-                        answer: {
-                            "Indonesia": "Jakarta",
-                            "Jepang": "Tokyo",
-                            "Korea Selatan": "Seoul"
-                        },
-                        explanation: 'Jakarta adalah ibukota Indonesia, Tokyo ibukota Jepang, dan Seoul adalah ibukota dari Korea Selatan.'
-                    }
-                ],
+  {
+    "type": "multiple-choice",
+    "text": "Kumpulan dua atau lebih komputer yang saling terhubung untuk berbagi data dan sumber daya disebut...",
+    "options": ["Sistem Operasi", "Jaringan Komputer", "Topologi", "Internet"],
+    "answer": 1,
+    "explanation": "Jaringan komputer adalah sistem yang menghubungkan dua atau lebih perangkat komputer untuk saling berkomunikasi dan berbagi sumber daya."
+  },
+  {
+    "type": "multiple-choice",
+    "text": "Langkah-langkah sistematis untuk menyelesaikan masalah yang disajikan secara visual menggunakan simbol-simbol bangun datar disebut...",
+    "options": ["Pseudocode", "Bahasa Natural", "Flowchart", "Source Code"],
+    "answer": 2,
+    "explanation": "Flowchart (diagram alir) adalah bentuk penyajian algoritma menggunakan simbol-simbol geometris untuk mewakili setiap langkah logika."
+  },
+  {
+    "type": "multiple-choice",
+    "text": "Berikut ini yang merupakan contoh dampak positif dari perkembangan teknologi informatika di bidang pendidikan adalah...",
+    "options": ["Meningkatnya kasus cyberbullying", "Kecanduan bermain game online", "Banyaknya penyebaran berita hoaks", "Kemudahan mengakses modul dan e-learning"],
+    "answer": 3,
+    "explanation": "Kemudahan mengakses e-learning dan materi belajar dari mana saja merupakan salah satu dampak positif terbesar informatika bagi pendidikan."
+  },
+  {
+    "type": "multiple-choice",
+    "text": "Sebuah sekolah membangun jaringan komputer untuk menghubungkan perangkat di laboratorium, ruang guru, dan perpustakaan dalam satu area gedung. Jenis jaringan yang tepat digunakan adalah...",
+    "options": ["WAN (Wide Area Network)", "MAN (Metropolitan Area Network)", "LAN (Local Area Network)", "PAN (Personal Area Network)"],
+    "answer": 2,
+    "explanation": "LAN (Local Area Network) digunakan untuk jaringan dalam area yang relatif kecil dan terbatas, seperti satu ruangan atau satu gedung sekolah."
+  },
+  {
+    "type": "multiple-choice",
+    "text": "Jika sebuah program perlu mengeksekusi perintah yang berbeda tergantung pada apakah nilai ujian siswa di atas atau di bawah 75, struktur dasar algoritma yang paling tepat digunakan adalah...",
+    "options": ["Sekuensial (Runtunan)", "Percabangan (Selection)", "Perulangan (Looping)", "Deklarasi Array"],
+    "answer": 1,
+    "explanation": "Percabangan (seperti IF-ELSE) digunakan ketika algoritma harus memilih langkah berbeda berdasarkan kondisi atau syarat tertentu yang terpenuhi."
+  },
+  {
+    "type": "multiple-choice",
+    "text": "Diberikan sekumpulan data nilai ujian Informatika sebagai berikut: 70, 80, 80, 90, 85. Nilai modus dari data tersebut adalah...",
+    "options": ["70", "80", "85", "90"],
+    "answer": 1,
+    "explanation": "Modus adalah nilai yang paling sering muncul dalam suatu kumpulan data. Pada data tersebut, angka 80 muncul sebanyak dua kali."
+  },
+  {
+    "type": "matching",
+    "text": "Jodohkan jenis data berikut dengan contoh yang paling tepat!",
+    "left": ["Data Kualitatif", "Data Kuantitatif"],
+    "right": ["Warna tas milik siswa", "Tinggi badan siswa dalam cm", "Nama-nama pahlawan nasional", "Suhu udara hari ini"],
+    "answer": {
+      "Data Kualitatif": "Warna tas milik siswa",
+      "Data Kuantitatif": "Tinggi badan siswa dalam cm"
+    },
+    "explanation": "Data kualitatif berbentuk deskripsi/kategori (warna), sedangkan data kuantitatif berbentuk angka yang bisa diukur secara numerik (tinggi badan)."
+  },
+  {
+    "type": "matching",
+    "text": "Jodohkan perangkat jaringan (network device) berikut dengan fungsi utamanya!",
+    "left": ["Router", "Switch"],
+    "right": ["Menghubungkan dua atau lebih jaringan komputer yang berbeda", "Menghubungkan perangkat-perangkat komputer dalam satu jaringan lokal (LAN)", "Memancarkan sinyal Wi-Fi dari satelit", "Menyimpan data website sekolah"],
+    "answer": {
+      "Router": "Menghubungkan dua atau lebih jaringan komputer yang berbeda",
+      "Switch": "Menghubungkan perangkat-perangkat komputer dalam satu jaringan lokal (LAN)"
+    },
+    "explanation": "Router bertugas merutekan paket data antar jaringan yang berbeda (misal LAN ke Internet), sedangkan Switch membagi dan menghubungkan koneksi di dalam satu area lokal."
+  },
+  {
+    "type": "matching",
+    "text": "Jodohkan struktur dasar algoritma berikut dengan karakteristiknya!",
+    "left": ["Sekuensial", "Perulangan"],
+    "right": ["Langkah dijalankan secara berurutan dari awal hingga akhir tanpa ada yang terlewat", "Mengulang perintah yang sama berkali-kali selama kondisinya terpenuhi", "Memilih langkah berdasarkan pilihan kondisi True atau False"],
+    "answer": {
+      "Sekuensial": "Langkah dijalankan secara berurutan dari awal hingga akhir tanpa ada yang terlewat",
+      "Perulangan": "Mengulang perintah yang sama berkali-kali selama kondisinya terpenuhi"
+    },
+    "explanation": "Sekuensial adalah langkah berurutan (step-by-step), sedangkan perulangan (looping) mengeksekusi blok kode berulang kali."
+  },
+  {
+    "type": "short-answer",
+    "text": "Data yang dinyatakan dalam bentuk angka dan dapat dihitung menggunakan operasi matematika disebut sebagai data...",
+    "answer": ["kuantitatif", "data kuantitatif"],
+    "explanation": "Data kuantitatif adalah data yang bersifat numerik (angka) sehingga bisa diolah secara statistik."
+  },
+  {
+    "type": "short-answer",
+    "text": "Hitunglah nilai rata-rata (mean) dari kelompok data berikut: 6, 8, 10, dan 4!",
+    "answer": ["7", "tujuh"],
+    "explanation": "Rata-rata (mean) dihitung dengan menjumlahkan semua data lalu dibagi banyak data. (6 + 8 + 10 + 4) / 4 = 28 / 4 = 7."
+  },
+  {
+    "type": "short-answer",
+    "text": "Manfaat utama dari jaringan komputer yang memungkinkan banyak komputer menggunakan satu printer fisik yang sama secara bergantian disebut berbagi...",
+    "answer": ["sumber daya", "resource", "hardware", "perangkat keras"],
+    "explanation": "Resource sharing (berbagi sumber daya) adalah manfaat utama jaringan agar perangkat seperti printer atau scanner dapat dipakai bersama-sama."
+  },
+  {
+    "type": "short-answer",
+    "text": "Istilah yang sering digunakan untuk menyebut tindak kejahatan yang dilakukan melalui jaringan internet atau dunia maya adalah...",
+    "answer": ["cybercrime", "kejahatan siber", "cyber crime"],
+    "explanation": "Cybercrime meliputi berbagai tindak pidana digital seperti peretasan (hacking), penipuan online, hingga pencurian data."
+  }
+],
                 
                 status: [], // { state: 'unanswered'|'skipped'|'answered', correct: bool, answer: any }
                 

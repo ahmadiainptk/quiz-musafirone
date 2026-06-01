@@ -3,30 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aplikasi Presentasi Quiz</title>
+    <title>Aplikasi Presentasi Quiz Lanjutan</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             darkMode: 'class',
-            theme: {
-                extend: {}
-            }
+            theme: { extend: {} }
         }
     </script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     
     <style>
-        /* Mencegah scrolling/pull-to-refresh saat mencoret-coret di perangkat sentuh */
-        canvas {
-            touch-action: none;
-        }
-        /* Transisi halus untuk overlay peek */
-        .peek-enter-active, .peek-leave-active {
-            transition: opacity 0.2s ease;
-        }
-        .peek-enter-from, .peek-leave-to {
-            opacity: 0;
-        }
+        canvas { touch-action: none; }
+        .peek-enter-active, .peek-leave-active { transition: opacity 0.2s ease; }
+        .peek-enter-from, .peek-leave-to { opacity: 0; }
+        /* Custom scrollbar untuk mode pembahasan */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .dark ::-webkit-scrollbar-thumb { background: #475569; }
     </style>
 </head>
 <body x-data="quizApp()" :class="{ 'dark': darkMode }" class="h-screen w-screen overflow-hidden flex flex-col transition-colors duration-300 font-sans">
@@ -34,19 +29,16 @@
     <header class="flex-shrink-0 bg-white/95 dark:bg-gray-800/95 backdrop-blur shadow z-50 p-4 flex flex-wrap justify-between items-center gap-4 text-gray-800 dark:text-gray-100 relative">
         
         <div class="flex-1 flex items-center gap-4 min-w-[200px]">
-            <h1 x-show="!whiteboardOpen && !isFinished" class="text-xl md:text-2xl font-bold">
+            <h1 x-show="!whiteboardOpen && !isFinished" class="text-xl md:text-2xl font-bold flex items-center gap-2">
                 Soal <span x-text="currentIndex + 1"></span> / <span x-text="questions.length"></span>
+                <span x-show="status[currentIndex]?.state === 'skipped'" class="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full uppercase tracking-wider ml-2 shadow-sm">Review Skip</span>
             </h1>
-            <h1 x-show="whiteboardOpen" class="text-xl md:text-2xl font-bold text-indigo-500">
-                Whiteboard
-            </h1>
+            <h1 x-show="whiteboardOpen && !isFinished" class="text-xl md:text-2xl font-bold text-indigo-500">Whiteboard</h1>
+            <h1 x-show="isFinished" class="text-xl md:text-2xl font-bold text-green-500">Hasil Quiz</h1>
             
-            <button x-show="whiteboardOpen" 
-                    @mousedown="isPeeking = true" 
-                    @mouseup="isPeeking = false" 
-                    @mouseleave="isPeeking = false"
-                    @touchstart="isPeeking = true" 
-                    @touchend="isPeeking = false"
+            <button x-show="whiteboardOpen && !isFinished" 
+                    @mousedown="isPeeking = true" @mouseup="isPeeking = false" @mouseleave="isPeeking = false"
+                    @touchstart="isPeeking = true" @touchend="isPeeking = false"
                     class="px-4 py-2 bg-yellow-400 hover:bg-yellow-500 text-yellow-900 rounded-lg shadow font-bold text-sm transition active:scale-95 select-none cursor-pointer flex items-center gap-2">
                 <span>👀</span> <span class="hidden md:inline">Tahan untuk Intip Soal</span>
             </button>
@@ -56,14 +48,18 @@
             <div class="text-blue-600 dark:text-blue-400 flex items-center gap-2">
                 <span>Total:</span> <span x-text="formatTime(totalTime)"></span>
             </div>
-            <div class="w-px h-5 bg-gray-300 dark:bg-gray-600"></div>
-            <div class="text-orange-600 dark:text-orange-400 flex items-center gap-2">
+            <div x-show="!isFinished" class="w-px h-5 bg-gray-300 dark:bg-gray-600"></div>
+            <div x-show="!isFinished" class="text-orange-600 dark:text-orange-400 flex items-center gap-2">
                 <span>Soal:</span> <span x-text="formatTime(questionTime)"></span>
             </div>
         </div>
 
         <div class="flex-1 flex justify-end items-center gap-3">
-            <button @click="toggleWhiteboard()" :disabled="isFinished" class="px-4 py-2 bg-indigo-500 hover:bg-indigo-600 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg shadow transition font-bold text-sm md:text-base flex items-center gap-2">
+            <button x-show="!isFinished" @click="finishQuizEarly()" class="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg shadow transition font-bold text-sm">
+                Akhiri Quiz
+            </button>
+
+            <button x-show="!isFinished" @click="toggleWhiteboard()" class="px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-white rounded-lg shadow transition font-bold text-sm md:text-base flex items-center gap-2">
                 <svg x-show="!whiteboardOpen" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
                 <svg x-show="whiteboardOpen" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                 <span x-text="whiteboardOpen ? 'Tutup Whiteboard' : 'Whiteboard'" class="hidden md:inline"></span>
@@ -78,106 +74,195 @@
 
     <main class="flex-grow relative w-full bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100 flex flex-col">
         
-        <div x-show="!whiteboardOpen && !isFinished" class="absolute inset-0 flex flex-col justify-center overflow-y-auto px-6 md:px-16 py-8">
-            <div class="max-w-6xl w-full mx-auto" x-show="questions.length > 0">
+        <div x-show="!whiteboardOpen && !isFinished && questions.length > 0" class="absolute inset-0 flex flex-col justify-center overflow-y-auto px-6 md:px-16 py-8">
+            <div class="max-w-6xl w-full mx-auto">
                 
-                <div class="text-3xl md:text-5xl font-medium leading-tight mb-12 text-center md:text-left">
-                    <p x-text="questions[currentIndex].text"></p>
+                <div class="text-3xl md:text-4xl font-medium leading-tight mb-8 text-center md:text-left">
+                    <span class="inline-block px-3 py-1 bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100 rounded-lg text-sm font-bold uppercase tracking-widest mb-4 border border-blue-200 dark:border-blue-700 shadow-sm"
+                          x-text="getQuestionTypeLabel(questions[currentIndex].type)"></span>
+                    <p x-text="questions[currentIndex].text" class="mt-2"></p>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
-                    <template x-for="(option, index) in questions[currentIndex].options" :key="index">
-                        <div 
-                            @click="!isChecked ? selectedOption = index : null"
-                            class="p-6 md:p-8 border-4 rounded-2xl cursor-pointer transition-all duration-200 shadow-sm"
-                            :class="{
-                                'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:border-blue-400 dark:hover:border-blue-500': selectedOption !== index && !isChecked,
-                                'border-blue-500 bg-blue-50 dark:bg-blue-900/40': selectedOption === index && !isChecked,
-                                'border-green-500 bg-green-100 dark:bg-green-900/60 text-green-900 dark:text-green-100': isChecked && index === questions[currentIndex].answer,
-                                'border-red-500 bg-red-100 dark:bg-red-900/60 text-red-900 dark:text-red-100': isChecked && selectedOption === index && index !== questions[currentIndex].answer,
-                                'opacity-40 cursor-not-allowed': isChecked && index !== questions[currentIndex].answer && selectedOption !== index
-                            }">
-                            
-                            <div class="flex items-center gap-6">
-                                <div class="w-12 h-12 flex-shrink-0 rounded-full flex items-center justify-center font-bold text-xl bg-gray-100 dark:bg-gray-700 border-2 border-inherit"
-                                     x-text="String.fromCharCode(65 + index)"></div>
-                                <span class="text-2xl font-medium" x-text="option"></span>
+                <div class="mb-12">
+                    <div x-show="questions[currentIndex].type === 'multiple-choice'" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <template x-for="(option, index) in questions[currentIndex].options" :key="index">
+                            <div @click="!isChecked ? tempAnswer = index : null"
+                                 class="p-6 border-4 rounded-xl cursor-pointer transition-all duration-200 shadow-sm flex items-center gap-4"
+                                 :class="{
+                                     'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:border-blue-400': tempAnswer !== index && !isChecked,
+                                     'border-blue-500 bg-blue-50 dark:bg-blue-900/40': tempAnswer === index && !isChecked,
+                                     'border-green-500 bg-green-100 dark:bg-green-900/60 text-green-900 dark:text-green-100': isChecked && index === questions[currentIndex].answer,
+                                     'border-red-500 bg-red-100 dark:bg-red-900/60 text-red-900 dark:text-red-100': isChecked && tempAnswer === index && index !== questions[currentIndex].answer,
+                                     'opacity-40 cursor-not-allowed': isChecked && index !== questions[currentIndex].answer && tempAnswer !== index
+                                 }">
+                                <div class="w-10 h-10 flex-shrink-0 rounded-full flex items-center justify-center font-bold text-lg bg-gray-100 dark:bg-gray-700 border-2 border-inherit" x-text="String.fromCharCode(65 + index)"></div>
+                                <span class="text-xl font-medium" x-text="option"></span>
                             </div>
-                        </div>
-                    </template>
-                </div>
-
-                <div class="flex justify-center md:justify-end gap-4">
-                    <button 
-                        @click="checkAnswer()" 
-                        :disabled="selectedOption === null || isChecked"
-                        class="px-8 py-4 bg-green-500 hover:bg-green-600 disabled:bg-gray-400 dark:disabled:bg-gray-600 disabled:cursor-not-allowed text-white text-xl font-bold rounded-xl shadow-lg transition transform active:scale-95">
-                        Periksa Jawaban
-                    </button>
-
-                    <button 
-                        x-show="isChecked"
-                        @click="nextQuestion()" 
-                        class="px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white text-xl font-bold rounded-xl shadow-lg transition transform active:scale-95">
-                        <span x-text="currentIndex === questions.length - 1 ? 'Selesai' : 'Soal Selanjutnya ➔'"></span>
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <div x-show="whiteboardOpen" style="display: none;" class="absolute inset-0 z-40 bg-white dark:bg-gray-900 overflow-hidden">
-            
-            <div class="absolute bottom-6 left-6 bg-white/90 dark:bg-gray-800/90 backdrop-blur border dark:border-gray-700 p-3 rounded-2xl shadow-2xl flex gap-4 items-center z-50">
-                <div class="font-bold text-sm text-gray-500 dark:text-gray-400 px-2">Alat:</div>
-                <input type="color" x-model="penColor" class="w-10 h-10 rounded cursor-pointer border-0 p-0">
-                <button @click="clearCanvas()" class="px-5 py-2 bg-red-500 hover:bg-red-600 text-white font-bold rounded-xl shadow">Bersihkan</button>
-            </div>
-
-            <div x-show="isPeeking" 
-                 x-transition:enter="peek-enter-active"
-                 x-transition:enter-start="peek-enter-from"
-                 x-transition:leave="peek-leave-active"
-                 x-transition:leave-end="peek-leave-to"
-                 class="absolute inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-8 pointer-events-none">
-                
-                <div class="bg-white dark:bg-gray-800 p-10 rounded-2xl shadow-2xl max-w-5xl w-full border-4 border-yellow-400">
-                    <div class="text-yellow-500 font-bold mb-4 uppercase tracking-widest text-sm flex items-center gap-2">
-                        <span>👀</span> Sedang Mengintip Soal
+                        </template>
                     </div>
-                    <p class="text-3xl md:text-4xl font-medium mb-8" x-text="questions[currentIndex].text"></p>
-                    <div class="grid grid-cols-2 gap-4">
-                        <template x-for="(option, idx) in questions[currentIndex].options">
-                            <div class="p-4 bg-gray-100 dark:bg-gray-700 rounded-lg text-xl flex items-center gap-4">
-                                <div class="font-bold w-8 h-8 flex items-center justify-center bg-gray-200 dark:bg-gray-600 rounded-full text-sm" x-text="String.fromCharCode(65+idx)"></div>
-                                <span x-text="option"></span>
+
+                    <div x-show="questions[currentIndex].type === 'short-answer'" class="w-full max-w-2xl mx-auto">
+                        <input type="text" x-model="tempAnswer" :disabled="isChecked"
+                               class="w-full p-6 text-2xl border-4 rounded-xl focus:outline-none bg-white dark:bg-gray-800 transition-colors shadow-inner"
+                               :class="{'border-green-500': isChecked && status[currentIndex].correct, 'border-red-500': isChecked && !status[currentIndex].correct, 'border-gray-300 dark:border-gray-600 focus:border-blue-500': !isChecked}"
+                               placeholder="Ketik jawaban Anda di sini...">
+                        <div x-show="isChecked && !status[currentIndex].correct" class="mt-4 p-4 bg-green-100 dark:bg-green-900/40 border border-green-500 rounded-lg text-green-800 dark:text-green-100 font-bold">
+                            Jawaban yang benar: <span x-text="questions[currentIndex].answer.join(' / ')"></span>
+                        </div>
+                    </div>
+
+                    <div x-show="questions[currentIndex].type === 'matching'" class="w-full max-w-4xl mx-auto flex flex-col gap-4">
+                        <template x-for="leftItem in questions[currentIndex].left" :key="leftItem">
+                            <div class="flex flex-col md:flex-row items-center gap-4 bg-gray-100 dark:bg-gray-800 p-4 rounded-xl border-4 transition-colors"
+                                 :class="{'border-green-500 bg-green-50 dark:bg-green-900/20': isChecked && tempAnswer[leftItem] === questions[currentIndex].answer[leftItem], 'border-red-500 bg-red-50 dark:bg-red-900/20': isChecked && tempAnswer[leftItem] !== questions[currentIndex].answer[leftItem], 'border-gray-200 dark:border-gray-700': !isChecked}">
+                                <div class="flex-1 text-xl font-semibold text-center md:text-left w-full" x-text="leftItem"></div>
+                                <div class="flex-none hidden md:block text-2xl text-gray-400">➔</div>
+                                <div class="flex-1 w-full">
+                                    <select x-model="tempAnswer[leftItem]" :disabled="isChecked"
+                                            class="w-full p-4 text-lg border-2 rounded-lg bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-600 focus:outline-none focus:border-blue-500 shadow-sm cursor-pointer">
+                                        <option value="">-- Pilih Pasangan --</option>
+                                        <template x-for="rightItem in questions[currentIndex].right" :key="rightItem">
+                                            <option :value="rightItem" x-text="rightItem"></option>
+                                        </template>
+                                    </select>
+                                    <div x-show="isChecked && tempAnswer[leftItem] !== questions[currentIndex].answer[leftItem]" class="mt-2 text-sm text-green-600 dark:text-green-400 font-bold">
+                                        Benar: <span x-text="questions[currentIndex].answer[leftItem]"></span>
+                                    </div>
+                                </div>
                             </div>
                         </template>
                     </div>
                 </div>
-            </div>
 
-            <canvas 
-                x-ref="canvas"
-                class="absolute inset-0 w-full h-full cursor-crosshair"
-                @mousedown="startDrawing"
-                @mousemove="draw"
-                @mouseup="stopDrawing"
-                @mouseout="stopDrawing"
-                @touchstart="startDrawing"
-                @touchmove="draw"
-                @touchend="stopDrawing">
-            </canvas>
+                <div class="flex flex-wrap justify-center md:justify-end gap-4 border-t dark:border-gray-700 pt-6">
+                    <button x-show="!isChecked" @click="skipQuestion()"
+                            class="px-6 py-4 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 text-lg font-bold rounded-xl transition active:scale-95">
+                        Lewati (Skip) ⏭
+                    </button>
+
+                    <button x-show="!isChecked" @click="checkCurrentAnswer()" :disabled="!canCheck()"
+                            class="px-8 py-4 bg-green-500 hover:bg-green-600 disabled:bg-gray-400 dark:disabled:bg-gray-600 disabled:cursor-not-allowed text-white text-xl font-bold rounded-xl shadow-lg transition transform active:scale-95">
+                        Periksa Jawaban
+                    </button>
+
+                    <button x-show="isChecked" @click="nextQuestion()" 
+                            class="px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white text-xl font-bold rounded-xl shadow-lg transition transform active:scale-95 animate-pulse">
+                        <span x-text="getNextButtonLabel()"></span>
+                    </button>
+                </div>
+            </div>
         </div>
 
-        <div x-show="isFinished" class="absolute inset-0 flex items-center justify-center bg-gray-50 dark:bg-gray-900 z-50">
-            <div class="text-center bg-white dark:bg-gray-800 p-12 rounded-3xl shadow-2xl border dark:border-gray-700">
-                <div class="text-6xl mb-6">🎉</div>
-                <h2 class="text-4xl font-bold text-green-500 mb-6">Quiz Selesai!</h2>
-                <div class="text-2xl mb-8 flex flex-col gap-2">
-                    <p>Total Waktu Anda:</p>
-                    <p class="text-5xl font-mono font-bold text-blue-600 dark:text-blue-400" x-text="formatTime(totalTime)"></p>
+        <div x-show="whiteboardOpen && !isFinished" style="display: none;" class="absolute inset-0 z-40 bg-white dark:bg-gray-900 overflow-hidden">
+            <div class="absolute bottom-6 left-6 bg-white/90 dark:bg-gray-800/90 backdrop-blur border dark:border-gray-700 p-3 rounded-2xl shadow-2xl flex gap-4 items-center z-50">
+                <input type="color" x-model="penColor" class="w-10 h-10 rounded cursor-pointer border-0 p-0">
+                <button @click="clearCanvas()" class="px-5 py-2 bg-red-500 hover:bg-red-600 text-white font-bold rounded-xl shadow">Bersihkan Layar</button>
+            </div>
+
+            <div x-show="isPeeking" x-transition:enter="peek-enter-active" x-transition:enter-start="peek-enter-from" x-transition:leave="peek-leave-active" x-transition:leave-end="peek-leave-to"
+                 class="absolute inset-0 z-50 bg-black/80 backdrop-blur flex items-center justify-center p-8 pointer-events-none">
+                <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl max-w-4xl w-full border-4 border-yellow-400 shadow-2xl">
+                    <div class="text-yellow-500 font-bold mb-2 uppercase tracking-widest text-sm">👀 Intip Soal</div>
+                    <p class="text-2xl md:text-3xl font-medium mb-6" x-text="questions[currentIndex]?.text"></p>
                 </div>
-                <button @click="location.reload()" class="px-8 py-4 bg-indigo-500 hover:bg-indigo-600 text-white rounded-xl font-bold text-xl shadow-lg transform active:scale-95 transition">Ulangi Quiz</button>
+            </div>
+
+            <canvas x-ref="canvas" class="absolute inset-0 w-full h-full cursor-crosshair"
+                @mousedown="startDrawing" @mousemove="draw" @mouseup="stopDrawing" @mouseout="stopDrawing"
+                @touchstart="startDrawing" @touchmove="draw" @touchend="stopDrawing"></canvas>
+        </div>
+
+        <div x-show="isFinished && !isReviewing" class="absolute inset-0 flex items-center justify-center overflow-y-auto p-6 z-30">
+            <div class="text-center bg-white dark:bg-gray-800 p-10 md:p-16 rounded-3xl shadow-2xl border dark:border-gray-700 max-w-2xl w-full">
+                <div class="text-7xl mb-6">🏆</div>
+                <h2 class="text-4xl font-bold text-gray-800 dark:text-gray-100 mb-2">Quiz Selesai!</h2>
+                <p class="text-gray-500 dark:text-gray-400 mb-8">Berikut adalah rekapitulasi hasil Anda.</p>
+                
+                <div class="grid grid-cols-2 gap-6 mb-10">
+                    <div class="bg-gray-100 dark:bg-gray-700 p-6 rounded-2xl shadow-inner">
+                        <div class="text-sm uppercase tracking-widest text-gray-500 dark:text-gray-400 font-bold mb-1">Skor Akhir</div>
+                        <div class="text-6xl font-black text-blue-600 dark:text-blue-400" x-text="calculateScore()"></div>
+                    </div>
+                    <div class="bg-gray-100 dark:bg-gray-700 p-6 rounded-2xl shadow-inner flex flex-col justify-center">
+                        <div class="text-sm uppercase tracking-widest text-gray-500 dark:text-gray-400 font-bold mb-1">Waktu Pengerjaan</div>
+                        <div class="text-3xl font-mono font-bold text-gray-800 dark:text-gray-100" x-text="formatTime(totalTime)"></div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col md:flex-row gap-4 justify-center">
+                    <button @click="isReviewing = true" class="px-8 py-4 bg-indigo-500 hover:bg-indigo-600 text-white rounded-xl font-bold text-lg shadow-lg transform active:scale-95 transition">Lihat Pembahasan 📚</button>
+                    <button @click="location.reload()" class="px-8 py-4 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 rounded-xl font-bold text-lg shadow-lg transform active:scale-95 transition">Ulangi Quiz 🔄</button>
+                </div>
+            </div>
+        </div>
+
+        <div x-show="isFinished && isReviewing" style="display: none;" class="absolute inset-0 overflow-y-auto bg-gray-100 dark:bg-gray-900 p-4 md:p-8 z-30">
+            <div class="max-w-5xl mx-auto">
+                <div class="flex justify-between items-center mb-8 sticky top-0 bg-gray-100/90 dark:bg-gray-900/90 backdrop-blur py-4 z-10 border-b dark:border-gray-700">
+                    <h2 class="text-3xl font-bold text-gray-800 dark:text-gray-100">Pembahasan Quiz</h2>
+                    <button @click="isReviewing = false" class="px-6 py-2 bg-gray-800 dark:bg-gray-200 text-white dark:text-gray-900 font-bold rounded-lg shadow hover:opacity-90">Kembali ke Skor</button>
+                </div>
+
+                <div class="space-y-8 pb-20">
+                    <template x-for="(q, index) in questions" :key="index">
+                        <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 md:p-8 shadow-lg border-l-8"
+                             :class="status[index].correct ? 'border-green-500' : (status[index].state === 'skipped' ? 'border-yellow-400' : 'border-red-500')">
+                            
+                            <div class="flex justify-between items-start mb-4">
+                                <h3 class="text-xl font-bold">Soal <span x-text="index + 1"></span></h3>
+                                <span class="px-3 py-1 rounded-full text-sm font-bold uppercase"
+                                      :class="status[index].correct ? 'bg-green-100 text-green-800' : (status[index].state === 'skipped' ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800')"
+                                      x-text="status[index].state === 'skipped' ? 'Dilewati' : (status[index].correct ? 'Benar' : 'Salah')"></span>
+                            </div>
+                            
+                            <p class="text-lg md:text-xl font-medium mb-6" x-text="q.text"></p>
+                            
+                            <div class="bg-gray-50 dark:bg-gray-700/50 p-4 rounded-xl mb-6 border dark:border-gray-600">
+                                <template x-if="q.type === 'multiple-choice'">
+                                    <div>
+                                        <div class="mb-2"><span class="font-semibold text-gray-500 dark:text-gray-400">Jawaban Anda:</span> 
+                                            <span x-text="status[index].answer !== null ? q.options[status[index].answer] : '-'"></span>
+                                        </div>
+                                        <div><span class="font-semibold text-gray-500 dark:text-gray-400">Kunci Jawaban:</span> 
+                                            <span class="text-green-600 dark:text-green-400 font-bold" x-text="q.options[q.answer]"></span>
+                                        </div>
+                                    </div>
+                                </template>
+                                
+                                <template x-if="q.type === 'short-answer'">
+                                    <div>
+                                        <div class="mb-2"><span class="font-semibold text-gray-500 dark:text-gray-400">Jawaban Anda:</span> 
+                                            <span x-text="status[index].answer || '-'"></span>
+                                        </div>
+                                        <div><span class="font-semibold text-gray-500 dark:text-gray-400">Kunci Jawaban:</span> 
+                                            <span class="text-green-600 dark:text-green-400 font-bold" x-text="q.answer.join(' / ')"></span>
+                                        </div>
+                                    </div>
+                                </template>
+
+                                <template x-if="q.type === 'matching'">
+                                    <div class="space-y-2">
+                                        <span class="font-semibold text-gray-500 dark:text-gray-400 block mb-2">Kunci Pasangan:</span> 
+                                        <template x-for="leftItem in q.left">
+                                            <div class="flex gap-2 text-sm md:text-base">
+                                                <span class="font-medium" x-text="leftItem"></span> ➔ 
+                                                <span class="text-green-600 dark:text-green-400 font-bold" x-text="q.answer[leftItem]"></span>
+                                            </div>
+                                        </template>
+                                    </div>
+                                </template>
+                            </div>
+
+                            <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 p-5 rounded-xl">
+                                <div class="text-blue-800 dark:text-blue-300 font-bold mb-2 flex items-center gap-2">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                    Pembahasan
+                                </div>
+                                <p class="text-gray-700 dark:text-gray-300 leading-relaxed" x-text="q.explanation"></p>
+                            </div>
+                        </div>
+                    </template>
+                </div>
             </div>
         </div>
 
@@ -188,47 +273,60 @@
             Alpine.data('quizApp', () => ({
                 darkMode: false,
                 
-                // Data JSON Soal
+                // Data JSON Soal (3 Jenis)
                 questions: [
                     {
-                        "id": 1,
-                        "text": "Berapakah hasil dari 15 x 12?",
-                        "options": ["170", "180", "190", "200"],
-                        "answer": 1
+                        type: 'multiple-choice',
+                        text: 'Framework apa yang digunakan untuk membuat aplikasi presentasi quiz ini secara single-file di bagian frontend?',
+                        options: ["React & Bootstrap", "AlpineJS & TailwindCSS", "Vue & Bulma", "Svelte & Materialize"],
+                        answer: 1,
+                        explanation: 'Sesuai dengan kode sumbernya, aplikasi ini dibangun murni menggunakan kombinasi AlpineJS untuk reaktivitas dan TailwindCSS untuk styling.'
                     },
                     {
-                        "id": 2,
-                        "text": "Teknologi manakah yang merupakan runtime JavaScript untuk lingkungan server-side?",
-                        "options": ["AlpineJS", "TailwindCSS", "Node.js", "Astro"],
-                        "answer": 2
+                        type: 'short-answer',
+                        text: 'Apa kepanjangan dari singkatan HTML?',
+                        answer: ["Hypertext Markup Language", "Hyper Text Markup Language"], // Array of accepted answers
+                        explanation: 'HTML adalah singkatan dari Hypertext Markup Language, bahasa standar untuk membuat dan menyusun halaman web.'
                     },
                     {
-                        "id": 3,
-                        "text": "Jika sebuah segitiga siku-siku memiliki panjang alas 3 cm dan tinggi 4 cm, berapakah panjang sisi miringnya?",
-                        "options": ["5 cm", "6 cm", "7 cm", "8 cm"],
-                        "answer": 0
+                        type: 'matching',
+                        text: 'Jodohkan ibukota dengan negara yang sesuai!',
+                        left: ["Indonesia", "Jepang", "Korea Selatan"],
+                        right: ["Seoul", "Beijing", "Tokyo", "Jakarta"], // Termasuk pengecoh (Beijing)
+                        answer: {
+                            "Indonesia": "Jakarta",
+                            "Jepang": "Tokyo",
+                            "Korea Selatan": "Seoul"
+                        },
+                        explanation: 'Jakarta adalah ibukota Indonesia, Tokyo ibukota Jepang, dan Seoul adalah ibukota dari Korea Selatan.'
                     }
                 ],
                 
+                status: [], // { state: 'unanswered'|'skipped'|'answered', correct: bool, answer: any }
+                
                 currentIndex: 0,
-                selectedOption: null,
+                tempAnswer: null, // Tempat penampungan sementara input user sebelum diperiksa
                 isChecked: false,
                 isFinished: false,
+                isReviewing: false,
                 
                 // Timers
                 totalTime: 0,
                 questionTime: 0,
                 timerInterval: null,
                 
-                // Whiteboard & Peek
+                // Whiteboard
                 whiteboardOpen: false,
                 isPeeking: false,
                 isDrawing: false,
                 ctx: null,
-                penColor: '#3b82f6', // Default blue
+                penColor: '#3b82f6',
 
                 init() {
-                    // Mulai timer utama
+                    // Inisialisasi status array
+                    this.status = this.questions.map(() => ({ state: 'unanswered', correct: false, answer: null }));
+                    this.loadQuestionData();
+
                     this.timerInterval = setInterval(() => {
                         if (!this.isFinished) {
                             this.totalTime++;
@@ -236,12 +334,16 @@
                         }
                     }, 1000);
 
-                    // Re-render canvas saat ukuran layar berubah (jika whiteboard aktif)
                     window.addEventListener('resize', () => {
-                        if (this.whiteboardOpen) {
-                            this.resizeCanvas();
-                        }
+                        if (this.whiteboardOpen) this.resizeCanvas();
                     });
+                },
+
+                getQuestionTypeLabel(type) {
+                    if(type === 'multiple-choice') return 'Pilihan Ganda';
+                    if(type === 'short-answer') return 'Isian Singkat';
+                    if(type === 'matching') return 'Menjodohkan';
+                    return 'Soal';
                 },
 
                 formatTime(seconds) {
@@ -250,41 +352,137 @@
                     return `${m}:${s}`;
                 },
 
-                checkAnswer() {
-                    if (this.selectedOption !== null) {
-                        this.isChecked = true;
+                // Memuat data sementara (berguna saat loop balik ke soal skip)
+                loadQuestionData() {
+                    let q = this.questions[this.currentIndex];
+                    let s = this.status[this.currentIndex];
+                    this.isChecked = s.state === 'answered';
+
+                    if (q.type === 'multiple-choice') {
+                        this.tempAnswer = s.answer !== null ? s.answer : null;
+                    } else if (q.type === 'short-answer') {
+                        this.tempAnswer = s.answer !== null ? s.answer : '';
+                    } else if (q.type === 'matching') {
+                        // Salin objek atau buat baru jika kosong
+                        this.tempAnswer = s.answer !== null ? JSON.parse(JSON.stringify(s.answer)) : {};
                     }
                 },
 
-                nextQuestion() {
-                    if (this.currentIndex < this.questions.length - 1) {
-                        this.currentIndex++;
-                        this.selectedOption = null;
-                        this.isChecked = false;
-                        this.questionTime = 0; // Reset timer untuk soal baru
-                        this.whiteboardOpen = false; // Otomatis tutup whiteboard di soal baru
-                    } else {
-                        this.isFinished = true;
-                        this.whiteboardOpen = false;
+                canCheck() {
+                    if (this.isChecked) return false;
+                    let q = this.questions[this.currentIndex];
+                    
+                    if (q.type === 'multiple-choice') return this.tempAnswer !== null;
+                    if (q.type === 'short-answer') return typeof this.tempAnswer === 'string' && this.tempAnswer.trim() !== '';
+                    if (q.type === 'matching') {
+                        if (!this.tempAnswer) return false;
+                        for (let item of q.left) {
+                            if (!this.tempAnswer[item] || this.tempAnswer[item] === '') return false;
+                        }
+                        return true;
                     }
+                    return false;
+                },
+
+                checkCurrentAnswer() {
+                    let q = this.questions[this.currentIndex];
+                    let isCorrect = false;
+
+                    if (q.type === 'multiple-choice') {
+                        isCorrect = this.tempAnswer === q.answer;
+                    } else if (q.type === 'short-answer') {
+                        let userAns = this.tempAnswer.trim().toLowerCase();
+                        isCorrect = q.answer.some(a => a.toLowerCase() === userAns);
+                    } else if (q.type === 'matching') {
+                        let correctCount = 0;
+                        for(let key of q.left) {
+                            if(this.tempAnswer[key] === q.answer[key]) correctCount++;
+                        }
+                        isCorrect = correctCount === q.left.length;
+                    }
+
+                    // Simpan hasil ke global status
+                    this.status[this.currentIndex] = {
+                        state: 'answered',
+                        correct: isCorrect,
+                        answer: q.type === 'matching' ? JSON.parse(JSON.stringify(this.tempAnswer)) : this.tempAnswer
+                    };
+                    this.isChecked = true;
+                },
+
+                skipQuestion() {
+                    if (this.status[this.currentIndex].state !== 'answered') {
+                        this.status[this.currentIndex].state = 'skipped';
+                        // Simpan inputan sementara (jika ada yg sempat diisi)
+                        this.status[this.currentIndex].answer = typeof this.tempAnswer === 'object' && this.tempAnswer !== null 
+                            ? JSON.parse(JSON.stringify(this.tempAnswer)) : this.tempAnswer;
+                    }
+                    this.nextQuestion();
+                },
+
+                nextQuestion() {
+                    let nextIdx = -1;
+                    
+                    // 1. Cari soal belum dijawab/di-skip di sisa antrian depan
+                    for(let i = this.currentIndex + 1; i < this.questions.length; i++) {
+                        if(this.status[i].state !== 'answered') {
+                            nextIdx = i; break;
+                        }
+                    }
+                    
+                    // 2. Jika di depan habis, mutar ke awal mencari yang di-skip
+                    if (nextIdx === -1) {
+                        for(let i = 0; i < this.currentIndex; i++) {
+                            if(this.status[i].state === 'skipped' || this.status[i].state === 'unanswered') {
+                                nextIdx = i; break;
+                            }
+                        }
+                    }
+
+                    if (nextIdx !== -1) {
+                        this.currentIndex = nextIdx;
+                        this.loadQuestionData();
+                        this.questionTime = 0;
+                        this.whiteboardOpen = false;
+                    } else {
+                        // Jika tidak ada lagi yang bisa dijawab, akhiri quiz
+                        this.finishQuiz();
+                    }
+                },
+
+                getNextButtonLabel() {
+                    // Cek apakah masih ada soal tersisa (termasuk yg di-skip di belakang)
+                    let left = this.status.filter(s => s.state !== 'answered').length;
+                    return left > 0 ? 'Lanjut ➔' : 'Selesaikan Quiz ➔';
+                },
+
+                finishQuizEarly() {
+                    if(confirm('Apakah Anda yakin ingin mengakhiri dan mengumpulkan quiz sekarang? Soal yang belum dijawab akan dianggap salah.')) {
+                        this.finishQuiz();
+                    }
+                },
+
+                finishQuiz() {
+                    this.isFinished = true;
+                    this.whiteboardOpen = false;
+                    clearInterval(this.timerInterval);
+                },
+
+                calculateScore() {
+                    let correctCount = this.status.filter(s => s.correct).length;
+                    return Math.round((correctCount / this.questions.length) * 100);
                 },
 
                 // ---- Logika Whiteboard ----
                 toggleWhiteboard() {
                     this.whiteboardOpen = !this.whiteboardOpen;
                     if (this.whiteboardOpen) {
-                        // $nextTick memastikan elemen canvas sudah dirender di DOM sebelum di-resize
-                        this.$nextTick(() => {
-                            this.resizeCanvas();
-                        });
+                        this.$nextTick(() => { this.resizeCanvas(); });
                     }
                 },
-
                 resizeCanvas() {
                     const canvas = this.$refs.canvas;
                     const container = canvas.parentElement;
-                    
-                    // Simpan coretan yang sudah ada
                     const imgData = this.ctx && canvas.width > 0 ? this.ctx.getImageData(0, 0, canvas.width, canvas.height) : null;
                     
                     canvas.width = container.clientWidth;
@@ -293,59 +491,40 @@
                     this.ctx = canvas.getContext('2d');
                     this.ctx.lineCap = 'round';
                     this.ctx.lineJoin = 'round';
-                    
-                    if (imgData) {
-                        this.ctx.putImageData(imgData, 0, 0);
-                    }
+                    if (imgData) this.ctx.putImageData(imgData, 0, 0);
                 },
-
                 getCoordinates(e) {
                     const canvas = this.$refs.canvas;
                     const rect = canvas.getBoundingClientRect();
-                    
                     if (e.type.includes('touch')) {
                         e.preventDefault(); 
-                        return {
-                            x: e.touches[0].clientX - rect.left,
-                            y: e.touches[0].clientY - rect.top
-                        };
+                        return { x: e.touches[0].clientX - rect.left, y: e.touches[0].clientY - rect.top };
                     }
-                    return {
-                        x: e.clientX - rect.left,
-                        y: e.clientY - rect.top
-                    };
+                    return { x: e.clientX - rect.left, y: e.clientY - rect.top };
                 },
-
                 startDrawing(e) {
                     this.isDrawing = true;
                     this.ctx.lineWidth = 4;
                     this.ctx.strokeStyle = this.penColor;
                     const pos = this.getCoordinates(e);
-                    
                     this.ctx.beginPath();
                     this.ctx.moveTo(pos.x, pos.y);
                     this.draw(e);
                 },
-
                 draw(e) {
                     if (!this.isDrawing) return;
                     const pos = this.getCoordinates(e);
-                    
                     this.ctx.lineTo(pos.x, pos.y);
                     this.ctx.stroke();
                     this.ctx.beginPath();
                     this.ctx.moveTo(pos.x, pos.y);
                 },
-
                 stopDrawing() {
                     this.isDrawing = false;
                     if(this.ctx) this.ctx.beginPath();
                 },
-
                 clearCanvas() {
-                    if(this.ctx) {
-                        this.ctx.clearRect(0, 0, this.$refs.canvas.width, this.$refs.canvas.height);
-                    }
+                    if(this.ctx) this.ctx.clearRect(0, 0, this.$refs.canvas.width, this.$refs.canvas.height);
                 }
             }));
         });

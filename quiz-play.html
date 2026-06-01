@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplikasi Presentasi Quiz</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {}
+            }
+        }
+    </script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+    <style>
+        /* Mencegah scrolling saat mencoret-coret di perangkat sentuh */
+        canvas {
+            touch-action: none;
+        }
+    </style>
+</head>
+<body x-data="quizApp()" :class="{ 'dark': darkMode }" class="transition-colors duration-300">
+    <div class="min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-100 flex flex-col font-sans">
+        
+        <header class="bg-white dark:bg-gray-800 shadow p-4 flex justify-between items-center relative z-10">
+            <h1 class="text-xl font-bold">Quiz Presentation</h1>
+            
+            <div class="flex items-center gap-4">
+                <div class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-100 px-3 py-1 rounded-md font-mono font-semibold">
+                    Total: <span x-text="formatTime(totalTime)"></span>
+                </div>
+                
+                <button @click="darkMode = !darkMode" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition">
+                    <svg x-show="!darkMode" class="w-6 h-6 text-yellow-500" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"/></svg>
+                    <svg x-show="darkMode" class="w-6 h-6 text-gray-300" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/></svg>
+                </button>
+            </div>
+        </header>
+
+        <main class="flex-grow max-w-4xl w-full mx-auto p-4 flex flex-col justify-center">
+            
+            <div x-show="questions.length > 0" class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 md:p-8 w-full relative">
+                
+                <button @click="toggleWhiteboard()" class="absolute top-6 right-6 p-2 bg-indigo-500 hover:bg-indigo-600 text-white rounded-lg shadow transition flex items-center gap-2 text-sm">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+                    <span>Whiteboard</span>
+                </button>
+
+                <div class="flex justify-between items-end mb-6 border-b dark:border-gray-700 pb-4 pr-32">
+                    <h2 class="text-2xl font-bold text-gray-700 dark:text-gray-200">
+                        Soal <span x-text="currentIndex + 1"></span> / <span x-text="questions.length"></span>
+                    </h2>
+                    <div class="text-sm bg-gray-100 dark:bg-gray-700 px-3 py-1 rounded-md font-mono">
+                        Timer Soal: <span x-text="formatTime(questionTime)"></span>
+                    </div>
+                </div>
+
+                <div class="text-xl md:text-2xl mb-8 font-medium">
+                    <p x-text="questions[currentIndex].text"></p>
+                </div>
+
+                <div class="space-y-4 mb-8">
+                    <template x-for="(option, index) in questions[currentIndex].options" :key="index">
+                        <div 
+                            @click="!isChecked ? selectedOption = index : null"
+                            class="p-4 border-2 rounded-lg cursor-pointer transition-all duration-200"
+                            :class="{
+                                'border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700': selectedOption !== index && !isChecked,
+                                'border-blue-500 bg-blue-50 dark:bg-blue-900/30': selectedOption === index && !isChecked,
+                                'border-green-500 bg-green-100 dark:bg-green-900/40 text-green-800 dark:text-green-100': isChecked && index === questions[currentIndex].answer,
+                                'border-red-500 bg-red-100 dark:bg-red-900/40 text-red-800 dark:text-red-100': isChecked && selectedOption === index && index !== questions[currentIndex].answer,
+                                'opacity-50 cursor-not-allowed': isChecked && index !== questions[currentIndex].answer && selectedOption !== index
+                            }">
+                            
+                            <div class="flex items-center gap-4">
+                                <div class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm bg-white dark:bg-gray-800 shadow"
+                                     x-text="String.fromCharCode(65 + index)"></div>
+                                <span class="text-lg" x-text="option"></span>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+
+                <div class="flex justify-between items-center">
+                    <button 
+                        @click="checkAnswer()" 
+                        :disabled="selectedOption === null || isChecked"
+                        class="px-6 py-3 bg-green-500 hover:bg-green-600 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-bold rounded-lg shadow transition">
+                        Periksa Jawaban
+                    </button>
+
+                    <button 
+                        x-show="isChecked"
+                        @click="nextQuestion()" 
+                        class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg shadow transition">
+                        <span x-text="currentIndex === questions.length - 1 ? 'Selesai' : 'Soal Selanjutnya'"></span>
+                    </button>
+                </div>
+            </div>
+
+            <div x-show="isFinished" class="text-center mt-12 bg-white dark:bg-gray-800 p-10 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold text-green-500 mb-4">Quiz Selesai!</h2>
+                <p class="text-xl">Total Waktu Anda: <span class="font-mono font-bold" x-text="formatTime(totalTime)"></span></p>
+                <button @click="location.reload()" class="mt-8 px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-bold">Ulangi Quiz</button>
+            </div>
+            
+        </main>
+
+        <div x-show="whiteboardOpen" 
+             style="display: none;"
+             class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+            
+            <div class="bg-white dark:bg-gray-900 w-full max-w-5xl h-[80vh] rounded-xl shadow-2xl flex flex-col overflow-hidden relative">
+                <div class="bg-gray-100 dark:bg-gray-800 p-3 flex justify-between items-center border-b dark:border-gray-700">
+                    <div class="flex gap-4 items-center">
+                        <h3 class="font-bold">Whiteboard</h3>
+                        <input type="color" x-model="penColor" class="w-8 h-8 rounded cursor-pointer">
+                        <button @click="clearCanvas()" class="px-3 py-1 bg-red-500 hover:bg-red-600 text-white text-sm rounded shadow">Bersihkan</button>
+                    </div>
+                    <button @click="toggleWhiteboard()" class="p-2 text-gray-500 hover:text-gray-800 dark:hover:text-gray-200">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+                </div>
+                
+                <div class="flex-grow relative bg-white dark:bg-gray-900 cursor-crosshair">
+                    <canvas 
+                        x-ref="canvas"
+                        class="absolute inset-0 w-full h-full"
+                        @mousedown="startDrawing"
+                        @mousemove="draw"
+                        @mouseup="stopDrawing"
+                        @mouseout="stopDrawing"
+                        @touchstart="startDrawing"
+                        @touchmove="draw"
+                        @touchend="stopDrawing">
+                    </canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('quizApp', () => ({
+                darkMode: false,
+                
+                // Format Soal JSON
+                questions: [
+                    {
+                        "id": 1,
+                        "text": "Berapakah hasil dari 15 x 12?",
+                        "options": ["170", "180", "190", "200"],
+                        "answer": 1
+                    },
+                    {
+                        "id": 2,
+                        "text": "Teknologi manakah yang merupakan runtime JavaScript untuk lingkungan server-side?",
+                        "options": ["AlpineJS", "TailwindCSS", "Node.js", "Astro"],
+                        "answer": 2
+                    },
+                    {
+                        "id": 3,
+                        "text": "Jika sebuah segitiga siku-siku memiliki panjang alas 3 cm dan tinggi 4 cm, berapakah panjang sisi miringnya?",
+                        "options": ["5 cm", "6 cm", "7 cm", "8 cm"],
+                        "answer": 0
+                    }
+                ],
+                
+                currentIndex: 0,
+                selectedOption: null,
+                isChecked: false,
+                isFinished: false,
+                
+                // Timers
+                totalTime: 0,
+                questionTime: 0,
+                timerInterval: null,
+                
+                // Whiteboard
+                whiteboardOpen: false,
+                isDrawing: false,
+                ctx: null,
+                penColor: '#3b82f6', // Default blue
+
+                init() {
+                    // Mulai timer utama
+                    this.timerInterval = setInterval(() => {
+                        if (!this.isFinished) {
+                            this.totalTime++;
+                            this.questionTime++;
+                        }
+                    }, 1000);
+
+                    // Resize canvas logic
+                    window.addEventListener('resize', () => {
+                        if (this.whiteboardOpen) {
+                            this.resizeCanvas();
+                        }
+                    });
+                },
+
+                formatTime(seconds) {
+                    const m = Math.floor(seconds / 60).toString().padStart(2, '0');
+                    const s = (seconds % 60).toString().padStart(2, '0');
+                    return `${m}:${s}`;
+                },
+
+                checkAnswer() {
+                    if (this.selectedOption !== null) {
+                        this.isChecked = true;
+                    }
+                },
+
+                nextQuestion() {
+                    if (this.currentIndex < this.questions.length - 1) {
+                        this.currentIndex++;
+                        this.selectedOption = null;
+                        this.isChecked = false;
+                        this.questionTime = 0; // Reset timer soal
+                    } else {
+                        this.isFinished = true;
+                        this.questions = []; // Sembunyikan container soal
+                    }
+                },
+
+                // ---- Logika Whiteboard ----
+                toggleWhiteboard() {
+                    this.whiteboardOpen = !this.whiteboardOpen;
+                    if (this.whiteboardOpen) {
+                        // Render canvas setelah DOM dirender oleh Alpine
+                        setTimeout(() => this.resizeCanvas(), 50);
+                    }
+                },
+
+                resizeCanvas() {
+                    const canvas = this.$refs.canvas;
+                    const container = canvas.parentElement;
+                    
+                    // Simpan data gambar saat ini agar tidak hilang saat resize
+                    const imgData = this.ctx ? this.ctx.getImageData(0, 0, canvas.width, canvas.height) : null;
+                    
+                    canvas.width = container.clientWidth;
+                    canvas.height = container.clientHeight;
+                    
+                    this.ctx = canvas.getContext('2d');
+                    this.ctx.lineCap = 'round';
+                    this.ctx.lineJoin = 'round';
+                    
+                    if (imgData) {
+                        this.ctx.putImageData(imgData, 0, 0);
+                    }
+                },
+
+                getCoordinates(e) {
+                    const canvas = this.$refs.canvas;
+                    const rect = canvas.getBoundingClientRect();
+                    
+                    if (e.type.includes('touch')) {
+                        e.preventDefault(); // Cegah scrolling
+                        return {
+                            x: e.touches[0].clientX - rect.left,
+                            y: e.touches[0].clientY - rect.top
+                        };
+                    }
+                    return {
+                        x: e.clientX - rect.left,
+                        y: e.clientY - rect.top
+                    };
+                },
+
+                startDrawing(e) {
+                    this.isDrawing = true;
+                    this.ctx.lineWidth = 4;
+                    this.ctx.strokeStyle = this.penColor;
+                    const pos = this.getCoordinates(e);
+                    
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(pos.x, pos.y);
+                    this.draw(e);
+                },
+
+                draw(e) {
+                    if (!this.isDrawing) return;
+                    const pos = this.getCoordinates(e);
+                    
+                    this.ctx.lineTo(pos.x, pos.y);
+                    this.ctx.stroke();
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(pos.x, pos.y);
+                },
+
+                stopDrawing() {
+                    this.isDrawing = false;
+                    if(this.ctx) this.ctx.beginPath();
+                },
+
+                clearCanvas() {
+                    if(this.ctx) {
+                        this.ctx.clearRect(0, 0, this.$refs.canvas.width, this.$refs.canvas.height);
+                    }
+                }
+            }));
+        });
+    </script>
+</body>
+</html>

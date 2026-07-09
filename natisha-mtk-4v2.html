@@ -1,0 +1,580 @@
+html
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kuis Bilangan Cacah - Natisha</title>
+<style>
+  :root{
+    --bg:#f4f7fb; --card:#ffffff; --line:#e1e6ef; --accent:#4f7cff;
+    --head:#fafafc; --ok:#2e9e5b; --bad:#e0495b; --text:#2c3340;
+  }
+  *{box-sizing:border-box}
+  body{
+    font-family:"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:var(--bg); color:var(--text); margin:0; padding:0 24px 24px;
+    line-height:1.6;
+  }
+  .navbar{
+    position:sticky; top:0; z-index:100;
+    display:flex; align-items:center; justify-content:space-between;
+    gap:12px; flex-wrap:wrap;
+    background:var(--accent); color:#fff;
+    padding:10px 18px; margin:0 -24px 20px;
+    box-shadow:0 2px 6px rgba(20,30,60,.18);
+  }
+  .navbar .brand{font-weight:700; font-size:1.05rem; letter-spacing:.3px;}
+  .nav-actions{display:flex; gap:8px;}
+  .nav-actions button{background:#fff; color:var(--accent); padding:8px 16px; font-size:.95rem;}
+  .nav-actions button.ghost{background:transparent; color:#fff; border:1px solid #fff;}
+  .nav-actions button:hover{filter:brightness(.96);}
+  .wrap{max-width:760px; margin:0 auto;}
+  h1{font-size:1.6rem; margin:0 0 4px; color:var(--accent);}
+  .sub{color:#778; margin:0 0 20px; font-size:.95rem;}
+  .q{
+    background:var(--card); border:1px solid var(--line); border-radius:12px;
+    padding:16px 18px; margin-bottom:16px; box-shadow:0 1px 3px rgba(20,30,60,.04);
+  }
+  .qhead{
+    background:var(--head); border:1px solid var(--line);
+    padding:10px 12px; border-radius:8px; font-weight:600; text-align:justify;
+    margin-bottom:12px;
+  }
+  .qnum{color:var(--accent);}
+  .soal{margin:0 0 10px; text-align:justify;}
+  label.opt{
+    display:block; padding:8px 10px; border:1px solid var(--line);
+    border-radius:8px; margin:6px 0; cursor:pointer; transition:.15s;
+  }
+  label.opt:hover{background:#f6f9ff; border-color:#cdd9ff;}
+  label.opt input{margin-right:8px; vertical-align:middle;}
+  .correct{background:#e7f8ee !important; border-color:var(--ok) !important;}
+  .wrong{background:#fdeced !important; border-color:var(--bad) !important;}
+  .num{font-variant-numeric:tabular-nums;}
+  .controls{display:flex; gap:10px; flex-wrap:wrap; margin:8px 0 24px;}
+  button{
+    background:var(--accent); color:#fff; border:0; padding:12px 20px;
+    border-radius:8px; font-size:1rem; cursor:pointer; font-weight:600;
+  }
+  button.ghost{background:#fff; color:var(--accent); border:1px solid var(--accent);}
+  button:hover{filter:brightness(1.05);}
+  .score{
+    background:var(--card); border:1px solid var(--line); border-radius:12px;
+    padding:18px; text-align:center; font-size:1.1rem; margin-bottom:24px;
+    display:none;
+  }
+  .score b{font-size:1.5rem; color:var(--accent);}
+  .send{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:18px;}
+  .send input[type=text]{
+    width:100%; padding:10px 12px; margin:6px 0 14px; border:1px solid var(--line);
+    border-radius:8px; background:#ededed; color:#444;
+  }
+  .send input[type=text]:focus{outline:none; background:#fff; border-color:var(--accent);}
+  .note{font-size:.9rem; color:#778; margin-top:6px;}
+  .ket{font-size:.9rem; color:#556; margin:14px 0 0;}
+  table{border-collapse:collapse; margin:10px 0; width:100%;}
+  th,td{border:1px solid #888; padding:6px 10px; text-align:center;}
+  th{background:#f0f2f7;}
+</style>
+</head>
+<body>
+<nav class="navbar">
+  <span class="brand">Kuis Bilangan Cacah · Natisha</span>
+  <span class="nav-actions">
+    <button onclick="getScore(document.getElementById('quizForm'))">Cek Nilai</button>
+    <button class="ghost" type="button" onclick="resetQuiz()">Ulangi</button>
+  </span>
+</nav>
+
+<div class="wrap">
+  <h1>Kuis Bilangan Cacah</h1>
+  <p class="sub">Latihan membaca, menulis, nilai tempat, membandingkan, dan operasi hitung — Kelas 4<br>
+  Proyek: <b>Natisha</b></p>
+
+
+
+  <div class="score" id="scoreBox">
+    Nilai kamu: <b id="nilai">0</b> / 100<br>
+    <span id="skorDetail" class="note"></span>
+  </div>
+
+  <form name="quiz" id="quizForm">
+
+    <!-- Soal 1 -->
+    <div class="q">
+      <div class="qhead"><span class="qnum">Soal No.1</span></div>
+      <p class="soal">Sebuah toko sepatu mencantumkan label harga Rp9.520 pada sepasang sepatu. Bilangan yang tertulis pada label harga tersebut dibaca . . .</p>
+      <label class="opt"><input name="q1" type="radio" value="A">A. sembilan ribu lima ratus dua puluh</label>
+      <label class="opt"><input name="q1" type="radio" value="B">B. sembilan puluh lima ribu dua puluh</label>
+      <label class="opt"><input name="q1" type="radio" value="C">C. sembilan ribu lima puluh dua</label>
+      <label class="opt"><input name="q1" type="radio" value="D">D. sembilan ratus lima puluh dua</label>
+    </div>
+
+    <!-- Soal 2 -->
+    <div class="q">
+      <div class="qhead"><span class="qnum">Soal No.2</span></div>
+      <p class="soal">Bima mengikuti lari maraton sejauh 4.815 meter. Jarak tempuh lari maraton Bima dibaca . . .</p>
+      <label class="opt"><input name="q2" type="radio" value="A">A. empat ribu delapan ratus lima belas</label>
+      <label class="opt"><input name="q2" type="radio" value="B">B. empat ribu delapan puluh lima belas</label>
+      <label class="opt"><input name="q2" type="radio" value="C">C. empat ribu delapan ratus lima puluh satu</label>
+      <label class="opt"><input name="q2" type="radio" value="D">D. empat puluh delapan ribu lima belas</label>
+    </div>
+
+    <!-- Soal 3 -->
+    <div class="q">
+      <div class="qhead"><span class="qnum">Soal No.3</span></div>
+      <p class="soal">Ketinggian Gunung Bromo tercatat dua ribu tiga ratus dua puluh sembilan meter. Ketinggian tersebut dapat ditulis . . . meter</p>
+      <label class="opt"><input name="q3" type="radio" value="A">A. 2.932</label>
+      <label class="opt"><input name="q3" type="radio" value="B">B. 2.329</label>
+      <label class="opt"><input name="q3" type="radio" value="C">C. 2.239</label>
+      <label class="opt"><input name="q3" type="radio" value="D">D. 2.392</label>
+    </div>
+
+    <!-- Soal 4 -->
+    <div class="q">
+      <div class="qhead"><span class="qnum">Soal No.4</span></div>
+      <p class="soal">Sebuah konser amal dihadiri oleh lima ribu dua ratus tiga belas penonton. Jumlah penonton tersebut dapat ditulis . . .</p>
+      <label class="opt"><input name="q4" type="radio" value="A">A. 5.312</label>
+      <label class="opt"><input name="q4" type="radio" value="B">B. 5.231</label>
+      <label class="opt"><input name="q4" type="radio" value="C">C. 5.213</label>
+      <label class="opt"><input name="q4" type="radio" value="D">D. 5.123</label>
+    </div>
+
+    <!-- Soal 5 -->
+    <div class="q">
+      <div class="qhead"><span class="qnum">Soal No.5</span></div>
+      <p class="soal">Perhatikan bilangan <span class="num">7.854</span>. Angka 8 pada bilangan tersebut menempati nilai tempat . . .</p>
+      <label class="opt"><input name="q5" type="radio" value="A">A. satuan</label>
+      <label class="opt"><input name="q5" type="radio" value="B">B. puluhan</label>
+      <label class="opt"><input name="q5" type="radio" value="C">C. ratusan</label>
+      <label class="opt"><input name="q5" type="radio" value="D">D. ribuan</label>
+    </div>
+
+    <!-- Soal 6 -->
+    <div class="q">
+      <div class="qhead"><span class="qnum">Soal No.6</span></div>
+      <p class="soal">Pak Rudi menangkap ikan di laut seberat 3.417 kg. Angka 4 pada berat ikan tersebut menempati nilai tempat . . .</p>
+      <label class="opt"><input name="q6" type="radio" value="A">A. ribuan</label>
+      <label class="opt"><input name="q6" type="radio" value="B">B. ratusan</label>
+      <label class="opt"><input name="q6" type="radio" value="C">C. puluhan</label>
+      <label class="opt"><input name="q6" type="radio" value="D">D. satuan</label>
+    </div>
+
+    <!-- Soal 7 -->
+    <div class="q">
+      <div class="qhead"><span class="qnum">Soal No.7</span></div>
+      <p class="soal">Pada bilangan <span class="num">5.291</span>, angka yang menempati nilai tempat puluhan yaitu . . .</p>
+      <label class="opt"><input name="q7" type="radio" value="A">A. 5</label>
+      <label class="opt"><input name="q7" type="radio" value="B">B. 2</label>
+      <label class="opt"><input name="q7" type="radio" value="C">C. 9</label>
+      <label class="opt"><input name="q7" type="radio" value="D">D. 1</label>
+    </div>
+
+    <!-- Soal 8 -->
+    <div class="q">
+      <div class="qhead"><span class="qnum">Soal No.8</span></div>
+      <p class="soal">Perhatikan tabel harga alat tulis berikut!</p>
+      <table>
+        <tbody>
+          <tr><th>Barang</th><th>Harga</th></tr>
+          <tr><td>Buku</td><td>Rp. 4.520</td></tr>
+          <tr><td>Pensil</td><td>Rp. 2.350</td></tr>
+          <tr><td>Penghapus</td><td>Rp. 1.840</td></tr>
+          <tr><td>Penggaris</td><td>Rp. 3.710</td></tr>
+        </tbody>
+      </table>
+      <p class="soal">Berdasarkan tabel di atas, harga barang yang nilai tempat ratusannya angka 3 yaitu . . .</p>
+      <label class="opt"><input name="q8" type="radio" value="A">A. Buku</label>
+      <label class="opt"><input name="q8" type="radio" value="B">B. Pensil</label>
+      <label class="opt"><input name="q8" type="radio" value="C">C. Penghapus</label>
+      <label class="opt"><input name="q8" type="radio" value="D">D. Penggaris</label>
+    </div>
+
+    <!-- Soal 9 -->
+    <div class="q">
+      <div class="qhead"><span class="qnum">Soal No.9</span></div>
+      <p class="soal">Perhatikan kedua bilangan berikut!<br><br><span class="num">8.325 &nbsp; .... &nbsp; 8.352</span><br><br>Tanda perbandingan yang tepat yaitu . . .</p>
+      <label class="opt"><input name="q9" type="radio" value="A">A. &gt;</label>
+      <label class="opt"><input name="q9" type="radio" value="B">B. &lt;</label>
+      <label class="opt"><input name="q9" type="radio" value="C">C. =</label>
+      <label class="opt"><input name="q9" type="radio" value="D">D. ≠ (tidak sama)</label>
+    </div>
+
+    <!-- Soal 10 -->
+    <div class="q">
+      <div class="qhead"><span class="qnum">Soal No.10</span></div>
+      <p class="soal">Desa Makmur memanen 4.582 kg padi, sedangkan Desa Sukajaya memanen 4.528 kg padi. Pernyataan yang benar yaitu . . .</p>
+      <label class="opt"><input name="q10" type="radio" value="A">A. Panen Desa Sukajaya lebih banyak dari Desa Makmur</label>
+      <label class="opt"><input name="q10" type="radio" value="B">B. Panen Desa Makmur lebih banyak dari Desa Sukajaya</label>
+      <label class="opt"><input name="q10" type="radio" value="C">C. Panen kedua desa jumlahnya sama</label>
+      <label class="opt"><input name="q10" type="radio" value="D">D. Panen padi sulit dibandingkan</label>
+    </div>
+
+    <!-- Soal 11 -->
+    <div class="q">
+      <div class="qhead"><span class="qnum">Soal No.11</span></div>
+      <p class="soal">Tiga gedung memiliki tinggi: Gedung A = 145 m, Gedung B = 112 m, Gedung C = 158 m. Urutan gedung dari yang paling rendah ke paling tinggi yaitu . . .</p>
+      <label class="opt"><input name="q11" type="radio" value="A">A. Gedung C, Gedung A, Gedung B</label>
+      <label class="opt"><input name="q11" type="radio" value="B">B. Gedung B, Gedung A, Gedung C</label>
+      <label class="opt"><input name="q11" type="radio" value="C">C. Gedung A, Gedung B, Gedung C</label>
+      <label class="opt"><input name="q11" type="radio" value="D">D. Gedung B, Gedung C, Gedung A</label>
+    </div>
+
+    <!-- Soal 12 -->
+    <div class="q">
+      <div class="qhead"><span class="qnum">Soal No.12</span></div>
+      <p class="soal">Hasil dari<br><span class="num">468 + 259 = . . .</span></p>
+      <label class="opt"><input name="q12" type="radio" value="A">A. 717</label>
+      <label class="opt"><input name="q12" type="radio" value="B">B. 727</label>
+      <label class="opt"><input name="q12" type="radio" value="C">C. 817</label>
+      <label class="opt"><input name="q12" type="radio" value="D">D. 827</label>
+    </div>
+
+    <!-- Soal 13 -->
+    <div class="q">
+      <div class="qhead"><span class="qnum">Soal No.13</span></div>
+      <p class="soal">Reza memiliki 342 koin. Pamannya memberi 156 koin, dan bibinya memberi 202 koin. Banyak koin Reza sekarang yaitu . . .</p>
+      <label class="opt"><input name="q13" type="radio" value="A">A. 690</label>
+      <label class="opt"><input name="q13" type="radio" value="B">B. 700</label>
+      <label class="opt"><input name="q13" type="radio" value="C">C. 710</label>
+      <label class="opt"><input name="q13" type="radio" value="D">D. 720</label>
+    </div>
+
+    <!-- Soal 14 -->
+    <div class="q">
+      <div class="qhead"><span class="qnum">Soal No.14</span></div>
+      <p class="soal">Hasil dari<br><span class="num">735 − 286 = . . .</span></p>
+      <label class="opt"><input name="q14" type="radio" value="A">A. 439</label>
+      <label class="opt"><input name="q14" type="radio" value="B">B. 449</label>
+      <label class="opt"><input name="q14" type="radio" value="C">C. 539</label>
+      <label class="opt"><input name="q14" type="radio" value="D">D. 549</label>
+    </div>
+
+    <!-- Soal 15 -->
+    <div class="q">
+      <div class="qhead"><span class="qnum">Soal No.15</span></div>
+      <p class="soal">Di sebuah peternakan terdapat 354 ekor ayam. Jika ayam jantan berjumlah 147 ekor, maka banyak ayam betina yaitu . . . ekor</p>
+      <label class="opt"><input name="q15" type="radio" value="A">A. 197</label>
+      <label class="opt"><input name="q15" type="radio" value="B">B. 207</label>
+      <label class="opt"><input name="q15" type="radio" value="C">C. 217</label>
+      <label class="opt"><input name="q15" type="radio" value="D">D. 501</label>
+    </div>
+
+    <!-- Soal 16 -->
+    <div class="q">
+      <div class="qhead"><span class="qnum">Soal No.16</span></div>
+      <p class="soal">Seorang pedagang memiliki 15 dus air mineral. Setiap dus berisi 24 botol. Total air mineral yang dimiliki pedagang tersebut yaitu . . . botol</p>
+      <label class="opt"><input name="q16" type="radio" value="A">A. 340</label>
+      <label class="opt"><input name="q16" type="radio" value="B">B. 350</label>
+      <label class="opt"><input name="q16" type="radio" value="C">C. 360</label>
+      <label class="opt"><input name="q16" type="radio" value="D">D. 370</label>
+    </div>
+
+    <!-- Soal 17 -->
+    <div class="q">
+      <div class="qhead"><span class="qnum">Soal No.17</span></div>
+      <p class="soal">Hasil dari<br><span class="num">58 × 7 = . . .</span></p>
+      <label class="opt"><input name="q17" type="radio" value="A">A. 396</label>
+      <label class="opt"><input name="q17" type="radio" value="B">B. 406</label>
+      <label class="opt"><input name="q17" type="radio" value="C">C. 416</label>
+      <label class="opt"><input name="q17" type="radio" value="D">D. 426</label>
+    </div>
+
+    <!-- Soal 18 -->
+    <div class="q">
+      <div class="qhead"><span class="qnum">Soal No.18</span></div>
+      <p class="soal">Ibu memiliki 96 buah apel yang akan dimasukkan ke dalam beberapa kantong plastik. Setiap kantong berisi 8 apel. Banyak kantong plastik yang dibutuhkan yaitu . . .</p>
+      <label class="opt"><input name="q18" type="radio" value="A">A. 10</label>
+      <label class="opt"><input name="q18" type="radio" value="B">B. 11</label>
+      <label class="opt"><input name="q18" type="radio" value="C">C. 12</label>
+      <label class="opt"><input name="q18" type="radio" value="D">D. 13</label>
+    </div>
+
+    <!-- Soal 19 -->
+    <div class="q">
+      <div class="qhead"><span class="qnum">Soal No.19</span></div>
+      <p class="soal">Rara memiliki 20 permen yang akan dibagikan sama rata kepada temannya. Banyaknya cara membagi (jumlah teman yang mungkin, lebih dari 1) yaitu . . . cara</p>
+      <label class="opt"><input name="q19" type="radio" value="A">A. 4</label>
+      <label class="opt"><input name="q19" type="radio" value="B">B. 5</label>
+      <label class="opt"><input name="q19" type="radio" value="C">C. 6</label>
+      <label class="opt"><input name="q19" type="radio" value="D">D. 7</label>
+    </div>
+
+    <!-- Soal 20 -->
+    <div class="q">
+      <div class="qhead"><span class="qnum">Soal No.20</span></div>
+      <p class="soal">Banyaknya bilangan kelipatan 5 yang lebih dari 15 dan kurang dari 55 yaitu . . .</p>
+      <label class="opt"><input name="q20" type="radio" value="A">A. 6</label>
+      <label class="opt"><input name="q20" type="radio" value="B">B. 7</label>
+      <label class="opt"><input name="q20" type="radio" value="C">C. 8</label>
+      <label class="opt"><input name="q20" type="radio" value="D">D. 9</label>
+    </div>
+
+    <!-- Soal 21 -->
+    <div class="q">
+      <div class="qhead"><span class="qnum">Soal No.21</span></div>
+      <p class="soal">Sebuah toko baju menjual kemeja seharga Rp8.750. Bilangan yang tertulis pada harga tersebut dibaca . . .</p>
+      <label class="opt"><input name="q21" type="radio" value="A">A. delapan ribu tujuh ratus lima puluh</label>
+      <label class="opt"><input name="q21" type="radio" value="B">B. delapan puluh tujuh ribu lima puluh</label>
+      <label class="opt"><input name="q21" type="radio" value="C">C. delapan ribu tujuh puluh lima</label>
+      <label class="opt"><input name="q21" type="radio" value="D">D. delapan ratus tujuh puluh lima</label>
+    </div>
+
+    <!-- Soal 22 -->
+    <div class="q">
+      <div class="qhead"><span class="qnum">Soal No.22</span></div>
+      <p class="soal">Rute lari maraton anak menempuh jarak 2.546 meter. Jarak tersebut dibaca . . .</p>
+      <label class="opt"><input name="q22" type="radio" value="A">A. dua ribu lima ratus empat puluh enam</label>
+      <label class="opt"><input name="q22" type="radio" value="B">B. dua ribu lima puluh empat enam</label>
+      <label class="opt"><input name="q22" type="radio" value="C">C. dua ribu lima ratus empat enam</label>
+      <label class="opt"><input name="q22" type="radio" value="D">D. dua puluh lima ribu empat ratus enam</label>
+    </div>
+
+    <!-- Soal 23 -->
+    <div class="q">
+      <div class="qhead"><span class="qnum">Soal No.23</span></div>
+      <p class="soal">Kapasitas stadion sepak bola tersebut adalah tujuh ribu sembilan ratus dua puluh empat kursi. Jumlah kursi dapat ditulis . . .</p>
+      <label class="opt"><input name="q23" type="radio" value="A">A. 7.294</label>
+      <label class="opt"><input name="q23" type="radio" value="B">B. 7.924</label>
+      <label class="opt"><input name="q23" type="radio" value="C">C. 7.942</label>
+      <label class="opt"><input name="q23" type="radio" value="D">D. 7.429</label>
+    </div>
+
+    <!-- Soal 24 -->
+    <div class="q">
+      <div class="qhead"><span class="qnum">Soal No.24</span></div>
+      <p class="soal">Donatur menyumbangkan enam ribu tiga ratus delapan puluh lima buku ke panti asuhan. Jumlah buku yang disumbangkan dapat ditulis . . .</p>
+      <label class="opt"><input name="q24" type="radio" value="A">A. 6.835</label>
+      <label class="opt"><input name="q24" type="radio" value="B">B. 6.583</label>
+      <label class="opt"><input name="q24" type="radio" value="C">C. 6.385</label>
+      <label class="opt"><input name="q24" type="radio" value="D">D. 6.358</label>
+    </div>
+
+    <!-- Soal 25 -->
+    <div class="q">
+      <div class="qhead"><span class="qnum">Soal No.25</span></div>
+      <p class="soal">Perhatikan bilangan <span class="num">4.872</span>. Angka 7 pada bilangan tersebut menempati nilai tempat . . .</p>
+      <label class="opt"><input name="q25" type="radio" value="A">A. satuan</label>
+      <label class="opt"><input name="q25" type="radio" value="B">B. puluhan</label>
+      <label class="opt"><input name="q25" type="radio" value="C">C. ratusan</label>
+      <label class="opt"><input name="q25" type="radio" value="D">D. ribuan</label>
+    </div>
+
+    <!-- Soal 26 -->
+    <div class="q">
+      <div class="qhead"><span class="qnum">Soal No.26</span></div>
+      <p class="soal">Pak Somad memanen gandum seberat 5.389 kg. Angka 3 pada berat gandum tersebut menempati nilai tempat . . .</p>
+      <label class="opt"><input name="q26" type="radio" value="A">A. ribuan</label>
+      <label class="opt"><input name="q26" type="radio" value="B">B. ratusan</label>
+      <label class="opt"><input name="q26" type="radio" value="C">C. puluhan</label>
+      <label class="opt"><input name="q26" type="radio" value="D">D. satuan</label>
+    </div>
+
+    <!-- Soal 27 -->
+    <div class="q">
+      <div class="qhead"><span class="qnum">Soal No.27</span></div>
+      <p class="soal">Pada bilangan <span class="num">9.158</span>, angka yang menempati nilai tempat puluhan yaitu . . .</p>
+      <label class="opt"><input name="q27" type="radio" value="A">A. 9</label>
+      <label class="opt"><input name="q27" type="radio" value="B">B. 1</label>
+      <label class="opt"><input name="q27" type="radio" value="C">C. 5</label>
+      <label class="opt"><input name="q27" type="radio" value="D">D. 8</label>
+    </div>
+
+    <!-- Soal 28 -->
+    <div class="q">
+      <div class="qhead"><span class="qnum">Soal No.28</span></div>
+      <p class="soal">Perhatikan tabel harga camilan berikut!</p>
+      <table>
+        <tbody>
+          <tr><th>Camilan</th><th>Harga</th></tr>
+          <tr><td>Keripik</td><td>Rp. 5.240</td></tr>
+          <tr><td>Kacang</td><td>Rp. 3.650</td></tr>
+          <tr><td>Biskuit</td><td>Rp. 7.820</td></tr>
+          <tr><td>Permen</td><td>Rp. 4.190</td></tr>
+        </tbody>
+      </table>
+      <p class="soal">Berdasarkan tabel di atas, harga camilan yang nilai tempat ratusannya angka 8 yaitu . . .</p>
+      <label class="opt"><input name="q28" type="radio" value="A">A. Keripik</label>
+      <label class="opt"><input name="q28" type="radio" value="B">B. Kacang</label>
+      <label class="opt"><input name="q28" type="radio" value="C">C. Biskuit</label>
+      <label class="opt"><input name="q28" type="radio" value="D">D. Permen</label>
+    </div>
+
+    <!-- Soal 29 -->
+    <div class="q">
+      <div class="qhead"><span class="qnum">Soal No.29</span></div>
+      <p class="soal">Perhatikan kedua bilangan berikut!<br><br><span class="num">7.458 &nbsp; .... &nbsp; 7.485</span><br><br>Tanda perbandingan yang tepat yaitu . . .</p>
+      <label class="opt"><input name="q29" type="radio" value="A">A. &gt;</label>
+      <label class="opt"><input name="q29" type="radio" value="B">B. &lt;</label>
+      <label class="opt"><input name="q29" type="radio" value="C">C. =</label>
+      <label class="opt"><input name="q29" type="radio" value="D">D. ≠ (tidak sama)</label>
+    </div>
+
+    <!-- Soal 30 -->
+    <div class="q">
+      <div class="qhead"><span class="qnum">Soal No.30</span></div>
+      <p class="soal">Panen jagung Petani A mencapai 5.214 kg, sedangkan Petani B mencapai 5.241 kg. Pernyataan yang benar yaitu . . .</p>
+      <label class="opt"><input name="q30" type="radio" value="A">A. Panen Petani A lebih banyak dari Petani B</label>
+      <label class="opt"><input name="q30" type="radio" value="B">B. Panen Petani B lebih banyak dari Petani A</label>
+      <label class="opt"><input name="q30" type="radio" value="C">C. Panen Petani A dan Petani B jumlahnya sama</label>
+      <label class="opt"><input name="q30" type="radio" value="D">D. Panen Petani A sulit dibandingkan</label>
+    </div>
+
+    <!-- Soal 31 -->
+    <div class="q">
+      <div class="qhead"><span class="qnum">Soal No.31</span></div>
+      <p class="soal">Tiga pohon memiliki tinggi: Pohon Mangga = 142 cm, Pohon Jambu = 125 cm, Pohon Jeruk = 156 cm. Urutan pohon dari yang paling pendek ke paling tinggi yaitu . . .</p>
+      <label class="opt"><input name="q31" type="radio" value="A">A. Pohon Jeruk, Pohon Mangga, Pohon Jambu</label>
+      <label class="opt"><input name="q31" type="radio" value="B">B. Pohon Jambu, Pohon Mangga, Pohon Jeruk</label>
+      <label class="opt"><input name="q31" type="radio" value="C">C. Pohon Mangga, Pohon Jambu, Pohon Jeruk</label>
+      <label class="opt"><input name="q31" type="radio" value="D">D. Pohon Mangga, Pohon Jeruk, Pohon Jambu</label>
+    </div>
+
+    <!-- Soal 32 -->
+    <div class="q">
+      <div class="qhead"><span class="qnum">Soal No.32</span></div>
+      <p class="soal">Hasil dari<br><span class="num">374 + 489 = . . .</span></p>
+      <label class="opt"><input name="q32" type="radio" value="A">A. 853</label>
+      <label class="opt"><input name="q32" type="radio" value="B">B. 863</label>
+      <label class="opt"><input name="q32" type="radio" value="C">C. 873</label>
+      <label class="opt"><input name="q32" type="radio" value="D">D. 883</label>
+    </div>
+
+    <!-- Soal 33 -->
+    <div class="q">
+      <div class="qhead"><span class="qnum">Soal No.33</span></div>
+      <p class="soal">Yudi memiliki 412 kelereng. Kakaknya memberi 185 kelereng, dan pamannya memberi 126 kelereng. Banyak kelereng Yudi sekarang yaitu . . .</p>
+      <label class="opt"><input name="q33" type="radio" value="A">A. 713</label>
+      <label class="opt"><input name="q33" type="radio" value="B">B. 723</label>
+      <label class="opt"><input name="q33" type="radio" value="C">C. 733</label>
+      <label class="opt"><input name="q33" type="radio" value="D">D. 743</label>
+    </div>
+
+    <!-- Soal 34 -->
+    <div class="q">
+      <div class="qhead"><span class="qnum">Soal No.34</span></div>
+      <p class="soal">Hasil dari<br><span class="num">824 − 357 = . . .</span></p>
+      <label class="opt"><input name="q34" type="radio" value="A">A. 457</label>
+      <label class="opt"><input name="q34" type="radio" value="B">B. 467</label>
+      <label class="opt"><input name="q34" type="radio" value="C">C. 477</label>
+      <label class="opt"><input name="q34" type="radio" value="D">D. 567</label>
+    </div>
+
+    <!-- Soal 35 -->
+    <div class="q">
+      <div class="qhead"><span class="qnum">Soal No.35</span></div>
+      <p class="soal">Di sebuah sekolah dasar, terdapat 425 siswa. Jika siswa laki-laki berjumlah 198 orang, maka banyak siswa perempuan yaitu . . . orang</p>
+      <label class="opt"><input name="q35" type="radio" value="A">A. 227</label>
+      <label class="opt"><input name="q35" type="radio" value="B">B. 237</label>
+      <label class="opt"><input name="q35" type="radio" value="C">C. 247</label>
+      <label class="opt"><input name="q35" type="radio" value="D">D. 623</label>
+    </div>
+
+    <!-- Soal 36 -->
+    <div class="q">
+      <div class="qhead"><span class="qnum">Soal No.36</span></div>
+      <p class="soal">Sebuah pabrik roti memasukkan roti ke dalam kardus. Setiap kardus berisi 35 roti. Jika pabrik mengisi 16 kardus, maka total roti yang dikemas yaitu . . . roti</p>
+      <label class="opt"><input name="q36" type="radio" value="A">A. 540</label>
+      <label class="opt"><input name="q36" type="radio" value="B">B. 550</label>
+      <label class="opt"><input name="q36" type="radio" value="C">C. 560</label>
+      <label class="opt"><input name="q36" type="radio" value="D">D. 570</label>
+    </div>
+
+    <!-- Soal 37 -->
+    <div class="q">
+      <div class="qhead"><span class="qnum">Soal No.37</span></div>
+      <p class="soal">Hasil dari<br><span class="num">74 × 9 = . . .</span></p>
+      <label class="opt"><input name="q37" type="radio" value="A">A. 646</label>
+      <label class="opt"><input name="q37" type="radio" value="B">B. 656</label>
+      <label class="opt"><input name="q37" type="radio" value="C">C. 666</label>
+      <label class="opt"><input name="q37" type="radio" value="D">D. 676</label>
+    </div>
+
+    <!-- Soal 38 -->
+    <div class="q">
+      <div class="qhead"><span class="qnum">Soal No.38</span></div>
+      <p class="soal">Pak Joko memiliki 108 bibit tomat yang akan ditanam di beberapa baris. Setiap baris berisi 9 bibit. Banyak baris yang dibutuhkan yaitu . . .</p>
+      <label class="opt"><input name="q38" type="radio" value="A">A. 11</label>
+      <label class="opt"><input name="q38" type="radio" value="B">B. 12</label>
+      <label class="opt"><input name="q38" type="radio" value="C">C. 13</label>
+      <label class="opt"><input name="q38" type="radio" value="D">D. 14</label>
+    </div>
+
+    <!-- Soal 39 -->
+    <div class="q">
+      <div class="qhead"><span class="qnum">Soal No.39</span></div>
+      <p class="soal">Lani memiliki 30 kartu yang akan dibagikan sama rata kepada temannya. Banyaknya cara membagi (jumlah teman yang mungkin, lebih dari 1) yaitu . . . cara</p>
+      <label class="opt"><input name="q39" type="radio" value="A">A. 6</label>
+      <label class="opt"><input name="q39" type="radio" value="B">B. 7</label>
+      <label class="opt"><input name="q39" type="radio" value="C">C. 8</label>
+      <label class="opt"><input name="q39" type="radio" value="D">D. 9</label>
+    </div>
+
+    <!-- Soal 40 -->
+    <div class="q">
+      <div class="qhead"><span class="qnum">Soal No.40</span></div>
+      <p class="soal">Banyaknya bilangan kelipatan 6 yang lebih dari 10 dan kurang dari 65 yaitu . . .</p>
+      <label class="opt"><input name="q40" type="radio" value="A">A. 8</label>
+      <label class="opt"><input name="q40" type="radio" value="B">B. 9</label>
+      <label class="opt"><input name="q40" type="radio" value="C">C. 10</label>
+      <label class="opt"><input name="q40" type="radio" value="D">D. 11</label>
+    </div>
+  </form>
+
+  <p class="ket"><b>Keterangan:</b><br>Nilai Tertinggi (Maksimal): 100<br>Setiap soal benar = 2,5 poin (40 soal).</p>
+</div>
+
+<script>
+// Kunci jawaban
+var answers = {
+  q1:"A", q2:"A", q3:"B", q4:"C", q5:"C", q6:"B", q7:"C", q8:"B",
+  q9:"B", q10:"B", q11:"B", q12:"B", q13:"B", q14:"B", q15:"B",
+  q16:"C", q17:"B", q18:"C", q19:"B", q20:"B",
+  q21:"A", q22:"A", q23:"B", q24:"C", q25:"B", q26:"B", q27:"C", q28:"C",
+  q29:"B", q30:"B", q31:"B", q32:"B", q33:"B", q34:"B", q35:"A",
+  q36:"C", q37:"C", q38:"B", q39:"B", q40:"B"
+};
+
+function getScore(f){
+  if(!f) f = document.getElementById('quizForm');
+  var benar = 0, total = Object.keys(answers).length;
+  for(var key in answers){
+    var radios = f.elements[key];
+    var pilih = "";
+    if(radios){
+      for(var i=0;i<radios.length;i++){
+        radios[i].parentNode.classList.remove('correct','wrong');
+        if(radios[i].checked) pilih = radios[i].value;
+      }
+    }
+    // tandai kunci & jawaban
+    if(radios){
+      for(var j=0;j<radios.length;j++){
+        if(radios[j].value === answers[key]) radios[j].parentNode.classList.add('correct');
+        else if(radios[j].value === pilih) radios[j].parentNode.classList.add('wrong');
+      }
+    }
+    if(pilih === answers[key]) benar++;
+  }
+  var nilai = Math.round((benar/total)*100);
+  document.getElementById('scoreBox').style.display = 'block';
+  document.getElementById('nilai').textContent = nilai;
+  document.getElementById('skorDetail').textContent =
+    "Benar " + benar + " dari " + total + " soal.";
+  document.getElementById('scoreBox').scrollIntoView({behavior:'smooth'});
+}
+
+function resetQuiz(){
+  var f = document.getElementById('quizForm');
+  var radios = f.querySelectorAll('input[type=radio]');
+  for(var i=0;i<radios.length;i++){
+    radios[i].checked = false;
+    radios[i].parentNode.classList.remove('correct','wrong');
+  }
+  document.getElementById('scoreBox').style.display = 'none';
+}
+
+</script>
+</body>
+</html>

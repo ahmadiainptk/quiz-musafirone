@@ -1,0 +1,468 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuis Pecahan Level Up</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Fredoka', sans-serif;
+            background-color: #e0f2fe; /* Sky 100 */
+            background-image: radial-gradient(#bae6fd 20%, transparent 20%), radial-gradient(#bae6fd 20%, transparent 20%);
+            background-color: #e0f2fe;
+            background-position: 0 0, 25px 25px;
+            background-size: 50px 50px;
+        }
+        
+        .fraction-btn {
+            transition: all 0.2s ease-in-out;
+        }
+        
+        .fraction-btn:active {
+            transform: scale(0.95);
+        }
+
+        @keyframes bounce-in {
+            0% { transform: scale(0.5); opacity: 0; }
+            80% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .animate-bounce-in {
+            animation: bounce-in 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+        .animate-shake {
+            animation: shake 0.3s ease-in-out;
+        }
+
+        .heart-icon {
+            transition: all 0.3s ease;
+        }
+        .heart-lost {
+            filter: grayscale(100%);
+            opacity: 0.4;
+            transform: scale(0.8);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-4">
+
+    <div id="app-container" class="bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl w-full max-w-4xl overflow-hidden border-4 border-white">
+        <div id="app-content"></div>
+    </div>
+
+    <script>
+        // --- DATA BENTUK & WARNA ---
+        const shapes = {
+            'bintang': `<svg viewBox="0 0 100 100" class="w-full h-full drop-shadow-md"><polygon points="50,5 61,39 97,39 68,60 79,95 50,75 21,95 32,60 3,39 39,39" fill="CURRENT_COLOR" stroke="#333" stroke-width="4" stroke-linejoin="round"/></svg>`,
+            'hati': `<svg viewBox="0 0 100 100" class="w-full h-full drop-shadow-md"><path d="M50,90 C50,90 5,60 5,30 C5,12 25,2 50,22 C75,2 95,12 95,30 C95,60 50,90 50,90 Z" fill="CURRENT_COLOR" stroke="#333" stroke-width="4" stroke-linejoin="round"/></svg>`,
+            'lingkaran': `<svg viewBox="0 0 100 100" class="w-full h-full drop-shadow-md"><circle cx="50" cy="50" r="42" fill="CURRENT_COLOR" stroke="#333" stroke-width="4"/></svg>`,
+            'segitiga': `<svg viewBox="0 0 100 100" class="w-full h-full drop-shadow-md"><polygon points="50,10 90,85 10,85" fill="CURRENT_COLOR" stroke="#333" stroke-width="4" stroke-linejoin="round"/></svg>`,
+            'kotak': `<svg viewBox="0 0 100 100" class="w-full h-full drop-shadow-md"><rect x="15" y="15" width="70" height="70" rx="10" fill="CURRENT_COLOR" stroke="#333" stroke-width="4" stroke-linejoin="round"/></svg>`
+        };
+
+        const colors = [
+            { name: 'merah', hex: '#EF4444' },
+            { name: 'biru', hex: '#3B82F6' },
+            { name: 'kuning', hex: '#F59E0B' },
+            { name: 'hijau', hex: '#10B981' },
+            { name: 'ungu', hex: '#8B5CF6' },
+            { name: 'pink', hex: '#EC4899' }
+        ];
+
+        const baseColorHex = '#E5E7EB'; // Abu-abu pucat
+        
+        // Ikon hati untuk UI Nyawa
+        const heartSVG = `<svg viewBox="0 0 24 24" class="w-8 h-8 sm:w-10 sm:h-10 text-red-500 fill-current drop-shadow"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>`;
+
+        // --- STATE GAME ---
+        let gameState = 'start'; // 'start', 'playing', 'gameover', 'victory'
+        let score = 0;
+        let lives = 3;
+        let currentQuestionNum = 1;
+        const maxQuestions = 500;
+        let currentLevel = 1;
+        let currentQuestionData = null;
+        let hasAnswered = false;
+
+        // --- LOGIC TINGKAT KESULITAN ---
+        function getDifficultyParams(level) {
+            // Level 1-10
+            // Semakin tinggi level, jumlah benda maksimal (penyebut) semakin banyak
+            // Level 1: 3-5 benda
+            // Level 10: 15-25 benda (agar muat di layar)
+            
+            let minD, maxD;
+            
+            if (level === 1) { minD = 3; maxD = 5; }
+            else if (level === 2) { minD = 4; maxD = 7; }
+            else if (level === 3) { minD = 5; maxD = 9; }
+            else if (level === 4) { minD = 6; maxD = 12; }
+            else if (level === 5) { minD = 8; maxD = 15; }
+            else if (level === 6) { minD = 10; maxD = 18; }
+            else if (level === 7) { minD = 12; maxD = 20; }
+            else if (level === 8) { minD = 14; maxD = 22; }
+            else if (level === 9) { minD = 16; maxD = 24; }
+            else { minD = 18; maxD = 25; } // Level 10
+
+            return { minD, maxD };
+        }
+
+        // --- LOGIC GENERATOR SOAL ---
+        function generateQuestion() {
+            // Update level berdasarkan jumlah soal yang sudah dijawab
+            // Misal: naik level setiap 10 soal (sampai maks level 10)
+            currentLevel = Math.min(10, Math.floor((currentQuestionNum - 1) / 10) + 1);
+            
+            const { minD, maxD } = getDifficultyParams(currentLevel);
+            
+            // Tentukan penyebut (D)
+            const d = Math.floor(Math.random() * (maxD - minD + 1)) + minD;
+            
+            // Tentukan pembilang (N)
+            const n = Math.floor(Math.random() * d) + 1;
+
+            // Pilih bentuk dan warna acak
+            const shapeKeys = Object.keys(shapes);
+            const shapeName = shapeKeys[Math.floor(Math.random() * shapeKeys.length)];
+            const targetColor = colors[Math.floor(Math.random() * colors.length)];
+
+            // Buat Pilihan Jawaban
+            const correctAnswer = { n, d };
+            let optionsSet = new Set([JSON.stringify(correctAnswer)]);
+
+            // Generate pengecoh cerdas berdasarkan level
+            while(optionsSet.size < 4) {
+                let wrongD, wrongN;
+                
+                if (currentLevel < 3) {
+                    // Level awal: Pengecoh acak total di range yang sama
+                    wrongD = Math.floor(Math.random() * (maxD - minD + 1)) + minD;
+                    wrongN = Math.floor(Math.random() * wrongD) + 1;
+                } else {
+                    // Level tinggi: Pengecoh lebih mirip (penyebut sama pembilang beda, atau sebaliknya)
+                    const strat = Math.random();
+                    if (strat < 0.4) {
+                        // Penyebut sama, pembilang beda +- 1 atau 2
+                        wrongD = d;
+                        let offset = Math.random() > 0.5 ? 1 : -1;
+                        if(currentLevel > 5) offset = Math.floor(Math.random() * 3) - 1; // bisa +- 0,1,2
+                        if(offset === 0) offset = 1;
+                        wrongN = n + offset;
+                        if (wrongN < 1) wrongN = 1;
+                        if (wrongN > wrongD) wrongN = wrongD;
+                    } else if (strat < 0.8) {
+                        // Pembilang sama, penyebut beda
+                        wrongN = n;
+                        wrongD = d + (Math.random() > 0.5 ? 1 : -1);
+                        if (wrongD < wrongN) wrongD = wrongN; // D tidak boleh lebih kecil dari N
+                    } else {
+                        // Acak
+                        wrongD = Math.floor(Math.random() * (maxD - minD + 1)) + minD;
+                        wrongN = Math.floor(Math.random() * wrongD) + 1;
+                    }
+                }
+
+                const wrongAnswer = { n: wrongN, d: wrongD };
+                optionsSet.add(JSON.stringify(wrongAnswer));
+            }
+
+            const options = Array.from(optionsSet).map(str => JSON.parse(str));
+            options.sort(() => Math.random() - 0.5);
+
+            // Acak urutan benda (yang berwarna tidak selalu di awal)
+            let itemColors = Array(d).fill(baseColorHex);
+            let coloredIndices = new Set();
+            while (coloredIndices.size < n) {
+                coloredIndices.add(Math.floor(Math.random() * d));
+            }
+            coloredIndices.forEach(idx => {
+                itemColors[idx] = targetColor.hex;
+            });
+
+            return {
+                n, d, shapeName, targetColor, options, correctAnswer, itemColors
+            };
+        }
+
+        // --- KONTROL GAME ---
+        function startGame() {
+            score = 0;
+            lives = 3;
+            currentQuestionNum = 1;
+            currentLevel = 1;
+            gameState = 'playing';
+            loadNewQuestion();
+        }
+
+        function loadNewQuestion() {
+            hasAnswered = false;
+            currentQuestionData = generateQuestion();
+            render();
+        }
+
+        function handleAnswer(selectedN, selectedD) {
+            if (hasAnswered) return;
+            hasAnswered = true;
+
+            const isCorrect = (selectedN === currentQuestionData.correctAnswer.n && selectedD === currentQuestionData.correctAnswer.d);
+            
+            if (isCorrect) {
+                score += 10;
+                playSuccessSound();
+            } else {
+                lives--;
+                playErrorSound();
+                // Animasi getar layar kalau salah
+                document.getElementById('app-container').classList.add('animate-shake');
+                setTimeout(() => document.getElementById('app-container').classList.remove('animate-shake'), 300);
+            }
+
+            renderFeedback(isCorrect, selectedN, selectedD);
+
+            setTimeout(() => {
+                if (lives <= 0) {
+                    gameState = 'gameover';
+                    render();
+                } else if (currentQuestionNum >= maxQuestions) {
+                    gameState = 'victory';
+                    render();
+                } else {
+                    currentQuestionNum++;
+                    loadNewQuestion();
+                }
+            }, 2000); 
+        }
+
+        // --- FUNGSI RENDER TAMPILAN ---
+        const appContent = document.getElementById('app-content');
+
+        function render() {
+            if (gameState === 'start') {
+                appContent.innerHTML = `
+                    <div class="p-10 sm:p-16 text-center flex flex-col items-center">
+                        <div class="flex space-x-2 mb-6">
+                            <div class="w-16 h-16 transform -rotate-12">${shapes['bintang'].replace('CURRENT_COLOR', '#F59E0B')}</div>
+                            <div class="w-16 h-16 transform rotate-12 mt-4">${shapes['hati'].replace('CURRENT_COLOR', '#EF4444')}</div>
+                            <div class="w-16 h-16 transform -rotate-6">${shapes['lingkaran'].replace('CURRENT_COLOR', '#3B82F6')}</div>
+                        </div>
+                        <h1 class="text-4xl sm:text-6xl font-extrabold text-sky-600 mb-4 drop-shadow-sm">
+                            Petualangan Pecahan
+                        </h1>
+                        <p class="text-xl text-slate-600 mb-8 max-w-lg font-semibold">
+                            Selesaikan tantangan hingga level 10! Hati-hati, kamu hanya punya <span class="text-red-500 font-bold">3 Nyawa</span>.
+                        </p>
+                        
+                        <div class="flex items-center space-x-4 mb-10 bg-slate-100 p-4 rounded-2xl border-2 border-slate-200">
+                            <div class="flex">${heartSVG}${heartSVG}${heartSVG}</div>
+                        </div>
+
+                        <button onclick="startGame()" class="px-12 py-5 text-2xl font-bold text-white bg-sky-500 rounded-2xl shadow-[0_8px_0_#0284c7] hover:bg-sky-400 hover:shadow-[0_4px_0_#0284c7] hover:translate-y-1 transition-all active:shadow-none active:translate-y-2">
+                            ▶ Mulai Petualangan
+                        </button>
+                    </div>
+                `;
+            } 
+            else if (gameState === 'playing') {
+                const { n, d, shapeName, targetColor, options, itemColors } = currentQuestionData;
+                
+                // HTML Nyawa
+                let livesHTML = '';
+                for (let i = 0; i < 3; i++) {
+                    livesHTML += `<div class="heart-icon ${i >= lives ? 'heart-lost' : ''}">${heartSVG}</div>`;
+                }
+
+                // HTML Gambar Benda (Lebih rapat kalau d banyak)
+                let itemsHTML = '';
+                let itemSizeClass = d > 15 ? 'w-8 h-8 sm:w-10 sm:h-10 m-1' : (d > 8 ? 'w-10 h-10 sm:w-12 sm:h-12 m-1.5' : 'w-12 h-12 sm:w-16 sm:h-16 m-2');
+                
+                for (let i = 0; i < d; i++) {
+                    const svgHtml = shapes[shapeName].replace('CURRENT_COLOR', itemColors[i]);
+                    itemsHTML += `<div class="${itemSizeClass} animate-bounce-in" style="animation-delay: ${i * 0.03}s">${svgHtml}</div>`;
+                }
+
+                // HTML Pilihan
+                let optionsHTML = '';
+                options.forEach((opt, idx) => {
+                    optionsHTML += `
+                        <button id="btn-${opt.n}-${opt.d}" onclick="handleAnswer(${opt.n}, ${opt.d})" 
+                            class="fraction-btn flex flex-col items-center justify-center p-3 sm:p-4 bg-white border-4 border-slate-200 rounded-2xl text-3xl sm:text-4xl font-bold text-slate-700 hover:border-sky-400 hover:bg-sky-50 shadow-sm">
+                            <span class="border-b-4 border-slate-700 px-3 sm:px-4 w-full text-center pb-1 mb-1">${opt.n}</span>
+                            <span>${opt.d}</span>
+                        </button>
+                    `;
+                });
+
+                appContent.innerHTML = `
+                    <div class="p-6 sm:p-8 flex flex-col items-center">
+                        <!-- Top HUD: Lives, Level, Score -->
+                        <div class="w-full flex justify-between items-center mb-6 bg-slate-50 p-4 rounded-2xl border-2 border-slate-200">
+                            <div class="flex space-x-1">
+                                ${livesHTML}
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <span class="text-sm font-bold text-slate-400 uppercase tracking-wider">Level ${currentLevel}</span>
+                                <span class="bg-sky-100 text-sky-800 font-bold px-4 py-1 rounded-full border-2 border-sky-200">
+                                    Soal ${currentQuestionNum}
+                                </span>
+                            </div>
+                            <div class="flex items-center space-x-2 bg-amber-100 text-amber-700 font-black px-4 py-2 rounded-xl border-2 border-amber-300 text-xl">
+                                <span>⭐ ${score}</span>
+                            </div>
+                        </div>
+
+                        <!-- Pertanyaan -->
+                        <h2 class="text-xl sm:text-2xl font-bold text-center text-slate-700 mb-6 leading-relaxed px-4">
+                            Pecahan berapakah yang menunjukkan jumlah <span style="color: ${targetColor.hex}; text-shadow: 1px 1px 0 #fff;">${shapeName} berwarna ${targetColor.name}</span>?
+                        </h2>
+
+                        <!-- Area Gambar -->
+                        <div class="flex flex-wrap justify-center items-center bg-slate-100 border-4 border-slate-200 rounded-3xl p-4 sm:p-6 mb-8 min-h-[120px] w-full max-w-3xl shadow-inner">
+                            ${itemsHTML}
+                        </div>
+
+                        <!-- Area Pilihan -->
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 w-full max-w-2xl" id="options-container">
+                            ${optionsHTML}
+                        </div>
+
+                        <!-- Area Feedback -->
+                        <div id="feedback-area" class="h-16 w-full mt-4 flex items-center justify-center">
+                            <!-- Tempat feedback -->
+                        </div>
+                    </div>
+                `;
+            }
+            else if (gameState === 'gameover' || gameState === 'victory') {
+                const isWin = gameState === 'victory';
+                const title = isWin ? 'Luar Biasa!' : 'Permainan Selesai!';
+                const msg = isWin ? 'Kamu berhasil menyelesaikan semua level!' : 'Jangan menyerah, ayo coba lagi!';
+                const emoji = isWin ? '👑' : '💔';
+                const btnColor = isWin ? 'amber' : 'sky';
+
+                appContent.innerHTML = `
+                    <div class="p-10 sm:p-16 text-center flex flex-col items-center animate-bounce-in">
+                        <div class="text-8xl mb-6">${emoji}</div>
+                        <h1 class="text-4xl sm:text-5xl font-black text-slate-800 mb-2">
+                            ${title}
+                        </h1>
+                        <p class="text-xl text-slate-500 mb-8 font-semibold">${msg}</p>
+                        
+                        <div class="bg-slate-50 border-4 border-slate-200 rounded-3xl p-8 mb-10 w-full max-w-md">
+                            <div class="flex justify-between items-center mb-4 border-b-2 border-slate-200 pb-4">
+                                <span class="text-xl font-bold text-slate-500">Level Tercapai:</span>
+                                <span class="text-2xl font-black text-slate-700">${currentLevel} / 10</span>
+                            </div>
+                            <div class="flex justify-between items-center mb-4 border-b-2 border-slate-200 pb-4">
+                                <span class="text-xl font-bold text-slate-500">Soal Dijawab:</span>
+                                <span class="text-2xl font-black text-slate-700">${currentQuestionNum - (isWin?0:1)}</span>
+                            </div>
+                            <div class="mt-6">
+                                <p class="text-lg text-slate-500 font-bold mb-1">Total Skor:</p>
+                                <div class="text-6xl font-black text-amber-500 drop-shadow-sm flex items-center justify-center">
+                                    ⭐ ${score}
+                                </div>
+                            </div>
+                        </div>
+
+                        <button onclick="startGame()" class="px-10 py-5 text-2xl font-bold text-white bg-${btnColor}-500 rounded-2xl shadow-[0_8px_0_var(--tw-shadow-color)] shadow-${btnColor}-700 hover:bg-${btnColor}-400 hover:shadow-[0_4px_0_var(--tw-shadow-color)] hover:translate-y-1 transition-all active:shadow-none active:translate-y-2 flex items-center space-x-3">
+                            <span>🔄 Main Lagi dari Awal</span>
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        // --- FUNGSI FEEDBACK & EFEK ---
+        function renderFeedback(isCorrect, selectedN, selectedD) {
+            const { correctAnswer } = currentQuestionData;
+            const feedbackArea = document.getElementById('feedback-area');
+            
+            const buttons = document.querySelectorAll('.fraction-btn');
+            buttons.forEach(btn => {
+                btn.disabled = true;
+                btn.classList.add('opacity-50', 'cursor-not-allowed');
+            });
+
+            const selectedBtn = document.getElementById(`btn-${selectedN}-${selectedD}`);
+            const correctBtn = document.getElementById(`btn-${correctAnswer.n}-${correctAnswer.d}`);
+
+            if (isCorrect) {
+                selectedBtn.classList.remove('bg-white', 'border-slate-200', 'opacity-50', 'hover:border-sky-400', 'hover:bg-sky-50');
+                selectedBtn.classList.add('bg-green-500', 'border-green-700', 'text-white', 'scale-110', 'z-10', 'opacity-100');
+                selectedBtn.querySelector('span').classList.replace('border-slate-700', 'border-white');
+                
+                feedbackArea.innerHTML = `
+                    <div class="text-2xl sm:text-3xl font-black text-green-600 animate-bounce-in flex items-center">
+                        ✅ +10 Poin!
+                    </div>
+                `;
+            } else {
+                selectedBtn.classList.remove('bg-white', 'border-slate-200', 'opacity-50', 'hover:border-sky-400', 'hover:bg-sky-50');
+                selectedBtn.classList.add('bg-red-500', 'border-red-700', 'text-white', 'opacity-100');
+                selectedBtn.querySelector('span').classList.replace('border-slate-700', 'border-white');
+
+                correctBtn.classList.remove('bg-white', 'border-slate-200', 'opacity-50', 'hover:border-sky-400', 'hover:bg-sky-50');
+                correctBtn.classList.add('bg-green-500', 'border-green-700', 'text-white', 'animate-pulse', 'opacity-100');
+                correctBtn.querySelector('span').classList.replace('border-slate-700', 'border-white');
+
+                feedbackArea.innerHTML = `
+                    <div class="text-xl sm:text-2xl font-black text-red-500 animate-bounce-in flex items-center text-center">
+                        ❌ Jawaban Benar: ${correctAnswer.n}/${correctAnswer.d}
+                    </div>
+                `;
+            }
+        }
+
+        // --- AUDIO SEDERHANA ---
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        
+        function playSuccessSound() {
+            if(audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); // C5
+            osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.1); // E5
+            osc.frequency.setValueAtTime(783.99, audioCtx.currentTime + 0.2); // G5
+            
+            gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+            
+            osc.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.3);
+        }
+
+        function playErrorSound() {
+            if(audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            osc.type = 'square'; // Suara lebih 'kasar'
+            osc.frequency.setValueAtTime(300, audioCtx.currentTime); 
+            osc.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.3);
+            
+            gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+            
+            osc.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.3);
+        }
+
+        // Init
+        render();
+
+    </script>
+</body>
+</html>

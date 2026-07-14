@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>University Graduation Portal</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#137fec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                        "navy": "#0A2647",
+                        "gold": "#D4AF37",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-[#111418] font-display overflow-x-hidden">
+<div class="relative flex min-h-screen w-full flex-col group/design-root">
+<!-- Navigation -->
+<nav class="sticky top-0 z-50 w-full bg-white/95 backdrop-blur-sm border-b border-[#e5e7eb]">
+<div class="max-w-[1280px] mx-auto px-4 md:px-8">
+<div class="flex items-center justify-between h-20">
+<!-- Logo Section -->
+<div class="flex items-center gap-3 text-navy">
+<div class="flex items-center justify-center size-10 rounded-lg bg-navy text-white">
+<span class="material-symbols-outlined text-2xl">school</span>
+</div>
+<h2 class="text-navy text-xl font-bold leading-tight tracking-tight">University Portal</h2>
+</div>
+<!-- Desktop Links -->
+<div class="hidden md:flex items-center gap-8">
+<a class="text-navy text-sm font-medium hover:text-primary transition-colors" href="#">Home</a>
+<a class="text-navy text-sm font-medium hover:text-primary transition-colors" href="#">Cek Status</a>
+<a class="text-navy text-sm font-medium hover:text-primary transition-colors" href="#">Daftar Peserta</a>
+</div>
+<!-- CTA -->
+<div class="flex items-center gap-4">
+<button class="flex items-center justify-center overflow-hidden rounded-full h-10 px-6 bg-primary text-white text-sm font-bold shadow-md hover:bg-blue-600 transition-all">
+<span class="truncate">Login</span>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<!-- Hero Section -->
+<header class="@container w-full">
+<div class="relative flex min-h-[560px] flex-col justify-center overflow-hidden bg-navy">
+<!-- Background Image with Overlay -->
+<div class="absolute inset-0 z-0">
+<img alt="Happy graduates throwing caps in the air during ceremony" class="w-full h-full object-cover opacity-40" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA0B4wS9UfgVKoMVcFcKclE7rJph0Bm5rh0z8smaMob12gz8gG7ry-etgF6jrOA9Fopv7mh48UKc0lRX97_kjwzA0BqbGbIkf4jv_mkJNxBhp50SIkZUY-mGWCKnHe56NMcL8t7lD5CnIxoNuef4e0IgyO6RxpZOzdNB5IE0JotsJLRYE56kOv11oWR3jB4UBbhYqa6u2KyvQTNm-Ir5WhENH43F73OjYlcqlzsburtYBvorsdQ0f74rdARF6uWsgVjc5-qI74a1iU"/>
+<div class="absolute inset-0 bg-gradient-to-t from-navy via-navy/50 to-transparent"></div>
+</div>
+<!-- Hero Content -->
+<div class="relative z-10 w-full max-w-[1280px] mx-auto px-4 md:px-8 py-20 text-center md:text-left">
+<div class="max-w-3xl flex flex-col gap-6">
+<div class="inline-flex w-fit items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 backdrop-blur-md">
+<span class="material-symbols-outlined text-gold text-sm">campaign</span>
+<span class="text-white text-xs font-bold uppercase tracking-wide">Periode 2024 Dibuka</span>
+</div>
+<h1 class="text-white text-4xl md:text-6xl font-black leading-[1.1] tracking-tight">
+                            Rayakan Pencapaian <br/>
+<span class="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400">Akademik Anda</span>
+</h1>
+<p class="text-gray-200 text-lg md:text-xl font-light leading-relaxed max-w-2xl">
+                            Selamat datang para calon wisudawan. Segera lengkapi persyaratan administrasi dan akademik untuk mengikuti prosesi wisuda yang khidmat dan berkesan.
+                        </p>
+<div class="flex flex-col sm:flex-row gap-4 pt-4 justify-center md:justify-start">
+<button class="flex items-center justify-center h-12 px-8 rounded-full bg-gold hover:bg-[#c49f27] text-navy text-base font-bold shadow-lg shadow-gold/20 transition-all">
+                                Daftar Wisuda Sekarang
+                            </button>
+<button class="flex items-center justify-center h-12 px-8 rounded-full bg-white/10 hover:bg-white/20 text-white border border-white/20 text-base font-medium backdrop-blur-sm transition-all">
+                                Panduan Lengkap
+                            </button>
+</div>
+</div>
+</div>
+</div>
+</header>
+<!-- Requirements Section -->
+<main class="flex-1 w-full bg-background-light py-16 md:py-24">
+<div class="max-w-[1280px] mx-auto px-4 md:px-8">
+<!-- Section Header -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+<div class="max-w-2xl">
+<h2 class="text-navy text-3xl md:text-4xl font-bold leading-tight mb-4">Persyaratan Pendaftaran</h2>
+<p class="text-[#617589] text-lg">Pastikan Anda telah memenuhi seluruh kriteria berikut sebelum melakukan pendaftaran online.</p>
+</div>
+<a class="text-primary font-bold hover:underline flex items-center gap-1" href="#">
+                        Lihat Buku Pedoman 
+                        <span class="material-symbols-outlined text-lg">arrow_forward</span>
+</a>
+</div>
+<!-- Cards Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<!-- Card 1: Academic -->
+<div class="bg-white rounded-xl p-8 shadow-sm border border-gray-100 hover:shadow-md transition-shadow flex flex-col h-full">
+<div class="size-12 rounded-lg bg-blue-50 flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-primary text-3xl">menu_book</span>
+</div>
+<h3 class="text-navy text-xl font-bold mb-4">Syarat Akademik</h3>
+<ul class="flex flex-col gap-3 text-[#617589] flex-1">
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-green-500 text-lg mt-0.5">check</span>
+<span class="text-sm leading-relaxed">Telah dinyatakan <strong>Lulus Sidang</strong> Skripsi/Tesis/Disertasi.</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-green-500 text-lg mt-0.5">check</span>
+<span class="text-sm leading-relaxed">Memiliki Surat Keterangan <strong>Bebas Pustaka</strong> Universitas.</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-green-500 text-lg mt-0.5">check</span>
+<span class="text-sm leading-relaxed">Transkrip Nilai Final telah divalidasi oleh prodi.</span>
+</li>
+</ul>
+</div>
+<!-- Card 2: Administrative -->
+<div class="bg-white rounded-xl p-8 shadow-sm border border-gray-100 hover:shadow-md transition-shadow flex flex-col h-full">
+<div class="size-12 rounded-lg bg-blue-50 flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-primary text-3xl">receipt_long</span>
+</div>
+<h3 class="text-navy text-xl font-bold mb-4">Syarat Administrasi</h3>
+<ul class="flex flex-col gap-3 text-[#617589] flex-1">
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-green-500 text-lg mt-0.5">check</span>
+<span class="text-sm leading-relaxed">Melunasi tagihan <strong>UKT</strong> semester terakhir.</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-green-500 text-lg mt-0.5">check</span>
+<span class="text-sm leading-relaxed">Membayar <strong>Biaya Wisuda</strong> melalui bank mitra.</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-green-500 text-lg mt-0.5">check</span>
+<span class="text-sm leading-relaxed">Mengunggah bukti bayar yang valid (.pdf/.jpg).</span>
+</li>
+</ul>
+</div>
+<!-- Card 3: Photo Specs (Critical) -->
+<div class="bg-white rounded-xl p-8 shadow-md border-t-4 border-t-gold hover:shadow-lg transition-shadow flex flex-col h-full relative overflow-hidden">
+<div class="absolute top-0 right-0 bg-gold text-navy text-[10px] font-bold px-3 py-1 rounded-bl-lg uppercase tracking-wider">
+                            Wajib Diperhatikan
+                        </div>
+<div class="size-12 rounded-lg bg-yellow-50 flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-gold text-3xl">photo_camera</span>
+</div>
+<h3 class="text-navy text-xl font-bold mb-2">Ketentuan Foto Ijazah</h3>
+<p class="text-sm text-[#617589] mb-4">
+                            Latar Merah/Biru, Kemeja Putih, Tanpa Kacamata.
+                        </p>
+<!-- Visual Examples -->
+<div class="grid grid-cols-2 gap-3 mt-auto">
+<!-- Correct Example -->
+<div class="flex flex-col gap-2 group cursor-help">
+<div class="relative w-full aspect-[3/4] rounded-lg overflow-hidden bg-gray-100 border-2 border-green-500">
+<div class="w-full h-full bg-cover bg-center" data-alt="Portrait of a smiling man in a white shirt with correct posture" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDn_go71Y7KHlao0S788x27fiSc096uOO65Uj5d9Qx0dtOirthLTSL7XFwwuvGGrnAXzg_1aBT8uEO0ElxCM9K8O4A152Kzn0Kq63KnZmXPnGFZ3rDFTork3pM8oOK0YWlTeN_sDJ-m9_sHVgX7N7gVwnYVE0oKzfopxH02Ft6unaHRef3gfqn2bb4L39Zd9l7k-oCnOKrnC-eiJdGr1a04mhIxlX-3ZZvEYEI5ljFUmh92HetmsnuOpmuWWZwQAl2mvZc46n4NUcY');"></div>
+<div class="absolute bottom-1 right-1 bg-green-500 text-white rounded-full p-0.5">
+<span class="material-symbols-outlined text-sm block">check</span>
+</div>
+</div>
+<span class="text-xs font-bold text-green-600 text-center">Benar</span>
+</div>
+<!-- Incorrect Example -->
+<div class="flex flex-col gap-2 group cursor-help">
+<div class="relative w-full aspect-[3/4] rounded-lg overflow-hidden bg-gray-100 border-2 border-red-500 opacity-80">
+<div class="w-full h-full bg-cover bg-center grayscale" data-alt="Portrait of a man wearing sunglasses looking away" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDJMkBxOScPUTDHndXsdC86fr64JSU7eObPMMiuKWu2JYdSY-V4KXtVwJdvVlwgDQ2k54IvoKuuUgmAigWDaZtiaIcpADUAQ__AFpUqAf5zlj3DlzZglaZlWR_BfTPQtDAfVJ3VomDDz2Kl7IBeo6LbC4FjknYaxIAjvB_dsldH1cGukxHN9icV_2d7vAwrviOTFq9-xWHF4HINFUDDGvXyxRIxQVd8w1sllRqDqTrNwEmBBh5LDIA5qNcA0vzzoudZt7uBBUEiLRA');"></div>
+<div class="absolute bottom-1 right-1 bg-red-500 text-white rounded-full p-0.5">
+<span class="material-symbols-outlined text-sm block">close</span>
+</div>
+</div>
+<span class="text-xs font-bold text-red-600 text-center">Salah</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-navy text-white py-12">
+<div class="max-w-[1280px] mx-auto px-4 md:px-8">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-10">
+<div class="col-span-1 md:col-span-2 flex flex-col gap-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-3xl">school</span>
+<h2 class="text-xl font-bold">University Portal</h2>
+</div>
+<p class="text-gray-400 text-sm leading-relaxed max-w-sm">
+                            Sistem informasi terintegrasi untuk pengelolaan data wisuda dan alumni. Melayani dengan integritas dan profesionalisme.
+                        </p>
+</div>
+<div class="flex flex-col gap-4">
+<h3 class="text-gold font-bold text-sm uppercase tracking-wider">Layanan Akademik</h3>
+<ul class="flex flex-col gap-2 text-sm text-gray-300">
+<li><a class="hover:text-white" href="#">Pusat Bantuan</a></li>
+<li><a class="hover:text-white" href="#">Kalender Akademik</a></li>
+<li><a class="hover:text-white" href="#">Verifikasi Ijazah</a></li>
+</ul>
+</div>
+<div class="flex flex-col gap-4">
+<h3 class="text-gold font-bold text-sm uppercase tracking-wider">Hubungi Kami</h3>
+<ul class="flex flex-col gap-2 text-sm text-gray-300">
+<li class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">call</span>
+                                +62 21 1234 5678
+                            </li>
+<li class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">mail</span>
+                                helpdesk@university.ac.id
+                            </li>
+<li class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">location_on</span>
+                                Gedung Rektorat Lt. 1
+                            </li>
+</ul>
+</div>
+</div>
+<div class="border-t border-white/10 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+<p class="text-xs text-gray-500">© 2024 University Portal. All rights reserved.</p>
+<div class="flex gap-4">
+<a class="text-xs text-gray-500 hover:text-white" href="#">Privacy Policy</a>
+<a class="text-xs text-gray-500 hover:text-white" href="#">Terms of Service</a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+</body></html>

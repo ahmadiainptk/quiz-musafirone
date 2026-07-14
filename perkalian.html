@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuis Perkalian Luar Angkasa</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        /* Animasi Custom */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px) rotate(-2deg); }
+            50% { transform: translateX(10px) rotate(2deg); }
+            75% { transform: translateX(-10px) rotate(-2deg); }
+        }
+        [x-cloak] { display: none !important; }
+    </style>
+    
+    <!-- Logika Game Alpine.js HARUS didaftarkan sebelum Alpine dimuat -->
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('gameData', () => ({
+                gameState: 'start',
+                score: 0,
+                lives: 3,
+                question: { num1: 0, num2: 0, correct: 0, options: [] }, // Inisialisasi awal mencegah error
+                feedback: null,
+                selectedAnswer: null,
+                level: 1,
+
+                generateQuestion(currentScore) {
+                    // Tentukan level berdasarkan skor (1 level setiap 50 poin)
+                    const currentLvl = Math.floor(currentScore / 50) + 1;
+                    
+                    // Batas minimum dan maksimum angka pertama (num1)
+                    // Semakin tinggi level, angka terkecil yang muncul juga ikut membesar (maksimal floor di angka 7)
+                    const minNum1 = Math.min(1 + Math.floor(currentLvl / 2), 7);
+                    const maxNum1 = Math.min(5 + currentLvl, 15); 
+                    
+                    // Batas minimum dan maksimum angka kedua (num2)
+                    // Di level tinggi, perkalian x1 atau x2 akan hilang dengan sendirinya
+                    const minNum2 = Math.min(1 + Math.floor(currentLvl / 3), 4);
+                    const maxNum2 = Math.min(10 + Math.floor(currentLvl / 5), 12);
+                    
+                    const num1 = Math.floor(Math.random() * (maxNum1 - minNum1 + 1)) + minNum1;
+                    const num2 = Math.floor(Math.random() * (maxNum2 - minNum2 + 1)) + minNum2;
+                    const correct = num1 * num2;
+                    
+                    let optionsSet = new Set([correct]);
+                    
+                    while(optionsSet.size < 4) {
+                        const isClose = Math.random() > 0.3;
+                        if (isClose) {
+                            const offsetNum1 = Math.random() > 0.5 ? num1 + 1 : (num1 > 1 ? num1 - 1 : num1 + 2);
+                            optionsSet.add(offsetNum1 * num2);
+                        } else {
+                            const randomWrong = correct + (Math.floor(Math.random() * 10) + 1) * (Math.random() > 0.5 ? 1 : -1);
+                            if (randomWrong > 0) optionsSet.add(randomWrong);
+                        }
+                    }
+
+                    const optionsArray = Array.from(optionsSet).sort(() => Math.random() - 0.5);
+                    
+                    this.question = { num1, num2, correct, options: optionsArray };
+                },
+
+                startGame() {
+                    this.score = 0;
+                    this.lives = 3;
+                    this.level = 1;
+                    this.gameState = 'playing';
+                    this.generateQuestion(0);
+                },
+
+                handleAnswer(answer) {
+                    if (this.feedback !== null) return;
+
+                    this.selectedAnswer = answer;
+                    const isCorrect = answer === this.question.correct;
+
+                    if (isCorrect) {
+                        this.feedback = 'correct';
+                        this.score += 10;
+                        if (this.score % 50 === 0) this.level++;
+                    } else {
+                        this.feedback = 'wrong';
+                        this.lives--; // Kurangi nyawa langsung
+                    }
+
+                    setTimeout(() => {
+                        this.feedback = null;
+                        this.selectedAnswer = null;
+                        
+                        if (!isCorrect && this.lives <= 0) {
+                            this.gameState = 'gameover';
+                        } else {
+                            this.generateQuestion(isCorrect ? this.score : this.score);
+                        }
+                    }, 1000);
+                }
+            }));
+        });
+    </script>
+
+    <!-- Alpine.js CDN: Diletakkan SETELAH blok pendaftaran, ditambah atribut defer -->
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+</head>
+<!-- Menggunakan x-data referensi ke komponen yang telah di-register -->
+<body class="bg-slate-900 text-white font-sans antialiased selection:bg-indigo-500 selection:text-white" x-data="gameData">
+
+    <!-- SCREEN: START -->
+    <div x-show="gameState === 'start'" x-cloak class="min-h-screen flex flex-col items-center justify-center p-4">
+        <div class="bg-slate-800 p-8 rounded-3xl shadow-2xl border-4 border-indigo-500 max-w-md w-full text-center space-y-6">
+            <div class="flex justify-center mb-4">
+                <!-- Ikon Rocket -->
+                <svg class="text-indigo-400 animate-bounce w-20 h-20" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/>
+                </svg>
+            </div>
+            <h1 class="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400">
+                Kuis Perkalian Antariksa
+            </h1>
+            <p class="text-slate-300 text-lg">
+                Jawab soal perkalian untuk menerbangkan roketmu dan kumpulkan skor tertinggi!
+            </p>
+            <button @click="startGame()" class="w-full py-4 bg-indigo-600 hover:bg-indigo-500 rounded-xl text-xl font-bold transition-all transform hover:scale-105 active:scale-95 flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(79,70,229,0.5)]">
+                <!-- Ikon Play -->
+                <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                Mulai Petualangan
+            </button>
+        </div>
+    </div>
+
+    <!-- SCREEN: GAME OVER -->
+    <div x-show="gameState === 'gameover'" x-cloak class="min-h-screen flex flex-col items-center justify-center p-4">
+        <div class="bg-slate-800 p-8 rounded-3xl shadow-2xl border-4 border-rose-500 max-w-md w-full text-center space-y-6">
+            <h2 class="text-4xl font-bold text-rose-500 mb-2">Misi Gagal!</h2>
+            <p class="text-slate-300">Bahan bakar roketmu habis karena jawaban salah.</p>
+            
+            <div class="bg-slate-900 rounded-2xl p-6 border-2 border-slate-700">
+                <p class="text-slate-400 uppercase tracking-wider text-sm font-bold mb-1">Skor Akhir</p>
+                <p class="text-6xl font-black text-amber-400 flex justify-center items-center gap-2">
+                    <!-- Ikon Bintang -->
+                    <svg class="w-12 h-12" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    <span x-text="score"></span>
+                </p>
+            </div>
+
+            <button @click="startGame()" class="w-full py-4 bg-emerald-600 hover:bg-emerald-500 rounded-xl text-xl font-bold transition-all transform hover:scale-105 active:scale-95 flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(16,185,129,0.5)]">
+                <!-- Ikon Ulangi -->
+                <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path stroke-linecap="round" stroke-linejoin="round" d="M3 3v5h5"/>
+                </svg>
+                Main Lagi
+            </button>
+        </div>
+    </div>
+
+    <!-- SCREEN: PLAYING -->
+    <div x-show="gameState === 'playing'" x-cloak class="min-h-screen p-4 flex flex-col relative overflow-hidden">
+        
+        <!-- Ornamen Bintang Latar Belakang -->
+        <svg class="absolute top-10 left-10 text-slate-700 opacity-20 w-10 h-10" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg class="absolute top-40 right-20 text-slate-700 opacity-20 w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg class="absolute bottom-20 left-1/4 text-slate-700 opacity-20 w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+
+        <!-- Header Info -->
+        <div class="max-w-2xl w-full mx-auto flex justify-between items-center bg-slate-800/80 backdrop-blur-md p-4 rounded-2xl border border-slate-700 z-10 shadow-lg">
+            <div class="flex items-center gap-2 text-amber-400 font-bold text-xl bg-slate-900 py-2 px-4 rounded-xl border border-amber-500/30">
+                <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                <span x-text="score"></span>
+            </div>
+            <div class="flex items-center gap-1">
+                <template x-for="i in 3" :key="i">
+                    <!-- Ikon Hati/Nyawa -->
+                    <svg class="w-8 h-8 transition-all duration-300" 
+                         :class="i <= lives ? 'text-rose-500 drop-shadow-[0_0_10px_rgba(244,63,94,0.8)] fill-current' : 'text-slate-700'" 
+                         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
+                    </svg>
+                </template>
+            </div>
+        </div>
+
+        <!-- Area Pertanyaan -->
+        <div class="flex-1 flex flex-col items-center justify-center max-w-2xl w-full mx-auto z-10 mt-8">
+            <div class="text-center w-full">
+                <p class="text-indigo-300 font-medium mb-4 tracking-widest uppercase text-sm">Level <span x-text="level"></span></p>
+                
+                <div class="bg-slate-800 border-4 rounded-3xl p-8 shadow-2xl mb-8 w-full transition-all duration-300 transform"
+                     :class="{
+                        'border-emerald-500 scale-105 shadow-[0_0_30px_rgba(16,185,129,0.3)] bg-emerald-900/20': feedback === 'correct',
+                        'border-rose-500 scale-95 shadow-[0_0_30px_rgba(244,63,94,0.3)] bg-rose-900/20 animate-[shake_0.5s_ease-in-out]': feedback === 'wrong',
+                        'border-indigo-500': feedback === null
+                     }">
+                    
+                    <div class="flex items-center justify-center gap-4 md:gap-8 text-5xl md:text-7xl font-black font-mono">
+                        <span class="text-indigo-300" x-text="question.num1"></span>
+                        <span class="text-slate-500">×</span>
+                        <span class="text-purple-300" x-text="question.num2"></span>
+                        <span class="text-slate-500">=</span>
+                        <span class="text-white border-b-4 border-slate-600 pb-2 min-w-[3ch] inline-block text-center">?</span>
+                    </div>
+                </div>
+
+                <!-- Tombol Pilihan Jawaban -->
+                <div class="grid grid-cols-2 gap-4 w-full">
+                    <template x-for="option in question.options" :key="option">
+                        <button
+                            :disabled="feedback !== null"
+                            @click="handleAnswer(option)"
+                            class="relative py-6 md:py-8 rounded-2xl text-3xl md:text-4xl font-bold border-b-4 transition-all duration-200 active:border-b-0 active:translate-y-1 flex justify-center items-center gap-2"
+                            :class="{
+                                'bg-emerald-600 border-emerald-400 text-white shadow-[0_0_15px_rgba(16,185,129,0.5)] z-10 scale-105': feedback !== null && option === question.correct,
+                                'bg-rose-600 border-rose-400 text-white shadow-[0_0_15px_rgba(244,63,94,0.5)] opacity-80': feedback !== null && option === selectedAnswer && option !== question.correct,
+                                'bg-slate-800/50 border-slate-700 text-slate-500 opacity-50': feedback !== null && option !== question.correct && option !== selectedAnswer,
+                                'bg-slate-800 border-slate-600 hover:bg-slate-700 text-slate-200 hover:border-indigo-400': feedback === null
+                            }"
+                        >
+                            <span x-text="option"></span>
+                            
+                            <!-- Ikon Benar -->
+                            <svg x-show="feedback !== null && option === question.correct" class="absolute right-4 text-emerald-200 opacity-80 w-6 h-6 md:w-8 md:h-8" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <!-- Ikon Salah -->
+                            <svg x-show="feedback !== null && option === selectedAnswer && option !== question.correct" class="absolute right-4 text-rose-200 opacity-80 w-6 h-6 md:w-8 md:h-8" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                            </svg>
+                        </button>
+                    </template>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

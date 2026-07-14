@@ -1,0 +1,586 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Quest: Misteri Angka</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap');
+        
+        body {
+            font-family: 'Fredoka', sans-serif;
+            background-color: #0f172a;
+            background-image: radial-gradient(#1e293b 1px, transparent 1px);
+            background-size: 20px 20px;
+            color: white;
+            user-select: none;
+            overflow-x: hidden;
+        }
+
+        .game-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .card {
+            background: rgba(30, 41, 59, 0.9);
+            backdrop-filter: blur(10px);
+            border: 2px solid #334155;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+
+        .btn-option {
+            transition: all 0.2s ease;
+        }
+        
+        .btn-option:hover:not(:disabled) {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.4);
+        }
+        
+        .btn-option:active:not(:disabled) {
+            transform: translateY(1px) scale(0.98);
+        }
+
+        .correct-anim {
+            animation: pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            background-color: #10b981 !important;
+            border-color: #059669 !important;
+            color: white !important;
+        }
+
+        .wrong-anim {
+            animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+            background-color: #ef4444 !important;
+            border-color: #b91c1c !important;
+            color: white !important;
+        }
+
+        @keyframes pop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes shake {
+            10%, 90% { transform: translate3d(-1px, 0, 0); }
+            20%, 80% { transform: translate3d(2px, 0, 0); }
+            30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+            40%, 60% { transform: translate3d(4px, 0, 0); }
+        }
+
+        .heart {
+            color: #ef4444;
+            text-shadow: 0 0 5px rgba(239, 68, 68, 0.5);
+            transition: all 0.3s ease;
+        }
+        
+        .heart.lost {
+            color: #334155;
+            text-shadow: none;
+            transform: scale(0.8);
+        }
+
+        .progress-bar {
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="game-container">
+        <!-- Main Game Area -->
+        <div id="app" class="card w-full max-w-2xl rounded-3xl p-6 sm:p-8 relative overflow-hidden">
+            
+            <!-- Screen: Start -->
+            <div id="screen-start" class="text-center space-y-6">
+                <div class="text-6xl mb-4">🔢</div>
+                <h1 class="text-4xl sm:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400 drop-shadow-lg">
+                    Math Quest
+                </h1>
+                <p class="text-xl text-slate-300">Tantangan Nilai Tempat & Terbilang</p>
+                
+                <div class="bg-slate-800 p-4 rounded-xl text-left space-y-2 text-slate-300 text-sm sm:text-base border border-slate-700">
+                    <p>🎮 <b>Cara Bermain:</b></p>
+                    <ul class="list-disc pl-5 space-y-1">
+                        <li>Jawab soal tentang nilai tempat, angka, dan terbilang.</li>
+                        <li>Ada <b>500 soal</b> yang harus diselesaikan.</li>
+                        <li>Setiap <b>50 soal</b>, level kesulitan akan naik (Maks Level 10).</li>
+                        <li>Kamu punya <b>3 nyawa</b>. Salah jawab = hilang 1 nyawa.</li>
+                    </ul>
+                </div>
+
+                <button onclick="startGame()" class="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500 text-white rounded-2xl font-bold text-xl shadow-lg transition-transform hover:scale-105 active:scale-95">
+                    Mulai Bermain!
+                </button>
+            </div>
+
+            <!-- Screen: Game -->
+            <div id="screen-game" class="hidden flex-col h-full">
+                <!-- Header: Stats -->
+                <div class="flex justify-between items-center mb-6">
+                    <div class="flex flex-col">
+                        <span class="text-xs text-slate-400 uppercase tracking-wider font-bold">Level <span id="level-display" class="text-blue-400 text-base">1</span></span>
+                        <div class="text-lg font-bold">Skor: <span id="score-display" class="text-emerald-400">0</span>/500</div>
+                    </div>
+                    <div class="flex space-x-1 text-2xl sm:text-3xl" id="lives-display">
+                        <span class="heart">❤️</span>
+                        <span class="heart">❤️</span>
+                        <span class="heart">❤️</span>
+                    </div>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="w-full bg-slate-700 rounded-full h-2.5 mb-6 overflow-hidden">
+                    <div id="level-progress" class="bg-blue-500 h-2.5 rounded-full progress-bar" style="width: 0%"></div>
+                </div>
+
+                <!-- Question Area -->
+                <div class="flex-grow flex flex-col justify-center items-center py-4 mb-6 min-h-[160px]">
+                    <h2 id="question-text" class="text-2xl sm:text-3xl text-center font-semibold leading-snug">
+                        Memuat pertanyaan...
+                    </h2>
+                </div>
+
+                <!-- Options Grid -->
+                <div id="options-container" class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-auto">
+                    <!-- Buttons generated by JS -->
+                </div>
+            </div>
+
+            <!-- Screen: Game Over -->
+            <div id="screen-gameover" class="hidden text-center space-y-6 py-8">
+                <div class="text-6xl mb-2">💀</div>
+                <h2 class="text-4xl font-bold text-red-500">Game Over!</h2>
+                <div class="space-y-1">
+                    <p class="text-xl text-slate-300">Kamu kehabisan nyawa.</p>
+                    <p class="text-2xl font-bold">Skor Akhir: <span id="final-score" class="text-blue-400">0</span></p>
+                    <p class="text-lg text-slate-400">Mencapai Level: <span id="final-level" class="text-emerald-400">1</span></p>
+                </div>
+                <button onclick="resetGame()" class="mt-4 px-8 py-3 bg-slate-700 hover:bg-slate-600 text-white rounded-xl font-bold text-lg shadow-lg transition-transform hover:scale-105 active:scale-95">
+                    Main Lagi
+                </button>
+            </div>
+
+            <!-- Screen: Win -->
+            <div id="screen-win" class="hidden text-center space-y-6 py-8">
+                <div class="text-6xl mb-2">🏆</div>
+                <h2 class="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-200">Luar Biasa!</h2>
+                <div class="space-y-2">
+                    <p class="text-xl text-slate-200">Kamu berhasil menyelesaikan semua 500 soal!</p>
+                    <p class="text-slate-400">Kamu adalah Master Angka yang sesungguhnya.</p>
+                </div>
+                <button onclick="resetGame()" class="mt-4 px-8 py-3 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-400 hover:to-orange-400 text-white rounded-xl font-bold text-lg shadow-lg transition-transform hover:scale-105 active:scale-95">
+                    Main Lagi
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // --- DATA & KONSTANTA ---
+        const MAX_SCORE = 500;
+        const QUESTIONS_PER_LEVEL = 50;
+        const MAX_LEVEL = 10;
+        const STARTING_LIVES = 3;
+
+        const PLACE_VALUES = [
+            "Satuan", "Puluhan", "Ratusan", 
+            "Ribuan", "Puluh Ribuan", "Ratus Ribuan", 
+            "Jutaan", "Puluh Jutaan", "Ratus Jutaan",
+            "Miliaran", "Puluh Miliaran", "Ratus Miliaran"
+        ];
+
+        // --- STATE GAME ---
+        let score = 0;
+        let lives = STARTING_LIVES;
+        let currentLevel = 1;
+        let currentAnswer = null;
+        let isProcessing = false;
+
+        // --- UTILITAS MATEMATIKA & BAHASA ---
+
+        // Konversi angka ke format ribuan (1000 -> 1.000)
+        function formatNumber(num) {
+            return num.toLocaleString('id-ID');
+        }
+
+        // Fungsi mengubah angka menjadi terbilang bahasa Indonesia (support hingga ratusan miliar)
+        function terbilang(angka) {
+            let n = parseInt(angka);
+            if (n === 0) return "nol";
+            
+            let bilangan = ["", "satu", "dua", "tiga", "empat", "lima", "enam", "tujuh", "delapan", "sembilan", "sepuluh", "sebelas"];
+            let hasil = "";
+            
+            if (n < 12) {
+                hasil = bilangan[n];
+            } else if (n < 20) {
+                hasil = terbilang(n - 10) + " belas";
+            } else if (n < 100) {
+                hasil = terbilang(Math.floor(n / 10)) + " puluh " + terbilang(n % 10);
+            } else if (n < 200) {
+                hasil = "seratus " + terbilang(n - 100);
+            } else if (n < 1000) {
+                hasil = terbilang(Math.floor(n / 100)) + " ratus " + terbilang(n % 100);
+            } else if (n < 2000) {
+                hasil = "seribu " + terbilang(n - 1000);
+            } else if (n < 1000000) {
+                hasil = terbilang(Math.floor(n / 1000)) + " ribu " + terbilang(n % 1000);
+            } else if (n < 1000000000) {
+                hasil = terbilang(Math.floor(n / 1000000)) + " juta " + terbilang(n % 1000000);
+            } else if (n < 1000000000000) {
+                hasil = terbilang(Math.floor(n / 1000000000)) + " miliar " + terbilang(n % 1000000000);
+            }
+            
+            return hasil.trim().replace(/\s+/g, ' ');
+        }
+
+        // Generate angka acak berdasarkan panjang digit min dan max
+        function randomNum(minDigits, maxDigits) {
+            let numDigits = Math.floor(Math.random() * (maxDigits - minDigits + 1)) + minDigits;
+            let numStr = "";
+            // Digit pertama tidak boleh 0
+            numStr += Math.floor(Math.random() * 9) + 1;
+            for (let i = 1; i < numDigits; i++) {
+                numStr += Math.floor(Math.random() * 10);
+            }
+            return parseInt(numStr);
+        }
+
+        // Acak array (Fisher-Yates)
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        // --- LOGIKA PEMBUATAN SOAL ---
+
+        function generateQuestion() {
+            // Tentukan range digit berdasarkan level
+            // Level 1: 1-3 digit, Level 2: 4 digit, Level 3: 5 digit... Level 10: 12 digit
+            let minDigits, maxDigits;
+            
+            if (currentLevel === 1) {
+                minDigits = 2; // Hindari 1 digit agar ada nilai tempat minimal puluhan/ratusan
+                maxDigits = 3;
+            } else {
+                minDigits = currentLevel + 1;
+                maxDigits = currentLevel + 2;
+            }
+            
+            // Batasi max 12 digit (Ratus Miliaran)
+            if (maxDigits > 12) maxDigits = 12;
+            if (minDigits > 12) minDigits = 11;
+
+            const n = randomNum(minDigits, maxDigits);
+            const nStr = n.toString();
+            const nLen = nStr.length;
+            
+            // Pilih tipe soal acak (0 sampai 3)
+            const type = Math.floor(Math.random() * 4);
+            
+            let questionText = "";
+            let correctAnswer = "";
+            let options = [];
+
+            switch(type) {
+                case 0: // Tentukan nilai tempat dari angka yang disorot
+                    // Pilih index acak dari angka (kecuali 0 agar tidak ambigu jika ada banyak 0)
+                    let validIndices = [];
+                    for(let i=0; i<nLen; i++) if(nStr[i] !== '0') validIndices.push(i);
+                    if(validIndices.length === 0) validIndices = [0]; // fallback
+                    
+                    const pickIdx = validIndices[Math.floor(Math.random() * validIndices.length)];
+                    const targetDigit = nStr[pickIdx];
+                    
+                    // Hitung nilai tempat (index dari belakang)
+                    const placeIndex = nLen - 1 - pickIdx;
+                    correctAnswer = PLACE_VALUES[placeIndex];
+                    
+                    // Buat teks HTML untuk highlight digit yang dipilih
+                    let highlightedNum = "";
+                    let dotCounter = 0;
+                    // Format number with dots manually to keep the HTML tag correct
+                    for(let i = nLen - 1; i >= 0; i--) {
+                        let digitChar = nStr[i];
+                        if (i === pickIdx) {
+                            digitChar = `<span class="text-yellow-400 font-bold text-4xl underline">${digitChar}</span>`;
+                        }
+                        highlightedNum = digitChar + highlightedNum;
+                        dotCounter++;
+                        if (dotCounter % 3 === 0 && i !== 0) {
+                            highlightedNum = "." + highlightedNum;
+                        }
+                    }
+
+                    questionText = `Pada bilangan <span class="font-mono bg-slate-800 px-2 rounded tracking-widest">${highlightedNum}</span>,<br><span class="text-lg">angka yang digarisbawahi menempati nilai tempat...</span>`;
+                    
+                    options.push(correctAnswer);
+                    // Distractor: nilai tempat acak lainnya
+                    while(options.length < 4) {
+                        let rPlace = PLACE_VALUES[Math.floor(Math.random() * Math.min(nLen+2, PLACE_VALUES.length))];
+                        if(!options.includes(rPlace)) options.push(rPlace);
+                    }
+                    break;
+
+                case 1: // Angka pada nilai tempat tertentu
+                    const pIndex = Math.floor(Math.random() * nLen);
+                    const targetPlaceName = PLACE_VALUES[pIndex];
+                    // Angka dari belakang
+                    correctAnswer = nStr[nLen - 1 - pIndex];
+                    
+                    questionText = `Angka berapa yang menempati nilai tempat <b class="text-yellow-400">${targetPlaceName}</b> pada bilangan <b class="font-mono text-xl">${formatNumber(n)}</b>?`;
+                    
+                    options.push(correctAnswer);
+                    // Distractor: angka lain yang ada di dalam bilangan atau angka acak
+                    while(options.length < 4) {
+                        let rDigit = Math.floor(Math.random() * 10).toString();
+                        if(!options.includes(rDigit)) options.push(rDigit);
+                    }
+                    break;
+
+                case 2: // Terbilang -> Angka
+                    const w = terbilang(n);
+                    questionText = `Tuliskan angka dari:<br><span class="text-yellow-400 text-2xl font-bold leading-tight">"${w.charAt(0).toUpperCase() + w.slice(1)}"</span>`;
+                    correctAnswer = formatNumber(n);
+                    
+                    options.push(correctAnswer);
+                    // Distractor: modifikasi angka
+                    while(options.length < 4) {
+                        // Bikin distractor yang masuk akal: tukar digit atau ubah angka sedikit
+                        let arr = nStr.split('');
+                        if (arr.length > 1) {
+                            // Swap 2 angka acak
+                            let i1 = Math.floor(Math.random() * arr.length);
+                            let i2 = Math.floor(Math.random() * arr.length);
+                            let temp = arr[i1]; arr[i1] = arr[i2]; arr[i2] = temp;
+                            // Pastikan tidak berawalan 0
+                            if (arr[0] === '0') arr[0] = '1';
+                        } else {
+                            arr[0] = ((parseInt(arr[0]) + 1) % 9 + 1).toString();
+                        }
+                        
+                        let fakeNum = parseInt(arr.join(''));
+                        // Kadang ubah panjang digit (salah baca ribu jadi ratus)
+                        if (Math.random() > 0.5) fakeNum = Math.floor(fakeNum / 10);
+                        if (fakeNum === 0) fakeNum = n + 10;
+
+                        let fakeFormatted = formatNumber(fakeNum);
+                        if(!options.includes(fakeFormatted) && fakeFormatted !== correctAnswer) {
+                            options.push(fakeFormatted);
+                        }
+                    }
+                    break;
+
+                case 3: // Angka -> Terbilang
+                    questionText = `Bagaimana cara membaca bilangan <br><b class="text-3xl text-yellow-400 font-mono tracking-wider">${formatNumber(n)}</b> ?`;
+                    correctAnswer = terbilang(n);
+                    
+                    options.push(correctAnswer);
+                    // Distractor:
+                    while(options.length < 4) {
+                        let fakeN = n;
+                        let randType = Math.floor(Math.random() * 3);
+                        if (randType === 0) {
+                            // Tambah/kurang faktor 10 (salah order of magnitude)
+                            fakeN = n * (Math.random() > 0.5 ? 10 : 0.1);
+                            fakeN = Math.floor(fakeN);
+                        } else if (randType === 1) {
+                            // Ubah 1 digit
+                            let dArr = nStr.split('');
+                            let idx = Math.floor(Math.random() * dArr.length);
+                            dArr[idx] = ((parseInt(dArr[idx]) + 5) % 10).toString();
+                            if(dArr[0] === '0') dArr[0] = '1';
+                            fakeN = parseInt(dArr.join(''));
+                        } else {
+                             // Hilangkan digit tengah
+                            if(nStr.length > 2) {
+                                fakeN = parseInt(nStr.substring(0, 1) + nStr.substring(2));
+                            } else {
+                                fakeN = n + 1;
+                            }
+                        }
+                        
+                        if (fakeN <= 0) fakeN = n + 15;
+                        
+                        let fakeWords = terbilang(fakeN);
+                        if(!options.includes(fakeWords) && fakeWords !== correctAnswer) {
+                            options.push(fakeWords);
+                        }
+                    }
+                    
+                    // Kapitalisasi awal kalimat untuk opsi
+                    correctAnswer = correctAnswer.charAt(0).toUpperCase() + correctAnswer.slice(1);
+                    options = options.map(opt => opt.charAt(0).toUpperCase() + opt.slice(1));
+                    break;
+            }
+
+            shuffle(options);
+            currentAnswer = correctAnswer;
+            return { questionText, options, correctAnswer };
+        }
+
+        // --- MANAJEMEN UI & GAME LOOP ---
+
+        function showScreen(id) {
+            document.getElementById('screen-start').classList.add('hidden');
+            document.getElementById('screen-game').classList.add('hidden');
+            document.getElementById('screen-gameover').classList.add('hidden');
+            document.getElementById('screen-win').classList.add('hidden');
+            document.getElementById(id).classList.remove('hidden');
+            
+            if (id === 'screen-game') {
+                document.getElementById('screen-game').classList.add('flex');
+            } else {
+                document.getElementById('screen-game').classList.remove('flex');
+            }
+        }
+
+        function updateUI() {
+            document.getElementById('score-display').innerText = score;
+            document.getElementById('level-display').innerText = currentLevel;
+            
+            // Update Lives
+            const hearts = document.querySelectorAll('.heart');
+            hearts.forEach((h, index) => {
+                if (index < lives) {
+                    h.classList.remove('lost');
+                    h.innerText = '❤️';
+                } else {
+                    h.classList.add('lost');
+                    h.innerText = '🖤';
+                }
+            });
+
+            // Update Level Progress Bar (0 to 100% within current 50 questions)
+            const questionsInCurrentLevel = score % QUESTIONS_PER_LEVEL;
+            let progressPercent = (questionsInCurrentLevel / QUESTIONS_PER_LEVEL) * 100;
+            // Jika score adalah kelipatan 50 dan > 0, berarti baru naik level, progress 0
+            if (score > 0 && score % QUESTIONS_PER_LEVEL === 0) progressPercent = 0; 
+            
+            document.getElementById('level-progress').style.width = `${progressPercent}%`;
+        }
+
+        function startGame() {
+            score = 0;
+            lives = STARTING_LIVES;
+            currentLevel = 1;
+            showScreen('screen-game');
+            loadNextQuestion();
+        }
+
+        function resetGame() {
+            startGame();
+        }
+
+        function handleLevelUp() {
+            // Kalkulasi level: 1 + Math.floor(score / 50). Maks 10.
+            const newLevel = Math.min(MAX_LEVEL, 1 + Math.floor(score / QUESTIONS_PER_LEVEL));
+            if (newLevel > currentLevel) {
+                currentLevel = newLevel;
+                // Opsional: Animasi/Pesan Naik Level
+                const qText = document.getElementById('question-text');
+                qText.innerHTML = `<span class="text-4xl text-emerald-400 font-bold block mb-2">LEVEL UP!</span><span class="text-xl">Sekarang kamu di Level ${currentLevel}</span>`;
+                document.getElementById('options-container').innerHTML = '';
+                
+                // Jeda sedikit sebelum soal berikutnya
+                isProcessing = true;
+                setTimeout(() => {
+                    isProcessing = false;
+                    loadNextQuestion();
+                }, 1500);
+                return true;
+            }
+            return false;
+        }
+
+        function loadNextQuestion() {
+            if (score >= MAX_SCORE) {
+                showScreen('screen-win');
+                return;
+            }
+
+            if (handleLevelUp()) return;
+
+            updateUI();
+            const qData = generateQuestion();
+            
+            document.getElementById('question-text').innerHTML = qData.questionText;
+            
+            const optContainer = document.getElementById('options-container');
+            optContainer.innerHTML = '';
+            
+            qData.options.forEach((opt, index) => {
+                const btn = document.createElement('button');
+                // Styling dinamis ukuran font berdasarkan panjang teks (berguna untuk terbilang)
+                let textClass = "text-xl sm:text-2xl";
+                if (opt.length > 30) textClass = "text-sm sm:text-base";
+                else if (opt.length > 15) textClass = "text-base sm:text-lg";
+
+                btn.className = `btn-option w-full min-h-[80px] p-4 bg-slate-800 hover:bg-slate-700 border-2 border-slate-600 rounded-xl font-semibold text-slate-200 shadow-md flex items-center justify-center ${textClass}`;
+                btn.innerHTML = `<span>${opt}</span>`;
+                btn.onclick = () => checkAnswer(btn, opt, qData.correctAnswer);
+                optContainer.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(btnElement, selectedAnswer, correctAnswer) {
+            if (isProcessing) return;
+            isProcessing = true;
+
+            const buttons = document.querySelectorAll('.btn-option');
+            // Disable all buttons
+            buttons.forEach(b => b.disabled = true);
+
+            if (selectedAnswer === correctAnswer) {
+                // Benar
+                btnElement.classList.add('correct-anim');
+                score++;
+                
+                setTimeout(() => {
+                    isProcessing = false;
+                    loadNextQuestion();
+                }, 600); // Cepat ganti soal jika benar
+                
+            } else {
+                // Salah
+                btnElement.classList.add('wrong-anim');
+                lives--;
+                
+                // Cari tombol yang benar dan beri warna hijau
+                buttons.forEach(b => {
+                    if (b.innerText.trim() === correctAnswer.toString().trim() || b.querySelector('span').innerText === correctAnswer) {
+                        b.classList.remove('bg-slate-800', 'border-slate-600');
+                        b.classList.add('bg-emerald-600', 'border-emerald-500', 'text-white');
+                    }
+                });
+
+                updateUI();
+
+                setTimeout(() => {
+                    if (lives <= 0) {
+                        document.getElementById('final-score').innerText = score;
+                        document.getElementById('final-level').innerText = currentLevel;
+                        showScreen('screen-gameover');
+                        isProcessing = false;
+                    } else {
+                        isProcessing = false;
+                        loadNextQuestion();
+                    }
+                }, 1500); // Jeda lebih lama jika salah agar bisa melihat jawaban benar
+            }
+        }
+    </script>
+</body>
+</html>

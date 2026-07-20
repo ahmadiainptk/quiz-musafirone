@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Game Edukasi: Nilai Tempat Matematika</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700&display=swap');
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: #a7f3d0;
+            background-image: radial-gradient(#34d399 2px, transparent 2px);
+            background-size: 30px 30px;
+            overflow-x: hidden;
+            touch-action: none;
+        }
+
+        h1, h2, .font-heading {
+            font-family: 'Fredoka One', cursive;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+        .shake { animation: shake 0.5s ease-in-out; }
+
+        @keyframes pop {
+            0% { transform: scale(0.8); opacity: 0; }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .pop-anim { animation: pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+
+        .drag-clone {
+            position: fixed;
+            pointer-events: none;
+            z-index: 1000;
+            opacity: 0.9;
+            transform: scale(1.1);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .drop-zone.active-drop {
+            background-color: #fef08a !important;
+            border-color: #eab308 !important;
+            transform: scale(1.05);
+            box-shadow: inset 0 0 15px rgba(234, 179, 8, 0.5);
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background-color: #f00;
+            z-index: 9999;
+            animation: fall linear forwards;
+        }
+
+        @keyframes fall {
+            to { transform: translateY(100vh) rotate(720deg); }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-4">
+
+    <div id="startScreen" class="bg-white rounded-3xl shadow-2xl p-8 md:p-12 w-full max-w-2xl text-center relative border-8 border-white border-opacity-50 backdrop-blur-sm">
+        <h1 class="text-4xl md:text-6xl text-indigo-600 drop-shadow-md mb-6 pop-anim">Petualangan Angka</h1>
+        <p class="text-gray-600 text-lg md:text-xl font-bold mb-8">Pelajari Nilai Tempat: Ratusan hingga Ribuan!</p>
+        
+        <div class="bg-indigo-50 p-6 rounded-2xl mb-8 text-left text-indigo-800">
+            <h3 class="font-heading text-xl mb-2">Peraturan:</h3>
+            <ul class="list-disc pl-5 space-y-1 font-semibold">
+                <li>Tarik angka yang benar ke kotaknya.</li>
+                <li>Terdapat 4 Level dengan tingkat kesulitan yang meningkat.</li>
+                <li>Total 100 pertanyaan menantimu!</li>
+                <li>Hanya ada 1 kali kesempatan menjawab per pertanyaan.</li>
+            </ul>
+        </div>
+
+        <button onclick="startGame()" class="bg-green-500 hover:bg-green-600 text-white text-3xl font-heading py-4 px-12 rounded-full shadow-[0_6px_0_#166534] hover:shadow-[0_2px_0_#166534] hover:translate-y-[4px] transition-all">
+            Mulai Bermain!
+        </button>
+    </div>
+
+    <div id="gameScreen" class="hidden bg-white rounded-3xl shadow-2xl p-6 md:p-10 w-full max-w-4xl text-center relative border-8 border-white border-opacity-50 backdrop-blur-sm">
+        
+        <!-- Header Game -->
+        <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
+            <div class="bg-indigo-100 text-indigo-800 px-5 py-2 rounded-full font-bold shadow-inner text-lg w-full md:w-auto">
+                Level <span id="levelDisplay">1</span> | Soal: <span id="questionDisplay">1/20</span>
+            </div>
+            <button onclick="giveUp()" class="bg-red-100 hover:bg-red-200 text-red-600 px-6 py-2 rounded-full font-bold transition w-full md:w-auto">
+                Menyerah
+            </button>
+        </div>
+
+        <p class="text-gray-600 mb-4 text-lg font-bold">Tarik angka yang tepat untuk membentuk bilangan di bawah ini!</p>
+
+        <div class="bg-indigo-500 text-white rounded-2xl py-4 px-8 inline-block mb-8 shadow-lg transform transition hover:scale-105">
+            <h2 class="text-sm uppercase tracking-widest text-indigo-200 mb-1">Target Angka</h2>
+            <div id="targetNumber" class="text-5xl md:text-7xl font-heading tracking-wider">000</div>
+        </div>
+
+        <!-- Area Drop Zones (Akan dirender dinamis via JS) -->
+        <div id="dropZoneContainer" class="flex flex-row flex-wrap justify-center items-center gap-4 md:gap-6 mb-10 w-full">
+            <!-- Drop zones disuntikkan di sini -->
+        </div>
+
+        <!-- Tombol Cek dan Pesan Umpan Balik -->
+        <button id="checkButton" onclick="checkAnswer()" class="bg-yellow-400 hover:bg-yellow-500 text-yellow-900 text-2xl font-heading py-3 px-10 rounded-full shadow-[0_6px_0_#b45309] hover:shadow-[0_2px_0_#b45309] hover:translate-y-[4px] transition-all mb-8 hidden mx-auto">
+            Cek Jawaban!
+        </button>
+
+        <div id="feedbackMessage" class="hidden text-xl font-bold p-4 rounded-xl mb-6 mx-auto max-w-2xl"></div>
+
+        <!-- Area Pilihan Angka -->
+        <div class="bg-gray-100 p-4 rounded-2xl shadow-inner max-w-2xl mx-auto">
+            <h3 class="text-gray-500 text-sm font-bold uppercase tracking-wider mb-3">Pilihan Angka (Tarik ke atas)</h3>
+            <div class="flex flex-wrap justify-center gap-3 md:gap-5" id="digitContainer">
+                <!-- Angka di-generate oleh JS -->
+            </div>
+        </div>
+    </div>
+
+    <div id="gameOverScreen" class="hidden bg-white rounded-3xl shadow-2xl p-8 md:p-12 w-full max-w-2xl text-center relative border-8 border-white border-opacity-50 backdrop-blur-sm">
+        <h1 class="text-5xl md:text-6xl text-indigo-600 drop-shadow-md mb-4 font-heading pop-anim">Permainan Selesai!</h1>
+        <p id="gameOverSubtext" class="text-gray-600 text-xl font-bold mb-8">Kamu telah menyelesaikan tantangan.</p>
+        
+        <div class="bg-green-100 border-4 border-green-400 p-6 rounded-3xl mb-8 pop-anim">
+            <h3 class="text-green-800 font-heading text-2xl mb-2">Skor Akhir Kamu</h3>
+            <div id="finalScore" class="text-7xl font-heading text-green-600 drop-shadow-sm">0%</div>
+            <p id="scoreDetail" class="text-green-700 font-bold mt-2">Benar 0 dari 0 soal</p>
+        </div>
+
+        <button onclick="resetGame()" class="bg-blue-500 hover:bg-blue-600 text-white text-2xl font-heading py-4 px-10 rounded-full shadow-[0_6px_0_#1e3a8a] hover:shadow-[0_2px_0_#1e3a8a] hover:translate-y-[4px] transition-all">
+            Main Lagi
+        </button>
+    </div>
+
+    <script>
+        const levelConfig = [
+            { level: 1, maxQ: 20, minNum: 100, maxNum: 999, places: ['ratusan', 'puluhan', 'satuan'], randomizePlaces: false },
+            { level: 2, maxQ: 20, minNum: 1000, maxNum: 9999, places: ['ribuan', 'ratusan', 'puluhan', 'satuan'], randomizePlaces: false },
+            { level: 3, maxQ: 30, minNum: 100, maxNum: 999, places: ['ratusan', 'puluhan', 'satuan'], randomizePlaces: true },
+            { level: 4, maxQ: 30, minNum: 1000, maxNum: 9999, places: ['ribuan', 'ratusan', 'puluhan', 'satuan'], randomizePlaces: true }
+        ];
+
+        const placeStyles = {
+            ribuan:  { label: 'Ribuan',  text: 'text-purple-500', bg: 'bg-purple-50', border: 'border-purple-300', textFill: 'text-purple-600' },
+            ratusan: { label: 'Ratusan', text: 'text-red-500', bg: 'bg-red-50', border: 'border-red-300', textFill: 'text-red-600' },
+            puluhan: { label: 'Puluhan', text: 'text-green-500', bg: 'bg-green-50', border: 'border-green-300', textFill: 'text-green-600' },
+            satuan:  { label: 'Satuan',  text: 'text-blue-500', bg: 'bg-blue-50', border: 'border-blue-300', textFill: 'text-blue-600' }
+        };
+
+        let currentLevelIndex = 0;
+        let currentQuestion = 1;
+        let totalCorrect = 0;
+        let totalAttempted = 0;
+        
+        let currentTarget = 0;
+        let answers = {};
+        let isProcessing = false;
+
+        function showScreen(screenId) {
+            document.getElementById('startScreen').classList.add('hidden');
+            document.getElementById('gameScreen').classList.add('hidden');
+            document.getElementById('gameOverScreen').classList.add('hidden');
+            document.getElementById(screenId).classList.remove('hidden');
+        }
+
+        function startGame() {
+            currentLevelIndex = 0;
+            currentQuestion = 1;
+            totalCorrect = 0;
+            totalAttempted = 0;
+            showScreen('gameScreen');
+            startRound();
+        }
+
+        function startRound() {
+            isProcessing = false;
+            let config = levelConfig[currentLevelIndex];
+
+            // Cek apakah level selesai
+            if (currentQuestion > config.maxQ) {
+                currentLevelIndex++;
+                if (currentLevelIndex >= levelConfig.length) {
+                    endGame("Selamat! Kamu menyelesaikan semua level!");
+                    return;
+                }
+                config = levelConfig[currentLevelIndex];
+                currentQuestion = 1;
+            }
+
+            // Update Header UI
+            document.getElementById('levelDisplay').textContent = config.level;
+            document.getElementById('questionDisplay').textContent = `${currentQuestion}/${config.maxQ}`;
+
+            // Generate Angka Target
+            currentTarget = Math.floor(Math.random() * (config.maxNum - config.minNum + 1)) + config.minNum;
+            const targetEl = document.getElementById('targetNumber');
+            targetEl.textContent = currentTarget;
+            
+            // Animasi Pop
+            targetEl.classList.remove('pop-anim');
+            void targetEl.offsetWidth; // trigger reflow
+            targetEl.classList.add('pop-anim');
+
+            // Susun Place / Drop Zones
+            let placesToRender = [...config.places];
+            if (config.randomizePlaces) {
+                placesToRender = shuffleArray(placesToRender);
+            }
+
+            renderDropZones(placesToRender);
+            generateDigits();
+
+            // Reset UI States
+            document.getElementById('checkButton').classList.add('hidden');
+            document.getElementById('feedbackMessage').classList.add('hidden');
+        }
+
+        function renderDropZones(placesArr) {
+            const container = document.getElementById('dropZoneContainer');
+            container.innerHTML = '';
+            answers = {}; 
+
+            placesArr.forEach(place => {
+                answers[place] = null;
+                const style = placeStyles[place];
+                const div = document.createElement('div');
+                div.className = "flex flex-col items-center flex-1 min-w-[80px] max-w-[120px]";
+                
+                div.innerHTML = `
+                    <div class="${style.text} font-bold mb-2 text-lg md:text-xl font-heading drop-shadow-sm">${style.label}</div>
+                    <div class="drop-zone ${style.bg} border-4 border-dashed ${style.border} w-full aspect-[3/4] rounded-2xl flex items-center justify-center text-4xl md:text-5xl font-heading ${style.textFill} transition-all duration-200 cursor-pointer shadow-inner" data-place="${place}">
+                        ?
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+
+            // Re-attach click to clear zone
+            document.querySelectorAll('.drop-zone').forEach(zone => {
+                zone.addEventListener('click', () => {
+                    if (isProcessing) return;
+                    if (zone.textContent.trim() !== '?') {
+                        zone.textContent = '?';
+                        zone.classList.remove('bg-white', 'border-solid');
+                        zone.classList.add('border-dashed');
+                        answers[zone.dataset.place] = null;
+                        document.getElementById('checkButton').classList.add('hidden');
+                    }
+                });
+            });
+        }
+
+        function generateDigits() {
+            const container = document.getElementById('digitContainer');
+            container.innerHTML = '';
+            
+            // Dapatkan digit jawaban yang benar
+            let requiredDigits = currentTarget.toString().split('');
+            
+            // Tambahkan 2 pengecoh (angka acak 0-9)
+            requiredDigits.push(Math.floor(Math.random() * 10).toString());
+            requiredDigits.push(Math.floor(Math.random() * 10).toString());
+
+            // Acak posisinya
+            const shuffledDigits = shuffleArray(requiredDigits);
+
+            shuffledDigits.forEach((digitValue, idx) => {
+                const digit = document.createElement('div');
+                // Beri ID unik agar pengecoh yang bernilai sama bisa dibedakan elemennya
+                digit.id = `digit-${idx}`; 
+                digit.className = 'draggable-digit bg-white border-2 border-gray-200 w-14 h-16 md:w-16 md:h-20 rounded-xl flex items-center justify-center text-3xl md:text-4xl font-heading text-gray-700 shadow-md cursor-grab active:cursor-grabbing hover:bg-blue-50 hover:border-blue-300 transition-colors select-none touch-none';
+                digit.textContent = digitValue;
+                digit.dataset.value = digitValue;
+                
+                digit.addEventListener('pointerdown', handleDragStart);
+                container.appendChild(digit);
+            });
+        }
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        let draggedClone = null;
+        let activeDragValue = null;
+        let initialX = 0, initialY = 0;
+        let currentDropZone = null;
+
+        function handleDragStart(e) {
+            if (isProcessing) return;
+            if (e.pointerType === 'mouse' && e.button !== 0) return;
+            
+            const sourceEl = e.currentTarget; 
+            activeDragValue = sourceEl.dataset.value;
+
+            draggedClone = sourceEl.cloneNode(true);
+            draggedClone.classList.remove('hover:bg-blue-50', 'hover:border-blue-300');
+            draggedClone.classList.add('drag-clone');
+            
+            const rect = sourceEl.getBoundingClientRect();
+            initialX = e.clientX - rect.left;
+            initialY = e.clientY - rect.top;
+
+            updateClonePosition(e.clientX, e.clientY);
+            document.body.appendChild(draggedClone);
+
+            window.addEventListener('pointermove', handleDragMove);
+            window.addEventListener('pointerup', handleDragEnd);
+            window.addEventListener('pointercancel', handleDragEnd);
+            
+            document.body.style.cursor = 'grabbing';
+        }
+
+        function handleDragMove(e) {
+            if (!draggedClone) return;
+            e.preventDefault();
+            
+            updateClonePosition(e.clientX, e.clientY);
+
+            const elemBelow = document.elementFromPoint(e.clientX, e.clientY);
+            const dropZoneBelow = elemBelow ? elemBelow.closest('.drop-zone') : null;
+
+            if (currentDropZone !== dropZoneBelow) {
+                if (currentDropZone) currentDropZone.classList.remove('active-drop');
+                currentDropZone = dropZoneBelow;
+                if (currentDropZone) currentDropZone.classList.add('active-drop');
+            }
+        }
+
+        function updateClonePosition(x, y) {
+            if(draggedClone) {
+                draggedClone.style.left = `${x - initialX}px`;
+                draggedClone.style.top = `${y - initialY}px`;
+            }
+        }
+
+        function handleDragEnd(e) {
+            if (!draggedClone) return;
+
+            draggedClone.remove();
+            draggedClone = null;
+            document.body.style.cursor = 'default';
+
+            window.removeEventListener('pointermove', handleDragMove);
+            window.removeEventListener('pointerup', handleDragEnd);
+            window.removeEventListener('pointercancel', handleDragEnd);
+
+            if (currentDropZone) {
+                currentDropZone.classList.remove('active-drop');
+                
+                const place = currentDropZone.dataset.place;
+                answers[place] = activeDragValue;
+                
+                currentDropZone.textContent = activeDragValue;
+                currentDropZone.classList.remove('border-dashed');
+                currentDropZone.classList.add('bg-white', 'border-solid', 'pop-anim');
+                
+                setTimeout(() => {
+                    if(currentDropZone) currentDropZone.classList.remove('pop-anim');
+                }, 400);
+
+                checkAllFilled();
+            }
+            currentDropZone = null;
+            activeDragValue = null;
+        }
+
+        function checkAllFilled() {
+            // Memeriksa apakah semua properti dalam object 'answers' sudah terisi angka
+            const allFilled = Object.values(answers).every(val => val !== null);
+            const btn = document.getElementById('checkButton');
+            
+            if (allFilled) {
+                btn.classList.remove('hidden');
+                btn.classList.add('pop-anim');
+            } else {
+                btn.classList.add('hidden');
+            }
+        }
+
+        function checkAnswer() {
+            if (isProcessing) return;
+            isProcessing = true; // Lock the UI
+
+            let formedNumber = 0;
+            if (answers.ribuan !== undefined && answers.ribuan !== null) formedNumber += parseInt(answers.ribuan) * 1000;
+            if (answers.ratusan !== undefined && answers.ratusan !== null) formedNumber += parseInt(answers.ratusan) * 100;
+            if (answers.puluhan !== undefined && answers.puluhan !== null) formedNumber += parseInt(answers.puluhan) * 10;
+            if (answers.satuan !== undefined && answers.satuan !== null) formedNumber += parseInt(answers.satuan) * 1;
+
+            totalAttempted++;
+            const msgBox = document.getElementById('feedbackMessage');
+            document.getElementById('checkButton').classList.add('hidden');
+
+            if (formedNumber === currentTarget) {
+                totalCorrect++;
+                msgBox.textContent = `Hebat! Jawabanmu benar.`;
+                msgBox.className = 'text-green-800 bg-green-200 border-2 border-green-500 text-xl font-bold p-4 rounded-xl mb-6 pop-anim mx-auto max-w-2xl';
+                shootConfetti();
+            } else {
+                msgBox.textContent = `Salah. Kamu menyusun ${formedNumber}. Jawaban yang benar adalah ${currentTarget}.`;
+                msgBox.className = 'text-red-800 bg-red-200 border-2 border-red-500 text-xl font-bold p-4 rounded-xl mb-6 pop-anim mx-auto max-w-2xl';
+                
+                document.querySelectorAll('.drop-zone').forEach(zone => {
+                    zone.classList.remove('shake');
+                    void zone.offsetWidth;
+                    zone.classList.add('shake');
+                });
+            }
+
+            msgBox.classList.remove('hidden');
+
+            // Pindah ke soal berikutnya setelah 2.5 detik
+            setTimeout(() => {
+                currentQuestion++;
+                startRound();
+            }, 2500);
+        }
+
+        function giveUp() {
+            endGame("Kamu telah menyerah di tengah jalan.");
+        }
+
+        function endGame(subtitle) {
+            let percentage = 0;
+            if (totalAttempted > 0) {
+                percentage = Math.round((totalCorrect / totalAttempted) * 100);
+            }
+
+            document.getElementById('gameOverSubtext').textContent = subtitle;
+            document.getElementById('finalScore').textContent = `${percentage}%`;
+            document.getElementById('scoreDetail').textContent = `Benar ${totalCorrect} dari ${totalAttempted} soal yang dikerjakan.`;
+            
+            showScreen('gameOverScreen');
+        }
+
+        function resetGame() {
+            startGame();
+        }
+
+        function shootConfetti() {
+            const colors = ['#fde047', '#3b82f6', '#ef4444', '#22c55e', '#a855f7'];
+            for (let i = 0; i < 60; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.top = -10 + 'px';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                
+                const size = (Math.random() * 8 + 6) + 'px';
+                confetti.style.width = size;
+                confetti.style.height = size;
+                
+                const duration = Math.random() * 2 + 2; 
+                const delay = Math.random() * 0.5;
+                confetti.style.animationDuration = duration + 's';
+                confetti.style.animationDelay = delay + 's';
+                
+                document.body.appendChild(confetti);
+                
+                setTimeout(() => { confetti.remove(); }, (duration + delay) * 1000);
+            }
+        }
+
+        // Tampilkan layar utama saat game pertama kali dimuat
+        document.addEventListener('DOMContentLoaded', () => {
+            showScreen('startScreen');
+        });
+    </script>
+</body>
+</html>

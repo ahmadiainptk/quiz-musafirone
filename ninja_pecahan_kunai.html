@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ninja Pecahan - Lempar Kunai</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Shojumaru&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(to bottom, #0f172a, #1e1b4b);
+            overflow: hidden;
+            touch-action: manipulation;
+        }
+        
+        .title-font {
+            font-family: 'Shojumaru', system-ui;
+        }
+
+        .fraction {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            font-weight: bold;
+            line-height: 1;
+        }
+        .fraction span.numerator {
+            border-bottom: 2px solid white;
+            padding: 0 0.5rem;
+            margin-bottom: 0.25rem;
+        }
+        .fraction span.denominator {
+            padding: 0 0.5rem;
+        }
+
+        .fraction-bar-container {
+            display: flex;
+            width: 100%;
+            height: 20px;
+            border: 2px solid #94a3b8;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 10px;
+            background-color: #334155;
+        }
+        .fraction-bar-segment {
+            flex: 1;
+            border-right: 1px solid #64748b;
+        }
+        .fraction-bar-segment:last-child {
+            border-right: none;
+        }
+        .fraction-bar-segment.filled {
+            background-color: #4ade80; /* Green fill */
+            box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+        }
+
+        .target-platform {
+            background: linear-gradient(to right, #475569, #334155);
+            border: 3px solid #94a3b8;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+            transition: transform 0.1s, border-color 0.2s;
+            position: relative;
+        }
+        .target-platform:hover:not(:disabled) {
+            transform: scale(1.02) translateX(-5px);
+            border-color: #cbd5e1;
+            cursor: crosshair;
+        }
+        .target-platform:active:not(:disabled) {
+            transform: scale(0.98);
+        }
+        .target-platform.selected {
+            border-color: #facc15; /* Yellow */
+            background: linear-gradient(to right, #854d0e, #713f12);
+        }
+        .target-platform.success {
+            border-color: #4ade80;
+            background: linear-gradient(to right, #166534, #14532d);
+        }
+        .target-platform.error {
+            border-color: #f87171;
+            background: linear-gradient(to right, #991b1b, #7f1d1d);
+        }
+
+        /* Hit Sequence Badge for ordering levels */
+        .sequence-badge {
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            width: 30px;
+            height: 30px;
+            background-color: #facc15;
+            color: #000;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 900;
+            font-size: 1.2rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+            opacity: 0;
+            transform: scale(0);
+            transition: all 0.3s;
+        }
+        .target-platform.selected .sequence-badge {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* Kunai Animation */
+        .kunai {
+            position: absolute;
+            font-size: 2.5rem;
+            z-index: 50;
+            pointer-events: none;
+            transition: transform 0.3s ease-in; /* Throw speed */
+            filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.5));
+        }
+
+        @keyframes throwNinja {
+            0% { transform: rotate(0deg); }
+            50% { transform: rotate(-20deg) scale(1.1); }
+            100% { transform: rotate(0deg); }
+        }
+        .ninja-throw {
+            animation: throwNinja 0.3s ease-out;
+        }
+
+        .modal-bg {
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+        }
+    </style>
+</head>
+<body class="text-white h-screen w-screen flex flex-col">
+
+    <header class="w-full p-3 md:p-4 flex justify-between items-center bg-slate-900/80 border-b border-slate-700 z-10 relative shadow-lg">
+        <div class="flex items-center gap-2 md:gap-4">
+            <h1 class="title-font text-lg md:text-2xl text-yellow-400 drop-shadow-md hidden md:block">Ninja Pecahan</h1>
+            <span class="bg-indigo-600 px-3 py-1 rounded-full text-xs md:text-sm font-bold shadow-lg text-center" id="level-display">Level 1: Mulai</span>
+        </div>
+        <div class="flex items-center gap-4 text-sm md:text-xl font-bold">
+            <div class="flex flex-col items-end md:flex-row md:items-center gap-1 md:gap-2 text-slate-300">
+                <span>Soal: <span id="question-progress" class="text-white">0/10</span></span>
+            </div>
+            <button onclick="confirmSurrender()" class="bg-red-600 hover:bg-red-500 text-white px-4 py-1.5 rounded-lg text-sm font-bold transition-colors border border-red-400 shadow-[0_0_10px_rgba(220,38,38,0.5)]">
+                🏳️ Menyerah
+            </button>
+        </div>
+    </header>
+
+    <main class="flex-1 relative w-full overflow-hidden flex flex-col" id="game-container">
+        
+        <!-- Instruksi -->
+        <div class="w-full text-center z-10 pt-4 px-2" id="question-prompt-container">
+            <h2 id="question-prompt" class="text-lg md:text-3xl font-extrabold text-white drop-shadow-[0_2px_2px_rgba(0,0,0,1)] bg-slate-800/80 inline-block px-6 py-2 rounded-2xl border border-slate-600 shadow-lg">
+                Pilih pecahan...
+            </h2>
+        </div>
+
+        <div class="flex-1 relative flex">
+            <!-- Karakter Ninja (Kiri) -->
+            <div id="ninja-container" class="absolute left-[5%] md:left-[15%] top-1/2 -translate-y-1/2 z-20 flex flex-col items-center">
+                <div id="ninja" class="text-6xl md:text-8xl drop-shadow-[0_10px_10px_rgba(0,0,0,0.5)] transform-origin-bottom">🥷</div>
+                <!-- Platform Ninja -->
+                <div class="w-24 md:w-32 h-6 md:h-8 bg-slate-700 rounded-full mt-2 border-t-2 border-slate-500 shadow-[0_10px_20px_black]"></div>
+            </div>
+
+            <!-- Wadah Target (Kanan) -->
+            <div id="targets-container" class="absolute right-[5%] md:right-[15%] top-[5%] bottom-[5%] w-[55%] md:w-[40%] flex flex-col justify-center gap-3 z-10">
+                <!-- Target diinjeksi via JS -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Start Screen Modal -->
+    <div id="start-modal" class="modal-bg absolute inset-0 z-50 flex justify-center items-center flex-col">
+        <div class="bg-slate-800 p-6 md:p-8 rounded-3xl border-4 border-indigo-500 text-center max-w-2xl mx-4 shadow-[0_0_40px_rgba(99,102,241,0.6)]">
+            <h1 class="title-font text-4xl md:text-5xl text-yellow-400 mb-2 drop-shadow-md">Ninja Pecahan</h1>
+            <h2 class="title-font text-xl text-slate-300 mb-6">Jalan Sang Kunai</h2>
+            
+            <p class="text-sm md:text-base mb-6 text-slate-300">
+                Lemparkan kunai 🗡️ ke target pecahan yang benar! <br>Game ini memiliki 6 Level dengan tingkat kesulitan yang terus meningkat.
+            </p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-left bg-slate-900 p-4 rounded-xl mb-6 text-xs md:text-sm text-slate-300">
+                <div><b>Lvl 1 (10 Soal):</b> Cari yang Terbesar (+Gambar)</div>
+                <div><b>Lvl 2 (10 Soal):</b> Cari yang Terkecil (+Gambar)</div>
+                <div><b>Lvl 3 (10 Soal):</b> Urutkan Terbesar ke Terkecil (+Gambar, 3 pilihan)</div>
+                <div><b>Lvl 4 (10 Soal):</b> Urutkan Terkecil ke Terbesar (+Gambar, 3 pilihan)</div>
+                <div><b>Lvl 5 (20 Soal):</b> Urutkan Terbesar ke Terkecil (Tanpa Gambar, 4 pilihan)</div>
+                <div><b>Lvl 6 (20 Soal):</b> Urutkan Terkecil ke Terbesar (Tanpa Gambar, 5 pilihan)</div>
+            </div>
+            
+            <button onclick="startGame()" class="bg-green-500 hover:bg-green-400 text-slate-900 text-xl md:text-2xl font-extrabold py-3 md:py-4 px-10 rounded-full transition-transform hover:scale-105 shadow-[0_0_20px_rgba(74,222,128,0.5)]">
+                MULAI PETUALANGAN
+            </button>
+        </div>
+    </div>
+
+    <!-- Game Over / Recap Modal -->
+    <div id="game-over-modal" class="modal-bg absolute inset-0 z-50 hidden justify-center items-center flex-col">
+        <div class="bg-slate-800 p-8 rounded-3xl border-4 border-yellow-500 text-center max-w-lg mx-4 shadow-[0_0_40px_rgba(234,179,8,0.5)]">
+            <h1 id="end-title" class="title-font text-4xl md:text-5xl text-yellow-400 mb-2 drop-shadow-md">REKAPITULASI</h1>
+            <h2 id="end-subtitle" class="text-xl font-bold mb-6 text-slate-300">Latihan Selesai!</h2>
+            
+            <div class="bg-slate-900 p-6 rounded-xl mb-6 grid grid-cols-2 gap-4 text-left">
+                <div class="text-slate-400 text-sm">Soal Dijawab:</div>
+                <div class="text-white font-bold text-right" id="stat-answered">0</div>
+                
+                <div class="text-slate-400 text-sm">Jawaban Benar:</div>
+                <div class="text-green-400 font-bold text-right" id="stat-correct">0</div>
+                
+                <div class="col-span-2 border-t border-slate-700 my-2"></div>
+                
+                <div class="text-slate-300 text-lg font-bold">Akurasi:</div>
+                <div class="text-yellow-400 font-black text-2xl text-right" id="stat-accuracy">0%</div>
+            </div>
+            
+            <button onclick="location.reload()" class="bg-blue-500 hover:bg-blue-400 text-white text-xl font-extrabold py-3 px-8 rounded-full transition-transform hover:scale-110 shadow-lg w-full">
+                MAIN LAGI
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // --- KONFIGURASI LEVEL ---
+        const LEVELS = [
+            { id: 1, type: 'find_max',  count: 2, visual: true,  maxQs: 10, prompt: "Lemparkan kunai ke pecahan <b>PALING BESAR</b>!", title: "Level 1: Cari Terbesar" },
+            { id: 2, type: 'find_min',  count: 2, visual: true,  maxQs: 10, prompt: "Lemparkan kunai ke pecahan <b>PALING KECIL</b>!", title: "Level 2: Cari Terkecil" },
+            { id: 3, type: 'sort_desc', count: 3, visual: true,  maxQs: 10, prompt: "Urutkan dengan melempar dari yang <b>TERBESAR</b> ke <b>TERKECIL</b>!", title: "Level 3: Urut Terbesar" },
+            { id: 4, type: 'sort_asc',  count: 3, visual: true,  maxQs: 10, prompt: "Urutkan dengan melempar dari yang <b>TERKECIL</b> ke <b>TERBESAR</b>!", title: "Level 4: Urut Terkecil" },
+            { id: 5, type: 'sort_desc', count: 4, visual: false, maxQs: 20, prompt: "Tantangan! Urutkan dari <b>TERBESAR</b> ke <b>TERKECIL</b>!", title: "Level 5: Master Terbesar" },
+            { id: 6, type: 'sort_asc',  count: 5, visual: false, maxQs: 20, prompt: "Tantangan! Urutkan dari <b>TERKECIL</b> ke <b>TERBESAR</b>!", title: "Level 6: Master Terkecil" }
+        ];
+
+        // --- STATE PERMAINAN ---
+        let currentLevelIndex = 0;
+        let questionCountInLevel = 0; // Berapa soal yg sdh dilewati di level ini
+        let totalCorrect = 0;
+        let totalAnswered = 0;
+        
+        let currentFractions = [];
+        let targetSequence = []; // Urutan ID yg benar [id1, id2, ...]
+        let userSequence = [];   // Urutan ID yg diklik user
+        let isAnimating = false;
+
+        // --- REFERENSI DOM ---
+        const DOM = {
+            levelDisplay: document.getElementById('level-display'),
+            qProgress: document.getElementById('question-progress'),
+            prompt: document.getElementById('question-prompt'),
+            targetsContainer: document.getElementById('targets-container'),
+            ninja: document.getElementById('ninja'),
+            gameContainer: document.getElementById('game-container'),
+            startModal: document.getElementById('start-modal'),
+            gameOverModal: document.getElementById('game-over-modal')
+        };
+
+        // --- FUNGSI UTILITAS ---
+        function getRandomInt(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        function generateUniqueFractions(count, useVisual) {
+            let fractions = [];
+            let maxDen = useVisual ? 10 : 20; // Batasi penyebut agar gambar tidak terlalu kecil
+            
+            while (fractions.length < count) {
+                let den = getRandomInt(2, maxDen);
+                let num = getRandomInt(1, den - 1); // Tidak pernah 1 utuh (num=den)
+                let val = num / den;
+                
+                // Pastikan nilai tidak ada yang persis sama agar bisa diurutkan dg pasti
+                let isDuplicate = fractions.some(f => Math.abs(f.val - val) < 0.001);
+                if (!isDuplicate) {
+                    fractions.push({ 
+                        id: `frac-${fractions.length}`, 
+                        num: num, 
+                        den: den, 
+                        val: val 
+                    });
+                }
+            }
+            return fractions;
+        }
+
+        function createFractionHTML(fraction, useVisual) {
+            let visualHTML = '';
+            if (useVisual) {
+                let segments = '';
+                for(let i = 0; i < fraction.den; i++) {
+                    segments += `<div class="fraction-bar-segment ${i < fraction.num ? 'filled' : ''}"></div>`;
+                }
+                visualHTML = `<div class="fraction-bar-container">${segments}</div>`;
+            }
+
+            return `
+                <div class="fraction text-xl md:text-3xl ${useVisual ? 'mb-2' : ''}">
+                    <span class="numerator">${fraction.num}</span>
+                    <span class="denominator">${fraction.den}</span>
+                </div>
+                ${visualHTML}
+            `;
+        }
+
+        function setupQuestion() {
+            const levelConfig = LEVELS[currentLevelIndex];
+            
+            // Update Header
+            DOM.levelDisplay.innerText = levelConfig.title;
+            DOM.qProgress.innerText = `${questionCountInLevel + 1}/${levelConfig.maxQs}`;
+            DOM.prompt.innerHTML = levelConfig.prompt;
+
+            // Generate Data
+            currentFractions = generateUniqueFractions(levelConfig.count, levelConfig.visual);
+            
+            // Tentukan target urutan yang benar
+            let sorted = [...currentFractions];
+            if (levelConfig.type.includes('max') || levelConfig.type.includes('desc')) {
+                sorted.sort((a, b) => b.val - a.val); // Besar ke kecil
+            } else {
+                sorted.sort((a, b) => a.val - b.val); // Kecil ke besar
+            }
+            
+            // Jika tipe single choice (find_max / find_min), urutan benar hanya elemen pertama
+            if (levelConfig.type.startsWith('find')) {
+                targetSequence = [sorted[0].id];
+            } else {
+                targetSequence = sorted.map(f => f.id);
+            }
+
+            userSequence = [];
+            
+            // Render Target ke DOM
+            renderTargets(levelConfig);
+        }
+
+        function renderTargets(levelConfig) {
+            DOM.targetsContainer.innerHTML = '';
+            
+            // Mengatur ukuran tombol dinamis agar muat di layar
+            // Semakin banyak tombol, ukurannya semakin pipih/kecil
+            const btnHeightClass = levelConfig.count <= 3 ? 'py-4 md:py-6' : 'py-2 md:py-3';
+            
+            currentFractions.forEach(frac => {
+                const btn = document.createElement('button');
+                btn.id = frac.id;
+                btn.className = `target-platform w-full ${btnHeightClass} px-4 rounded-2xl md:rounded-3xl flex flex-col justify-center items-center text-white`;
+                btn.onclick = () => handleTargetClick(frac.id, btn);
+                
+                // Tambahkan elemen sequence badge (tersembunyi secara default)
+                let badgeHTML = levelConfig.type.startsWith('sort') ? `<div class="sequence-badge" id="badge-${frac.id}"></div>` : '';
+                
+                btn.innerHTML = badgeHTML + createFractionHTML(frac, levelConfig.visual);
+                DOM.targetsContainer.appendChild(btn);
+            });
+        }
+
+        function throwKunai(targetElement, callback) {
+            isAnimating = true;
+            DOM.ninja.classList.add('ninja-throw');
+
+            const kunai = document.createElement('div');
+            kunai.className = 'kunai';
+            kunai.innerText = '🗡️';
+            
+            // Set posisi awal di tangan ninja
+            const ninjaRect = DOM.ninja.getBoundingClientRect();
+            const startX = ninjaRect.right - 20;
+            const startY = ninjaRect.top + (ninjaRect.height / 2) - 20;
+            
+            kunai.style.left = `${startX}px`;
+            kunai.style.top = `${startY}px`;
+            
+            document.body.appendChild(kunai);
+
+            // Hitung jarak ke target
+            const targetRect = targetElement.getBoundingClientRect();
+            const targetX = targetRect.left + 20; // Sedikit di pinggir kiri target
+            const targetY = targetRect.top + (targetRect.height / 2) - 20;
+
+            const deltaX = targetX - startX;
+            const deltaY = targetY - startY;
+            
+            // Hitung rotasi kunai agar mengarah ke target
+            const angle = Math.atan2(deltaY, deltaX) * 180 / Math.PI;
+
+            // Trigger animasi ke frame berikutnya agar transisi CSS jalan
+            requestAnimationFrame(() => {
+                kunai.style.transform = `translate(${deltaX}px, ${deltaY}px) rotate(${angle + 45}deg)`; // +45 menyesuaikan orientasi emoji 🗡️
+            });
+
+            // Tunggu animasi kunai selesai
+            setTimeout(() => {
+                kunai.remove();
+                DOM.ninja.classList.remove('ninja-throw');
+                isAnimating = false;
+                if (callback) callback();
+            }, 300); // Harus sesuai dengan transition time di CSS .kunai
+        }
+
+        function handleTargetClick(id, btnElement) {
+            if (isAnimating || btnElement.disabled || userSequence.includes(id)) return;
+
+            // Lemparkan kunai
+            throwKunai(btnElement, () => {
+                // Eksekusi logika pengecekan setelah kunai mendarat
+                processHit(id, btnElement);
+            });
+        }
+
+        function processHit(id, btnElement) {
+            const levelConfig = LEVELS[currentLevelIndex];
+            userSequence.push(id);
+            
+            const currentStep = userSequence.length - 1;
+            const isCorrectSoFar = targetSequence[currentStep] === id;
+
+            if (levelConfig.type.startsWith('sort')) {
+                // --- MODE MENGURUTKAN (L3-L6) ---
+                btnElement.classList.add('selected');
+                const badge = document.getElementById(`badge-${id}`);
+                badge.innerText = userSequence.length; // Tampilkan angka urutan 1, 2, 3..
+                
+                if (!isCorrectSoFar) {
+                    // SALAH di tengah jalan
+                    handleWrongAnswer(btnElement);
+                } else if (userSequence.length === targetSequence.length) {
+                    // BENAR SEMUA
+                    handleCorrectAnswer(btnElement, true);
+                }
+                
+            } else {
+                // --- MODE SINGLE CHOICE (L1-L2) ---
+                if (isCorrectSoFar) {
+                    handleCorrectAnswer(btnElement, false);
+                } else {
+                    handleWrongAnswer(btnElement);
+                }
+            }
+        }
+
+        function handleCorrectAnswer(btnElement, isSequence) {
+            totalAnswered++;
+            totalCorrect++;
+            btnElement.classList.add('success');
+            
+            if (isSequence) {
+                // Ubah semua yg selected jadi success
+                userSequence.forEach(uid => {
+                    document.getElementById(uid).classList.add('success');
+                });
+            }
+
+            disableAllTargets();
+            setTimeout(nextQuestion, 800);
+        }
+
+        function handleWrongAnswer(btnElement) {
+            totalAnswered++;
+            btnElement.classList.add('error');
+            DOM.targetsContainer.classList.add('animate-pulse'); // Efek getar sederhana Tailwind
+            
+            // Tunjukkan jawaban yang seharusnya dipukul pada langkah ini
+            const correctId = targetSequence[userSequence.length - 1];
+            const correctBtn = document.getElementById(correctId);
+            if(correctBtn) correctBtn.style.borderColor = '#4ade80'; // highlight hijau
+            
+            disableAllTargets();
+            setTimeout(() => {
+                DOM.targetsContainer.classList.remove('animate-pulse');
+                nextQuestion();
+            }, 1500);
+        }
+
+        function disableAllTargets() {
+            const btns = DOM.targetsContainer.querySelectorAll('button');
+            btns.forEach(b => b.disabled = true);
+        }
+
+        function nextQuestion() {
+            questionCountInLevel++;
+            const levelConfig = LEVELS[currentLevelIndex];
+            
+            if (questionCountInLevel >= levelConfig.maxQs) {
+                // Lanjut ke level berikutnya
+                currentLevelIndex++;
+                questionCountInLevel = 0;
+                
+                if (currentLevelIndex >= LEVELS.length) {
+                    endGame("TAMAT! KAU ADALAH MASTER NINJA!");
+                    return;
+                }
+            }
+            
+            setupQuestion();
+        }
+
+        function startGame() {
+            DOM.startModal.classList.add('hidden');
+            DOM.gameOverModal.classList.add('hidden');
+            DOM.gameOverModal.classList.remove('flex');
+            
+            currentLevelIndex = 0;
+            questionCountInLevel = 0;
+            totalCorrect = 0;
+            totalAnswered = 0;
+            
+            setupQuestion();
+        }
+
+        function confirmSurrender() {
+            if (totalAnswered === 0) {
+                location.reload();
+                return;
+            }
+            endGame("MENYERAH? PERJALANANMU TERHENTI.");
+        }
+
+        function endGame(titleText) {
+            DOM.gameOverModal.classList.remove('hidden');
+            DOM.gameOverModal.classList.add('flex');
+            
+            document.getElementById('end-title').innerText = titleText;
+            document.getElementById('stat-answered').innerText = totalAnswered;
+            document.getElementById('stat-correct').innerText = totalCorrect;
+            
+            const accuracy = totalAnswered === 0 ? 0 : Math.round((totalCorrect / totalAnswered) * 100);
+            
+            const accElement = document.getElementById('stat-accuracy');
+            accElement.innerText = `${accuracy}%`;
+            
+            // Ubah warna persentase berdasarkan performa
+            if (accuracy >= 80) accElement.className = "text-green-400 font-black text-4xl text-right";
+            else if (accuracy >= 50) accElement.className = "text-yellow-400 font-black text-4xl text-right";
+            else accElement.className = "text-red-500 font-black text-4xl text-right";
+        }
+
+    </script>
+</body>
+</html>

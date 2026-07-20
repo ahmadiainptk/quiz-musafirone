@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Monster Laper: Pesta Pecahan V2</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f0fdf4;
+        }
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(#bbf7d0 2px, transparent 2px);
+            background-size: 30px 30px;
+            overflow: hidden; 
+        }
+        h1, h2, h3, .font-display {
+            font-family: 'Fredoka One', cursive;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+        .animate-float { animation: float 3s ease-in-out infinite; }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-10px) rotate(-3deg); }
+            40% { transform: translateX(10px) rotate(3deg); }
+            60% { transform: translateX(-5px) rotate(-2deg); }
+            80% { transform: translateX(5px) rotate(2deg); }
+        }
+        .animate-shake { animation: shake 0.4s ease-in-out; }
+
+        @keyframes popOut {
+            0% { transform: scale(0.5); opacity: 0; }
+            80% { transform: scale(1.05); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .animate-pop { animation: popOut 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+
+        @keyframes textFloatUp {
+            0% { transform: translateY(0) scale(1); opacity: 1; }
+            100% { transform: translateY(-50px) scale(1.2); opacity: 0; }
+        }
+        .floating-feedback {
+            position: absolute;
+            pointer-events: none;
+            font-family: 'Fredoka One', cursive;
+            font-size: 1.5rem;
+            text-shadow: 2px 2px 0px white, -2px -2px 0px white, 2px -2px 0px white, -2px 2px 0px white;
+            animation: textFloatUp 1s ease-out forwards;
+            z-index: 100;
+        }
+
+        .food-item {
+            cursor: grab;
+            transition: transform 0.1s;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.15));
+            touch-action: none; /* Mencegah layar ikut tergeser saat drag makanan di HP */
+        }
+        .food-item:active { cursor: grabbing; }
+        .dragging-clone {
+            position: absolute;
+            pointer-events: none; 
+            z-index: 1000;
+            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.3));
+            transform: scale(1.1);
+            margin: 0 !important;
+        }
+        
+        .belly-fill { transition: stroke-dasharray 0.4s ease-out, stroke 0.3s; }
+        .belly-error { stroke: #ef4444 !important; }
+        .belly-success { stroke: #22c55e !important; }
+
+        .overlay { backdrop-filter: blur(5px); }
+
+        /* Dynamic scaling for multiple monsters */
+        .monster-container { transition: all 0.3s; }
+        .monster-wrapper { position: relative; display: flex; flex-direction: column; items-center; justify-content: flex-end;}
+        
+        /* Custom scrollbar for tray */
+        #tray::-webkit-scrollbar { width: 8px; height: 8px; }
+        #tray::-webkit-scrollbar-track { background: transparent; }
+        #tray::-webkit-scrollbar-thumb { background: #fdba74; border-radius: 10px; }
+        
+        .vomit-particle {
+            position: absolute;
+            pointer-events: none;
+            z-index: 50;
+            font-size: 2rem;
+            transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+    </style>
+</head>
+<body class="h-screen w-screen flex flex-col items-center justify-between">
+
+    <header class="w-full max-w-4xl p-3 flex justify-between items-center z-10 bg-white/80 backdrop-blur-sm border-b-2 border-green-200 shadow-sm">
+        <div class="flex items-center gap-4">
+            <div>
+                <h1 class="text-xl md:text-2xl text-green-600 drop-shadow-sm font-display tracking-wide leading-none">Monster Laper</h1>
+                <p class="text-sm md:text-base text-gray-600 font-bold" id="level-display">Level 1 | Soal 1/10</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-3">
+            <button id="btn-giveup" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-full shadow-[0_4px_0_#b91c1c] active:shadow-[0_0px_0_#b91c1c] active:translate-y-[4px] transition-all text-sm md:text-base">
+                Menyerah
+            </button>
+        </div>
+    </header>
+
+    <main class="flex-1 w-full max-w-5xl relative flex flex-col items-center justify-center overflow-hidden p-2">
+        <div id="monsters-area" class="flex flex-wrap justify-center items-end gap-2 md:gap-6 w-full h-full max-h-full content-center">
+            <!-- Monsters injected here -->
+        </div>
+    </main>
+
+    <footer class="w-full bg-orange-100 rounded-t-[2rem] md:rounded-t-[3rem] border-t-4 border-orange-300 p-4 shadow-[0_-10px_20px_rgba(0,0,0,0.05)] relative z-20 flex flex-col max-h-[35vh]">
+        <h3 class="text-center text-orange-600 font-bold mb-2 text-sm md:text-base">Tarik makanan yang tepat ke perut monster!</h3>
+        <div id="tray" class="flex flex-wrap justify-center items-center gap-3 md:gap-4 min-h-[80px] overflow-y-auto p-2 pb-6">
+            <!-- Makanan di-generate oleh JS -->
+        </div>
+    </footer>
+
+    <div id="start-screen" class="absolute inset-0 bg-black/60 overlay z-50 flex flex-col items-center justify-center p-4">
+        <div class="bg-white rounded-3xl p-8 max-w-md w-full text-center shadow-2xl animate-pop border-4 border-green-500">
+            <h2 class="text-4xl text-green-500 font-display mb-4">Pesta Pecahan!</h2>
+            <p class="text-gray-600 mb-4 text-sm md:text-base">Beri makan monster sesuai permintaannya! <b>Tarik makanan berkali-kali</b> dari nampan untuk merakit pecahan hingga perutnya penuh. <br><br>⚠️ <b>Hati-hati!</b> Jika kebanyakan makan, monster akan muntah dan perutnya kosong lagi!</p>
+            <ul class="text-left text-gray-600 text-sm mb-6 bg-gray-100 p-3 rounded-xl space-y-1">
+                <li>🟢 <b>Level 1:</b> Penyebut Genap</li>
+                <li>🟡 <b>Level 2:</b> Penyebut Ganjil</li>
+                <li>🟠 <b>Level 3:</b> Pecahan > 1 (Sangat Lapar!)</li>
+                <li>🔴 <b>Level 4-10:</b> Jumlah monster bertambah!</li>
+            </ul>
+            <button id="btn-start" class="bg-green-500 hover:bg-green-600 text-white font-display text-2xl py-3 px-8 rounded-full shadow-[0_6px_0_#16a34a] active:shadow-[0_0px_0_#16a34a] active:translate-y-[6px] transition-all w-full">
+                Mulai Main!
+            </button>
+        </div>
+    </div>
+
+    <!-- Layar Selesai (Menyerah / Tamat) -->
+    <div id="game-over-screen" class="absolute inset-0 bg-black/60 overlay z-50 flex flex-col items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl p-8 max-w-md w-full text-center shadow-2xl border-4 border-blue-400 animate-pop">
+            <h2 id="end-title" class="text-4xl text-blue-500 font-display mb-2">Permainan Selesai!</h2>
+            <div class="bg-blue-50 rounded-xl p-4 my-6">
+                <p class="text-gray-600 text-lg mb-2">Akurasi Jawaban Benar:</p>
+                <p id="final-accuracy" class="text-5xl font-display text-blue-600 mb-4">0%</p>
+                <p class="text-gray-600">Total Soal Dikerjakan: <b id="final-questions" class="text-blue-600">0</b></p>
+            </div>
+            <button id="btn-restart" class="bg-blue-500 hover:bg-blue-600 text-white font-display text-xl py-3 px-8 rounded-full shadow-[0_6px_0_#2563eb] active:shadow-[0_0px_0_#2563eb] active:translate-y-[6px] transition-all w-full">
+                Main Lagi
+            </button>
+        </div>
+    </div>
+
+    <!-- Feedback singkat saat level selesai -->
+    <div id="level-up-toast" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-40 hidden pointer-events-none">
+        <h2 class="text-5xl text-yellow-400 font-display drop-shadow-[0_4px_4px_rgba(0,0,0,0.5)] animate-pop">Level Up!</h2>
+    </div>
+
+    <script>
+        let audioCtx;
+        function initAudio() {
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+        }
+
+        function playSound(type) {
+            if (!audioCtx) return;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            const now = audioCtx.currentTime;
+
+            if (type === 'grab') {
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(400, now);
+                osc.frequency.exponentialRampToValueAtTime(600, now + 0.1);
+                gain.gain.setValueAtTime(0.2, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
+                osc.start(now);
+                osc.stop(now + 0.1);
+            } else if (type === 'eat') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(600, now);
+                osc.frequency.linearRampToValueAtTime(900, now + 0.15);
+                gain.gain.setValueAtTime(0.3, now);
+                gain.gain.linearRampToValueAtTime(0.01, now + 0.3);
+                osc.start(now);
+                osc.stop(now + 0.3);
+            } else if (type === 'error') {
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(150, now);
+                osc.frequency.exponentialRampToValueAtTime(100, now + 0.3);
+                gain.gain.setValueAtTime(0.3, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+                osc.start(now);
+                osc.stop(now + 0.3);
+            } else if (type === 'vomit') {
+                // Suara muntah (nada rendah yang menurun drastis)
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(300, now);
+                osc.frequency.exponentialRampToValueAtTime(50, now + 0.5);
+                gain.gain.setValueAtTime(0.4, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.6);
+                osc.start(now);
+                osc.stop(now + 0.6);
+            } else if (type === 'win') {
+                osc.type = 'square';
+                gain.gain.setValueAtTime(0.15, now);
+                gain.gain.linearRampToValueAtTime(0, now + 0.6);
+                osc.frequency.setValueAtTime(440, now); 
+                osc.frequency.setValueAtTime(554.37, now + 0.15); 
+                osc.frequency.setValueAtTime(659.25, now + 0.3); 
+                osc.frequency.setValueAtTime(880, now + 0.45); 
+                osc.start(now);
+                osc.stop(now + 0.6);
+            } else if (type === 'complete') {
+                osc.type = 'sine';
+                gain.gain.setValueAtTime(0.2, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.4);
+                osc.frequency.setValueAtTime(880, now);
+                osc.frequency.setValueAtTime(1108.73, now + 0.1);
+                osc.start(now);
+                osc.stop(now + 0.4);
+            }
+        }
+
+        let state = {
+            level: 1,
+            question: 1,
+            maxQuestionsPerLevel: 10,
+            maxLevels: 10,
+            totalFoodDropped: 0,
+            correctFoodDropped: 0,
+            completedQuestions: 0,
+            monsters: [] 
+        };
+
+        const monsterColors = [
+            { id: 'green', grad1: '#4ade80', grad2: '#16a34a', leg: '#15803d' },
+            { id: 'red', grad1: '#f87171', grad2: '#dc2626', leg: '#b91c1c' },
+            { id: 'blue', grad1: '#60a5fa', grad2: '#2563eb', leg: '#1d4ed8' },
+            { id: 'purple', grad1: '#c084fc', grad2: '#9333ea', leg: '#7e22ce' },
+            { id: 'orange', grad1: '#fb923c', grad2: '#ea580c', leg: '#c2410c' },
+            { id: 'pink', grad1: '#f472b6', grad2: '#db2777', leg: '#be185d' },
+            { id: 'teal', grad1: '#2dd4bf', grad2: '#0d9488', leg: '#0f766e' },
+            { id: 'yellow', grad1: '#fde047', grad2: '#ca8a04', leg: '#a16207' },
+        ];
+
+        function gcd(a, b) {
+            return b === 0 ? a : gcd(b, a % b);
+        }
+
+        function addFractions(f1, f2) {
+            if (f1.n === 0) return { n: f2.n, d: f2.d, val: f2.n / f2.d };
+            let newN = (f1.n * f2.d) + (f2.n * f1.d);
+            let newD = f1.d * f2.d;
+            let divisor = gcd(newN, newD);
+            return { n: newN / divisor, d: newD / divisor, val: newN / newD };
+        }
+
+        function generateLevelFraction(level) {
+            let ruleLvl = level;
+            if (level >= 4) {
+                ruleLvl = Math.floor(Math.random() * 3) + 1; 
+            }
+
+            let n, d;
+            if (ruleLvl === 1) {
+                const denoms = [4, 6, 8, 10];
+                d = denoms[Math.floor(Math.random() * denoms.length)];
+                n = Math.floor(Math.random() * (d - 2)) + 2; 
+            } else if (ruleLvl === 2) {
+                const denoms = [3, 5, 7, 9];
+                d = denoms[Math.floor(Math.random() * denoms.length)];
+                if (d === 3) n = 2; 
+                else n = Math.floor(Math.random() * (d - 2)) + 2; 
+            } else {
+                n = Math.floor(Math.random() * 9) + 11; 
+                const denoms = [4, 5, 6, 7, 8, 9, 10];
+                d = denoms[Math.floor(Math.random() * denoms.length)];
+                while(d >= n) {
+                    d = denoms[Math.floor(Math.random() * denoms.length)];
+                }
+            }
+            return { n, d, val: n/d };
+        }
+
+        function generateTrayFractions(monsters, level) {
+            let trayMap = new Map(); 
+            
+            const add = (n, d) => {
+                if (n === 0) return;
+                let div = gcd(n, d);
+                n /= div; d /= div;
+                if (n/d === 1) return; 
+                trayMap.set(`${n}/${d}`, {n, d, val: n/d});
+            };
+
+            monsters.forEach(m => {
+                let t = m.target;
+                add(1, t.d); 
+                if (t.n > 2) add(Math.floor(t.n / 2), t.d); 
+                if (t.n > 5) {
+                    add(Math.floor(t.n / 3), t.d);
+                    add(Math.floor(t.n / 4), t.d);
+                }
+            });
+
+            monsters.forEach(m => {
+                let div = gcd(m.target.n, m.target.d);
+                let simpleN = m.target.n / div;
+                let simpleD = m.target.d / div;
+                trayMap.delete(`${simpleN}/${simpleD}`);
+            });
+            
+            let decoyCount = 0;
+            let attempts = 0;
+            while ((decoyCount < 3 || trayMap.size < 6) && attempts < 50) {
+                attempts++;
+                let decoyD = Math.floor(Math.random() * 8) + 2; 
+                let decoyN = Math.floor(Math.random() * (decoyD - 1)) + 1;
+                let div = gcd(decoyN, decoyD);
+                decoyN /= div; decoyD /= div;
+                
+                let key = `${decoyN}/${decoyD}`;
+                
+                let isExactTarget = monsters.some(m => {
+                    let md = gcd(m.target.n, m.target.d);
+                    return (m.target.n/md === decoyN) && (m.target.d/md === decoyD);
+                });
+                
+                if (!isExactTarget && !trayMap.has(key)) {
+                    trayMap.set(key, {n: decoyN, d: decoyD, val: decoyN/decoyD});
+                    decoyCount++;
+                }
+            }
+
+            return Array.from(trayMap.values()).sort(() => Math.random() - 0.5);
+        }
+
+        function createMonsterDOM(monsterData, count) {
+            const wrap = document.createElement('div');
+            wrap.className = 'monster-wrapper animate-pop';
+            wrap.id = `monster-wrap-${monsterData.id}`;
+            
+            let sizeClass = 'w-48 h-56 md:w-56 md:h-64'; 
+            if (count >= 7) sizeClass = 'w-20 h-24 md:w-28 md:h-32';
+            else if (count >= 5) sizeClass = 'w-28 h-32 md:w-36 md:h-40';
+            else if (count >= 3) sizeClass = 'w-36 h-40 md:w-48 md:h-56';
+
+            let guidelines = '';
+            const d = monsterData.target.d;
+            for(let i=0; i<d; i++) {
+                let angle = (i / d) * 360 - 90;
+                let rad = angle * Math.PI / 180;
+                let x2 = 100 + 40 * Math.cos(rad);
+                let y2 = 165 + 40 * Math.sin(rad);
+                guidelines += `<line x1="100" y1="165" x2="${x2}" y2="${y2}" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-dasharray="3 2" />`;
+            }
+
+            const bubbleSize = count >= 5 ? 'text-xs md:text-sm p-1 md:p-2' : 'text-sm md:text-lg p-2 md:p-3';
+            const numSize = count >= 5 ? 'text-lg md:text-xl' : 'text-2xl md:text-4xl';
+            const color = monsterData.color;
+
+            wrap.innerHTML = `
+                <div class="relative bg-white border-2 border-gray-800 rounded-2xl ${bubbleSize} shadow-md mb-2 animate-float z-10 text-center mx-auto" style="width: 90%;">
+                    <div class="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-[8px] border-l-transparent border-t-[10px] border-t-gray-800 border-r-[8px] border-r-transparent"></div>
+                    <div class="absolute -bottom-[5px] left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-[6px] border-l-transparent border-t-[8px] border-t-white border-r-[6px] border-r-transparent z-10"></div>
+                    <span class="font-bold text-gray-700 block leading-tight">Mau</span>
+                    <span class="text-orange-500 font-display block ${numSize}">${monsterData.target.n}/${monsterData.target.d}</span>
+                </div>
+
+                <div class="relative ${sizeClass} mx-auto monster-container">
+                    <svg viewBox="0 0 200 250" class="w-full h-full">
+                        <defs>
+                            <radialGradient id="grad-${monsterData.id}" cx="50%" cy="50%" r="50%">
+                                <stop offset="0%" stop-color="${color.grad1}" />
+                                <stop offset="100%" stop-color="${color.grad2}" />
+                            </radialGradient>
+                            <radialGradient id="shadow" cx="50%" cy="50%" r="50%">
+                                <stop offset="0%" stop-color="rgba(0,0,0,0.2)" />
+                                <stop offset="100%" stop-color="rgba(0,0,0,0)" />
+                            </radialGradient>
+                        </defs>
+                        
+                        <ellipse cx="100" cy="240" rx="60" ry="10" fill="url(#shadow)" />
+                        <path d="M 60 200 L 50 240 L 70 240 Z" fill="${color.leg}" />
+                        <path d="M 140 200 L 130 240 L 150 240 Z" fill="${color.leg}" />
+                        <path d="M 30 130 Q 10 150 20 180" fill="none" stroke="${color.grad2}" stroke-width="15" stroke-linecap="round" />
+                        <path d="M 170 130 Q 190 150 180 180" fill="none" stroke="${color.grad2}" stroke-width="15" stroke-linecap="round" />
+                        <rect x="30" y="50" width="140" height="160" rx="70" fill="url(#grad-${monsterData.id})" />
+
+                        <circle cx="70" cy="90" r="18" fill="white" stroke="#064e3b" stroke-width="2"/>
+                        <circle cx="130" cy="90" r="18" fill="white" stroke="#064e3b" stroke-width="2"/>
+                        <circle cx="70" cy="90" r="8" fill="#0f172a" class="pupil" />
+                        <circle cx="130" cy="90" r="8" fill="#0f172a" class="pupil" />
+                        <circle cx="67" cy="87" r="3" fill="white" />
+                        <circle cx="127" cy="87" r="3" fill="white" />
+
+                        <path d="M 80 115 Q 100 135 120 115 Z" fill="#4c0519" id="mouth-${monsterData.id}" stroke="#000" stroke-width="2" stroke-linejoin="round" />
+
+                        <circle cx="100" cy="165" r="40" fill="rgba(0,0,0,0.3)" id="belly-bg-${monsterData.id}"/>
+                        <g id="guides-${monsterData.id}">${guidelines}</g>
+                        <circle cx="100" cy="165" r="40" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="4" />
+                        
+                        <circle cx="100" cy="165" r="20" fill="transparent" stroke="#fde047" stroke-width="40" stroke-dasharray="0 125.66" transform="rotate(-90 100 165)" id="fill-${monsterData.id}" class="belly-fill"/>
+                        <path d="M 70 145 A 40 40 0 0 1 115 130 A 35 35 0 0 0 70 160 Z" fill="rgba(255,255,255,0.3)" />
+                        
+                        <text id="belly-text-${monsterData.id}" x="100" y="170" text-anchor="middle" dominant-baseline="middle" font-family="'Fredoka One', cursive" font-size="20" fill="white" stroke="#000" stroke-width="1.5"></text>
+                    </svg>
+                    <div id="drop-${monsterData.id}" class="drop-zone absolute bottom-6 md:bottom-10 left-1/2 transform -translate-x-1/2 w-1/2 h-1/2 rounded-full z-20" data-id="${monsterData.id}"></div>
+                </div>
+            `;
+            return wrap;
+        }
+
+        function createFoodElement(fractionObj) {
+            const div = document.createElement('div');
+            div.className = 'food-item animate-pop flex items-center justify-center';
+            div.dataset.n = fractionObj.n;
+            div.dataset.d = fractionObj.d;
+            
+            div.style.width = '70px';
+            div.style.height = '70px';
+
+            let svgContent = '';
+            const colors = ['#f43f5e', '#3b82f6', '#d946ef', '#eab308', '#f97316'];
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            
+            if (fractionObj.val >= 1) {
+                svgContent = `<circle cx="50" cy="50" r="45" fill="${color}" stroke="#fff" stroke-width="4"/>`;
+            } else {
+                const angle = fractionObj.val * 360;
+                const rad = (angle - 90) * Math.PI / 180;
+                const x = 50 + 45 * Math.cos(rad);
+                const y = 50 + 45 * Math.sin(rad);
+                const largeArc = fractionObj.val > 0.5 ? 1 : 0;
+                svgContent = `<path d="M50,50 L50,5 A45,45 0 ${largeArc},1 ${x},${y} Z" fill="${color}" stroke="#fff" stroke-width="3" stroke-linejoin="round"/>`;
+            }
+
+            const str = `${fractionObj.n}/${fractionObj.d}`;
+            const fontSize = str.length > 3 ? 18 : 26;
+            
+            div.innerHTML = `
+                <svg viewBox="0 0 100 100" class="w-full h-full drop-shadow-md pointer-events-none">
+                    <circle cx="50" cy="50" r="45" fill="rgba(0,0,0,0.1)" stroke="none"/>
+                    ${svgContent}
+                    <text x="50" y="55" text-anchor="middle" dominant-baseline="middle" font-family="'Fredoka One', cursive" font-size="${fontSize}" fill="white" stroke="#000" stroke-width="1.5">${str}</text>
+                </svg>
+            `;
+            
+            attachDragEvents(div);
+            return div;
+        }
+
+        let isDragging = false;
+        let draggedClone = null;
+        let currentOriginalItem = null;
+
+        function attachDragEvents(element) {
+            element.addEventListener('pointerdown', (e) => {
+                if (isDragging) return;
+                initAudio(); 
+                playSound('grab');
+                
+                isDragging = true;
+                currentOriginalItem = element;
+                
+                draggedClone = element.cloneNode(true);
+                draggedClone.classList.add('dragging-clone');
+                document.body.appendChild(draggedClone);
+                
+                moveClone(e);
+                e.preventDefault();
+            });
+        }
+
+        document.addEventListener('pointermove', (e) => {
+            if (!isDragging || !draggedClone) return;
+            moveClone(e);
+            
+            state.monsters.forEach(m => {
+                if(m.isFull) return;
+                const dropZone = document.getElementById(`drop-${m.id}`);
+                if(!dropZone) return;
+                const rect = dropZone.getBoundingClientRect();
+                const dist = Math.hypot(e.clientX - (rect.left + rect.width/2), e.clientY - (rect.top + rect.height/2));
+                const mouth = document.getElementById(`mouth-${m.id}`);
+                if (dist < 100) mouth.setAttribute('d', 'M 80 115 Q 100 155 120 115 Z'); // Buka lebar
+                else mouth.setAttribute('d', 'M 80 115 Q 100 135 120 115 Z'); // Normal
+            });
+        });
+
+        document.addEventListener('pointerup', (e) => {
+            if (!isDragging || !draggedClone) return;
+            
+            const cloneRect = draggedClone.getBoundingClientRect();
+            let droppedOnMonster = null;
+
+            for(let m of state.monsters) {
+                if(m.isFull) continue;
+                document.getElementById(`mouth-${m.id}`).setAttribute('d', 'M 80 115 Q 100 135 120 115 Z'); 
+                const dropZone = document.getElementById(`drop-${m.id}`);
+                if(dropZone && isOverlapping(cloneRect, dropZone.getBoundingClientRect())) {
+                    droppedOnMonster = m;
+                    break;
+                }
+            }
+
+            if (droppedOnMonster) {
+                const dropN = parseInt(currentOriginalItem.dataset.n);
+                const dropD = parseInt(currentOriginalItem.dataset.d);
+                processDrop(droppedOnMonster, dropN, dropD);
+            } else {
+                playSound('error'); 
+            }
+
+            draggedClone.remove();
+            draggedClone = null;
+            isDragging = false;
+            currentOriginalItem = null;
+        });
+
+        function moveClone(e) {
+            const width = draggedClone.offsetWidth;
+            const height = draggedClone.offsetHeight;
+            draggedClone.style.left = (e.clientX - width / 2) + 'px';
+            draggedClone.style.top = (e.clientY - height / 2) + 'px';
+        }
+
+        function isOverlapping(rect1, rect2) {
+            return !(rect1.right < rect2.left || rect1.left > rect2.right || rect1.bottom < rect2.top || rect1.top > rect2.bottom);
+        }
+
+        function showFloatingText(text, color, elementId) {
+            const el = document.createElement('div');
+            el.className = 'floating-feedback';
+            el.textContent = text;
+            el.style.color = color;
+            
+            const targetEl = document.getElementById(elementId);
+            if(targetEl) {
+                const rect = targetEl.getBoundingClientRect();
+                el.style.left = (rect.left + rect.width/2 - 30) + 'px';
+                el.style.top = (rect.top - 20) + 'px';
+                document.body.appendChild(el);
+                setTimeout(() => el.remove(), 1000);
+            }
+        }
+
+        function createVomitParticles(monsterId) {
+            const wrap = document.getElementById(`monster-wrap-${monsterId}`);
+            if(!wrap) return;
+            
+            const emojis = ['🤢', '🤮', '💦', '💥'];
+            for(let i=0; i<6; i++) {
+                const p = document.createElement('div');
+                p.className = 'vomit-particle';
+                p.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                p.style.left = '50%';
+                p.style.top = '60%'; // Area perut/mulut
+                p.style.transform = `translate(-50%, -50%) scale(0.1)`;
+                
+                wrap.appendChild(p);
+                
+                // Trigger reflow
+                p.getBoundingClientRect();
+                
+                const angle = (Math.random() * Math.PI) - (Math.PI / 2); // Tersebar ke atas
+                const dist = 60 + Math.random() * 60;
+                const tx = Math.cos(angle) * dist;
+                const ty = Math.sin(angle) * dist - 80;
+                
+                p.style.transform = `translate(calc(-50% + ${tx}px), calc(-50% + ${ty}px)) scale(1.2)`;
+                p.style.opacity = '0';
+                
+                setTimeout(() => p.remove(), 500);
+            }
+        }
+
+        function updateBellyVisual(monster) {
+            const fillEl = document.getElementById(`fill-${monster.id}`);
+            const bgEl = document.getElementById(`belly-bg-${monster.id}`);
+            const textEl = document.getElementById(`belly-text-${monster.id}`);
+            
+            let val = monster.current.val;
+            
+            if (val === 0) textEl.textContent = '';
+            else textEl.textContent = `${monster.current.n}/${monster.current.d}`;
+            
+            const circ = 125.66;
+            let wholes = Math.floor(val);
+            let remainder = val - wholes;
+            
+            if (val > 0 && remainder < 0.001) { 
+                wholes -= 1; 
+                remainder = 1; 
+            }
+            
+            const bgColors = ['rgba(0,0,0,0.3)', '#fef08a', '#fdba74', '#fca5a5', '#d8b4fe'];
+            const fillColors = ['#fde047', '#f97316', '#ef4444', '#a855f7', '#ec4899'];
+            
+            bgEl.setAttribute('fill', bgColors[Math.min(wholes, bgColors.length - 1)]);
+            fillEl.style.stroke = fillColors[Math.min(wholes, fillColors.length - 1)];
+            fillEl.setAttribute('stroke-dasharray', `${remainder * circ} ${circ}`);
+        }
+
+        function processDrop(monster, dropN, dropD) {
+            state.totalFoodDropped++;
+            const dropVal = dropN / dropD;
+            const eps = 0.001;
+            
+            let newCurrentVal = monster.current.val + dropVal;
+
+            if (newCurrentVal <= monster.target.val + eps) {
+                // MAKANAN DITERIMA (Pas atau Kurang)
+                state.correctFoodDropped++;
+                monster.current = addFractions(monster.current, {n: dropN, d: dropD});
+                
+                updateBellyVisual(monster);
+                playSound('eat');
+                
+                if (Math.abs(newCurrentVal - monster.target.val) < eps) {
+                    // KENYANG!
+                    monster.isFull = true;
+                    showFloatingText("Kenyang!", "#22c55e", `monster-wrap-${monster.id}`);
+                    const mouthEl = document.getElementById(`mouth-${monster.id}`);
+                    mouthEl.setAttribute('d', 'M 70 110 Q 100 150 130 110 Z');
+                    
+                    if (state.monsters.every(m => m.isFull)) {
+                        state.completedQuestions++;
+                        setTimeout(() => completeQuestion(), 800);
+                    }
+                } else {
+                    // BELUM KENYANG
+                    showFloatingText("Lagi!", "#fde047", `monster-wrap-${monster.id}`);
+                    const mouthEl = document.getElementById(`mouth-${monster.id}`);
+                    mouthEl.setAttribute('d', 'M 80 120 Q 100 140 120 120 Z');
+                    setTimeout(() => {
+                        if(!monster.isFull) mouthEl.setAttribute('d', 'M 80 115 Q 100 135 120 115 Z');
+                    }, 500);
+                }
+            } else {
+                // DITOLAK KARENA KELEBIHAN (MUNTAH)
+                playSound('vomit');
+                showFloatingText("Muntah! 🤮", "#ef4444", `monster-wrap-${monster.id}`);
+                createVomitParticles(monster.id);
+                
+                // RESET PERUT
+                monster.current = { n: 0, d: monster.target.d, val: 0 };
+                updateBellyVisual(monster);
+                
+                const wrapEl = document.getElementById(`monster-wrap-${monster.id}`);
+                const mouthEl = document.getElementById(`mouth-${monster.id}`);
+                
+                wrapEl.classList.add('animate-shake');
+                
+                // Ekspresi mulut muntah lebar (menjorok ke bawah)
+                mouthEl.setAttribute('d', 'M 70 130 Q 100 180 130 130 Z'); 
+                
+                setTimeout(() => {
+                    wrapEl.classList.remove('animate-shake');
+                    if(!monster.isFull) mouthEl.setAttribute('d', 'M 80 115 Q 100 135 120 115 Z');
+                }, 800);
+            }
+        }
+
+        function getNumMonstersForLevel(level) {
+            if (level <= 3) return 1;
+            return Math.min(8, level - 2); 
+        }
+
+        function startQuestion() {
+            document.getElementById('level-display').textContent = `Level ${state.level} | Soal ${state.question}/${state.maxQuestionsPerLevel}`;
+            
+            const area = document.getElementById('monsters-area');
+            const tray = document.getElementById('tray');
+            area.innerHTML = '';
+            tray.innerHTML = '';
+            state.monsters = [];
+
+            const numMonsters = getNumMonstersForLevel(state.level);
+            const availableColors = [...monsterColors].sort(() => Math.random() - 0.5);
+
+            for (let i = 0; i < numMonsters; i++) {
+                const target = generateLevelFraction(state.level);
+                const m = {
+                    id: `m-${Date.now()}-${i}`,
+                    target: target,
+                    current: { n: 0, d: target.d, val: 0 },
+                    color: availableColors[i % availableColors.length],
+                    isFull: false
+                };
+                state.monsters.push(m);
+                area.appendChild(createMonsterDOM(m, numMonsters));
+            }
+
+            const foods = generateTrayFractions(state.monsters, state.level);
+            foods.forEach((f, idx) => {
+                setTimeout(() => tray.appendChild(createFoodElement(f)), idx * 50);
+            });
+        }
+
+        function completeQuestion() {
+            if (state.question < state.maxQuestionsPerLevel) {
+                state.question++;
+                playSound('complete');
+                startQuestion();
+            } else {
+                if (state.level < state.maxLevels) {
+                    state.level++;
+                    state.question = 1;
+                    playSound('win');
+                    showLevelUpToast();
+                    setTimeout(startQuestion, 1500);
+                } else {
+                    gameOver(true);
+                }
+            }
+        }
+
+        function showLevelUpToast() {
+            const toast = document.getElementById('level-up-toast');
+            toast.classList.remove('hidden');
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 1200);
+        }
+
+        function gameOver(isWin = false) {
+            document.getElementById('game-over-screen').classList.remove('hidden');
+            document.getElementById('end-title').textContent = isWin ? "Luar Biasa! Kamu Tamat!" : "Permainan Selesai!";
+            
+            let accuracy = 0;
+            if (state.totalFoodDropped > 0) {
+                accuracy = Math.round((state.correctFoodDropped / state.totalFoodDropped) * 100);
+            }
+            
+            document.getElementById('final-accuracy').textContent = `${accuracy}%`;
+            document.getElementById('final-questions').textContent = state.completedQuestions;
+            playSound(isWin ? 'win' : 'error');
+        }
+
+        document.getElementById('btn-start').addEventListener('click', () => {
+            initAudio();
+            document.getElementById('start-screen').classList.add('hidden');
+            state = {
+                level: 1, question: 1, maxQuestionsPerLevel: 10, maxLevels: 10,
+                totalFoodDropped: 0, correctFoodDropped: 0, completedQuestions: 0, monsters: []
+            };
+            startQuestion();
+        });
+
+        document.getElementById('btn-restart').addEventListener('click', () => {
+            document.getElementById('game-over-screen').classList.add('hidden');
+            document.getElementById('start-screen').classList.remove('hidden');
+        });
+
+        document.getElementById('btn-giveup').addEventListener('click', () => {
+            gameOver(false);
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            const pupils = document.querySelectorAll('.pupil');
+            pupils.forEach(pupil => {
+                const rect = pupil.getBoundingClientRect();
+                const centerX = rect.left + rect.width / 2;
+                const centerY = rect.top + rect.height / 2;
+                const angle = Math.atan2(e.clientY - centerY, e.clientX - centerX);
+                const distance = Math.min(3, Math.hypot(e.clientX - centerX, e.clientY - centerY) * 0.02);
+                const moveX = Math.cos(angle) * distance;
+                const moveY = Math.sin(angle) * distance;
+                pupil.style.transform = `translate(${moveX}px, ${moveY}px)`;
+            });
+        });
+
+    </script>
+</body>
+</html>

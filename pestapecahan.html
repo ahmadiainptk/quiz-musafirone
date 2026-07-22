@@ -95,11 +95,60 @@
             font-size: 2rem;
             transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
         }
+
+        /* Footer by Bimbel Musafirone */
+        .footer-musafirone {
+            height: 100px;
+            background: linear-gradient(135deg, #1a472a 0%, #2d7a4a 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-top: 4px solid #fbbf24;
+            position: relative;
+            z-index: 30;
+            width: 100%;
+            flex-shrink: 0;
+        }
+        .footer-musafirone .footer-text {
+            font-family: 'Fredoka One', cursive;
+            color: #fbbf24;
+            font-size: 1.5rem;
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.3);
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .footer-musafirone .footer-text span {
+            color: #ffffff;
+            opacity: 0.9;
+        }
+        .footer-musafirone .footer-icon {
+            font-size: 2rem;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+        }
+        /* Sesuaikan layout utama */
+        .main-container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            height: 100dvh;
+        }
+        .main-content {
+            flex: 1;
+            overflow: hidden;
+        }
+        /* Pastikan footer game (tray) tetap di atas footer baru */
+        .game-footer {
+            flex-shrink: 0;
+            position: relative;
+            z-index: 20;
+        }
     </style>
 </head>
-<body class="h-screen w-screen flex flex-col items-center justify-between">
+<body class="main-container">
 
-    <header class="w-full max-w-4xl p-3 flex justify-between items-center z-10 bg-white/80 backdrop-blur-sm border-b-2 border-green-200 shadow-sm">
+    <header class="w-full max-w-4xl p-3 flex justify-between items-center z-10 bg-white/80 backdrop-blur-sm border-b-2 border-green-200 shadow-sm flex-shrink-0">
         <div class="flex items-center gap-4">
             <div>
                 <h1 class="text-xl md:text-2xl text-green-600 drop-shadow-sm font-display tracking-wide leading-none">Monster Laper</h1>
@@ -113,18 +162,28 @@
         </div>
     </header>
 
-    <main class="flex-1 w-full max-w-5xl relative flex flex-col items-center justify-center overflow-hidden p-2">
+    <main class="main-content w-full max-w-5xl relative flex flex-col items-center justify-center overflow-hidden p-2 mx-auto">
         <div id="monsters-area" class="flex flex-wrap justify-center items-end gap-2 md:gap-6 w-full h-full max-h-full content-center">
             <!-- Monsters injected here -->
         </div>
     </main>
 
-    <footer class="w-full bg-orange-100 rounded-t-[2rem] md:rounded-t-[3rem] border-t-4 border-orange-300 p-4 shadow-[0_-10px_20px_rgba(0,0,0,0.05)] relative z-20 flex flex-col max-h-[35vh]">
+    <!-- Footer Game (Tray) -->
+    <footer class="game-footer w-full bg-orange-100 rounded-t-[2rem] md:rounded-t-[3rem] border-t-4 border-orange-300 p-4 shadow-[0_-10px_20px_rgba(0,0,0,0.05)] flex flex-col max-h-[35vh]">
         <h3 class="text-center text-orange-600 font-bold mb-2 text-sm md:text-base">Tarik makanan yang tepat ke perut monster!</h3>
         <div id="tray" class="flex flex-wrap justify-center items-center gap-3 md:gap-4 min-h-[80px] overflow-y-auto p-2 pb-6">
             <!-- Makanan di-generate oleh JS -->
         </div>
     </footer>
+
+    <!-- Footer by Bimbel Musafirone (tinggi 100px) -->
+    <div class="footer-musafirone">
+        <div class="footer-text">
+            <span class="footer-icon">📚</span>
+            by Bimbel Musafirone
+            <span class="footer-icon">✨</span>
+        </div>
+    </div>
 
     <div id="start-screen" class="absolute inset-0 bg-black/60 overlay z-50 flex flex-col items-center justify-center p-4">
         <div class="bg-white rounded-3xl p-8 max-w-md w-full text-center shadow-2xl animate-pop border-4 border-green-500">

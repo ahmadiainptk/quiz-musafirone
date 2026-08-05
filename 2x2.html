@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pintar Perkalian: 2 Digit x 2 Digit</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Animasi Transisi Halus */
+        .animate-fade-in {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Menghilangkan panah atas/bawah pada input number di berbagai browser */
+        input[type="text"] {
+            -moz-appearance: textfield;
+        }
+        input[type="text"]::-webkit-outer-spin-button,
+        input[type="text"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        /* Styling khusus agar grid terlihat proporsional di layar kecil */
+        .grid-container {
+            /* 5 Kolom: Operator, Ribuan, Ratusan, Puluhan, Satuan */
+            display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            column-gap: 0.5rem;
+            row-gap: 0.75rem;
+            align-items: center;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-b from-blue-100 to-indigo-200 flex items-center justify-center p-2 sm:p-4 font-sans text-gray-800">
+    
+    <div class="max-w-xl w-full bg-white rounded-3xl shadow-2xl overflow-hidden border-4 border-white">
+        
+        <div class="bg-indigo-600 p-6 text-center text-white relative shadow-md z-10">
+            <h1 class="text-2xl sm:text-3xl font-extrabold tracking-wide">Pintar Perkalian</h1>
+            <p class="text-indigo-100 mt-1 text-sm sm:text-base">Level 2: 2 Digit x 2 Digit</p>
+        </div>
+
+        <div class="p-6 sm:p-8">
+            
+            <div id="menu-screen" class="text-center space-y-8 py-4 animate-fade-in">
+                <div class="bg-blue-50 p-6 rounded-2xl inline-block border border-blue-100 shadow-inner">
+                    <p class="text-lg sm:text-xl mb-4 text-gray-700 font-medium">Mari berlatih perkalian bersusun ke bawah!</p>
+                    <ul class="text-left text-gray-600 space-y-2 list-none max-w-sm mx-auto">
+                        <li class="flex items-start gap-2">
+                            <span class="text-blue-500 font-bold">1.</span> Kalikan angka atas dengan <span class="font-bold">satuan</span> angka bawah (Baris ke-1).
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-blue-500 font-bold">2.</span> Kalikan angka atas dengan <span class="font-bold">puluhan</span> angka bawah (Baris ke-2).
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-blue-500 font-bold">3.</span> Jumlahkan keduanya untuk hasil akhir.
+                        </li>
+                    </ul>
+                </div>
+                
+                <button onclick="startGame()" class="flex items-center justify-center gap-3 w-full sm:w-auto mx-auto bg-green-500 hover:bg-green-600 text-white font-bold text-xl sm:text-2xl py-4 px-10 rounded-full shadow-lg transition-transform transform hover:scale-105 active:scale-95">
+                    <!-- Icon Play -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                    Mulai Bermain
+                </button>
+            </div>
+
+            <div id="playing-screen" class="space-y-6 hidden animate-fade-in">
+                
+                <!-- Papan Skor -->
+                <div class="flex justify-between items-center bg-gray-50 p-3 sm:p-4 rounded-xl border-2 border-gray-100 shadow-sm">
+                    <div class="text-center flex-1">
+                        <p class="text-xs sm:text-sm text-gray-500 font-bold uppercase tracking-wider">Benar</p>
+                        <p id="score-val" class="text-2xl sm:text-3xl font-black text-green-500">0</p>
+                    </div>
+                    <div class="text-center border-l border-r px-4 sm:px-6 border-gray-200 flex-1">
+                        <p class="text-xs sm:text-sm text-gray-500 font-bold uppercase tracking-wider">Percobaan</p>
+                        <p id="attempts-val" class="text-2xl sm:text-3xl font-black text-blue-500">0</p>
+                    </div>
+                    <div class="text-center flex-1">
+                        <p class="text-xs sm:text-sm text-gray-500 font-bold uppercase tracking-wider">Akurasi</p>
+                        <p id="accuracy-val" class="text-2xl sm:text-3xl font-black text-purple-500">0%</p>
+                    </div>
+                </div>
+
+                <!-- Area Game (Grid Perkalian) -->
+                <div class="flex justify-center bg-yellow-50 py-6 sm:py-8 rounded-2xl border-2 border-yellow-200 shadow-inner overflow-x-auto">
+                    <div class="grid-container text-3xl sm:text-4xl font-bold font-mono w-max text-right">
+                        
+                        <!-- Baris 1: Simpanan (Langkah 2 - Puluhan) -->
+                        <div></div><div></div>
+                        <div></div>
+                        <div class="flex justify-center"><input id="c2_o" type="text" inputmode="numeric" data-next="r2_h" data-prev="r2_t" class="math-input carry-input" placeholder=""></div>
+                        <div></div>
+
+                        <!-- Baris 2: Simpanan (Langkah 1 - Satuan) -->
+                        <div></div><div></div>
+                        <div></div>
+                        <div class="flex justify-center"><input id="c1_o" type="text" inputmode="numeric" data-next="r1_t" data-prev="r1_o" class="math-input carry-input" placeholder=""></div>
+                        <div></div>
+
+                        <!-- Baris 3: Angka Pertama -->
+                        <div></div><div></div><div></div>
+                        <div class="px-2 text-center transition-all duration-200 rounded-lg" id="n1_t">0</div>
+                        <div class="px-2 text-center transition-all duration-200 rounded-lg" id="n1_o">0</div>
+
+                        <!-- Baris 4: Angka Kedua -->
+                        <div class="px-2 text-gray-400 text-2xl sm:text-3xl flex justify-center items-end pb-1">x</div>
+                        <div></div><div></div>
+                        <div class="px-2 text-center transition-all duration-200 rounded-lg" id="n2_t">0</div>
+                        <div class="px-2 text-center transition-all duration-200 rounded-lg" id="n2_o">0</div>
+
+                        <!-- Garis Pemisah 1 -->
+                        <div class="col-span-5 border-b-4 sm:border-b-8 border-gray-800 rounded-full my-1"></div>
+
+                        <!-- Baris 5: Hasil Langkah 1 (N1 x N2_Satuan) -->
+                        <div></div><div></div>
+                        <div class="flex justify-center"><input id="r1_h" type="text" inputmode="numeric" data-next="r2_t" data-prev="r1_t" class="math-input main-input"></div>
+                        <div class="flex justify-center"><input id="r1_t" type="text" inputmode="numeric" data-next="r1_h" data-prev="c1_o" class="math-input main-input"></div>
+                        <div class="flex justify-center"><input id="r1_o" type="text" inputmode="numeric" data-next="c1_o" class="math-input main-input"></div>
+
+                        <!-- Baris 6: Hasil Langkah 2 (N1 x N2_Puluhan) -->
+                        <div class="px-2 text-gray-400 text-3xl sm:text-4xl flex justify-center">+</div>
+                        <div class="flex justify-center"><input id="r2_th" type="text" inputmode="numeric" data-next="f_o" data-prev="r2_h" class="math-input main-input"></div>
+                        <div class="flex justify-center"><input id="r2_h" type="text" inputmode="numeric" data-next="r2_th" data-prev="c2_o" class="math-input main-input"></div>
+                        <div class="flex justify-center"><input id="r2_t" type="text" inputmode="numeric" data-next="c2_o" data-prev="r1_h" class="math-input main-input"></div>
+                        <div class="px-2 text-gray-300">0</div> <!-- Trailing 0 sudah disiapkan otomatis -->
+
+                        <!-- Garis Pemisah 2 -->
+                        <div class="col-span-5 border-b-4 sm:border-b-8 border-gray-800 rounded-full my-1"></div>
+
+                        <!-- Baris 7: Hasil Akhir Penjumlahan -->
+                        <div></div>
+                        <div class="flex justify-center"><input id="f_th" type="text" inputmode="numeric" data-prev="f_h" class="math-input main-input !border-indigo-300 bg-indigo-50 text-indigo-900"></div>
+                        <div class="flex justify-center"><input id="f_h" type="text" inputmode="numeric" data-next="f_th" data-prev="f_t" class="math-input main-input !border-indigo-300 bg-indigo-50 text-indigo-900"></div>
+                        <div class="flex justify-center"><input id="f_t" type="text" inputmode="numeric" data-next="f_h" data-prev="f_o" class="math-input main-input !border-indigo-300 bg-indigo-50 text-indigo-900"></div>
+                        <div class="flex justify-center"><input id="f_o" type="text" inputmode="numeric" data-next="f_t" data-prev="r2_th" class="math-input main-input !border-indigo-300 bg-indigo-50 text-indigo-900"></div>
+
+                    </div>
+                </div>
+
+                <!-- Pesan Feedback -->
+                <div class="min-h-[4rem] flex items-center justify-center">
+                    <div id="feedback-box" class="hidden flex items-center gap-2 px-6 py-3 rounded-full font-bold text-sm sm:text-lg animate-bounce transition-all">
+                        <span id="feedback-icon"></span>
+                        <span id="feedback-text"></span>
+                    </div>
+                </div>
+
+                <!-- Tombol Aksi -->
+                <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center mt-2">
+                    <button onclick="checkAnswer()" class="flex-1 flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white font-bold py-3 sm:py-4 px-6 rounded-2xl shadow-md transition-colors active:scale-95 text-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                        Cek Jawaban
+                    </button>
+                    <button onclick="giveUp()" class="flex items-center justify-center gap-2 bg-red-100 hover:bg-red-200 text-red-600 font-bold py-3 sm:py-4 px-6 rounded-2xl transition-colors active:scale-95 text-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path><line x1="4" y1="22" x2="4" y2="15"></line></svg>
+                        Menyerah
+                    </button>
+                </div>
+
+            </div>
+
+            <!-- FINISHED SCREEN -->
+            <div id="finished-screen" class="text-center py-10 space-y-8 hidden animate-fade-in">
+                <div class="inline-block p-4 bg-yellow-100 rounded-full mb-2 shadow-inner border border-yellow-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-yellow-600"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path><line x1="4" y1="22" x2="4" y2="15"></line></svg>
+                </div>
+                <h2 class="text-3xl sm:text-4xl font-black text-gray-800">Permainan Selesai!</h2>
+                
+                <div class="bg-gray-50 rounded-3xl p-6 sm:p-8 max-w-sm mx-auto border-2 border-gray-200 shadow-inner">
+                    <div class="mb-6">
+                        <p class="text-gray-500 font-bold uppercase tracking-widest text-sm mb-1">Total Skor</p>
+                        <p id="final-score" class="text-6xl font-black text-indigo-600">0</p>
+                    </div>
+                    
+                    <div class="border-t-2 border-gray-200 pt-6">
+                        <p class="text-gray-500 font-bold uppercase tracking-widest text-sm mb-1">Akurasi Jawaban</p>
+                        <p id="final-accuracy" class="text-5xl font-black text-green-500">0%</p>
+                        <p class="text-gray-400 mt-2 text-sm">Dari <span id="final-attempts">0</span> kali percobaan</p>
+                    </div>
+                </div>
+
+                <button onclick="startGame()" class="flex items-center justify-center gap-3 w-full sm:w-auto mx-auto bg-indigo-500 hover:bg-indigo-600 text-white font-bold text-xl py-4 px-10 rounded-full shadow-lg transition-transform transform hover:scale-105 active:scale-95">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+                    Main Lagi
+                </button>
+            </div>
+            
+        </div>
+    </div>
+
+    <script>
+        // Terapkan Tailwind class secara dinamis via JS untuk menjaga kerapian HTML
+        const carryClasses = "w-8 h-8 sm:w-10 sm:h-10 text-center text-lg sm:text-xl text-blue-600 bg-blue-50 border-2 border-blue-200 rounded-full outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all placeholder-gray-300".split(' ');
+        const mainClasses = "w-10 h-12 sm:w-14 sm:h-16 text-center text-2xl sm:text-4xl text-gray-800 bg-white border-2 border-gray-300 rounded-xl outline-none focus:border-green-500 focus:ring-4 focus:ring-green-100 transition-all shadow-sm".split(' ');
+        
+        document.querySelectorAll('.carry-input').forEach(el => el.classList.add(...carryClasses));
+        document.querySelectorAll('.main-input').forEach(el => el.classList.add(...mainClasses));
+
+        // State Aplikasi
+        let state = {
+            num1: 0,
+            num2: 0,
+            score: 0,
+            attempts: 0
+        };
+
+        // DOM Elements
+        const screens = {
+            menu: document.getElementById('menu-screen'),
+            playing: document.getElementById('playing-screen'),
+            finished: document.getElementById('finished-screen')
+        };
+        const feedbackBox = document.getElementById('feedback-box');
+        const feedbackText = document.getElementById('feedback-text');
+        const feedbackIcon = document.getElementById('feedback-icon');
+
+        const svgs = {
+            success: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>`,
+            error: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>`
+        };
+
+        // Beralih antar layar
+        function switchScreen(screenName) {
+            Object.values(screens).forEach(el => el.classList.add('hidden'));
+            screens[screenName].classList.remove('hidden');
+        }
+
+        function getAccuracy() {
+            if (state.attempts === 0) return 0;
+            return Math.round((state.score / state.attempts) * 100);
+        }
+
+        function updateScoreBoard() {
+            document.getElementById('score-val').textContent = state.score;
+            document.getElementById('attempts-val').textContent = state.attempts;
+            document.getElementById('accuracy-val').textContent = getAccuracy() + '%';
+        }
+
+        function startGame() {
+            state.score = 0;
+            state.attempts = 0;
+            updateScoreBoard();
+            switchScreen('playing');
+            generateProblem();
+        }
+
+        function generateProblem() {
+            // Angka puluhan acak (10 - 99)
+            state.num1 = Math.floor(Math.random() * 90) + 10;
+            state.num2 = Math.floor(Math.random() * 90) + 10;
+            
+            // Set ke text HTML
+            document.getElementById('n1_t').textContent = Math.floor(state.num1 / 10);
+            document.getElementById('n1_o').textContent = state.num1 % 10;
+            document.getElementById('n2_t').textContent = Math.floor(state.num2 / 10);
+            document.getElementById('n2_o').textContent = state.num2 % 10;
+
+            clearInputs();
+            hideFeedback();
+            
+            // Fokus otomatis ke input baris pertama (satuan)
+            setTimeout(() => {
+                document.getElementById('r1_o').focus();
+            }, 100);
+        }
+
+        function clearInputs() {
+            document.querySelectorAll('.math-input').forEach(input => {
+                input.value = '';
+            });
+        }
+
+        function showFeedback(msg, type) {
+            feedbackBox.className = `flex items-center gap-2 px-6 py-3 rounded-full font-bold text-sm sm:text-lg animate-bounce transition-all ${type === 'success' ? 'bg-green-100 text-green-700 border border-green-200' : 'bg-red-100 text-red-700 border border-red-200'}`;
+            feedbackIcon.innerHTML = type === 'success' ? svgs.success : svgs.error;
+            feedbackText.textContent = msg;
+            feedbackBox.classList.remove('hidden');
+        }
+
+        function hideFeedback() {
+            feedbackBox.classList.add('hidden');
+        }
+
+        // --- Fitur Highlight Dinamis ---
+        // Peta/Kamus untuk menentukan angka mana yang menyala berdasarkan ID kotak input
+        const highlightMap = {
+            'r1_o': { texts: ['n1_o', 'n2_o'] }, // Satuan x Satuan
+            'c1_o': { texts: ['n1_o', 'n2_o'] }, // Simpanan Satuan x Satuan
+            'r1_t': { texts: ['n1_t', 'n2_o'], inputs: ['c1_o'] }, // Puluhan x Satuan + Simpanan 1
+            'r1_h': { texts: ['n1_t', 'n2_o'], inputs: ['c1_o'] }, // Ratusan (Sisa Puluhan x Satuan)
+
+            'r2_t': { texts: ['n1_o', 'n2_t'] }, // Satuan x Puluhan
+            'c2_o': { texts: ['n1_o', 'n2_t'] }, // Simpanan Satuan x Puluhan
+            'r2_h': { texts: ['n1_t', 'n2_t'], inputs: ['c2_o'] }, // Puluhan x Puluhan + Simpanan 2
+            'r2_th': { texts: ['n1_t', 'n2_t'], inputs: ['c2_o'] },// Ribuan (Sisa Puluhan x Puluhan)
+
+            // Khusus baris penjumlahan, kita highlight kotak input baris 1 & 2 nya
+            'f_o': { inputs: ['r1_o'] },
+            'f_t': { inputs: ['r1_t', 'r2_t'] },
+            'f_h': { inputs: ['r1_h', 'r2_h'] },
+            'f_th': { inputs: ['r2_th'] }
+        };
+
+        const textHighlightClasses = ['!bg-pink-200', '!text-pink-900', 'scale-110', 'transform', 'shadow-md', 'z-10', 'relative'];
+        const inputHighlightClasses = ['!border-pink-500', '!bg-pink-100', '!text-pink-900'];
+
+        function clearHighlights() {
+            document.querySelectorAll('.highlight-text').forEach(el => {
+                el.classList.remove(...textHighlightClasses, 'highlight-text');
+            });
+            document.querySelectorAll('.highlight-input').forEach(el => {
+                el.classList.remove(...inputHighlightClasses, 'highlight-input');
+            });
+        }
+        // --- Akhir Fitur Highlight ---
+
+        // Handle auto-advance dan input constraint
+        document.querySelectorAll('.math-input').forEach(input => {
+            
+            // Event Highlight saat kotak aktif (diklik/di-tap)
+            input.addEventListener('focus', (e) => {
+                clearHighlights(); // Bersihkan yang lama dulu
+                const mapping = highlightMap[e.target.id];
+                
+                if (mapping) {
+                    if (mapping.texts) {
+                        mapping.texts.forEach(id => {
+                            const el = document.getElementById(id);
+                            if (el) el.classList.add(...textHighlightClasses, 'highlight-text');
+                        });
+                    }
+                    if (mapping.inputs) {
+                        mapping.inputs.forEach(id => {
+                            const el = document.getElementById(id);
+                            if (el) el.classList.add(...inputHighlightClasses, 'highlight-input');
+                        });
+                    }
+                }
+            });
+
+            // Bersihkan highlight saat pindah ke kotak lain
+            input.addEventListener('blur', clearHighlights);
+
+            input.addEventListener('input', (e) => {
+                let val = e.target.value;
+                
+                // Pastikan hanya angka 1 digit
+                if (val.length > 1) val = val.slice(-1);
+                if (!/^\d*$/.test(val)) val = '';
+                
+                e.target.value = val;
+                hideFeedback();
+
+                // Pindah ke kotak sebelah kiri (jika ada) saat terisi
+                if (val !== '') {
+                    const nextId = e.target.getAttribute('data-next');
+                    if (nextId) {
+                        const nextEl = document.getElementById(nextId);
+                        if (nextEl) nextEl.focus();
+                    }
+                }
+            });
+
+            // Handle navigasi via Backspace dan konfirmasi Enter
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Backspace' && e.target.value === '') {
+                    const prevId = e.target.getAttribute('data-prev');
+                    if (prevId) {
+                        e.preventDefault();
+                        const prevEl = document.getElementById(prevId);
+                        if (prevEl) prevEl.focus();
+                    }
+                }
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    checkAnswer();
+                }
+            });
+        });
+
+        function checkAnswer() {
+            // Helper untuk mengambil dan konversi nilai dari input box
+            const getVal = (id) => {
+                const val = document.getElementById(id).value;
+                return val === '' ? 0 : parseInt(val, 10);
+            };
+
+            // Rakit angka yang diinput user
+            const ansR1 = getVal('r1_h') * 100 + getVal('r1_t') * 10 + getVal('r1_o');
+            // Hasil baris dua sejatinya adalah X puluhan, namun di papan hanya dicetak sampai r2_t dan bergeser.
+            // Contoh 45 x 2 = 90. r2_h = 9, r2_t = 0.
+            const ansR2 = getVal('r2_th') * 100 + getVal('r2_h') * 10 + getVal('r2_t'); 
+            const ansFinal = getVal('f_th') * 1000 + getVal('f_h') * 100 + getVal('f_t') * 10 + getVal('f_o');
+
+            // Kalkulasi matematika sebenarnya
+            const satuanN2 = state.num2 % 10;
+            const puluhanN2 = Math.floor(state.num2 / 10);
+            
+            const expectedR1 = state.num1 * satuanN2;
+            const expectedR2 = state.num1 * puluhanN2;
+            const expectedFinal = state.num1 * state.num2;
+
+            state.attempts++;
+
+            // Evaluasi
+            if (ansFinal === expectedFinal) {
+                // Cek apakah step-step intermediate (baris 1 & 2) dikerjakan dengan benar
+                // Kadang expectedR1 atau R2 bisa 0, kita akomodasi
+                if (ansR1 !== expectedR1 || ansR2 !== expectedR2) {
+                     showFeedback('Jawaban akhir benar, tapi hitungan per barisnya ada yang keliru nih. Cek lagi ya!', 'error');
+                } else {
+                     showFeedback('Luar Biasa! Jawabanmu sempurna!', 'success');
+                     state.score++;
+                     updateScoreBoard();
+                     
+                     // Pindah ke soal berikutnya otomatis
+                     document.querySelectorAll('.math-input').forEach(el => el.blur());
+                     setTimeout(() => {
+                         generateProblem();
+                     }, 1500);
+                }
+            } else {
+                showFeedback('Wah, hasil akhirnya masih kurang tepat. Hitung lagi pelan-pelan!', 'error');
+            }
+            updateScoreBoard();
+        }
+
+        function giveUp() {
+            document.getElementById('final-score').textContent = state.score;
+            document.getElementById('final-attempts').textContent = state.attempts;
+            document.getElementById('final-accuracy').textContent = getAccuracy() + '%';
+            switchScreen('finished');
+        }
+    </script>
+</body>
+</html>

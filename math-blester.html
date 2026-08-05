@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Blaster 2: Perang Bintang Dua Digit</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --bg-color: #0f172a; /* Slate 900 */
+            --text-color: #f8fafc; /* Slate 50 */
+            --accent-color: #38bdf8; /* Light Blue 400 */
+            --enemy-color: #ef4444; /* Red 500 */
+            --player-color: #22c55e; /* Green 500 */
+            --laser-color: #fde047; /* Yellow 300 */
+            --explosion-color: #fb923c; /* Orange 400 */
+            --font-family: 'Courier New', Courier, monospace;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: var(--font-family);
+            margin: 0;
+            overflow: hidden; /* Mencegah scroll saat main */
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        #game-container {
+            flex-grow: 1;
+            position: relative;
+            background-color: #000;
+            border: 2px solid var(--accent-color);
+            border-radius: 8px;
+            margin: 10px;
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.2);
+            overflow: hidden; /* Agar musuh tidak keluar kotak */
+        }
+
+        #ui-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: rgba(15, 23, 42, 0.8);
+            border-bottom: 2px solid var(--accent-color);
+            z-index: 10;
+        }
+
+        .stat-box {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        #problem-display {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--laser-color);
+            text-shadow: 0 0 10px rgba(253, 224, 71, 0.5);
+            z-index: 5;
+            background: rgba(0,0,0,0.5);
+            padding: 10px 20px;
+            border-radius: 10px;
+            border: 1px solid var(--laser-color);
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 20;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .btn {
+            background-color: var(--accent-color);
+            color: var(--bg-color);
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            font-family: inherit;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.2s ease;
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.5);
+        }
+
+        .btn:hover {
+            background-color: #7dd3fc; /* Light Blue 300 */
+            transform: scale(1.05);
+        }
+        
+        .title {
+            font-size: 3rem;
+            color: var(--accent-color);
+            text-shadow: 0 0 10px var(--accent-color);
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #94a3b8;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .entity {
+            position: absolute;
+            transform: translate(-50%, -50%); /* Pusatkan kordinat */
+        }
+
+        #player {
+            width: 50px;
+            height: 50px;
+            bottom: 20px; /* Posisi awal di bawah */
+            left: 50%;
+            z-index: 5;
+            /* Bentuk pesawat sederhana pakai CSS */
+            clip-path: polygon(50% 0%, 0% 100%, 50% 80%, 100% 100%);
+            background-color: var(--player-color);
+            box-shadow: 0 0 15px var(--player-color);
+            transition: left 0.1s ease-out; /* Pergerakan lebih mulus */
+        }
+
+        .enemy {
+            width: 60px;
+            height: 60px;
+            background-color: rgba(239, 68, 68, 0.2);
+            border: 2px solid var(--enemy-color);
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            box-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
+            transition: top 0.5s linear; /* Animasi jatuh */
+        }
+        
+        .enemy.correct-target {
+             border-color: #fbbf24;
+             box-shadow: 0 0 15px rgba(251, 191, 36, 0.8);
+        }
+
+        .laser {
+            width: 4px;
+            height: 20px;
+            background-color: var(--laser-color);
+            border-radius: 2px;
+            box-shadow: 0 0 8px var(--laser-color);
+        }
+
+        .explosion {
+            width: 40px;
+            height: 40px;
+            background-color: var(--explosion-color);
+            border-radius: 50%;
+            opacity: 0.8;
+            animation: explode 0.3s forwards;
+        }
+
+        @keyframes explode {
+            0% { transform: translate(-50%, -50%) scale(0.5); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(2); opacity: 0; }
+        }
+        
+        #mobile-controls {
+            display: flex;
+            justify-content: space-around;
+            padding: 10px;
+            background-color: var(--bg-color);
+        }
+        
+        .control-btn {
+            background-color: rgba(255,255,255,0.1);
+            border: 1px solid var(--accent-color);
+            color: var(--text-color);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            touch-action: manipulation; /* Mencegah zoom saat tap cepat */
+        }
+        
+        .control-btn:active {
+            background-color: rgba(255,255,255,0.3);
+        }
+        
+        /* Sembunyikan kontrol mobile di desktop */
+        @media (min-width: 768px) {
+            #mobile-controls {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="ui-bar">
+        <div class="stat-box">Level: <span id="level-val">1</span></div>
+        <div class="stat-box text-yellow-300">Skor: <span id="score-val">0</span></div>
+        <div class="stat-box text-red-400">Nyawa: <span id="lives-val">3</span> ❤️</div>
+    </div>
+
+    <div id="game-container">
+        <!-- Area soal akan muncul di sini -->
+        <div id="problem-display" class="hidden"></div>
+        
+        <!-- Pemain -->
+        <div id="player" class="entity hidden"></div>
+        
+        <!-- Container untuk musuh, laser, ledakan akan dibuat via JS -->
+    </div>
+    
+    <div id="mobile-controls">
+        <button class="control-btn" id="btn-left">◀</button>
+        <button class="control-btn" id="btn-shoot">🎯</button>
+        <button class="control-btn" id="btn-right">▶</button>
+    </div>
+
+    <div id="start-screen" class="overlay">
+        <h1 class="title">MATH BLASTER 2</h1>
+        <p class="subtitle">Perkalian 2 Digit vs 2 Digit<br>Gunakan Panah Kiri/Kanan untuk bergerak. Spasi untuk menembak.</p>
+        <button id="start-btn" class="btn">Mulai Misi</button>
+    </div>
+
+    <div id="game-over-screen" class="overlay hidden">
+        <h1 class="title text-red-500">MISI GAGAL</h1>
+        <p class="subtitle text-xl">Skor Akhir: <span id="final-score" class="text-yellow-300 font-bold">0</span></p>
+        <button id="restart-btn" class="btn">Coba Lagi</button>
+    </div>
+    
+    <div id="level-up-screen" class="overlay hidden">
+         <h1 class="title text-green-400">SEKTOR AMAN!</h1>
+         <p class="subtitle">Bersiap untuk level berikutnya...</p>
+    </div>
+
+    <script>
+        // Konfigurasi Game
+        const CONFIG = {
+            playerSpeed: 7, // Kecepatan gerak pesawat
+            laserSpeed: 10,
+            baseEnemySpeed: 1, // Kecepatan dasar musuh jatuh
+            enemySpawnRate: 1500, // Ms antar kemunculan musuh (awal)
+            pointsPerKill: 10,
+            pointsPenalty: 5,
+            levelUpScore: 100, // Poin untuk naik level
+            maxLevel: 5
+        };
+
+        // State Game
+        let state = {
+            isPlaying: false,
+            score: 0,
+            lives: 3,
+            level: 1,
+            playerX: 50, // Persentase (0-100)
+            currentProblem: null,
+            enemies: [], // { id, element, x, y, value, isCorrect }
+            lasers: [], // { element, x, y }
+            keys: { ArrowLeft: false, ArrowRight: false, Space: false },
+            lastShotTime: 0,
+            shootCooldown: 300, // Ms antar tembakan
+            enemyIntervalId: null,
+            gameLoopId: null
+        };
+
+        // DOM Elements
+        const gameContainer = document.getElementById('game-container');
+        const playerEl = document.getElementById('player');
+        const problemDisplay = document.getElementById('problem-display');
+        const scoreEl = document.getElementById('score-val');
+        const livesEl = document.getElementById('lives-val');
+        const levelEl = document.getElementById('level-val');
+        
+        const startScreen = document.getElementById('start-screen');
+        const gameOverScreen = document.getElementById('game-over-screen');
+        const levelUpScreen = document.getElementById('level-up-screen');
+        const finalScoreEl = document.getElementById('final-score');
+
+        // Helper: Generate Random Number
+        function randomInt(min, max) {
+            return Math.floor(Math.random() * (max - min + 1) + min);
+        }
+
+        // Logic Pembuatan Soal (2 Digit x 2 Digit)
+        function generateProblem() {
+            // Tingkat kesulitan berdasarkan level
+            // Level 1: Angka belasan (10-15)
+            // Level 2: 10-20
+            // Level 3: 15-25
+            // Level 4: 20-50
+            // Level 5: 30-99
+            
+            let min, max;
+            switch(state.level) {
+                case 1: min = 10; max = 15; break;
+                case 2: min = 10; max = 20; break;
+                case 3: min = 15; max = 25; break;
+                case 4: min = 20; max = 50; break;
+                case 5: min = 30; max = 99; break;
+                default: min = 10; max = 20;
+            }
+
+            const num1 = randomInt(min, max);
+            const num2 = randomInt(min, max);
+            const answer = num1 * num2;
+            
+            return {
+                text: `${num1} × ${num2} = ?`,
+                answer: answer
+            };
+        }
+
+        function setNewProblem() {
+            state.currentProblem = generateProblem();
+            problemDisplay.textContent = state.currentProblem.text;
+            problemDisplay.classList.remove('hidden');
+        }
+
+        function spawnEnemy() {
+            if (!state.isPlaying || !state.currentProblem) return;
+
+            const enemy = document.createElement('div');
+            enemy.classList.add('entity', 'enemy');
+            
+            // Tentukan posisi X secara acak (10% - 90%)
+            const startX = randomInt(10, 90);
+            const startY = -10; // Mulai di atas layar
+            
+            enemy.style.left = `${startX}%`;
+            enemy.style.top = `${startY}%`;
+
+            // Tentukan nilai musuh
+            let value;
+            let isCorrect = false;
+            
+            // 30% peluang memunculkan jawaban benar jika belum ada
+            const hasCorrectEnemy = state.enemies.some(e => e.isCorrect);
+            
+            if (Math.random() < 0.3 || (!hasCorrectEnemy && Math.random() < 0.6)) {
+                value = state.currentProblem.answer;
+                isCorrect = true;
+                // Opsional: Beri highlight sedikit pada musuh yang benar (buat lebih mudah sedikit di awal)
+                if(state.level <= 2) enemy.classList.add('correct-target'); 
+            } else {
+                // Generate jawaban salah yang masuk akal (dekat dengan jawaban benar)
+                const offset = randomInt(-20, 20);
+                value = state.currentProblem.answer + (offset === 0 ? 5 : offset);
+                if (value < 0) value = Math.abs(value); // Pastikan positif
+            }
+
+            enemy.textContent = value;
+            gameContainer.appendChild(enemy);
+
+            state.enemies.push({
+                id: Date.now() + Math.random(), // Unique ID
+                element: enemy,
+                x: startX,
+                y: startY,
+                value: value,
+                isCorrect: isCorrect,
+                speed: CONFIG.baseEnemySpeed + (state.level * 0.2) // Makin cepat tiap level
+            });
+        }
+
+        function updatePlayerPosition() {
+            // Update posisi berdasarkan persentase
+            playerEl.style.left = `${state.playerX}%`;
+        }
+
+        function shoot() {
+            const now = Date.now();
+            if (now - state.lastShotTime < state.shootCooldown) return;
+            
+            state.lastShotTime = now;
+
+            const laser = document.createElement('div');
+            laser.classList.add('entity', 'laser');
+            
+            // Posisi awal laser = posisi pemain saat ini
+            // Gunakan px untuk laser agar lebih mudah mendeteksi tabrakan
+            const playerRect = playerEl.getBoundingClientRect();
+            const containerRect = gameContainer.getBoundingClientRect();
+            
+            const startX = playerRect.left - containerRect.left + (playerRect.width / 2);
+            const startY = playerRect.top - containerRect.top;
+
+            laser.style.left = `${startX}px`;
+            laser.style.top = `${startY}px`;
+            
+            gameContainer.appendChild(laser);
+
+            state.lasers.push({
+                element: laser,
+                x: startX,
+                y: startY
+            });
+        }
+
+        function createExplosion(x, y) {
+            const explosion = document.createElement('div');
+            explosion.classList.add('entity', 'explosion');
+            explosion.style.left = `${x}px`;
+            explosion.style.top = `${y}px`;
+            gameContainer.appendChild(explosion);
+            
+            // Hapus elemen setelah animasi selesai
+            setTimeout(() => {
+                if (explosion.parentNode) explosion.parentNode.removeChild(explosion);
+            }, 300);
+        }
+
+        function checkCollision(rect1, rect2) {
+            return (
+                rect1.left < rect2.right &&
+                rect1.right > rect2.left &&
+                rect1.top < rect2.bottom &&
+                rect1.bottom > rect2.top
+            );
+        }
+
+        function updateUI() {
+            scoreEl.textContent = state.score;
+            livesEl.textContent = state.lives;
+            levelEl.textContent = state.level;
+        }
+
+        function loseLife() {
+            state.lives--;
+            updateUI();
+            
+            // Efek visual kena damage
+            gameContainer.style.borderColor = 'red';
+            setTimeout(() => {
+                if(state.isPlaying) gameContainer.style.borderColor = 'var(--accent-color)';
+            }, 200);
+
+            if (state.lives <= 0) {
+                gameOver();
+            }
+        }
+        
+        function checkLevelUp() {
+            const targetScore = state.level * CONFIG.levelUpScore;
+            if (state.score >= targetScore && state.level < CONFIG.maxLevel) {
+                levelUp();
+            }
+        }
+        
+        function levelUp() {
+            state.isPlaying = false;
+            cancelAnimationFrame(state.gameLoopId);
+            clearInterval(state.enemyIntervalId);
+            
+            state.level++;
+            levelUpScreen.classList.remove('hidden');
+            
+            setTimeout(() => {
+                levelUpScreen.classList.add('hidden');
+                // Bersihkan layar
+                clearEntities();
+                setNewProblem();
+                
+                state.isPlaying = true;
+                // Percepat spawn rate
+                const newSpawnRate = Math.max(500, CONFIG.enemySpawnRate - (state.level * 200));
+                state.enemyIntervalId = setInterval(spawnEnemy, newSpawnRate);
+                gameLoop();
+            }, 2000);
+        }
+
+        function gameLoop() {
+            if (!state.isPlaying) return;
+
+            // 1. Handle Input Pemain (Keyboard)
+            if (state.keys.ArrowLeft) {
+                state.playerX = Math.max(5, state.playerX - 1.5); // Batas kiri 5%
+            }
+            if (state.keys.ArrowRight) {
+                state.playerX = Math.min(95, state.playerX + 1.5); // Batas kanan 95%
+            }
+            if (state.keys.Space || state.keys.ShootMobile) {
+                shoot();
+                state.keys.ShootMobile = false; // Reset trigger mobile
+            }
+            updatePlayerPosition();
+
+            const containerRect = gameContainer.getBoundingClientRect();
+
+            // 2. Update Lasers
+            for (let i = state.lasers.length - 1; i >= 0; i--) {
+                const laserObj = state.lasers[i];
+                laserObj.y -= CONFIG.laserSpeed;
+                laserObj.element.style.top = `${laserObj.y}px`;
+
+                // Hapus laser jika keluar layar atas
+                if (laserObj.y < -20) {
+                    laserObj.element.remove();
+                    state.lasers.splice(i, 1);
+                }
+            }
+
+            // 3. Update Enemies & Collision Detection
+            for (let i = state.enemies.length - 1; i >= 0; i--) {
+                const enemyObj = state.enemies[i];
+                // Gerakkan musuh turun (gunakan persentase agar responsif)
+                enemyObj.y += enemyObj.speed * 0.1; 
+                enemyObj.element.style.top = `${enemyObj.y}%`;
+
+                const enemyRect = enemyObj.element.getBoundingClientRect();
+
+                // Cek musuh keluar layar bawah
+                if (enemyObj.y > 110) {
+                    enemyObj.element.remove();
+                    state.enemies.splice(i, 1);
+                    
+                    // Jika jawaban benar terlewat, penalti
+                    if (enemyObj.isCorrect) {
+                       // Opsi: bisa kurangi skor atau nyawa jika melewatkan jawaban benar.
+                       // Untuk sekarang biarkan saja agar tidak terlalu frustrasi.
+                    }
+                    continue;
+                }
+                
+                // Cek tabrakan musuh dengan pemain
+                const playerRect = playerEl.getBoundingClientRect();
+                if(checkCollision(enemyRect, playerRect)) {
+                    createExplosion(enemyRect.left - containerRect.left + 30, enemyRect.top - containerRect.top + 30);
+                    enemyObj.element.remove();
+                    state.enemies.splice(i, 1);
+                    loseLife();
+                    continue;
+                }
+
+                // Cek tabrakan laser dengan musuh
+                let hit = false;
+                for (let j = state.lasers.length - 1; j >= 0; j--) {
+                    const laserObj = state.lasers[j];
+                    const laserRect = laserObj.element.getBoundingClientRect();
+
+                    if (checkCollision(laserRect, enemyRect)) {
+                        // Tumbukan!
+                        const hitX = laserRect.left - containerRect.left;
+                        const hitY = laserRect.top - containerRect.top;
+                        createExplosion(hitX, hitY);
+                        
+                        // Cek Jawaban
+                        if (enemyObj.isCorrect) {
+                            state.score += CONFIG.pointsPerKill;
+                            // Feedback visual skor naik
+                            scoreEl.style.color = '#4ade80'; // Hijau
+                            setTimeout(() => scoreEl.style.color = '', 300);
+                            
+                            setNewProblem(); // Soal baru karena sudah terjawab
+                            checkLevelUp();
+                        } else {
+                            state.score = Math.max(0, state.score - CONFIG.pointsPenalty);
+                            // Feedback visual skor turun
+                            scoreEl.style.color = '#f87171'; // Merah
+                            setTimeout(() => scoreEl.style.color = '', 300);
+                        }
+                        updateUI();
+
+                        // Hapus laser dan musuh
+                        laserObj.element.remove();
+                        state.lasers.splice(j, 1);
+                        enemyObj.element.remove();
+                        state.enemies.splice(i, 1);
+                        hit = true;
+                        break; // Lanjut ke musuh berikutnya
+                    }
+                }
+            }
+
+            state.gameLoopId = requestAnimationFrame(gameLoop);
+        }
+
+        function clearEntities() {
+            state.enemies.forEach(e => e.element.remove());
+            state.lasers.forEach(l => l.element.remove());
+            state.enemies = [];
+            state.lasers = [];
+            // Bersihkan ledakan jika ada yang tersisa
+            document.querySelectorAll('.explosion').forEach(e => e.remove());
+        }
+
+        function startGame() {
+            // Reset State
+            state = {
+                ...state,
+                isPlaying: true,
+                score: 0,
+                lives: 3,
+                level: 1,
+                playerX: 50,
+                keys: { ArrowLeft: false, ArrowRight: false, Space: false, ShootMobile: false }
+            };
+            
+            clearEntities();
+            updateUI();
+            
+            // Sembunyikan Overlay, Tampilkan Elemen Game
+            startScreen.classList.add('hidden');
+            gameOverScreen.classList.add('hidden');
+            playerEl.classList.remove('hidden');
+            
+            setNewProblem();
+            
+            // Mulai loop dan interval
+            if (state.enemyIntervalId) clearInterval(state.enemyIntervalId);
+            state.enemyIntervalId = setInterval(spawnEnemy, CONFIG.enemySpawnRate);
+            
+            if (state.gameLoopId) cancelAnimationFrame(state.gameLoopId);
+            state.gameLoopId = requestAnimationFrame(gameLoop);
+        }
+
+        function gameOver() {
+            state.isPlaying = false;
+            cancelAnimationFrame(state.gameLoopId);
+            clearInterval(state.enemyIntervalId);
+            
+            playerEl.classList.add('hidden');
+            problemDisplay.classList.add('hidden');
+            
+            finalScoreEl.textContent = state.score;
+            gameOverScreen.classList.remove('hidden');
+        }
+
+        // Keyboard Controls
+        window.addEventListener('keydown', (e) => {
+            if (state.keys.hasOwnProperty(e.code)) {
+                state.keys[e.code] = true;
+                if(e.code === 'Space') e.preventDefault(); // Mencegah scroll
+            }
+        });
+
+        window.addEventListener('keyup', (e) => {
+            if (state.keys.hasOwnProperty(e.code)) {
+                state.keys[e.code] = false;
+            }
+        });
+        
+        // Mobile Controls (Touch Events)
+        const btnLeft = document.getElementById('btn-left');
+        const btnRight = document.getElementById('btn-right');
+        const btnShoot = document.getElementById('btn-shoot');
+        
+        // Fungsi helper untuk handle touch start & end
+        const addTouchControl = (element, keyMap) => {
+            element.addEventListener('touchstart', (e) => {
+                e.preventDefault(); // Mencegah double tap zoom
+                state.keys[keyMap] = true;
+            });
+            element.addEventListener('touchend', (e) => {
+                 e.preventDefault();
+                state.keys[keyMap] = false;
+            });
+             element.addEventListener('mousedown', () => state.keys[keyMap] = true);
+             element.addEventListener('mouseup', () => state.keys[keyMap] = false);
+             element.addEventListener('mouseleave', () => state.keys[keyMap] = false);
+        };
+
+        addTouchControl(btnLeft, 'ArrowLeft');
+        addTouchControl(btnRight, 'ArrowRight');
+        
+        // Tembak agak beda karena kita ingin trigger satu kali per tap
+        btnShoot.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            state.keys.ShootMobile = true;
+        });
+        btnShoot.addEventListener('mousedown', () => state.keys.ShootMobile = true);
+
+        // UI Buttons
+        document.getElementById('start-btn').addEventListener('click', startGame);
+        document.getElementById('restart-btn').addEventListener('click', startGame);
+        
+        // Resize Handler: Pastikan posisi entities (terutama laser) tetap relevan
+        window.addEventListener('resize', () => {
+             if(state.isPlaying) {
+                 // Hanya update posisi player
+                 updatePlayerPosition();
+             }
+        });
+
+    </script>
+</body>
+</html>

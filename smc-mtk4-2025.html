@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Try Out SMC 2025 - Matematika Level 4</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- KaTeX for Math Rendering -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="text-gray-800 antialiased h-screen flex flex-col overflow-hidden">
+
+    <nav class="bg-blue-700 text-white shadow-md z-10 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center gap-3">
+                    <i class="fa-solid fa-calculator text-2xl"></i>
+                    <h1 class="font-bold text-lg sm:text-xl truncate">SMC 2025 Level 4</h1>
+                </div>
+                <div class="flex items-center gap-2 sm:gap-4">
+                    <div id="header-timer" class="hidden items-center bg-blue-800 px-3 py-2 rounded-lg font-mono font-bold text-yellow-300 text-sm sm:text-base">
+                        <i class="fa-regular fa-clock mr-1 sm:mr-2"></i>
+                        <span id="time-display">90:00</span>
+                    </div>
+                    <button id="btn-submit-nav" onclick="confirmSubmit()" class="hidden bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-3 sm:px-4 rounded-lg transition shadow text-sm sm:text-base whitespace-nowrap">
+                        <i class="fa-solid fa-check mr-1"></i> <span class="hidden sm:inline">Selesai</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-1 overflow-y-auto relative w-full flex justify-center">
+        
+        <!-- ================= WELCOME SCREEN ================= -->
+        <div id="welcome-screen" class="max-w-3xl w-full px-4 py-12 flex flex-col items-center justify-center min-h-full transition-opacity duration-300">
+            <div class="bg-white p-8 rounded-2xl shadow-xl text-center w-full">
+                <div class="w-20 h-20 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-6 text-4xl">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                </div>
+                <h2 class="text-3xl font-bold text-gray-900 mb-2">Try Out Prediksi SMC 2025</h2>
+                <p class="text-gray-500 mb-8 font-medium">Matematika Level 4</p>
+                
+                <div class="grid grid-cols-2 gap-4 mb-8 text-left">
+                    <div class="bg-gray-50 p-4 rounded-xl flex items-start gap-3">
+                        <i class="fa-solid fa-list-ol text-blue-500 mt-1"></i>
+                        <div>
+                            <p class="text-sm text-gray-500">Jumlah Soal</p>
+                            <p class="font-bold text-gray-800">35 Pilihan Ganda</p>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-xl flex items-start gap-3">
+                        <i class="fa-solid fa-stopwatch text-blue-500 mt-1"></i>
+                        <div>
+                            <p class="text-sm text-gray-500">Waktu</p>
+                            <p class="font-bold text-gray-800">90 Menit</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-left bg-yellow-50 text-yellow-800 p-4 rounded-xl mb-8 text-sm">
+                    <strong>Instruksi:</strong>
+                    <ul class="list-disc pl-5 mt-2 space-y-1">
+                        <li>Pastikan koneksi internet stabil (walau soal diload di awal).</li>
+                        <li>Jangan merefresh halaman agar waktu dan jawaban tidak hilang.</li>
+                        <li>Klik "Submit" di akhir pengerjaan untuk melihat nilai dan pembahasan.</li>
+                    </ul>
+                </div>
+
+                <button onclick="startQuiz()" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-10 rounded-full transition transform hover:scale-105 shadow-lg">
+                    Mulai Ujian Sekarang <i class="fa-solid fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- ================= QUIZ SCREEN ================= -->
+        <div id="quiz-screen" class="hidden w-full max-w-4xl mx-auto px-4 py-6 flex-col gap-6 min-h-full">
+            
+            <!-- Question Area -->
+            <div class="w-full flex flex-col">
+                <div class="bg-white rounded-2xl shadow-sm p-6 sm:p-8 flex-1 border border-gray-100 mb-6 relative">
+                    <div class="flex justify-between items-center mb-6 border-b pb-4">
+                        <div class="flex items-center gap-3 flex-wrap">
+                            <h2 id="q-number" class="text-xl sm:text-2xl font-bold text-blue-800">Soal 1</h2>
+                            <span id="progress-text" class="text-xs font-semibold bg-blue-100 text-blue-700 px-2 py-1 rounded">0/35 Terjawab</span>
+                        </div>
+                        <button onclick="toggleFlag()" id="btn-flag" class="text-gray-400 hover:text-orange-500 transition text-sm sm:text-base whitespace-nowrap ml-2">
+                            <i class="fa-regular fa-flag"></i> <span class="hidden sm:inline">Tandai Ragu</span>
+                        </button>
+                    </div>
+                    
+                    <div id="q-text" class="text-gray-800 text-base sm:text-lg mb-8 leading-relaxed prose max-w-none">
+                        <!-- Question Text Here -->
+                    </div>
+
+                    <div id="q-options" class="space-y-3">
+                        <!-- Options Here -->
+                    </div>
+                </div>
+
+                <!-- Prev/Dropdown/Next Controls -->
+                <div class="flex flex-row justify-between items-center gap-2 sm:gap-4 bg-white p-3 sm:p-4 rounded-2xl shadow-sm border border-gray-100">
+                    <button onclick="prevQuestion()" id="btn-prev" class="flex-1 sm:flex-none justify-center px-3 sm:px-5 py-2.5 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 font-medium transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center">
+                        <i class="fa-solid fa-chevron-left sm:mr-2"></i> <span class="hidden sm:inline">Sebelumnya</span>
+                    </button>
+                    
+                    <div class="relative flex-1 sm:max-w-xs">
+                        <select id="nav-dropdown" onchange="jumpToQuestion(parseInt(this.value))" class="w-full appearance-none p-2.5 pr-8 border border-gray-300 rounded-lg text-gray-700 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 font-semibold cursor-pointer transition text-center text-sm sm:text-base text-ellipsis overflow-hidden">
+                            <!-- Dropdown options generated via JS -->
+                        </select>
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-500">
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </div>
+                    </div>
+
+                    <button onclick="nextQuestion()" id="btn-next" class="flex-1 sm:flex-none justify-center px-3 sm:px-5 py-2.5 rounded-lg bg-blue-600 text-white hover:bg-blue-700 font-medium transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center">
+                        <span class="hidden sm:inline">Selanjutnya</span> <i class="fa-solid fa-chevron-right sm:ml-2"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= RESULT SCREEN ================= -->
+        <div id="result-screen" class="hidden max-w-3xl w-full px-4 py-12 flex flex-col items-center justify-center min-h-full">
+            <div class="bg-white p-8 rounded-2xl shadow-xl text-center w-full">
+                <div class="w-24 h-24 bg-green-100 text-green-500 rounded-full flex items-center justify-center mx-auto mb-6 text-5xl">
+                    <i class="fa-solid fa-check-circle"></i>
+                </div>
+                <h2 class="text-3xl font-bold text-gray-900 mb-2">Ujian Selesai!</h2>
+                <p class="text-gray-500 mb-8">Berikut adalah hasil evaluasi kamu.</p>
+                
+                <div class="bg-gray-50 rounded-2xl p-6 mb-8 border border-gray-100">
+                    <div class="text-6xl font-black text-blue-600 mb-2" id="final-score">100</div>
+                    <div class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-6">Skor Akhir</div>
+                    
+                    <div class="grid grid-cols-3 gap-4 text-center divide-x divide-gray-200">
+                        <div>
+                            <p class="text-2xl font-bold text-green-500" id="stat-correct">0</p>
+                            <p class="text-xs text-gray-500 mt-1">Benar</p>
+                        </div>
+                        <div>
+                            <p class="text-2xl font-bold text-red-500" id="stat-wrong">0</p>
+                            <p class="text-xs text-gray-500 mt-1">Salah</p>
+                        </div>
+                        <div>
+                            <p class="text-2xl font-bold text-gray-400" id="stat-empty">0</p>
+                            <p class="text-xs text-gray-500 mt-1">Kosong</p>
+                        </div>
+                    </div>
+                </div>
+
+                <button onclick="showReview()" class="w-full sm:w-auto bg-blue-100 text-blue-700 hover:bg-blue-200 font-bold py-3 px-8 rounded-xl transition shadow-sm">
+                    <i class="fa-solid fa-book-open mr-2"></i> Lihat Pembahasan
+                </button>
+            </div>
+        </div>
+
+        <!-- ================= REVIEW SCREEN ================= -->
+        <div id="review-screen" class="hidden w-full max-w-4xl mx-auto px-4 py-8">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-2xl font-bold text-gray-800">Kunci Jawaban & Pembahasan</h2>
+                <button onclick="location.reload()" class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-lg font-medium transition">
+                    <i class="fa-solid fa-rotate-right mr-2"></i> Ulangi
+                </button>
+            </div>
+            
+            <div id="review-container" class="space-y-6">
+                <!-- Review items generated via JS -->
+            </div>
+        </div>
+        
+    </main>
+
+    <!-- Modal Konfirmasi Submit -->
+    <div id="modal-submit" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center opacity-0 transition-opacity">
+        <div class="bg-white p-6 rounded-2xl shadow-2xl max-w-sm w-full mx-4 transform scale-95 transition-transform" id="modal-content">
+            <div class="text-center mb-6">
+                <div class="w-16 h-16 bg-yellow-100 text-yellow-500 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">Akhiri Ujian?</h3>
+                <p class="text-gray-500 text-sm" id="modal-warning">Ada beberapa soal yang belum dijawab. Yakin ingin mengakhiri sekarang?</p>
+            </div>
+            <div class="flex gap-3">
+                <button onclick="closeModal()" class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold py-2.5 rounded-xl transition">
+                    Batal
+                </button>
+                <button onclick="submitQuiz()" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 rounded-xl transition shadow">
+                    Ya, Selesai
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ----------------------------------------------------
+        // DATA SOAL (Diambil dari Modul Prediksi SMC 2025)
+        // ----------------------------------------------------
+        const quizData = [
+            {
+                text: "Ada berapa banyak bilangan bulat dua digit yang nilainya sama dengan tiga kali jumlah digit-digitnya ditambah dengan hasil perkalian digit-digitnya?",
+                options: ["1", "2", "3", "4"],
+                answer: 0,
+                explanation: "Misalkan bilangan tersebut adalah $10a + b$.<br>Model persamaannya: $10a + b = 3(a + b) + ab$<br>$10a + b = 3a + 3b + ab$<br>$7a - 2b = ab \\implies 7a - ab = 2b \\implies a(7 - b) = 2b \\implies a = \\frac{2b}{7-b}$<br>Karena $a$ dan $b$ digit, uji nilai $b$. Jika $b=5 \\implies a=5$ (Angka 55). Hanya ada 1 yang memenuhi."
+            },
+            {
+                text: "Enam orang delegasi bertemu di sebuah konferensi dan saling berjabat tangan. Andi berjabat tangan dengan 1 orang, Budi dengan 2 orang, Candra dengan 3 orang, Dodi dengan 4 orang, dan Edi dengan 5 orang. Berapa banyak orang yang berjabat tangan dengan Feri?",
+                options: ["2", "3", "4", "5"],
+                answer: 1,
+                explanation: "Edi (5) berjabat dengan semua. Andi (1) pasti hanya dengan Edi. Dodi (4) berjabat dengan selain Andi (yaitu Edi, Budi, Candra, Feri). Budi (2) jatah habis dengan Edi & Dodi. Candra (3) sudah dengan Edi & Dodi, sisa 1 dengan Feri. Maka Feri berjabat dengan Edi, Dodi, Candra (3 orang)."
+            },
+            {
+                text: "Berapakah angka satuan (digit terakhir) dari hasil $4^{(4^{2026})}$?",
+                options: ["2", "4", "6", "8"],
+                answer: 2,
+                explanation: "Pola angka satuan perpangkatan 4: ganjil=4, genap=6. Karena $4^{2026}$ adalah genap, maka $4^{\\text{genap}}$ selalu memiliki satuan 6."
+            },
+            {
+                text: "Berapakah bilangan bulat positif terkecil yang hanya terdiri dari angka 0 dan 1, serta habis dibagi oleh 12?",
+                options: ["11000", "11100", "111100", "1111000"],
+                answer: 1,
+                explanation: "Habis dibagi 12 = habis dibagi 3 (jumlah digit kelipatan 3) & 4 (2 digit terakhir 00). Agar jumlah digit 3, butuh tiga angka '1' (111). Syarat dibagi 4 butuh '00'. Digabung terkecil: 11100."
+            },
+            {
+                text: "Diberikan enam bilangan prima berikut: 31, 37, 41, 43, 47, dan 53. Anton memilih tiga bilangan prima di antaranya dan rata-rata dari ketiga bilangan tersebut adalah 41. Berapakah rata-rata dari tiga bilangan prima yang tersisa?",
+                options: ["41", "42", "43", "44"],
+                answer: 2,
+                explanation: "Jumlah 6 bilangan = 252. Rata-rata 3 pilihan = 41 (Jumlah=123). Sisa jumlah = 252 - 123 = 129. Rata-rata tersisa = 129 / 3 = 43."
+            },
+            {
+                text: "Di sebuah dompet digital kripto, saldo saya berisi $x$ Koin A dan $y$ Koin B. Jika nilainya ditukar menjadi $y$ Koin A dan $x$ Koin B, maka total nilai dompet saya menjadi tepat sepertiga dari total nilai semula. Jika 1 Koin A nilainya setara dengan 100 Koin B, berapakah total Koin B paling sedikit yang saya miliki di awal?",
+                options: ["199 Koin A dan 98 Koin B", "299 Koin A dan 97 Koin B", "399 Koin A dan 96 Koin B", "298 Koin A dan 97 Koin B"],
+                answer: 1,
+                explanation: "Nilai awal (dlm B): $100x + y$. Ditukar: $100y + x$. Persamaan: $3(100y + x) = 100x + y \\implies 300y + 3x = 100x + y \\implies 299y = 97x$. Perbandingan $x/y = 299/97$. Koin B minimal (y) adalah 97."
+            },
+            {
+                text: "Diketahui sistem persamaan berikut:<br>$ab = 2$<br>$a(b+1) = 3$<br>Berapakah nilai dari $(a+1)(b+1)$?",
+                options: ["5", "6", "7", "8"],
+                answer: 1,
+                explanation: "$a(b+1)=3 \\implies ab+a=3$. Karena $ab=2$, maka $2+a=3 \\implies a=1$. Maka $b=2$. $(a+1)(b+1) = (2)(3) = 6$."
+            },
+            {
+                text: "Dua robot pembersih bergerak dengan kecepatan konstan berlawanan arah di sebuah sirkuit melingkar. Robot A membutuhkan waktu 60 detik untuk menyelesaikan satu putaran. Jika kedua robot berpapasan setiap 40 detik, berapa lama waktu yang dibutuhkan Robot B untuk menyelesaikan satu putaran penuh?",
+                options: ["80 detik", "100 detik", "120 detik", "140 detik"],
+                answer: 2,
+                explanation: "$V_a = 1/60$. Kecepatan relatif: $V_a + V_b = 1/40$. $1/60 + 1/t_b = 1/40 \\implies 1/t_b = 1/40 - 1/60 = 1/120$. Maka 120 detik."
+            },
+            {
+                text: "Dalam sebuah barisan rekursif, setiap suku setelah suku kedua merupakan penjumlahan dari dua suku sebelumnya (seperti deret Fibonacci). Jika semua sukunya adalah bilangan bulat positif dan suku keenam adalah 100, berapakah nilai minimum yang mungkin untuk suku ketiga?",
+                options: ["20", "22", "24", "25"],
+                answer: 1,
+                explanation: "$U_1=a, U_2=b$. Maka $U_6 = 3a+5b = 100$. Agar $U_3 = a+b$ minimum, maksimalkan $b$. $3a = 100-5b = 5(20-b)$. Nilai b tertinggi agar (20-b) kelipatan 3 adalah b=17. Maka a=5. $U_3 = 17+5 = 22$."
+            },
+            {
+                text: "Jumlah empat pecahan berbeda bernilai kurang dari 1. Tiga pecahan pertama adalah $\\frac{1}{2}$, $\\frac{1}{4}$, dan $\\frac{1}{5}$. Pecahan keempat adalah $\\frac{1}{n}$, di mana $n$ adalah bilangan bulat positif. Syarat apa yang harus dipenuhi oleh $n$?",
+                options: ["$n > 19$", "$n > 20$", "$n < 20$", "$n \\ge 20$"],
+                answer: 1,
+                explanation: "Total 3 awal: $10/20 + 5/20 + 4/20 = 19/20$. $19/20 + 1/n < 1 \\implies 1/n < 1/20$. Maka n harus lebih besar dari 20 ($n > 20$)."
+            },
+            {
+                text: "Jarak antara kota X dan Y adalah 120 km. Untuk menempuhnya, sebuah bus memerlukan waktu 1 jam dan dilanjutkan dengan kereta api selama 1,5 jam. Jika kecepatan kereta api 10 km/jam lebih cepat daripada bus, berapakah kecepatan bus tersebut?",
+                options: ["40 km/jam", "42 km/jam", "45 km/jam", "50 km/jam"],
+                answer: 1,
+                explanation: "$1(V) + 1.5(V+10) = 120 \\implies V + 1.5V + 15 = 120 \\implies 2.5V = 105 \\implies V = 42$ km/jam."
+            },
+            {
+                text: "Seorang agen mendatangkan 300 kg apel dengan modal Rp 900.000,-. Sebanyak 200 kg dijual dengan harga Rp 4.000,-/kg, dan 50 kg dijual Rp 3.000,-/kg. Sisanya busuk dan dibuang. Keadaan agen tersebut adalah...",
+                options: ["Untung Rp 50.000,-", "Rugi Rp 50.000,-", "Untung Rp 100.000,-", "Rugi Rp 100.000,-"],
+                answer: 0,
+                explanation: "Penerimaan: $(200 \\times 4000) + (50 \\times 3000) = 800.000 + 150.000 = 950.000$. Modal = 900.000. Untung 50.000."
+            },
+            {
+                text: "Pak Budi terpaksa menjual laptop gaming-nya seharga Rp 16.000.000,- dan mengalami kerugian 20% dari harga belinya. Jika ia sebenarnya ingin mendapatkan keuntungan sebesar 15%, berapakah harga laptop itu seharusnya dijual?",
+                options: ["Rp 21.000.000,-", "Rp 22.000.000,-", "Rp 23.000.000,-", "Rp 24.000.000,-"],
+                answer: 2,
+                explanation: "Harga Jual (Rugi 20%) = 80% Harga Beli. $16jt = 80\\% HB \\implies HB = 20jt$. Target Jual (Untung 15%) = $115\\% \\times 20jt = 23jt$."
+            },
+            {
+                text: "Rina menabung di Bank A dan mendapatkan bunga sebesar $\\frac{1}{5}$ dari modal awal setelah 4 bulan menabung. Jika ia menabung di Bank B, ia akan mendapatkan nominal bunga dua kali lipat dari yang ia dapat di Bank A, namun membutuhkan waktu 12 bulan. Suku bunga per tahun di Bank B adalah...",
+                options: ["30%", "40%", "50%", "60%"],
+                answer: 1,
+                explanation: "Bunga B = $2 \\times (1/5) = 2/5 = 40\\%$. Bunga 40% ini didapat dalam 12 bulan (1 tahun). Maka suku bunga per tahun adalah 40%."
+            },
+            {
+                text: "Sebuah toko komputer menjual hardisk dengan margin keuntungan 50% dari harga kulakan. Karena sedang masa promo, pemilik toko memberikan diskon 30% dari harga jual. Berapa persen keuntungan bersih yang didapat toko tersebut setelah diskon?",
+                options: ["5%", "10%", "15%", "20%"],
+                answer: 0,
+                explanation: "Misal Beli = 100. Jual = 150. Diskon = 30% x 150 = 45. Harga Diskon = 150 - 45 = 105. Keuntungan bersih = 105 - 100 = 5 (atau 5%)."
+            },
+            {
+                text: "Diketahui dua himpunan $A$ dan $B$. Jika $|A \\cup B| = 12$ dan $|A| = 7$, manakah di antara himpunan berikut yang memuat *semua* kemungkinan nilai untuk $|B|$?",
+                options: ["$\\{5, 6, 7, 8, 9, 10, 11\\}$", "$\\{5, 6, 7, 8, 9, 10, 11, 12\\}$", "$\\{6, 7, 8, 9, 10, 11, 12\\}$", "$\\{7, 8, 9, 10, 11, 12, 13\\}$"],
+                answer: 1,
+                explanation: "$|A \\cup B| = |A| + |B| - |A \\cap B| \\implies 12 = 7 + |B| - irisan \\implies |B| = 5 + irisan$. Irisan min=0, max=7 (karena |A|=7). Maka nilai |B| dari $5+0=5$ sampai $5+7=12$."
+            },
+            {
+                text: "Berapa banyak himpunan bagian dari $\\{1, 2, 3, 4, 5, 6\\}$ yang pasti mengandung elemen $\\{1, 2\\}$ atau elemen $\\{5, 6\\}$?",
+                options: ["24", "26", "28", "30"],
+                answer: 2,
+                explanation: "Inklusi-Eksklusi. Memuat {1,2} = $2^4 = 16$. Memuat {5,6} = $2^4 = 16$. Memuat keduanya = $2^2 = 4$. Total = $16 + 16 - 4 = 28$."
+            },
+            {
+                text: "Jika sebuah fungsi matematika memenuhi $f(x) + 2f(\\frac{1}{x}) = 3x$ untuk setiap $x \\neq 0$, maka nilai dari $f(2)$ adalah...",
+                options: ["-2", "-1", "1", "2"],
+                answer: 1,
+                explanation: "Substitusi $x=2$: $f(2) + 2f(1/2) = 6$. Substitusi $x=1/2$: $f(1/2) + 2f(2) = 1.5$. Eliminasi menghasilkan $f(2) = -1$."
+            },
+            {
+                text: "Diketahui fungsi $f(x+y) = f(x) + f(y) + xy$ untuk semua bilangan real $x, y$. Jika $f(2) = 5$, berapakah nilai dari $f(10)$?",
+                options: ["55", "60", "65", "70"],
+                answer: 2,
+                explanation: "Cari f(1): $f(1+1) = 2f(1)+1 \\implies 5 = 2f(1)+1 \\implies f(1)=2$. Pola: $f(x) = (x^2+3x)/2$. Maka $f(10) = (100+30)/2 = 65$."
+            },
+            {
+                text: "Jika $2^{x-1} = 5$, berapakah hasil dari $2^{x+2}$?",
+                options: ["20", "30", "40", "50"],
+                answer: 2,
+                explanation: "$2^{x+2} = 2^{(x-1)+3} = 2^{x-1} \\times 2^3 = 5 \\times 8 = 40$."
+            },
+            {
+                text: "Rata-rata berat badan 40 siswa kelas A adalah 65 kg, sedangkan rata-rata berat badan 60 siswa kelas B adalah 55 kg. Berapa rata-rata berat badan seluruh siswa tersebut?",
+                options: ["58 kg", "59 kg", "60 kg", "61 kg"],
+                answer: 1,
+                explanation: "Rata-rata gabungan = $((40 \\times 65) + (60 \\times 55)) / 100 = (2600 + 3300) / 100 = 5900 / 100 = 59$."
+            },
+            {
+                text: "Berapa banyak cara menyusun huruf-huruf dari kata \"LOGARITMA\" dengan syarat huruf vokal dan konsonan harus disusun secara berselang-seling?",
+                options: ["720", "1440", "2880", "5760"],
+                answer: 1,
+                explanation: "5 Konsonan (L,G,R,T,M) & 4 Vokal (O,A,I,A). Susunan wajib K-V-K-V-K-V-K-V-K. Permutasi Konsonan = 5! = 120. Permutasi Vokal = 4!/2! = 12. Total = $120 \\times 12 = 1440$."
+            },
+            {
+                text: "Dari 10 programmer, akan dipilih 4 orang untuk membentuk satu tim. Dua di antara mereka (A dan B) sedang bermusuhan dan menolak jika berada dalam tim yang sama, sementara programmer C adalah pimpinan proyek sehingga wajib masuk ke dalam tim. Berapa banyak kombinasi tim yang mungkin terbentuk?",
+                options: ["42", "50", "77", "84"],
+                answer: 2,
+                explanation: "C wajib masuk (pilih 3 dari sisa 9). Total tanpa syarat: $C(9,3) = 84$. Syarat terlarang (A & B masuk sama-sama bersama C): pilih 1 dari sisa 7 = 7. Valid = $84 - 7 = 77$."
+            },
+            {
+                text: "Berapa banyak bilangan genap 5-digit berbeda yang dapat dibentuk menggunakan angka 1, 2, 3, 4, 5, 6, 7, 8, dan 9 tanpa ada pengulangan angka?",
+                options: ["3360", "6720", "8400", "15120"],
+                answer: 1,
+                explanation: "Slot terakhir (genap) ada 4 opsi (2,4,6,8). Sisa 4 slot diisi 8 angka: $P(8,4) = 8\\times7\\times6\\times5 = 1680$. Total = $4 \\times 1680 = 6720$."
+            },
+            {
+                text: "Nilai median (tepat di tengah) dari data pemakaian memori berikut adalah...<br><br><table class='w-full max-w-sm text-left border-collapse'><tr class='bg-gray-100'><th class='p-2 border'>Memori</th><th class='p-2 border'>Frekuensi</th></tr><tr><td class='p-2 border'>1 - 10</td><td class='p-2 border'>5</td></tr><tr><td class='p-2 border'>11 - 20</td><td class='p-2 border'>8</td></tr><tr><td class='p-2 border'>21 - 30</td><td class='p-2 border'>12</td></tr><tr><td class='p-2 border'>31 - 40</td><td class='p-2 border'>15</td></tr><tr><td class='p-2 border'>41 - 50</td><td class='p-2 border'>10</td></tr></table>",
+                options: ["29,5", "30,0", "30,5", "31,0"],
+                answer: 2,
+                explanation: "Total N = 50. Median data ke-25. F Kumulatif (1-10)=5, (11-20)=13, (21-30)=25. Karena jatuh tepat di batas akhir kelas 21-30, nilainya adalah Tepi Atas kelas = 30 + 0,5 = 30,5."
+            },
+            {
+                text: "<b>[Geometri Desain Grafis Digital]</b> Pada sebuah <i>canvas</i> aplikasi desain grafis, terdapat objek segitiga dengan titik koordinat piksel di $A(2, 1)$, $B(8, 3)$, dan $C(4, 9)$. Luas area piksel dari segitiga grafis tersebut adalah...",
+                options: ["20 satuan luas", "22 satuan luas", "24 satuan luas", "26 satuan luas"],
+                answer: 1,
+                explanation: "Rumus Shoelace: $L = 0.5 |(x_1y_2 + x_2y_3 + x_3y_1) - (y_1x_2 + y_2x_3 + y_3x_1)| = 0.5 |(6+72+4) - (8+12+18)| = 0.5 |82 - 38| = 22$."
+            },
+            {
+                text: "<b>[Geometri Transformasi Algoritma]</b> Sebuah objek kursor komputer berada di titik $(x, y)$. Algoritma merotasikannya sebesar $90^\\circ$ berlawanan arah jarum jam dengan pusat rotasi $(0,0)$, lalu mentranslasikannya (menggesernya) sejauh sumbu $x+2$ dan sumbu $y-3$. Jika posisi akhir kursor sekarang di $(1, 2)$, dimanakah titik koordinat awal kursor tersebut?",
+                options: ["$(5, 1)$", "$(1, 5)$", "$(-5, 1)$", "$(-1, -5)$"],
+                answer: 0,
+                explanation: "Invers translasi dari (1,2) adalah (1-2, 2+3) = (-1,5). Invers rotasi $+90^\\circ$ dari pusat (x,y) $\\to$ (-y,x). Jika $(-y, x) = (-1, 5)$, maka $y=1, x=5$. Koordinat (5,1)."
+            },
+            {
+                text: "<b>[Geometri Collision Detection]</b> Sebuah game memiliki algoritma deteksi tabrakan. Lingkaran 'Player' berada di koordinat $(3, 4)$ dengan radius $R$. Lingkaran 'Musuh' berada di koordinat $(15, 9)$ dengan radius 6. Berapa radius $R$ agar saat itu juga Player tepat mulai bergesekan (Tabrakan)?",
+                options: ["5", "6", "7", "8"],
+                answer: 2,
+                explanation: "Jarak pusat $d = \\sqrt{(15-3)^2 + (9-4)^2} = \\sqrt{144+25} = 13$. Syarat tabrakan: $R + 6 = 13 \\implies R = 7$."
+            },
+            {
+                text: "<b>[Fungsi Optimasi]</b> Sebuah sistem cloud computing membagi <i>Bandwidth</i> maksimal berdasarkan fungsi profit $P = 3x + 4y$. Sistem memiliki batasan memori: $x + y \\le 10$ dan $2x + y \\le 16$, dengan $x \\ge 0, y \\ge 0$. Berapakah nilai maksimum profit $P$ yang bisa dihasilkan?",
+                options: ["30", "32", "34", "40"],
+                answer: 3,
+                explanation: "Titik potong (6,4) $\\to P = 18+16=34$. Titik potong sumbu Y dari x+y=10 (0,10) $\\to P=40$. Titik potong sumbu X dari 2x+y=16 (8,0) $\\to P=24$. Maksimum = 40."
+            },
+            {
+                text: "<b>[Pertidaksamaan Logika]</b> Algoritma kompresi data menerima paket data ukuran $x$ (bulat) yang lolos filter: toleransi mutlak $|3x - 4| \\le 11$ dan syarat memori $x^2 - 2x > 0$. Ada berapa nilai bilangan bulat $x$ yang valid diterima?",
+                options: ["3", "4", "5", "6"],
+                answer: 2,
+                explanation: "$|3x-4| \\le 11 \\implies -7 \\le 3x \\le 15 \\implies -2.33 \\le x \\le 5$. Bulat: {-2,-1,0,1,2,3,4,5}. Syarat memori: $x(x-2)>0 \\implies x<0$ atau $x>2$. Irisannya: {-2,-1,3,4,5}. Ada 5 nilai."
+            },
+            {
+                text: "<b>[Pembuktian & Pola Algoritma]</b> Perhatikan pseudocode algoritma sederhana berikut:<br><pre class='bg-gray-800 text-green-400 p-4 rounded-md font-mono text-sm mt-3'>jumlah = 0\nUNTUK i DARI 1 SAMPAI 10 LAKUKAN:\n   UNTUK j DARI 1 SAMPAI i LAKUKAN:\n      jumlah = jumlah + 1\nCETAK jumlah</pre><br>Berapakah nilai yang dicetak?",
+                options: ["45", "50", "55", "60"],
+                answer: 2,
+                explanation: "Loop j berjalan sejumlah iterasi i. Maka total hitungan = deret aritmatika $1+2+3+...+10$. Jumlah = $10 \\times 11 / 2 = 55$."
+            },
+            {
+                text: "<b>[Logika Formal Komputer]</b> Sebuah sistem gerbang logika memiliki skema akses: $P = (A \\text{ OR } B) \\text{ AND } (\\text{NOT } A \\text{ OR } B)$. Aturan tersebut selalu dapat disederhanakan menjadi fungsi yang mutlak bergantung pada...",
+                options: ["Variabel A saja", "Variabel B saja", "Variabel A AND B", "Variabel A OR B"],
+                answer: 1,
+                explanation: "Hukum Distributif Boolean: $(A + B)(A' + B) = B + (AA')$. Karena $AA'$ (A AND NOT A) adalah 0 (False), maka $= B + 0 = B$. Tergantung pada B saja."
+            },
+            {
+                text: "<b>[Struktur Algoritma Data]</b> Akses lisensi disimpan dalam kode Biner. Jika admin memberikan akses bernilai desimal '173', berapa banyak digit bit '1' di dalam bentuk bilangan biner dari lisensi tersebut?",
+                options: ["4", "5", "6", "7"],
+                answer: 1,
+                explanation: "$173 = 128 + 32 + 8 + 4 + 1$. Bentuk binernya: $10101101_2$. Terdapat 5 angka '1'."
+            },
+            {
+                text: "<b>[Induksi Matematika Rekursif]</b> Kompleksitas pemrosesan algoritma membentuk barisan penjumlahan bilangan ganjil berurutan ($1 + 3 + 5 + 7 + ...$). Jika iterasi operasi berhenti di total hasil $225$, berapakah nilai $n$ data yang baru saja diproses?",
+                options: ["13", "14", "15", "16"],
+                answer: 2,
+                explanation: "Jumlah n bilangan ganjil pertama sama dengan $n^2$. $n^2 = 225 \\implies n = \\sqrt{225} = 15$."
+            },
+            {
+                text: "<b>[Optimasi Cost Function]</b> Sebuah model Machine Learning memiliki persamaan fungsi <i>Loss</i> (tingkat eror) $L(w) = w^2 - 14w + 60$, di mana $w$ adalah nilai beban saraf tiruan. Berapakah nilai kerugian paling minimum yang bisa dicapai?",
+                options: ["9", "10", "11", "12"],
+                answer: 2,
+                explanation: "Eror minimum di puncak kurva $w = -b/(2a) = 14/2 = 7$. Substitusi ke L(w): $L(7) = 7^2 - 14(7) + 60 = 49 - 98 + 60 = 11$."
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let userAnswers = new Array(quizData.length).fill(null);
+        let flaggedQuestions = new Array(quizData.length).fill(false);
+        let timerInterval;
+        let timeRemaining = 90 * 60; // 90 minutes in seconds
+
+        function init() {
+            renderMath();
+        }
+
+        function startQuiz() {
+            document.getElementById('welcome-screen').classList.add('hidden');
+            document.getElementById('quiz-screen').classList.remove('hidden');
+            document.getElementById('quiz-screen').classList.add('flex');
+            document.getElementById('header-timer').classList.remove('hidden');
+            document.getElementById('header-timer').classList.add('flex');
+            document.getElementById('btn-submit-nav').classList.remove('hidden');
+            
+            startTimer();
+            buildNavDropdown();
+            renderQuestion();
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                timeRemaining--;
+                let m = Math.floor(timeRemaining / 60).toString().padStart(2, '0');
+                let s = (timeRemaining % 60).toString().padStart(2, '0');
+                document.getElementById('time-display').innerText = `${m}:${s}`;
+                
+                if (timeRemaining <= 300) { // 5 minutes left warning
+                    document.getElementById('header-timer').classList.replace('text-yellow-300', 'text-red-400');
+                    document.getElementById('header-timer').classList.replace('bg-blue-800', 'bg-red-900');
+                }
+
+                if(timeRemaining <= 0) {
+                    clearInterval(timerInterval);
+                    submitQuiz(); // Auto submit
+                }
+            }, 1000);
+        }
+
+        function renderQuestion() {
+            const q = quizData[currentQuestionIndex];
+            
+            document.getElementById('q-number').innerText = `Soal ${currentQuestionIndex + 1}`;
+            document.getElementById('q-text').innerHTML = q.text;
+            
+            let optionsHtml = '';
+            const labels = ['A', 'B', 'C', 'D'];
+            q.options.forEach((opt, idx) => {
+                const isSelected = userAnswers[currentQuestionIndex] === idx;
+                
+                // Active vs Inactive classes
+                const baseClass = "flex items-center p-4 border rounded-xl cursor-pointer transition-all duration-200 ";
+                const activeClass = isSelected ? "bg-blue-50 border-blue-500 shadow-sm ring-2 ring-blue-200" : "bg-white border-gray-200 hover:bg-gray-50";
+                
+                const circleBaseClass = "w-5 h-5 rounded-full border-2 mr-4 relative flex items-center justify-center transition-colors ";
+                const circleActiveClass = isSelected ? "border-blue-500 bg-blue-500" : "border-gray-300";
+                const dotHtml = isSelected ? `<div class="w-2 h-2 bg-white rounded-full"></div>` : ``;
+
+                optionsHtml += `
+                    <div onclick="selectOption(${idx})" class="${baseClass} ${activeClass}">
+                        <div class="${circleBaseClass} ${circleActiveClass}">${dotHtml}</div>
+                        <span class="font-bold ${isSelected ? 'text-blue-700' : 'text-gray-500'} mr-3 w-4">${labels[idx]}.</span>
+                        <div class="${isSelected ? 'text-blue-900' : 'text-gray-700'} flex-1">${opt}</div>
+                    </div>
+                `;
+            });
+            document.getElementById('q-options').innerHTML = optionsHtml;
+
+            // Update Flag UI
+            const flagBtn = document.getElementById('btn-flag');
+            if(flaggedQuestions[currentQuestionIndex]) {
+                flagBtn.classList.replace('text-gray-400', 'text-orange-500');
+                flagBtn.innerHTML = `<i class="fa-solid fa-flag"></i> <span class="hidden sm:inline">Ditandai</span>`;
+            } else {
+                flagBtn.classList.replace('text-orange-500', 'text-gray-400');
+                flagBtn.innerHTML = `<i class="fa-regular fa-flag"></i> <span class="hidden sm:inline">Tandai Ragu</span>`;
+            }
+
+            // Update Prev/Next Buttons
+            document.getElementById('btn-prev').disabled = currentQuestionIndex === 0;
+            document.getElementById('btn-next').disabled = currentQuestionIndex === quizData.length - 1;
+
+            updateNavDropdown();
+            renderMath(); // Re-render KaTeX on new content
+        }
+
+        function selectOption(optionIndex) {
+            userAnswers[currentQuestionIndex] = optionIndex;
+            renderQuestion(); // Re-render to update visual selection and navigation state
+        }
+
+        function toggleFlag() {
+            flaggedQuestions[currentQuestionIndex] = !flaggedQuestions[currentQuestionIndex];
+            renderQuestion(); // Re-render to update flag button and dropdown state
+        }
+
+        function nextQuestion() {
+            if(currentQuestionIndex < quizData.length - 1) {
+                currentQuestionIndex++;
+                renderQuestion();
+            }
+        }
+
+        function prevQuestion() {
+            if(currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                renderQuestion();
+            }
+        }
+
+        function jumpToQuestion(idx) {
+            currentQuestionIndex = idx;
+            renderQuestion();
+        }
+
+        function buildNavDropdown() {
+            updateNavDropdown();
+        }
+
+        function updateNavDropdown() {
+            const dropdown = document.getElementById('nav-dropdown');
+            if(!dropdown) return;
+
+            let html = '';
+            for(let i=0; i<quizData.length; i++) {
+                let status = '';
+                if(flaggedQuestions[i]) status = ' 🚩 (Ragu)';
+                else if(userAnswers[i] !== null) status = ' ✓ (Terjawab)';
+                
+                let selectedStr = (i === currentQuestionIndex) ? 'selected' : '';
+                html += `<option value="${i}" ${selectedStr}>Soal ${i+1}${status}</option>`;
+            }
+            dropdown.innerHTML = html;
+            
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const answeredCount = userAnswers.filter(ans => ans !== null).length;
+            document.getElementById('progress-text').innerText = `${answeredCount}/${quizData.length} Terjawab`;
+        }
+
+        function confirmSubmit() {
+            const unanswered = userAnswers.filter(ans => ans === null).length;
+            const modal = document.getElementById('modal-submit');
+            const warningText = document.getElementById('modal-warning');
+            
+            if(unanswered > 0) {
+                warningText.innerText = `Masih ada ${unanswered} soal yang belum dijawab. Yakin ingin mengakhiri sekarang?`;
+            } else {
+                warningText.innerText = `Semua soal telah terjawab. Yakin ingin mengakhiri dan melihat nilai?`;
+            }
+            
+            modal.classList.remove('hidden');
+            setTimeout(() => { modal.classList.remove('opacity-0'); modal.querySelector('#modal-content').classList.remove('scale-95'); }, 10);
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('modal-submit');
+            modal.classList.add('opacity-0');
+            modal.querySelector('#modal-content').classList.add('scale-95');
+            setTimeout(() => { modal.classList.add('hidden'); }, 300);
+        }
+
+        function submitQuiz() {
+            clearInterval(timerInterval);
+            closeModal();
+            
+            document.getElementById('quiz-screen').classList.add('hidden');
+            document.getElementById('quiz-screen').classList.remove('flex');
+            document.getElementById('header-timer').classList.add('hidden');
+            document.getElementById('header-timer').classList.remove('flex');
+            document.getElementById('btn-submit-nav').classList.add('hidden');
+            
+            calculateScore();
+            
+            document.getElementById('result-screen').classList.remove('hidden');
+            document.getElementById('result-screen').classList.add('flex');
+        }
+
+        function calculateScore() {
+            let correct = 0;
+            let wrong = 0;
+            let empty = 0;
+
+            userAnswers.forEach((ans, idx) => {
+                if (ans === null) empty++;
+                else if (ans === quizData[idx].answer) correct++;
+                else wrong++;
+            });
+
+            // Score calculation (Standard: Correct = 4, Wrong = -1, Empty = 0)
+            // But for simple Try Out, let's use percentage or just total correct out of 35. 
+            // Let's do (Correct / Total) * 100
+            let finalScore = Math.round((correct / quizData.length) * 100);
+
+            document.getElementById('final-score').innerText = finalScore;
+            document.getElementById('stat-correct').innerText = correct;
+            document.getElementById('stat-wrong').innerText = wrong;
+            document.getElementById('stat-empty').innerText = empty;
+        }
+
+        function showReview() {
+            document.getElementById('result-screen').classList.add('hidden');
+            document.getElementById('result-screen').classList.remove('flex');
+            document.getElementById('review-screen').classList.remove('hidden');
+
+            const container = document.getElementById('review-container');
+            let html = '';
+            const labels = ['A', 'B', 'C', 'D'];
+
+            quizData.forEach((q, idx) => {
+                const userAns = userAnswers[idx];
+                const isCorrect = userAns === q.answer;
+                const isEmpty = userAns === null;
+                
+                let badge = '';
+                if(isCorrect) badge = `<span class="bg-green-100 text-green-700 text-xs font-bold px-3 py-1 rounded border border-green-200"><i class="fa-solid fa-check mr-1"></i> Benar</span>`;
+                else if(isEmpty) badge = `<span class="bg-gray-100 text-gray-500 text-xs font-bold px-3 py-1 rounded border border-gray-200">Kosong</span>`;
+                else badge = `<span class="bg-red-100 text-red-700 text-xs font-bold px-3 py-1 rounded border border-red-200"><i class="fa-solid fa-xmark mr-1"></i> Salah</span>`;
+
+                let optionsHtml = '';
+                q.options.forEach((opt, optIdx) => {
+                    let optClass = "p-3 border rounded-lg text-sm mb-2 flex ";
+                    if (optIdx === q.answer) {
+                        optClass += "bg-green-50 border-green-300 font-semibold text-green-800"; // Correct Answer Style
+                    } else if (optIdx === userAns && !isCorrect) {
+                        optClass += "bg-red-50 border-red-300 font-semibold text-red-800"; // Wrong User Answer Style
+                    } else {
+                        optClass += "bg-white border-gray-200 text-gray-600";
+                    }
+
+                    optionsHtml += `
+                        <div class="${optClass}">
+                            <span class="mr-3 font-bold w-4">${labels[optIdx]}.</span>
+                            <div class="flex-1">${opt}</div>
+                            ${optIdx === q.answer ? '<i class="fa-solid fa-check text-green-500 ml-2 mt-0.5"></i>' : ''}
+                            ${optIdx === userAns && !isCorrect ? '<i class="fa-solid fa-xmark text-red-500 ml-2 mt-0.5"></i>' : ''}
+                        </div>
+                    `;
+                });
+
+                html += `
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 mb-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="font-bold text-lg text-blue-800">Soal ${idx + 1}</h3>
+                            ${badge}
+                        </div>
+                        <div class="text-gray-800 mb-6 text-sm sm:text-base">${q.text}</div>
+                        <div class="mb-6">${optionsHtml}</div>
+                        <div class="bg-blue-50 border border-blue-100 p-4 rounded-xl">
+                            <h4 class="font-bold text-sm text-blue-800 mb-2 uppercase tracking-wide"><i class="fa-solid fa-lightbulb text-yellow-500 mr-1"></i> Pembahasan</h4>
+                            <div class="text-sm text-gray-700 leading-relaxed">${q.explanation}</div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+            renderMath(); // Render equations in review mode
+        }
+
+        function renderMath() {
+            if(window.renderMathInElement) {
+                renderMathInElement(document.body, {
+                    delimiters: [
+                        {left: '$$', right: '$$', display: true},
+                        {left: '$', right: '$', display: false}, // Specifically parse $...$ as inline
+                        {left: '\\(', right: '\\)', display: false},
+                        {left: '\\[', right: '\\]', display: true}
+                    ],
+                    throwOnError: false,
+                    ignoredClasses: ["option-input"]
+                });
+            }
+        }
+
+        // Initialize on load
+        window.onload = init;
+    </script>
+</body>
+</html>

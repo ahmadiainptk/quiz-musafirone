@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Katak Garis Bilangan - Step by Step</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .confetti-container {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; overflow: hidden; z-index: 50; display: none;
+        }
+        
+        .confetti {
+            position: absolute; width: 10px; height: 10px; background-color: #f00;
+            animation: fall linear forwards;
+        }
+
+        @keyframes fall {
+            to { transform: translateY(100vh) rotate(720deg); }
+        }
+
+        /* Styling khusus untuk menyorot bagian soal yang aktif */
+        .step-active {
+            box-shadow: 0 0 0 4px #3b82f6; /* blue-500 */
+            transform: scale(1.1);
+            background-color: #eff6ff;
+            transition: all 0.3s ease;
+        }
+        .step-inactive {
+            opacity: 0.5;
+            transform: scale(1);
+            transition: all 0.3s ease;
+        }
+        .step-done {
+            opacity: 1;
+            background-color: #f0fdf4; /* green-50 */
+            border-color: #22c55e; /* green-500 */
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+<body class="p-2 md:p-4">
+
+    <!-- OVERLAY GAME OVER -->
+    <div id="gameOverOverlay" class="fixed inset-0 bg-black bg-opacity-80 z-50 hidden flex-col items-center justify-center p-4">
+        <div class="bg-white rounded-3xl p-8 max-w-md w-full text-center shadow-2xl transform transition-transform scale-100">
+            <h2 class="text-4xl font-black text-indigo-600 mb-2">Game Selesai!</h2>
+            <p class="text-slate-500 mb-6 font-medium">Kamu telah berusaha dengan baik.</p>
+            
+            <div class="bg-indigo-50 rounded-2xl p-6 mb-6">
+                <p class="text-sm text-indigo-400 font-bold uppercase tracking-wider mb-1">Skor Akhir</p>
+                <p id="finalScoreDisplay" class="text-6xl font-black text-indigo-700">0</p>
+            </div>
+            
+            <div class="flex justify-between text-slate-600 mb-8 px-4 font-medium">
+                <div class="text-left">
+                    <p class="text-xs uppercase text-slate-400">Level Tercapai</p>
+                    <p id="finalLevelDisplay" class="text-xl font-bold">1</p>
+                </div>
+                <div class="text-right">
+                    <p class="text-xs uppercase text-slate-400">Soal Diselesaikan</p>
+                    <p id="finalSolvedDisplay" class="text-xl font-bold">0</p>
+                </div>
+            </div>
+
+            <button onclick="resetFullGame()" class="w-full bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-bold py-4 rounded-xl shadow-lg transition active:scale-95 text-lg">
+                Main Lagi Dari Awal 🔄
+            </button>
+        </div>
+    </div>
+
+    <div class="max-w-4xl w-full bg-white rounded-3xl shadow-2xl p-4 md:p-6 relative overflow-hidden flex flex-col h-full md:h-auto">
+        
+        <!-- Header & Skor -->
+        <div class="flex justify-between items-center mb-4">
+            <h1 class="text-lg md:text-3xl font-extrabold text-indigo-700 drop-shadow-sm flex items-center gap-2">
+                🐸 <span class="hidden md:inline">Katak Matematika</span>
+                <span id="levelBadge" class="bg-indigo-100 text-indigo-800 text-xs md:text-sm px-2 py-1 rounded-lg border border-indigo-200">Level 1</span>
+            </h1>
+            <div class="flex gap-2">
+                <div class="bg-yellow-100 border-2 border-yellow-400 rounded-full px-3 py-1 md:px-4 md:py-1.5 font-bold text-yellow-700 flex items-center gap-1 md:gap-2">
+                    <span>⭐</span>
+                    <span id="scoreDisplay" class="text-lg md:text-xl">0</span>
+                </div>
+                <button onclick="endGame()" class="bg-rose-100 hover:bg-rose-200 border border-rose-300 text-rose-700 px-3 py-1 rounded-full text-xs font-bold transition active:scale-95">
+                    Menyerah 🏳️
+                </button>
+            </div>
+        </div>
+
+        <!-- Area Soal Step-by-Step (Dinamis) -->
+        <div class="text-center mb-4 bg-slate-50 p-4 rounded-2xl border-2 border-slate-200">
+            <h2 class="text-sm md:text-md text-slate-600 font-semibold mb-3" id="instructionTitle">Tahap 1: Letakkan katak di angka pertama!</h2>
+            
+            <div id="equationContainer" class="flex flex-wrap justify-center items-center gap-2 md:gap-4 text-2xl md:text-4xl font-black text-gray-800 min-h-[60px]">
+                <!-- Parts Soal akan di-generate JS disini -->
+            </div>
+        </div>
+
+        <div class="w-full relative h-40 md:h-64 bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm mb-4" id="canvasContainer">
+            <canvas id="gameCanvas" class="absolute top-0 left-0 w-full h-full"></canvas>
+        </div>
+
+        <div id="controlPanel" class="bg-indigo-50 rounded-2xl p-3 md:p-4 border border-indigo-100 transition-opacity duration-300">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4">
+                
+                <!-- Kontrol Hadap -->
+                <div class="flex flex-col items-center bg-white p-2 md:p-3 rounded-xl shadow-sm border border-slate-100">
+                    <p class="text-xs md:text-sm font-bold text-slate-500 mb-2 uppercase tracking-wide">Arah Hadap</p>
+                    <div class="flex bg-slate-100 p-1 rounded-lg w-full">
+                        <button id="btnFaceLeft" class="flex-1 py-2 text-xs md:text-sm font-bold rounded-md transition-colors text-slate-400">⬅️ KIRI (-)</button>
+                        <button id="btnFaceRight" class="flex-1 py-2 text-xs md:text-sm font-bold rounded-md transition-colors bg-white shadow text-blue-600">KANAN (+) ➡️</button>
+                    </div>
+                </div>
+
+                <!-- Kontrol Langkah -->
+                <div class="flex flex-col items-center bg-white p-2 md:p-3 rounded-xl shadow-sm border border-slate-100">
+                    <p class="text-xs md:text-sm font-bold text-slate-500 mb-2 uppercase tracking-wide">Jarak Lompat</p>
+                    <div class="flex items-center justify-between w-full px-2 md:px-4">
+                        <button id="btnStepMinus" class="w-10 h-10 rounded-full bg-slate-100 hover:bg-slate-200 text-xl font-bold text-slate-600 transition active:scale-95">-</button>
+                        <span id="stepCountDisplay" class="text-2xl md:text-3xl font-black text-indigo-600 w-12 text-center">0</span>
+                        <button id="btnStepPlus" class="w-10 h-10 rounded-full bg-slate-100 hover:bg-slate-200 text-xl font-bold text-slate-600 transition active:scale-95">+</button>
+                    </div>
+                </div>
+
+                <!-- Aksi Lompat -->
+                <div class="flex flex-col items-center justify-center gap-2">
+                    <button id="btnJumpFwd" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 rounded-xl shadow-md transition active:scale-95 border-b-4 border-green-700 flex items-center justify-center gap-2 text-sm">
+                        Maju (Ditambah) 🟢
+                    </button>
+                    <button id="btnJumpBwd" class="w-full bg-rose-500 hover:bg-rose-600 text-white font-bold py-2 rounded-xl shadow-md transition active:scale-95 border-b-4 border-rose-700 flex items-center justify-center gap-2 text-sm">
+                        Mundur (Dikurang) 🔴
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="feedbackContainer" class="mt-4 text-center min-h-[80px] flex flex-col items-center justify-center">
+            <p id="feedbackText" class="text-sm md:text-md font-medium text-slate-600 opacity-0 transition-opacity mb-2"></p>
+            <button id="btnCheckFinal" class="hidden bg-gradient-to-r from-green-500 to-emerald-600 text-white font-bold py-2 px-8 rounded-full shadow-lg transform transition hover:scale-105 active:scale-95">
+                Cek Jawaban Akhir ✅
+            </button>
+            <button id="btnNextQuestion" class="hidden bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-bold py-2 px-8 rounded-full shadow-lg transform transition hover:scale-105 active:scale-95">
+                Lanjut Soal Berikutnya ⏭️
+            </button>
+        </div>
+
+    </div>
+
+    <!-- Container untuk efek Confetti -->
+    <div id="confetti" class="confetti-container"></div>
+
+    <script>
+        const state = {
+            // Pengaturan Batas Garis Bilangan (Dinamis akan diatur per level)
+            minVal: -10,
+            maxVal: 10,
+            
+            // Meta Game State
+            score: 0,
+            level: 1,
+            consecutiveCorrect: 0, // Untuk naik level
+            questionsSolved: 0,
+            
+            // Data Soal Saat Ini
+            // Struktur: [{type: 'start', num: -2}, {type: 'op', op: '+', num: 5}, {type: 'op', op: '-', num: -3}]
+            equationParts: [], 
+            correctAnswer: 0,
+            
+            // Step-by-Step State
+            // Tahap = index dari equationParts (0 = start, 1 = op1, 2 = op2). 
+            // Tahap Terakhir = input jawaban.
+            currentStep: 0, 
+            
+            // State Katak & Kendali Fisik
+            frogPos: 0,       
+            frogStartPos: 0,  // Posisi sblm lompat di thp ini
+            frogFacing: 1,    // 1 (Kanan), -1 (Kiri)
+            stepInput: 0,     // Nilai input dr user
+            
+            // State Animasi
+            frogVisualX: 0, 
+            frogVisualY: 0,
+            isAnimating: false
+        };
+
+        // DOM Elements
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const container = document.getElementById('canvasContainer');
+        
+        const eqContainer = document.getElementById('equationContainer');
+        const instructionTitle = document.getElementById('instructionTitle');
+        
+        const controlPanel = document.getElementById('controlPanel');
+        const btnFaceLeft = document.getElementById('btnFaceLeft');
+        const btnFaceRight = document.getElementById('btnFaceRight');
+        const btnStepMinus = document.getElementById('btnStepMinus');
+        const btnStepPlus = document.getElementById('btnStepPlus');
+        const stepCountDisplay = document.getElementById('stepCountDisplay');
+        const btnJumpFwd = document.getElementById('btnJumpFwd');
+        const btnJumpBwd = document.getElementById('btnJumpBwd');
+        
+        const feedbackText = document.getElementById('feedbackText');
+        const btnCheckFinal = document.getElementById('btnCheckFinal');
+        const btnNextQuestion = document.getElementById('btnNextQuestion');
+        
+        const elScore = document.getElementById('scoreDisplay');
+        const elLevel = document.getElementById('levelBadge');
+        const elConfetti = document.getElementById('confetti');
+
+        function resizeCanvas() {
+            canvas.width = container.clientWidth;
+            canvas.height = container.clientHeight;
+            drawScene();
+        }
+        window.addEventListener('resize', resizeCanvas);
+
+        function valToX(val) {
+            const padding = canvas.width * 0.05; 
+            const usableWidth = canvas.width - (padding * 2);
+            const range = state.maxVal - state.minVal;
+            const percentage = (val - state.minVal) / range;
+            return padding + (percentage * usableWidth);
+        }
+
+        function drawNumberLine() {
+            const y = canvas.height * 0.75; 
+            
+            ctx.beginPath();
+            ctx.moveTo(valToX(state.minVal), y);
+            ctx.lineTo(valToX(state.maxVal), y);
+            ctx.lineWidth = 4;
+            ctx.strokeStyle = '#475569';
+            ctx.lineCap = 'round';
+            ctx.stroke();
+
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'top';
+            
+            for (let i = state.minVal; i <= state.maxVal; i++) {
+                const x = valToX(i);
+                ctx.beginPath();
+                ctx.moveTo(x, y - 8);
+                ctx.lineTo(x, y + 8);
+                
+                if (i === 0) {
+                    ctx.lineWidth = 4; ctx.strokeStyle = '#000';
+                } else if (i % 5 === 0) {
+                    ctx.lineWidth = 3; ctx.strokeStyle = '#334155';
+                } else {
+                    ctx.lineWidth = 2; ctx.strokeStyle = '#64748b';
+                }
+                ctx.stroke();
+
+                const isMobile = canvas.width < 600;
+                const range = state.maxVal - state.minVal;
+                // Logika adaptif untuk label agar tidak terlalu padat
+                let stepLabel = 1;
+                if (range > 30) stepLabel = 5;
+                else if (range > 20 || (isMobile && range > 10)) stepLabel = 2;
+
+                const shouldShowLabel = i % stepLabel === 0 || i === 0 || i === state.minVal || i === state.maxVal;
+                
+                if (shouldShowLabel) {
+                    if (i < 0) ctx.fillStyle = '#dc2626'; 
+                    else if (i > 0) ctx.fillStyle = '#16a34a'; 
+                    else ctx.fillStyle = '#000'; 
+                    
+                    const fontSize = isMobile ? 10 : 14;
+                    ctx.font = `bold ${fontSize}px Inter, sans-serif`;
+                    ctx.fillText(i.toString(), x, y + 15);
+                }
+            }
+        }
+
+        function drawFrogBody(ctx, size) {
+            const width = size * 1.3;
+            const height = size * 1.1;
+
+            // Paha terlipat (BELAKANG)
+            ctx.beginPath();
+            ctx.ellipse(-width * 0.4, -height * 0.3, width * 0.4, height * 0.4, -Math.PI / 6, 0, Math.PI * 2);
+            ctx.fillStyle = '#16a34a'; 
+            ctx.fill();
+            ctx.lineWidth = 2; ctx.strokeStyle = '#14532d'; ctx.stroke();
+
+            // Kaki belakang
+            ctx.beginPath();
+            ctx.ellipse(-width * 0.6, 0, width * 0.35, height * 0.15, 0, 0, Math.PI * 2);
+            ctx.fillStyle = '#22c55e'; ctx.fill(); ctx.stroke();
+
+            // Badan & Moncong (DEPAN)
+            ctx.beginPath();
+            ctx.moveTo(-width * 0.6, 0); 
+            ctx.bezierCurveTo(-width * 0.7, -height * 1.2, width * 0.2, -height * 1.2, width * 0.6, -height * 0.5); 
+            ctx.bezierCurveTo(width * 0.9, -height * 0.2, width * 0.8, 0, width * 0.4, 0); 
+            ctx.lineTo(-width * 0.6, 0); 
+            ctx.fillStyle = '#22c55e'; ctx.fill(); ctx.stroke();
+
+            // Mata (DEPAN)
+            ctx.beginPath();
+            ctx.arc(width * 0.4, -height * 0.7, height * 0.35, 0, Math.PI * 2);
+            ctx.fillStyle = '#22c55e'; ctx.fill(); ctx.stroke();
+
+            ctx.beginPath();
+            ctx.arc(width * 0.45, -height * 0.7, height * 0.2, 0, Math.PI * 2);
+            ctx.fillStyle = 'white'; ctx.fill(); ctx.stroke();
+
+            // Pupil
+            ctx.beginPath();
+            ctx.arc(width * 0.52, -height * 0.7, height * 0.1, 0, Math.PI * 2);
+            ctx.fillStyle = 'black'; ctx.fill();
+
+            // Tangan depan
+            ctx.beginPath();
+            ctx.ellipse(width * 0.4, -height * 0.15, width * 0.15, height * 0.25, Math.PI / 8, 0, Math.PI * 2);
+            ctx.fillStyle = '#22c55e'; ctx.fill(); ctx.stroke();
+            ctx.beginPath();
+            ctx.ellipse(width * 0.5, 0, width * 0.25, height * 0.12, 0, 0, Math.PI * 2);
+            ctx.fillStyle = '#22c55e'; ctx.fill(); ctx.stroke();
+
+            // Mulut
+            ctx.beginPath();
+            ctx.moveTo(width * 0.85, -height * 0.25);
+            ctx.quadraticCurveTo(width * 0.6, -height * 0.1, width * 0.4, -height * 0.15);
+            ctx.stroke();
+        }
+
+        function drawScene() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawNumberLine();
+            
+            const frogX = state.isAnimating ? state.frogVisualX : valToX(state.frogPos);
+            
+            ctx.save(); 
+            const baseY = canvas.height * 0.75; 
+            const y = baseY - 15 - state.frogVisualY; 
+            // Skala adaptif untuk katak saat range makin besar (level tinggi)
+            const range = state.maxVal - state.minVal;
+            let baseSize = canvas.width < 600 ? 15 : 20;
+            if(range > 20) baseSize *= (20/range); 
+            const size = Math.max(8, baseSize); // min 8px
+            
+            ctx.translate(frogX, y);
+            ctx.scale(state.frogFacing, 1); 
+            drawFrogBody(ctx, size);
+            ctx.restore(); 
+        }
+
+        function determineEquationFormat() {
+            // Level 1-2: 2 angka (1 operasi)
+            // Level 3-4: 3 angka (2 operasi)
+            // Level 5+: 4 angka (3 operasi)
+            if (state.level <= 2) return 1;
+            if (state.level <= 4) return 2;
+            return 3;
+        }
+
+        function generateQuestion() {
+            const numOps = determineEquationFormat();
+            
+            // Adjust bounds based on level
+            state.minVal = -10 - (state.level * 2);
+            state.maxVal = 10 + (state.level * 2);
+            if(state.minVal < -30) state.minVal = -30;
+            if(state.maxVal > 30) state.maxVal = 30;
+
+            let valid = false;
+            let parts = [];
+            let finalAns = 0;
+
+            // Brute force mencari kombinasi soal yang hasilnya tidak keluar batas
+            while (!valid) {
+                parts = [];
+                // Angka pertama
+                let startNum = Math.floor(Math.random() * 11) - 5;
+                if(startNum === 0) startNum = 2;
+                parts.push({type: 'start', num: startNum});
+                
+                let currentTotal = startNum;
+                valid = true;
+
+                for (let i = 0; i < numOps; i++) {
+                    let op = Math.random() > 0.5 ? '+' : '-';
+                    // Hindari angka 0
+                    let num = Math.floor(Math.random() * 15) - 7;
+                    if(num === 0) num = -3;
+                    
+                    parts.push({type: 'op', op: op, num: num});
+                    
+                    if (op === '+') currentTotal += num;
+                    else currentTotal -= num;
+
+                    // Cek jika sub-step keluar batas (fatal error animasi)
+                    if (currentTotal < state.minVal || currentTotal > state.maxVal) {
+                        valid = false;
+                        break;
+                    }
+                }
+                
+                if (valid) {
+                    finalAns = currentTotal;
+                }
+            }
+
+            state.equationParts = parts;
+            state.correctAnswer = finalAns;
+            
+            renderEquationUI();
+            startStep(0);
+        }
+
+        function renderEquationUI() {
+            eqContainer.innerHTML = '';
+            
+            state.equationParts.forEach((part, index) => {
+                const div = document.createElement('div');
+                div.id = `eqPart${index}`;
+                div.className = `px-2 py-1 md:px-3 md:py-2 rounded-xl border-2 transition-all flex items-center gap-1`;
+                
+                if (part.type === 'start') {
+                    div.innerHTML = `<span class="${part.num < 0 ? 'text-rose-600' : 'text-blue-600'}">${part.num}</span>`;
+                } else {
+                    div.innerHTML = `
+                        <span class="text-slate-700">${part.op}</span>
+                        <span class="${part.num < 0 ? 'text-rose-600' : 'text-blue-600'}">${part.num < 0 ? `(${part.num})` : part.num}</span>
+                    `;
+                }
+                eqContainer.appendChild(div);
+            });
+
+            // Sama Dengan
+            const equals = document.createElement('span');
+            equals.className = "text-slate-400";
+            equals.innerText = "=";
+            eqContainer.appendChild(equals);
+
+            // Kotak Jawaban
+            const ansDiv = document.createElement('div');
+            ansDiv.id = "eqPartFinal";
+            ansDiv.className = `px-2 py-1 md:px-3 md:py-2 rounded-xl border-2 transition-all flex items-center justify-center`;
+            
+            ansDiv.innerHTML = `
+                <span id="playerAnswerText" class="text-green-600 font-bold hidden">?</span>
+                <input type="number" id="playerAnswerInput" class="w-14 h-10 md:w-20 md:h-14 text-center bg-white border-2 border-dashed border-gray-400 rounded-xl text-2xl md:text-3xl text-green-600 font-bold outline-none focus:border-blue-500 hidden" placeholder="?">
+            `;
+            eqContainer.appendChild(ansDiv);
+        }
+
+        function updateEquationStyles() {
+            for(let i=0; i<state.equationParts.length; i++) {
+                const el = document.getElementById(`eqPart${i}`);
+                if (!el) continue;
+                
+                if (i === state.currentStep) el.className = `px-2 py-1 md:px-3 md:py-2 rounded-xl border-2 step-active flex items-center gap-1`;
+                else if (i < state.currentStep) el.className = `px-2 py-1 md:px-3 md:py-2 rounded-xl border-2 step-done flex items-center gap-1`;
+                else el.className = `px-2 py-1 md:px-3 md:py-2 rounded-xl border-2 step-inactive flex items-center gap-1`;
+            }
+
+            const finalEl = document.getElementById('eqPartFinal');
+            if(finalEl) {
+                if (state.currentStep === state.equationParts.length) finalEl.className = `px-2 py-1 md:px-3 md:py-2 rounded-xl border-2 step-active flex items-center justify-center`;
+                else finalEl.className = `px-2 py-1 md:px-3 md:py-2 rounded-xl border-2 step-inactive flex items-center justify-center`;
+            }
+        }
+
+        function updateFacingUI() {
+            if (state.frogFacing === 1) {
+                btnFaceRight.className = "flex-1 py-2 text-xs md:text-sm font-bold rounded-md transition-colors bg-white shadow text-blue-600";
+                btnFaceLeft.className = "flex-1 py-2 text-xs md:text-sm font-bold rounded-md transition-colors text-slate-400";
+            } else {
+                btnFaceLeft.className = "flex-1 py-2 text-xs md:text-sm font-bold rounded-md transition-colors bg-white shadow text-rose-600";
+                btnFaceRight.className = "flex-1 py-2 text-xs md:text-sm font-bold rounded-md transition-colors text-slate-400";
+            }
+            drawScene(); 
+        }
+
+        btnFaceRight.addEventListener('click', () => { if(!state.isAnimating) { state.frogFacing = 1; updateFacingUI(); }});
+        btnFaceLeft.addEventListener('click', () => { if(!state.isAnimating) { state.frogFacing = -1; updateFacingUI(); }});
+
+        function updateStepUI() {
+            stepCountDisplay.innerText = state.stepInput;
+        }
+
+        btnStepPlus.addEventListener('click', () => { 
+            if(!state.isAnimating && state.stepInput < 30) { state.stepInput++; updateStepUI(); }
+        });
+        btnStepMinus.addEventListener('click', () => { 
+            if(!state.isAnimating && state.stepInput > 0) { state.stepInput--; updateStepUI(); }
+        });
+
+        function executeJump(moveDirection) {
+            if (state.isAnimating || state.stepInput === 0) return;
+            
+            // Konsep: Arah Hadap * Maju/Mundur(1/-1) * Jarak
+            const deltaX = state.frogFacing * moveDirection * state.stepInput;
+            const targetPos = state.frogPos + deltaX;
+            
+            if (targetPos < state.minVal || targetPos > state.maxVal) {
+                showFeedback("Ups! Katak melompat keluar batas layar. Cek lagi hitungannya.", "error");
+                return;
+            }
+
+            state.frogStartPos = state.frogPos;
+            disableControls(true);
+            
+            const startX = valToX(state.frogPos);
+            const endX = valToX(targetPos);
+            const duration = Math.max(500, 300 + (Math.abs(deltaX) * 50)); // Semakin jauh semakin lama, max speed
+
+            state.isAnimating = true;
+            const startTime = performance.now();
+            const jumpHeight = Math.abs(endX - startX) * 0.3 + 20; 
+
+            function step(currentTime) {
+                const elapsed = currentTime - startTime;
+                let progress = elapsed / duration;
+                if (progress > 1) progress = 1;
+
+                const easeProgress = progress < 0.5 ? 2 * progress * progress : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+                state.frogVisualX = startX + (endX - startX) * easeProgress;
+                
+                const arch = Math.sin(progress * Math.PI); 
+                state.frogVisualY = arch * jumpHeight;
+                
+                drawScene();
+
+                if (progress < 1) {
+                    requestAnimationFrame(step);
+                } else {
+                    state.isAnimating = false;
+                    state.frogPos = targetPos; 
+                    drawScene();
+                    evaluateJumpResult();
+                }
+            }
+            requestAnimationFrame(step);
+        }
+
+        btnJumpFwd.addEventListener('click', () => executeJump(1));
+        btnJumpBwd.addEventListener('click', () => executeJump(-1));
+
+        function evaluateJumpResult() {
+            // Cari tahu posisi yang diharapkan di tahap ini
+            let expectedPos = 0;
+            const part = state.equationParts[state.currentStep];
+            
+            if (part.type === 'start') {
+                expectedPos = part.num;
+            } else {
+                // Hitung dari awal sampai step ini
+                expectedPos = state.equationParts[0].num;
+                for(let i=1; i<=state.currentStep; i++) {
+                    const p = state.equationParts[i];
+                    if (p.op === '+') expectedPos += p.num;
+                    else expectedPos -= p.num;
+                }
+            }
+
+            if (state.frogPos === expectedPos) {
+                // BENAR
+                showFeedback("Gerakan Tepat! Lanjut...", "success");
+                
+                // Transisi langsung (Fast Paced)
+                setTimeout(() => {
+                    startStep(state.currentStep + 1);
+                }, 800);
+
+            } else {
+                // SALAH
+                showFeedback("Arah atau jarak kurang tepat. Katak kembali ke awal tahap.", "error");
+                
+                setTimeout(() => {
+                    const start = valToX(state.frogPos);
+                    const end = valToX(state.frogStartPos);
+                    state.isAnimating = true;
+                    let p = 0;
+                    function reverseStep() {
+                        p += 0.05;
+                        if(p>1) p = 1;
+                        state.frogVisualX = start + (end-start)*p;
+                        state.frogVisualY = 0;
+                        drawScene();
+                        if(p<1) requestAnimationFrame(reverseStep);
+                        else {
+                            state.isAnimating = false;
+                            state.frogPos = state.frogStartPos;
+                            disableControls(false);
+                            drawScene();
+                        }
+                    }
+                    requestAnimationFrame(reverseStep);
+                }, 1500);
+            }
+        }
+
+        function disableControls(disabled) {
+            const btns = [btnFaceLeft, btnFaceRight, btnStepMinus, btnStepPlus, btnJumpFwd, btnJumpBwd];
+            btns.forEach(b => {
+                b.disabled = disabled;
+                if(disabled) b.classList.add('opacity-50', 'cursor-not-allowed');
+                else b.classList.remove('opacity-50', 'cursor-not-allowed');
+            });
+        }
+
+        function showFeedback(msg, type) {
+            feedbackText.innerHTML = msg;
+            feedbackText.className = `text-sm md:text-md font-bold transition-opacity px-4 py-2 rounded-lg inline-block mb-2 ${
+                type === 'success' ? 'bg-green-100 text-green-700 border border-green-300' : 
+                type === 'info' ? 'bg-blue-100 text-blue-700 border border-blue-300' :
+                'bg-red-100 text-red-700 border border-red-300'
+            }`;
+            feedbackText.style.opacity = 1;
+        }
+
+        function startStep(stepIndex) {
+            state.currentStep = stepIndex;
+            updateEquationStyles();
+            
+            // Apakah ini tahap memasukkan jawaban?
+            if (stepIndex === state.equationParts.length) {
+                // TAHAP AKHIR
+                controlPanel.style.opacity = 0.3;
+                controlPanel.style.pointerEvents = 'none';
+                
+                btnCheckFinal.classList.remove('hidden');
+                btnNextQuestion.classList.add('hidden');
+                
+                instructionTitle.innerText = "Tahap Akhir: Dimana posisi terakhir katak? Ketik angkanya!";
+                showFeedback("Lihat katak berhenti di angka berapa.", "info");
+                
+                const inp = document.getElementById('playerAnswerInput');
+                inp.classList.remove('hidden');
+                inp.disabled = false;
+                inp.value = '';
+                inp.focus();
+                
+            } else {
+                // TAHAP PERGERAKAN KATAK
+                const part = state.equationParts[stepIndex];
+                state.stepInput = 0;
+                updateStepUI();
+                
+                if (stepIndex === 0) {
+                    // Start baru
+                    state.frogPos = 0;
+                    state.frogFacing = part.num >= 0 ? 1 : -1;
+                    instructionTitle.innerText = `Langkah 1: Arahkan katak ke angka pertama (${part.num}) dari titik 0.`;
+                } else {
+                    instructionTitle.innerText = `Langkah ${stepIndex+1}: Operasi [ ${part.op} ] Angka [ ${part.num} ]. Atur arah dan lompat!`;
+                    // Opsional: set default arah berdasarkan angka (bisa dimatikan agar siswa mikir sendiri)
+                    // state.frogFacing = part.num >= 0 ? 1 : -1; 
+                }
+                
+                updateFacingUI();
+                disableControls(false);
+                
+                controlPanel.style.opacity = 1;
+                controlPanel.style.pointerEvents = 'auto';
+                
+                btnCheckFinal.classList.add('hidden');
+                btnNextQuestion.classList.add('hidden');
+                feedbackText.style.opacity = 0;
+                
+                drawScene();
+            }
+        }
+
+        btnCheckFinal.addEventListener('click', () => {
+            const inp = document.getElementById('playerAnswerInput');
+            const userAnswer = parseInt(inp.value);
+            
+            if (isNaN(userAnswer)) {
+                showFeedback("Isi dengan angka dulu!", "error");
+                return;
+            }
+
+            if (userAnswer === state.correctAnswer) {
+                // MENANG SOAL INI
+                state.score += 10 * state.level;
+                state.consecutiveCorrect++;
+                state.questionsSolved++;
+                elScore.innerText = state.score;
+                
+                showFeedback("🎉 BENAR SEKALI! Katak sampai di tujuan.", "success");
+                triggerConfetti();
+                
+                inp.classList.add('hidden');
+                const txt = document.getElementById('playerAnswerText');
+                txt.classList.remove('hidden');
+                txt.innerText = state.correctAnswer;
+                
+                btnCheckFinal.classList.add('hidden');
+                
+                // Cek Naik Level
+                if (state.consecutiveCorrect >= 3) {
+                    state.level++;
+                    state.consecutiveCorrect = 0;
+                    elLevel.innerText = `Level ${state.level}`;
+                    setTimeout(() => alert(`Selamat! Naik ke Level ${state.level}. Soal akan lebih panjang.`), 500);
+                }
+
+                btnNextQuestion.classList.remove('hidden');
+
+            } else {
+                // SALAH JAWABAN AKHIR
+                state.consecutiveCorrect = 0; // Reset streak
+                showFeedback(`Salah. Jawabanmu ${userAnswer}. Coba lihat kataknya di angka berapa?`, "error");
+            }
+        });
+
+        btnNextQuestion.addEventListener('click', () => {
+            generateQuestion();
+        });
+
+        function triggerConfetti() {
+            elConfetti.style.display = 'block';
+            elConfetti.innerHTML = ''; 
+            const colors = ['#ef4444', '#3b82f6', '#10b981', '#f59e0b', '#8b5cf6'];
+            for (let i = 0; i < 60; i++) {
+                const conf = document.createElement('div');
+                conf.classList.add('confetti');
+                conf.style.left = Math.random() * 100 + 'vw';
+                conf.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                conf.style.animationDuration = (Math.random() * 2 + 1) + 's';
+                conf.style.animationDelay = (Math.random() * 0.5) + 's';
+                elConfetti.appendChild(conf);
+            }
+            setTimeout(() => { elConfetti.style.display = 'none'; }, 4000);
+        }
+
+        function endGame() {
+            document.getElementById('gameOverOverlay').classList.remove('hidden');
+            document.getElementById('gameOverOverlay').classList.add('flex');
+            
+            document.getElementById('finalScoreDisplay').innerText = state.score;
+            document.getElementById('finalLevelDisplay').innerText = state.level;
+            document.getElementById('finalSolvedDisplay').innerText = state.questionsSolved;
+        }
+
+        function resetFullGame() {
+            state.score = 0;
+            state.level = 1;
+            state.consecutiveCorrect = 0;
+            state.questionsSolved = 0;
+            
+            elScore.innerText = "0";
+            elLevel.innerText = "Level 1";
+            
+            document.getElementById('gameOverOverlay').classList.add('hidden');
+            document.getElementById('gameOverOverlay').classList.remove('flex');
+            
+            generateQuestion();
+        }
+
+        // INIT
+        window.onload = function() {
+            resizeCanvas(); 
+            generateQuestion(); 
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuis Operasi Bilangan Bulat</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for animations and specific game elements */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0fdf4; /* Light green background */
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .shake {
+            animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
+        }
+
+        @keyframes shake {
+            10%, 90% { transform: translate3d(-1px, 0, 0); }
+            20%, 80% { transform: translate3d(2px, 0, 0); }
+            30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+            40%, 60% { transform: translate3d(4px, 0, 0); }
+        }
+
+        /* Progress bar animation */
+        .progress-bar-fill {
+            transition: width 0.3s ease-out;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center text-slate-800">
+
+    <!-- Main Game Container -->
+    <div id="game-container" class="bg-white rounded-2xl shadow-xl w-full max-w-md p-8 m-4 relative overflow-hidden text-center border-4 border-emerald-500 hidden">
+        
+        <!-- Header Info (Level, Score) -->
+        <div class="flex justify-between items-center mb-6 border-b-2 border-emerald-100 pb-2">
+            <div class="text-lg font-bold text-emerald-600">Level <span id="level-display">1</span></div>
+            <div class="text-lg font-bold text-emerald-600">Skor: <span id="score-display">0</span></div>
+        </div>
+
+        <!-- Progress to next level -->
+        <div class="mb-6">
+            <div class="text-xs text-slate-500 text-left mb-1 font-semibold">Progres Level</div>
+            <div class="w-full bg-slate-200 rounded-full h-2.5">
+                <div id="level-progress" class="bg-emerald-500 h-2.5 rounded-full progress-bar-fill" style="width: 0%"></div>
+            </div>
+        </div>
+
+        <!-- The Question -->
+        <div class="my-8">
+            <h2 id="question-text" class="text-5xl font-extrabold text-slate-700 tracking-wider transition-all duration-300">?</h2>
+            <div id="feedback-msg" class="h-6 mt-2 text-sm font-bold opacity-0 transition-opacity duration-300"></div>
+        </div>
+
+        <!-- Answer Input & Numpad -->
+        <div class="mb-4">
+            <div class="flex flex-col items-center gap-4">
+                <input type="text" id="answer-input" readonly
+                       class="w-full max-w-[240px] text-center text-4xl p-3 border-4 border-emerald-200 rounded-xl bg-slate-50 text-slate-800 focus:border-emerald-500 focus:outline-none transition-colors shadow-inner"
+                       placeholder="?">
+            </div>
+        </div>
+
+        <!-- Numpad Grid -->
+        <div class="grid grid-cols-3 gap-2 mb-6 max-w-[240px] mx-auto">
+            <button class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-2xl font-bold py-3 rounded-lg shadow active:bg-slate-300 transition-colors" onclick="inputNum('1')">1</button>
+            <button class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-2xl font-bold py-3 rounded-lg shadow active:bg-slate-300 transition-colors" onclick="inputNum('2')">2</button>
+            <button class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-2xl font-bold py-3 rounded-lg shadow active:bg-slate-300 transition-colors" onclick="inputNum('3')">3</button>
+
+            <button class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-2xl font-bold py-3 rounded-lg shadow active:bg-slate-300 transition-colors" onclick="inputNum('4')">4</button>
+            <button class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-2xl font-bold py-3 rounded-lg shadow active:bg-slate-300 transition-colors" onclick="inputNum('5')">5</button>
+            <button class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-2xl font-bold py-3 rounded-lg shadow active:bg-slate-300 transition-colors" onclick="inputNum('6')">6</button>
+
+            <button class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-2xl font-bold py-3 rounded-lg shadow active:bg-slate-300 transition-colors" onclick="inputNum('7')">7</button>
+            <button class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-2xl font-bold py-3 rounded-lg shadow active:bg-slate-300 transition-colors" onclick="inputNum('8')">8</button>
+            <button class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-2xl font-bold py-3 rounded-lg shadow active:bg-slate-300 transition-colors" onclick="inputNum('9')">9</button>
+
+            <button class="bg-slate-200 hover:bg-slate-300 text-slate-800 text-3xl font-bold py-3 rounded-lg shadow active:bg-slate-400 transition-colors" onclick="inputMinus()">-</button>
+            <button class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-2xl font-bold py-3 rounded-lg shadow active:bg-slate-300 transition-colors" onclick="inputNum('0')">0</button>
+            <button class="bg-red-100 hover:bg-red-200 text-red-600 text-xl font-bold py-3 rounded-lg shadow active:bg-red-300 flex items-center justify-center transition-colors" onclick="inputDelete()">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2M3 12l6.414 6.414a2 2 0 001.414.586H19a2 2 0 002-2V7a2 2 0 00-2-2h-8.172a2 2 0 00-1.414.586L3 12z"></path></svg>
+            </button>
+
+            <button class="col-span-3 bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3 rounded-xl shadow-md active:bg-emerald-700 text-xl mt-1 transition-transform active:scale-95" onclick="submitAnswer(event)">Jawab</button>
+        </div>
+
+        <!-- Surrender Button -->
+        <button id="surrender-btn" class="mt-4 text-sm text-red-500 hover:text-red-700 font-semibold underline decoration-red-300 underline-offset-4">
+            Menyerah
+        </button>
+    </div>
+
+    <!-- Start / Game Over Screen -->
+    <div id="menu-container" class="bg-white rounded-2xl shadow-xl w-full max-w-md p-8 m-4 text-center border-4 border-emerald-500 flex flex-col items-center">
+        
+        <div class="w-24 h-24 bg-emerald-100 rounded-full flex items-center justify-center mb-6 shadow-inner">
+            <svg class="w-12 h-12 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+            </svg>
+        </div>
+        
+        <h1 class="text-3xl font-black text-emerald-600 mb-2">Kuis Bilangan Bulat</h1>
+        <p class="text-slate-500 mb-8 px-4">Latih kemampuan penjumlahan dan pengurangan bilangan positif & negatif. Semakin cepat kamu menjawab, semakin cepat levelmu naik!</p>
+        
+        <!-- Stats hidden on first load, shown on game over -->
+        <div id="final-stats" class="hidden w-full bg-slate-50 rounded-xl p-4 mb-6 border border-slate-200">
+            <h3 class="text-lg font-bold text-slate-700 border-b pb-2 mb-2">Statistik Terakhir</h3>
+            <div class="grid grid-cols-2 gap-4 text-left px-2">
+                <div>Level Akhir: <span id="final-level" class="font-bold text-emerald-600"></span></div>
+                <div>Skor: <span id="final-score" class="font-bold text-emerald-600"></span></div>
+                <div>Benar: <span id="final-correct" class="font-bold text-green-600"></span></div>
+                <div>Salah: <span id="final-wrong" class="font-bold text-red-500"></span></div>
+            </div>
+        </div>
+
+        <button id="start-btn" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-4 px-8 rounded-xl text-lg transition-transform hover:-translate-y-1 active:translate-y-0 shadow-lg hover:shadow-xl">
+            Mulai Bermain
+        </button>
+    </div>
+
+    <script>
+        // DOM Elements
+        const menuContainer = document.getElementById('menu-container');
+        const gameContainer = document.getElementById('game-container');
+        const startBtn = document.getElementById('start-btn');
+        const surrenderBtn = document.getElementById('surrender-btn');
+        const answerInput = document.getElementById('answer-input');
+        
+        const questionText = document.getElementById('question-text');
+        const levelDisplay = document.getElementById('level-display');
+        const scoreDisplay = document.getElementById('score-display');
+        const levelProgressBar = document.getElementById('level-progress');
+        const feedbackMsg = document.getElementById('feedback-msg');
+        
+        const finalStats = document.getElementById('final-stats');
+        const finalLevelDisplay = document.getElementById('final-level');
+        const finalScoreDisplay = document.getElementById('final-score');
+        const finalCorrectDisplay = document.getElementById('final-correct');
+        const finalWrongDisplay = document.getElementById('final-wrong');
+
+        // Game State Variables
+        let currentLevel = 1;
+        let currentScore = 0;
+        let progressPoints = 0; // Points towards next level
+        let pointsNeededForNextLevel = 100;
+        
+        let currentAnswer = 0;
+        let questionStartTime = 0;
+        
+        let stats = {
+            correct: 0,
+            wrong: 0
+        };
+
+        // Constants for complexity scaling
+        const BASE_POINTS_PER_CORRECT = 10;
+        const TIME_BONUS_MULTIPLIER = 2; // How much speed matters
+
+        // Initialize and start game
+        function startGame() {
+            // Reset state
+            currentLevel = 1;
+            currentScore = 0;
+            progressPoints = 0;
+            pointsNeededForNextLevel = 100;
+            stats = { correct: 0, wrong: 0 };
+            
+            updateUI();
+            
+            // UI Transition
+            menuContainer.classList.add('hidden');
+            gameContainer.classList.remove('hidden');
+            gameContainer.classList.add('fade-in');
+            
+            // Delay class removal for animation re-triggering
+            setTimeout(() => gameContainer.classList.remove('fade-in'), 500);
+            
+            generateQuestion();
+        }
+
+        // End game and show stats
+        function endGame() {
+            gameContainer.classList.add('hidden');
+            menuContainer.classList.remove('hidden');
+            menuContainer.classList.add('fade-in');
+            
+            // Show stats
+            finalStats.classList.remove('hidden');
+            finalLevelDisplay.textContent = currentLevel;
+            finalScoreDisplay.textContent = currentScore;
+            finalCorrectDisplay.textContent = stats.correct;
+            finalWrongDisplay.textContent = stats.wrong;
+            
+            startBtn.textContent = "Main Lagi";
+        }
+
+        // Numpad Logic
+        function inputNum(n) {
+            if (answerInput.value === '0' || answerInput.value === '-0') {
+                 if (answerInput.value === '0') answerInput.value = n;
+                 else answerInput.value = '-' + n;
+            } else {
+                 answerInput.value += n;
+            }
+        }
+
+        function inputMinus() {
+            if (answerInput.value.startsWith('-')) {
+                answerInput.value = answerInput.value.substring(1);
+            } else if (answerInput.value === '') {
+                answerInput.value = '-';
+            } else {
+                answerInput.value = '-' + answerInput.value;
+            }
+        }
+
+        function inputDelete() {
+            answerInput.value = answerInput.value.slice(0, -1);
+        }
+
+        // Generate a new question based on current level
+        function generateQuestion() {
+            answerInput.value = ''; // Clear input
+            questionStartTime = Date.now(); 
+
+            let maxNum = 10;
+            let allowNegatives = false;
+            let numOperands = 2;
+            let useGrouping = 0; // 0: no brackets, 1: single bracket group, 2: double bracket group
+
+            // Determine complexity based on level
+            if (currentLevel >= 2) { maxNum = 20; }
+            if (currentLevel >= 3) { allowNegatives = true; } // Intro to negatives
+            if (currentLevel >= 4) { numOperands = 3; } // a + b - c
+            if (currentLevel >= 6) { useGrouping = 1; maxNum = 25; } // a - (b + c)
+            if (currentLevel >= 8) { numOperands = 4; maxNum = 30; } // a + b - c + d
+            if (currentLevel >= 10) { useGrouping = 2; maxNum = 40; } // (a + b) - (c + d)
+            if (currentLevel >= 13) { numOperands = 5; maxNum = 50; } // Higher complexity
+            if (currentLevel >= 18) { maxNum = 100; }
+
+            const getNum = () => {
+                let n = getRandomInt(1, maxNum);
+                if (allowNegatives && Math.random() > 0.5) n = -n;
+                // Wrap negative numbers in parentheses for clarity
+                return n < 0 ? `(${n})` : `${n}`;
+            };
+            const getOp = () => Math.random() > 0.5 ? '+' : '-';
+
+            let exprStr = "";
+
+            if (numOperands === 2) {
+                exprStr = `${getNum()} ${getOp()} ${getNum()}`;
+            } else if (numOperands === 3) {
+                if (useGrouping === 1 && Math.random() > 0.5) {
+                    exprStr = `${getNum()} ${getOp()} (${getNum()} ${getOp()} ${getNum()})`;
+                } else if (useGrouping === 1) {
+                    exprStr = `(${getNum()} ${getOp()} ${getNum()}) ${getOp()} ${getNum()}`;
+                } else {
+                    exprStr = `${getNum()} ${getOp()} ${getNum()} ${getOp()} ${getNum()}`;
+                }
+            } else if (numOperands === 4) {
+                if (useGrouping === 2) {
+                    exprStr = `(${getNum()} ${getOp()} ${getNum()}) ${getOp()} (${getNum()} ${getOp()} ${getNum()})`;
+                } else if (useGrouping === 1) {
+                    exprStr = `${getNum()} ${getOp()} (${getNum()} ${getOp()} ${getNum()}) ${getOp()} ${getNum()}`;
+                } else {
+                    exprStr = `${getNum()} ${getOp()} ${getNum()} ${getOp()} ${getNum()} ${getOp()} ${getNum()}`;
+                }
+            } else {
+                // 5 or more operands
+                if (useGrouping > 0) {
+                     exprStr = `(${getNum()} ${getOp()} ${getNum()}) ${getOp()} ${getNum()} ${getOp()} (${getNum()} ${getOp()} ${getNum()})`;
+                } else {
+                     exprStr = `${getNum()} ${getOp()} ${getNum()} ${getOp()} ${getNum()} ${getOp()} ${getNum()} ${getOp()} ${getNum()}`;
+                }
+            }
+
+            // Adjust font size based on expression length
+            if (exprStr.length > 25) {
+                questionText.className = "text-xl sm:text-2xl font-extrabold text-slate-700 tracking-wide transition-all duration-300";
+            } else if (exprStr.length > 15) {
+                questionText.className = "text-2xl sm:text-3xl font-extrabold text-slate-700 tracking-wider transition-all duration-300";
+            } else {
+                questionText.className = "text-4xl sm:text-5xl font-extrabold text-slate-700 tracking-wider transition-all duration-300";
+            }
+
+            // Safely evaluate the generated math string (contains only numbers, +, -, and parens)
+            currentAnswer = eval(exprStr);
+            questionText.textContent = `${exprStr} =`;
+            
+            // Small animation for new question
+            questionText.classList.add('fade-in');
+            setTimeout(() => questionText.classList.remove('fade-in'), 500);
+        }
+
+        // Helper to get random integer
+        function getRandomInt(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        // Handle answering
+        function submitAnswer(e) {
+            if (e) e.preventDefault(); 
+            
+            if (answerInput.value === '' || answerInput.value === '-') {
+                showFeedback("Masukkan angka!", false);
+                return;
+            }
+
+            const userAnswer = parseInt(answerInput.value, 10);
+
+            const timeTakenMs = Date.now() - questionStartTime;
+            const timeTakenSec = timeTakenMs / 1000;
+
+            if (userAnswer === currentAnswer) {
+                // Correct!
+                stats.correct++;
+                
+                // Calculate points based on speed & complexity
+                // More operands = more time expected
+                const operandCount = (questionText.textContent.match(/[+-]/g) || []).length;
+                const expectedTime = 2 + (operandCount * 1.5); 
+                let timeBonus = 0;
+                
+                if (timeTakenSec < expectedTime) {
+                    // Calculate bonus: quicker is better
+                    const speedRatio = 1 - (timeTakenSec / expectedTime); // 0 to 1
+                    timeBonus = Math.floor(BASE_POINTS_PER_CORRECT * TIME_BONUS_MULTIPLIER * speedRatio);
+                }
+
+                const pointsEarned = BASE_POINTS_PER_CORRECT + timeBonus;
+                
+                currentScore += pointsEarned;
+                progressPoints += pointsEarned;
+                
+                showFeedback(`Benar! +${pointsEarned} pt`, true);
+                
+                checkLevelUp();
+                updateUI();
+                generateQuestion();
+                
+            } else {
+                // Wrong!
+                stats.wrong++;
+                
+                // Penalize progress slightly
+                progressPoints -= Math.floor(BASE_POINTS_PER_CORRECT / 2);
+                if (progressPoints < 0) progressPoints = 0;
+                
+                showFeedback("Salah, coba lagi!", false);
+                
+                // Shake effect on input
+                answerInput.classList.add('shake', 'border-red-500', 'text-red-500');
+                setTimeout(() => {
+                    answerInput.classList.remove('shake', 'border-red-500', 'text-red-500');
+                    answerInput.value = ''; // clear for retry
+                }, 400);
+                
+                updateUI();
+            }
+        }
+
+        // Check if player earned enough points to level up
+        function checkLevelUp() {
+            if (progressPoints >= pointsNeededForNextLevel) {
+                currentLevel++;
+                // Carry over extra points
+                progressPoints = progressPoints - pointsNeededForNextLevel;
+                
+                // Increase requirement for next level
+                // Scaling: 100, 150, 225, 337...
+                pointsNeededForNextLevel = Math.floor(pointsNeededForNextLevel * 1.5);
+                
+                showFeedback(`Level Up! Level ${currentLevel}`, true, true);
+            }
+        }
+
+        // Update DOM elements
+        function updateUI() {
+            levelDisplay.textContent = currentLevel;
+            scoreDisplay.textContent = currentScore;
+            
+            // Calculate progress percentage
+            let progressPercent = (progressPoints / pointsNeededForNextLevel) * 100;
+            if (progressPercent > 100) progressPercent = 100;
+            if (progressPercent < 0) progressPercent = 0;
+            
+            levelProgressBar.style.width = `${progressPercent}%`;
+        }
+
+        // Show brief feedback message
+        function showFeedback(msg, isPositive, isLevelUp = false) {
+            feedbackMsg.textContent = msg;
+            feedbackMsg.className = `h-6 mt-2 font-bold transition-opacity duration-300 opacity-100 ${isPositive ? 'text-green-500' : 'text-red-500'} ${isLevelUp ? 'text-xl' : 'text-sm'}`;
+            
+            // Fade out after a bit
+            setTimeout(() => {
+                feedbackMsg.classList.remove('opacity-100');
+                feedbackMsg.classList.add('opacity-0');
+            }, 1500);
+        }
+
+        // Event Listeners
+        startBtn.addEventListener('click', startGame);
+        surrenderBtn.addEventListener('click', endGame);
+        
+        // Global Keyboard Listener for physical keyboards
+        document.addEventListener('keydown', (e) => {
+            if (gameContainer.classList.contains('hidden')) return; // Ignore if in menu
+            
+            if (e.key >= '0' && e.key <= '9') {
+                inputNum(e.key);
+            } else if (e.key === '-' || e.key === '_') {
+                inputMinus();
+            } else if (e.key === 'Backspace') {
+                inputDelete();
+            } else if (e.key === 'Enter') {
+                submitAnswer();
+            }
+        });
+
+    </script>
+</body>
+</html>

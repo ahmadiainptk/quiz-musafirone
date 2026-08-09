@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuis SPLDV Dinamis</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .shake {
+            animation: shake 0.5s;
+        }
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            50% { transform: translateX(5px); }
+            75% { transform: translateX(-5px); }
+            100% { transform: translateX(0); }
+        }
+        /* Custom Numpad Input Focus */
+        .numpad-input.active {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 font-sans min-h-screen flex items-center justify-center p-4">
+
+    <div id="app" class="w-full max-w-lg bg-slate-800 rounded-2xl shadow-2xl p-6 relative overflow-hidden">
+        
+        <!-- Screen: Main Menu -->
+        <div id="screen-menu" class="text-center space-y-6">
+            <h1 class="text-3xl font-bold text-blue-400">Master SPLDV</h1>
+            <p class="text-slate-400">Uji kemampuan Sistem Persamaan Linear Dua Variabel Anda melalui 6 Level. Kesulitan akan menyesuaikan kecepatan Anda!</p>
+            <div class="text-sm text-slate-500 text-left bg-slate-700/50 p-4 rounded-xl">
+                <ul class="list-disc list-inside space-y-1">
+                    <li>Level 1: Model Aljabar</li>
+                    <li>Level 2: Substitusi Bentuk Setara</li>
+                    <li>Level 3: Eliminasi (Faktor Pengali)</li>
+                    <li>Level 4: Analisis Himpunan Penyelesaian</li>
+                    <li>Level 5: Selesaikan SPLDV</li>
+                    <li>Level 6: Soal Cerita</li>
+                </ul>
+            </div>
+            <button onclick="startGame()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-xl transition duration-200">
+                Mulai Bermain
+            </button>
+        </div>
+
+        <!-- Screen: Game -->
+        <div id="screen-game" class="hidden flex flex-col h-full">
+            <!-- Header -->
+            <div class="flex justify-between items-center border-b border-slate-700 pb-4 mb-4">
+                <div>
+                    <h2 id="level-title" class="text-xl font-bold text-blue-400">Level 1</h2>
+                    <p id="question-progress" class="text-sm text-slate-400">Soal 1 / 10</p>
+                </div>
+                <div class="text-right">
+                    <span id="difficulty-badge" class="px-2 py-1 bg-green-500/20 text-green-400 rounded text-xs font-mono mb-1 inline-block">Cacah</span>
+                    <button onclick="surrender()" class="block text-sm text-red-400 hover:text-red-300 transition">Menyerah</button>
+                </div>
+            </div>
+
+            <!-- Question Area -->
+            <div id="question-container" class="mb-6 flex-grow">
+                <p id="question-text" class="text-lg mb-4"></p>
+                
+                <!-- Input Area (Multiple Choice OR Fill-in) -->
+                <div id="answer-area"></div>
+            </div>
+
+            <!-- Custom Numpad (Hidden by default) -->
+            <div id="numpad" class="hidden mt-auto border-t border-slate-700 pt-4">
+                <div class="grid grid-cols-3 gap-2">
+                    <button onclick="numpadPress('1')" class="bg-slate-700 hover:bg-slate-600 p-3 rounded-lg font-bold text-xl">1</button>
+                    <button onclick="numpadPress('2')" class="bg-slate-700 hover:bg-slate-600 p-3 rounded-lg font-bold text-xl">2</button>
+                    <button onclick="numpadPress('3')" class="bg-slate-700 hover:bg-slate-600 p-3 rounded-lg font-bold text-xl">3</button>
+                    
+                    <button onclick="numpadPress('4')" class="bg-slate-700 hover:bg-slate-600 p-3 rounded-lg font-bold text-xl">4</button>
+                    <button onclick="numpadPress('5')" class="bg-slate-700 hover:bg-slate-600 p-3 rounded-lg font-bold text-xl">5</button>
+                    <button onclick="numpadPress('6')" class="bg-slate-700 hover:bg-slate-600 p-3 rounded-lg font-bold text-xl">6</button>
+                    
+                    <button onclick="numpadPress('7')" class="bg-slate-700 hover:bg-slate-600 p-3 rounded-lg font-bold text-xl">7</button>
+                    <button onclick="numpadPress('8')" class="bg-slate-700 hover:bg-slate-600 p-3 rounded-lg font-bold text-xl">8</button>
+                    <button onclick="numpadPress('9')" class="bg-slate-700 hover:bg-slate-600 p-3 rounded-lg font-bold text-xl">9</button>
+                    
+                    <button onclick="numpadPress('-')" class="bg-slate-600 hover:bg-slate-500 p-3 rounded-lg font-bold text-xl">-</button>
+                    <button onclick="numpadPress('0')" class="bg-slate-700 hover:bg-slate-600 p-3 rounded-lg font-bold text-xl">0</button>
+                    <button onclick="numpadPress('/')" class="bg-slate-600 hover:bg-slate-500 p-3 rounded-lg font-bold text-xl">/</button>
+                    
+                    <button onclick="numpadAction('del')" class="bg-red-900/50 hover:bg-red-800/50 text-red-200 p-3 rounded-lg font-bold col-span-1">DEL</button>
+                    <button onclick="submitAnswer()" class="bg-blue-600 hover:bg-blue-500 text-white p-3 rounded-lg font-bold col-span-2 shadow-lg">JAWAB</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Screen: Result -->
+        <div id="screen-result" class="hidden text-center space-y-6">
+            <h1 id="result-title" class="text-3xl font-bold">Permainan Selesai</h1>
+            <p id="result-desc" class="text-slate-400 text-lg"></p>
+            <div class="p-4 bg-slate-700 rounded-xl inline-block w-full">
+                <p class="text-sm text-slate-400">Level Tercapai</p>
+                <p id="result-level" class="text-2xl font-bold text-blue-400">1</p>
+            </div>
+            <button onclick="location.reload()" class="w-full bg-slate-600 hover:bg-slate-500 text-white font-bold py-3 rounded-xl transition duration-200">
+                Main Lagi
+            </button>
+        </div>
+
+    </div>
+
+    <script>
+        // --- GAME STATE ---
+        let state = {
+            level: 1,
+            questionNumber: 1,
+            difficultyScore: 1, // 1 to 5 (Cacah -> Bulat -> Pecahan Kompleks)
+            startTime: 0,
+            currentCorrectAnswer: null,
+            activeInputId: null
+        };
+
+        const NUM_QUESTIONS_PER_LEVEL = 10;
+        const ITEMS = ['Buku', 'Pensil', 'Penghapus', 'Penggaris', 'Spidol', 'Kertas'];
+
+        // --- UTILITIES ---
+        function getNumberBasedOnDifficulty() {
+            // Difficulty 1: 1..5 (Cacah kecil)
+            // Difficulty 2: 1..10 (Cacah)
+            // Difficulty 3: -10..10 (Bulat)
+            // Difficulty 4: -20..20 (Bulat lebih besar)
+            // Difficulty 5: Fractional logic handled in generators, coefficients -25..25
+            let d = Math.floor(state.difficultyScore);
+            let min, max;
+            if (d === 1) { min = 1; max = 5; }
+            else if (d === 2) { min = 1; max = 10; }
+            else if (d === 3) { min = -10; max = 10; }
+            else if (d === 4) { min = -20; max = 20; }
+            else { min = -25; max = 25; }
+
+            let num = Math.floor(Math.random() * (max - min + 1)) + min;
+            if (num === 0) num = 1; // hindari koefisien 0
+            return num;
+        }
+
+        function getDifficultyLabel() {
+            if (state.difficultyScore < 2) return { text: "Cacah Dasar", color: "text-green-400 bg-green-500/20" };
+            if (state.difficultyScore < 3) return { text: "Cacah", color: "text-blue-400 bg-blue-500/20" };
+            if (state.difficultyScore < 4) return { text: "Bulat", color: "text-yellow-400 bg-yellow-500/20" };
+            return { text: "Rasional/Kompleks", color: "text-purple-400 bg-purple-500/20" };
+        }
+
+        function formatEq(a, b, c, varX = 'x', varY = 'y') {
+            let str = '';
+            if (a !== 0) str += (a === 1 ? '' : (a === -1 ? '-' : a)) + varX;
+            if (b !== 0) {
+                if (b > 0) str += (str ? ' + ' : '') + (b === 1 ? '' : b) + varY;
+                else str += (str ? ' - ' : '-') + (Math.abs(b) === 1 ? '' : Math.abs(b)) + varY;
+            }
+            return (str || '0') + ' = ' + c;
+        }
+
+        function parseFraction(str) {
+            if (!str) return NaN;
+            if (str.includes('/')) {
+                const parts = str.split('/');
+                if (parts.length !== 2) return NaN;
+                return parseFloat(parts[0]) / parseFloat(parts[1]);
+            }
+            return parseFloat(str);
+        }
+
+        function shuffle(array) {
+            return array.sort(() => Math.random() - 0.5);
+        }
+
+        // --- QUESTION GENERATORS ---
+        const generators = {
+            // Level 1: Model Aljabar dari persoalan sehari-hari
+            level1: () => {
+                let x = Math.abs(getNumberBasedOnDifficulty()) * 1000;
+                let y = Math.abs(getNumberBasedOnDifficulty()) * 1000;
+                let a1 = Math.floor(Math.random() * 5) + 1;
+                let b1 = Math.floor(Math.random() * 5) + 1;
+                let c1 = a1 * x + b1 * y;
+                let itemX = ITEMS[Math.floor(Math.random() * ITEMS.length)];
+                let itemY = ITEMS[Math.floor(Math.random() * ITEMS.length)];
+                while(itemY === itemX) itemY = ITEMS[Math.floor(Math.random() * ITEMS.length)];
+
+                let text = `Andi membeli ${a1} ${itemX} dan ${b1} ${itemY} seharga Rp${c1.toLocaleString('id-ID')}. Model matematika yang tepat (misal x = harga 1 ${itemX}, y = harga 1 ${itemY}) adalah...`;
+                
+                let correct = formatEq(a1, b1, c1);
+                let options = [
+                    correct,
+                    formatEq(b1, a1, c1), // swap
+                    formatEq(a1, -b1, c1), // wrong sign
+                    formatEq(a1, b1, c1 + 1000) // wrong total
+                ];
+                state.currentCorrectAnswer = correct;
+                return { text, type: 'mcq', options: shuffle(options) };
+            },
+
+            // Level 2: Substitusi (mengubah bentuk)
+            level2: () => {
+                let a = getNumberBasedOnDifficulty();
+                let b = getNumberBasedOnDifficulty();
+                let c = getNumberBasedOnDifficulty();
+                
+                let text = `Diketahui persamaan: ${formatEq(a, b, c)}. Bentuk setara yang tepat untuk melakukan metode substitusi adalah...`;
+                
+                let correctOp = Math.random() > 0.5 ? 'x' : 'y';
+                let correct, w1, w2, w3;
+
+                if (correctOp === 'x') {
+                    correct = `x = (${c} ${b > 0 ? '-' : '+'} ${Math.abs(b)}y) / ${a}`;
+                    w1 = `x = (${c} ${b > 0 ? '+' : '-'} ${Math.abs(b)}y) / ${a}`; // wrong sign
+                    w2 = `x = (${c} ${b > 0 ? '-' : '+'} ${Math.abs(b)}y) / ${b}`; // wrong divisor
+                    w3 = `y = (${c} ${a > 0 ? '+' : '-'} ${Math.abs(a)}x) / ${b}`; // wrong sign y var
+                } else {
+                    correct = `y = (${c} ${a > 0 ? '-' : '+'} ${Math.abs(a)}x) / ${b}`;
+                    w1 = `y = (${c} ${a > 0 ? '+' : '-'} ${Math.abs(a)}x) / ${b}`;
+                    w2 = `y = (${c} ${a > 0 ? '-' : '+'} ${Math.abs(a)}x) / ${a}`;
+                    w3 = `x = (${c} ${b > 0 ? '+' : '-'} ${Math.abs(b)}y) / ${a}`;
+                }
+
+                state.currentCorrectAnswer = correct;
+                return { text, type: 'mcq', options: shuffle([correct, w1, w2, w3]) };
+            },
+
+            // Level 3: Eliminasi (Faktor pengali)
+            level3: () => {
+                let a1 = getNumberBasedOnDifficulty();
+                let a2 = getNumberBasedOnDifficulty();
+                let b1 = getNumberBasedOnDifficulty();
+                let b2 = getNumberBasedOnDifficulty();
+                
+                let text = `Sistem:\n(1) ${formatEq(a1, b1, 10)}\n(2) ${formatEq(a2, b2, 20)}\n\nUntuk mengeliminasi variabel x, pengali terkecil (tanpa tanda negatif) untuk Persamaan 1 dan 2 secara berurutan adalah...`;
+                
+                // FPB function
+                const gcd = (a, b) => b === 0 ? Math.abs(a) : gcd(b, a % b);
+                let fpb = gcd(Math.abs(a1), Math.abs(a2));
+                let mult1 = Math.abs(a2) / fpb;
+                let mult2 = Math.abs(a1) / fpb;
+
+                let correct = `(1) dikali ${mult1}, (2) dikali ${mult2}`;
+                let w1 = `(1) dikali ${mult2}, (2) dikali ${mult1}`;
+                let w2 = `(1) dikali ${Math.abs(b2)}, (2) dikali ${Math.abs(b1)}`;
+                let w3 = `(1) dikali ${mult1 + 1}, (2) dikali ${mult2 + 1}`;
+
+                // Jika mult1 == mult2 (jarang tapi bisa), pastikan w1 beda
+                if(mult1 === mult2) w1 = `(1) dikali ${mult1+1}, (2) dikali ${mult2+2}`;
+                if(correct === w2) w2 = `(1) dikali ${Math.abs(a2)}, (2) dikali ${Math.abs(b2)}`;
+
+                state.currentCorrectAnswer = correct;
+                return { text, type: 'mcq', options: shuffle([correct, w1, w2, w3]) };
+            },
+
+            // Level 4: Analisis Himpunan (1, Sejajar, Berimpit)
+            level4: () => {
+                let type = Math.floor(Math.random() * 3); // 0: tepat satu, 1: sejajar, 2: berimpit
+                let a1 = getNumberBasedOnDifficulty();
+                let b1 = getNumberBasedOnDifficulty();
+                let c1 = getNumberBasedOnDifficulty();
+                let a2, b2, c2;
+
+                let options = ["Tepat Satu Penyelesaian", "Tidak Ada Penyelesaian (Sejajar)", "Banyak Penyelesaian (Berimpit)"];
+                let correct;
+
+                if (type === 0) { // Tepat satu (a1/a2 != b1/b2)
+                    do {
+                        a2 = getNumberBasedOnDifficulty();
+                        b2 = getNumberBasedOnDifficulty();
+                    } while ((a1 * b2) === (a2 * b1));
+                    c2 = getNumberBasedOnDifficulty();
+                    correct = options[0];
+                } else if (type === 1) { // Sejajar (a1/a2 == b1/b2 != c1/c2)
+                    let k = Math.floor(Math.random() * 3) + 2;
+                    a2 = a1 * k;
+                    b2 = b1 * k;
+                    do {
+                        c2 = getNumberBasedOnDifficulty() * k;
+                    } while ((c1 * k) === c2);
+                    correct = options[1];
+                } else { // Berimpit (a1/a2 == b1/b2 == c1/c2)
+                    let k = Math.floor(Math.random() * 3) + 2;
+                    a2 = a1 * k;
+                    b2 = b1 * k;
+                    c2 = c1 * k;
+                    correct = options[2];
+                }
+
+                let text = `Analisis sistem persamaan berikut:\n(1) ${formatEq(a1, b1, c1)}\n(2) ${formatEq(a2, b2, c2)}\nSifat penyelesaiannya adalah...`;
+                state.currentCorrectAnswer = correct;
+                return { text, type: 'mcq', options };
+            },
+
+            // Level 5: Menyelesaikan (Fill in the blank)
+            level5: () => {
+                let d = Math.floor(state.difficultyScore);
+                let xNum = getNumberBasedOnDifficulty();
+                let yNum = getNumberBasedOnDifficulty();
+                let denom = (d >= 4) ? (Math.floor(Math.random() * 3) + 1) : 1; 
+                
+                let x = xNum / denom;
+                let y = yNum / denom;
+
+                let a1 = getNumberBasedOnDifficulty();
+                let b1 = getNumberBasedOnDifficulty();
+                let a2, b2;
+                do {
+                    a2 = getNumberBasedOnDifficulty();
+                    b2 = getNumberBasedOnDifficulty();
+                } while (a1 * b2 === a2 * b1);
+
+                a1 = a1 * denom; b1 = b1 * denom;
+                a2 = a2 * denom; b2 = b2 * denom;
+
+                let c1 = a1 * x + b1 * y;
+                let c2 = a2 * x + b2 * y;
+
+                const gcd = (a, b) => b === 0 ? Math.abs(a) : gcd(b, a % b);
+                const simplify = (a, b, c) => {
+                    let g = gcd(gcd(a, b), c);
+                    if(g === 0) g = 1;
+                    return [a/g, b/g, c/g];
+                };
+
+                let [sa1, sb1, sc1] = simplify(a1, b1, c1);
+                let [sa2, sb2, sc2] = simplify(a2, b2, c2);
+
+                let text = `Tentukan nilai x dan y dari:\n(1) ${formatEq(sa1, sb1, sc1)}\n(2) ${formatEq(sa2, sb2, sc2)}`;
+                state.currentCorrectAnswer = { x: x, y: y };
+                return { text, type: 'inputs', fields: ['x', 'y'] };
+            },
+
+            // Level 6: Soal Cerita
+            level6: () => {
+                let x = Math.abs(getNumberBasedOnDifficulty()) * 1000;
+                let y = Math.abs(getNumberBasedOnDifficulty()) * 1000;
+                let a1 = Math.floor(Math.random() * 4) + 1;
+                let b1 = Math.floor(Math.random() * 4) + 1;
+                let c1 = a1 * x + b1 * y;
+                
+                let a2 = Math.floor(Math.random() * 4) + 1;
+                let b2 = Math.floor(Math.random() * 4) + 1;
+                if (a1*b2 === a2*b1) b2++; // cegah paralel
+                let c2 = a2 * x + b2 * y;
+
+                let itemX = ITEMS[Math.floor(Math.random() * ITEMS.length)];
+                let itemY = ITEMS[Math.floor(Math.random() * ITEMS.length)];
+                while(itemY === itemX) itemY = ITEMS[Math.floor(Math.random() * ITEMS.length)];
+
+                let text = `Harga ${a1} ${itemX} dan ${b1} ${itemY} adalah Rp${c1.toLocaleString('id-ID')}. Harga ${a2} ${itemX} dan ${b2} ${itemY} adalah Rp${c2.toLocaleString('id-ID')}. Berapakah harga 1 ${itemX}?`;
+                state.currentCorrectAnswer = { ans: x };
+                return { text, type: 'inputs', fields: ['ans'], labels: [`Harga 1 ${itemX}`] };
+            }
+        };
+
+        // --- CORE LOGIC ---
+        function startGame() {
+            document.getElementById('screen-menu').classList.add('hidden');
+            document.getElementById('screen-result').classList.add('hidden');
+            document.getElementById('screen-game').classList.remove('hidden');
+            
+            state.level = 1;
+            state.questionNumber = 1;
+            state.difficultyScore = 1;
+            
+            renderQuestion();
+        }
+
+        function renderQuestion() {
+            // Update Header
+            document.getElementById('level-title').innerText = `Level ${state.level}`;
+            document.getElementById('question-progress').innerText = `Soal ${state.questionNumber} / 10`;
+            
+            let diffLabel = getDifficultyLabel();
+            let diffEl = document.getElementById('difficulty-badge');
+            diffEl.innerText = diffLabel.text;
+            diffEl.className = `px-2 py-1 rounded text-xs font-mono mb-1 inline-block ${diffLabel.color}`;
+
+            // Generate
+            let qData = generators['level' + state.level]();
+            document.getElementById('question-text').innerText = qData.text;
+
+            let answerArea = document.getElementById('answer-area');
+            answerArea.innerHTML = '';
+
+            if (qData.type === 'mcq') {
+                document.getElementById('numpad').classList.add('hidden');
+                qData.options.forEach(opt => {
+                    let btn = document.createElement('button');
+                    btn.className = "w-full text-left bg-slate-700 hover:bg-slate-600 p-4 rounded-xl mb-3 transition font-mono";
+                    btn.innerText = opt;
+                    btn.onclick = () => checkAnswer(opt === state.currentCorrectAnswer, btn);
+                    answerArea.appendChild(btn);
+                });
+            } else if (qData.type === 'inputs') {
+                document.getElementById('numpad').classList.remove('hidden');
+                let grid = document.createElement('div');
+                grid.className = 'space-y-4';
+                
+                qData.fields.forEach((field, index) => {
+                    let wrapper = document.createElement('div');
+                    let label = document.createElement('label');
+                    label.className = 'block text-sm text-slate-400 mb-1';
+                    label.innerText = qData.labels ? qData.labels[index] : `${field} =`;
+                    
+                    let input = document.createElement('input');
+                    input.type = 'text';
+                    input.readOnly = true; 
+                    input.id = `input-${field}`;
+                    input.className = 'numpad-input w-full bg-slate-800 border border-slate-600 rounded-lg p-3 text-white font-mono text-lg focus:outline-none cursor-pointer';
+                    input.onclick = () => setActiveInput(input.id);
+                    
+                    wrapper.appendChild(label);
+                    wrapper.appendChild(input);
+                    grid.appendChild(wrapper);
+
+                    if (index === 0) setActiveInput(input.id);
+                });
+                answerArea.appendChild(grid);
+            }
+
+            state.startTime = Date.now();
+        }
+
+        function setActiveInput(id) {
+            document.querySelectorAll('.numpad-input').forEach(el => el.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            state.activeInputId = id;
+        }
+
+        function numpadPress(val) {
+            if (!state.activeInputId) return;
+            let el = document.getElementById(state.activeInputId);
+            el.value += val;
+        }
+
+        function numpadAction(action) {
+            if (!state.activeInputId) return;
+            let el = document.getElementById(state.activeInputId);
+            if (action === 'del') {
+                el.value = el.value.slice(0, -1);
+            }
+        }
+
+        function submitAnswer() {
+            let isCorrect = true;
+            
+            for (const key in state.currentCorrectAnswer) {
+                let el = document.getElementById(`input-${key}`);
+                if (!el || el.value.trim() === '') {
+                    isCorrect = false;
+                    break;
+                }
+                
+                let userVal = parseFraction(el.value);
+                let correctVal = parseFloat(state.currentCorrectAnswer[key]);
+                
+                if (Math.abs(userVal - correctVal) > 0.01) {
+                    isCorrect = false;
+                }
+            }
+
+            let appCont = document.getElementById('app');
+            checkAnswer(isCorrect, appCont);
+        }
+
+        function checkAnswer(isCorrect, elementTarget) {
+            if (isCorrect) {
+                let timeTaken = (Date.now() - state.startTime) / 1000;
+                
+                if (timeTaken <= 8) state.difficultyScore = Math.min(5, state.difficultyScore + 0.3);
+                else if (timeTaken > 15) state.difficultyScore = Math.max(1, state.difficultyScore - 0.2);
+
+                state.questionNumber++;
+                
+                if (state.questionNumber > NUM_QUESTIONS_PER_LEVEL) {
+                    state.level++;
+                    state.questionNumber = 1;
+                }
+
+                if (state.level > 6) {
+                    endGame("Selamat! Anda berhasil menamatkan seluruh rintangan SPLDV.");
+                } else {
+                    renderQuestion();
+                }
+            } else {
+                elementTarget.classList.remove('shake');
+                void elementTarget.offsetWidth; 
+                elementTarget.classList.add('shake');
+                
+                if(elementTarget.tagName === 'BUTTON' && !elementTarget.classList.contains('bg-blue-600')) {
+                    elementTarget.classList.add('bg-red-900');
+                    setTimeout(() => elementTarget.classList.remove('bg-red-900'), 500);
+                }
+            }
+        }
+
+        function surrender() {
+            endGame("Anda menyerah. Jangan patah semangat, mari belajar konsepnya lagi!");
+        }
+
+        function endGame(msg) {
+            document.getElementById('screen-game').classList.add('hidden');
+            document.getElementById('screen-result').classList.remove('hidden');
+            document.getElementById('result-desc').innerText = msg;
+            
+            let finalLevel = state.level > 6 ? "Selesai (MAX)" : (state.level - 1);
+            if (finalLevel === 0 && state.level === 1) finalLevel = "Belum lewat Level 1";
+            document.getElementById('result-level').innerText = finalLevel;
+        }
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Interaktif: Sistem Koordinasi & Homeostasis</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+
+        .option-btn {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .option-btn:hover:not(:disabled) {
+            transform: translateX(8px);
+            background-color: #f1f5f9;
+            border-color: #3b82f6;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin: auto;
+            height: 300px;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .progress-bar {
+            transition: width 0.5s ease-in-out;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="bg-white border-b border-slate-200 py-4 shadow-sm">
+        <div class="max-w-4xl mx-auto px-6 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white font-bold">Q</div>
+                <h1 class="text-xl font-bold tracking-tight text-slate-800">BioQuiz IX</h1>
+            </div>
+            <div id="quiz-timer" class="text-sm font-semibold text-slate-500 bg-slate-100 px-3 py-1 rounded-full">
+                Sistem Koordinasi & Homeostasis
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow flex items-center justify-center p-4">
+        <div class="max-w-3xl w-full">
+            
+            <!-- Start Screen -->
+            <div id="start-screen" class="bg-white rounded-3xl shadow-xl p-8 text-center border border-slate-100 fade-in">
+                <div class="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <span class="text-4xl">🧠</span>
+                </div>
+                <h2 class="text-3xl font-extrabold mb-4">Uji Pemahamanmu!</h2>
+                <p class="text-slate-600 mb-8 leading-relaxed">
+                    Siapkan dirimu untuk 40 soal pilihan ganda mengenai Sistem Saraf, Alat Indra, Hormon, dan Homeostasis. Soal ditampilkan satu per satu untuk membantumu fokus.
+                </p>
+                <div class="grid grid-cols-2 gap-4 mb-8 text-left max-w-md mx-auto">
+                    <div class="flex items-center space-x-2 text-sm text-slate-500">
+                        <span class="text-blue-500 font-bold">✓</span> 40 Soal Pilihan Ganda
+                    </div>
+                    <div class="flex items-center space-x-2 text-sm text-slate-500">
+                        <span class="text-blue-500 font-bold">✓</span> Analisis Skor Akhir
+                    </div>
+                    <div class="flex items-center space-x-2 text-sm text-slate-500">
+                        <span class="text-blue-500 font-bold">✓</span> Penjelasan Jawaban
+                    </div>
+                    <div class="flex items-center space-x-2 text-sm text-slate-500">
+                        <span class="text-blue-500 font-bold">✓</span> 100% Sesuai Materi
+                    </div>
+                </div>
+                <button onclick="startQuiz()" class="w-full sm:w-64 bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-2xl shadow-lg transition-transform hover:scale-105 active:scale-95">
+                    Mulai Quiz Sekarang
+                </button>
+            </div>
+
+            <!-- Quiz Container -->
+            <div id="quiz-container" class="hidden">
+                <!-- Progress -->
+                <div class="mb-6">
+                    <div class="flex justify-between text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">
+                        <span id="category-label">Kategori</span>
+                        <span id="progress-text">Soal 1 dari 40</span>
+                    </div>
+                    <div class="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden">
+                        <div id="progress-bar" class="progress-bar bg-blue-500 h-full w-0"></div>
+                    </div>
+                </div>
+
+                <!-- Question Card -->
+                <div class="bg-white rounded-3xl shadow-xl border border-slate-100 overflow-hidden fade-in">
+                    <div class="p-8">
+                        <h3 id="question-text" class="text-xl font-bold text-slate-800 leading-snug mb-8">
+                            Memuat pertanyaan...
+                        </h3>
+                        <div id="options-container" class="space-y-4">
+                            <!-- Options will be injected here -->
+                        </div>
+                    </div>
+                    <div id="feedback-area" class="hidden px-8 py-4 bg-slate-50 border-t border-slate-100 text-sm">
+                        <!-- Feedback after answering -->
+                    </div>
+                </div>
+                
+                <div class="mt-6 flex justify-end">
+                    <button id="next-btn" onclick="nextQuestion()" class="hidden bg-slate-800 text-white px-8 py-3 rounded-xl font-bold hover:bg-slate-900 transition-colors">
+                        Lanjut &rarr;
+                    </button>
+                </div>
+            </div>
+
+            <!-- Result Screen -->
+            <div id="result-screen" class="hidden bg-white rounded-3xl shadow-xl p-8 border border-slate-100 fade-in">
+                <h2 class="text-3xl font-extrabold text-center mb-2">Hasil Akhir Anda</h2>
+                <p class="text-center text-slate-500 mb-8">Berikut adalah ringkasan performa belajar Anda</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center mb-10">
+                    <div class="text-center">
+                        <div class="text-6xl font-black text-blue-600 mb-2" id="final-score">0</div>
+                        <div class="text-sm font-bold text-slate-400 uppercase tracking-widest">Skor Total</div>
+                        <div class="mt-4 p-4 bg-blue-50 rounded-2xl inline-block">
+                            <span id="score-comment" class="text-blue-800 font-semibold text-sm">Hebat! Kamu paham materinya.</span>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="chart-container">
+                            <canvas id="resultChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
+                    <div class="bg-slate-50 p-4 rounded-2xl text-center">
+                        <div class="text-xs text-slate-500 font-bold mb-1">Benar</div>
+                        <div id="correct-count" class="text-xl font-bold text-green-600">0</div>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-2xl text-center">
+                        <div class="text-xs text-slate-500 font-bold mb-1">Salah</div>
+                        <div id="wrong-count" class="text-xl font-bold text-red-600">0</div>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-2xl text-center">
+                        <div class="text-xs text-slate-500 font-bold mb-1">Akurasi</div>
+                        <div id="accuracy-pct" class="text-xl font-bold text-blue-600">0%</div>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-2xl text-center">
+                        <div class="text-xs text-slate-500 font-bold mb-1">Waktu</div>
+                        <div class="text-xl font-bold text-slate-600">Selesai</div>
+                    </div>
+                </div>
+
+                <button onclick="location.reload()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold py-4 rounded-2xl transition-colors">
+                    Ulangi Quiz
+                </button>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="py-6 text-center text-slate-400 text-xs">
+        &copy; 2024 Media Belajar Digital - Bab 1: Koordinasi & Homeostasis
+    </footer>
+
+    <script>
+        // --- QUIZ DATA (40 Questions) ---
+        const questions = [
+            // SISTEM SARAF (10)
+            { q: "Apa fungsi utama dari dendrit pada sel saraf?", o: ["Meneruskan impuls menjauhi badan sel", "Menerima impuls dan mengirimkannya ke badan sel", "Melindungi akson", "Pusat pengaturan aktivitas sel"], a: 1, cat: "Saraf", f: "Dendrit menerima impuls dari sel lain dan mengirimkannya ke badan sel." },
+            { q: "Bagian neuron yang berfungsi mempercepat jalannya impuls adalah...", o: ["Nukleus", "Badan Sel", "Selubung Mielin", "Dendrit"], a: 2, cat: "Saraf", f: "Mielin adalah isolator lemak yang mempercepat transmisi impuls." },
+            { q: "Neuron yang membawa impuls dari indra ke pusat saraf disebut neuron...", o: ["Motoris", "Konektor", "Sensoris", "Multipolar"], a: 2, cat: "Saraf", f: "Sensoris (unipolar) menghantar impuls dari organ indra ke otak/sumsum tulang belakang." },
+            { q: "Otak besar (Serebrum) memiliki fungsi utama sebagai...", o: ["Pusat keseimbangan", "Pusat gerakan sadar dan pengolah data indra", "Pengendali gerak refleks", "Pusat koordinasi mengetik"], a: 1, cat: "Saraf", f: "Serebrum mengatur gerakan sadar dan kognisi." },
+            { q: "Pusat pengendalian gerak refleks berada pada...", o: ["Otak Kecil", "Otak Besar", "Medula Spinalis", "Talamus"], a: 2, cat: "Saraf", f: "Medula spinalis (sumsum tulang belakang) menangani refleks spontan." },
+            { q: "Selaput pelindung otak disebut...", o: ["Pleura", "Meninges", "Perikardium", "Peritonium"], a: 1, cat: "Saraf", f: "Meninges terdiri dari Durameter, Araknoid, dan Piameter." },
+            { q: "Fenomena penurunan konsentrasi akibat paparan gawai berlebih disebut...", o: ["Brain Rot", "Brain Storm", "Neuro-drain", "Sinapsis-fatigue"], a: 0, cat: "Saraf", f: "Brain rot terkait neuroplastisitas negatif akibat gawai berlebih." },
+            { q: "Bagian akson yang tidak tertutup mielin disebut...", o: ["Nukleolus", "Sinapsis", "Nodus Ranvier", "Sel Schwann"], a: 2, cat: "Saraf", f: "Nodus Ranvier adalah tempat masuknya ion untuk lompatan impuls." },
+            { q: "Sinapsis adalah...", o: ["Inti sel saraf", "Cairan otak", "Ujung akson penghubung sel saraf", "Pembungkus akson"], a: 2, cat: "Saraf", f: "Sinapsis adalah celah/titik temu antar sel saraf." },
+            { q: "Neuron bipolar berfungsi sebagai...", o: ["Penghantar ke otot", "Penerima rangsang cahaya", "Neuron konektor", "Pemberi nutrisi"], a: 2, cat: "Saraf", f: "Neuron konektor biasanya berbentuk bipolar." },
+
+            // ALAT INDRA (12)
+            { q: "Bagian mata yang memberi warna pada mata adalah...", o: ["Pupil", "Iris", "Retina", "Koroid"], a: 1, cat: "Indra", f: "Iris mengandung pigmen warna mata." },
+            { q: "Lapisan mata terdalam yang menangkap bayangan adalah...", o: ["Sklera", "Lensa", "Retina", "Koroid"], a: 2, cat: "Indra", f: "Retina mengandung fotoreseptor (batang dan kerucut)." },
+            { q: "Sel batang pada retina berfungsi untuk...", o: ["Melihat warna terang", "Melihat di cahaya rendah (tidak sensitif warna)", "Memfokuskan cahaya", "Melindungi bola mata"], a: 1, cat: "Indra", f: "Sel batang aktif saat redup." },
+            { q: "Fungsi saluran Eustachius pada telinga adalah...", o: ["Menangkap getaran suara", "Menyeimbangkan tekanan udara", "Mengirim impuls ke otak", "Memperkuat bunyi"], a: 1, cat: "Indra", f: "Eustachius menghubungkan telinga tengah ke tenggorokan." },
+            { q: "Alat keseimbangan pada telinga dalam disebut...", o: ["Koklea", "Saluran setengah lingkaran", "Membran timpani", "Inkus"], a: 1, cat: "Indra", f: "Semicircular canals (saluran setengah lingkaran) mendeteksi posisi kepala." },
+            { q: "Organ Corti terdapat di dalam bagian telinga...", o: ["Tengah", "Luar", "Koklea", "Maleus"], a: 2, cat: "Indra", f: "Organ corti berisi sel rambut sensorik di dalam koklea." },
+            { q: "Reseptor pembau pada hidung adalah sel...", o: ["Gustatori", "Olfaktorius", "Meisner", "Merkel"], a: 1, cat: "Indra", f: "Olfaktorius mendeteksi zat kimia gas." },
+            { q: "Lidah mendeteksi rasa gurih yang disebut...", o: ["Umami", "Maltosa", "Laktosa", "Sorbitol"], a: 0, cat: "Indra", f: "Umami berasal dari glutamat." },
+            { q: "Reseptor dingin pada kulit disebut korpus...", o: ["Pacini", "Meisner", "Krause", "Ruffini"], a: 2, cat: "Indra", f: "Krause = Dingin, Ruffini = Panas." },
+            { q: "Bagian mata yang tembus pandang di depan dan mentransmisi cahaya adalah...", o: ["Koroid", "Sklera", "Kornea", "Aqueous humor"], a: 2, cat: "Indra", f: "Kornea adalah jendela depan mata." },
+            { q: "Ujung saraf tanpa selaput pada kulit berfungsi mendeteksi...", o: ["Tekanan kuat", "Rasa sakit/nyeri", "Tekanan ringan", "Suhu"], a: 1, cat: "Indra", f: "Ujung saraf bebas merespons kerusakan jaringan (nyeri)." },
+            { q: "Reseptor peraba (sentuhan) pada kulit disebut...", o: ["Korpus Meisner", "Korpus Pacini", "Korpus Krause", "Lempeng Merkel"], a: 0, cat: "Indra", f: "Meisner terletak di permukaan kulit untuk sentuhan halus." },
+
+            // HORMON (8)
+            { q: "Kelenjar yang disebut 'Master of Gland' adalah...", o: ["Tiroid", "Adrenal", "Hipofisis (Pituitari)", "Pineal"], a: 2, cat: "Hormon", f: "Pituitari mengontrol banyak kelenjar endokrin lain." },
+            { q: "Hormon melatonin yang mengatur jam tidur dihasilkan oleh...", o: ["Pankreas", "Pineal", "Tiroid", "Ovarium"], a: 1, cat: "Hormon", f: "Kelenjar pineal mengatur ritme sirkadian." },
+            { q: "Hormon yang mempercepat denyut jantung saat takut adalah...", o: ["Insulin", "Tiroksin", "Adrenalin", "ADH"], a: 2, cat: "Hormon", f: "Adrenalin memicu respons 'fight or flight'." },
+            { q: "Kekurangan hormon insulin dapat menyebabkan...", o: ["Diabetes Melitus", "Kerdil", "Gondok", "Kurang darah"], a: 0, cat: "Hormon", f: "Insulin menurunkan gula darah; tanpanya, gula darah naik berlebih." },
+            { q: "Hormon pertumbuhan (GH) dihasilkan oleh kelenjar...", o: ["Gonad", "Hipofisis", "Paratiroid", "Adrenal"], a: 1, cat: "Hormon", f: "Growth Hormone (GH) dari lobus anterior pituitari." },
+            { q: "Hormon tiroksin berfungsi untuk...", o: ["Menurunkan gula darah", "Metabolisme tubuh", "Pembentukan sperma", "Kontraksi rahim"], a: 1, cat: "Hormon", f: "Tiroid mengatur kecepatan metabolisme sel." },
+            { q: "Hormon progesteron pada wanita berfungsi untuk...", o: ["Melahirkan", "Menjaga ketebalan rahim", "Menurunkan kalsium", "Membuat suara berat"], a: 1, cat: "Hormon", f: "Progesteron mempersiapkan dan menjaga kehamilan/rahim." },
+            { q: "Kelenjar paratiroid mengatur kadar...", o: ["Air", "Kalsium darah", "Garam", "Zat besi"], a: 1, cat: "Hormon", f: "Parathormon (PTH) meningkatkan kalsium darah." },
+
+            // HOMEOSTASIS (10)
+            { q: "Definisi homeostasis adalah...", o: ["Perubahan tubuh yang drastis", "Proses otomatis mempertahankan kondisi stabil", "Kemampuan berlari cepat", "Proses penuaan dini"], a: 1, cat: "Homeostasis", f: "Homeostasis menjaga stabilitas internal (suhu, pH, dll)." },
+            { q: "Pusat pengaturan suhu tubuh di otak adalah...", o: ["Serebrum", "Hipotalamus", "Medula Oblongata", "Talamus"], a: 1, cat: "Homeostasis", f: "Hipotalamus bertindak sebagai termostat tubuh." },
+            { q: "Saat kepanasan, pembuluh darah akan melebar yang disebut...", o: ["Konstriksi", "Dilatasi", "Kompensasi", "Kavitasi"], a: 1, cat: "Homeostasis", f: "Dilatasi pembuluh darah membuang panas ke permukaan kulit." },
+            { q: "Hormon yang memerintahkan ginjal menyerap kembali air adalah...", o: ["TSH", "ADH", "FSH", "LH"], a: 1, cat: "Homeostasis", f: "Antidiuretic Hormone (ADH) mengatur reabsorpsi air." },
+            { q: "Jika tubuh kekurangan air, urine yang dihasilkan akan...", o: ["Banyak dan encer", "Sedikit dan kental", "Berwarna bening", "Banyak dan kuning"], a: 1, cat: "Homeostasis", f: "Tubuh menahan air, sehingga urine lebih pekat (kuning tua)." },
+            { q: "Saat kadar gula darah naik setelah makan, pankreas melepaskan...", o: ["Glukagon", "Insulin", "Adrenalin", "Tiroksin"], a: 1, cat: "Homeostasis", f: "Insulin menurunkan gula darah dengan memasukkannya ke sel." },
+            { q: "Glikogen adalah...", o: ["Hormon pembakar gula", "Cadangan gula di hati/otot", "Alat pencernaan", "Zat pewarna empedu"], a: 1, cat: "Homeostasis", f: "Kelebihan glukosa disimpan sebagai glikogen." },
+            { q: "Hormon kalsitonin berfungsi untuk...", o: ["Meningkatkan kalsium darah", "Menurunkan kalsium darah ke tulang", "Menyerap air di ginjal", "Meningkatkan detak jantung"], a: 1, cat: "Homeostasis", f: "Kalsitonin (dari tiroid) membantu pengendapan kalsium ke tulang." },
+            { q: "Menggigil saat kedinginan bertujuan untuk...", o: ["Mendinginkan suhu", "Menghasilkan panas melalui kontraksi otot", "Mengeluarkan keringat", "Menghilangkan stres"], a: 1, cat: "Homeostasis", f: "Kontraksi otot menghasilkan energi panas." },
+            { q: "Glukagon bekerja dengan cara...", o: ["Mengubah glukosa jadi glikogen", "Merombak glikogen jadi glukosa", "Mematikan sel kanker", "Meningkatkan nafsu makan"], a: 1, cat: "Homeostasis", f: "Glukagon menaikkan kadar gula darah saat kita lapar/puasa." }
+        ];
+
+        // --- STATE MANAGEMENT ---
+        let currentIdx = 0;
+        let score = 0;
+        let correctAnswers = 0;
+        let wrongAnswers = 0;
+        let userChoices = [];
+        let catScores = { "Saraf": 0, "Indra": 0, "Hormon": 0, "Homeostasis": 0 };
+        let catTotals = { "Saraf": 10, "Indra": 12, "Hormon": 8, "Homeostasis": 10 };
+
+        // --- FUNCTIONS ---
+        function startQuiz() {
+            document.getElementById('start-screen').classList.add('hidden');
+            document.getElementById('quiz-container').classList.remove('hidden');
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const q = questions[currentIdx];
+            document.getElementById('question-text').innerText = q.q;
+            document.getElementById('category-label').innerText = q.cat;
+            document.getElementById('progress-text').innerText = `Soal ${currentIdx + 1} dari ${questions.length}`;
+            
+            // Progress Bar
+            const pct = ((currentIdx + 1) / questions.length) * 100;
+            document.getElementById('progress-bar').style.width = pct + "%";
+
+            const container = document.getElementById('options-container');
+            container.innerHTML = '';
+
+            q.o.forEach((opt, i) => {
+                const btn = document.createElement('button');
+                btn.className = "option-btn w-full text-left p-4 border-2 border-slate-200 rounded-2xl font-medium text-slate-700 bg-white";
+                btn.innerHTML = `<span class="inline-block w-8 h-8 rounded-lg bg-slate-100 text-center leading-8 mr-3 text-sm font-bold">${String.fromCharCode(65+i)}</span> ${opt}`;
+                btn.onclick = () => selectOption(i);
+                container.appendChild(btn);
+            });
+
+            document.getElementById('feedback-area').classList.add('hidden');
+            document.getElementById('next-btn').classList.add('hidden');
+        }
+
+        function selectOption(idx) {
+            const q = questions[currentIdx];
+            const btns = document.querySelectorAll('.option-btn');
+            
+            // Disable all buttons
+            btns.forEach(b => b.disabled = true);
+
+            const feedback = document.getElementById('feedback-area');
+            feedback.classList.remove('hidden');
+
+            if (idx === q.a) {
+                btns[idx].classList.add('border-green-500', 'bg-green-50', 'text-green-700');
+                feedback.innerHTML = `<span class="text-green-600 font-bold">Benar!</span> ${q.f}`;
+                correctAnswers++;
+                catScores[q.cat]++;
+            } else {
+                btns[idx].classList.add('border-red-500', 'bg-red-50', 'text-red-700');
+                btns[q.a].classList.add('border-green-500', 'bg-green-50');
+                feedback.innerHTML = `<span class="text-red-600 font-bold">Salah.</span> Jawaban yang benar adalah <b>${q.o[q.a]}</b>. <br>${q.f}`;
+                wrongAnswers++;
+            }
+
+            document.getElementById('next-btn').classList.remove('hidden');
+        }
+
+        function nextQuestion() {
+            currentIdx++;
+            if (currentIdx < questions.length) {
+                showQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function showResults() {
+            document.getElementById('quiz-container').classList.add('hidden');
+            document.getElementById('result-screen').classList.remove('hidden');
+
+            const total = questions.length;
+            const finalPct = Math.round((correctAnswers / total) * 100);
+            
+            document.getElementById('final-score').innerText = finalPct;
+            document.getElementById('correct-count').innerText = correctAnswers;
+            document.getElementById('wrong-count').innerText = wrongAnswers;
+            document.getElementById('accuracy-pct').innerText = finalPct + "%";
+
+            // Comment logic
+            let comment = "";
+            if (finalPct >= 90) comment = "Luar biasa! Kamu sudah menguasai Bab 1 dengan sempurna.";
+            else if (finalPct >= 75) comment = "Bagus sekali! Pemahamanmu sangat kuat.";
+            else if (finalPct >= 60) comment = "Cukup baik, tapi yuk pelajari lagi bagian yang salah.";
+            else comment = "Jangan menyerah! Baca kembali ringkasan materi dan coba lagi.";
+            document.getElementById('score-comment').innerText = comment;
+
+            renderChart();
+        }
+
+        function renderChart() {
+            const ctx = document.getElementById('resultChart').getContext('2d');
+            
+            // Calculate percentage per category
+            const data = [
+                (catScores["Saraf"] / catTotals["Saraf"]) * 100,
+                (catScores["Indra"] / catTotals["Indra"]) * 100,
+                (catScores["Hormon"] / catTotals["Hormon"]) * 100,
+                (catScores["Homeostasis"] / catTotals["Homeostasis"]) * 100
+            ];
+
+            new Chart(ctx, {
+                type: 'polarArea',
+                data: {
+                    labels: ['Saraf', 'Indra', 'Hormon', 'Homeostasis'],
+                    datasets: [{
+                        data: data,
+                        backgroundColor: [
+                            'rgba(59, 130, 246, 0.6)', // Blue
+                            'rgba(245, 158, 11, 0.6)', // Orange
+                            'rgba(168, 85, 247, 0.6)', // Purple
+                            'rgba(16, 185, 129, 0.6)'  // Green
+                        ],
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            suggestedMin: 0,
+                            suggestedMax: 100,
+                            ticks: { display: false }
+                        }
+                    },
+                    plugins: {
+                        legend: { position: 'bottom', labels: { boxWidth: 10, font: { size: 10 } } }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>

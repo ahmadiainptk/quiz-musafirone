@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game 2D Quiz: Sistem Koordinasi & Homeostasis</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { margin: 0; overflow: hidden; background-color: #1a202c; color: white; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        #canvas-container { position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1; }
+        #ui-layer { position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 10; display: flex; flex-direction: column; justify-content: space-between; pointer-events: none; }
+        .pointer-events-auto { pointer-events: auto; }
+        
+        /* Health Bar Transitions */
+        .health-bar-inner { transition: width 0.3s ease-in-out; }
+        
+        /* Button Hover Effects */
+        .option-btn {
+            transition: all 0.2s ease;
+        }
+        .option-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+        .option-btn:disabled { opacity: 0.8; cursor: not-allowed; }
+        
+        .correct-ans { background-color: #48bb78 !important; color: white !important; border-color: #2f855a !important; }
+        .wrong-ans { background-color: #f56565 !important; color: white !important; border-color: #c53030 !important; }
+
+        /* Screens */
+        .screen { position: absolute; top:0; left:0; width: 100vw; height: 100vh; background: rgba(15, 23, 42, 0.95); z-index: 50; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+
+    <!-- Start Screen -->
+    <div id="start-screen" class="screen">
+        <h1 class="text-5xl font-bold mb-4 text-blue-400 text-center drop-shadow-lg">IPA Battle Quiz</h1>
+        <h2 class="text-2xl mb-8 text-gray-200">Sistem Koordinasi & Homeostasis</h2>
+        <p class="text-lg text-gray-400 mb-8 max-w-2xl text-center">Jawab 40 pertanyaan untuk mengalahkan monster! Jawaban benar akan menyerang monster, jawaban salah membuatmu diserang balik. Semoga berhasil!</p>
+        <button onclick="startGame()" class="pointer-events-auto px-8 py-4 bg-blue-600 hover:bg-blue-500 rounded-full text-xl font-bold transition shadow-lg hover:scale-105">Mulai Pertarungan</button>
+    </div>
+
+    <!-- Game Over Screen -->
+    <div id="end-screen" class="screen hidden">
+        <h1 id="end-title" class="text-6xl font-bold mb-4 drop-shadow-lg"></h1>
+        <h2 class="text-3xl mb-4">Skor Akhir: <span id="final-score" class="text-blue-400 font-bold"></span> / 40</h2>
+        <p id="end-message" class="text-xl text-gray-300 mb-8 max-w-xl text-center"></p>
+        <button onclick="location.reload()" class="pointer-events-auto px-8 py-4 bg-purple-600 hover:bg-purple-500 rounded-full text-xl font-bold transition shadow-lg hover:scale-105">Main Lagi</button>
+    </div>
+
+    <!-- UI Layer -->
+    <div id="ui-layer" class="p-6 hidden">
+        <!-- Header: Health Bars & Info -->
+        <div class="flex justify-between items-start w-full max-w-5xl mx-auto mt-4">
+            <!-- Player Status -->
+            <div class="w-1/3 bg-gray-800 bg-opacity-80 p-4 rounded-xl border-2 border-blue-500 shadow-lg">
+                <div class="flex justify-between mb-1">
+                    <span class="font-bold text-blue-300">Pahlawan (Kamu)</span>
+                    <span id="player-hp-text" class="text-sm font-mono">40/40 HP</span>
+                </div>
+                <div class="w-full bg-gray-900 rounded-full h-4 border border-gray-700">
+                    <div id="player-hp-bar" class="bg-blue-500 h-full rounded-full health-bar-inner" style="width: 100%;"></div>
+                </div>
+            </div>
+
+            <!-- Quiz Progress -->
+            <div class="flex flex-col items-center">
+                <div class="bg-gray-800 bg-opacity-80 px-6 py-2 rounded-full border border-gray-600 shadow-md">
+                    <span class="text-gray-400 font-semibold">Soal: </span>
+                    <span id="question-counter" class="text-xl font-bold text-white">1/40</span>
+                </div>
+            </div>
+
+            <!-- Monster Status -->
+            <div class="w-1/3 bg-gray-800 bg-opacity-80 p-4 rounded-xl border-2 border-red-500 shadow-lg">
+                <div class="flex justify-between mb-1">
+                    <span class="font-bold text-red-300">Boss Monster</span>
+                    <span id="monster-hp-text" class="text-sm font-mono">40/40 HP</span>
+                </div>
+                <div class="w-full bg-gray-900 rounded-full h-4 border border-gray-700">
+                    <div id="monster-hp-bar" class="bg-red-500 h-full rounded-full health-bar-inner" style="width: 100%;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Question and Options Bottom Area -->
+        <div class="w-full max-w-5xl mx-auto mb-4 bg-gray-800 bg-opacity-90 rounded-2xl border border-gray-600 shadow-2xl pointer-events-auto flex flex-col p-6">
+            <h3 id="question-text" class="text-2xl font-bold mb-6 text-center text-blue-100 min-h-[4rem] flex items-center justify-center">Memuat pertanyaan...</h3>
+            
+            <div id="options-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Options injected by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Canvas Layer -->
+    <div id="canvas-container">
+        <canvas id="gameCanvas"></canvas>
+    </div>
+
+<script>
+// --- QUIZ DATA (40 Questions from IPA_BS_KLS_IX_Rev-20-55.pdf) ---
+const quizData = [
+    { q: "Apa fungsi utama dari dendrit pada struktur sel saraf (neuron)?", o: ["Meneruskan impuls dari badan sel ke sel lain", "Menerima impuls dari sel lain ke badan sel", "Membentuk selubung mielin", "Mengatur semua aktivitas sel saraf"], a: 1 },
+    { q: "Bagian akson yang tidak dilindungi oleh selubung mielin disebut...", o: ["Nodus Ranvier", "Sinapsis", "Badan sel", "Sel Schwann"], a: 0 },
+    { q: "Neuron yang berfungsi menghantarkan impuls dari pusat saraf ke organ motor (otot/kelenjar) disebut?", o: ["Neuron sensoris", "Neuron konektor", "Neuron motoris", "Neuron unipolar"], a: 2 },
+    { q: "Kemampuan otak yang menurun (sulit konsentrasi, terganggu emosi) akibat asupan konten digital berlebih disebut?", o: ["Homeostasis", "Neuroplastisitas positif", "Doom scrolling", "Neuroplastisitas negatif (Brain rot)"], a: 3 },
+    { q: "Struktur sel saraf yang berfungsi membentuk selubung mielin adalah...", o: ["Dendrit", "Sel Schwann", "Nukleus", "Sinapsis"], a: 1 },
+    { q: "Gerakan sadar yang dilakukan oleh tubuh kita merupakan tanggung jawab utama dari...", o: ["Otak besar (Serebrum)", "Otak kecil (Serebelum)", "Kelenjar pineal", "Medula spinalis"], a: 0 },
+    { q: "Bagian otak yang berfungsi sebagai pusat keseimbangan gerakan dan koordinasi adalah...", o: ["Otak besar", "Otak kecil (Serebelum)", "Kelenjar pituitari", "Medula oblongata"], a: 1 },
+    { q: "Otak dan medula spinalis dilindungi oleh tiga lapisan selaput pelindung (dari luar ke dalam: durameter, araknoid, piameter) yang disebut...", o: ["Meninges", "Sklera", "Mielin", "Sinapsis"], a: 0 },
+    { q: "Kelenjar di otak yang berperan dalam pengaturan jam biologis (seperti waktu bangun tidur) adalah...", o: ["Kelenjar pituitari", "Kelenjar adrenal", "Kelenjar pineal", "Kelenjar tiroid"], a: 2 },
+    { q: "Gerak refleks pada tubuh manusia (misal: langsung menarik tangan saat terkena panas) dikendalikan oleh...", o: ["Medula spinalis (Sumsum tulang belakang)", "Otak besar", "Serebelum", "Hipotalamus"], a: 0 },
+    { q: "Lapisan terluar dari bola mata yang berfungsi sebagai tempat perlekatan otot ekstrinsik adalah...", o: ["Koroid", "Retina", "Sklera", "Kornea"], a: 2 },
+    { q: "Bagian mata yang memberikan warna khas pada mata seseorang dan mengatur kadar intensitas cahaya adalah...", o: ["Lensa", "Iris", "Pupil", "Kornea"], a: 1 },
+    { q: "Sel pada retina mata yang bekerja saat intensitas cahaya rendah dan tidak sensitif terhadap warna adalah...", o: ["Sel kerucut", "Sel batang", "Sel schwann", "Sel olfaktorius"], a: 1 },
+    { q: "Bagian mata yang berfungsi memfokuskan cahaya agar bayangan jatuh tepat di retina adalah...", o: ["Lensa mata", "Pupil", "Vitreous humor", "Aqueous humor"], a: 0 },
+    { q: "Cairan di dalam bola mata yang berfungsi mempertahankan posisi bentuk bola mata adalah...", o: ["Aqueous humor", "Vitreous humor", "Cairan limfa", "Plasma darah"], a: 1 },
+    { q: "Telinga tengah terdiri atas saluran Eustachius dan tiga tulang pendengaran yaitu...", o: ["Maleus, Inkus, Sklera", "Maleus, Inkus, Stapes", "Sklera, Koroid, Retina", "Stapes, Inkus, Koklea"], a: 1 },
+    { q: "Fungsi utama saluran Eustachius pada telinga tengah adalah...", o: ["Mendeteksi posisi kepala", "Menyeimbangkan tekanan udara pada kedua sisi membran timpani", "Meneruskan getaran bunyi ke organ corti", "Menangkap gelombang bunyi dari luar"], a: 1 },
+    { q: "Sel saraf pada hidung yang berfungsi mendeteksi partikel kimiawi sebagai bau adalah...", o: ["Sel kerucut", "Sel batang", "Sel olfaktorius", "Papila"], a: 2 },
+    { q: "Permukaan lidah tertutup oleh ribuan benjolan yang mengandung reseptor pengecap, disebut...", o: ["Papila", "Olfaktorius", "Korpus", "Meninges"], a: 0 },
+    { q: "Rasa 'Umami' pada indra pengecap manusia mendeteksi sensasi gurih yang biasanya berasal dari senyawa...", o: ["Glukosa", "Kalsium", "Asam klorida", "Glutamat (seperti pada MSG)"], a: 3 },
+    { q: "Pada kulit manusia, reseptor saraf yang berfungsi untuk merasakan suhu panas disebut...", o: ["Korpus krause", "Korpus pacini", "Korpus ruffini", "Lempeng merkel"], a: 2 },
+    { q: "Pada kulit manusia, reseptor saraf yang berfungsi untuk merasakan tekanan kuat adalah...", o: ["Korpus ruffini", "Korpus pacini", "Korpus meissner", "Korpus krause"], a: 1 },
+    { q: "Kelenjar pada kulit yang menghasilkan keringat untuk membuang panas dari tubuh saat air menguap adalah...", o: ["Kelenjar sebasea", "Kelenjar tiroid", "Kelenjar keringat", "Kelenjar pineal"], a: 2 },
+    { q: "Sistem pengontrolan cairan, suhu, dan zat di dalam tubuh untuk mempertahankan kondisi stabil secara otomatis disebut...", o: ["Metabolisme", "Homeostasis", "Neuroplastisitas", "Ekskresi"], a: 1 },
+    { q: "Bagian otak yang bertugas memerintahkan tubuh untuk berkeringat atau menggigil guna mengatur suhu tubuh adalah...", o: ["Serebelum", "Hipotalamus", "Kelenjar pituitari", "Serebrum"], a: 1 },
+    { q: "Saat tubuh kepanasan, pembuluh darah di kulit akan mengalami dilatasi. Hal ini bertujuan untuk...", o: ["Menahan panas di dalam tubuh", "Mempercepat aliran oksigen ke otak", "Menyebabkan panas keluar tubuh bersamaan dengan keringat", "Menghentikan produksi keringat"], a: 2 },
+    { q: "Apa respons otot yang diperintahkan hipotalamus saat tubuh merasa terlalu kedinginan?", o: ["Otot relaksasi penuh", "Otot berkontraksi menyebabkan menggigil (menghasilkan panas)", "Otot mengurangi penggunaan glukosa", "Otot menghasilkan keringat"], a: 1 },
+    { q: "Warna urine yang jernih atau kuning pucat menandakan bahwa tubuh...", o: ["Kekurangan cairan (Dehidrasi)", "Terhidrasi dengan baik", "Mengalami infeksi ginjal", "Kelebihan protein"], a: 1 },
+    { q: "Hormon yang merangsang reabsorpsi air di ginjal, yang diproduksi oleh kelenjar pituitari, adalah...", o: ["Hormon ADH (Antidiuretic Hormone)", "Hormon TSH (Thyroid Stimulating Hormone)", "Insulin", "Adrenalin"], a: 0 },
+    { q: "Jika kita terlalu banyak minum air, bagaimana respons kelenjar pituitari?", o: ["Mengeluarkan banyak ADH", "Mengeluarkan sedikit ADH", "Menghentikan produksi urine", "Meningkatkan produksi hormon tiroksin"], a: 1 },
+    { q: "Kelenjar pankreas memproduksi dua hormon utama untuk mengatur kadar gula darah, yaitu...", o: ["Adrenalin dan tiroksin", "Estrogen dan progesteron", "Insulin dan glukagon", "Kalsitonin dan parathormon"], a: 2 },
+    { q: "Ketika kadar gula darah tinggi, hormon insulin merangsang sel hati untuk mengubah glukosa menjadi...", o: ["Lemak jenuh", "Protein cair", "Glikogen", "Asam amino"], a: 2 },
+    { q: "Hormon yang dikeluarkan pankreas saat kadar gula dalam darah menurun untuk merombak glikogen menjadi glukosa adalah...", o: ["Insulin", "Glukagon", "Kalsitonin", "Tiroksin"], a: 1 },
+    { q: "Kelenjar yang menghasilkan hormon adrenalin untuk mempercepat denyut jantung adalah kelenjar...", o: ["Adrenal", "Tiroid", "Timus", "Paratiroid"], a: 0 },
+    { q: "Kelenjar tiroid menghasilkan hormon tiroksin yang berfungsi utama untuk...", o: ["Pengaturan jam biologis", "Perkembangan seksual", "Reabsorpsi air di ginjal", "Metabolisme tubuh"], a: 3 },
+    { q: "Hormon yang berfungsi mengubah kalsium tulang menjadi kalsium darah (meningkatkan kalsium darah) dihasilkan oleh...", o: ["Kelenjar tiroid", "Kelenjar paratiroid (Parathormon)", "Kelenjar pankreas", "Kelenjar gonad"], a: 1 },
+    { q: "Saat kadar kalsium darah tinggi, kelenjar tiroid memproduksi hormon yang merangsang pengendapan kalsium di tulang, yaitu hormon...", o: ["Parathormon (PTH)", "Kalsitonin", "Oksitosin", "Glukagon"], a: 1 },
+    { q: "Hormon yang berperan dalam pematangan ovum pada organ reproduksi yang dihasilkan kelenjar pituitari adalah...", o: ["FSH (Follicle Stimulating Hormone)", "ACTH", "GH (Growth Hormone)", "ADH"], a: 0 },
+    { q: "Reseptor pada kulit berupa ujung saraf tanpa selaput secara khusus berfungsi untuk merasakan sensasi...", o: ["Dingin", "Panas", "Tekanan", "Sakit/Nyeri"], a: 3 },
+    { q: "Celah penghubung tempat bertemunya ujung akson suatu neuron dengan dendrit neuron lainnya disebut...", o: ["Selubung mielin", "Sinapsis", "Nodus Ranvier", "Badan sel"], a: 1 }
+];
+
+// Shuffle arrays helper
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+}
+
+// --- GAME LOGIC ---
+const TOTAL_QUESTIONS = quizData.length; // 40
+let currentQuestionIndex = 0;
+let playerHP = TOTAL_QUESTIONS;
+let monsterHP = TOTAL_QUESTIONS;
+let score = 0;
+let isAnimating = false;
+
+// UI Elements
+const uiLayer = document.getElementById('ui-layer');
+const startScreen = document.getElementById('start-screen');
+const endScreen = document.getElementById('end-screen');
+const qText = document.getElementById('question-text');
+const optionsGrid = document.getElementById('options-grid');
+const pBar = document.getElementById('player-hp-bar');
+const pText = document.getElementById('player-hp-text');
+const mBar = document.getElementById('monster-hp-bar');
+const mText = document.getElementById('monster-hp-text');
+const qCounter = document.getElementById('question-counter');
+
+function startGame() {
+    // Reset state
+    currentQuestionIndex = 0;
+    playerHP = TOTAL_QUESTIONS;
+    monsterHP = TOTAL_QUESTIONS;
+    score = 0;
+    
+    // Shuffle Questions
+    shuffleArray(quizData);
+    
+    startScreen.classList.add('hidden');
+    uiLayer.classList.remove('hidden');
+    
+    updateHealthUI();
+    loadQuestion();
+    
+    // Start Canvas Loop
+    if (!gameLoopActive) {
+        gameLoopActive = true;
+        lastTime = performance.now();
+        requestAnimationFrame(gameLoop);
+    }
+}
+
+function loadQuestion() {
+    if (currentQuestionIndex >= TOTAL_QUESTIONS) {
+        endGame();
+        return;
+    }
+    
+    isAnimating = false;
+    const qData = quizData[currentQuestionIndex];
+    qText.innerText = qData.q;
+    qCounter.innerText = `${currentQuestionIndex + 1}/${TOTAL_QUESTIONS}`;
+    
+    // Prepare options
+    let opts = qData.o.map((optText, idx) => {
+        return { text: optText, isCorrect: idx === qData.a };
+    });
+    shuffleArray(opts);
+    
+    optionsGrid.innerHTML = '';
+    opts.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.className = "option-btn w-full py-3 px-4 bg-gray-700 hover:bg-gray-600 rounded-xl text-left font-medium border border-gray-500 shadow-sm focus:outline-none";
+        btn.innerText = opt.text;
+        btn.onclick = () => handleAnswer(btn, opt.isCorrect, opts);
+        optionsGrid.appendChild(btn);
+    });
+}
+
+function handleAnswer(clickedBtn, isCorrect, allOptsData) {
+    if (isAnimating) return;
+    isAnimating = true;
+    
+    // Disable all buttons
+    const btns = optionsGrid.querySelectorAll('button');
+    btns.forEach(b => b.disabled = true);
+    
+    // Highlight correct & wrong
+    btns.forEach((b, i) => {
+        if (allOptsData[i].isCorrect) {
+            b.classList.add('correct-ans');
+        } else if (b === clickedBtn && !isCorrect) {
+            b.classList.add('wrong-ans');
+        }
+    });
+
+    if (isCorrect) {
+        score++;
+        monsterHP--;
+        triggerPlayerAttack();
+    } else {
+        playerHP--;
+        triggerMonsterAttack();
+    }
+    
+    updateHealthUI();
+    
+    // Wait for animation then load next
+    setTimeout(() => {
+        currentQuestionIndex++;
+        loadQuestion();
+    }, 1500); // 1.5s delay for animation
+}
+
+function updateHealthUI() {
+    pText.innerText = `${playerHP}/${TOTAL_QUESTIONS} HP`;
+    pBar.style.width = `${(playerHP / TOTAL_QUESTIONS) * 100}%`;
+    
+    mText.innerText = `${monsterHP}/${TOTAL_QUESTIONS} HP`;
+    mBar.style.width = `${(monsterHP / TOTAL_QUESTIONS) * 100}%`;
+}
+
+function endGame() {
+    uiLayer.classList.add('hidden');
+    endScreen.classList.remove('hidden');
+    
+    document.getElementById('final-score').innerText = score;
+    const title = document.getElementById('end-title');
+    const msg = document.getElementById('end-message');
+    
+    if (score === 40) {
+        title.innerText = "Sempurna!";
+        title.className = "text-6xl font-bold mb-4 drop-shadow-lg text-yellow-400";
+        msg.innerText = "Kamu memiliki pemahaman homeostasis dan koordinasi tubuh yang sempurna layaknya Profesor IPA!";
+    } else if (score >= 30) {
+        title.innerText = "Kemenangan Gemilang!";
+        title.className = "text-6xl font-bold mb-4 drop-shadow-lg text-green-400";
+        msg.innerText = "Sistem sarafmu merespons dengan sangat baik. Monster berhasil dikalahkan!";
+    } else if (score >= 20) {
+        title.innerText = "Pertarungan Sengit!";
+        title.className = "text-6xl font-bold mb-4 drop-shadow-lg text-blue-400";
+        msg.innerText = "Kamu berhasil bertahan, namun masih perlu menstabilkan homeostasis tubuhmu.";
+    } else {
+        title.innerText = "Kekalahan Sistem...";
+        title.className = "text-6xl font-bold mb-4 drop-shadow-lg text-red-500";
+        msg.innerText = "Sistem koordinasi terganggu. Mari pelajari lagi Bab 1 agar tubuh kembali seimbang!";
+    }
+}
+
+
+// --- CANVAS GAME RENDERER ---
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+let cw, ch;
+let gameLoopActive = false;
+let lastTime = 0;
+
+// Resize handling
+function resizeCanvas() {
+    cw = window.innerWidth;
+    ch = window.innerHeight;
+    canvas.width = cw;
+    canvas.height = ch;
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+
+// Game Entities
+let player = { x: 0, y: 0, bounceY: 0, color: '#3b82f6', targetState: 'idle' };
+let monster = { x: 0, y: 0, radius: 60, breathTime: 0, color: '#9333ea', flashTime: 0 };
+let projectiles = [];
+let particles = [];
+
+function triggerPlayerAttack() {
+    player.targetState = 'attack';
+    setTimeout(() => player.targetState = 'idle', 300);
+    
+    // Spawn projectile
+    projectiles.push({
+        x: player.x + 40,
+        y: player.y - 40,
+        vx: 15,
+        vy: 0,
+        color: '#60a5fa', // blue light
+        radius: 15,
+        isPlayer: true
+    });
+}
+
+function triggerMonsterAttack() {
+    monster.targetState = 'attack';
+    setTimeout(() => monster.targetState = 'idle', 300);
+    
+    projectiles.push({
+        x: monster.x - 60,
+        y: monster.y - 20,
+        vx: -15,
+        vy: 0,
+        color: '#f87171', // red fire
+        radius: 20,
+        isPlayer: false
+    });
+}
+
+function spawnHitParticles(x, y, color) {
+    for(let i=0; i<15; i++) {
+        particles.push({
+            x: x, y: y,
+            vx: (Math.random() - 0.5) * 10,
+            vy: (Math.random() - 0.5) * 10,
+            life: 1.0,
+            color: color
+        });
+    }
+}
+
+function gameLoop(time) {
+    if (!gameLoopActive) return;
+    const dt = (time - lastTime) / 1000;
+    lastTime = time;
+
+    update(dt);
+    draw(time);
+
+    requestAnimationFrame(gameLoop);
+}
+
+function update(dt) {
+    // Position entities relative to screen
+    player.x = cw * 0.2;
+    player.y = ch * 0.7;
+    
+    monster.x = cw * 0.8;
+    monster.y = ch * 0.7;
+
+    // Bounce player
+    player.bounceY = Math.sin(performance.now() / 300) * 10;
+    
+    // Breath monster
+    monster.breathTime += dt * 3;
+    
+    // Flash monster/player logic (handled in draw via hit detection)
+
+    // Projectiles
+    for (let i = projectiles.length - 1; i >= 0; i--) {
+        let p = projectiles[i];
+        p.x += p.vx;
+        
+        // Check collision
+        if (p.isPlayer && p.x > monster.x - monster.radius) {
+            spawnHitParticles(monster.x, monster.y, p.color);
+            monster.flashTime = 0.2; // flash white for 0.2s
+            projectiles.splice(i, 1);
+        } else if (!p.isPlayer && p.x < player.x + 40) {
+            spawnHitParticles(player.x, player.y - 40, p.color);
+            player.flashTime = 0.2;
+            projectiles.splice(i, 1);
+        }
+    }
+    
+    // Flash timers
+    if(monster.flashTime > 0) monster.flashTime -= dt;
+    if(player.flashTime > 0) player.flashTime -= dt;
+
+    // Particles
+    for (let i = particles.length - 1; i >= 0; i--) {
+        let pt = particles[i];
+        pt.x += pt.vx;
+        pt.y += pt.vy;
+        pt.life -= dt * 2;
+        if (pt.life <= 0) particles.splice(i, 1);
+    }
+}
+
+function draw(time) {
+    // Background gradient
+    let grd = ctx.createLinearGradient(0, 0, 0, ch);
+    grd.addColorStop(0, "#0f172a");
+    grd.addColorStop(1, "#1e293b");
+    ctx.fillStyle = grd;
+    ctx.fillRect(0, 0, cw, ch);
+    
+    // Draw Floor
+    ctx.fillStyle = "#020617";
+    ctx.beginPath();
+    ctx.ellipse(cw/2, ch*0.8, cw/1.5, ch*0.2, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    // --- DRAW PLAYER (Wizard shape) ---
+    ctx.save();
+    ctx.translate(player.x, player.y + player.bounceY);
+    if(player.flashTime > 0) {
+        ctx.fillStyle = 'white';
+    } else {
+        ctx.fillStyle = player.color;
+    }
+    // Body (Triangle)
+    ctx.beginPath();
+    ctx.moveTo(0, -60);
+    ctx.lineTo(30, 0);
+    ctx.lineTo(-30, 0);
+    ctx.fill();
+    // Head (Circle)
+    ctx.beginPath();
+    ctx.arc(0, -70, 20, 0, Math.PI*2);
+    ctx.fill();
+    // Staff
+    ctx.strokeStyle = '#d97706';
+    ctx.lineWidth = 5;
+    ctx.beginPath();
+    ctx.moveTo(40, -10);
+    ctx.lineTo(40, -90);
+    ctx.stroke();
+    // Staff orb
+    ctx.fillStyle = '#60a5fa';
+    ctx.beginPath();
+    ctx.arc(40, -95, 10, 0, Math.PI*2);
+    ctx.fill();
+    
+    // Action Animation (push staff forward)
+    if (player.targetState === 'attack') {
+        ctx.fillStyle = 'rgba(255,255,255,0.5)';
+        ctx.beginPath();
+        ctx.arc(50, -95, 20, 0, Math.PI*2);
+        ctx.fill();
+    }
+    ctx.restore();
+
+    // --- DRAW MONSTER (Slime shape) ---
+    ctx.save();
+    let currentRadius = monster.radius + Math.sin(monster.breathTime) * 5;
+    ctx.translate(monster.x, monster.y);
+    
+    if(monster.flashTime > 0) {
+        ctx.fillStyle = 'white';
+    } else {
+        ctx.fillStyle = monster.color;
+    }
+    // Slime Body
+    ctx.beginPath();
+    ctx.arc(0, -currentRadius/2, currentRadius, Math.PI, 0);
+    ctx.quadraticCurveTo(currentRadius, currentRadius/2, 0, currentRadius/2);
+    ctx.quadraticCurveTo(-currentRadius, currentRadius/2, -currentRadius, -currentRadius/2);
+    ctx.fill();
+    // Eyes
+    ctx.fillStyle = '#111827';
+    ctx.beginPath();
+    ctx.arc(-20, -currentRadius/2, 8, 0, Math.PI*2);
+    ctx.arc(20, -currentRadius/2, 8, 0, Math.PI*2);
+    ctx.fill();
+    ctx.restore();
+
+    // --- DRAW PROJECTILES ---
+    projectiles.forEach(p => {
+        ctx.fillStyle = p.color;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI*2);
+        ctx.fill();
+        // Core glow
+        ctx.fillStyle = 'white';
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius*0.5, 0, Math.PI*2);
+        ctx.fill();
+    });
+
+    // --- DRAW PARTICLES ---
+    particles.forEach(pt => {
+        ctx.globalAlpha = Math.max(0, pt.life);
+        ctx.fillStyle = pt.color;
+        ctx.beginPath();
+        ctx.arc(pt.x, pt.y, 4, 0, Math.PI*2);
+        ctx.fill();
+        ctx.globalAlpha = 1.0;
+    });
+}
+
+</script>
+</body>
+</html>

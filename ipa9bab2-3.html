@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mega Quiz 80: Koordinasi & Homeostasis</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap');
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #fcfaf7;
+            color: #1a1c20;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+
+        .option-card {
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .option-card:hover:not(:disabled) {
+            border-color: #4f46e5;
+            background-color: #f5f3ff;
+            transform: translateY(-2px);
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 550px;
+            margin: auto;
+            height: 350px;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .animate-slide {
+            animation: slideIn 0.3s ease-out forwards;
+        }
+
+        .progress-bar-fill {
+            transition: width 0.6s cubic-bezier(0.65, 0, 0.35, 1);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200">
+        <div class="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-9 h-9 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-indigo-200">B</div>
+                <span class="font-extrabold text-slate-800 tracking-tight">BIO-MARATHON <span class="text-indigo-600">80</span></span>
+            </div>
+            <div id="category-badge" class="hidden md:block px-4 py-1 rounded-full bg-slate-100 text-slate-500 text-xs font-bold uppercase tracking-tighter">
+                Menunggu Mulai...
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow container mx-auto px-4 py-8 flex items-center justify-center">
+        
+        <!-- Welcome Screen -->
+        <div id="start-screen" class="max-w-2xl w-full glass-card rounded-[2rem] p-10 shadow-2xl text-center border-b-4 border-indigo-600 animate-slide">
+            <div class="inline-flex items-center justify-center w-20 h-20 bg-indigo-50 rounded-3xl mb-6">
+                <span class="text-4xl">🔬</span>
+            </div>
+            <h1 class="text-4xl font-extrabold text-slate-900 mb-4">Uji Kompetensi Total</h1>
+            <p class="text-slate-600 mb-8 leading-relaxed">
+                Tantang dirimu dengan <b>80 soal marathon</b> yang mencakup seluruh aspek Bab 1: Sistem Koordinasi & Homeostasis. Pastikan konsentrasimu tetap terjaga hingga akhir!
+            </p>
+            
+            <div class="grid grid-cols-2 gap-4 mb-10 text-left">
+                <div class="p-4 bg-slate-50 rounded-2xl flex items-center space-x-3">
+                    <span class="text-2xl">🧠</span>
+                    <div><p class="text-[10px] uppercase font-bold text-slate-400">Saraf</p><p class="text-sm font-bold">20 Soal</p></div>
+                </div>
+                <div class="p-4 bg-slate-50 rounded-2xl flex items-center space-x-3">
+                    <span class="text-2xl">👁️</span>
+                    <div><p class="text-[10px] uppercase font-bold text-slate-400">Indra</p><p class="text-sm font-bold">20 Soal</p></div>
+                </div>
+                <div class="p-4 bg-slate-50 rounded-2xl flex items-center space-x-3">
+                    <span class="text-2xl">🧪</span>
+                    <div><p class="text-[10px] uppercase font-bold text-slate-400">Hormon</p><p class="text-sm font-bold">20 Soal</p></div>
+                </div>
+                <div class="p-4 bg-slate-50 rounded-2xl flex items-center space-x-3">
+                    <span class="text-2xl">⚖️</span>
+                    <div><p class="text-[10px] uppercase font-bold text-slate-400">Homeo</p><p class="text-sm font-bold">20 Soal</p></div>
+                </div>
+            </div>
+
+            <button onclick="initQuiz()" class="group relative w-full py-5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl font-bold text-lg shadow-xl shadow-indigo-200 transition-all overflow-hidden">
+                <span class="relative z-10">Mulai Marathon Sekarang</span>
+                <div class="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform"></div>
+            </button>
+        </div>
+
+        <!-- Quiz Interface -->
+        <div id="quiz-ui" class="hidden max-w-3xl w-full">
+            <div class="mb-8">
+                <div class="flex justify-between items-end mb-3">
+                    <div>
+                        <h2 id="current-category" class="text-indigo-600 font-bold text-sm uppercase tracking-widest">Kategori Soal</h2>
+                        <p class="text-slate-400 text-xs font-medium">Jangan terburu-buru, baca dengan teliti.</p>
+                    </div>
+                    <div class="text-right">
+                        <span id="q-counter" class="text-2xl font-black text-slate-800">1</span>
+                        <span class="text-slate-400 font-bold">/ 80</span>
+                    </div>
+                </div>
+                <div class="h-2 w-full bg-slate-200 rounded-full overflow-hidden shadow-inner">
+                    <div id="progress-bar" class="progress-bar-fill h-full bg-indigo-600 w-0"></div>
+                </div>
+            </div>
+
+            <div id="question-card" class="glass-card rounded-[2.5rem] shadow-xl p-10 animate-slide">
+                <h3 id="question-text" class="text-2xl font-bold text-slate-800 leading-tight mb-10">Memuat soal...</h3>
+                
+                <div id="options-grid" class="grid grid-cols-1 gap-4 mb-8">
+                    <!-- Options inject -->
+                </div>
+
+                <div id="explanation-box" class="hidden p-6 bg-slate-50 border-l-4 border-indigo-500 rounded-r-2xl animate-slide">
+                    <p id="explanation-text" class="text-slate-600 text-sm leading-relaxed"></p>
+                </div>
+            </div>
+
+            <div class="mt-8 flex justify-between items-center">
+                <div id="score-float" class="px-4 py-2 bg-white rounded-xl shadow-sm border border-slate-100 font-bold text-slate-600">
+                    Skor: <span id="current-score" class="text-indigo-600">0</span>
+                </div>
+                <button id="btn-next" onclick="nextQuestion()" class="hidden px-10 py-4 bg-slate-900 text-white rounded-2xl font-bold hover:bg-black transition-all transform active:scale-95 shadow-lg">
+                    Soal Berikutnya &rarr;
+                </button>
+            </div>
+        </div>
+
+        <!-- Result Screen -->
+        <div id="result-screen" class="hidden max-w-4xl w-full glass-card rounded-[3rem] p-10 shadow-2xl animate-slide">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl font-extrabold text-slate-900">Analisis Performa Anda</h2>
+                <p class="text-slate-500">Hasil berdasarkan 80 pertanyaan komprehensif</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-10">
+                <div class="chart-container">
+                    <canvas id="masteryRadar"></canvas>
+                </div>
+                <div class="space-y-6">
+                    <div class="text-center p-8 bg-indigo-600 rounded-[2rem] text-white shadow-2xl shadow-indigo-200">
+                        <p class="text-xs uppercase font-black tracking-widest opacity-80 mb-1">Total Skor</p>
+                        <h3 id="final-score-val" class="text-7xl font-black mb-2">0</h3>
+                        <p id="final-grade" class="font-bold text-lg">Predikat: Cukup</p>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="p-4 bg-emerald-50 border border-emerald-100 rounded-2xl text-center">
+                            <p class="text-[10px] font-bold text-emerald-600 uppercase">Benar</p>
+                            <p id="final-correct" class="text-2xl font-black text-emerald-700">0</p>
+                        </div>
+                        <div class="p-4 bg-rose-50 border border-rose-100 rounded-2xl text-center">
+                            <p class="text-[10px] font-bold text-rose-600 uppercase">Salah</p>
+                            <p id="final-wrong" class="text-2xl font-black text-rose-700">0</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-4">
+                <button onclick="location.reload()" class="flex-grow py-5 bg-indigo-600 text-white rounded-2xl font-bold shadow-lg">Ulangi Marathon</button>
+                <button onclick="window.print()" class="px-8 py-5 bg-slate-100 text-slate-700 rounded-2xl font-bold border border-slate-200">Cetak Laporan</button>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="py-6 text-center text-slate-400 text-[10px] font-bold uppercase tracking-widest">
+        Dibuat untuk Persiapan Ujian Kompetensi IPA - Bab 1
+    </footer>
+
+    <script>
+        const quizData = [
+            // SISTEM SARAF (20 Soal)
+            {q: "Bagian neuron yang berfungsi sebagai penerima impuls pertama kali adalah...", o: ["Akson", "Dendrit", "Badan Sel", "Sel Schwann"], a: 1, cat: "Saraf", f: "Dendrit bercabang-cabang dan berfungsi menerima sinyal dari sel lain."},
+            {q: "Isolator lemak yang membungkus akson untuk mempercepat impuls disebut...", o: ["Sinapsis", "Nukleus", "Selubung Mielin", "Nodus Ranvier"], a: 2, cat: "Saraf", f: "Mielin mencegah bocornya impuls listrik saraf."},
+            {q: "Celah antar sel saraf tempat neurotransmiter dilepaskan adalah...", o: ["Nodus Ranvier", "Dendrit", "Sinapsis", "Meninges"], a: 2, cat: "Saraf", f: "Sinapsis adalah titik temu kimiawi antar neuron."},
+            {q: "Neuron yang membawa impuls dari reseptor ke otak disebut neuron...", o: ["Motoris", "Konektor", "Sensoris", "Asosiasi"], a: 2, cat: "Saraf", f: "Sensoris mengonversi rangsang fisik menjadi sinyal saraf ke pusat."},
+            {q: "Sistem saraf pusat terdiri dari...", o: ["Otak & Saraf Tepi", "Otak & Medula Spinalis", "Serebrum & Serebelum", "Simpatik & Parasimpatik"], a: 1, cat: "Saraf", f: "Pusat integrasi data berada di Otak dan Sumsum Tulang Belakang."},
+            {q: "Selaput pelindung otak yang tersusun dari 3 lapis disebut...", o: ["Perikardium", "Pleura", "Meninges", "Peritonium"], a: 2, cat: "Saraf", f: "Meninges terdiri dari Durameter, Araknoid, dan Piameter."},
+            {q: "Otak besar (Serebrum) berfungsi sebagai pusat...", o: ["Keseimbangan", "Gerakan refleks", "Gerakan sadar & kecerdasan", "Denyut jantung"], a: 2, cat: "Saraf", f: "Serebrum mengontrol fungsi kognitif dan motorik sadar."},
+            {q: "Koordinasi gerakan jari saat mengetik diatur oleh...", o: ["Serebelum", "Medula Oblongata", "Talamus", "Hipotalamus"], a: 0, cat: "Saraf", f: "Serebelum (Otak Kecil) mengatur ketelitian dan keseimbangan gerak."},
+            {q: "Pusat gerak refleks tubuh bagian bawah berada di...", o: ["Otak Kecil", "Sumsum Tulang Belakang", "Otak Besar", "Hipofisis"], a: 1, cat: "Saraf", f: "Medula spinalis mengolah refleks tanpa menunggu instruksi otak."},
+            {q: "Istilah untuk penurunan kualitas otak akibat paparan gawai berlebih adalah...", o: ["Brain Freeze", "Brain Rot", "Synapse Decay", "Neuro-drain"], a: 1, cat: "Saraf", f: "Brain rot merujuk pada pengaruh konten digital yang menurunkan fokus."},
+            {q: "Bagian akson yang tidak terbungkus mielin berfungsi untuk...", o: ["Melindungi sel", "Tempat masuknya ion/lompatan impuls", "Menyimpan nutrisi", "Membentuk sinapsis"], a: 1, cat: "Saraf", f: "Nodus ranvier mempercepat transmisi melalui konduksi saltatori."},
+            {q: "Badan sel saraf mengandung organel vital, yaitu...", o: ["Hanya protein", "Nukleus", "Lemak mielin", "Kloroplas"], a: 1, cat: "Saraf", f: "Nukleus di badan sel berfungsi sebagai pusat kendali metabolisme sel saraf."},
+            {q: "Neuron multipolar paling banyak ditemukan sebagai neuron...", o: ["Sensoris", "Motoris", "Unipolar", "Reseptor"], a: 1, cat: "Saraf", f: "Neuron motoris biasanya memiliki banyak dendrit (multipolar)."},
+            {q: "Sistem saraf tepi berfungsi untuk...", o: ["Mengolah data", "Menghubungkan pusat saraf dengan organ", "Pusat memori", "Menghasilkan hormon"], a: 1, cat: "Saraf", f: "Saraf tepi (perifer) adalah jalur komunikasi ke seluruh tubuh."},
+            {q: "Sel Schwann berfungsi untuk...", o: ["Mengolah impuls", "Membentuk selubung mielin", "Penerima rangsang", "Pelindung otak"], a: 1, cat: "Saraf", f: "Sel Schwann melilit akson untuk membentuk lapisan lemak mielin."},
+            {q: "Efektor dalam lengkung refleks biasanya berupa...", o: ["Indra", "Otak", "Otot atau Kelenjar", "Saraf sensoris"], a: 2, cat: "Saraf", f: "Efektor adalah organ yang melakukan aksi (kontraksi/sekresi)."},
+            {q: "Cairan yang mengisi ruang antar meninges dan melindungi otak dari benturan adalah...", o: ["Darah", "Limfa", "Serebrospinal", "Sinovial"], a: 2, cat: "Saraf", f: "Cairan serebrospinal meredam guncangan mekanis pada otak."},
+            {q: "Bagian otak yang mengatur fungsi vital seperti pernapasan adalah...", o: ["Hipotalamus", "Medula Oblongata", "Talamus", "Serebelun"], a: 1, cat: "Saraf", f: "Batang otak (medula oblongata) adalah pusat kehidupan otomatis."},
+            {q: "Neuroplastisitas negatif dapat disebabkan oleh...", o: ["Belajar alat musik", "Olahraga", "Paparan konten negatif berulang", "Membaca buku"], a: 2, cat: "Saraf", f: "Kebiasaan buruk dapat 'memprogram' otak ke arah yang merugikan."},
+            {q: "Alur impuls pada gerak sadar yang benar adalah...", o: ["Reseptor - Otak - Efektor", "Reseptor - Sumsum - Efektor", "Efektor - Otak - Reseptor", "Reseptor - Saraf sensoris - Otak - Saraf motoris - Efektor"], a: 3, cat: "Saraf", f: "Gerak sadar melibatkan pemrosesan di korteks serebri (otak)."},
+
+            // ALAT INDRA (20 Soal)
+            {q: "Lapisan mata yang berwarna putih, kuat, dan melindungi bola mata adalah...", o: ["Koroid", "Retina", "Sklera", "Iris"], a: 2, cat: "Indra", f: "Sklera adalah pembungkus luar mata yang sangat kuat."},
+            {q: "Bagian mata yang mengatur jumlah cahaya yang masuk adalah...", o: ["Lensa", "Retina", "Pupil", "Sklera"], a: 2, cat: "Indra", f: "Pupil membesar/mengecil sesuai intensitas cahaya."},
+            {q: "Fotoreseptor yang sensitif terhadap warna dan cahaya terang adalah...", o: ["Sel Batang", "Sel Kerucut", "Sel Saraf Olfaktori", "Sel Gustatori"], a: 1, cat: "Indra", f: "Sel kerucut (cones) aktif di tempat terang dan membedakan warna."},
+            {q: "Penderita rabun jauh (miopi) disebabkan bayangan jatuh di...", o: ["Depan retina", "Belakang retina", "Tepat di bintik kuning", "Bintik buta"], a: 0, cat: "Indra", f: "Miopi terjadi karena lensa terlalu cembung atau bola mata terlalu panjang."},
+            {q: "Telinga bagian tengah terhubung ke tenggorokan melalui saluran...", o: ["Koklea", "Eustachius", "Semicircular", "Auditori"], a: 1, cat: "Indra", f: "Saluran Eustachius menyeimbangkan tekanan telinga tengah dan luar."},
+            {q: "Tulang pendengaran terkecil yang menempel pada jendela oval adalah...", o: ["Martil", "Landasan", "Sanggurdi", "Maleus"], a: 2, cat: "Indra", f: "Sanggurdi (stapes) adalah tulang terkecil di tubuh manusia."},
+            {q: "Organ pendengaran yang sebenarnya di dalam koklea adalah...", o: ["Membran Timpani", "Organ Corti", "Saluran Inkus", "Saraf Vestibular"], a: 1, cat: "Indra", f: "Organ Corti berisi sel rambut yang mengubah getaran menjadi impuls saraf."},
+            {q: "Alat keseimbangan tubuh pada telinga adalah...", o: ["Koklea", "Tiga saluran setengah lingkaran", "Gendang telinga", "Saluran Eustachius"], a: 1, cat: "Indra", f: "Kanalis semisirkularis mendeteksi gerakan rotasi kepala."},
+            {q: "Reseptor pembau pada hidung terletak di...", o: ["Lubang hidung", "Atas rongga hidung (Epitel Olfaktori)", "Tenggorokan", "Sinus"], a: 1, cat: "Indra", f: "Sel olfaktori mendeteksi molekul kimia dalam udara."},
+            {q: "Rasa gurih pada lidah disebut...", o: ["Asam", "Pahit", "Umami", "Manis"], a: 2, cat: "Indra", f: "Umami dideteksi dari glutamat yang ada dalam protein/penyedap."},
+            {q: "Tonjolan kecil pada permukaan lidah yang mengandung sel pengecap disebut...", o: ["Papila", "Vili", "Alveoli", "Pori-pori"], a: 0, cat: "Indra", f: "Papila memberikan tekstur kasar pada lidah dan berisi kuncup pengecap."},
+            {q: "Reseptor kulit yang peka terhadap suhu panas adalah...", o: ["Meisner", "Ruffini", "Krause", "Pacini"], a: 1, cat: "Indra", f: "Korpus Ruffini merespons suhu tinggi/panas."},
+            {q: "Korpus Krause pada kulit berfungsi mendeteksi...", o: ["Nyeri", "Dingin", "Tekanan", "Sentuhan"], a: 1, cat: "Indra", f: "Krause peka terhadap suhu rendah/dingin."},
+            {q: "Bagian mata yang jernih di depan dan tidak memiliki pembuluh darah adalah...", o: ["Koroid", "Kornea", "Iris", "Lensa"], a: 1, cat: "Indra", f: "Kornea mendapatkan nutrisi dari cairan aqueous humor."},
+            {q: "Cairan yang menjaga bentuk bola mata tetap bulat adalah...", o: ["Darah", "Aqueous Humor", "Vitreous Humor", "Cairan Limfa"], a: 2, cat: "Indra", f: "Vitreous humor bersifat seperti jeli di rongga utama mata."},
+            {q: "Bintik buta adalah area di retina yang...", o: ["Paling tajam melihat", "Hanya ada sel batang", "Tidak memiliki fotoreseptor", "Penuh dengan sel kerucut"], a: 2, cat: "Indra", f: "Bintik buta adalah tempat saraf optik keluar dari bola mata."},
+            {q: "Ketidakmampuan membedakan warna secara total/sebagian disebut...", o: ["Katarak", "Glaukoma", "Buta Warna", "Presbiopi"], a: 2, cat: "Indra", f: "Buta warna biasanya bersifat genetik karena kelainan sel kerucut."},
+            {q: "Gendang telinga secara medis disebut...", o: ["Maleus", "Koklea", "Membran Timpani", "Otosklerosis"], a: 2, cat: "Indra", f: "Membran timpani bergetar saat terkena gelombang bunyi."},
+            {q: "Reseptor sentuhan halus di ujung jari adalah...", o: ["Pacini", "Meisner", "Merkel", "Ruffini"], a: 1, cat: "Indra", f: "Korpus Meisner terletak di dermis atas untuk sentuhan ringan."},
+            {q: "Ujung saraf bebas pada kulit berfungsi sebagai reseptor...", o: ["Gatal", "Sakit/Nyeri", "Tekanan berat", "Panas"], a: 1, cat: "Indra", f: "Nyeri adalah mekanisme peringatan saat jaringan terancam rusak."},
+
+            // HORMON (20 Soal)
+            {q: "Kelenjar endokrin sering disebut kelenjar buntu karena...", o: ["Tidak berfungsi", "Tidak memiliki saluran pengalir", "Menghasilkan racun", "Hanya aktif saat tidur"], a: 1, cat: "Hormon", f: "Hormon disekresikan langsung ke pembuluh darah."},
+            {q: "Hipofisis (Pituitari) dijuluki 'Master of Gland' karena...", o: ["Paling besar", "Mengatur kelenjar endokrin lainnya", "Ada di otak", "Ditemukan pertama kali"], a: 1, cat: "Hormon", f: "Hormon dari pituitari mengontrol tiroid, adrenal, dan gonad."},
+            {q: "Hormon yang memicu pertumbuhan tulang dan otot adalah...", o: ["ADH", "TSH", "GH (Growth Hormone)", "LH"], a: 2, cat: "Hormon", f: "GH diproduksi oleh hipofisis anterior."},
+            {q: "Hormon melatonin yang mengatur jam tidur diproduksi oleh kelenjar...", o: ["Tiroid", "Adrenal", "Pineal", "Pankreas"], a: 2, cat: "Hormon", f: "Kelenjar pineal merespons kegelapan untuk memicu kantuk."},
+            {q: "Kelenjar tiroid membutuhkan mineral ... untuk memproduksi tiroksin.", o: ["Zat Besi", "Kalsium", "Yodium", "Magnesium"], a: 2, cat: "Hormon", f: "Kekurangan yodium menyebabkan pembengkakan kelenjar tiroid (gondok)."},
+            {q: "Hormon yang menurunkan kadar kalsium darah dengan menyimpannya di tulang adalah...", o: ["Parathormon", "Kalsitonin", "Insulin", "Adrenalin"], a: 1, cat: "Hormon", f: "Kalsitonin dihasilkan oleh kelenjar tiroid."},
+            {q: "Kebalikan dari kalsitonin, Parathormon (PTH) berfungsi untuk...", o: ["Menambah gula darah", "Meningkatkan kalsium darah", "Menurunkan detak jantung", "Memacu pertumbuhan"], a: 1, cat: "Hormon", f: "PTH mengambil kalsium dari tulang saat kadar di darah rendah."},
+            {q: "Hormon insulin dihasilkan oleh sel khusus di organ...", o: ["Hati", "Lambung", "Pankreas (Pulau Langerhans)", "Ginjal"], a: 2, cat: "Hormon", f: "Pankreas memiliki fungsi eksokrin (pencernaan) dan endokrin (hormon)."},
+            {q: "Penderita Diabetes Melitus mengalami masalah pada hormon...", o: ["Glukagon", "Adrenalin", "Insulin", "Tiroksin"], a: 2, cat: "Hormon", f: "Tubuh tidak bisa mengontrol gula darah karena kurangnya insulin."},
+            {q: "Hormon 'Fight or Flight' yang memacu detak jantung saat panik adalah...", o: ["Estrogen", "Adrenalin (Epinefrin)", "ADH", "Oksitosin"], a: 1, cat: "Hormon", f: "Adrenalin dihasilkan oleh medula kelenjar adrenal."},
+            {q: "Hormon ADH berfungsi untuk...", o: ["Membakar gula", "Mengatur penyerapan air di ginjal", "Memacu kelahiran", "Mengatur suhu"], a: 1, cat: "Hormon", f: "Antidiuretic Hormone mengurangi volume urine."},
+            {q: "Oksitosin adalah hormon yang berperan penting dalam...", o: ["Tidur", "Metabolisme", "Kontraksi rahim & menyusui", "Pertumbuhan rambut"], a: 2, cat: "Hormon", f: "Oksitosin sering disebut hormon kasih sayang/ikatan sosial."},
+            {q: "Hormon yang mematangkan sel telur (ovulasi) pada wanita adalah...", o: ["FSH", "LH", "Testosteron", "Prolaktin"], a: 1, cat: "Hormon", f: "Luteinizing Hormone (LH) memicu pelepasan sel telur."},
+            {q: "Testosteron diproduksi oleh kelenjar...", o: ["Ovarium", "Testis", "Adrenal", "Hipofisis"], a: 1, cat: "Hormon", f: "Testosteron mengatur ciri kelamin sekunder pada pria."},
+            {q: "Estrogen dan Progesteron dihasilkan oleh...", o: ["Rahim", "Ovarium", "Plasenta", "Vagina"], a: 1, cat: "Hormon", f: "Kedua hormon ini mengatur siklus menstruasi dan kehamilan."},
+            {q: "Hormon tiroksin berfungsi utama untuk mengatur...", o: ["Tinggi badan", "Kecepatan metabolisme sel", "Kadar air", "Sistem imun"], a: 1, cat: "Hormon", f: "Tiroid adalah 'metabolostat' tubuh kita."},
+            {q: "Kekurangan GH pada masa anak-anak menyebabkan...", o: ["Raksasa (Gigantisme)", "Kerdil (Dwarfisme)", "Gondok", "Kretinisme"], a: 1, cat: "Hormon", f: "Pertumbuhan tulang yang tidak maksimal akibat hormon rendah."},
+            {q: "Kelebihan GH pada masa dewasa (setelah pertumbuhan berhenti) disebut...", o: ["Akromegali", "Gigantisme", "Obesitas", "Diabetes"], a: 0, cat: "Hormon", f: "Akromegali menyebabkan penebalan tulang wajah, tangan, dan kaki."},
+            {q: "Kelenjar adrenal terletak di bagian...", o: ["Atas ginjal", "Leher", "Otak", "Perut bawah"], a: 0, cat: "Hormon", f: "Disebut juga kelenjar suprarenalis."},
+            {q: "Hormon yang merangsang pengeluaran ASI adalah...", o: ["Oksitosin", "Prolaktin", "Estrogen", "Progesteron"], a: 1, cat: "Hormon", f: "Prolaktin memicu produksi, Oksitosin memicu pengeluaran."},
+
+            // HOMEOSTASIS (20 Soal)
+            {q: "Kemampuan tubuh mempertahankan kondisi internal yang stabil disebut...", o: ["Metabolisme", "Homeostasis", "Evolusi", "Koordinasi"], a: 1, cat: "Homeostasis", f: "Homeostasis berasal dari kata Homeo (Sama) dan Stasis (Diam)."},
+            {q: "Pusat pengendali suhu tubuh di otak adalah...", o: ["Serebrum", "Medula Oblongata", "Hipotalamus", "Talamus"], a: 2, cat: "Homeostasis", f: "Hipotalamus bertindak sebagai termostat tubuh."},
+            {q: "Respon tubuh saat kepanasan untuk membuang panas adalah...", o: ["Menggigil", "Vasokonstriksi", "Vasodilatasi & Berkeringat", "Meningkatkan nafsu makan"], a: 2, cat: "Homeostasis", f: "Melebarnya pembuluh darah kulit (dilatasi) mengalirkan panas ke luar."},
+            {q: "Menggigil bertujuan untuk...", o: ["Mendinginkan tubuh", "Menghasilkan panas melalui kontraksi otot", "Menghilangkan stres", "Membuang racun"], a: 1, cat: "Homeostasis", f: "Energi mekanik otot yang bergetar berubah menjadi energi panas."},
+            {q: "Saat tubuh dehidrasi (kurang air), pituitari akan melepas ... ADH.", o: ["Lebih sedikit", "Lebih banyak", "Jumlah tetap", "Tanpa"], a: 1, cat: "Homeostasis", f: "Banyak ADH membuat ginjal menyerap air kembali ke darah."},
+            {q: "Warna urine kuning pekat menandakan bahwa tubuh sedang...", o: ["Kelebihan air", "Kekurangan air (Dehidrasi)", "Sangat sehat", "Kekurangan protein"], a: 1, cat: "Homeostasis", f: "Urine pekat berarti air ditarik kembali ke tubuh karena kekurangan cairan."},
+            {q: "Hormon yang menaikkan gula darah saat kita lapar/puasa adalah...", o: ["Insulin", "Glukagon", "Adrenalin", "Tiroksin"], a: 1, cat: "Homeostasis", f: "Glukagon merombak glikogen di hati menjadi glukosa."},
+            {q: "Glikogen adalah bentuk simpanan glukosa yang berada di...", o: ["Otak", "Paru-paru", "Hati dan Otot", "Darah"], a: 2, cat: "Homeostasis", f: "Glikogen sering disebut sebagai 'gula otot'."},
+            {q: "Mekanisme umpan balik negatif bertujuan untuk...", o: ["Memperparah keadaan", "Mengembalikan kondisi ke titik normal", "Mempercepat pertumbuhan", "Meningkatkan suhu"], a: 1, cat: "Homeostasis", f: "Negative feedback melawan perubahan agar tetap stabil."},
+            {q: "Jika kadar kalsium darah terlalu tinggi, tubuh akan melakukan...", o: ["Pelepasan PTH", "Sekresi Kalsitonin", "Merusak tulang", "Menahan kencing"], a: 1, cat: "Homeostasis", f: "Kalsitonin menyimpan kelebihan kalsium ke dalam matriks tulang."},
+            {q: "Saat kita banyak minum air, produksi hormon ADH akan...", o: ["Meningkat drastis", "Menurun/Berhenti", "Tetap tinggi", "Berubah jadi insulin"], a: 1, cat: "Homeostasis", f: "Sedikit ADH membuat ginjal mengeluarkan air (urine encer)."},
+            {q: "Hormon insulin bekerja dengan cara...", o: ["Mengubah glikogen jadi glukosa", "Memasukkan glukosa ke dalam sel", "Meningkatkan rasa haus", "Mendinginkan tubuh"], a: 1, cat: "Homeostasis", f: "Insulin membuka 'pintu' sel agar gula bisa masuk dan digunakan."},
+            {q: "Penyempitan pembuluh darah saat kedinginan disebut...", o: ["Dilatasi", "Konstriksi", "Kavitasi", "Inflasi"], a: 1, cat: "Homeostasis", f: "Vasokonstriksi menjaga darah panas tetap di bagian dalam tubuh."},
+            {q: "Homeostasis penting karena enzim di tubuh hanya bekerja optimal pada...", o: ["Suhu ekstrem", "Rentang pH dan suhu tertentu", "Keadaan beku", "Saat tubuh stres"], a: 1, cat: "Homeostasis", f: "Gangguan homeostasis merusak fungsi protein/enzim vital."},
+            {q: "Keringat yang menguap dari kulit menyebabkan...", o: ["Peningkatan suhu", "Pendinginan (Evaporative cooling)", "Penyumbatan pori", "Kulit jadi panas"], a: 1, cat: "Homeostasis", f: "Penguapan menyerap energi panas dari permukaan tubuh."},
+            {q: "Saat kadar gula darah turun, sel alfa pankreas mengeluarkan...", o: ["Insulin", "Glukagon", "Epinefrin", "Somatostatin"], a: 1, cat: "Homeostasis", f: "Sel alfa menghasilkan glukagon, sel beta menghasilkan insulin."},
+            {q: "Sistem yang bekerja sama paling erat dalam homeostasis adalah...", o: ["Saraf dan Pencernaan", "Saraf dan Endokrin (Hormon)", "Otot dan Tulang", "Pernapasan saja"], a: 1, cat: "Homeostasis", f: "Saraf memberi respon cepat, Hormon memberi respon jangka panjang."},
+            {q: "Rasa haus adalah sinyal homeostasis yang berasal dari...", o: ["Mulut kering", "Hipotalamus mendeteksi darah kental", "Perut kosong", "Ginjal sakit"], a: 1, cat: "Homeostasis", f: "Osmoreseptor di otak mendeteksi kepekatan cairan darah."},
+            {q: "Osteoporosis (pengeroposan tulang) bisa disebabkan oleh kelebihan hormon...", o: ["Kalsitonin", "Parathormon (PTH)", "GH", "Tiroksin"], a: 1, cat: "Homeostasis", f: "PTH yang berlebih terus-menerus mengambil kalsium dari tulang."},
+            {q: "Pengaturan kadar air dalam tubuh disebut juga...", o: ["Termoregulasi", "Osmoregulasi", "Glikoregulasi", "Ekskresi"], a: 1, cat: "Homeostasis", f: "Osmoregulasi menjaga tekanan osmotik cairan tubuh."}
+        ];
+
+        // --- STATE ---
+        let currentIdx = 0;
+        let score = 0;
+        let correctCount = 0;
+        let wrongCount = 0;
+        let catStats = { "Saraf": 0, "Indra": 0, "Hormon": 0, "Homeostasis": 0 };
+        let resultsChart = null;
+
+        // --- CORE FUNCTIONS ---
+        function initQuiz() {
+            document.getElementById('start-screen').classList.add('hidden');
+            document.getElementById('quiz-ui').classList.remove('hidden');
+            document.getElementById('category-badge').classList.remove('hidden');
+            renderQuestion();
+        }
+
+        function renderQuestion() {
+            const q = quizData[currentIdx];
+            
+            // UI Update
+            document.getElementById('q-counter').innerText = currentIdx + 1;
+            document.getElementById('current-category').innerText = q.cat;
+            document.getElementById('category-badge').innerText = q.cat;
+            document.getElementById('question-text').innerText = q.q;
+            
+            // Progress Bar
+            const progress = ((currentIdx + 1) / quizData.length) * 100;
+            document.getElementById('progress-bar').style.width = progress + "%";
+
+            // Options
+            const grid = document.getElementById('options-grid');
+            grid.innerHTML = '';
+            q.o.forEach((opt, i) => {
+                const btn = document.createElement('button');
+                btn.className = "option-card w-full text-left p-5 border-2 border-slate-100 rounded-2xl bg-white flex items-center group";
+                btn.innerHTML = `
+                    <span class="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center font-bold text-slate-400 mr-4 group-hover:bg-indigo-600 group-hover:text-white transition-colors">${String.fromCharCode(65+i)}</span>
+                    <span class="font-semibold text-slate-700">${opt}</span>
+                `;
+                btn.onclick = () => handleAnswer(i);
+                grid.appendChild(btn);
+            });
+
+            document.getElementById('explanation-box').classList.add('hidden');
+            document.getElementById('btn-next').classList.add('hidden');
+        }
+
+        function handleAnswer(choiceIdx) {
+            const q = quizData[currentIdx];
+            const btns = document.querySelectorAll('.option-card');
+            
+            btns.forEach(b => b.disabled = true);
+            
+            const expBox = document.getElementById('explanation-box');
+            const expText = document.getElementById('explanation-text');
+            expBox.classList.remove('hidden');
+
+            if(choiceIdx === q.a) {
+                btns[choiceIdx].classList.replace('border-slate-100', 'border-emerald-500');
+                btns[choiceIdx].classList.add('bg-emerald-50');
+                expText.innerHTML = `<b class="text-emerald-600">Jawaban Benar!</b><br>${q.f}`;
+                score += 1.25; // 80 * 1.25 = 100
+                correctCount++;
+                catStats[q.cat]++;
+            } else {
+                btns[choiceIdx].classList.replace('border-slate-100', 'border-rose-500');
+                btns[choiceIdx].classList.add('bg-rose-50');
+                btns[q.a].classList.replace('border-slate-100', 'border-emerald-500');
+                expText.innerHTML = `<b class="text-rose-600">Kurang Tepat.</b> Jawaban yang benar adalah <b>${q.o[q.a]}</b>.<br>${q.f}`;
+                wrongCount++;
+            }
+
+            document.getElementById('current-score').innerText = Math.round(score);
+            document.getElementById('btn-next').classList.remove('hidden');
+        }
+
+        function nextQuestion() {
+            currentIdx++;
+            if(currentIdx < quizData.length) {
+                renderQuestion();
+            } else {
+                showFinalResults();
+            }
+        }
+
+        function showFinalResults() {
+            document.getElementById('quiz-ui').classList.add('hidden');
+            document.getElementById('category-badge').classList.add('hidden');
+            document.getElementById('result-screen').classList.remove('hidden');
+
+            const finalScore = Math.round(score);
+            document.getElementById('final-score-val').innerText = finalScore;
+            document.getElementById('final-correct').innerText = correctCount;
+            document.getElementById('final-wrong').innerText = wrongCount;
+
+            let grade = "";
+            if(finalScore >= 90) grade = "Predikat: Sempurna (Master)";
+            else if(finalScore >= 75) grade = "Predikat: Sangat Baik";
+            else if(finalScore >= 60) grade = "Predikat: Cukup";
+            else grade = "Predikat: Perlu Remedial";
+            document.getElementById('final-grade').innerText = grade;
+
+            renderMasteryChart();
+        }
+
+        function renderMasteryChart() {
+            const ctx = document.getElementById('masteryRadar').getContext('2d');
+            
+            // Normalize to percentage
+            const dataValues = [
+                (catStats["Saraf"] / 20) * 100,
+                (catStats["Indra"] / 20) * 100,
+                (catStats["Hormon"] / 20) * 100,
+                (catStats["Homeostasis"] / 20) * 100
+            ];
+
+            resultsChart = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['Sistem Saraf', 'Alat Indra', 'Sistem Hormon', 'Homeostasis'],
+                    datasets: [{
+                        label: 'Penguasaan Materi (%)',
+                        data: dataValues,
+                        backgroundColor: 'rgba(79, 70, 229, 0.2)',
+                        borderColor: 'rgba(79, 70, 229, 1)',
+                        borderWidth: 3,
+                        pointBackgroundColor: 'rgba(79, 70, 229, 1)',
+                        pointRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: { display: true },
+                            suggestedMin: 0,
+                            suggestedMax: 100,
+                            ticks: { stepSize: 20, font: { size: 10 } }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
